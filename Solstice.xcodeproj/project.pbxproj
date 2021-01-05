@@ -19,6 +19,10 @@
 		7190094825A4D98C002ED383 /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
 		7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
 		7190094F25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
+		71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
+		71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
+		71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
+		71EECF3725A51AF800CCC2FC /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,8 @@
 		7190092D25A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7190094625A4D98C002ED383 /* Solar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solar.swift; sourceTree = "<group>"; };
 		7190094D25A4D9C2002ED383 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarCalculator.swift; sourceTree = "<group>"; };
+		71EECF3525A51AF800CCC2FC /* Color.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +115,8 @@
 				7190090725A4D6D5002ED383 /* Assets.xcassets */,
 				7190094625A4D98C002ED383 /* Solar.swift */,
 				7190094D25A4D9C2002ED383 /* LocationManager.swift */,
+				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
+				71EECF3525A51AF800CCC2FC /* Color.extension.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -316,9 +324,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */,
 				7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				7190094725A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093025A4D6D5002ED383 /* ContentView.swift in Sources */,
+				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,9 +337,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71EECF3725A51AF800CCC2FC /* Color.extension.swift in Sources */,
 				7190094F25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				7190094825A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093125A4D6D5002ED383 /* ContentView.swift in Sources */,
+				71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092F25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

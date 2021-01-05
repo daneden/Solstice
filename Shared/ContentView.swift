@@ -10,32 +10,36 @@ import Combine
 import CoreLocation
 
 struct ContentView: View {
-  @ObservedObject var locationManager = LocationManager.shared
-  
-  var solarToday: Solar? {
-    guard let coord =
-            locationManager.location?.coordinate,
-            CLLocationCoordinate2DIsValid(coord) else { return nil }
-    return Solar(coordinate: coord)
-  }
-  
-  var solarYesterday: Solar? {
-    guard let coord =
-            locationManager.location?.coordinate,
-          CLLocationCoordinate2DIsValid(coord) else { return nil }
-    guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else { return nil }
-    
-    return Solar(for: yesterday, coordinate: coord)
-  }
+  var calculator = SolarCalculator()
   
   var body: some View {
-    if let sunsetToday = solarToday?.sunset,
-       let sunsetYesterday = solarYesterday?.sunset {
-      Text(sunsetToday, style: .time)
-      Text(sunsetYesterday, style: .time)
-      Text(locationManager.location?.coordinate.latitude.description ?? "0")
-      Text(Date(), style: .time)
+    VStack(alignment: .leading, spacing: 6) {
+      if let today = calculator.today?.begins,
+         let yesterday = calculator.yesterday?.begins {
+        Label("Yesterday: \(yesterday, style: .time)", systemImage: "sunrise")
+          .foregroundColor(.tertiaryLabel)
+        
+        Label("Today: \(today, style: .time)", systemImage: "sunrise.fill")
+          .foregroundColor(.secondary)
+      }
+      
+      Text("\(calculator.differenceString) \(verbiage) seconds of daylight today than yesterday.")
+        .font(Font.system(.largeTitle, design: .rounded).bold())
+        .padding(.vertical)
+      
+      if let today = calculator.today?.ends,
+         let yesterday = calculator.yesterday?.ends {
+        Label("Today: \(today, style: .time)", systemImage: "sunset.fill")
+          .foregroundColor(.secondary)
+        
+        Label("Yesterday: \(yesterday, style: .time)", systemImage: "sunset")
+          .foregroundColor(.tertiaryLabel)
+      }
     }
+  }
+  
+  var verbiage: String {
+    calculator.difference >= 0 ? "more" : "fewer"
   }
 }
 
