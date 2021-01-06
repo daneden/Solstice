@@ -28,29 +28,43 @@ struct ContentView: View {
             Spacer()
           }
           
-          if let today = calculator.today?.begins,
-             let yesterday = calculator.yesterday?.begins {
-            Label("Yesterday: \(yesterday, style: .time)", systemImage: "sunrise")
-              .foregroundColor(.tertiaryLabel)
-            
-            Label("Today: \(today, style: .time)", systemImage: "sunrise.fill")
-              .foregroundColor(.secondary)
-          }
-          
-          Text("\(calculator.differenceString) \(verbiage) seconds of daylight today than yesterday.")
+          Text("There are \(calculator.differenceString) \(verbiage) seconds of daylight today than yesterday.")
             .font(Font.system(.largeTitle, design: .rounded).bold())
             .padding(.vertical)
           
-          if let today = calculator.today?.ends,
-             let yesterday = calculator.yesterday?.ends {
-            Label("Today: \(today, style: .time)", systemImage: "sunset.fill")
-              .foregroundColor(.secondary)
+          HStack {
+            VStack(alignment: .leading, spacing: 4) {
+              HStack {
+                Text("Today").font(.caption)
+                Spacer()
+              }
+              if let ends = calculator.today?.ends,
+                 let begins = calculator.today?.begins {
+                Label("\(begins, style: .time)", systemImage: "sunrise.fill")
+                Label("\(ends, style: .time)", systemImage: "sunset.fill")
+              }
+            }
             
-            Label("Yesterday: \(yesterday, style: .time)", systemImage: "sunset")
-              .foregroundColor(.tertiaryLabel)
+            VStack(alignment: .leading, spacing: 4) {
+              HStack {
+                Text("Yesterday").font(.caption)
+                Spacer()
+              }
+              if let ends = calculator.yesterday?.ends,
+                 let begins = calculator.yesterday?.begins {
+                Label("\(begins, style: .time)", systemImage: "sunrise")
+                Label("\(ends, style: .time)", systemImage: "sunset")
+              }
+            }.foregroundColor(.secondary)
           }
           
           Spacer()
+          
+          if let nextSolstice = calculator.nextSolstice {
+            Text("\(nextSolstice, style: .relative) until the next solstice")
+              .font(.caption)
+              .foregroundColor(.secondary)
+          }
         }
         .padding()
         .padding(.bottom)

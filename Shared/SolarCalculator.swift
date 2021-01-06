@@ -39,16 +39,42 @@ struct SolarCalculator {
     return coords
   }
   
+  private var todaysDate: Date {
+    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date())!
+  }
+  
+  var prevSolstice: Date? {
+    let components = Calendar.current.dateComponents([.month], from: todaysDate)
+    if let month = components.month, month >= 6 {
+      return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
+    } else {
+      return Calendar.current.date(from: DateComponents(year: components.year ?? 0 - 1, month: 12, day: 22))
+    }
+  }
+  
+  var nextSolstice: Date? {
+    let components = Calendar.current.dateComponents([.month, .year], from: todaysDate)
+    if let month = components.month, month >= 12 {
+      return Calendar.current.date(from: DateComponents(year: components.year ?? 0 + 1, month: 6, day: 22))
+    } else if let month = components.month, month >= 6 {
+      return Calendar.current.date(from: DateComponents(year: components.year, month: 12, day: 22))
+    } else {
+      return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
+    }
+  }
+  
   var today: Daylight? {
     guard let coords = coords else { return nil }
-    guard let solar = Solar(coordinate: coords) else { return nil }
+    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) else { return nil }
+    guard let solar = Solar(for: date, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
   var yesterday: Daylight? {
     guard let coords = coords else { return nil }
-    guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else { return nil }
+    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) else { return nil }
+    guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return nil }
     guard let solar = Solar(for: yesterday, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
