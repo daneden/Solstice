@@ -29,6 +29,7 @@ struct SundialView: View {
             .offset(
               x: geometry.size.width * CGFloat(currentPosition),
               y: CGFloat(sin((currentPosition - .pi / 4) * .pi * 2) * waveSize))
+            .shadow(color: Color.white.opacity(0.6), radius: 10, x: 0.0, y: 0.0)
         }
         
         Rectangle()
