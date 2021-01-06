@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		711AE5EA25A5ADC500B363BA /* WaveShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5E925A5ADC500B363BA /* WaveShape.swift */; };
+		711AE5EB25A5ADC500B363BA /* WaveShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5E925A5ADC500B363BA /* WaveShape.swift */; };
+		711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
+		711AE5F625A5B2FA00B363BA /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
+		711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5FB25A5B35700B363BA /* VisualEffectView.swift */; };
+		711AE5FD25A5B35700B363BA /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5FB25A5B35700B363BA /* VisualEffectView.swift */; };
 		7190092125A4D6D5002ED383 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190092025A4D6D5002ED383 /* Tests_iOS.swift */; };
 		7190092C25A4D6D5002ED383 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190092B25A4D6D5002ED383 /* Tests_macOS.swift */; };
 		7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090525A4D6D2002ED383 /* SolsticeApp.swift */; };
@@ -43,6 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		711AE5E925A5ADC500B363BA /* WaveShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveShape.swift; sourceTree = "<group>"; };
+		711AE5F425A5B2FA00B363BA /* SundialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SundialView.swift; sourceTree = "<group>"; };
+		711AE5FB25A5B35700B363BA /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		7190090525A4D6D2002ED383 /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7190090625A4D6D2002ED383 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7190090725A4D6D5002ED383 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,7 +114,9 @@
 				7190092A25A4D6D5002ED383 /* Tests macOS */,
 				7190090D25A4D6D5002ED383 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		7190090425A4D6D2002ED383 /* Shared */ = {
 			isa = PBXGroup;
@@ -117,6 +128,9 @@
 				7190094D25A4D9C2002ED383 /* LocationManager.swift */,
 				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
 				71EECF3525A51AF800CCC2FC /* Color.extension.swift */,
+				711AE5E925A5ADC500B363BA /* WaveShape.swift */,
+				711AE5F425A5B2FA00B363BA /* SundialView.swift */,
+				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -326,10 +340,13 @@
 			files = (
 				71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */,
 				7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */,
+				711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */,
+				711AE5EA25A5ADC500B363BA /* WaveShape.swift in Sources */,
 				7190094725A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093025A4D6D5002ED383 /* ContentView.swift in Sources */,
 				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
+				711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,10 +356,13 @@
 			files = (
 				71EECF3725A51AF800CCC2FC /* Color.extension.swift in Sources */,
 				7190094F25A4D9C2002ED383 /* LocationManager.swift in Sources */,
+				711AE5FD25A5B35700B363BA /* VisualEffectView.swift in Sources */,
+				711AE5EB25A5ADC500B363BA /* WaveShape.swift in Sources */,
 				7190094825A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093125A4D6D5002ED383 /* ContentView.swift in Sources */,
 				71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092F25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
+				711AE5F625A5B2FA00B363BA /* SundialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
