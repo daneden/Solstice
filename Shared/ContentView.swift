@@ -15,10 +15,9 @@ struct ContentView: View {
   
   var body: some View {
     ZStack {
-      SundialView()
+      SundialView(currentPosition: daylightProgress)
       
-      VStack {
-        Spacer()
+      GeometryReader { geometry in
         VStack(alignment: .leading, spacing: 6) {
           if let location = location.placemark?.locality {
             Label(location, systemImage: "location.fill")
@@ -52,12 +51,22 @@ struct ContentView: View {
         .padding()
         .padding(.bottom)
         .padding(.bottom)
+        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        .offset(y: geometry.size.height / 4)
+        .frame(width: geometry.size.width, height: geometry.size.height / 2)
       }
     }.edgesIgnoringSafeArea(.bottom)
   }
   
   var verbiage: String {
     calculator.difference >= 0 ? "more" : "fewer"
+  }
+  
+  var daylightProgress: Double {
+    let begins = calculator.today?.begins ?? Date()
+    let ends = calculator.today?.ends ?? Date()
+    let period = begins.distance(to: ends)
+    return begins.distance(to: Date()) / period
   }
 }
 

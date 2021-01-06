@@ -9,10 +9,13 @@ import SwiftUI
 
 struct SundialView: View {
   var waveSize = 75.0
+  var circleSize: CGFloat = 36.0
+  var currentPosition: Double
   
   var wave: some View {
     Wave(amplitude: waveSize, frequency: .pi * 2, phase: .pi / 2)
       .stroke(Color.secondarySystemFill, lineWidth: 2)
+      .offset(y: -1)
   }
   
   var body: some View {
@@ -21,10 +24,12 @@ struct SundialView: View {
         ZStack {
           wave
           Circle()
-            .frame(width: CGFloat(waveSize / 1.75))
-            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-            .offset(x: -80.0, y: -15)
-        }.offset(y: 10)
+            .frame(width: circleSize)
+            .position(x: -circleSize / 2, y: geometry.size.height / 2)
+            .offset(
+              x: geometry.size.width * CGFloat(currentPosition),
+              y: CGFloat(sin((currentPosition - .pi / 4) * .pi * 2) * waveSize))
+        }
         
         Rectangle()
           .fill(Color.clear)
@@ -38,6 +43,6 @@ struct SundialView: View {
 
 struct SundialView_Previews: PreviewProvider {
     static var previews: some View {
-        SundialView()
+      SundialView(currentPosition: 0.75)
     }
 }
