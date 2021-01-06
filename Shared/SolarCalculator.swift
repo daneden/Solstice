@@ -71,7 +71,8 @@ struct SolarCalculator {
   
   var prevSolsticeDaylight: Daylight? {
     guard let coords = coords else { return nil }
-    guard let solar = Solar(for: prevSolstice!, coordinate: coords) else { return nil }
+    guard let prevSolstice = prevSolstice else { return nil }
+    guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }

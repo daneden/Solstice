@@ -64,7 +64,9 @@ struct ContentView: View {
           if let nextSolstice = calculator.nextSolstice {
             VStack(alignment: .leading, spacing: 4) {
               Label("\(nextSolstice, style: .relative) until the next solstice", systemImage: "calendar")
-              Text(prevSolsticeDifference)
+              if let prevSolsticeDifference = prevSolsticeDifference {
+                Text(prevSolsticeDifference)
+              }
             }
               .font(.caption)
               .foregroundColor(.secondary)
@@ -100,9 +102,10 @@ struct ContentView: View {
     return daylightLength / dayLength
   }
   
-  var prevSolsticeDifference: String {
-    let prevSolsticeDaylight = calculator.prevSolsticeDaylight!
-    let (minutes, seconds) = prevSolsticeDaylight.difference(from: calculator.today!)
+  var prevSolsticeDifference: String? {
+    guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return nil }
+    guard let today = calculator.today else { return nil }
+    let (minutes, seconds) = prevSolsticeDaylight.difference(from: today)
     var value = "\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : "") and \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")"
     if minutes > 0 && seconds > 0 {
       value += " more daylight today than at the previous solstice"
