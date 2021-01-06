@@ -25,6 +25,8 @@
 		7190094825A4D98C002ED383 /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
 		7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
 		7190094F25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
+		71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
+		71A36C2025A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
@@ -68,6 +70,7 @@
 		7190092D25A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7190094625A4D98C002ED383 /* Solar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solar.swift; sourceTree = "<group>"; };
 		7190094D25A4D9C2002ED383 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		71A36C1E25A6065F004F527B /* Date.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.extension.swift; sourceTree = "<group>"; };
 		71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarCalculator.swift; sourceTree = "<group>"; };
 		71EECF3525A51AF800CCC2FC /* Color.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +134,7 @@
 				711AE5E925A5ADC500B363BA /* WaveShape.swift */,
 				711AE5F425A5B2FA00B363BA /* SundialView.swift */,
 				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
+				71A36C1E25A6065F004F527B /* Date.extension.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -346,6 +350,7 @@
 				7190093025A4D6D5002ED383 /* ContentView.swift in Sources */,
 				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
+				71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */,
 				711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +367,7 @@
 				7190093125A4D6D5002ED383 /* ContentView.swift in Sources */,
 				71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092F25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
+				71A36C2025A6065F004F527B /* Date.extension.swift in Sources */,
 				711AE5F625A5B2FA00B363BA /* SundialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,7 +521,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -538,7 +544,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;

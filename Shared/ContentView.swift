@@ -15,7 +15,7 @@ struct ContentView: View {
   
   var body: some View {
     ZStack {
-      SundialView(currentPosition: daylightProgress)
+      SundialView(currentPosition: daylightProgress, offset: daylightOffset)
       
       GeometryReader { geometry in
         VStack(alignment: .leading, spacing: 4) {
@@ -77,10 +77,23 @@ struct ContentView: View {
   }
   
   var daylightProgress: Double {
-    let begins = calculator.today?.begins ?? Date()
-    let ends = calculator.today?.ends ?? Date()
+    let begins = Date().startOfDay
+    let ends = Date().endOfDay
     let period = begins.distance(to: ends)
     return begins.distance(to: Date()) / period
+  }
+  
+  var daylightOffset: Double {
+    let dayBegins = Date().startOfDay
+    let dayEnds = Date().endOfDay
+    let dayLength = dayBegins.distance(to: dayEnds)
+    
+    let daylightBegins = calculator.today?.begins ?? dayBegins
+    let daylightEnds = calculator.today?.ends ?? dayEnds
+    let daylightLength = daylightBegins.distance(to: daylightEnds)
+    print( daylightLength / dayLength )
+    
+    return daylightLength / dayLength
   }
 }
 
