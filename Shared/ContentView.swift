@@ -18,8 +18,10 @@ struct ContentView: View {
       SundialView(currentPosition: daylightProgress)
       
       GeometryReader { geometry in
-        VStack(alignment: .leading, spacing: 6) {
-          if let location = location.placemark?.locality {
+        VStack(alignment: .leading, spacing: 4) {
+          Spacer(minLength: geometry.size.height / 2)
+          
+          if let location = location.placemark?.locality ?? "Current Location" {
             Label(location, systemImage: "location.fill")
               .font(Font.subheadline.bold())
               .foregroundColor(.secondary)
@@ -47,15 +49,13 @@ struct ContentView: View {
             Label("Yesterday: \(yesterday, style: .time)", systemImage: "sunset")
               .foregroundColor(.tertiaryLabel)
           }
+          
+          Spacer()
         }
         .padding()
         .padding(.bottom)
-        .padding(.bottom)
-        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-        .offset(y: geometry.size.height / 4)
-        .frame(width: geometry.size.width, height: geometry.size.height / 2)
       }
-    }.edgesIgnoringSafeArea(.bottom)
+    }
   }
   
   var verbiage: String {
