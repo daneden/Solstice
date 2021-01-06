@@ -9,6 +9,8 @@ import Foundation
 import Combine
 import CoreLocation
 
+typealias DaylightTime = (minutes: Int, seconds: Int)
+
 struct Daylight {
   var begins: Date?
   var ends: Date?
@@ -20,13 +22,17 @@ struct Daylight {
     }
   }
   
-  func difference(from: Daylight) -> TimeInterval {
-    let minutes = Double(duration?.minute ?? 0) / 60
-    let seconds = Double(duration?.second ?? 0)
+  func difference(from: Daylight) -> DaylightTime {
+    let minutes = duration?.minute ?? 0
+    let seconds = duration?.second ?? 0
     
-    let otherMinutes = Double(from.duration?.minute ?? 0) / 60
-    let otherSeconds = Double(from.duration?.second ?? 0) / 60
-    return TimeInterval((minutes + seconds) - (otherMinutes + otherSeconds))
+    let otherMinutes = from.duration?.minute ?? 0
+    let otherSeconds = from.duration?.second ?? 0
+    
+    return (
+      minutes: minutes - otherMinutes,
+      seconds: seconds - otherSeconds
+    )
   }
 }
 
@@ -44,23 +50,30 @@ struct SolarCalculator {
   }
   
   var prevSolstice: Date? {
-    let components = Calendar.current.dateComponents([.month], from: todaysDate)
+    let components = Calendar.current.dateComponents([.month, .year], from: todaysDate)
     if let month = components.month, month >= 6 {
       return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
     } else {
-      return Calendar.current.date(from: DateComponents(year: components.year ?? 0 - 1, month: 12, day: 22))
+      return Calendar.current.date(from: DateComponents(year: (components.year ?? 0) - 1, month: 12, day: 22))
     }
   }
   
   var nextSolstice: Date? {
     let components = Calendar.current.dateComponents([.month, .year], from: todaysDate)
     if let month = components.month, month >= 12 {
-      return Calendar.current.date(from: DateComponents(year: components.year ?? 0 + 1, month: 6, day: 22))
+      return Calendar.current.date(from: DateComponents(year: (components.year ?? 0) + 1, month: 6, day: 22))
     } else if let month = components.month, month >= 6 {
       return Calendar.current.date(from: DateComponents(year: components.year, month: 12, day: 22))
     } else {
       return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
     }
+  }
+  
+  var prevSolsticeDaylight: Daylight? {
+    guard let coords = coords else { return nil }
+    guard let solar = Solar(for: prevSolstice!, coordinate: coords) else { return nil }
+    
+    return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
   var today: Daylight? {
@@ -80,23 +93,16 @@ struct SolarCalculator {
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
-  var difference: TimeInterval {
+  var difference: DaylightTime {
     guard let today = today, let yesterday = yesterday else {
-      return 0.0
+      return (minutes: 0, seconds: 0)
     }
     
     return today.difference(from: yesterday)
   }
   
   var differenceString: String {
-    return String(format: "%.2f", difference)
-  }
-}
-
-extension Double {
-  /// Rounds the double to decimal places value
-  func rounded(toPlaces places:Int) -> Double {
-    let divisor = pow(10.0, Double(places))
-    return (self * divisor).rounded() / divisor
+    let (minutes, seconds) = difference
+    return String("\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : "") and \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")")
   }
 }

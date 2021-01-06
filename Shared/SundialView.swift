@@ -15,8 +15,8 @@ struct SundialView: View {
   
   var wave: some View {
     Wave(amplitude: waveSize, frequency: .pi * 2, phase: .pi / 2)
-      .stroke(Color.secondarySystemFill, lineWidth: 2)
-      .offset(y: -1)
+      .stroke(Color.secondary, lineWidth: 3)
+      .offset(y: -1.5)
   }
   
   var body: some View {

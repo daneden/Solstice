@@ -25,10 +25,11 @@ struct ContentView: View {
             Label(location, systemImage: "location.fill")
               .font(Font.subheadline.bold())
               .foregroundColor(.secondary)
-            Spacer()
+            Spacer(minLength: 0)
           }
           
-          Text("There are \(calculator.differenceString) \(verbiage) seconds of daylight today than yesterday.")
+          Text("\(calculator.differenceString) \(verbiage) daylight today than yesterday.")
+            .lineLimit(4)
             .font(Font.system(.largeTitle, design: .rounded).bold())
             .padding(.vertical)
           
@@ -61,7 +62,10 @@ struct ContentView: View {
           Spacer()
           
           if let nextSolstice = calculator.nextSolstice {
-            Text("\(nextSolstice, style: .relative) until the next solstice")
+            VStack(alignment: .leading, spacing: 4) {
+              Label("\(nextSolstice, style: .relative) until the next solstice", systemImage: "calendar")
+              Text(prevSolsticeDifference)
+            }
               .font(.caption)
               .foregroundColor(.secondary)
           }
@@ -73,7 +77,8 @@ struct ContentView: View {
   }
   
   var verbiage: String {
-    calculator.difference >= 0 ? "more" : "fewer"
+    calculator.difference.minutes >= 0 && calculator.difference.seconds >= 0
+      ? "more" : "less"
   }
   
   var daylightProgress: Double {
@@ -91,9 +96,21 @@ struct ContentView: View {
     let daylightBegins = calculator.today?.begins ?? dayBegins
     let daylightEnds = calculator.today?.ends ?? dayEnds
     let daylightLength = daylightBegins.distance(to: daylightEnds)
-    print( daylightLength / dayLength )
     
     return daylightLength / dayLength
+  }
+  
+  var prevSolsticeDifference: String {
+    let prevSolsticeDaylight = calculator.prevSolsticeDaylight!
+    let (minutes, seconds) = prevSolsticeDaylight.difference(from: calculator.today!)
+    var value = "\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : "") and \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")"
+    if minutes > 0 && seconds > 0 {
+      value += " more daylight today than at the previous solstice"
+    } else {
+      value += " less daylight today than at the previous solstice"
+    }
+    
+    return value
   }
 }
 
