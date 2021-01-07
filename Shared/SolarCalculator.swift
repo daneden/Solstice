@@ -29,10 +29,28 @@ struct Daylight {
     let otherMinutes = from.duration?.minute ?? 0
     let otherSeconds = from.duration?.second ?? 0
     
+    var calculatedMinutes = minutes - otherMinutes
+    var calculatedSeconds = seconds - otherSeconds
+    
+    // Sometimes the difference is returned as e.g. 1min and -7sec
+    // so in those cases, we'll make up the difference
+    if calculatedMinutes > 0 && calculatedSeconds < 0 {
+      calculatedMinutes -= 1
+      calculatedSeconds += 60
+    }
+    
     return (
-      minutes: minutes - otherMinutes,
-      seconds: seconds - otherSeconds
+      minutes: calculatedMinutes,
+      seconds: calculatedSeconds
     )
+  }
+  
+  var peak: Date? {
+    guard let interval = ends?.timeIntervalSince(begins ?? Date()) else {return nil }
+    print(interval)
+    let peak = begins?.advanced(by: interval / 2)
+    
+    return peak
   }
 }
 

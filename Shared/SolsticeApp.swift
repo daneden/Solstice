@@ -9,9 +9,18 @@ import SwiftUI
 
 @main
 struct SolsticeApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+  @ObservedObject var locationManager = LocationManager.shared
+  var body: some Scene {
+    WindowGroup {
+      if locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse {
+        ContentView().onAppear {
+          locationManager.start()
         }
+      } else if locationManager.status == .notDetermined {
+        LandingView()
+      } else {
+        PermissionDeniedView()
+      }
     }
+  }
 }
