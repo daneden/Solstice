@@ -14,24 +14,13 @@ struct SundialView: View {
   var offset = 0.0
   var sunColor = Color.systemYellow
   
+  var quarterOffset: Double {
+    offset / 4
+  }
+  
   var wave: some View {
     Wave(amplitude: waveSize, frequency: .pi * 2, phase: .pi / 2)
-      .trim(from: 0.25, to: 0.75)
       .stroke(Color.opaqueSeparator, lineWidth: 3)
-      .offset(y: -1.5)
-  }
-  
-  var sunsetWave1: some View {
-    Wave(amplitude: waveSize, frequency: .pi * 2, phase: .pi / 2)
-      .trim(from: 0, to: 0.25)
-      .stroke(Color.opaqueSeparator.opacity(0.5), lineWidth: 3)
-      .offset(y: -1.5)
-  }
-  
-  var sunsetWave2: some View {
-    Wave(amplitude: waveSize, frequency: .pi * 2, phase: .pi / 2)
-      .trim(from: 0.75, to: 1)
-      .stroke(Color.opaqueSeparator.opacity(0.5), lineWidth: 3)
       .offset(y: -1.5)
   }
   
@@ -40,11 +29,6 @@ struct SundialView: View {
       GeometryReader { geometry in
         ZStack {
           wave
-          
-          Rectangle()
-            .fill(Color.opaqueSeparator)
-            .frame(height: 1)
-            .offset(y: -1)
           
           Circle()
             .fill(sunColor)
@@ -55,8 +39,16 @@ struct SundialView: View {
               y: CGFloat(sin((currentPosition - .pi / 4) * .pi * 2) * waveSize))
             .shadow(color: sunColor.opacity(0.6), radius: 10, x: 0.0, y: 0.0)
           
-          sunsetWave1
-          sunsetWave2
+          Rectangle()
+            .fill(Color.systemBackground.opacity(0.5))
+            .frame(height: CGFloat(waveSize * 2) - CGFloat(waveSize * offset))
+            .overlay(
+              Rectangle()
+                .frame(width: nil, height: 1, alignment: .top)
+                .foregroundColor(Color.opaqueSeparator),
+              alignment: .top
+            )
+            .offset(y: CGFloat(offset * waveSize))
         }.offset(y: CGFloat(offset * waveSize))
       }
     }
