@@ -10,8 +10,9 @@ import SwiftUI
 struct LandingView: View {
   var body: some View {
     VStack(alignment: .leading) {
-      Image(systemName: "sunrise.fill")
-        .font(Font.system(.largeTitle, design: .rounded).bold())
+      Image("Solstice-Icon")
+        .resizable()
+        .frame(width: 48, height: 48)
         .padding(.bottom)
       
       Text("Solstice tells you how much daylight there is today compared to yesterday.")
@@ -24,7 +25,7 @@ struct LandingView: View {
         .padding(.bottom)
       
       Button(action: { LocationManager.shared.requestAuthorization() }) {
-        Label("Grant permission access", systemImage: "location.fill")
+        Label("Grant location access", systemImage: "location.fill")
           .frame(maxWidth: .infinity)
           .font(Font.subheadline.bold())
           .foregroundColor(.primary)
