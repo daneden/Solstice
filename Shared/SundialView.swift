@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct SundialView: View {
-  var waveSize = 75.0
-  var circleSize: CGFloat = 36.0
+  var waveSize = 80.0
+  var circleSize: CGFloat = 24.0
   var currentPosition: Double
   var offset = 0.0
-  var sunColor = Color.systemYellow
+  var sunColor = Color.primary
+  var duration: DateComponents?
   
   var quarterOffset: Double {
     offset / 4
@@ -49,6 +50,16 @@ struct SundialView: View {
               alignment: .top
             )
             .offset(y: CGFloat(offset * waveSize))
+          
+          if let duration = duration {
+            Text("\(duration.hour ?? 0)hrs, \(duration.minute ?? 0)min")
+              .font(.footnote)
+              .foregroundColor(.secondary)
+              .padding(4)
+              .padding(.horizontal, 4)
+              .background(VisualEffectView(effect: UIBlurEffect(style: .systemMaterial)))
+              .cornerRadius(8)
+          }
         }.offset(y: CGFloat(offset * waveSize))
       }
     }
@@ -57,6 +68,6 @@ struct SundialView: View {
 
 struct SundialView_Previews: PreviewProvider {
     static var previews: some View {
-      SundialView(currentPosition: 0.75)
+      SundialView(currentPosition: 0.75, duration: DateComponents(hour: 8, minute: 12, second: 36))
     }
 }

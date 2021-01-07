@@ -112,6 +112,15 @@ struct SolarCalculator {
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
+  var tomorrow: Daylight? {
+    guard let coords = coords else { return nil }
+    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) else { return nil }
+    guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return nil }
+    guard let solar = Solar(for: tomorrow, coordinate: coords) else { return nil }
+    
+    return Daylight(begins: solar.sunrise, ends: solar.sunset)
+  }
+  
   var difference: DaylightTime {
     guard let today = today, let yesterday = yesterday else {
       return (minutes: 0, seconds: 0)
@@ -122,6 +131,6 @@ struct SolarCalculator {
   
   var differenceString: String {
     let (minutes, seconds) = difference
-    return String("\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : "") and \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")")
+    return String("\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : ""), \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")")
   }
 }
