@@ -8,12 +8,33 @@
 import SwiftUI
 
 struct SundialView: View {
-  var waveSize = 80.0
-  var circleSize: CGFloat = 24.0
-  var currentPosition: Double
-  var offset = 0.0
-  var sunColor = Color.primary
-  var duration: DateComponents?
+  private var calculator = SolarCalculator()
+  @ObservedObject private var location = LocationManager.shared
+  
+  private var circleSize: CGFloat = 24.0
+  
+  private var offset: Double {
+    let daylightBegins = calculator.today?.begins ?? dayBegins
+    let daylightEnds = calculator.today?.ends ?? dayEnds
+    let daylightLength = daylightBegins.distance(to: daylightEnds)
+    let dayLength = dayBegins.distance(to: dayEnds)
+    
+    return daylightLength / dayLength
+  }
+  
+  private var sunColor = Color.primary
+  private var duration: DateComponents? {
+    return calculator.today?.duration
+  }
+  
+  private var waveSize = 80.0
+  private let dayBegins = Date().startOfDay
+  private let dayEnds = Date().endOfDay
+  private var currentPosition: Double {
+    let dayLength = dayBegins.distance(to: dayEnds)
+    return dayBegins.distance(to: Date()) / dayLength
+  }
+  
   
   var quarterOffset: Double {
     offset / 4
@@ -68,6 +89,6 @@ struct SundialView: View {
 
 struct SundialView_Previews: PreviewProvider {
     static var previews: some View {
-      SundialView(currentPosition: 0.75, duration: DateComponents(hour: 8, minute: 12, second: 36))
+      SundialView()
     }
 }

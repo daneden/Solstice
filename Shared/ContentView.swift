@@ -15,23 +15,19 @@ struct ContentView: View {
   
   var body: some View {
     VStack {
-      SundialView(
-        currentPosition: daylightProgress,
-        offset: daylightOffset,
-        duration: calculator.today?.duration
-      )
+      SundialView()
       
       VStack(alignment: .leading, spacing: 4) {
         TabView {
           SolsticeOverview()
           VStack {
-            if let nextSolstice = calculator.nextSolstice {
+            if let nextSolstice = calculator.nextSolstice,
+               let prevSolsticeDifference = prevSolsticeDifference {
               VStack(alignment: .leading, spacing: 8) {
                 Text("\(nextSolstice, style: .relative) until the next solstice.")
-                if let prevSolsticeDifference = prevSolsticeDifference {
-                  Text(prevSolsticeDifference)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
+                
+                Text(prevSolsticeDifference)
+                  .fixedSize(horizontal: false, vertical: true)
               }
             }
           }.font(Font.system(.largeTitle, design: .rounded))
