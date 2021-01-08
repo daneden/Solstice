@@ -11,7 +11,6 @@ import CoreLocation
 
 struct ContentView: View {
   var calculator = SolarCalculator()
-  @ObservedObject var location = LocationManager.shared
   
   var body: some View {
     VStack {
@@ -35,25 +34,6 @@ struct ContentView: View {
       }
       .padding()
     }
-  }
-  
-  var daylightProgress: Double {
-    let begins = Date().startOfDay
-    let ends = Date().endOfDay
-    let period = begins.distance(to: ends)
-    return begins.distance(to: Date()) / period
-  }
-  
-  var daylightOffset: Double {
-    let dayBegins = Date().startOfDay
-    let dayEnds = Date().endOfDay
-    let dayLength = dayBegins.distance(to: dayEnds)
-    
-    let daylightBegins = calculator.today?.begins ?? dayBegins
-    let daylightEnds = calculator.today?.ends ?? dayEnds
-    let daylightLength = daylightBegins.distance(to: daylightEnds)
-    
-    return daylightLength / dayLength
   }
   
   var prevSolsticeDifference: String? {

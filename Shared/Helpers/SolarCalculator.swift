@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import CoreLocation
+import SwiftUI
 
 typealias DaylightTime = (minutes: Int, seconds: Int)
 
@@ -47,7 +48,6 @@ struct Daylight {
   
   var peak: Date? {
     guard let interval = ends?.timeIntervalSince(begins ?? Date()) else {return nil }
-    print(interval)
     let peak = begins?.advanced(by: interval / 2)
     
     return peak
@@ -55,7 +55,7 @@ struct Daylight {
 }
 
 struct SolarCalculator {
-  private let locationManager = LocationManager.shared
+  @ObservedObject private var locationManager = LocationManager.shared
   private var coords: CLLocationCoordinate2D? {
     guard let coords =
           locationManager.location?.coordinate,

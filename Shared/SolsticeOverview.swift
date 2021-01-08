@@ -19,48 +19,40 @@ struct SolsticeOverview: View {
           .foregroundColor(.secondary)
       }
       
-      Text("\(calculator.differenceString) \(verbiage) daylight today than yesterday.")
+      Text("\(calculator.differenceString) \(verbiage) daylight today.")
         .lineLimit(4)
         .font(Font.system(.largeTitle, design: .rounded).bold())
         .padding(.vertical).fixedSize(horizontal: false, vertical: true)
       
       HStack {
-        VStack(alignment: .leading, spacing: 4) {
-          HStack {
-            Text("Yesterday").font(.caption)
-            Spacer()
-          }
-          if let ends = calculator.yesterday?.ends,
-             let begins = calculator.yesterday?.begins {
-            Label("\(begins, style: .time)", systemImage: "sunrise")
-            Label("\(ends, style: .time)", systemImage: "sunset")
-          }
-        }.foregroundColor(.secondary)
-        
-        VStack(alignment: .leading, spacing: 4) {
-          HStack {
-            Text("Today").font(.caption)
-            Spacer()
-          }
-          if let ends = calculator.today?.ends,
-             let begins = calculator.today?.begins {
-            Label("\(begins, style: .time)", systemImage: "sunrise.fill")
-            Label("\(ends, style: .time)", systemImage: "sunset.fill")
+        VStack(alignment: .leading) {
+          Label("Sunrise", systemImage: "sunrise.fill")
+          if let begins = calculator.today?.begins,
+             let beginsYesterday = calculator.yesterday?.begins {
+            Text("\(begins, style: .time)")
+            
+            VStack {
+              Text("Yesterday")
+              Text("\(beginsYesterday, style: .time)")
+            }.foregroundColor(.secondary).font(.footnote).padding(.top)
           }
         }
         
-        VStack(alignment: .leading, spacing: 4) {
-          HStack {
-            Text("Tomorrow").font(.caption)
-            Spacer()
+        Spacer()
+        
+        VStack(alignment: .trailing) {
+          Label("Sunset", systemImage: "sunset.fill")
+          if let ends = calculator.today?.ends,
+             let endsYesterday = calculator.yesterday?.ends {
+            Text("\(ends, style: .time)")
+            
+            VStack {
+              Text("Yesterday")
+              Text("\(endsYesterday, style: .time)")
+            }.foregroundColor(.secondary).font(.footnote).padding(.top)
           }
-          if let ends = calculator.tomorrow?.ends,
-             let begins = calculator.tomorrow?.begins {
-            Label("\(begins, style: .time)", systemImage: "sunrise")
-            Label("\(ends, style: .time)", systemImage: "sunset")
-          }
-        }.foregroundColor(.secondary)
-      }.font(.system(.footnote, design: Font.Design.monospaced))
+        }
+      }
     }
   }
   
