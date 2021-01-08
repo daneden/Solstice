@@ -19,7 +19,7 @@ struct SolsticeOverview: View {
           .foregroundColor(.secondary)
       }
       
-      Text("\(calculator.differenceString) \(verbiage) daylight today.")
+      Text("\(calculator.differenceString) \(verbiage) daylight today than yesterday.")
         .lineLimit(4)
         .font(Font.system(.largeTitle, design: .rounded).bold())
         .padding(.vertical).fixedSize(horizontal: false, vertical: true)
@@ -31,10 +31,10 @@ struct SolsticeOverview: View {
              let beginsYesterday = calculator.yesterday?.begins {
             Text("\(begins, style: .time)")
             
-            VStack {
+            VStack(alignment: .leading) {
               Text("Yesterday")
               Text("\(beginsYesterday, style: .time)")
-            }.foregroundColor(.secondary).font(.footnote).padding(.top)
+            }.foregroundColor(.secondary).font(.footnote).padding(.top, 4)
           }
         }
         
@@ -46,10 +46,10 @@ struct SolsticeOverview: View {
              let endsYesterday = calculator.yesterday?.ends {
             Text("\(ends, style: .time)")
             
-            VStack {
+            VStack(alignment: .trailing) {
               Text("Yesterday")
               Text("\(endsYesterday, style: .time)")
-            }.foregroundColor(.secondary).font(.footnote).padding(.top)
+            }.foregroundColor(.secondary).font(.footnote).padding(.top, 4)
           }
         }
       }

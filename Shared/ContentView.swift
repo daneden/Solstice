@@ -19,20 +19,20 @@ struct ContentView: View {
       VStack(alignment: .leading, spacing: 4) {
         TabView {
           SolsticeOverview()
-          VStack {
-            if let nextSolstice = calculator.nextSolstice,
-               let prevSolsticeDifference = prevSolsticeDifference {
+            .padding()
+          if let nextSolstice = calculator.nextSolstice,
+             let prevSolsticeDifference = prevSolsticeDifference {
+            VStack {
               VStack(alignment: .leading, spacing: 8) {
                 Text("\(nextSolstice, style: .relative) until the next solstice.")
                 
                 Text(prevSolsticeDifference)
                   .fixedSize(horizontal: false, vertical: true)
               }
-            }
-          }.font(Font.system(.largeTitle, design: .rounded))
+            }.font(Font.system(.largeTitle, design: .rounded)).padding()
+          }
         }.tabViewStyle(PageTabViewStyle())
       }
-      .padding()
     }
   }
   

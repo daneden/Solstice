@@ -34,6 +34,10 @@ class LocationManager: NSObject, ObservableObject {
     self.locationManager.delegate = self
     self.locationManager.desiredAccuracy = kCLLocationAccuracyReduced
     self.status = self.locationManager.authorizationStatus
+    
+    if self.status == .authorizedAlways || self.status == .authorizedWhenInUse {
+      self.start()
+    }
   }
   
   func requestAuthorization() {

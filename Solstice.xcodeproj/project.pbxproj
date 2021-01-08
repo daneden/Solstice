@@ -35,6 +35,8 @@
 		71A36C2025A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */; };
 		71C8841325A7B1150009F2A1 /* SolsticeOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */; };
+		71C8841D25A896800009F2A1 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841C25A896800009F2A1 /* CustomLabel.swift */; };
+		71C8841E25A896800009F2A1 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841C25A896800009F2A1 /* CustomLabel.swift */; };
 		71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
@@ -83,6 +85,7 @@
 		7190094D25A4D9C2002ED383 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		71A36C1E25A6065F004F527B /* Date.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.extension.swift; sourceTree = "<group>"; };
 		71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeOverview.swift; sourceTree = "<group>"; };
+		71C8841C25A896800009F2A1 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarCalculator.swift; sourceTree = "<group>"; };
 		71EECF3525A51AF800CCC2FC /* Color.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -213,6 +216,7 @@
 				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
 				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
 				711AE5E925A5ADC500B363BA /* WaveShape.swift */,
+				71C8841C25A896800009F2A1 /* CustomLabel.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -375,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */,
+				71C8841D25A896800009F2A1 /* CustomLabel.swift in Sources */,
 				7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */,
 				711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */,
@@ -396,6 +401,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71EECF3725A51AF800CCC2FC /* Color.extension.swift in Sources */,
+				71C8841E25A896800009F2A1 /* CustomLabel.swift in Sources */,
 				7190094F25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				71C8841325A7B1150009F2A1 /* SolsticeOverview.swift in Sources */,
 				711AE5FD25A5B35700B363BA /* VisualEffectView.swift in Sources */,
@@ -561,7 +567,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -584,7 +590,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;

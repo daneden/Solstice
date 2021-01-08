@@ -55,7 +55,7 @@ struct Daylight {
 }
 
 struct SolarCalculator {
-  @ObservedObject private var locationManager = LocationManager.shared
+  private let locationManager = LocationManager.shared
   private var coords: CLLocationCoordinate2D? {
     guard let coords =
           locationManager.location?.coordinate,
