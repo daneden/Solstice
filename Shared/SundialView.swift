@@ -10,6 +10,9 @@ import SwiftUI
 struct SundialView: View {
   @Environment(\.colorScheme) var colorScheme
   private var calculator = SolarCalculator()
+  private var solsticeCalculator: SolarCalculator {
+    return SolarCalculator(baseDate: calculator.prevSolstice ?? Date())
+  }
   @ObservedObject private var location = LocationManager.shared
   
   private var circleSize: CGFloat = 24.0
@@ -44,10 +47,25 @@ struct SundialView: View {
     return result
   }
   
+  private var solsticeWaveSize: Double {
+    let solsticeLength = solsticeCalculator.today?.begins?.distance(to: solsticeCalculator.today?.ends ?? Date()) ?? 0.0
+    let todayLength = calculator.today?.begins?.distance(to: calculator.today?.ends ?? Date()) ?? 1.0
+    
+    return solsticeLength / todayLength
+  }
+  
   var body: some View {
     ZStack {
       GeometryReader { geometry in
         ZStack {
+          Wave(
+            amplitude: waveSize * solsticeWaveSize,
+            frequency: .pi * 2,
+            phase: (.pi / 2) + phaseOffset
+          )
+            .stroke(Color.secondarySystemFill, style: StrokeStyle(lineWidth: 1, dash: [5, 3]))
+            .offset(y: -0.5)
+          
           Wave(
             amplitude: waveSize,
             frequency: .pi * 2,
@@ -55,6 +73,7 @@ struct SundialView: View {
           )
             .stroke(Color.opaqueSeparator, lineWidth: 3)
             .offset(y: -1.5)
+          .shadow(color: .systemBackground, radius: 10, x: 0.0, y: 1.0)
           
           Circle()
             .fill(sunColor)

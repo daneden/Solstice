@@ -55,6 +55,8 @@ struct Daylight {
 }
 
 struct SolarCalculator {
+  var baseDate = Date()
+  
   private let locationManager = LocationManager.shared
   private var coords: CLLocationCoordinate2D? {
     guard let coords =
@@ -64,12 +66,12 @@ struct SolarCalculator {
   }
   
   private var todaysDate: Date {
-    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date())!
+    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
   }
   
   var prevSolstice: Date? {
-    let components = Calendar.current.dateComponents([.month, .year], from: todaysDate)
-    if let month = components.month, month >= 6 {
+    let components = Calendar.current.dateComponents([.month, .day, .year], from: todaysDate)
+    if let month = components.month, let day = components.day, month >= 6 && day >= 22 {
       return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
     } else {
       return Calendar.current.date(from: DateComponents(year: (components.year ?? 0) - 1, month: 12, day: 22))
@@ -77,10 +79,10 @@ struct SolarCalculator {
   }
   
   var nextSolstice: Date? {
-    let components = Calendar.current.dateComponents([.month, .year], from: todaysDate)
-    if let month = components.month, month >= 12 {
+    let components = Calendar.current.dateComponents([.month, .day, .year], from: todaysDate)
+    if let month = components.month, let day = components.day, month >= 12 && day >= 22 {
       return Calendar.current.date(from: DateComponents(year: (components.year ?? 0) + 1, month: 6, day: 22))
-    } else if let month = components.month, month >= 6 {
+    } else if let month = components.month, let day = components.day, month >= 6 && day >= 22 {
       return Calendar.current.date(from: DateComponents(year: components.year, month: 12, day: 22))
     } else {
       return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
@@ -97,7 +99,7 @@ struct SolarCalculator {
   
   var today: Daylight? {
     guard let coords = coords else { return nil }
-    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) else { return nil }
+    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
     guard let solar = Solar(for: date, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
@@ -105,7 +107,7 @@ struct SolarCalculator {
   
   var yesterday: Daylight? {
     guard let coords = coords else { return nil }
-    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) else { return nil }
+    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
     guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return nil }
     guard let solar = Solar(for: yesterday, coordinate: coords) else { return nil }
     
@@ -114,7 +116,7 @@ struct SolarCalculator {
   
   var tomorrow: Daylight? {
     guard let coords = coords else { return nil }
-    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) else { return nil }
+    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
     guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return nil }
     guard let solar = Solar(for: tomorrow, coordinate: coords) else { return nil }
     
