@@ -80,9 +80,9 @@ class NotificationManager: ObservableObject {
         if let components = solsticeCalculator.today?.durationComponents,
            let hour = components.hour,
            let minute = components.minute {
-          content.subtitle = "\(hour)hrs and \(minute)mins of daylight today."
+          content.body = "\(hour)hrs and \(minute)mins of daylight today."
         } else {
-          content.subtitle = "Open Solstice to see the day’s daylight."
+          content.body = "Open Solstice to see the day’s daylight."
         }
         
         let trigger = UNCalendarNotificationTrigger(
