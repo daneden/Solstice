@@ -13,8 +13,8 @@ struct VisualEffectView: View {
     Rectangle().fill(Color.secondarySystemBackground)
   }
   
-  typealias SystemMaterial = EmptyView
-  typealias SystemInvertedRuleMaterial = EmptyView
+  typealias SystemMaterial = VisualEffectView
+  typealias SystemInvertedRuleMaterial = VisualEffectView
 }
 
 struct VisualEffectView_Previews: PreviewProvider {

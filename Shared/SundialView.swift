@@ -39,7 +39,7 @@ struct SundialView: View {
     let peak = calculator.today?.peak ?? Date()
     let noon = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date())
     let distanceFromNoon = noon?.distance(to: peak)
-    print(peak)
+    
     let result = Double(distanceFromNoon ?? 0.0) / 60 / 60 / 24 * (Double.pi / 2)
     return CGFloat(result)
   }
@@ -99,14 +99,12 @@ struct SundialWave: View {
       phase: (.pi / 2) + offset
     )
     .stroke(Color.opaqueSeparator, lineWidth: 3)
-    .offset(y: -1.5)
+    .offset(y: -3)
   }
 }
 
 
 struct SundialSun: View {
-  let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
-
   var circleSize: CGFloat = 24.0
   var sunColor = Color.primary
   var frameWidth: CGFloat
@@ -120,8 +118,8 @@ struct SundialSun: View {
       .frame(width: circleSize, alignment: .center)
       .position(x: 0, y: arcSize)
       .offset(
-        x: (frameWidth * fmod(position, 1)) + circleSize / 2,
-        y: sin((position * .pi * 2) - .pi / 4) * -arcSize
+        x: (frameWidth * fmod(position, 1)),
+        y: sin((position * .pi * 2) - .pi / 2) * -arcSize
       )
       .shadow(color: sunColor.opacity(0.6), radius: 10, x: 0.0, y: 0.0)
   }

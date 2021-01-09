@@ -26,7 +26,7 @@ struct SolsticeApp: App {
         } else {
           PermissionDeniedView()
         }
-      }.accentColor(.systemOrange)
+      }.accentColor(.accentColor)
       .navigationViewStyle(StackNavigationViewStyle())
     }
   }

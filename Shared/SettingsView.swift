@@ -27,7 +27,7 @@ struct SettingsView: View {
         ) {
           Toggle(isOn: $notifsEnabled) {
             Text("Enable Daily Notifications")
-          }
+          }.toggleStyle(SwitchToggleStyle(tint: .accentColor))
           
           DatePicker(
             "Notification Time",
