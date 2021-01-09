@@ -14,15 +14,17 @@ struct SolsticeApp: App {
     WindowGroup {
       NavigationView {
         if locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse {
-          ContentView().onAppear {
-            locationManager.start()
-          }
+          ContentView()
+            .environmentObject(locationManager)
+            .onAppear {
+              locationManager.start()
+            }
         } else if locationManager.status == .notDetermined {
           LandingView()
         } else {
           PermissionDeniedView()
         }
-      }
+      }.accentColor(.systemOrange)
     }
   }
 }

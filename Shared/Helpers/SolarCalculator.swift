@@ -55,14 +55,21 @@ struct Daylight {
 }
 
 struct SolarCalculator {
+  @AppStorage(UDValues.cachedLatitude.key) var latitude: Double = UDValues.cachedLatitude.value
+  @AppStorage(UDValues.cachedLongitude.key) var longitude: Double = UDValues.cachedLongitude.value
+  
   var baseDate = Date()
   
   private let locationManager = LocationManager.shared
-  private var coords: CLLocationCoordinate2D? {
-    guard let coords =
+  private var coords: CLLocationCoordinate2D {
+    if let coords =
           locationManager.location?.coordinate,
-          CLLocationCoordinate2DIsValid(coords) else { return nil }
-    return coords
+       CLLocationCoordinate2DIsValid(coords) {
+      return coords
+    } else {
+      return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
   }
   
   private var todaysDate: Date {
@@ -90,7 +97,6 @@ struct SolarCalculator {
   }
   
   var prevSolsticeDaylight: Daylight? {
-    guard let coords = coords else { return nil }
     guard let prevSolstice = prevSolstice else { return nil }
     guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return nil }
     
@@ -98,7 +104,6 @@ struct SolarCalculator {
   }
   
   var today: Daylight? {
-    guard let coords = coords else { return nil }
     guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
     guard let solar = Solar(for: date, coordinate: coords) else { return nil }
     
@@ -106,7 +111,6 @@ struct SolarCalculator {
   }
   
   var yesterday: Daylight? {
-    guard let coords = coords else { return nil }
     guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
     guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return nil }
     guard let solar = Solar(for: yesterday, coordinate: coords) else { return nil }
@@ -115,7 +119,6 @@ struct SolarCalculator {
   }
   
   var tomorrow: Daylight? {
-    guard let coords = coords else { return nil }
     guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
     guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return nil }
     guard let solar = Solar(for: tomorrow, coordinate: coords) else { return nil }

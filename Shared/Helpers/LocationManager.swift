@@ -8,25 +8,31 @@
 import Foundation
 import Combine
 import CoreLocation
+import SwiftUI
 
 class LocationManager: NSObject, ObservableObject {
+  @AppStorage(UDValues.cachedLatitude.key) var latitude: Double = UDValues.cachedLatitude.value
+  @AppStorage(UDValues.cachedLongitude.key) var longitude: Double = UDValues.cachedLongitude.value
+  
   let objectWillChange = PassthroughSubject<Void, Never>()
   static let shared = LocationManager()
   
   private let locationManager = CLLocationManager()
   private let geocoder = CLGeocoder()
   
-  @Published var status: CLAuthorizationStatus? {
-    willSet { objectWillChange.send() }
-  }
+  @Published var status: CLAuthorizationStatus?
   
   @Published var location: CLLocation? {
-    willSet { objectWillChange.send() }
+    // Update stored location for cached/spoofed location access
+    didSet {
+      if let latitude = location?.latitude, let longitude = location?.longitude {
+        self.latitude = latitude
+        self.longitude = longitude
+      }
+    }
   }
   
-  @Published var placemark: CLPlacemark? {
-    willSet { objectWillChange.send() }
-  }
+  @Published var placemark: CLPlacemark?
   
   override init() {
     super.init()
@@ -34,6 +40,7 @@ class LocationManager: NSObject, ObservableObject {
     self.locationManager.delegate = self
     self.locationManager.desiredAccuracy = kCLLocationAccuracyReduced
     self.status = self.locationManager.authorizationStatus
+    self.location = CLLocation(latitude: latitude, longitude: longitude)
     
     if self.status == .authorizedAlways || self.status == .authorizedWhenInUse {
       self.start()
@@ -67,9 +74,12 @@ extension LocationManager: CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    print("Updating location")
     guard let location = locations.last else { return }
     self.location = location
     self.geocode()
+    
+    self.objectWillChange.send()
   }
 }
 

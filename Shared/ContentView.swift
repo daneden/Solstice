@@ -10,7 +10,9 @@ import Combine
 import CoreLocation
 
 struct ContentView: View {
+  @EnvironmentObject var locationManager: LocationManager
   var calculator = SolarCalculator()
+  @State var settingsVisible = false
   
   var body: some View {
     VStack {
@@ -33,6 +35,14 @@ struct ContentView: View {
           }
         }.tabViewStyle(PageTabViewStyle())
       }
+    }.toolbar {
+      ToolbarItem {
+        Button(action: { settingsVisible.toggle() }) {
+          Label("Settings", systemImage: "gearshape")
+        }
+      }
+    }.sheet(isPresented: $settingsVisible) {
+      SettingsView()
     }
   }
   
