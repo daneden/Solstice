@@ -57,7 +57,7 @@ struct SolsticeOverview: View {
   }
   
   var verbiage: String {
-    calculator.difference.minutes >= 0 && calculator.difference.seconds >= 0
+    calculator.differenceComponents.minutes >= 0 && calculator.differenceComponents.seconds >= 0
       ? "more" : "less"
   }
 }

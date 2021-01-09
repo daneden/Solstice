@@ -15,20 +15,28 @@ typealias DaylightTime = (minutes: Int, seconds: Int)
 struct Daylight {
   var begins: Date?
   var ends: Date?
-  var duration: DateComponents? {
+  var durationComponents: DateComponents {
     if let begins = begins, let ends = ends {
       return Calendar.current.dateComponents([.hour, .minute, .second], from: begins, to: ends)
     } else {
-      return nil
+      var val = DateComponents()
+      val.hour = 12
+      val.minute = 0
+      val.second = 0
+      return val
     }
   }
   
-  func difference(from: Daylight) -> DaylightTime {
-    let minutes = duration?.minute ?? 0
-    let seconds = duration?.second ?? 0
+  var duration: TimeInterval {
+    return (begins ?? Date()).distance(to: ends ?? Date())
+  }
+  
+  func differenceComponents(from: Daylight) -> DaylightTime {
+    let minutes = durationComponents.minute!
+    let seconds = durationComponents.second!
     
-    let otherMinutes = from.duration?.minute ?? 0
-    let otherSeconds = from.duration?.second ?? 0
+    let otherMinutes = from.durationComponents.minute!
+    let otherSeconds = from.durationComponents.second!
     
     var calculatedMinutes = minutes - otherMinutes
     var calculatedSeconds = seconds - otherSeconds
@@ -46,6 +54,10 @@ struct Daylight {
     )
   }
   
+  func difference(from: Daylight) -> TimeInterval {
+    return self.duration - from.duration
+  }
+  
   var peak: Date? {
     guard let interval = ends?.timeIntervalSince(begins ?? Date()) else {return nil }
     let peak = begins?.advanced(by: interval / 2)
@@ -60,6 +72,14 @@ struct SolarCalculator {
   
   var baseDate = Date()
   
+  private var baseDateAtNoon: Date {
+    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
+  }
+  
+  private var todaysDate: Date {
+    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
+  }
+  
   private let locationManager = LocationManager.shared
   private var coords: CLLocationCoordinate2D {
     if let coords =
@@ -69,11 +89,6 @@ struct SolarCalculator {
     } else {
       return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
-    
-  }
-  
-  private var todaysDate: Date {
-    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
   }
   
   var prevSolstice: Date? {
@@ -104,38 +119,35 @@ struct SolarCalculator {
   }
   
   var today: Daylight? {
-    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
-    guard let solar = Solar(for: date, coordinate: coords) else { return nil }
+    guard let solar = Solar(for: baseDateAtNoon, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
   var yesterday: Daylight? {
-    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
-    guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return nil }
+    let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: baseDateAtNoon)!
     guard let solar = Solar(for: yesterday, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
   var tomorrow: Daylight? {
-    guard let date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate) else { return nil }
-    guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return nil }
+    let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: baseDateAtNoon)!
     guard let solar = Solar(for: tomorrow, coordinate: coords) else { return nil }
     
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
-  var difference: DaylightTime {
+  var differenceComponents: DaylightTime {
     guard let today = today, let yesterday = yesterday else {
       return (minutes: 0, seconds: 0)
     }
     
-    return today.difference(from: yesterday)
+    return today.differenceComponents(from: yesterday)
   }
   
   var differenceString: String {
-    let (minutes, seconds) = difference
+    let (minutes, seconds) = differenceComponents
     return String("\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : ""), \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")")
   }
 }

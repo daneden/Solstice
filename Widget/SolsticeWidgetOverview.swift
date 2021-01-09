@@ -15,14 +15,15 @@ struct SolsticeWidgetOverview: View {
   var body: some View {
     VStack(alignment: .leading) {
       if family == .systemLarge {
-        SundialView().padding(-20)
+        SundialView().padding(.horizontal, -20)
+        Spacer()
       }
       
       Image("Solstice-Icon")
         .resizable()
         .frame(width: 16, height: 16)
-      if let hours = calculator.today?.duration?.hour,
-         let minutes = calculator.today?.duration?.minute {
+      if let hours = calculator.today?.durationComponents.hour,
+         let minutes = calculator.today?.durationComponents.minute {
         Text("Daylight today:")
           .font(.caption)
         
@@ -39,10 +40,10 @@ struct SolsticeWidgetOverview: View {
         .font(.caption)
         .foregroundColor(.secondary)
         .fixedSize(horizontal: false, vertical: true)
-      
-      Spacer()
         
       if family != .systemSmall {
+        Spacer()
+        
         HStack {
           if let begins = calculator.today?.begins {
             Label("\(begins, style: .time)", systemImage: "sunrise.fill")
@@ -59,7 +60,7 @@ struct SolsticeWidgetOverview: View {
   }
   
   var verbiage: String {
-    calculator.difference.minutes >= 0 && calculator.difference.seconds >= 0
+    calculator.differenceComponents.minutes >= 0 && calculator.differenceComponents.seconds >= 0
       ? "more" : "less"
   }
 }

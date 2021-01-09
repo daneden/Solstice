@@ -12,6 +12,9 @@ struct VisualEffectView: View {
   var body: some View {
     Rectangle().fill(Color.secondarySystemBackground)
   }
+  
+  typealias SystemMaterial = EmptyView
+  typealias SystemInvertedRuleMaterial = EmptyView
 }
 
 struct VisualEffectView_Previews: PreviewProvider {

@@ -49,7 +49,10 @@ struct ContentView: View {
   var prevSolsticeDifference: String? {
     guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return nil }
     guard let today = calculator.today else { return nil }
-    var (minutes, seconds) = prevSolsticeDaylight.difference(from: today)
+    var (minutes, seconds) = prevSolsticeDaylight.differenceComponents(from: today)
+    let difference = prevSolsticeDaylight.difference(from: today)
+    let differenceString = difference.toTimeString(accuracy: .minutes)
+    print(differenceString)
     var value = "\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : ""), \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")"
     
     if minutes > 0 && seconds < 0 {
@@ -57,7 +60,7 @@ struct ContentView: View {
       seconds += 60
     }
     
-    if minutes >= 0 && seconds >= 0 {
+    if difference <= 0 {
       value += " more "
     } else {
       value += " less "

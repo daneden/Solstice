@@ -35,10 +35,16 @@ struct SettingsView: View {
             displayedComponents: [.hourAndMinute]
           ).onChange(of: chosenNotifTime) { _ in
             notifTime = chosenNotifTime.timeIntervalSince1970
+            notificationManager.adjustSchedule()
           }.disabled(!notifsEnabled)
             
         }
-      }.onChange(of: notifsEnabled) { value in
+      }
+      .navigationTitle(Text("Settings"))
+      .onAppear {
+        chosenNotifTime = Date(timeIntervalSince1970: notifTime)
+      }
+      .onChange(of: notifsEnabled) { value in
         /** To prevent duplicated calls, we'll only call this method when the toggle is on */
         if value {
           notificationManager.toggleNotifications(on: value, bindingTo: $notifsEnabled)

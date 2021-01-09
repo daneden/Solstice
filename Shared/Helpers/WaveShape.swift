@@ -9,16 +9,16 @@ import SwiftUI
 import UIKit
 
 struct Wave: Shape {
-  var amplitude: Double
-  var frequency: Double
-  var phase: Double = 0
+  var amplitude: CGFloat
+  var frequency: CGFloat
+  var phase: CGFloat = 0
   
   func path(in rect: CGRect) -> Path {
     let path = UIBezierPath()
     
     // calculate some important values up front
-    let width = Double(rect.width)
-    let height = Double(rect.height)
+    let width = CGFloat(rect.width)
+    let height = CGFloat(rect.height)
     // let midWidth = width / 2
     let midHeight = height / 2
     
@@ -48,17 +48,5 @@ struct Wave: Shape {
     }
     
     return Path(path.cgPath)
-  }
-}
-
-struct WaveShape: View {
-  var body: some View {
-    Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-  }
-}
-
-struct WaveShape_Previews: PreviewProvider {
-  static var previews: some View {
-    WaveShape()
   }
 }

@@ -9,7 +9,9 @@ import SwiftUI
 
 @main
 struct SolsticeApp: App {
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @ObservedObject var locationManager = LocationManager.shared
+  
   var body: some Scene {
     WindowGroup {
       NavigationView {
