@@ -16,7 +16,22 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       self.handleBackgroundNotificationScheduling(task: task as! BGAppRefreshTask)
     }
     
+    DispatchQueue.global(qos: .background).async {
+      self.submitBackgroundTask()
+    }
+    
     return true
+  }
+  
+  func submitBackgroundTask() {
+    let task = BGAppRefreshTaskRequest(identifier: "me.daneden.Solstice.notificationScheduler")
+    task.earliestBeginDate = Date(timeIntervalSinceNow: 60)
+    
+    do {
+      try BGTaskScheduler.shared.submit(task)
+    } catch {
+      print("Unable to submit task: \(error.localizedDescription)")
+    }
   }
   
   func handleBackgroundNotificationScheduling(task: BGAppRefreshTask) {
@@ -27,7 +42,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     task.expirationHandler = {
       print("Unable to schedule notification")
     }
-    
-    
   }
 }

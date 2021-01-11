@@ -10,6 +10,8 @@ import Foundation
 typealias UDValuePair<T> = (key: String, value: T)
 
 let defaultNotificationDate = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
+let solsticeSuiteName = "group.me.daneden.Solstice"
+let solsticeUDStore = UserDefaults(suiteName: solsticeSuiteName)
 
 struct UDValues {
   static let cachedLatitude: UDValuePair = ("cachedLatitude", 51.5074)

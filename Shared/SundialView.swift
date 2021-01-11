@@ -99,7 +99,6 @@ struct SundialWave: View {
       phase: (.pi / 2) + offset
     )
     .stroke(Color.opaqueSeparator, lineWidth: 3)
-    .offset(y: -3)
   }
 }
 
@@ -121,6 +120,7 @@ struct SundialSun: View {
         x: (frameWidth * fmod(position, 1)),
         y: sin((position * .pi * 2) - .pi / 2) * -arcSize
       )
+      .offset(y: circleSize / 2)
       .shadow(color: sunColor.opacity(0.6), radius: 10, x: 0.0, y: 0.0)
   }
 }

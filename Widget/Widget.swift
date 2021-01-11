@@ -19,17 +19,12 @@ struct Provider: TimelineProvider {
   }
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-    var entries: [SimpleEntry] = []
+    let timeline = Timeline(
+      entries: [SimpleEntry(date: Date())],
+      // Update every 5min
+      policy: .after(.init(timeIntervalSinceNow: 5 * 60))
+    )
     
-    // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    let currentDate = Date()
-    for hourOffset in 0 ..< 5 {
-      let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = SimpleEntry(date: entryDate)
-      entries.append(entry)
-    }
-    
-    let timeline = Timeline(entries: entries, policy: .atEnd)
     completion(timeline)
   }
 }

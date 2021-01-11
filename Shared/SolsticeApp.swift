@@ -26,7 +26,11 @@ struct SolsticeApp: App {
         } else {
           PermissionDeniedView()
         }
-      }.accentColor(.accentColor)
+      }
+      .onDisappear {
+        (UIApplication.shared.delegate as! AppDelegate).submitBackgroundTask()
+      }
+      .accentColor(.accentColor)
       .navigationViewStyle(StackNavigationViewStyle())
     }
   }

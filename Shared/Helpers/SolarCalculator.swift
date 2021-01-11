@@ -67,8 +67,11 @@ struct Daylight {
 }
 
 struct SolarCalculator {
-  @AppStorage(UDValues.cachedLatitude.key) var latitude: Double = UDValues.cachedLatitude.value
-  @AppStorage(UDValues.cachedLongitude.key) var longitude: Double = UDValues.cachedLongitude.value
+  @AppStorage(UDValues.cachedLatitude.key, store: solsticeUDStore)
+  var latitude: Double = UDValues.cachedLatitude.value
+  
+  @AppStorage(UDValues.cachedLongitude.key, store: solsticeUDStore)
+  var longitude: Double = UDValues.cachedLongitude.value
   
   var baseDate = Date()
   

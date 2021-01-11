@@ -10,8 +10,18 @@ import UserNotifications
 import SwiftUI
 import BackgroundTasks
 
-class NotificationManager: ObservableObject {
-  @AppStorage(UDValues.notificationTime.key) var notifTime: TimeInterval = UDValues.notificationTime.value
+class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+  @AppStorage(UDValues.notificationTime.key, store: solsticeUDStore)
+  var notifTime: TimeInterval = UDValues.notificationTime.value
+  
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
+    
+    DispatchQueue.global(qos: .background).async {
+      self.scheduleNotification()
+    }
+  }
+  
   static let shared = NotificationManager()
   private let notificationCenter = UNUserNotificationCenter.current()
   
@@ -75,12 +85,30 @@ class NotificationManager: ObservableObject {
         
         let solsticeCalculator = SolarCalculator(baseDate: targetDate)
         let content = UNMutableNotificationContent()
-        content.title = "Today’s Daylight"
         
-        if let components = solsticeCalculator.today?.durationComponents,
-           let hour = components.hour,
-           let minute = components.minute {
-          content.body = "\(hour)hrs and \(minute)mins of daylight today."
+        if let hour = components.hour, hour >= 18 || hour < 3 {
+          content.title = "Good Evening"
+        } else if let hour = components.hour, hour >= 3 && hour < 12 {
+          content.title = "Good Morning"
+        } else if let hour = components.hour, hour >= 12 && hour < 18 {
+          content.title = "Good Afternoon"
+        } else {
+          content.title = "Today’s Daylight"
+        }
+        
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        
+        if let suntimes = solsticeCalculator.today {
+          let components = suntimes.durationComponents
+          let duration = suntimes.differenceComponents(from: solsticeCalculator.yesterday ?? suntimes)
+          let hour = components.hour ?? 0
+          let minute = components.minute ?? 0
+          content.body = "The sun rises at \(formatter.string(from: suntimes.begins ?? Date())) "
+          content.body += "and sets at \(formatter.string(from: suntimes.ends ?? Date())); "
+          content.body += "\(hour)hrs and \(minute)mins of daylight today. "
+          content.body += "That’s \(duration.minutes) mins and \(duration.seconds) secs \(suntimes.difference(from: solsticeCalculator.yesterday ?? suntimes) > 0 ? "more" : "less") than yesterday."
         } else {
           content.body = "Open Solstice to see the day’s daylight."
         }

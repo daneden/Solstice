@@ -9,8 +9,12 @@ import SwiftUI
 import UserNotifications
 
 struct SettingsView: View {
-  @AppStorage(UDValues.notificationsEnabled.key) var notifsEnabled = UDValues.notificationsEnabled.value
-  @AppStorage(UDValues.notificationTime.key) var notifTime: TimeInterval = UDValues.notificationTime.value
+  @AppStorage(UDValues.notificationsEnabled.key, store: solsticeUDStore)
+  var notifsEnabled = UDValues.notificationsEnabled.value
+  
+  @AppStorage(UDValues.notificationTime.key, store: solsticeUDStore)
+  var notifTime: TimeInterval = UDValues.notificationTime.value
+  
   @State var chosenNotifTime: Date = defaultNotificationDate
   @ObservedObject var notificationManager = NotificationManager.shared
   
