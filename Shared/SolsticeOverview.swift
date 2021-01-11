@@ -34,7 +34,7 @@ struct SolsticeOverview: View {
             VStack(alignment: .leading) {
               Text("Yesterday")
               Text("\(beginsYesterday, style: .time)")
-            }.foregroundColor(.secondary).font(.footnote).padding(.top, 4)
+            }.foregroundColor(.secondary).font(Font.footnote.monospacedDigit()).padding(.top, 4)
           }
         }
         
@@ -49,10 +49,10 @@ struct SolsticeOverview: View {
             VStack(alignment: .trailing) {
               Text("Yesterday")
               Text("\(endsYesterday, style: .time)")
-            }.foregroundColor(.secondary).font(.footnote).padding(.top, 4)
+            }.foregroundColor(.secondary).font(Font.footnote.monospacedDigit()).padding(.top, 4)
           }
         }
-      }
+      }.font(Font.body.monospacedDigit())
     }
   }
   

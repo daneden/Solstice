@@ -31,7 +31,7 @@ struct ContentView: View {
                 Text(prevSolsticeDifference)
                   .fixedSize(horizontal: false, vertical: true)
               }
-            }.font(Font.system(.largeTitle, design: .rounded)).padding()
+            }.font(Font.system(.largeTitle, design: .rounded).bold()).padding()
           }
         }.tabViewStyle(PageTabViewStyle())
       }
@@ -48,9 +48,10 @@ struct ContentView: View {
   
   var prevSolsticeDifference: String? {
     guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return nil }
+    print(prevSolsticeDaylight)
     guard let today = calculator.today else { return nil }
-    var (minutes, seconds) = prevSolsticeDaylight.differenceComponents(from: today)
-    let difference = prevSolsticeDaylight.difference(from: today)
+    var (minutes, seconds) = today.differenceComponents(from: prevSolsticeDaylight)
+    let difference = today.difference(from: prevSolsticeDaylight)
     
     var value = "\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : ""), \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")"
     
@@ -59,7 +60,7 @@ struct ContentView: View {
       seconds += 60
     }
     
-    if difference <= 0 {
+    if difference >= 0 {
       value += " more "
     } else {
       value += " less "

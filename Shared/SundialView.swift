@@ -13,7 +13,6 @@ struct SundialView: View {
   
   private var calculator = SolarCalculator()
   
-  private var circleSize: CGFloat = 24
   private var scrimCompensation: CGFloat = 40
   
   private var offset: CGFloat {
@@ -63,7 +62,7 @@ struct SundialView: View {
             Rectangle()
               .fill(Color.clear)
               .frame(height: 2, alignment: .top)
-              .background(VisualEffectView.SystemInvertedRuleMaterial()),
+              .background(Color.tertiarySystemGroupedBackground),
             alignment: .top
           )
           .offset(y: (offset * waveSize) + scrimCompensation / 2)
@@ -98,13 +97,13 @@ struct SundialWave: View {
       frequency: .pi * 2,
       phase: (.pi / 2) + offset
     )
-    .stroke(Color.opaqueSeparator, lineWidth: 3)
+    .stroke(Color.opaqueSeparator, lineWidth: 2)
   }
 }
 
 
 struct SundialSun: View {
-  var circleSize: CGFloat = 24.0
+  @State var circleSize: CGFloat = 24.0
   var sunColor = Color.primary
   var frameWidth: CGFloat
   var position: CGFloat
@@ -113,14 +112,12 @@ struct SundialSun: View {
   
   var body: some View {
     Circle()
-      .fill(sunColor)
-      .frame(width: circleSize, alignment: .center)
-      .position(x: 0, y: arcSize)
+      .frame(width: circleSize)
       .offset(
-        x: (frameWidth * fmod(position, 1)),
+        x: (frameWidth * fmod(position, 1)) - (frameWidth / 2),
         y: sin((position * .pi * 2) - .pi / 2) * -arcSize
       )
-      .offset(y: circleSize / 2)
+      .foregroundColor(sunColor)
       .shadow(color: sunColor.opacity(0.6), radius: 10, x: 0.0, y: 0.0)
   }
 }
