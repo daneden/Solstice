@@ -48,7 +48,6 @@ struct ContentView: View {
   
   var prevSolsticeDifference: String? {
     guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return nil }
-    print(prevSolsticeDaylight)
     guard let today = calculator.today else { return nil }
     var (minutes, seconds) = today.differenceComponents(from: prevSolsticeDaylight)
     let difference = today.difference(from: prevSolsticeDaylight)
