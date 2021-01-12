@@ -33,7 +33,7 @@ struct Wave: Shape {
     path.move(to: CGPoint(x: 0, y: y))
     
     // now count across individual horizontal points one by one
-    for x in stride(from: 0, through: width, by: 2) {
+    for x in stride(from: 0, through: width, by: 1) {
       // find our current position relative to the wavelength
       relativeX = x / wavelength
       

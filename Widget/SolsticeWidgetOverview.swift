@@ -15,7 +15,7 @@ struct SolsticeWidgetOverview: View {
   var body: some View {
     VStack(alignment: .leading) {
       if family == .systemLarge {
-        SundialView().padding(.horizontal, -20)
+        SundialView(calculator: calculator).padding(.horizontal, -20)
         Spacer()
       }
       
