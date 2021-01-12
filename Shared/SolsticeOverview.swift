@@ -19,7 +19,7 @@ struct SolsticeOverview: View {
           .foregroundColor(.secondary)
       }
       
-      Text("\(calculator.differenceString) \(verbiage) daylight today than yesterday.")
+      Text("\(calculator.differenceString) daylight today than yesterday.")
         .lineLimit(4)
         .font(Font.system(.largeTitle, design: .rounded).bold())
         .padding(.vertical).fixedSize(horizontal: false, vertical: true)
@@ -54,11 +54,6 @@ struct SolsticeOverview: View {
         }
       }.font(Font.body.monospacedDigit())
     }
-  }
-  
-  var verbiage: String {
-    calculator.differenceComponents.minutes >= 0 && calculator.differenceComponents.seconds >= 0
-      ? "more" : "less"
   }
 }
 

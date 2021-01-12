@@ -35,7 +35,7 @@ struct SolsticeWidgetOverview: View {
       
       Spacer()
       
-      Text("\(calculator.differenceString) \(verbiage) than yesterday.")
+      Text("\(calculator.differenceString) than yesterday.")
         .lineLimit(4)
         .font(.caption)
         .foregroundColor(.secondary)
@@ -57,11 +57,6 @@ struct SolsticeWidgetOverview: View {
         }.font(.caption)
       }
     }.frame(maxWidth: .infinity, maxHeight: .infinity)
-  }
-  
-  var verbiage: String {
-    calculator.differenceComponents.minutes >= 0 && calculator.differenceComponents.seconds >= 0
-      ? "more" : "less"
   }
 }
 

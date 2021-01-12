@@ -141,16 +141,17 @@ struct SolarCalculator {
     return Daylight(begins: solar.sunrise, ends: solar.sunset)
   }
   
-  var differenceComponents: DaylightTime {
-    guard let today = today, let yesterday = yesterday else {
-      return (minutes: 0, seconds: 0)
+  var differenceString: String {
+    guard let today = today else { return "The same" }
+    guard let yesterday = yesterday else { return "The same" }
+    var string = today.difference(from: yesterday).toColloquialTimeString()
+    
+    if today.difference(from: yesterday) >= 0 {
+      string += " more"
+    } else {
+      string += " less"
     }
     
-    return today.differenceComponents(from: yesterday)
-  }
-  
-  var differenceString: String {
-    let (minutes, seconds) = differenceComponents
-    return String("\(abs(minutes)) min\(abs(minutes) > 1 || minutes == 0 ? "s" : ""), \(abs(seconds)) sec\(abs(seconds) > 1 || seconds == 0 ? "s" : "")")
+    return string
   }
 }
