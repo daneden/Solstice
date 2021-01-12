@@ -36,8 +36,6 @@ extension TimeInterval {
   func toColloquialTimeString() -> String {
     let ti = abs(Int(self))
 
-    let ms = abs(Int((self) * 1000))
-
     let seconds = ti % 60
     let minutes = (ti / 60) % 60
     let hours = (ti / 3600)
