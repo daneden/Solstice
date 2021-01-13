@@ -12,12 +12,12 @@ import SwiftUI
 
 typealias DaylightTime = (minutes: Int, seconds: Int)
 
-struct Daylight {
-  var begins: Date?
-  var ends: Date?
+struct Daylight: Hashable {
+  var begins: Date
+  var ends: Date
   
   var duration: TimeInterval {
-    (begins ?? Date()).distance(to: ends ?? Date())
+    begins.distance(to: ends)
   }
   
   func difference(from: Daylight) -> TimeInterval {
@@ -25,8 +25,8 @@ struct Daylight {
   }
   
   var peak: Date? {
-    guard let interval = ends?.timeIntervalSince(begins ?? Date()) else {return nil }
-    let peak = begins?.advanced(by: interval / 2)
+    let interval = ends.timeIntervalSince(begins)
+    let peak = begins.advanced(by: interval / 2)
     
     return peak
   }
@@ -69,14 +69,14 @@ struct SolarCalculator {
     }
   }
   
-  var nextSolstice: Date? {
+  var nextSolstice: Date {
     let components = Calendar.current.dateComponents([.month, .day, .year], from: todaysDate)
     if let month = components.month, let day = components.day, month >= 12 && day >= 22 {
-      return Calendar.current.date(from: DateComponents(year: (components.year ?? 0) + 1, month: 6, day: 22))
+      return Calendar.current.date(from: DateComponents(year: (components.year ?? 0) + 1, month: 6, day: 22))!
     } else if let month = components.month, let day = components.day, month >= 6 && day >= 22 {
-      return Calendar.current.date(from: DateComponents(year: components.year, month: 12, day: 22))
+      return Calendar.current.date(from: DateComponents(year: components.year, month: 12, day: 22))!
     } else {
-      return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))
+      return Calendar.current.date(from: DateComponents(year: components.year, month: 6, day: 22))!
     }
   }
   
@@ -84,27 +84,43 @@ struct SolarCalculator {
     guard let prevSolstice = prevSolstice else { return nil }
     guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return nil }
     
-    return Daylight(begins: solar.sunrise, ends: solar.sunset)
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      return Daylight(begins: sunrise, ends: sunset)
+    } else {
+      return nil
+    }
   }
   
   var today: Daylight? {
     guard let solar = Solar(for: baseDateAtNoon, coordinate: coords) else { return nil }
     
-    return Daylight(begins: solar.sunrise, ends: solar.sunset)
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      return Daylight(begins: sunrise, ends: sunset)
+    } else {
+      return nil
+    }
   }
   
   var yesterday: Daylight? {
     let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: baseDateAtNoon)!
     guard let solar = Solar(for: yesterday, coordinate: coords) else { return nil }
     
-    return Daylight(begins: solar.sunrise, ends: solar.sunset)
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      return Daylight(begins: sunrise, ends: sunset)
+    } else {
+      return nil
+    }
   }
   
   var tomorrow: Daylight? {
     let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: baseDateAtNoon)!
     guard let solar = Solar(for: tomorrow, coordinate: coords) else { return nil }
     
-    return Daylight(begins: solar.sunrise, ends: solar.sunset)
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      return Daylight(begins: sunrise, ends: sunset)
+    } else {
+      return nil
+    }
   }
   
   var differenceString: String {
@@ -119,5 +135,33 @@ struct SolarCalculator {
     }
     
     return string
+  }
+  
+  var monthlyDaylight: [Daylight] {
+    let todayComponents = Calendar.current.dateComponents([.year], from: baseDate)
+    var monthsOfDaylight: [Daylight] = []
+    let components = DateComponents(
+      year: todayComponents.year,
+      month: 1,
+      day: 1,
+      hour: 0,
+      minute: 0,
+      second: 0
+    )
+    
+    var date = Calendar.current.date(from: components)!
+    
+    for _ in 1...12 {
+      let solarCalculator = SolarCalculator(baseDate: date)
+      let daylight = solarCalculator.today
+      
+      if let daylight = daylight {
+        monthsOfDaylight.append(daylight)
+      }
+      
+      date = Calendar.current.date(byAdding: .month, value: 1, to: date)!
+    }
+    
+    return monthsOfDaylight
   }
 }

@@ -30,7 +30,7 @@ struct ContentView: View {
             dateOffset: $dateOffset,
             selectedDate: $selectedDate,
             calculator: calculator
-          ).fixedSize(horizontal: false, vertical: true)
+          )
           
           Spacer()
           Spacer()
@@ -39,31 +39,31 @@ struct ContentView: View {
             .padding()
         }
       }
+      .tag(0)
       .padding(.bottom)
       .padding(.bottom)
       
       Group {
         VStack {
-          Spacer()
+          SunCalendarView(solarCalculator: calculator).id(dateOffset)
           
-          if let nextSolstice = calculator.nextSolstice,
-             let prevSolsticeDifference = prevSolsticeDifference {
-            VStack(alignment: .leading, spacing: 8) {
-              Text("\(nextSolstice, style: .relative) until the next solstice.")
-              
-              Text(prevSolsticeDifference)
-                .fixedSize(horizontal: false, vertical: true)
-            }
-          }
+          VStack(alignment: .leading, spacing: 8) {
+            Text("\(calculator.nextSolstice, style: .relative) until the next solstice.")
+              .fixedSize(horizontal: false, vertical: true)
+            
+            Text(prevSolsticeDifference)
+              .fixedSize(horizontal: false, vertical: true)
+          }.font(Font.system(.title, design: .rounded).bold())
         }
       }
-      .font(Font.system(.title, design: .rounded).bold())
+      .tag(1)
       .padding()
       .padding(.bottom)
       .padding(.bottom)
       .frame(maxWidth: .infinity)
     }
     .tabViewStyle(PageTabViewStyle())
+    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
     .toolbar {
       ToolbarItem {
         Button(action: { settingsVisible.toggle() }) {
@@ -79,9 +79,9 @@ struct ContentView: View {
     }
   }
   
-  var prevSolsticeDifference: String? {
-    guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return nil }
-    guard let today = calculator.today else { return nil }
+  var prevSolsticeDifference: String {
+    guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return "" }
+    guard let today = calculator.today else { return "" }
     let difference = today.difference(from: prevSolsticeDaylight)
     
     var value = today.difference(from: prevSolsticeDaylight).toColloquialTimeString()

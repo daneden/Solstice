@@ -104,8 +104,8 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           let duration = suntimes.duration.toColloquialTimeString()
           let difference = suntimes.difference(from: solsticeCalculator.yesterday ?? suntimes)
           let differenceString = difference.toColloquialTimeString()
-          content.body = "The sun rises at \(formatter.string(from: suntimes.begins ?? Date())) "
-          content.body += "and sets at \(formatter.string(from: suntimes.ends ?? Date())); "
+          content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
+          content.body += "and sets at \(formatter.string(from: suntimes.ends)); "
           content.body += "\(duration) of daylight today. "
           content.body += "That’s \(differenceString) \(difference > 0 ? "more" : "less") than yesterday."
         } else {
