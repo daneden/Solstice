@@ -26,7 +26,7 @@ struct Wave: Shape {
     let wavelength = width / frequency
     
     // plot the starting point
-    var relativeX = 0 / wavelength
+    var relativeX = 0 / max(wavelength, 1.0)
     var sine = sin(phase + relativeX)
     var y = amplitude * sine + midHeight
     

@@ -15,43 +15,9 @@ typealias DaylightTime = (minutes: Int, seconds: Int)
 struct Daylight {
   var begins: Date?
   var ends: Date?
-  var durationComponents: DateComponents {
-    if let begins = begins, let ends = ends {
-      return Calendar.current.dateComponents([.hour, .minute, .second], from: begins, to: ends)
-    } else {
-      var val = DateComponents()
-      val.hour = 12
-      val.minute = 0
-      val.second = 0
-      return val
-    }
-  }
   
   var duration: TimeInterval {
-    return (begins ?? Date()).distance(to: ends ?? Date())
-  }
-  
-  func differenceComponents(from: Daylight) -> DaylightTime {
-    let minutes = durationComponents.minute!
-    let seconds = durationComponents.second!
-    
-    let otherMinutes = from.durationComponents.minute!
-    let otherSeconds = from.durationComponents.second!
-    
-    var calculatedMinutes = minutes - otherMinutes
-    var calculatedSeconds = seconds - otherSeconds
-    
-    // Sometimes the difference is returned as e.g. 1min and -7sec
-    // so in those cases, we'll make up the difference
-    if calculatedMinutes > 0 && calculatedSeconds < 0 {
-      calculatedMinutes -= 1
-      calculatedSeconds += 60
-    }
-    
-    return (
-      minutes: calculatedMinutes,
-      seconds: calculatedSeconds
-    )
+    (begins ?? Date()).distance(to: ends ?? Date())
   }
   
   func difference(from: Daylight) -> TimeInterval {

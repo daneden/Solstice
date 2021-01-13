@@ -9,6 +9,8 @@ import SwiftUI
 import UserNotifications
 
 struct SettingsView: View {
+  @Environment(\.presentationMode) var presentationMode
+  
   @AppStorage(UDValues.notificationsEnabled.key, store: solsticeUDStore)
   var notifsEnabled = UDValues.notificationsEnabled.value
   
@@ -45,6 +47,13 @@ struct SettingsView: View {
         }
       }
       .navigationTitle(Text("Settings"))
+      .toolbar {
+        ToolbarItem {
+          Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+            Text("Close")
+          }
+        }
+      }
       .onAppear {
         chosenNotifTime = Date(timeIntervalSince1970: notifTime)
       }

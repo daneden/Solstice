@@ -42,28 +42,11 @@ extension TimeInterval {
     
     var result: [String] = []
     
-    if hours > 0 {
-      result.append("\(hours) hrs")
-    }
+    if hours > 0 { result.append("\(hours) hr") }
+    if minutes > 0 { result.append("\(minutes) mins") }
+    if seconds > 0 { result.append("\(seconds) secs") }
     
-    if minutes > 0 {
-      result.append("\(minutes) mins")
-    }
-    
-    if seconds > 0 {
-      result.append("\(seconds) secs")
-    }
-    
-    switch result.count {
-    case 1:
-      return result[0]
-    case 2:
-      return "\(result[0]) and \(result[1])"
-    case 3:
-      return "\(result[0]), \(result[1]), and \(result[2])"
-    default:
-      return "0 minutes and 0 seconds"
-    }
+    return result.joined(separator: ", ")
   }
   
   static func fromDelimitedString(_ string: String) -> TimeInterval {

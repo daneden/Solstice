@@ -28,10 +28,6 @@ struct SundialView: View {
     return CGFloat(daylightLength / dayLength)
   }
   
-  private var duration: DateComponents? {
-    return calculator.today?.durationComponents
-  }
-  
   private var waveSize: CGFloat = 80.0
   
   private var currentPosition: CGFloat {
@@ -50,6 +46,8 @@ struct SundialView: View {
     // The phase is constantly offset by half pi since we want the peak of the curve to average at noon
     return CGFloat(result + .pi / 2)
   }
+  
+  @State var sundialAnimation: Animation? = nil
   
   var body: some View {
     GeometryReader { geometry in
@@ -74,7 +72,16 @@ struct SundialView: View {
             alignment: .top
           )
           .offset(y: (offset * waveSize) + scrimCompensation / 2)
-      }.frame(height: waveSize * 2.5).fixedSize(horizontal: false, vertical: true)
+      }
+      .frame(height: waveSize * 2.5)
+      .fixedSize(horizontal: false, vertical: true)
+      .overlay(SundialInnerShadowOverlay())
+      .animation(sundialAnimation)
+      .onAppear {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          sundialAnimation = easingSpringAnimation
+        }
+      }
     }
   }
 }
@@ -109,7 +116,7 @@ struct SundialSun: View {
   
   var body: some View {
     let waveLength = frameWidth / (.pi * 2)
-    let relativeX = (position * frameWidth) / waveLength
+    let relativeX = (position * frameWidth) / max(waveLength, 1.0)
     let sine = sin(phase + relativeX)
     let y = arcSize * sine
     
@@ -121,5 +128,31 @@ struct SundialSun: View {
         x: (frameWidth * fmod(position, 1)) - (frameWidth / 2),
         y: y
       )
+  }
+}
+
+struct SundialInnerShadowOverlay: View {
+  var body: some View {
+    HStack {
+      Rectangle()
+        .fill(
+          LinearGradient(
+            gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
+            startPoint: .leading,
+            endPoint: .trailing
+          )
+        )
+        .frame(width: 40)
+      Spacer()
+      Rectangle()
+        .fill(
+          LinearGradient(
+            gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
+            startPoint: .trailing,
+            endPoint: .leading
+          )
+        )
+        .frame(width: 40)
+    }
   }
 }

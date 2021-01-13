@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CoreLocation
 import SwiftUI
+import WidgetKit
 
 class LocationManager: NSObject, ObservableObject {
   @AppStorage(UDValues.cachedLatitude.key, store: solsticeUDStore)
@@ -32,6 +33,7 @@ class LocationManager: NSObject, ObservableObject {
         self.latitude = latitude
         self.longitude = longitude
       }
+      WidgetCenter.shared.reloadAllTimelines()
     }
   }
   

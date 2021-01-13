@@ -48,7 +48,7 @@ struct TimeMachineView<Component: View>: View {
   }
   
   private func onDragChange(_ drag: DragGesture.Value,_ frame: CGRect) {
-    withAnimation(springAnimation) {
+    withAnimation(stiffSpringAnimation) {
       let width = (knob: Double(knobWidth ?? frame.size.height), view: Double(frame.size.width))
       let xrange = (min: Double(0), max: Double(width.view - width.knob))
       var value = Double(drag.startLocation.x + drag.translation.width) // knob center x

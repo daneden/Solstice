@@ -101,14 +101,13 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         formatter.dateStyle = .none
         
         if let suntimes = solsticeCalculator.today {
-          let components = suntimes.durationComponents
-          let duration = suntimes.differenceComponents(from: solsticeCalculator.yesterday ?? suntimes)
-          let hour = components.hour ?? 0
-          let minute = components.minute ?? 0
+          let duration = suntimes.duration.toColloquialTimeString()
+          let difference = suntimes.difference(from: solsticeCalculator.yesterday ?? suntimes)
+          let differenceString = difference.toColloquialTimeString()
           content.body = "The sun rises at \(formatter.string(from: suntimes.begins ?? Date())) "
           content.body += "and sets at \(formatter.string(from: suntimes.ends ?? Date())); "
-          content.body += "\(hour)hrs and \(minute)mins of daylight today. "
-          content.body += "That’s \(duration.minutes) mins and \(duration.seconds) secs \(suntimes.difference(from: solsticeCalculator.yesterday ?? suntimes) > 0 ? "more" : "less") than yesterday."
+          content.body += "\(duration) of daylight today. "
+          content.body += "That’s \(differenceString) \(difference > 0 ? "more" : "less") than yesterday."
         } else {
           content.body = "Open Solstice to see the day’s daylight."
         }

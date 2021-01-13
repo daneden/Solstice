@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 typealias UDValuePair<T> = (key: String, value: T)
 
@@ -19,3 +20,6 @@ struct UDValues {
   static let notificationTime: UDValuePair<TimeInterval> = ("notifTime", defaultNotificationDate.timeIntervalSince1970)
   static let notificationsEnabled: UDValuePair = ("notifsEnabled", false)
 }
+
+let stiffSpringAnimation = Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.3)
+let easingSpringAnimation = Animation.interactiveSpring(response: 0.4, dampingFraction: 0.8, blendDuration: 1)

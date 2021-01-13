@@ -22,14 +22,13 @@ struct SolsticeWidgetOverview: View {
       Image("Solstice-Icon")
         .resizable()
         .frame(width: 16, height: 16)
-      if let hours = calculator.today?.durationComponents.hour,
-         let minutes = calculator.today?.durationComponents.minute {
+      if let duration = calculator.today?.duration.toColloquialTimeString() {
         Text("Daylight today:")
           .font(.caption)
         
-        Text("\(hours)hrs, \(minutes)mins")
+        Text("\(duration)")
           .lineLimit(4)
-          .font(Font.system(.headline, design: .rounded).bold())
+          .font(Font.system(family == .systemSmall ? .footnote : .headline, design: .rounded).bold().leading(.tight))
           .fixedSize(horizontal: false, vertical: true)
       }
       
@@ -56,7 +55,8 @@ struct SolsticeWidgetOverview: View {
           }
         }.font(.caption)
       }
-    }.frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 }
 
