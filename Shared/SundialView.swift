@@ -32,8 +32,7 @@ struct SundialView: View {
   
   private var currentPosition: CGFloat {
     let dayLength = 86400.0
-//    return CGFloat(dayBegins.distance(to: Date()) / dayLength)
-    return 0.5
+    return CGFloat(dayBegins.distance(to: Date()) / dayLength)
   }
   
   private var phase: CGFloat {
