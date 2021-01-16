@@ -63,8 +63,7 @@ struct SunCalendarView: View {
   }
   
   func calculateMonthlyDaylight() -> [Daylight] {
-    let todayComponents = Calendar.current.dateComponents([.year], from: solarCalculator.baseDate
-    )
+    let todayComponents = Calendar.current.dateComponents([.year], from: solarCalculator.baseDate)
     var monthsOfDaylight: [Daylight] = []
     let components = DateComponents(
       year: todayComponents.year,
@@ -76,11 +75,12 @@ struct SunCalendarView: View {
     )
     
     var date = Calendar.current.date(from: components)!
+    let calculator = SolarCalculator()
     
     for _ in 1...12 {
-      let solarCalculator = SolarCalculator(baseDate: date)
+      calculator.baseDate = date
       
-      monthsOfDaylight.append(solarCalculator.today)
+      monthsOfDaylight.append(calculator.today)
       
       date = Calendar.current.date(byAdding: .month, value: 1, to: date)!
     }

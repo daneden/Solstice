@@ -17,8 +17,6 @@ struct ContentView: View {
   @State var settingsVisible = false
   @State var timeTravelVisible = false
   
-  @State var monthlyDaylight: [Daylight] = []
-  
   var body: some View {
     TabView {
       Group {
@@ -32,14 +30,12 @@ struct ContentView: View {
             calculator: calculator
           )
           
-          Spacer()
-          Spacer()
+          
           
           SolsticeOverview(calculator: calculator)
             .padding()
         }
       }
-      .tag(0)
       .padding(.bottom)
       .padding(.bottom)
       
@@ -52,17 +48,17 @@ struct ContentView: View {
             Text("The next solstice is \(nextSolsticeDistance).")
               .fixedSize(horizontal: false, vertical: true)
             
-            Text(prevSolsticeDifference)
-              .fixedSize(horizontal: false, vertical: true)
+            if let value = prevSolsticeDifference() {
+              Text("\(value)")
+                .fixedSize(horizontal: false, vertical: true)
+            }
           }
           .font(Font.system(.title, design: .rounded).bold())
         }
       }
-      .tag(1)
       .padding()
       .padding(.bottom)
       .padding(.bottom)
-      .frame(maxWidth: .infinity)
     }
     .tabViewStyle(PageTabViewStyle())
     .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
@@ -76,27 +72,29 @@ struct ContentView: View {
       SettingsView()
     }
     .onChange(of: dateOffset) { value in
-      self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-      self.calculator.baseDate = self.selectedDate
+      DispatchQueue.main.async {
+        self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
+        self.calculator.baseDate = self.selectedDate
+      }
+    }
+    .onAppear {
+      if dateOffset == 0 {
+        self.selectedDate = Date()
+      }
     }
   }
   
-  var prevSolsticeDifference:String {
-    guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return "" }
+  func prevSolsticeDifference() -> String {
+    let prevSolsticeDaylight = calculator.prevSolsticeDaylight
     let today = calculator.today
     let difference = today.difference(from: prevSolsticeDaylight)
     
-    var value = today.difference(from: prevSolsticeDaylight).toColloquialTimeString()
+    let differenceString = difference.colloquialTimeString
+    let differenceComparator = difference >= 0 ? "more" : "less"
+    let sentence = String(format: "%@ %@ daylight today than at the previous solstice.", differenceString, differenceComparator)
+//    let sentence = "\(differenceString) \(differenceComparator) daylight today than at the previous solstice."
     
-    if difference >= 0 {
-      value += " more "
-    } else {
-      value += " less "
-    }
-    
-    value += "daylight today than at the previous solstice."
-    
-    return value
+    return sentence
   }
   
   var nextSolsticeDistance: String {
@@ -118,7 +116,7 @@ struct SolarTimeMachine: View {
           if timeTravelVisible {
             Text("\(selectedDate, style: .date)")
           }
-          if let duration = calculator.today.duration.toColloquialTimeString() {
+          if let duration = calculator.today.duration.colloquialTimeString {
             Text("\(duration)")
               .font(.footnote)
               .foregroundColor(.secondary)

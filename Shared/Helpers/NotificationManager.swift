@@ -101,9 +101,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         formatter.dateStyle = .none
         
         let suntimes = solsticeCalculator.today
-        let duration = suntimes.duration.toColloquialTimeString()
+        let duration = suntimes.duration.colloquialTimeString
         let difference = suntimes.difference(from: solsticeCalculator.yesterday)
-        let differenceString = difference.toColloquialTimeString()
+        let differenceString = difference.colloquialTimeString
         content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
         content.body += "and sets at \(formatter.string(from: suntimes.ends)); "
         content.body += "\(duration) of daylight today. "

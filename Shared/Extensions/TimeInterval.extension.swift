@@ -33,20 +33,13 @@ extension TimeInterval {
     }
   }
   
-  func toColloquialTimeString() -> String {
-    let ti = abs(Int(self))
-
-    let seconds = ti % 60
-    let minutes = (ti / 60) % 60
-    let hours = (ti / 3600)
+  var colloquialTimeString: String {
+    let formatter = DateComponentsFormatter()
+    formatter.unitsStyle = .short
+    formatter.allowedUnits = [.hour, .minute, .second]
+    let string = formatter.string(from: abs(self)) ?? ""
     
-    var result: [String] = []
-    
-    if hours > 0 { result.append("\(hours) hr") }
-    if minutes > 0 { result.append("\(minutes) mins") }
-    if seconds > 0 { result.append("\(seconds) secs") }
-    
-    return result.joined(separator: ", ")
+    return string
   }
   
   static func fromDelimitedString(_ string: String) -> TimeInterval {

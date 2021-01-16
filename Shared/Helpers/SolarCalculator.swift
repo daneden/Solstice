@@ -34,7 +34,7 @@ struct Daylight: Hashable {
   }
 }
 
-class SolarCalculator: ObservableObject {
+class SolarCalculator: NSObject, ObservableObject {
   @AppStorage(UDValues.cachedLatitude.key, store: solsticeUDStore)
   var latitude: Double = UDValues.cachedLatitude.value
   
@@ -98,13 +98,13 @@ class SolarCalculator: ObservableObject {
     }
   }
   
-  var prevSolsticeDaylight: Daylight? {
-    guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return nil }
+  var prevSolsticeDaylight: Daylight {
+    guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return .Default }
     
     if let sunrise = solar.sunrise, let sunset = solar.sunset {
       return Daylight(begins: sunrise, ends: sunset)
     } else {
-      return nil
+      return .Default
     }
   }
   
@@ -141,7 +141,7 @@ class SolarCalculator: ObservableObject {
   }
   
   var differenceString: String {
-    var string = today.difference(from: yesterday).toColloquialTimeString()
+    var string = today.difference(from: yesterday).colloquialTimeString
     
     if today.difference(from: yesterday) >= 0 {
       string += " more"

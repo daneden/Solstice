@@ -24,7 +24,7 @@ struct SolsticeWidgetOverview: View {
       Image("Solstice-Icon")
         .resizable()
         .frame(width: 16, height: 16)
-      if let duration = calculator.today.duration.toColloquialTimeString() {
+      if let duration = calculator.today.duration.colloquialTimeString {
         Text("Daylight today:")
           .font(.caption)
         
