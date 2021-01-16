@@ -32,7 +32,8 @@ struct SundialView: View {
   
   private var currentPosition: CGFloat {
     let dayLength = 86400.0
-    return CGFloat(dayBegins.distance(to: Date()) / dayLength)
+//    return CGFloat(dayBegins.distance(to: Date()) / dayLength)
+    return 0.5
   }
   
   private var phase: CGFloat {
@@ -73,6 +74,8 @@ struct SundialView: View {
           )
           .offset(y: (offset * waveSize) + scrimCompensation / 2)
       }
+      .padding(.vertical)
+      .padding(.vertical)
       .clipShape(Rectangle())
       .frame(height: waveSize * 2.5)
       .fixedSize(horizontal: false, vertical: true)
