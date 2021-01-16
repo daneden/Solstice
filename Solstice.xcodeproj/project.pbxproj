@@ -38,6 +38,9 @@
 		7190094825A4D98C002ED383 /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
 		7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
 		7190094F25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
+		719A3FBA25AF9ECA003BE97D /* Filler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A3FB925AF9ECA003BE97D /* Filler.swift */; };
+		719A3FBB25AF9ECA003BE97D /* Filler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A3FB925AF9ECA003BE97D /* Filler.swift */; };
+		719A3FBC25AF9ECA003BE97D /* Filler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A3FB925AF9ECA003BE97D /* Filler.swift */; };
 		71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71A36C2025A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */; };
@@ -133,6 +136,7 @@
 		7190092D25A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7190094625A4D98C002ED383 /* Solar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solar.swift; sourceTree = "<group>"; };
 		7190094D25A4D9C2002ED383 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		719A3FB925AF9ECA003BE97D /* Filler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filler.swift; sourceTree = "<group>"; };
 		71A36C1E25A6065F004F527B /* Date.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.extension.swift; sourceTree = "<group>"; };
 		71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeOverview.swift; sourceTree = "<group>"; };
 		71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,9 +228,9 @@
 				71C884BB25A913770009F2A1 /* SettingsView.swift */,
 				7190090525A4D6D2002ED383 /* SolsticeApp.swift */,
 				71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */,
+				712F90FA25AF439400CC8D7E /* SunCalendarView.swift */,
 				711AE5F425A5B2FA00B363BA /* SundialView.swift */,
 				711DFB4C25AE1B2D0004AC46 /* TimeMachineView.swift */,
-				712F90FA25AF439400CC8D7E /* SunCalendarView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -300,6 +304,7 @@
 				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
 				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
 				711AE5E925A5ADC500B363BA /* WaveShape.swift */,
+				719A3FB925AF9ECA003BE97D /* Filler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -521,6 +526,7 @@
 				71C884E325A9C3DA0009F2A1 /* AppDelegate.swift in Sources */,
 				7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */,
+				719A3FBA25AF9ECA003BE97D /* Filler.swift in Sources */,
 				711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */,
 				712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */,
 				711AE5EA25A5ADC500B363BA /* WaveShape.swift in Sources */,
@@ -549,6 +555,7 @@
 				711AE5EB25A5ADC500B363BA /* WaveShape.swift in Sources */,
 				7190094825A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093125A4D6D5002ED383 /* ContentView.swift in Sources */,
+				719A3FBB25AF9ECA003BE97D /* Filler.swift in Sources */,
 				711AE61325A718BF00B363BA /* PermissionDeniedView.swift in Sources */,
 				7148B47425A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
 				71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
@@ -585,6 +592,7 @@
 				71C8847125A90AA20009F2A1 /* Color.extension.swift in Sources */,
 				71C8843725A90A2D0009F2A1 /* Widget.swift in Sources */,
 				71C8844D25A90A420009F2A1 /* WaveShape.swift in Sources */,
+				719A3FBC25AF9ECA003BE97D /* Filler.swift in Sources */,
 				71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */,
 				71C8846525A90A9C0009F2A1 /* Date.extension.swift in Sources */,
 				71C8845F25A90A880009F2A1 /* Solar.swift in Sources */,
@@ -738,7 +746,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -763,7 +771,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -925,7 +933,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
@@ -950,7 +958,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;

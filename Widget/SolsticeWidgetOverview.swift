@@ -19,10 +19,12 @@ struct SolsticeWidgetOverview: View {
         Spacer()
       }
       
+      Filler()
+      
       Image("Solstice-Icon")
         .resizable()
         .frame(width: 16, height: 16)
-      if let duration = calculator.today?.duration.toColloquialTimeString() {
+      if let duration = calculator.today.duration.toColloquialTimeString() {
         Text("Daylight today:")
           .font(.caption)
         
@@ -44,13 +46,13 @@ struct SolsticeWidgetOverview: View {
         Spacer()
         
         HStack {
-          if let begins = calculator.today?.begins {
+          if let begins = calculator.today.begins {
             Label("\(begins, style: .time)", systemImage: "sunrise.fill")
           }
           
           Spacer()
           
-          if let ends = calculator.today?.ends {
+          if let ends = calculator.today.ends {
             Label("\(ends, style: .time)", systemImage: "sunset.fill")
           }
         }.font(.caption)

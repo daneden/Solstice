@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SunCalendarView: View {
-  var solarCalculator: SolarCalculator = SolarCalculator()
+  @ObservedObject var solarCalculator: SolarCalculator = SolarCalculator.shared
   var daylightArray: [Daylight] = []
   
   var currentMonth: Int {
@@ -18,7 +18,7 @@ struct SunCalendarView: View {
   
   init(solarCalculator: SolarCalculator) {
     self.solarCalculator = solarCalculator
-    self.daylightArray = solarCalculator.monthlyDaylight
+    self.daylightArray = self.calculateMonthlyDaylight()
   }
   
   var body: some View {
@@ -27,7 +27,6 @@ struct SunCalendarView: View {
         Text("Hours of daylight per month")
           .font(.subheadline)
         Text("Based on the hours of daylight on the first day of each month this year")
-          .lineLimit(3)
           .fixedSize(horizontal: false, vertical: true)
           .font(.caption)
           .foregroundColor(.secondary)
@@ -61,6 +60,32 @@ struct SunCalendarView: View {
       }
       .padding(.bottom)
     }
+  }
+  
+  func calculateMonthlyDaylight() -> [Daylight] {
+    let todayComponents = Calendar.current.dateComponents([.year], from: solarCalculator.baseDate
+    )
+    var monthsOfDaylight: [Daylight] = []
+    let components = DateComponents(
+      year: todayComponents.year,
+      month: 1,
+      day: 1,
+      hour: 0,
+      minute: 0,
+      second: 0
+    )
+    
+    var date = Calendar.current.date(from: components)!
+    
+    for _ in 1...12 {
+      let solarCalculator = SolarCalculator(baseDate: date)
+      
+      monthsOfDaylight.append(solarCalculator.today)
+      
+      date = Calendar.current.date(byAdding: .month, value: 1, to: date)!
+    }
+    
+    return monthsOfDaylight
   }
   
   func hoursOfDaylightForMonth(_ month: Daylight) -> Int {

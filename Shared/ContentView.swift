@@ -10,14 +10,14 @@ import Combine
 import CoreLocation
 
 struct ContentView: View {
-  @Namespace private var animation
   @EnvironmentObject var locationManager: LocationManager
-  @State var calculator = SolarCalculator()
+  @State var calculator = SolarCalculator.shared
   @State var selectedDate = Date()
   @State var dateOffset = 0.0
   @State var settingsVisible = false
-  @State var alertPresented = false
   @State var timeTravelVisible = false
+  
+  @State var monthlyDaylight: [Daylight] = []
   
   var body: some View {
     TabView {
@@ -45,15 +45,17 @@ struct ContentView: View {
       
       Group {
         VStack {
-          SunCalendarView(solarCalculator: calculator).id(dateOffset)
+          SunCalendarView(solarCalculator: calculator)
           
           VStack(alignment: .leading, spacing: 8) {
-            Text("\(calculator.nextSolstice, style: .relative) until the next solstice.")
+            Filler()
+            Text("The next solstice is \(nextSolsticeDistance).")
               .fixedSize(horizontal: false, vertical: true)
             
             Text(prevSolsticeDifference)
               .fixedSize(horizontal: false, vertical: true)
-          }.font(Font.system(.title, design: .rounded).bold())
+          }
+          .font(Font.system(.title, design: .rounded).bold())
         }
       }
       .tag(1)
@@ -75,13 +77,13 @@ struct ContentView: View {
     }
     .onChange(of: dateOffset) { value in
       self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-      self.calculator = SolarCalculator(baseDate: self.selectedDate)
+      self.calculator.baseDate = self.selectedDate
     }
   }
   
-  var prevSolsticeDifference: String {
+  var prevSolsticeDifference:String {
     guard let prevSolsticeDaylight = calculator.prevSolsticeDaylight else { return "" }
-    guard let today = calculator.today else { return "" }
+    let today = calculator.today
     let difference = today.difference(from: prevSolsticeDaylight)
     
     var value = today.difference(from: prevSolsticeDaylight).toColloquialTimeString()
@@ -95,6 +97,11 @@ struct ContentView: View {
     value += "daylight today than at the previous solstice."
     
     return value
+  }
+  
+  var nextSolsticeDistance: String {
+    let formatter = RelativeDateTimeFormatter()
+    return formatter.localizedString(for: calculator.nextSolstice, relativeTo: selectedDate)
   }
 }
 
@@ -111,7 +118,7 @@ struct SolarTimeMachine: View {
           if timeTravelVisible {
             Text("\(selectedDate, style: .date)")
           }
-          if let duration = calculator.today?.duration.toColloquialTimeString() {
+          if let duration = calculator.today.duration.toColloquialTimeString() {
             Text("\(duration)")
               .font(.footnote)
               .foregroundColor(.secondary)

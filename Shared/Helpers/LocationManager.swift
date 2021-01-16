@@ -79,7 +79,6 @@ extension LocationManager: CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    print("Updating location")
     guard let location = locations.last else { return }
     self.location = location
     self.geocode()

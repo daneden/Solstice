@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SundialView: View {
-  var calculator: SolarCalculator
+  @ObservedObject var calculator: SolarCalculator
   
   public init(calculator: SolarCalculator) {
     self.calculator = calculator
@@ -20,8 +20,8 @@ struct SundialView: View {
   private var scrimCompensation: CGFloat = 40
   
   private var offset: CGFloat {
-    let daylightBegins = calculator.today?.begins ?? dayBegins
-    let daylightEnds = calculator.today?.ends ?? dayEnds
+    let daylightBegins = calculator.today.begins
+    let daylightEnds = calculator.today.ends
     let daylightLength = daylightBegins.distance(to: daylightEnds)
     let dayLength = dayBegins.distance(to: dayEnds)
     
@@ -36,7 +36,7 @@ struct SundialView: View {
   }
   
   private var phase: CGFloat {
-    let peak = calculator.today?.peak ?? Date()
+    let peak = calculator.today.peak ?? Date()
     let noon = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: peak)!
     let distanceFromNoon = noon.distance(to: peak)
     
@@ -73,6 +73,7 @@ struct SundialView: View {
           )
           .offset(y: (offset * waveSize) + scrimCompensation / 2)
       }
+      .clipShape(Rectangle())
       .frame(height: waveSize * 2.5)
       .fixedSize(horizontal: false, vertical: true)
       .overlay(SundialInnerShadowOverlay())

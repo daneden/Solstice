@@ -100,17 +100,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         formatter.timeStyle = .short
         formatter.dateStyle = .none
         
-        if let suntimes = solsticeCalculator.today {
-          let duration = suntimes.duration.toColloquialTimeString()
-          let difference = suntimes.difference(from: solsticeCalculator.yesterday ?? suntimes)
-          let differenceString = difference.toColloquialTimeString()
-          content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
-          content.body += "and sets at \(formatter.string(from: suntimes.ends)); "
-          content.body += "\(duration) of daylight today. "
-          content.body += "That’s \(differenceString) \(difference > 0 ? "more" : "less") than yesterday."
-        } else {
-          content.body = "Open Solstice to see the day’s daylight."
-        }
+        let suntimes = solsticeCalculator.today
+        let duration = suntimes.duration.toColloquialTimeString()
+        let difference = suntimes.difference(from: solsticeCalculator.yesterday)
+        let differenceString = difference.toColloquialTimeString()
+        content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
+        content.body += "and sets at \(formatter.string(from: suntimes.ends)); "
+        content.body += "\(duration) of daylight today. "
+        content.body += "That’s \(differenceString) \(difference > 0 ? "more" : "less") than yesterday."
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: Calendar.current.dateComponents([.hour, .minute], from: targetNotificationTime),

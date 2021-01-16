@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SolsticeOverview: View {
-  var calculator = SolarCalculator()
+  @ObservedObject var calculator = SolarCalculator.shared
   @ObservedObject var location = LocationManager.shared
   
   var body: some View {
@@ -27,8 +27,8 @@ struct SolsticeOverview: View {
       HStack {
         VStack(alignment: .leading) {
           Label("Sunrise", systemImage: "sunrise.fill")
-          if let begins = calculator.today?.begins,
-             let beginsYesterday = calculator.yesterday?.begins {
+          if let begins = calculator.today.begins,
+             let beginsYesterday = calculator.yesterday.begins {
             Text("\(begins, style: .time)")
             
             VStack(alignment: .leading) {
@@ -42,8 +42,8 @@ struct SolsticeOverview: View {
         
         VStack(alignment: .trailing) {
           Label("Sunset", systemImage: "sunset.fill")
-          if let ends = calculator.today?.ends,
-             let endsYesterday = calculator.yesterday?.ends {
+          if let ends = calculator.today.ends,
+             let endsYesterday = calculator.yesterday.ends {
             Text("\(ends, style: .time)")
             
             VStack(alignment: .trailing) {
