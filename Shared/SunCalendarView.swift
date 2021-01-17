@@ -24,9 +24,9 @@ struct SunCalendarView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       VStack(alignment: .leading) {
-        Text("Hours of daylight per month")
+        Text("Daily Daylight Per Month")
           .font(.subheadline)
-        Text("Based on the hours of daylight on the first day of each month this year")
+        Text("Based on the hours of daylight on the 15th day of each month this year")
           .fixedSize(horizontal: false, vertical: true)
           .font(.caption)
           .foregroundColor(.secondary)
@@ -68,7 +68,7 @@ struct SunCalendarView: View {
     let components = DateComponents(
       year: todayComponents.year,
       month: 1,
-      day: 1,
+      day: 15,
       hour: 0,
       minute: 0,
       second: 0
