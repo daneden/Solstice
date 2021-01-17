@@ -29,9 +29,7 @@ struct ContentView: View {
             selectedDate: $selectedDate,
             calculator: calculator
           )
-          
-          
-          
+
           SolsticeOverview(calculator: calculator)
             .padding()
         }
