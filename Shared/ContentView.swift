@@ -18,55 +18,63 @@ struct ContentView: View {
   @State var timeTravelVisible = false
   
   var body: some View {
-    TabView {
-      Group {
-        VStack {
-          Spacer()
-          
-          SolarTimeMachine(
-            timeTravelVisible: $timeTravelVisible,
-            dateOffset: $dateOffset,
-            selectedDate: $selectedDate,
-            calculator: calculator
-          )
+    ZStack {
+      TabView {
+        Group {
+          VStack {
+            Spacer()
+            SolarTimeMachine(
+              timeTravelVisible: $timeTravelVisible,
+              dateOffset: $dateOffset,
+              selectedDate: $selectedDate,
+              calculator: calculator
+            )
+            Spacer()
 
-          SolsticeOverview(calculator: calculator)
-            .padding()
-        }
-      }
-      .padding(.bottom)
-      .padding(.bottom)
-      
-      Group {
-        VStack {
-          SunCalendarView(solarCalculator: calculator)
-          
-          VStack(alignment: .leading, spacing: 8) {
-            Filler()
-            Text("The next solstice is \(nextSolsticeDistance).")
-              .fixedSize(horizontal: false, vertical: true)
-            
-            if let value = prevSolsticeDifference() {
-              Text("\(value)")
-                .fixedSize(horizontal: false, vertical: true)
-            }
+            SolsticeOverview(calculator: calculator)
+              .padding()
           }
-          .font(Font.system(.title, design: .rounded).bold())
         }
+        .padding(.bottom)
+        .padding(.bottom)
+        
+        Group {
+          VStack {
+            Spacer()
+            SunCalendarView(solarCalculator: calculator)
+            Spacer()
+            
+            VStack(alignment: .leading, spacing: 8) {
+              Filler()
+              Text("The next solstice is \(nextSolsticeDistance).")
+                .fixedSize(horizontal: false, vertical: true)
+              
+              if let value = prevSolsticeDifference() {
+                Text("\(value)")
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+            }
+            .font(Font.system(.title, design: .rounded).bold())
+          }
+        }
+        .padding()
+        .padding(.bottom)
+        .padding(.bottom)
       }
-      .padding()
-      .padding(.bottom)
-      .padding(.bottom)
+      .tabViewStyle(PageTabViewStyle())
+      .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+      
+      VStack {
+        HStack {
+          Spacer()
+          Button(action: { settingsVisible.toggle() }) {
+            Label("Settings", systemImage: "gearshape")
+          }.foregroundColor(.secondary)
+        }.padding()
+        Spacer()
+      }
     }
-    .tabViewStyle(PageTabViewStyle())
-    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-    .toolbar {
-      ToolbarItem {
-        Button(action: { settingsVisible.toggle() }) {
-          Label("Settings", systemImage: "gearshape")
-        }
-      }
-    }.sheet(isPresented: $settingsVisible) {
+    .sheet(isPresented: $settingsVisible) {
       SettingsView()
     }
     .onChange(of: dateOffset) { value in
@@ -98,71 +106,6 @@ struct ContentView: View {
   var nextSolsticeDistance: String {
     let formatter = RelativeDateTimeFormatter()
     return formatter.localizedString(for: calculator.nextSolstice, relativeTo: selectedDate)
-  }
-}
-
-struct SolarTimeMachine: View {
-  @Binding var timeTravelVisible: Bool
-  @Binding var dateOffset: Double
-  @Binding var selectedDate: Date
-  
-  var calculator: SolarCalculator
-  var body: some View {
-    VStack {
-      VStack {
-        VStack {
-          if timeTravelVisible {
-            Text("\(selectedDate, style: .date)")
-          }
-          if let duration = calculator.today.duration.colloquialTimeString {
-            Text("\(duration)")
-              .font(.footnote)
-              .foregroundColor(.secondary)
-          }
-        }
-        .foregroundColor(timeTravelVisible ? .primary : .secondary)
-        .padding(6)
-        .padding(.horizontal, 6)
-        .background(VisualEffectView.SystemMaterial())
-        .cornerRadius(8)
-        .onTapGesture {
-          withAnimation(stiffSpringAnimation) {
-            if timeTravelVisible {
-              if self.dateOffset != 0 {
-                self.dateOffset = 0
-              } else {
-                timeTravelVisible = false
-              }
-            } else {
-              timeTravelVisible = true
-            }
-          }
-        }
-        
-        if timeTravelVisible {
-          TimeMachineView(value: $dateOffset, range: (-182.0, 182.0)) { modifiers in
-            ZStack {
-              Group {
-                VisualEffectView.SystemMaterial()
-                  .modifier(modifiers.barRight)
-                
-                VisualEffectView.SystemMaterial()
-                  .modifier(modifiers.barLeft)
-              }.cornerRadius(24)
-              
-              VStack(spacing: 0) {
-                Image(systemName: "arrowtriangle.down.fill").imageScale(.small)
-                  .padding(.vertical, -2)
-                Rectangle().frame(width: 2)
-              }.foregroundColor(.accentColor)
-              .modifier(modifiers.knob)
-            }
-          }.frame(height: 16).padding()
-        }
-        
-        SundialView(calculator: calculator)
-      }
-    }
   }
 }
 

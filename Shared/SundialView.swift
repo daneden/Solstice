@@ -10,8 +10,9 @@ import SwiftUI
 struct SundialView: View {
   @ObservedObject var calculator: SolarCalculator
   
-  public init(calculator: SolarCalculator) {
+  public init(calculator: SolarCalculator, waveSize: CGFloat = 80.0) {
     self.calculator = calculator
+    self.waveSize = waveSize
   }
   
   private let dayBegins = Date().startOfDay
@@ -28,7 +29,7 @@ struct SundialView: View {
     return CGFloat(daylightLength / dayLength)
   }
   
-  private var waveSize: CGFloat = 80.0
+  var waveSize: CGFloat = 80.0
   
   private var currentPosition: CGFloat {
     let dayLength = 86400.0
@@ -73,11 +74,7 @@ struct SundialView: View {
           )
           .offset(y: (offset * waveSize) + scrimCompensation / 2)
       }
-      .padding(.vertical)
-      .padding(.vertical)
       .clipShape(Rectangle())
-      .frame(height: waveSize * 2.5)
-      .fixedSize(horizontal: false, vertical: true)
       .overlay(SundialInnerShadowOverlay())
       .animation(sundialAnimation)
       .onAppear {

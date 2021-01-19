@@ -14,7 +14,7 @@ struct SolsticeApp: App {
   
   var body: some Scene {
     WindowGroup {
-      NavigationView {
+      Group {
         if locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse {
           ContentView()
             .environmentObject(locationManager)

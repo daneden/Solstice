@@ -20,6 +20,7 @@ struct SettingsView: View {
   var notifTime: TimeInterval = UDValues.notificationTime.value
   
   // Notification fragment settings
+  // TODO: Create an extension of AppStorage to help make this more manageable
   @AppStorage(UDValues.notificationsIncludeSunTimes.key, store: solsticeUDStore)
   var notifsIncludeSunTimes: Bool = UDValues.notificationsIncludeSunTimes.value
   
@@ -77,6 +78,11 @@ struct SettingsView: View {
             Toggle(NotificationFragments.timeUntilNextSolstice.rawValue, isOn: $notifsIncludeSolsticeCountdown)
               .toggleStyle(SwitchToggleStyle(tint: .accentColor))
               .disabled(!notifsEnabled)
+            
+            VStack(alignment: .leading) {
+              Text("Notification Preview").font(.caption).foregroundColor(.secondary)
+              NotificationPreview()
+            }.padding(.vertical, 8)
             
           }.onChange(of: [notifsIncludeDaylightChange, notifsIncludeSolsticeCountdown, notifsIncludeSunTimes, notifsIncludeDaylightDuration]) { _ in
             self.notificationManager.adjustSchedule()

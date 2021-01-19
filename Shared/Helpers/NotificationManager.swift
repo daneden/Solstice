@@ -96,51 +96,16 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           of: targetDate
         )!
         
-        let solsticeCalculator = SolarCalculator(baseDate: targetDate)
         let content = UNMutableNotificationContent()
-        
-        if let hour = components.hour, hour >= 18 || hour < 3 {
-          content.title = "Good Evening"
-        } else if let hour = components.hour, hour >= 3 && hour < 12 {
-          content.title = "Good Morning"
-        } else if let hour = components.hour, hour >= 12 && hour < 18 {
-          content.title = "Good Afternoon"
-        } else {
-          content.title = "Today’s Daylight"
-        }
-        
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-        
-        let suntimes = solsticeCalculator.today
-        let duration = suntimes.duration.colloquialTimeString
-        let difference = suntimes.difference(from: solsticeCalculator.yesterday)
-        let differenceString = difference.colloquialTimeString
-        
-        if self.notifsIncludeSunTimes {
-          content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
-          content.body += "and sets at \(formatter.string(from: suntimes.ends)). "
-        }
-        
-        if self.notifsIncludeDaylightDuration {
-          content.body += "\(duration) of daylight today. "
-        }
-        
-        if self.notifsIncludeDaylightChange {
-          content.body += "That’s \(differenceString) \(difference >= 0 ? "more" : "less") than yesterday. "
-        }
-        
-        if self.notifsIncludeSolsticeCountdown {
-          let formatter = RelativeDateTimeFormatter()
-          let string = formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
-          content.body += "The next solstice is in \(string). "
-        }
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: Calendar.current.dateComponents([.hour, .minute], from: targetNotificationTime),
           repeats: false
         )
+        
+        let notifContent = self.buildNotificationContent()
+        content.title = notifContent.title
+        content.body = notifContent.body
         
         let request = UNNotificationRequest(
           identifier: UUID().uuidString,
@@ -162,4 +127,58 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       }
     }
   }
+  
+  func buildNotificationContent() -> NotificationContent {
+    var content = (title: "", body: "")
+    let now = Date()
+    let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
+    let targetDate = Calendar.current.date(byAdding: .day, value: 1, to: now)!
+    
+    let solsticeCalculator = SolarCalculator(baseDate: targetDate)
+    let suntimes = solsticeCalculator.today
+    let duration = suntimes.duration.colloquialTimeString
+    let difference = suntimes.difference(from: solsticeCalculator.yesterday)
+    let differenceString = difference.colloquialTimeString
+    
+    if let hour = components.hour, hour >= 18 || hour < 3 {
+      content.title = "Good Evening"
+    } else if let hour = components.hour, hour >= 3 && hour < 12 {
+      content.title = "Good Morning"
+    } else if let hour = components.hour, hour >= 12 && hour < 18 {
+      content.title = "Good Afternoon"
+    } else {
+      content.title = "Today’s Daylight"
+    }
+    
+    let formatter = DateFormatter()
+    formatter.timeStyle = .short
+    formatter.dateStyle = .none
+    
+    if self.notifsIncludeSunTimes {
+      content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
+      content.body += "and sets at \(formatter.string(from: suntimes.ends)). "
+    }
+    
+    if self.notifsIncludeDaylightDuration {
+      content.body += "\(duration) of daylight today. "
+    }
+    
+    if self.notifsIncludeDaylightChange {
+      content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
+    }
+    
+    if self.notifsIncludeSolsticeCountdown {
+      let formatter = RelativeDateTimeFormatter()
+      let string = formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
+      content.body += "The next solstice is in \(string). "
+    }
+    
+    if !self.notifsIncludeDaylightChange && !self.notifsIncludeDaylightDuration && !self.notifsIncludeSolsticeCountdown && !self.notifsIncludeSunTimes {
+      content.body += "Open Solstice to see how today’s daylight has changed."
+    }
+    
+    return content
+  }
 }
+
+typealias NotificationContent = (title: String, body: String)
