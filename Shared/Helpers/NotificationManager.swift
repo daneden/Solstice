@@ -14,6 +14,19 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   @AppStorage(UDValues.notificationTime.key, store: solsticeUDStore)
   var notifTime: TimeInterval = UDValues.notificationTime.value
   
+  // Notification fragment settings
+  @AppStorage(UDValues.notificationsIncludeSunTimes.key, store: solsticeUDStore)
+  var notifsIncludeSunTimes: Bool = UDValues.notificationsIncludeSunTimes.value
+  
+  @AppStorage(UDValues.notificationsIncludeDaylightDuration.key, store: solsticeUDStore)
+  var notifsIncludeDaylightDuration: Bool = UDValues.notificationsIncludeDaylightDuration.value
+  
+  @AppStorage(UDValues.notificationsIncludeDaylightChange.key, store: solsticeUDStore)
+  var notifsIncludeDaylightChange: Bool = UDValues.notificationsIncludeDaylightChange.value
+  
+  @AppStorage(UDValues.notificationsIncludeSolsticeCountdown.key, store: solsticeUDStore)
+  var notifsIncludeSolsticeCountdown: Bool = UDValues.notificationsIncludeSolsticeCountdown.value
+  
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
     
@@ -32,8 +45,8 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   /**
    Requests notification permissions and enables notifications, or removes pending notifications when toggled off.
    - Parameters:
-      - on: Whether notifications should be enabled (true) or disabled (false)
-      - bindingTo: Optional binding to reflect the notification permission state. If authorization fails, the binding is updated to `false`.
+   - on: Whether notifications should be enabled (true) or disabled (false)
+   - bindingTo: Optional binding to reflect the notification permission state. If authorization fails, the binding is updated to `false`.
    */
   func toggleNotifications(on enabled: Bool, bindingTo: Binding<Bool>? = nil) {
     if enabled {
@@ -104,10 +117,26 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         let duration = suntimes.duration.colloquialTimeString
         let difference = suntimes.difference(from: solsticeCalculator.yesterday)
         let differenceString = difference.colloquialTimeString
-        content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
-        content.body += "and sets at \(formatter.string(from: suntimes.ends)); "
-        content.body += "\(duration) of daylight today. "
-        content.body += "That’s \(differenceString) \(difference > 0 ? "more" : "less") than yesterday."
+        
+        if self.notifsIncludeSunTimes {
+          content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
+          content.body += "and sets at \(formatter.string(from: suntimes.ends)). "
+        }
+        
+        if self.notifsIncludeDaylightDuration {
+          content.body += "\(duration) of daylight today. "
+        }
+        
+        if self.notifsIncludeDaylightChange {
+          content.body += "That’s \(differenceString) \(difference >= 0 ? "more" : "less") than yesterday."
+        }
+        
+        if self.notifsIncludeSolsticeCountdown {
+          let formatter = RelativeDateTimeFormatter()
+          content.body += formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
+        }
+        
+        
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: Calendar.current.dateComponents([.hour, .minute], from: targetNotificationTime),

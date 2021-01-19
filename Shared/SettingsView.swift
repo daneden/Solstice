@@ -10,15 +10,30 @@ import UserNotifications
 
 struct SettingsView: View {
   @Environment(\.presentationMode) var presentationMode
+  @ObservedObject var notificationManager = NotificationManager.shared
   
+  // General notification settings
   @AppStorage(UDValues.notificationsEnabled.key, store: solsticeUDStore)
   var notifsEnabled = UDValues.notificationsEnabled.value
   
   @AppStorage(UDValues.notificationTime.key, store: solsticeUDStore)
   var notifTime: TimeInterval = UDValues.notificationTime.value
   
+  // Notification fragment settings
+  @AppStorage(UDValues.notificationsIncludeSunTimes.key, store: solsticeUDStore)
+  var notifsIncludeSunTimes: Bool = UDValues.notificationsIncludeSunTimes.value
+  
+  @AppStorage(UDValues.notificationsIncludeDaylightDuration.key, store: solsticeUDStore)
+  var notifsIncludeDaylightDuration: Bool = UDValues.notificationsIncludeDaylightDuration.value
+  
+  @AppStorage(UDValues.notificationsIncludeSolsticeCountdown.key, store: solsticeUDStore)
+  var notifsIncludeSolsticeCountdown: Bool = UDValues.notificationsIncludeSolsticeCountdown.value
+  
+  @AppStorage(UDValues.notificationsIncludeDaylightChange.key, store: solsticeUDStore)
+  var notifsIncludeDaylightChange: Bool = UDValues.notificationsIncludeDaylightChange.value
+  
+  // Local state manager for notification times
   @State var chosenNotifTime: Date = defaultNotificationDate
-  @ObservedObject var notificationManager = NotificationManager.shared
   
   init() {
     chosenNotifTime = Date(timeIntervalSince1970: notifTime)
@@ -35,6 +50,7 @@ struct SettingsView: View {
             Text("Enable Daily Notifications")
           }.toggleStyle(SwitchToggleStyle(tint: .accentColor))
           
+          
           DatePicker(
             "Notification Time",
             selection: $chosenNotifTime,
@@ -43,6 +59,13 @@ struct SettingsView: View {
             notifTime = chosenNotifTime.timeIntervalSince1970
             notificationManager.adjustSchedule()
           }.disabled(!notifsEnabled)
+          
+          DisclosureGroup("Notification Content") {
+            Toggle(NotificationFragments.sunriseAndSunsetTimes.rawValue, isOn: $notifsIncludeSunTimes)
+            Toggle(NotificationFragments.daylightDuration.rawValue, isOn: $notifsIncludeDaylightDuration)
+            Toggle(NotificationFragments.daylightChange.rawValue, isOn: $notifsIncludeDaylightChange)
+            Toggle(NotificationFragments.timeUntilNextSolstice.rawValue, isOn: $notifsIncludeSolsticeCountdown)
+          }
             
         }
       }
