@@ -61,10 +61,25 @@ struct SettingsView: View {
           }.disabled(!notifsEnabled)
           
           DisclosureGroup("Notification Content") {
+            // TODO: Make this code dry-er
             Toggle(NotificationFragments.sunriseAndSunsetTimes.rawValue, isOn: $notifsIncludeSunTimes)
+              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+              .disabled(!notifsEnabled)
+            
             Toggle(NotificationFragments.daylightDuration.rawValue, isOn: $notifsIncludeDaylightDuration)
+              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+              .disabled(!notifsEnabled)
+            
             Toggle(NotificationFragments.daylightChange.rawValue, isOn: $notifsIncludeDaylightChange)
+              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+              .disabled(!notifsEnabled)
+            
             Toggle(NotificationFragments.timeUntilNextSolstice.rawValue, isOn: $notifsIncludeSolsticeCountdown)
+              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+              .disabled(!notifsEnabled)
+            
+          }.onChange(of: [notifsIncludeDaylightChange, notifsIncludeSolsticeCountdown, notifsIncludeSunTimes, notifsIncludeDaylightDuration]) { _ in
+            self.notificationManager.adjustSchedule()
           }
             
         }

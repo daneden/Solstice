@@ -128,15 +128,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
         
         if self.notifsIncludeDaylightChange {
-          content.body += "That’s \(differenceString) \(difference >= 0 ? "more" : "less") than yesterday."
+          content.body += "That’s \(differenceString) \(difference >= 0 ? "more" : "less") than yesterday. "
         }
         
         if self.notifsIncludeSolsticeCountdown {
           let formatter = RelativeDateTimeFormatter()
-          content.body += formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
+          let string = formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
+          content.body += "The next solstice is in \(string). "
         }
-        
-        
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: Calendar.current.dateComponents([.hour, .minute], from: targetNotificationTime),
