@@ -170,7 +170,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     if self.notifsIncludeSolsticeCountdown {
       let formatter = RelativeDateTimeFormatter()
       let string = formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
-      content.body += "The next solstice is in \(string). "
+      content.body += "The next solstice is \(string). "
     }
     
     if !self.notifsIncludeDaylightChange && !self.notifsIncludeDaylightDuration && !self.notifsIncludeSolsticeCountdown && !self.notifsIncludeSunTimes {
