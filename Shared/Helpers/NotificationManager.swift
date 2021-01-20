@@ -11,21 +11,14 @@ import SwiftUI
 import BackgroundTasks
 
 class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
-  @AppStorage(UDValues.notificationTime.key, store: solsticeUDStore)
-  var notifTime: TimeInterval = UDValues.notificationTime.value
+  // General notification settings
+  @AppStorage(UDValues.notificationTime) var notifTime
   
   // Notification fragment settings
-  @AppStorage(UDValues.notificationsIncludeSunTimes.key, store: solsticeUDStore)
-  var notifsIncludeSunTimes: Bool = UDValues.notificationsIncludeSunTimes.value
-  
-  @AppStorage(UDValues.notificationsIncludeDaylightDuration.key, store: solsticeUDStore)
-  var notifsIncludeDaylightDuration: Bool = UDValues.notificationsIncludeDaylightDuration.value
-  
-  @AppStorage(UDValues.notificationsIncludeDaylightChange.key, store: solsticeUDStore)
-  var notifsIncludeDaylightChange: Bool = UDValues.notificationsIncludeDaylightChange.value
-  
-  @AppStorage(UDValues.notificationsIncludeSolsticeCountdown.key, store: solsticeUDStore)
-  var notifsIncludeSolsticeCountdown: Bool = UDValues.notificationsIncludeSolsticeCountdown.value
+  @AppStorage(UDValues.notificationsIncludeSunTimes) var notifsIncludeSunTimes
+  @AppStorage(UDValues.notificationsIncludeDaylightDuration) var notifsIncludeDaylightDuration
+  @AppStorage(UDValues.notificationsIncludeSolsticeCountdown) var notifsIncludeSolsticeCountdown
+  @AppStorage(UDValues.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
   
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")

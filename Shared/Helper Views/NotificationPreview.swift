@@ -23,7 +23,8 @@ struct NotificationPreview: View {
         Text(title).font(Font.footnote.bold())
         Text(bodyContent).font(Font.footnote.leading(.tight))
       }
-      .padding(8)
+      .padding(.vertical, 8)
+      .padding(.horizontal, 12)
       .background(VisualEffectView.SystemMaterial())
       .cornerRadius(12)
     }

@@ -8,13 +8,6 @@
 import Foundation
 import SwiftUI
 
-enum NotificationFragments: String, CaseIterable {
-  case sunriseAndSunsetTimes = "Sunrise and sunset times"
-  case daylightDuration = "Daylight duration"
-  case daylightChange = "Daylight gain/loss"
-  case timeUntilNextSolstice = "Time until the next solstice"
-}
-
 typealias UDValuePair<T> = (key: String, value: T)
 
 let defaultNotificationDate = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!

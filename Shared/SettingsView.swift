@@ -8,44 +8,46 @@
 import SwiftUI
 import UserNotifications
 
+typealias NotificationFragment = (label: String, value: Binding<Bool>)
+
 struct SettingsView: View {
   @Environment(\.presentationMode) var presentationMode
   @ObservedObject var notificationManager = NotificationManager.shared
   
   // General notification settings
-  @AppStorage(UDValues.notificationsEnabled.key, store: solsticeUDStore)
-  var notifsEnabled = UDValues.notificationsEnabled.value
-  
-  @AppStorage(UDValues.notificationTime.key, store: solsticeUDStore)
-  var notifTime: TimeInterval = UDValues.notificationTime.value
+  @AppStorage(UDValues.notificationsEnabled) var notifsEnabled
+  @AppStorage(UDValues.notificationTime) var notifTime
   
   // Notification fragment settings
-  // TODO: Create an extension of AppStorage to help make this more manageable
-  @AppStorage(UDValues.notificationsIncludeSunTimes.key, store: solsticeUDStore)
-  var notifsIncludeSunTimes: Bool = UDValues.notificationsIncludeSunTimes.value
-  
-  @AppStorage(UDValues.notificationsIncludeDaylightDuration.key, store: solsticeUDStore)
-  var notifsIncludeDaylightDuration: Bool = UDValues.notificationsIncludeDaylightDuration.value
-  
-  @AppStorage(UDValues.notificationsIncludeSolsticeCountdown.key, store: solsticeUDStore)
-  var notifsIncludeSolsticeCountdown: Bool = UDValues.notificationsIncludeSolsticeCountdown.value
-  
-  @AppStorage(UDValues.notificationsIncludeDaylightChange.key, store: solsticeUDStore)
-  var notifsIncludeDaylightChange: Bool = UDValues.notificationsIncludeDaylightChange.value
+  @AppStorage(UDValues.notificationsIncludeSunTimes) var notifsIncludeSunTimes
+  @AppStorage(UDValues.notificationsIncludeDaylightDuration) var notifsIncludeDaylightDuration
+  @AppStorage(UDValues.notificationsIncludeSolsticeCountdown) var notifsIncludeSolsticeCountdown
+  @AppStorage(UDValues.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
   
   // Local state manager for notification times
   @State var chosenNotifTime: Date = defaultNotificationDate
   
+  // Disclosure group visibility toggle
+  @State var fragmentSettingsVisible = false
+  
   init() {
     chosenNotifTime = Date(timeIntervalSince1970: notifTime)
+  }
+  
+  var notificationFragments: [NotificationFragment] {
+    [
+      (label: "Sunrise/sunset times", value: $notifsIncludeSunTimes),
+      (label: "Daylight duration", value: $notifsIncludeDaylightDuration),
+      (label: "Daylight gain/loss", value: $notifsIncludeDaylightChange),
+      (label: "Time until next solstice", value: $notifsIncludeSolsticeCountdown),
+    ]
   }
   
   var body: some View {
     NavigationView {
       Form {
         Section(
-          header: Text("Notifications"),
-          footer: Text("Allow Solstice to show daily notifications with the day’s daylight gain/loss.")
+          header: Text("Notifications")
         ) {
           Toggle(isOn: $notifsEnabled) {
             Text("Enable Daily Notifications")
@@ -61,33 +63,32 @@ struct SettingsView: View {
             notificationManager.adjustSchedule()
           }.disabled(!notifsEnabled)
           
-          DisclosureGroup("Notification Content") {
-            // TODO: Make this code dry-er
-            Toggle(NotificationFragments.sunriseAndSunsetTimes.rawValue, isOn: $notifsIncludeSunTimes)
-              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-              .disabled(!notifsEnabled)
-            
-            Toggle(NotificationFragments.daylightDuration.rawValue, isOn: $notifsIncludeDaylightDuration)
-              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-              .disabled(!notifsEnabled)
-            
-            Toggle(NotificationFragments.daylightChange.rawValue, isOn: $notifsIncludeDaylightChange)
-              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-              .disabled(!notifsEnabled)
-            
-            Toggle(NotificationFragments.timeUntilNextSolstice.rawValue, isOn: $notifsIncludeSolsticeCountdown)
-              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-              .disabled(!notifsEnabled)
-            
-            VStack(alignment: .leading) {
-              Text("Notification Preview").font(.caption).foregroundColor(.secondary)
-              NotificationPreview()
-            }.padding(.vertical, 8)
-            
-          }.onChange(of: [notifsIncludeDaylightChange, notifsIncludeSolsticeCountdown, notifsIncludeSunTimes, notifsIncludeDaylightDuration]) { _ in
-            self.notificationManager.adjustSchedule()
-          }
-            
+          DisclosureGroup(
+            isExpanded: $fragmentSettingsVisible,
+            content: {
+              ForEach(notificationFragments, id: \.label) { fragment in
+                Toggle(fragment.label, isOn: fragment.value)
+                  .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                  .disabled(!notifsEnabled)
+              }
+              
+              VStack(alignment: .leading) {
+                Text("Notification Preview")
+                  .font(.caption)
+                  .foregroundColor(.secondary)
+                NotificationPreview()
+              }.padding(.vertical, 8)
+            }, label: {
+              Button(action: { withAnimation { self.fragmentSettingsVisible.toggle() } }) {
+                HStack {
+                  Text("Customise Notification Content").foregroundColor(.primary)
+                  Spacer()
+                }.contentShape(Rectangle())
+              }
+            })
+          
+        }.onChange(of: [notifsIncludeDaylightChange, notifsIncludeSolsticeCountdown, notifsIncludeSunTimes, notifsIncludeDaylightDuration]) { _ in
+          self.notificationManager.adjustSchedule()
         }
       }
       .navigationTitle(Text("Settings"))
@@ -98,14 +99,14 @@ struct SettingsView: View {
           }
         }
       }
-      .onAppear {
-        chosenNotifTime = Date(timeIntervalSince1970: notifTime)
-      }
-      .onChange(of: notifsEnabled) { value in
-        /** To prevent duplicated calls, we'll only call this method when the toggle is on */
-        if value {
-          notificationManager.toggleNotifications(on: value, bindingTo: $notifsEnabled)
-        }
+    }
+    .onAppear {
+      chosenNotifTime = Date(timeIntervalSince1970: notifTime)
+    }
+    .onChange(of: notifsEnabled) { value in
+      /** To prevent duplicated calls, we'll only call this method when the toggle is on */
+      if value {
+        notificationManager.toggleNotifications(on: value, bindingTo: $notifsEnabled)
       }
     }
   }
