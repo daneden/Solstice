@@ -16,8 +16,6 @@ struct NotificationPreview: View {
     let content = notificationManager.buildNotificationContent()
     title = content.title
     bodyContent = content.body
-    print(title)
-    print(bodyContent)
   }
   
     var body: some View {

@@ -103,6 +103,8 @@ struct SundialWave: View {
 
 
 struct SundialSun: View {
+  @Environment(\.widgetFamily) var family
+  
   @State var circleSize: CGFloat = 22.0
   var sunColor = Color.primary
   var frameWidth: CGFloat
@@ -114,6 +116,10 @@ struct SundialSun: View {
     position + phase
   }
   
+  var isWidget: Bool {
+    family == .systemLarge || family == .systemSmall || family == .systemMedium
+  }
+  
   var body: some View {
     let waveLength = frameWidth / (.pi * 2)
     let relativeX = (position * frameWidth) / max(waveLength, 1.0)
@@ -123,7 +129,7 @@ struct SundialSun: View {
     Circle()
       .frame(width: circleSize)
       .foregroundColor(sunColor)
-      .shadow(color: sunColor.opacity(0.6), radius: 10, x: 0.0, y: 0.0)
+      .shadow(color: sunColor.opacity(isWidget ? 0.4 : 0.6), radius: isWidget ? 5 : 10, x: 0.0, y: 0.0)
       .offset(
         x: (frameWidth * fmod(position, 1)) - (frameWidth / 2),
         y: y

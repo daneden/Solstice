@@ -53,7 +53,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       notificationCenter.requestAuthorization(options: [.alert]) { success, error in
         if success {
           print("Enabled notifications")
-          self.scheduleNotification()
+          self.adjustSchedule()
           
           DispatchQueue.main.async {
             if let binding = bindingTo {
@@ -76,8 +76,8 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   }
   
   func adjustSchedule() {
-    notificationCenter.removeAllPendingNotificationRequests()
-    scheduleNotification()
+    self.notificationCenter.removeAllPendingNotificationRequests()
+    self.scheduleNotification()
   }
   
   /**
@@ -120,6 +120,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
       } else {
         print("Found \(requests.count) pending notification requests; exiting")
+        print(requests)
         
         if let task = task {
           task.setTaskCompleted(success: false)

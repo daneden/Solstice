@@ -12,6 +12,8 @@ struct SolarTimeMachine: View {
   @Binding var dateOffset: Double
   @Binding var selectedDate: Date
   
+  var waveSize = UIScreen.screenHeight * 0.1
+  
   var calculator: SolarCalculator
   var body: some View {
     VStack {
@@ -45,7 +47,7 @@ struct SolarTimeMachine: View {
       }
       
       if timeTravelVisible {
-        TimeMachineView(value: $dateOffset, range: (-182.0, 182.0)) { modifiers in
+        CustomSlider(value: $dateOffset, range: (-182.0, 182.0)) { modifiers in
           ZStack {
             Group {
               VisualEffectView.SystemMaterial()
@@ -67,9 +69,9 @@ struct SolarTimeMachine: View {
       
       SundialView(
         calculator: calculator,
-        waveSize: 80.0
+        waveSize: waveSize
       )
-        .frame(height: 200)
+      .frame(height: waveSize * 2.5)
     }
   }
 }

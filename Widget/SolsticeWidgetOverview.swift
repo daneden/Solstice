@@ -35,14 +35,14 @@ struct SolsticeWidgetOverview: View {
       }
       
       Spacer()
-      
-      Text("\(calculator.differenceString) than yesterday.")
-        .lineLimit(4)
-        .font(.caption)
-        .foregroundColor(.secondary)
-        .fixedSize(horizontal: false, vertical: true)
         
       if family != .systemSmall {
+        Text("\(calculator.differenceString) than yesterday.")
+          .lineLimit(4)
+          .font(.caption)
+          .foregroundColor(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+        
         Spacer()
         
         HStack {
@@ -56,6 +56,18 @@ struct SolsticeWidgetOverview: View {
             Label("\(ends, style: .time)", systemImage: "sunset.fill")
           }
         }.font(.caption)
+      } else {
+        Spacer()
+        
+        VStack(alignment: .leading) {
+          if let begins = calculator.today.begins {
+            Label("\(begins, style: .time)", systemImage: "sunrise.fill")
+          }
+          
+          if let ends = calculator.today.ends {
+            Label("\(ends, style: .time)", systemImage: "sunset.fill")
+          }
+        }.font(.caption).foregroundColor(.secondary)
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

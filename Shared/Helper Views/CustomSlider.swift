@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeMachineView<Component: View>: View {
+struct CustomSlider<Component: View>: View {
   @Binding var value: Double
   var range: (Double, Double)
   var knobWidth: CGFloat?

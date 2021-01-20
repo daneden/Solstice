@@ -68,8 +68,14 @@ struct ContentView: View {
         HStack {
           Spacer()
           Button(action: { settingsVisible.toggle() }) {
-            Label("Settings", systemImage: "gearshape")
-          }.foregroundColor(.secondary)
+            Label("Settings", systemImage: "gear")
+              .labelStyle(IconOnlyLabelStyle())
+          }
+          .foregroundColor(.secondary)
+          .padding(6)
+          .background(VisualEffectView.SystemMaterial())
+          .cornerRadius(8)
+          
         }.padding()
         Spacer()
       }
