@@ -21,6 +21,12 @@ struct VisualEffectView: UIViewRepresentable {
     }
   }
   
+  struct SystemThinMaterial: View {
+    var body: some View {
+      VisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+    }
+  }
+  
   struct SystemInvertedRuleMaterial: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {

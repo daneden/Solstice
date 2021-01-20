@@ -17,8 +17,10 @@ struct ContentView: View {
   @State var settingsVisible = false
   @State var timeTravelVisible = false
   
+  let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+  
   var body: some View {
-    ZStack {
+    ZStack(alignment: .top) {
       TabView {
         Group {
           VStack {
@@ -55,6 +57,8 @@ struct ContentView: View {
               }
             }
             .font(Font.system(.title, design: .rounded).bold())
+            
+            Spacer()
           }
         }
         .padding()
@@ -64,21 +68,20 @@ struct ContentView: View {
       .tabViewStyle(PageTabViewStyle())
       .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
       
-      VStack {
-        HStack {
-          Spacer()
-          Button(action: { settingsVisible.toggle() }) {
-            Label("Settings", systemImage: "gear")
-              .labelStyle(IconOnlyLabelStyle())
-          }
-          .foregroundColor(.secondary)
-          .padding(6)
-          .background(VisualEffectView.SystemMaterial())
-          .cornerRadius(8)
-          
-        }.padding()
+      
+      HStack {
         Spacer()
-      }
+        Button(action: { settingsVisible.toggle() }) {
+          Label("Settings", systemImage: "gear")
+            .labelStyle(IconOnlyLabelStyle())
+            .contentShape(Rectangle())
+            .foregroundColor(.secondary)
+            .padding(6)
+            .background(VisualEffectView.SystemThinMaterial())
+            .cornerRadius(8)
+            .padding(12)
+        }
+      }.padding().padding(-12)
     }
     .sheet(isPresented: $settingsVisible) {
       SettingsView()
@@ -89,7 +92,7 @@ struct ContentView: View {
         self.calculator.baseDate = self.selectedDate
       }
     }
-    .onAppear {
+    .onReceive(timer) { _ in
       if dateOffset == 0 {
         self.selectedDate = Date()
       }
@@ -104,8 +107,7 @@ struct ContentView: View {
     let differenceString = difference.colloquialTimeString
     let differenceComparator = difference >= 0 ? "more" : "less"
     let sentence = String(format: "%@ %@ daylight today than at the previous solstice.", differenceString, differenceComparator)
-//    let sentence = "\(differenceString) \(differenceComparator) daylight today than at the previous solstice."
-    
+
     return sentence
   }
   

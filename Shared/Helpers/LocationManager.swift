@@ -69,6 +69,8 @@ class LocationManager: NSObject, ObservableObject {
       } else {
         self.placemark = nil
       }
+      
+      self.objectWillChange.send()
     })
   }
 }
