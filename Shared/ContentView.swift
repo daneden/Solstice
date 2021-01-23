@@ -17,8 +17,6 @@ struct ContentView: View {
   @State var settingsVisible = false
   @State var timeTravelVisible = false
   
-  let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
-  
   var body: some View {
     ZStack(alignment: .top) {
       TabView {
@@ -92,9 +90,9 @@ struct ContentView: View {
         self.calculator.baseDate = self.selectedDate
       }
     }
-    .onReceive(timer) { _ in
+    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
       if dateOffset == 0 {
-        self.selectedDate = Date()
+        selectedDate = Date()
       }
     }
   }
