@@ -17,7 +17,7 @@ struct ContentView: View {
   @State var settingsVisible = false
   @State var timeTravelVisible = false
   
-  let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+  let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
   
   var body: some View {
     ZStack(alignment: .top) {
