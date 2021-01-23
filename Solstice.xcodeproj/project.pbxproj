@@ -17,8 +17,6 @@
 		711DFB4D25AE1B2D0004AC46 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */; };
 		712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712F90FA25AF439400CC8D7E /* SunCalendarView.swift */; };
 		7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
-		7190092125A4D6D5002ED383 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190092025A4D6D5002ED383 /* Tests_iOS.swift */; };
-		7190092C25A4D6D5002ED383 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190092B25A4D6D5002ED383 /* Tests_macOS.swift */; };
 		7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090525A4D6D2002ED383 /* SolsticeApp.swift */; };
 		7190093025A4D6D5002ED383 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090625A4D6D2002ED383 /* ContentView.swift */; };
 		7190093225A4D6D5002ED383 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7190090725A4D6D5002ED383 /* Assets.xcassets */; };
@@ -61,13 +59,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7190091D25A4D6D5002ED383 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7190090025A4D6D2002ED383 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7190090B25A4D6D5002ED383;
-			remoteInfo = "Solstice (iOS)";
-		};
 		71C8843B25A90A2D0009F2A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7190090025A4D6D2002ED383 /* Project object */;
@@ -106,12 +97,6 @@
 		7190090725A4D6D5002ED383 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7190090C25A4D6D5002ED383 /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7190090F25A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7190091C25A4D6D5002ED383 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7190092025A4D6D5002ED383 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
-		7190092225A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7190092725A4D6D5002ED383 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7190092B25A4D6D5002ED383 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
-		7190092D25A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7190094625A4D98C002ED383 /* Solar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solar.swift; sourceTree = "<group>"; };
 		7190094D25A4D9C2002ED383 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		719A3FB925AF9ECA003BE97D /* Filler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filler.swift; sourceTree = "<group>"; };
@@ -148,20 +133,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7190091925A4D6D5002ED383 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7190092425A4D6D5002ED383 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		71C8842C25A90A2D0009F2A1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,8 +152,6 @@
 				71CDF93725AA395500C93BCD /* Solstice.entitlements */,
 				7190090425A4D6D2002ED383 /* Shared */,
 				7190090E25A4D6D5002ED383 /* iOS */,
-				7190091F25A4D6D5002ED383 /* Tests iOS */,
-				7190092A25A4D6D5002ED383 /* Tests macOS */,
 				71C8843525A90A2D0009F2A1 /* Widget */,
 				71C8843025A90A2D0009F2A1 /* Frameworks */,
 				7190090D25A4D6D5002ED383 /* Products */,
@@ -215,8 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				7190090C25A4D6D5002ED383 /* Solstice.app */,
-				7190091C25A4D6D5002ED383 /* Tests iOS.xctest */,
-				7190092725A4D6D5002ED383 /* Tests macOS.xctest */,
 				71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */,
 			);
 			name = Products;
@@ -229,24 +196,6 @@
 				71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */,
 			);
 			path = iOS;
-			sourceTree = "<group>";
-		};
-		7190091F25A4D6D5002ED383 /* Tests iOS */ = {
-			isa = PBXGroup;
-			children = (
-				7190092025A4D6D5002ED383 /* Tests_iOS.swift */,
-				7190092225A4D6D5002ED383 /* Info.plist */,
-			);
-			path = "Tests iOS";
-			sourceTree = "<group>";
-		};
-		7190092A25A4D6D5002ED383 /* Tests macOS */ = {
-			isa = PBXGroup;
-			children = (
-				7190092B25A4D6D5002ED383 /* Tests_macOS.swift */,
-				7190092D25A4D6D5002ED383 /* Info.plist */,
-			);
-			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
 		71C883FF25A7AF9F0009F2A1 /* Extensions */ = {
@@ -330,41 +279,6 @@
 			productReference = 7190090C25A4D6D5002ED383 /* Solstice.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7190091B25A4D6D5002ED383 /* Tests iOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7190093C25A4D6D5002ED383 /* Build configuration list for PBXNativeTarget "Tests iOS" */;
-			buildPhases = (
-				7190091825A4D6D5002ED383 /* Sources */,
-				7190091925A4D6D5002ED383 /* Frameworks */,
-				7190091A25A4D6D5002ED383 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				7190091E25A4D6D5002ED383 /* PBXTargetDependency */,
-			);
-			name = "Tests iOS";
-			productName = "Tests iOS";
-			productReference = 7190091C25A4D6D5002ED383 /* Tests iOS.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		7190092625A4D6D5002ED383 /* Tests macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7190093F25A4D6D5002ED383 /* Build configuration list for PBXNativeTarget "Tests macOS" */;
-			buildPhases = (
-				7190092325A4D6D5002ED383 /* Sources */,
-				7190092425A4D6D5002ED383 /* Frameworks */,
-				7190092525A4D6D5002ED383 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Tests macOS";
-			productName = "Tests macOS";
-			productReference = 7190092725A4D6D5002ED383 /* Tests macOS.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		71C8842E25A90A2D0009F2A1 /* WidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 71C8844125A90A2D0009F2A1 /* Build configuration list for PBXNativeTarget "WidgetExtension" */;
@@ -394,14 +308,6 @@
 					7190090B25A4D6D5002ED383 = {
 						CreatedOnToolsVersion = 12.3;
 					};
-					7190091B25A4D6D5002ED383 = {
-						CreatedOnToolsVersion = 12.3;
-						TestTargetID = 7190090B25A4D6D5002ED383;
-					};
-					7190092625A4D6D5002ED383 = {
-						CreatedOnToolsVersion = 12.3;
-						TestTargetID = 7190091325A4D6D5002ED383;
-					};
 					71C8842E25A90A2D0009F2A1 = {
 						CreatedOnToolsVersion = 12.3;
 					};
@@ -421,8 +327,6 @@
 			projectRoot = "";
 			targets = (
 				7190090B25A4D6D5002ED383 /* Solstice (iOS) */,
-				7190091B25A4D6D5002ED383 /* Tests iOS */,
-				7190092625A4D6D5002ED383 /* Tests macOS */,
 				71C8842E25A90A2D0009F2A1 /* WidgetExtension */,
 			);
 		};
@@ -434,20 +338,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7190093225A4D6D5002ED383 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7190091A25A4D6D5002ED383 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7190092525A4D6D5002ED383 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,22 +387,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7190091825A4D6D5002ED383 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7190092125A4D6D5002ED383 /* Tests_iOS.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7190092325A4D6D5002ED383 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7190092C25A4D6D5002ED383 /* Tests_macOS.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		71C8842B25A90A2D0009F2A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -539,11 +413,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		7190091E25A4D6D5002ED383 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7190090B25A4D6D5002ED383 /* Solstice (iOS) */;
-			targetProxy = 7190091D25A4D6D5002ED383 /* PBXContainerItemProxy */;
-		};
 		71C8843C25A90A2D0009F2A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 71C8842E25A90A2D0009F2A1 /* WidgetExtension */;
@@ -716,95 +585,6 @@
 			};
 			name = Release;
 		};
-		7190093D25A4D6D5002ED383 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				INFOPLIST_FILE = "Tests iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Tests-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Solstice (iOS)";
-			};
-			name = Debug;
-		};
-		7190093E25A4D6D5002ED383 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				INFOPLIST_FILE = "Tests iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Tests-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Solstice (iOS)";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		7190094025A4D6D5002ED383 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				INFOPLIST_FILE = "Tests macOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Tests-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Solstice (macOS)";
-			};
-			name = Debug;
-		};
-		7190094125A4D6D5002ED383 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				INFOPLIST_FILE = "Tests macOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Tests-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Solstice (macOS)";
-			};
-			name = Release;
-		};
 		71C8843F25A90A2D0009F2A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -875,24 +655,6 @@
 			buildConfigurations = (
 				7190093725A4D6D5002ED383 /* Debug */,
 				7190093825A4D6D5002ED383 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7190093C25A4D6D5002ED383 /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7190093D25A4D6D5002ED383 /* Debug */,
-				7190093E25A4D6D5002ED383 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7190093F25A4D6D5002ED383 /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7190094025A4D6D5002ED383 /* Debug */,
-				7190094125A4D6D5002ED383 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
