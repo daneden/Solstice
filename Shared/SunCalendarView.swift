@@ -23,7 +23,7 @@ struct SunCalendarView: View {
   
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 4) {
         Text("Daily Daylight Per Month")
           .font(.subheadline)
         Text("Based on the hours of daylight on the 15th day of each month this year")
