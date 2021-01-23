@@ -39,22 +39,17 @@ struct ContentView: View {
         Group {
           VStack {
             Spacer()
-            SunCalendarView(solarCalculator: calculator)
-            Spacer()
             
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 12) {
               Filler()
               Text("The next solstice is \(nextSolsticeDistance).")
-                .fixedSize(horizontal: false, vertical: true)
-              
-              if let value = prevSolsticeDifference() {
-                Text("\(value)")
-                  .fixedSize(horizontal: false, vertical: true)
-              }
+              Text("\(prevSolsticeDifference)")
             }
-            .font(Font.system(.title, design: .rounded).bold())
+            .font(.largeTitle)
             
             Spacer()
+            SunCalendarView(solarCalculator: calculator)
+            
           }
         }
         .padding()
@@ -68,9 +63,8 @@ struct ContentView: View {
       HStack {
         Spacer()
         Button(action: { settingsVisible.toggle() }) {
-          Label("Settings", systemImage: "gear")
+          Label("Settings", systemImage: "gearshape")
             .labelStyle(IconOnlyLabelStyle())
-            .contentShape(Rectangle())
             .foregroundColor(.secondary)
             .padding(6)
             .background(VisualEffectView.SystemThinMaterial())
@@ -83,28 +77,22 @@ struct ContentView: View {
       SettingsView()
     }
     .onChange(of: dateOffset) { value in
-      DispatchQueue.main.async {
-        self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-        self.calculator.baseDate = self.selectedDate
-      }
+      self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
+      self.calculator.baseDate = self.selectedDate
     }
     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-      if dateOffset == 0 {
-        selectedDate = Date()
-      }
+      if dateOffset == 0 { selectedDate = Date() }
     }
   }
   
-  func prevSolsticeDifference() -> String {
+  var prevSolsticeDifference: String {
     let prevSolsticeDaylight = calculator.prevSolsticeDaylight
     let today = calculator.today
     let difference = today.difference(from: prevSolsticeDaylight)
     
     let differenceString = difference.colloquialTimeString
     let differenceComparator = difference >= 0 ? "more" : "less"
-    let sentence = String(format: "%@ %@ daylight today than at the previous solstice.", differenceString, differenceComparator)
-
-    return sentence
+    return "\(differenceString) \(differenceComparator) daylight today than at the previous solstice."
   }
   
   var nextSolsticeDistance: String {

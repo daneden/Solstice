@@ -30,7 +30,7 @@ struct SolsticeOverview: View {
       
       Text("\(calculator.differenceString) daylight today than yesterday.")
         .lineLimit(4)
-        .font(Font.system(.largeTitle, design: .rounded).bold())
+        .font(.largeTitle)
         .padding(.vertical).fixedSize(horizontal: false, vertical: true)
       
       HStack {
