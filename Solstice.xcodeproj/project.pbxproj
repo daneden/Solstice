@@ -76,6 +76,8 @@
 		71E5006B25B863DA00C43609 /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
 		71E5006C25B863DA00C43609 /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
 		71E5006D25B863DA00C43609 /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
+		71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */; };
+		71E5007F25BC4BFF00C43609 /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */; };
 		71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
@@ -167,6 +169,7 @@
 		71E5002625B7909F00C43609 /* SolarTimeMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimeMachine.swift; sourceTree = "<group>"; };
 		71E5004325B8384000C43609 /* UIScreen.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.extension.swift; sourceTree = "<group>"; };
 		71E5006A25B863DA00C43609 /* AppStorage.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.extension.swift; sourceTree = "<group>"; };
+		71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
 		71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarCalculator.swift; sourceTree = "<group>"; };
 		71EECF3525A51AF800CCC2FC /* Color.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -352,6 +355,7 @@
 				711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */,
 				71E5001325B77C5000C43609 /* NotificationPreview.swift */,
 				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
+				71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -564,6 +568,7 @@
 				71E5006B25B863DA00C43609 /* AppStorage.extension.swift in Sources */,
 				711AE61225A718BF00B363BA /* PermissionDeniedView.swift in Sources */,
 				71C884BC25A913770009F2A1 /* SettingsView.swift in Sources */,
+				71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */,
 				7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
 				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
@@ -591,6 +596,7 @@
 				71E5002825B7909F00C43609 /* SolarTimeMachine.swift in Sources */,
 				7148B47425A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
 				71EECF3025A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
+				71E5007F25BC4BFF00C43609 /* LocationPickerView.swift in Sources */,
 				712F90FC25AF439400CC8D7E /* SunCalendarView.swift in Sources */,
 				7190092F25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
 				71E5004525B8384000C43609 /* UIScreen.extension.swift in Sources */,

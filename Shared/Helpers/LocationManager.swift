@@ -12,11 +12,15 @@ import SwiftUI
 import WidgetKit
 
 class LocationManager: NSObject, ObservableObject {
-  @AppStorage(UDValues.cachedLatitude.key, store: solsticeUDStore)
-  var latitude: Double = UDValues.cachedLatitude.value
+  @Published var manuallyAdjusted = false
   
-  @AppStorage(UDValues.cachedLongitude.key, store: solsticeUDStore)
-  var longitude: Double = UDValues.cachedLongitude.value
+  @AppStorage(UDValues.cachedLatitude) var latitude {
+    didSet { self.geocode() }
+  }
+  
+  @AppStorage(UDValues.cachedLongitude) var longitude {
+    didSet { self.geocode() }
+  }
   
   let objectWillChange = PassthroughSubject<Void, Never>()
   static let shared = LocationManager()
@@ -33,7 +37,10 @@ class LocationManager: NSObject, ObservableObject {
         self.latitude = latitude
         self.longitude = longitude
       }
+      self.geocode()
+      
       WidgetCenter.shared.reloadAllTimelines()
+      objectWillChange.send()
     }
   }
   
@@ -50,6 +57,11 @@ class LocationManager: NSObject, ObservableObject {
     if self.status == .authorizedAlways || self.status == .authorizedWhenInUse {
       self.start()
     }
+  }
+  
+  func requestAuthorization(completionBlock: @escaping () -> Void?) {
+    self.requestAuthorization()
+    completionBlock()
   }
   
   func requestAuthorization() {
@@ -83,6 +95,7 @@ extension LocationManager: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let location = locations.last else { return }
     self.location = location
+    self.manuallyAdjusted = false
     self.geocode()
     
     self.objectWillChange.send()

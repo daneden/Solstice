@@ -10,13 +10,22 @@ import SwiftUI
 struct SolsticeOverview: View {
   @ObservedObject var calculator = SolarCalculator.shared
   @ObservedObject var location = LocationManager.shared
+  @State var locationPickerOpen = false
   
   var body: some View {
     VStack(alignment: .leading) {
-      if let location = location.placemark?.locality ?? "Current Location" {
-        Label(location, systemImage: "location.fill")
+      if let placeName =
+          location.placemark?.locality ??
+          (location.manuallyAdjusted ? "Custom Location" : "Current Location") {
+        Label(placeName, systemImage: location.manuallyAdjusted ? "mappin.circle.fill" : "location.fill")
           .font(Font.subheadline.bold())
-          .foregroundColor(.secondary)
+          .foregroundColor(location.manuallyAdjusted ? .systemOrange : .secondary)
+          .onTapGesture {
+            self.locationPickerOpen.toggle()
+          }
+          .sheet(isPresented: $locationPickerOpen) {
+            LocationPickerView()
+          }
       }
       
       Text("\(calculator.differenceString) daylight today than yesterday.")
