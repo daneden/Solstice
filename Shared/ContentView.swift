@@ -24,10 +24,8 @@ struct ContentView: View {
           VStack {
             Spacer()
             SolarTimeMachine(
-              timeTravelVisible: $timeTravelVisible,
               dateOffset: $dateOffset,
-              selectedDate: $selectedDate,
-              calculator: calculator
+              selectedDate: $selectedDate
             )
             Spacer()
 

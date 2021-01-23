@@ -9,8 +9,9 @@ import SwiftUI
 
 struct SundialView: View {
   @ObservedObject var calculator: SolarCalculator
+  var waveSize: CGFloat = 80.0
   
-  public init(calculator: SolarCalculator, waveSize: CGFloat = 80.0) {
+  public init(calculator: SolarCalculator = .shared, waveSize: CGFloat = 80.0) {
     self.calculator = calculator
     self.waveSize = waveSize
   }
@@ -18,8 +19,14 @@ struct SundialView: View {
   private let dayBegins = Date().startOfDay
   private let dayEnds = Date().endOfDay
   
+  /**
+   Creates a margin around the sundial to clip the sun's shadow/glow
+   */
   private var scrimCompensation: CGFloat = 40
   
+  /**
+   Determines the proportion of the day that has daylight
+   */
   private var offset: CGFloat {
     let daylightBegins = calculator.today.begins
     let daylightEnds = calculator.today.ends
@@ -29,25 +36,36 @@ struct SundialView: View {
     return CGFloat(daylightLength / dayLength)
   }
   
-  var waveSize: CGFloat = 80.0
-  
+  /**
+   Determines the current time as a percentage of the day length
+   */
   private var currentPosition: CGFloat {
-    let dayLength = 86400.0
+    let dayLength = dayBegins.distance(to: dayEnds)
     return CGFloat(dayBegins.distance(to: Date()) / dayLength)
   }
   
+  /**
+   Determines the offset of noon compared to the sun's peak
+   */
   private var phase: CGFloat {
     let peak = calculator.today.peak ?? Date()
     let noon = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: peak)!
     let distanceFromNoon = noon.distance(to: peak)
     
-    // The difference between noon and the peak of the sun for the given date represented as a fraction of a day’s length
+    /**
+     The difference between noon and the peak of the sun for the given date represented as a fraction of a day’s length
+     */
     let result = distanceFromNoon / 60 / 60 / 24
     
-    // The phase is constantly offset by half pi since we want the peak of the curve to average at noon
+    /**
+     The phase is constantly offset by half pi since we want the peak of the curve to be positioned at noon by default
+     */
     return CGFloat(result + .pi / 2)
   }
   
+  /**
+   The sundial should be animated, but only shortly after mounting, hence the `nil` setting here
+   */
   @State var sundialAnimation: Animation? = nil
   
   var body: some View {
@@ -68,7 +86,7 @@ struct SundialView: View {
           .overlay(
             Rectangle()
               .fill(Color.clear)
-              .frame(height: 2, alignment: .top)
+              .frame(height: 1, alignment: .top)
               .background(Color.tertiarySystemGroupedBackground),
             alignment: .top
           )

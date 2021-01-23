@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SolarTimeMachine: View {
-  @Binding var timeTravelVisible: Bool
+  @State var timeTravelVisible = false
   @Binding var dateOffset: Double
   @Binding var selectedDate: Date
   
   var waveSize = UIScreen.screenHeight * 0.1
   
-  var calculator: SolarCalculator
+  var calculator: SolarCalculator = .shared
   var body: some View {
     VStack {
       VStack {
@@ -68,7 +68,6 @@ struct SolarTimeMachine: View {
       }
       
       SundialView(
-        calculator: calculator,
         waveSize: waveSize
       )
       .frame(height: waveSize * 2.5)
@@ -79,6 +78,6 @@ struct SolarTimeMachine: View {
 
 struct SolarTimeMachine_Previews: PreviewProvider {
     static var previews: some View {
-      SolarTimeMachine(timeTravelVisible: .constant(true), dateOffset: .constant(0), selectedDate: .constant(Date()), calculator: .shared)
+      SolarTimeMachine(dateOffset: .constant(0), selectedDate: .constant(Date()), calculator: .shared)
     }
 }
