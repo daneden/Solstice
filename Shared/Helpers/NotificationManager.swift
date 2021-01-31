@@ -134,11 +134,12 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     let difference = suntimes.difference(from: solsticeCalculator.yesterday)
     let differenceString = difference.colloquialTimeString
     
-    if let hour = components.hour, hour >= 18 || hour < 3 {
+    let hour = components.hour ?? 0
+    if hour >= 18 || hour < 3 {
       content.title = "Good Evening"
-    } else if let hour = components.hour, hour >= 3 && hour < 12 {
+    } else if hour >= 3 && hour < 12 {
       content.title = "Good Morning"
-    } else if let hour = components.hour, hour >= 12 && hour < 18 {
+    } else if hour >= 12 && hour < 18 {
       content.title = "Good Afternoon"
     } else {
       content.title = "Today’s Daylight"
@@ -149,7 +150,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     formatter.dateStyle = .none
     
     if self.notifsIncludeSunTimes {
-      content.body = "The sun rises at \(formatter.string(from: suntimes.begins)) "
+      content.body += "The sun rises at \(formatter.string(from: suntimes.begins)) "
       content.body += "and sets at \(formatter.string(from: suntimes.ends)). "
     }
     
@@ -167,6 +168,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       content.body += "The next solstice is \(string). "
     }
     
+    /**
+     Fallthrough for when notification settings specify no content
+     */
     if !self.notifsIncludeDaylightChange && !self.notifsIncludeDaylightDuration && !self.notifsIncludeSolsticeCountdown && !self.notifsIncludeSunTimes {
       content.body += "Open Solstice to see how today’s daylight has changed."
     }

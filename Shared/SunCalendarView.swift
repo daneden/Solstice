@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SunCalendarView: View {
-  @ObservedObject var solarCalculator: SolarCalculator = SolarCalculator.shared
+  @ObservedObject var solarCalculator = SolarCalculator.shared
   var daylightArray: [Daylight] = []
   
   var currentMonth: Int {
@@ -16,8 +16,7 @@ struct SunCalendarView: View {
     return month - 1
   }
   
-  init(solarCalculator: SolarCalculator) {
-    self.solarCalculator = solarCalculator
+  init() {
     self.daylightArray = self.calculateMonthlyDaylight()
   }
   
@@ -110,6 +109,7 @@ struct SunCalendarView: View {
 
 struct SunCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-      SunCalendarView(solarCalculator: SolarCalculator())
+      SunCalendarView(
+      )
     }
 }

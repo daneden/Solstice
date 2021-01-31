@@ -9,82 +9,98 @@ import SwiftUI
 import MapKit
 
 struct LocationPickerView: View {
-  private let locationManager = LocationManager.shared
   @Environment(\.presentationMode) var presentationMode
-  @State private var region = MKCoordinateRegion(
-    center: CLLocationCoordinate2D(latitude: LocationManager.shared.latitude, longitude: LocationManager.shared.longitude),
-    span: MKCoordinateSpan(latitudeDelta: 10.0, longitudeDelta: 10.0)
-  )
-  @State private var trackingMode = MapUserTrackingMode.none
-  @State private var showsUserLocation = false
+  @ObservedObject var locationService = LocationService.shared
+  @State var currentCompletion: MKLocalSearchCompletion?
+  
+  private let searchRequest = MKLocalSearch.Request()
   
   var body: some View {
     NavigationView {
-      Map(
-        coordinateRegion: $region,
-        showsUserLocation: showsUserLocation,
-        userTrackingMode: $trackingMode,
-        annotationItems: [region.center]
-      ) { item in
-        MapPin(coordinate: item)
-      }
-      .navigationTitle(Text("Choose Location"))
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItem {
-          Button(action: { self.updateLocationAndDismiss() }) {
-            Text("Done")
+      Form {
+        Section(header: Text("Search for a location")) {
+          ZStack(alignment: .trailing) {
+            TextField("Search", text: $locationService.queryFragment)
+            
+            if locationService.status == .isSearching {
+              ProgressView()
+            }
+          }
+          
+          Button(action: { useCurrentLocation() }) {
+            Label("Use Current Location", systemImage: "location.fill")
           }
         }
         
-        ToolbarItem(placement: .navigationBarLeading) {
-          Button(action: { self.useCurrentLocation() }) {
-            Label("Current Location", systemImage: "location.fill")
+        if !locationService.searchResults.isEmpty {
+          Section(header: Text("Results")) {
+            List {
+              Group { () -> AnyView in
+                switch locationService.status {
+                case .noResults: return AnyView(Text("No results"))
+                case .error(let description): return AnyView(Text("Error: \(description)"))
+                default: return AnyView(EmptyView())
+                }
+              }.foregroundColor(.secondary)
+              
+              ForEach(locationService.searchResults, id: \.self) { completionResult in
+                HStack {
+                  VStack(alignment: .leading) {
+                    Text(completionResult.title)
+                    if !completionResult.subtitle.isEmpty {
+                      Text(completionResult.subtitle)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    }
+                  }.opacity(completionResult == currentCompletion ? 0.75 : 1)
+                  
+                  
+                  Spacer()
+                  
+                  if completionResult == currentCompletion {
+                    ProgressView()
+                  }
+                }
+                .contentShape(Rectangle())
+                .onTapGesture { buildMKMapItem(from: completionResult) }
+              }
+            }
           }
         }
+      }.navigationTitle(Text("Choose Location"))
+    }
+  }
+  
+  func buildMKMapItem(from completion: MKLocalSearchCompletion) {
+    currentCompletion = completion
+    
+    searchRequest.naturalLanguageQuery = "\(completion.title), \(completion.subtitle)"
+    MKLocalSearch(request: searchRequest).start { (response, error) in
+      if let error = error {
+        print(error.localizedDescription)
       }
+      
+      if let response = response,
+         !response.mapItems.isEmpty {
+        let item = response.mapItems[0]
+        let coords = item.placemark.coordinate
+        let location = CLLocation(latitude: coords.latitude, longitude: coords.longitude)
+        LocationManager.shared.location = location
+        self.presentationMode.wrappedValue.dismiss()
+      }
+      
+      currentCompletion = nil
     }
   }
   
   func useCurrentLocation() {
-    if let location = locationManager.location {
-      region.center = location.coordinate
-      trackingMode = .follow
-      showsUserLocation = true
-      locationManager.manuallyAdjusted = false
-    }
-  }
-  
-  func updateLocationAndDismiss() {
-    if region.center != locationManager.location?.coordinate {
-      locationManager.manuallyAdjusted = true
-    }
-    locationManager.location = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
-    locationManager.latitude = region.center.latitude
-    locationManager.longitude = region.center.longitude
-    
+    LocationManager.shared.resetLocation()
     self.presentationMode.wrappedValue.dismiss()
   }
 }
 
-extension CLLocationCoordinate2D: Equatable, Identifiable {
-  public var id: UUID {
-    UUID()
-  }
-  
-  static public func ==(lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
-    return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
-  }
-}
-
-extension MKCoordinateRegion: Equatable {
-  static public func ==(lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
-    return lhs.center == rhs.center
-  }
-}
-
 struct LocationPickerView_Previews: PreviewProvider {
-    static var previews: some View {
-        LocationPickerView()
-    }
+  static var previews: some View {
+    LocationPickerView()
+  }
 }

@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Time",
+        "repositoryURL": "https://github.com/davedelong/time",
+        "state": {
+          "branch": null,
+          "revision": "d8a3557205a895bb130a17148517c9f9f7136b5f",
+          "version": "0.9.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

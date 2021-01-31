@@ -14,12 +14,10 @@ struct SolsticeOverview: View {
   
   var body: some View {
     VStack(alignment: .leading) {
-      if let placeName =
-          location.placemark?.locality ??
-          (location.manuallyAdjusted ? "Custom Location" : "Current Location") {
-        Label(placeName, systemImage: location.manuallyAdjusted ? "mappin.circle.fill" : "location.fill")
+      if let placeName = getPlaceName() {
+        Label(placeName, systemImage: "location.fill")
           .font(Font.subheadline.bold())
-          .foregroundColor(location.manuallyAdjusted ? .systemOrange : .secondary)
+          .foregroundColor(.secondary)
           .onTapGesture {
             self.locationPickerOpen.toggle()
           }
@@ -63,6 +61,16 @@ struct SolsticeOverview: View {
         }
       }.font(Font.body.monospacedDigit())
     }
+  }
+  
+  func getPlaceName() -> String {
+    let sublocality = location.placemark?.subLocality
+    let locality = location.placemark?.locality
+    
+    let filtered = [sublocality, locality].filter { $0 != nil } as! [String]
+    let builtString = filtered.joined(separator: ", ")
+    
+    return builtString.count == 0 ? "Current Location" : builtString
   }
 }
 

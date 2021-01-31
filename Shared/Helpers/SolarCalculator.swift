@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CoreLocation
 import SwiftUI
+import Time
 
 typealias DaylightTime = (minutes: Int, seconds: Int)
 
@@ -35,18 +36,47 @@ struct Daylight: Hashable {
 }
 
 class SolarCalculator: NSObject, ObservableObject {
-  @AppStorage(UDValues.cachedLatitude.key, store: solsticeUDStore)
-  var latitude: Double = UDValues.cachedLatitude.value
+  static var shared = SolarCalculator()
+  @AppStorage(UDValues.cachedLatitude) private var latitude
+  @AppStorage(UDValues.cachedLongitude) private var longitude
   
-  @AppStorage(UDValues.cachedLongitude.key, store: solsticeUDStore)
-  var longitude: Double = UDValues.cachedLongitude.value
+  private var cancellables = [AnyCancellable]()
+  private(set) var clock = Clock.system
+  
+  @Published var dateOffset = 0.0 {
+    didSet { updateBaseDate() }
+  }
+  
+  @Published var timezone = TimeZone.current {
+    didSet {
+      clock = clock.converting(to: timezone)
+    }
+  }
   
   @Published var baseDate = Date()
   
-  static var shared = SolarCalculator()
-  
   init(baseDate: Date = Date()) {
     self.baseDate = baseDate
+    super.init()
+    
+    clock.chime(every: .seconds(5))
+      .sink { [unowned self] (value: Absolute<Second>) in
+        updateBaseDate()
+      }
+      .store(in: &cancellables)
+  }
+  
+  private func updateBaseDate() {
+    var offset = DateComponents()
+    offset.day = Int(dateOffset)
+
+    let date = clock
+      .thisInstant()
+      .date
+    
+    let offsetDate = Calendar.current.date(byAdding: offset, to: date)!
+    
+    baseDate = offsetDate
   }
   
   private var baseDateAtNoon: Date {

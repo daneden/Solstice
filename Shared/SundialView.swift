@@ -16,8 +16,12 @@ struct SundialView: View {
     self.waveSize = waveSize
   }
   
-  private let dayBegins = Date().startOfDay
-  private let dayEnds = Date().endOfDay
+  private var dayBegins: Date {
+    calculator.baseDate.startOfDay
+  }
+  private var dayEnds: Date {
+    calculator.baseDate.endOfDay
+  }
   
   /**
    Creates a margin around the sundial to clip the sun's shadow/glow
@@ -41,7 +45,9 @@ struct SundialView: View {
    */
   private var currentPosition: CGFloat {
     let dayLength = dayBegins.distance(to: dayEnds)
-    return CGFloat(dayBegins.distance(to: Date()) / dayLength)
+    
+    let position = CGFloat(dayBegins.distance(to: calculator.baseDate) / dayLength)
+    return position
   }
   
   /**

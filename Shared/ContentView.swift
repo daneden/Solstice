@@ -11,7 +11,7 @@ import CoreLocation
 
 struct ContentView: View {
   @EnvironmentObject var locationManager: LocationManager
-  @State var calculator = SolarCalculator.shared
+  @ObservedObject var calculator = SolarCalculator.shared
   @State var selectedDate = Date()
   @State var dateOffset = 0.0
   @State var settingsVisible = false
@@ -29,7 +29,7 @@ struct ContentView: View {
             )
             Spacer()
 
-            SolsticeOverview(calculator: calculator)
+            SolsticeOverview()
               .padding()
           }
         }
@@ -45,11 +45,10 @@ struct ContentView: View {
               Text("The next solstice is \(nextSolsticeDistance).")
               Text("\(prevSolsticeDifference)")
             }
-            .font(.largeTitle)
+            .font(.title)
             
             Spacer()
-            SunCalendarView(solarCalculator: calculator)
-            
+            SunCalendarView()
           }
         }
         .padding()
@@ -57,7 +56,7 @@ struct ContentView: View {
         .padding(.bottom)
       }
       .tabViewStyle(PageTabViewStyle())
-      .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+      .indexViewStyle(PageIndexViewStyle.init(backgroundDisplayMode: .always))
       
       
       HStack {
@@ -73,12 +72,13 @@ struct ContentView: View {
         }
       }.padding().padding(-12)
     }
+    .accentColor(.systemTeal)
     .sheet(isPresented: $settingsVisible) {
       SettingsView()
     }
     .onChange(of: dateOffset) { value in
       self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-      self.calculator.baseDate = self.selectedDate
+      self.calculator.dateOffset = value
     }
     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
       if dateOffset == 0 { selectedDate = Date() }

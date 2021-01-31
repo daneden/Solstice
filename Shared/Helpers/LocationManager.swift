@@ -12,8 +12,6 @@ import SwiftUI
 import WidgetKit
 
 class LocationManager: NSObject, ObservableObject {
-  @Published var manuallyAdjusted = false
-  
   @AppStorage(UDValues.cachedLatitude) var latitude {
     didSet { self.geocode() }
   }
@@ -78,12 +76,17 @@ class LocationManager: NSObject, ObservableObject {
     geocoder.reverseGeocodeLocation(location, completionHandler: { (places, error) in
       if error == nil {
         self.placemark = places?[0]
+        SolarCalculator.shared.timezone = places?[0].timeZone ?? .current
       } else {
         self.placemark = nil
       }
       
       self.objectWillChange.send()
     })
+  }
+  
+  func resetLocation() {
+    self.location = locationManager.location
   }
 }
 
@@ -95,7 +98,6 @@ extension LocationManager: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let location = locations.last else { return }
     self.location = location
-    self.manuallyAdjusted = false
     self.geocode()
     
     self.objectWillChange.send()

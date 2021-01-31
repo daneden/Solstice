@@ -11,10 +11,10 @@ struct SolarTimeMachine: View {
   @State var timeTravelVisible = false
   @Binding var dateOffset: Double
   @Binding var selectedDate: Date
+  @ObservedObject var calculator: SolarCalculator = .shared
   
   var waveSize = UIScreen.screenHeight * 0.1
   
-  var calculator: SolarCalculator = .shared
   var body: some View {
     VStack {
       VStack {

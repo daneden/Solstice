@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreLocation
 
 typealias UDValuePair<T> = (key: String, value: T)
 
@@ -15,18 +16,23 @@ let solsticeSuiteName = "group.me.daneden.Solstice"
 let solsticeUDStore = UserDefaults(suiteName: solsticeSuiteName)
 
 struct UDValues {
-  static let cachedLatitude: UDValuePair = ("cachedLatitude", 51.5074)
-  static let cachedLongitude: UDValuePair = ("cachedLongitude", 0.1278)
+  typealias Value = UDValuePair
+  
+  static let cachedLatitude: Value = ("cachedLatitude", 51.5074)
+  static let cachedLongitude: Value = ("cachedLongitude", 0.1278)
   
   // General notification settings
-  static let notificationTime: UDValuePair<TimeInterval> = ("notifTime", defaultNotificationDate.timeIntervalSince1970)
-  static let notificationsEnabled: UDValuePair = ("notifsEnabled", false)
+  static let notificationTime: Value = ("notifTime", defaultNotificationDate.timeIntervalSince1970)
+  static let notificationsEnabled: Value = ("notifsEnabled", false)
   
   // Notification fragment settings
-  static let notificationsIncludeSunTimes: UDValuePair = ("notifsIncludeSunTimes", true)
-  static let notificationsIncludeDaylightDuration: UDValuePair = ("notifsIncludeDaylightDuration", true)
-  static let notificationsIncludeDaylightChange: UDValuePair = ("notifsIncludeDaylightChange", true)
-  static let notificationsIncludeSolsticeCountdown: UDValuePair = ("notifsIncludeSolsticeCountdown", false)
+  static let notificationsIncludeSunTimes: Value = ("notifsIncludeSunTimes", true)
+  static let notificationsIncludeDaylightDuration: Value = ("notifsIncludeDaylightDuration", true)
+  static let notificationsIncludeDaylightChange: Value = ("notifsIncludeDaylightChange", true)
+  static let notificationsIncludeSolsticeCountdown: Value = ("notifsIncludeSolsticeCountdown", false)
+  
+  // Cached Location Results
+  static let locations: Value<[Location]> = ("locations", [])
 }
 
 let stiffSpringAnimation = Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.3)
