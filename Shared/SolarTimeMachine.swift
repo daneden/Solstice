@@ -17,19 +17,7 @@ struct SolarTimeMachine: View {
   
   var body: some View {
     VStack {
-      VStack {
-        if timeTravelVisible {
-          Text("\(selectedDate, style: .date)")
-        }
-        if let duration = calculator.today.duration.colloquialTimeString {
-          Text("\(duration)")
-            .font(.footnote)
-            .foregroundColor(.secondary)
-        }
-      }
-      .foregroundColor(timeTravelVisible ? .primary : .secondary)
-      .buttonAppearance()
-      .onTapGesture {
+      Button(action: {
         withAnimation(stiffSpringAnimation) {
           if timeTravelVisible {
             if self.dateOffset != 0 {
@@ -41,7 +29,20 @@ struct SolarTimeMachine: View {
             timeTravelVisible = true
           }
         }
+      }) {
+        VStack {
+          if timeTravelVisible {
+            Text("\(selectedDate, style: .date)")
+              .foregroundColor(.primary)
+          }
+          if let duration = calculator.today.duration.colloquialTimeString {
+            Text("\(duration)")
+              .font(.footnote)
+              .foregroundColor(.secondary)
+          }
+        }
       }
+      .buttonStyle(SecondaryButtonStyle())
       
       if timeTravelVisible {
         CustomSlider(value: $dateOffset, range: (-182.0, 182.0)) { modifiers in

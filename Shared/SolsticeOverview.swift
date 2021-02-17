@@ -15,15 +15,13 @@ struct SolsticeOverview: View {
   var body: some View {
     VStack(alignment: .leading) {
       if let placeName = getPlaceName() {
+        Button(action: {
+          self.locationPickerOpen.toggle()
+        }) {
         Label(placeName, systemImage: "location.fill")
           .font(Font.subheadline.bold())
-          .buttonAppearance()
-          .onTapGesture {
-            self.locationPickerOpen.toggle()
-          }
-          .sheet(isPresented: $locationPickerOpen) {
-            LocationPickerView()
-          }
+        }
+        .buttonStyle(SecondaryButtonStyle())
       }
       
       Text("\(calculator.differenceString) daylight today than yesterday.")
@@ -60,6 +58,9 @@ struct SolsticeOverview: View {
           }
         }
       }.font(Font.body.monospacedDigit())
+    }
+    .sheet(isPresented: $locationPickerOpen) {
+      LocationPickerView()
     }
   }
   

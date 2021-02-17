@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct SundialView: View {
-  @ObservedObject var calculator: SolarCalculator
+  @ObservedObject var calculator: SolarCalculator = .shared
   var waveSize: CGFloat = 80.0
-  
-  public init(calculator: SolarCalculator = .shared, waveSize: CGFloat = 80.0) {
-    self.calculator = calculator
-    self.waveSize = waveSize
-  }
   
   private var dayBegins: Date {
     calculator.baseDate.startOfDay

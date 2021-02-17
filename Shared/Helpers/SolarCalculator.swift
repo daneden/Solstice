@@ -50,6 +50,7 @@ class SolarCalculator: NSObject, ObservableObject {
   @Published var timezone = TimeZone.current {
     didSet {
       clock = clock.converting(to: timezone)
+      updateBaseDate()
     }
   }
   
@@ -58,6 +59,7 @@ class SolarCalculator: NSObject, ObservableObject {
   init(baseDate: Date = Date()) {
     self.baseDate = baseDate
     super.init()
+    updateBaseDate()
     
     clock.chime(every: .seconds(5))
       .sink { [unowned self] (value: Absolute<Second>) in
@@ -66,25 +68,44 @@ class SolarCalculator: NSObject, ObservableObject {
       .store(in: &cancellables)
   }
   
-  private func updateBaseDate() {
+  func updateBaseDate() {
     var offset = DateComponents()
     offset.day = Int(dateOffset)
     let currentTimezone = TimeZone.current.secondsFromGMT()
     let offsetTimezone = timezone.secondsFromGMT()
-    let offsetAmount = TimeInterval(currentTimezone + offsetTimezone)
-
+    let offsetAmount = currentTimezone + offsetTimezone
+    offset.second = offsetAmount
+    
     let date = clock
-      .offset(by: offsetAmount)
       .thisInstant()
       .date
     
     let offsetDate = Calendar.current.date(byAdding: offset, to: date)!
     
-    baseDate = offsetDate
-    
     DispatchQueue.main.async {
+      self.baseDate = offsetDate
       self.objectWillChange.send()
     }
+  }
+  
+  private func applyTimezoneOffset(to date: Date) -> Date {
+    let currentTimezone = TimeZone.current.secondsFromGMT()
+    let offsetTimezone = timezone.secondsFromGMT()
+    let offsetAmount = currentTimezone + offsetTimezone
+    
+    let components = DateComponents(second: offsetAmount)
+    return Calendar.current.date(byAdding: components, to: date)!
+  }
+  
+  private func createDaylight(from solar: Solar) -> Daylight {
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      return Daylight(
+        begins: applyTimezoneOffset(to: sunrise),
+        ends: applyTimezoneOffset(to: sunset)
+      )
+    }
+    
+    return .Default
   }
   
   private var baseDateAtNoon: Date {
@@ -139,43 +160,27 @@ class SolarCalculator: NSObject, ObservableObject {
   var prevSolsticeDaylight: Daylight {
     guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return .Default }
     
-    if let sunrise = solar.sunrise, let sunset = solar.sunset {
-      return Daylight(begins: sunrise, ends: sunset)
-    } else {
-      return .Default
-    }
+    return createDaylight(from: solar)
   }
   
   var today: Daylight {
     guard let solar = Solar(for: baseDateAtNoon, coordinate: coords) else { return .Default }
     
-    if let sunrise = solar.sunrise, let sunset = solar.sunset {
-      return Daylight(begins: sunrise, ends: sunset)
-    } else {
-      return .Default
-    }
+    return createDaylight(from: solar)
   }
   
   var yesterday: Daylight {
     let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: baseDateAtNoon)!
     guard let solar = Solar(for: yesterday, coordinate: coords) else { return .Default }
     
-    if let sunrise = solar.sunrise, let sunset = solar.sunset {
-      return Daylight(begins: sunrise, ends: sunset)
-    } else {
-      return .Default
-    }
+    return createDaylight(from: solar)
   }
   
   var tomorrow: Daylight {
     let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: baseDateAtNoon)!
     guard let solar = Solar(for: tomorrow, coordinate: coords) else { return .Default }
     
-    if let sunrise = solar.sunrise, let sunset = solar.sunset {
-      return Daylight(begins: sunrise, ends: sunset)
-    } else {
-      return .Default
-    }
+    return createDaylight(from: solar)
   }
   
   var differenceString: String {

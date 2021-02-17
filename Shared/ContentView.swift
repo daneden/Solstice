@@ -64,10 +64,9 @@ struct ContentView: View {
         Button(action: { settingsVisible.toggle() }) {
           Label("Settings", systemImage: "gearshape")
             .labelStyle(IconOnlyLabelStyle())
-            .buttonAppearance()
-            .padding(12)
         }
-      }.padding().padding(-12)
+        .buttonStyle(SecondaryButtonStyle())
+      }.padding()
     }
     .accentColor(.systemTeal)
     .sheet(isPresented: $settingsVisible) {

@@ -9,18 +9,6 @@ import SwiftUI
 
 extension View {
   /**
-   Applies a button-like appearance to views, adding padding, a background, and corner radius
-   */
-  func buttonAppearance() -> some View {
-    return self
-      .foregroundColor(.secondary)
-      .padding(6)
-      .padding(.horizontal, 4)
-      .background(VisualEffectView.SystemThinMaterial())
-      .cornerRadius(8)
-  }
-  
-  /**
    Applies iOS-only modifiers. Usage:
    ```
    View
@@ -36,5 +24,16 @@ extension View {
     #else
     return self
     #endif
+  }
+}
+
+struct SecondaryButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .foregroundColor(.secondary)
+      .padding(6)
+      .padding(.horizontal, 4)
+      .background(VisualEffectView.SystemThinMaterial())
+      .cornerRadius(8)
   }
 }
