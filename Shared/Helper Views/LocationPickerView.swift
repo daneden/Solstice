@@ -24,6 +24,12 @@ struct LocationPickerView: View {
             
             if locationService.status == .isSearching {
               ProgressView()
+            } else if !locationService.queryFragment.isEmpty {
+              Button(action: { locationService.queryFragment = "" }) {
+                Label("Clear search", systemImage: "xmark.circle.fill")
+                  .labelStyle(IconOnlyLabelStyle())
+                  .foregroundColor(.secondary)
+              }
             }
           }
           
@@ -94,6 +100,7 @@ struct LocationPickerView: View {
   }
   
   func useCurrentLocation() {
+    locationService.queryFragment = ""
     LocationManager.shared.resetLocation()
     self.presentationMode.wrappedValue.dismiss()
   }

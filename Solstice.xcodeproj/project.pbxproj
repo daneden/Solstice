@@ -17,6 +17,7 @@
 		711DFB4D25AE1B2D0004AC46 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */; };
 		712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712F90FA25AF439400CC8D7E /* SunCalendarView.swift */; };
 		7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
+		71682AE225DD923400487ECA /* View.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71682AE125DD923400487ECA /* View.extension.swift */; };
 		7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090525A4D6D2002ED383 /* SolsticeApp.swift */; };
 		7190093025A4D6D5002ED383 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090625A4D6D2002ED383 /* ContentView.swift */; };
 		7190093225A4D6D5002ED383 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7190090725A4D6D5002ED383 /* Assets.xcassets */; };
@@ -96,6 +97,7 @@
 		711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		712F90FA25AF439400CC8D7E /* SunCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunCalendarView.swift; sourceTree = "<group>"; };
 		7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.extension.swift; sourceTree = "<group>"; };
+		71682AE125DD923400487ECA /* View.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.extension.swift; sourceTree = "<group>"; };
 		7190090525A4D6D2002ED383 /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7190090625A4D6D2002ED383 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7190090725A4D6D5002ED383 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */,
 				711DFB3425AE03700004AC46 /* ShakeGesture.swift */,
 				71E5004325B8384000C43609 /* UIScreen.extension.swift */,
+				71682AE125DD923400487ECA /* View.extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */,
 				71C884C325A91D060009F2A1 /* NotificationManager.swift in Sources */,
 				711DFB3525AE03700004AC46 /* ShakeGesture.swift in Sources */,
+				71682AE225DD923400487ECA /* View.extension.swift in Sources */,
 				711DFB4D25AE1B2D0004AC46 /* CustomSlider.swift in Sources */,
 				71E5004425B8384000C43609 /* UIScreen.extension.swift in Sources */,
 				71C884E325A9C3DA0009F2A1 /* AppDelegate.swift in Sources */,
@@ -559,7 +563,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -585,7 +589,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -611,7 +615,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
@@ -637,7 +641,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;

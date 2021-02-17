@@ -69,14 +69,22 @@ class SolarCalculator: NSObject, ObservableObject {
   private func updateBaseDate() {
     var offset = DateComponents()
     offset.day = Int(dateOffset)
+    let currentTimezone = TimeZone.current.secondsFromGMT()
+    let offsetTimezone = timezone.secondsFromGMT()
+    let offsetAmount = TimeInterval(currentTimezone + offsetTimezone)
 
     let date = clock
+      .offset(by: offsetAmount)
       .thisInstant()
       .date
     
     let offsetDate = Calendar.current.date(byAdding: offset, to: date)!
     
     baseDate = offsetDate
+    
+    DispatchQueue.main.async {
+      self.objectWillChange.send()
+    }
   }
   
   private var baseDateAtNoon: Date {

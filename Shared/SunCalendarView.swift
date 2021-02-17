@@ -40,13 +40,9 @@ struct SunCalendarView: View {
             
             VStack {
               Text("\(self.hoursOfDaylightForMonth(month))").font(.caption)
-              Rectangle()
-                .fill(Color.clear)
-                .background(
-                  daylightArray.firstIndex(of: month) == currentMonth
-                    ? AnyView(Color.accentColor)
-                    : AnyView(VisualEffectView.SystemInvertedRuleMaterial())
-                )
+              Color.accentColor
+                .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
+                .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
                 .frame(width: 12, height: self.calculateDaylightForMonth(month) * 200)
                 .cornerRadius(4)
               

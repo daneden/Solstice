@@ -28,10 +28,7 @@ struct SolarTimeMachine: View {
         }
       }
       .foregroundColor(timeTravelVisible ? .primary : .secondary)
-      .padding(6)
-      .padding(.horizontal, 6)
-      .background(VisualEffectView.SystemMaterial())
-      .cornerRadius(8)
+      .buttonAppearance()
       .onTapGesture {
         withAnimation(stiffSpringAnimation) {
           if timeTravelVisible {

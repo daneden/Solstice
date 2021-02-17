@@ -64,10 +64,7 @@ struct ContentView: View {
         Button(action: { settingsVisible.toggle() }) {
           Label("Settings", systemImage: "gearshape")
             .labelStyle(IconOnlyLabelStyle())
-            .foregroundColor(.secondary)
-            .padding(6)
-            .background(VisualEffectView.SystemThinMaterial())
-            .cornerRadius(8)
+            .buttonAppearance()
             .padding(12)
         }
       }.padding().padding(-12)

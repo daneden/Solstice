@@ -10,7 +10,7 @@ import SwiftUI
 struct VisualEffectView: View {
   var effect: UIVisualEffect?
   var body: some View {
-    Rectangle().fill(Color.secondarySystemBackground)
+    Color.secondarySystemBackground
   }
   
   typealias SystemMaterial = VisualEffectView

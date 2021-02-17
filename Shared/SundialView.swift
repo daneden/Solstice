@@ -26,7 +26,9 @@ struct SundialView: View {
   /**
    Creates a margin around the sundial to clip the sun's shadow/glow
    */
-  private var scrimCompensation: CGFloat = 40
+  private var scrimCompensation: CGFloat {
+    waveSize / 2
+  }
   
   /**
    Determines the proportion of the day that has daylight
@@ -86,14 +88,11 @@ struct SundialView: View {
           arcSize: waveSize
         )
         
-        Rectangle()
-          .fill(Color.systemBackground.opacity(0.55))
+        Color.systemBackground.opacity(0.55)
           .frame(height: (waveSize * 2) - (waveSize * offset) + scrimCompensation)
           .overlay(
-            Rectangle()
-              .fill(Color.clear)
-              .frame(height: 1, alignment: .top)
-              .background(Color.tertiarySystemGroupedBackground),
+            Color.tertiarySystemGroupedBackground
+              .frame(height: 1, alignment: .top),
             alignment: .top
           )
           .offset(y: (offset * waveSize) + scrimCompensation / 2)
@@ -164,24 +163,18 @@ struct SundialSun: View {
 struct SundialInnerShadowOverlay: View {
   var body: some View {
     HStack {
-      Rectangle()
-        .fill(
-          LinearGradient(
-            gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
-            startPoint: .leading,
-            endPoint: .trailing
-          )
-        )
+      LinearGradient(
+        gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
+        startPoint: .leading,
+        endPoint: .trailing
+      )
         .frame(width: 40)
       Spacer()
-      Rectangle()
-        .fill(
-          LinearGradient(
-            gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
-            startPoint: .trailing,
-            endPoint: .leading
-          )
-        )
+      LinearGradient(
+        gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
+        startPoint: .trailing,
+        endPoint: .leading
+      )
         .frame(width: 40)
     }
   }

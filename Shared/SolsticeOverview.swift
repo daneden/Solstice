@@ -17,7 +17,7 @@ struct SolsticeOverview: View {
       if let placeName = getPlaceName() {
         Label(placeName, systemImage: "location.fill")
           .font(Font.subheadline.bold())
-          .foregroundColor(.secondary)
+          .buttonAppearance()
           .onTapGesture {
             self.locationPickerOpen.toggle()
           }
