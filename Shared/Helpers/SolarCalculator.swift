@@ -48,10 +48,7 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   @Published var timezone = TimeZone.current {
-    didSet {
-      clock = clock.converting(to: timezone)
-      updateBaseDate()
-    }
+    didSet { updateBaseDate() }
   }
   
   @Published var baseDate = Date()
@@ -69,18 +66,16 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   func updateBaseDate() {
+    clock = clock.converting(to: timezone)
+    
     var offset = DateComponents()
     offset.day = Int(dateOffset)
-    let currentTimezone = TimeZone.current.secondsFromGMT()
-    let offsetTimezone = timezone.secondsFromGMT()
-    let offsetAmount = currentTimezone + offsetTimezone
-    offset.second = offsetAmount
     
     let date = clock
       .thisInstant()
       .date
     
-    let offsetDate = Calendar.current.date(byAdding: offset, to: date)!
+    let offsetDate = applyTimezoneOffset(to: Calendar.current.date(byAdding: offset, to: date)!)
     
     DispatchQueue.main.async {
       self.baseDate = offsetDate
@@ -91,8 +86,10 @@ class SolarCalculator: NSObject, ObservableObject {
   private func applyTimezoneOffset(to date: Date) -> Date {
     let currentTimezone = TimeZone.current.secondsFromGMT()
     let offsetTimezone = timezone.secondsFromGMT()
-    let offsetAmount = currentTimezone + offsetTimezone
-    
+    let offsetAmount = currentTimezone < offsetTimezone
+      ? max(currentTimezone, offsetTimezone) - min(currentTimezone, offsetTimezone)
+      : min(currentTimezone, offsetTimezone) - max(currentTimezone, offsetTimezone)
+    print(offsetAmount)
     let components = DateComponents(second: offsetAmount)
     return Calendar.current.date(byAdding: components, to: date)!
   }
