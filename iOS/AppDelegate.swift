@@ -37,7 +37,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func handleBackgroundNotificationScheduling(task: BGAppRefreshTask) {
     let notificationManager = NotificationManager.shared
     
-    notificationManager.scheduleNotification(from: task)
+    notificationManager.scheduleNotifications(from: task)
     
     task.expirationHandler = {
       print("Unable to schedule notification")

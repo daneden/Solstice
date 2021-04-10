@@ -89,7 +89,7 @@ class SolarCalculator: NSObject, ObservableObject {
     let offsetAmount = currentTimezone < offsetTimezone
       ? max(currentTimezone, offsetTimezone) - min(currentTimezone, offsetTimezone)
       : min(currentTimezone, offsetTimezone) - max(currentTimezone, offsetTimezone)
-    print(offsetAmount)
+
     let components = DateComponents(second: offsetAmount)
     return Calendar.current.date(byAdding: components, to: date)!
   }

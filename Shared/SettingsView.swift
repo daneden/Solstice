@@ -78,17 +78,17 @@ struct SettingsView: View {
                   .foregroundColor(.secondary)
                 NotificationPreview()
               }.padding(.vertical, 8)
-            }, label: {
+            },
+            label: {
               Button(action: { withAnimation { self.fragmentSettingsVisible.toggle() } }) {
                 HStack {
                   Text("Customise Notification Content").foregroundColor(.primary)
                   Spacer()
                 }.contentShape(Rectangle())
               }
-            })
+            }
+          )
           
-        }.onChange(of: [notifsIncludeDaylightChange, notifsIncludeSolsticeCountdown, notifsIncludeSunTimes, notifsIncludeDaylightDuration]) { _ in
-          self.notificationManager.adjustSchedule()
         }
       }
       .navigationTitle(Text("Settings"))
@@ -108,6 +108,9 @@ struct SettingsView: View {
       if value {
         notificationManager.toggleNotifications(on: value, bindingTo: $notifsEnabled)
       }
+    }
+    .onChange(of: notificationFragments.map { $0.value.wrappedValue }) { _ in
+      notificationManager.adjustSchedule()
     }
   }
 }

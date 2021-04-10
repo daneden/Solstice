@@ -24,7 +24,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
     
     DispatchQueue.global(qos: .background).async {
-      self.scheduleNotification()
+      self.scheduleNotifications()
     }
   }
   
@@ -70,18 +70,19 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   
   func adjustSchedule() {
     self.notificationCenter.removeAllPendingNotificationRequests()
-    self.scheduleNotification()
+    
+    DispatchQueue.main.async {
+      self.scheduleNotifications()
+    }
   }
   
-  /**
-   Schedules a notification for tomorrow's daylight.
-   */
-  func scheduleNotification(from task: BGAppRefreshTask? = nil) {
+  // MARK: Notification scheduler
+  func scheduleNotifications(from task: BGAppRefreshTask? = nil) {
     self.getPending { requests in
-      if requests.isEmpty {
+      for index in 1..<64 {
         let now = Date()
         let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
-        let targetDate = Calendar.current.date(byAdding: .day, value: 1, to: now)!
+        let targetDate = Calendar.current.date(byAdding: .day, value: index, to: now)!
         let targetNotificationTime = Calendar.current.date(
           bySettingHour: components.hour ?? 8,
           minute: components.minute ?? 0,
@@ -89,51 +90,54 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           of: targetDate
         )!
         
+        // Generate an ID for this notification and remove any current pending
+        // notifs for the same target time
+        let id = targetNotificationTime.description
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
+        
         let content = UNMutableNotificationContent()
         
+        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month, .year], from: targetNotificationTime)
+        
         let trigger = UNCalendarNotificationTrigger(
-          dateMatching: Calendar.current.dateComponents([.hour, .minute], from: targetNotificationTime),
+          dateMatching: triggerDate,
           repeats: false
         )
         
-        let notifContent = self.buildNotificationContent()
+        let notifContent = self.buildNotificationContent(for: targetNotificationTime)
         content.title = notifContent.title
         content.body = notifContent.body
         
         let request = UNNotificationRequest(
-          identifier: UUID().uuidString,
+          identifier: id,
           content: content,
           trigger: trigger
         )
-        
-        UNUserNotificationCenter.current().add(request)
-        
-        if let task = task {
-          task.setTaskCompleted(success: true)
+          
+        UNUserNotificationCenter.current().add(request) { error in
+          if let error = error {
+            print(error.localizedDescription)
+          }
         }
-      } else {
-        print("Found \(requests.count) pending notification requests; exiting")
-        print(requests)
-        
-        if let task = task {
-          task.setTaskCompleted(success: false)
-        }
+      }
+      
+      if let task = task {
+        task.setTaskCompleted(success: true)
       }
     }
   }
   
-  func buildNotificationContent() -> NotificationContent {
+  // MARK: Notification content builder
+  func buildNotificationContent(for date: Date) -> NotificationContent {
     var content = (title: "", body: "")
-    let now = Date()
-    let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
-    let targetDate = Calendar.current.date(byAdding: .day, value: 1, to: now)!
     
-    let solsticeCalculator = SolarCalculator(baseDate: targetDate)
+    let solsticeCalculator = SolarCalculator(baseDate: date)
     let suntimes = solsticeCalculator.today
     let duration = suntimes.duration.colloquialTimeString
     let difference = suntimes.difference(from: solsticeCalculator.yesterday)
     let differenceString = difference.colloquialTimeString
     
+    let components = Calendar.current.dateComponents([.hour], from: date)
     let hour = components.hour ?? 0
     if hour >= 18 || hour < 3 {
       content.title = "Good Evening"
