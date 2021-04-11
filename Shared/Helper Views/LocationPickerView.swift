@@ -68,7 +68,10 @@ struct LocationPickerView: View {
                   }
                 }
                 .contentShape(Rectangle())
-                .onTapGesture { buildMKMapItem(from: completionResult) }
+                .onTapGesture {
+                  buildMKMapItem(from: completionResult)
+                  locationService.queryFragment = completionResult.title
+                }
               }
             }
           }

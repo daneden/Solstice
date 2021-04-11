@@ -9,6 +9,14 @@ import SwiftUI
 import Combine
 import CoreLocation
 
+enum SheetPresentationState: Identifiable {
+  case settings, location
+  
+  var id: Int {
+    hashValue
+  }
+}
+
 struct ContentView: View {
   @EnvironmentObject var locationManager: LocationManager
   @ObservedObject var calculator = SolarCalculator.shared
@@ -16,52 +24,44 @@ struct ContentView: View {
   @State var dateOffset = 0.0
   @State var settingsVisible = false
   @State var timeTravelVisible = false
+  @State var locationPickerVisible = false
+  
+  @State var activeSheet: SheetPresentationState?
   
   var body: some View {
     ZStack(alignment: .top) {
-      TabView {
+      ScrollView {
         Group {
           VStack {
-            Spacer()
+            Spacer(minLength: 64)
             SolarTimeMachine(
               dateOffset: $dateOffset,
               selectedDate: $selectedDate
             )
             Spacer()
-
-            SolsticeOverview()
-              .padding()
+            
+            SolsticeOverview(activeSheet: $activeSheet)
           }
-        }
-        .padding(.bottom)
-        .padding(.bottom)
-        
-        Group {
-          VStack {
-            Spacer()
+          
+          Divider()
+          
+          VStack(alignment: .leading, spacing: 12) {
+            Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
             
-            VStack(alignment: .leading, spacing: 12) {
-              Filler()
-              Text("The next solstice is \(nextSolsticeDistance).")
-              Text("\(prevSolsticeDifference)")
-            }
-            .font(.title)
+            Divider()
             
-            Spacer()
             SunCalendarView()
           }
         }
         .padding()
-        .padding(.bottom)
-        .padding(.bottom)
       }
-      .tabViewStyle(PageTabViewStyle())
-      .indexViewStyle(PageIndexViewStyle.init(backgroundDisplayMode: .always))
       
+      LinearGradient(gradient: .init(colors: [Color.systemBackground.opacity(0.95), Color.systemBackground.opacity(0.1)]), startPoint: .center, endPoint: .bottom)
+        .frame(height: 88).edgesIgnoringSafeArea(.top)
       
       HStack {
         Spacer()
-        Button(action: { settingsVisible.toggle() }) {
+        Button(action: { self.activeSheet = .settings }) {
           Label("Settings", systemImage: "gearshape")
             .labelStyle(IconOnlyLabelStyle())
         }
@@ -69,8 +69,13 @@ struct ContentView: View {
       }.padding()
     }
     .accentColor(.systemTeal)
-    .sheet(isPresented: $settingsVisible) {
-      SettingsView()
+    .sheet(item: $activeSheet) { item in
+      switch item {
+      case .settings:
+        SettingsView()
+      case .location:
+        LocationPickerView()
+      }
     }
     .onChange(of: dateOffset) { value in
       self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!

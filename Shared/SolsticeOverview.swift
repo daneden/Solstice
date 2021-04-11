@@ -10,13 +10,13 @@ import SwiftUI
 struct SolsticeOverview: View {
   @ObservedObject var calculator = SolarCalculator.shared
   @ObservedObject var location = LocationManager.shared
-  @State var locationPickerOpen = false
+  @Binding var activeSheet: SheetPresentationState?
   
   var body: some View {
     VStack(alignment: .leading) {
       if let placeName = getPlaceName() {
         Button(action: {
-          self.locationPickerOpen.toggle()
+          self.activeSheet = .location
         }) {
         Label(placeName, systemImage: "location.fill")
           .font(Font.subheadline.bold())
@@ -29,38 +29,46 @@ struct SolsticeOverview: View {
         .font(.largeTitle)
         .padding(.vertical).fixedSize(horizontal: false, vertical: true)
       
-      HStack {
-        VStack(alignment: .leading) {
-          Label("Sunrise", systemImage: "sunrise.fill")
-          if let begins = calculator.today.begins,
-             let beginsYesterday = calculator.yesterday.begins {
+      // MARK: Metadata
+      VStack(alignment: .leading, spacing: 12) {
+        // MARK: Sunrise
+        Divider()
+        if let begins = calculator.today.begins {
+          HStack {
+            Label("Sunrise", systemImage: "sunrise.fill")
+            Spacer()
             Text("\(begins, style: .time)")
-            
-            VStack(alignment: .leading) {
-              Text("Yesterday")
-              Text("\(beginsYesterday, style: .time)")
-            }.foregroundColor(.secondary).font(Font.footnote.monospacedDigit()).padding(.top, 4)
           }
         }
         
-        Spacer()
-        
-        VStack(alignment: .trailing) {
-          Label("Sunset", systemImage: "sunset.fill")
-          if let ends = calculator.today.ends,
-             let endsYesterday = calculator.yesterday.ends {
+        // MARK: Sunset
+        Divider()
+        if let ends = calculator.today.ends {
+          HStack {
+            Label("Sunset", systemImage: "sunset.fill")
+            Spacer()
             Text("\(ends, style: .time)")
-            
-            VStack(alignment: .trailing) {
-              Text("Yesterday")
-              Text("\(endsYesterday, style: .time)")
-            }.foregroundColor(.secondary).font(Font.footnote.monospacedDigit()).padding(.top, 4)
           }
         }
-      }.font(Font.body.monospacedDigit())
-    }
-    .sheet(isPresented: $locationPickerOpen) {
-      LocationPickerView()
+        
+        // MARK: Duration
+        Divider()
+        if let duration = calculator.today.duration {
+          HStack {
+            Label("Total Daylight", systemImage: "sun.max")
+            Spacer()
+            Text("\(duration.colloquialTimeString)")
+          }
+        }
+        
+        if calculator.today.ends.isInFuture && calculator.today.begins.isInPast {
+          HStack {
+            Text("Total Remaining")
+            Spacer()
+            Text("\(Date().distance(to: calculator.today.ends).colloquialTimeString)")
+          }.font(.footnote).foregroundColor(.secondary)
+        }
+      }
     }
   }
   
@@ -77,6 +85,6 @@ struct SolsticeOverview: View {
 
 struct SolsticeOverview_Previews: PreviewProvider {
   static var previews: some View {
-    SolsticeOverview()
+    SolsticeOverview(activeSheet: .constant(nil))
   }
 }

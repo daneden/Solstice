@@ -98,7 +98,7 @@ struct SunCalendarView: View {
   }
   
   func monthAbbreviationFromInt(_ month: Int) -> String {
-    let ma = Calendar.current.shortMonthSymbols
+    let ma = Calendar.current.veryShortMonthSymbols
     return ma[month]
   }
 }
