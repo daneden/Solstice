@@ -28,6 +28,13 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Solstice uses your location to accurately measure the local sunrise/sunset times</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Use Siri to quickly find out about today’s remaining daylight</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>ViewDaylightIntent</string>
+		<string>ViewRemainingDaylightIntent</string>
+	</array>
 	<key>NSWidgetWantsLocation</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

@@ -16,6 +16,11 @@
 		711DFB3725AE03700004AC46 /* ShakeGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DFB3425AE03700004AC46 /* ShakeGesture.swift */; };
 		711DFB4D25AE1B2D0004AC46 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */; };
 		712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712F90FA25AF439400CC8D7E /* SunCalendarView.swift */; };
+		71350CC626230BBA00F5F96E /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71D1BB972622240400A17E47 /* Intents.framework */; };
+		71350CC926230BBA00F5F96E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71350CC826230BBA00F5F96E /* IntentHandler.swift */; };
+		71350CDD26230BBA00F5F96E /* SolsticeIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 71350CC526230BBA00F5F96E /* SolsticeIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		71350CE926230BD600F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; };
+		71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; };
 		7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
 		71682AE225DD923400487ECA /* View.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71682AE125DD923400487ECA /* View.extension.swift */; };
 		7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090525A4D6D2002ED383 /* SolsticeApp.swift */; };
@@ -30,6 +35,24 @@
 		71ABE16925C5A83100A52F35 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71B8EA0225C6FE09008E44F6 /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71B8EA0125C6FE09008E44F6 /* Time */; };
 		71B8EA0625C6FE39008E44F6 /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71B8EA0525C6FE39008E44F6 /* Time */; };
+		71C0418326230DFB00A828AC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
+		71C0418D26230E0300A828AC /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
+		71C0419726230E0B00A828AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
+		71C041A126230E1500A828AC /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
+		71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
+		71C041B526230E2600A828AC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
+		71C041BF26230E2C00A828AC /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
+		71C041CA26230E3A00A828AC /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71C041C926230E3A00A828AC /* Time */; };
+		71C041D9262310EB00A828AC /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
+		71C041F926231D1A00A828AC /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71350CC826230BBA00F5F96E /* IntentHandler.swift */; };
+		71C042072623219000A828AC /* AddVoiceShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C042062623219000A828AC /* AddVoiceShortcutView.swift */; };
+		71C042082623219000A828AC /* AddVoiceShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C042062623219000A828AC /* AddVoiceShortcutView.swift */; };
+		71C0420E262321A600A828AC /* EditVoiceShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C0420D262321A600A828AC /* EditVoiceShortcutView.swift */; };
+		71C0420F262321A600A828AC /* EditVoiceShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C0420D262321A600A828AC /* EditVoiceShortcutView.swift */; };
+		71C04215262321BD00A828AC /* IntentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C04214262321BD00A828AC /* IntentButton.swift */; };
+		71C04216262321BD00A828AC /* IntentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C04214262321BD00A828AC /* IntentButton.swift */; };
+		71C0421C262321CF00A828AC /* IntentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C0421B262321CF00A828AC /* IntentView.swift */; };
+		71C0421D262321CF00A828AC /* IntentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C0421B262321CF00A828AC /* IntentView.swift */; };
 		71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */; };
 		71C8843225A90A2D0009F2A1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C8843125A90A2D0009F2A1 /* WidgetKit.framework */; };
 		71C8843425A90A2D0009F2A1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C8843325A90A2D0009F2A1 /* SwiftUI.framework */; };
@@ -52,6 +75,7 @@
 		71C884D625A9B93D0009F2A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
 		71C884D725A9B93D0009F2A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
 		71C884E325A9C3DA0009F2A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */; };
+		71D1BC332622F39D00A17E47 /* SolsticeCountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1BC322622F39D00A17E47 /* SolsticeCountdownWidgetView.swift */; };
 		71E5001425B77C5000C43609 /* NotificationPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5001325B77C5000C43609 /* NotificationPreview.swift */; };
 		71E5002725B7909F00C43609 /* SolarTimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5002625B7909F00C43609 /* SolarTimeMachine.swift */; };
 		71E5004425B8384000C43609 /* UIScreen.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5004325B8384000C43609 /* UIScreen.extension.swift */; };
@@ -64,6 +88,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		71350CDB26230BBA00F5F96E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7190090025A4D6D2002ED383 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 71350CC426230BBA00F5F96E;
+			remoteInfo = SolsticeIntents;
+		};
 		71C8843B25A90A2D0009F2A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7190090025A4D6D2002ED383 /* Project object */;
@@ -81,6 +112,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				71C8843D25A90A2D0009F2A1 /* WidgetExtension.appex in Embed App Extensions */,
+				71350CDD26230BBA00F5F96E /* SolsticeIntents.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +128,10 @@
 		711DFB3425AE03700004AC46 /* ShakeGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeGesture.swift; sourceTree = "<group>"; };
 		711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		712F90FA25AF439400CC8D7E /* SunCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunCalendarView.swift; sourceTree = "<group>"; };
+		71350CC526230BBA00F5F96E /* SolsticeIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SolsticeIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		71350CC826230BBA00F5F96E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		71350CCA26230BBA00F5F96E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71350CE826230BD600F5F96E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.extension.swift; sourceTree = "<group>"; };
 		71682AE125DD923400487ECA /* View.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.extension.swift; sourceTree = "<group>"; };
 		7190090525A4D6D2002ED383 /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
@@ -108,6 +144,10 @@
 		719A3FB925AF9ECA003BE97D /* Filler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filler.swift; sourceTree = "<group>"; };
 		71A36C1E25A6065F004F527B /* Date.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.extension.swift; sourceTree = "<group>"; };
 		71ABE16725C5A83100A52F35 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		71C042062623219000A828AC /* AddVoiceShortcutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVoiceShortcutView.swift; sourceTree = "<group>"; };
+		71C0420D262321A600A828AC /* EditVoiceShortcutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVoiceShortcutView.swift; sourceTree = "<group>"; };
+		71C04214262321BD00A828AC /* IntentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentButton.swift; sourceTree = "<group>"; };
+		71C0421B262321CF00A828AC /* IntentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentView.swift; sourceTree = "<group>"; };
 		71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeOverview.swift; sourceTree = "<group>"; };
 		71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C8843125A90A2D0009F2A1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -123,6 +163,9 @@
 		71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71CDF93725AA395500C93BCD /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
 		71CDF93825AA398900C93BCD /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
+		71D1BB972622240400A17E47 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		71D1BBA22622240400A17E47 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = Library/Frameworks/IntentsUI.framework; sourceTree = DEVELOPER_DIR; };
+		71D1BC322622F39D00A17E47 /* SolsticeCountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCountdownWidgetView.swift; sourceTree = "<group>"; };
 		71E5001325B77C5000C43609 /* NotificationPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreview.swift; sourceTree = "<group>"; };
 		71E5002625B7909F00C43609 /* SolarTimeMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimeMachine.swift; sourceTree = "<group>"; };
 		71E5004325B8384000C43609 /* UIScreen.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.extension.swift; sourceTree = "<group>"; };
@@ -133,6 +176,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		71350CC226230BBA00F5F96E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71350CC626230BBA00F5F96E /* Intents.framework in Frameworks */,
+				71C041CA26230E3A00A828AC /* Time in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7190090925A4D6D5002ED383 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -154,6 +206,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		71350CC726230BBA00F5F96E /* SolsticeIntents */ = {
+			isa = PBXGroup;
+			children = (
+				71350CC826230BBA00F5F96E /* IntentHandler.swift */,
+				71350CCA26230BBA00F5F96E /* Info.plist */,
+				71350CE826230BD600F5F96E /* Intents.intentdefinition */,
+			);
+			path = SolsticeIntents;
+			sourceTree = "<group>";
+		};
 		719008FF25A4D6D2002ED383 = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +224,7 @@
 				7190090425A4D6D2002ED383 /* Shared */,
 				7190090E25A4D6D5002ED383 /* iOS */,
 				71C8843525A90A2D0009F2A1 /* Widget */,
+				71350CC726230BBA00F5F96E /* SolsticeIntents */,
 				71C8843025A90A2D0009F2A1 /* Frameworks */,
 				7190090D25A4D6D5002ED383 /* Products */,
 			);
@@ -194,6 +257,7 @@
 			children = (
 				7190090C25A4D6D5002ED383 /* Solstice.app */,
 				71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */,
+				71350CC526230BBA00F5F96E /* SolsticeIntents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -205,6 +269,17 @@
 				71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */,
 			);
 			path = iOS;
+			sourceTree = "<group>";
+		};
+		71C042052623217B00A828AC /* Intent Views */ = {
+			isa = PBXGroup;
+			children = (
+				71C042062623219000A828AC /* AddVoiceShortcutView.swift */,
+				71C0420D262321A600A828AC /* EditVoiceShortcutView.swift */,
+				71C04214262321BD00A828AC /* IntentButton.swift */,
+				71C0421B262321CF00A828AC /* IntentView.swift */,
+			);
+			path = "Intent Views";
 			sourceTree = "<group>";
 		};
 		71C883FF25A7AF9F0009F2A1 /* Extensions */ = {
@@ -241,6 +316,8 @@
 			children = (
 				71C8843125A90A2D0009F2A1 /* WidgetKit.framework */,
 				71C8843325A90A2D0009F2A1 /* SwiftUI.framework */,
+				71D1BB972622240400A17E47 /* Intents.framework */,
+				71D1BBA22622240400A17E47 /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -253,6 +330,7 @@
 				71C8843A25A90A2D0009F2A1 /* Info.plist */,
 				71C8848825A90DD40009F2A1 /* SolsticeWidgetOverview.swift */,
 				71C884A525A911D20009F2A1 /* VisualEffectView.swift */,
+				71D1BC322622F39D00A17E47 /* SolsticeCountdownWidgetView.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -260,6 +338,7 @@
 		71E5001225B77C4300C43609 /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
+				71C042052623217B00A828AC /* Intent Views */,
 				711DFB4C25AE1B2D0004AC46 /* CustomSlider.swift */,
 				71E5001325B77C5000C43609 /* NotificationPreview.swift */,
 				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
@@ -271,6 +350,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		71350CC426230BBA00F5F96E /* SolsticeIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71350CE126230BBA00F5F96E /* Build configuration list for PBXNativeTarget "SolsticeIntents" */;
+			buildPhases = (
+				71350CC126230BBA00F5F96E /* Sources */,
+				71350CC226230BBA00F5F96E /* Frameworks */,
+				71350CC326230BBA00F5F96E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SolsticeIntents;
+			packageProductDependencies = (
+				71C041C926230E3A00A828AC /* Time */,
+			);
+			productName = SolsticeIntents;
+			productReference = 71350CC526230BBA00F5F96E /* SolsticeIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7190090B25A4D6D5002ED383 /* Solstice (iOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7190093625A4D6D5002ED383 /* Build configuration list for PBXNativeTarget "Solstice (iOS)" */;
@@ -284,6 +383,7 @@
 			);
 			dependencies = (
 				71C8843C25A90A2D0009F2A1 /* PBXTargetDependency */,
+				71350CDC26230BBA00F5F96E /* PBXTargetDependency */,
 			);
 			name = "Solstice (iOS)";
 			packageProductDependencies = (
@@ -319,9 +419,12 @@
 		7190090025A4D6D2002ED383 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1230;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1230;
 				TargetAttributes = {
+					71350CC426230BBA00F5F96E = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					7190090B25A4D6D5002ED383 = {
 						CreatedOnToolsVersion = 12.3;
 					};
@@ -348,11 +451,19 @@
 			targets = (
 				7190090B25A4D6D5002ED383 /* Solstice (iOS) */,
 				71C8842E25A90A2D0009F2A1 /* WidgetExtension */,
+				71350CC426230BBA00F5F96E /* SolsticeIntents */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		71350CC326230BBA00F5F96E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7190090A25A4D6D5002ED383 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -373,6 +484,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		71350CC126230BBA00F5F96E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71C0419726230E0B00A828AC /* Constants.swift in Sources */,
+				71350CE926230BD600F5F96E /* Intents.intentdefinition in Sources */,
+				71C0418326230DFB00A828AC /* SolarCalculator.swift in Sources */,
+				71C042082623219000A828AC /* AddVoiceShortcutView.swift in Sources */,
+				71350CC926230BBA00F5F96E /* IntentHandler.swift in Sources */,
+				71C041B526230E2600A828AC /* LocationManager.swift in Sources */,
+				71C04216262321BD00A828AC /* IntentButton.swift in Sources */,
+				71C0421D262321CF00A828AC /* IntentView.swift in Sources */,
+				71C0420F262321A600A828AC /* EditVoiceShortcutView.swift in Sources */,
+				71C041BF26230E2C00A828AC /* TimeInterval.extension.swift in Sources */,
+				71C041A126230E1500A828AC /* LocationService.swift in Sources */,
+				71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */,
+				71C041D9262310EB00A828AC /* Date.extension.swift in Sources */,
+				71C0418D26230E0300A828AC /* Solar.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7190090825A4D6D5002ED383 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -395,8 +527,11 @@
 				71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */,
 				7190094725A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093025A4D6D5002ED383 /* ContentView.swift in Sources */,
+				71C0421C262321CF00A828AC /* IntentView.swift in Sources */,
+				71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */,
 				71E5006B25B863DA00C43609 /* AppStorage.extension.swift in Sources */,
 				711AE61225A718BF00B363BA /* PermissionDeniedView.swift in Sources */,
+				71C0420E262321A600A828AC /* EditVoiceShortcutView.swift in Sources */,
 				71C884BC25A913770009F2A1 /* SettingsView.swift in Sources */,
 				71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */,
 				7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
@@ -404,8 +539,11 @@
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
 				71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */,
 				711AE60B25A6711C00B363BA /* LandingView.swift in Sources */,
+				71C04215262321BD00A828AC /* IntentButton.swift in Sources */,
 				711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */,
+				71C041F926231D1A00A828AC /* IntentHandler.swift in Sources */,
 				71C884D625A9B93D0009F2A1 /* Constants.swift in Sources */,
+				71C042072623219000A828AC /* AddVoiceShortcutView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +563,7 @@
 				711DFB3725AE03700004AC46 /* ShakeGesture.swift in Sources */,
 				71E5004625B8384000C43609 /* UIScreen.extension.swift in Sources */,
 				71C8849425A90DE50009F2A1 /* SolsticeWidgetOverview.swift in Sources */,
+				71D1BC332622F39D00A17E47 /* SolsticeCountdownWidgetView.swift in Sources */,
 				71C8844725A90A3E0009F2A1 /* SundialView.swift in Sources */,
 				71C8846B25A90A9F0009F2A1 /* TimeInterval.extension.swift in Sources */,
 				71C8845325A90A830009F2A1 /* SolarCalculator.swift in Sources */,
@@ -436,6 +575,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		71350CDC26230BBA00F5F96E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 71350CC426230BBA00F5F96E /* SolsticeIntents */;
+			targetProxy = 71350CDB26230BBA00F5F96E /* PBXContainerItemProxy */;
+		};
 		71C8843C25A90A2D0009F2A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 71C8842E25A90A2D0009F2A1 /* WidgetExtension */;
@@ -444,6 +588,53 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		71350CE226230BBA00F5F96E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				INFOPLIST_FILE = SolsticeIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.SolsticeIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		71350CE326230BBA00F5F96E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				INFOPLIST_FILE = SolsticeIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.SolsticeIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		7190093425A4D6D5002ED383 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -563,7 +754,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -589,7 +780,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -615,7 +806,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
@@ -641,7 +832,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
@@ -664,6 +855,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		71350CE126230BBA00F5F96E /* Build configuration list for PBXNativeTarget "SolsticeIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71350CE226230BBA00F5F96E /* Debug */,
+				71350CE326230BBA00F5F96E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7190090325A4D6D2002ED383 /* Build configuration list for PBXProject "Solstice" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -711,6 +911,11 @@
 			productName = Time;
 		};
 		71B8EA0525C6FE39008E44F6 /* Time */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
+			productName = Time;
+		};
+		71C041C926230E3A00A828AC /* Time */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
 			productName = Time;

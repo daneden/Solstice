@@ -30,4 +30,11 @@ extension Date {
     components.second = -1
     return Calendar.current.date(byAdding: components, to: startOfMonth)!
   }
+  
+  var isInPast: Bool {
+    let now = Date()
+    return self < now
+  }
+  
+  var isInFuture: Bool { !isInPast }
 }

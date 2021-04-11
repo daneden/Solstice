@@ -16,7 +16,7 @@ struct LandingView: View {
         .padding(.bottom)
       
       Text("Solstice tells you how much daylight there is today compared to yesterday.")
-        .font(Font.system(.largeTitle, design: .rounded).bold())
+        .font(.largeTitle)
       
       Text("For savouring the minutes you have, or looking forward to the minutes you'll gain.")
         .padding(.vertical)

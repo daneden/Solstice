@@ -21,8 +21,7 @@ struct Provider: TimelineProvider {
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
     let timeline = Timeline(
       entries: [SimpleEntry(date: Date())],
-      // Update every 5min
-      policy: .after(.init(timeIntervalSinceNow: 5 * 60))
+      policy: .atEnd
     )
     
     completion(timeline)
@@ -33,7 +32,7 @@ struct SimpleEntry: TimelineEntry {
   let date: Date
 }
 
-struct WidgetEntryView : View {
+struct SolsticeWidgetOverviewEntryView: View {
   var entry: Provider.Entry
   
   var body: some View {
@@ -46,22 +45,50 @@ struct WidgetEntryView : View {
   }
 }
 
+struct SolsticeCountdownWidgetEntryView: View {
+  var entry: Provider.Entry
+  
+  var body: some View {
+    SolsticeCountdownWidgetView()
+  }
+}
+
 @main
-struct SolsticeWidget: Widget {
-  let kind: String = "Widget"
+struct SolsticeWidgets: WidgetBundle {
+  var body: some Widget {
+    SolsticeOverviewWidget()
+    SolsticeCountdownWidget()
+  }
+}
+
+struct SolsticeOverviewWidget: Widget {
+  let kind: String = "OverviewWidget"
   
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: kind, provider: Provider()) { entry in
-      WidgetEntryView(entry: entry)
+      SolsticeWidgetOverviewEntryView(entry: entry)
     }
     .configurationDisplayName("Daylight Today")
     .description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
   }
 }
 
+struct SolsticeCountdownWidget: Widget {
+  let kind: String = "CountdownWidget"
+  
+  var body: some WidgetConfiguration {
+    StaticConfiguration(kind: kind, provider: Provider()) { entry in
+      SolsticeCountdownWidgetEntryView(entry: entry)
+    }
+    .configurationDisplayName("Sunrise/Sunset Countdown")
+    .description("See the time remaining until the next sunrise/sunset")
+    .supportedFamilies([.systemSmall, .systemMedium])
+  }
+}
+
 struct Widget_Previews: PreviewProvider {
   static var previews: some View {
-    WidgetEntryView(entry: SimpleEntry(date: Date()))
+    SolsticeWidgetOverviewEntryView(entry: SimpleEntry(date: Date()))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }
