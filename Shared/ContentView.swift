@@ -85,6 +85,7 @@ struct ContentView: View {
         SunCalendarView()
           .padding(.vertical, 8)
       }
+      .listStyle(.plain)
       .toolbar {
         Button(action: { self.activeSheet = .settings }) {
           Label("Settings", systemImage: "gearshape")

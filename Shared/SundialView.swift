@@ -66,11 +66,6 @@ struct SundialView: View {
     return CGFloat(result + .pi / 2)
   }
   
-  /**
-   The sundial should be animated, but only shortly after mounting, hence the `nil` setting here
-   */
-  @State var sundialAnimation: Animation? = nil
-  
   var body: some View {
     GeometryReader { geometry in
       ZStack {
@@ -95,12 +90,6 @@ struct SundialView: View {
       .clipShape(Rectangle())
       .drawingGroup()
       .overlay(SundialInnerShadowOverlay())
-      .animation(sundialAnimation)
-      .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          sundialAnimation = easingSpringAnimation
-        }
-      }
     }
   }
 }
