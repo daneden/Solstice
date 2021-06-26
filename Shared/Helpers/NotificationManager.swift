@@ -19,6 +19,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   @AppStorage(UDValues.notificationsIncludeDaylightDuration) var notifsIncludeDaylightDuration
   @AppStorage(UDValues.notificationsIncludeSolsticeCountdown) var notifsIncludeSolsticeCountdown
   @AppStorage(UDValues.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
+  @AppStorage(UDValues.sadPreference) var sadPreference
   
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
@@ -104,7 +105,13 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           repeats: false
         )
         
-        let notifContent = self.buildNotificationContent(for: targetNotificationTime)
+        guard let notifContent = self.buildNotificationContent(for: targetNotificationTime) else {
+          if let task = task {
+            task.setTaskCompleted(success: true)
+          }
+          return
+        }
+        
         content.title = notifContent.title
         content.body = notifContent.body
         
@@ -127,8 +134,12 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     }
   }
   
+  enum Context {
+    case preview, notification
+  }
+  
   // MARK: Notification content builder
-  func buildNotificationContent(for date: Date) -> NotificationContent {
+  func buildNotificationContent(for date: Date, in context: Context = .notification) -> NotificationContent? {
     var content = (title: "", body: "")
     
     let solsticeCalculator = SolarCalculator(baseDate: date)
@@ -136,6 +147,10 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     let duration = suntimes.duration.colloquialTimeString
     let difference = suntimes.difference(from: solsticeCalculator.yesterday)
     let differenceString = difference.colloquialTimeString
+    
+    if difference < 0 && sadPreference == .suppressNotifications && context != .preview {
+      return nil
+    }
     
     let components = Calendar.current.dateComponents([.hour], from: date)
     let hour = components.hour ?? 0
@@ -163,7 +178,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     }
     
     if self.notifsIncludeDaylightChange {
-      content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
+      if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
+        content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
+      }
     }
     
     if self.notifsIncludeSolsticeCountdown {

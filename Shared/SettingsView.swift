@@ -23,6 +23,7 @@ struct SettingsView: View {
   @AppStorage(UDValues.notificationsIncludeDaylightDuration) var notifsIncludeDaylightDuration
   @AppStorage(UDValues.notificationsIncludeSolsticeCountdown) var notifsIncludeSolsticeCountdown
   @AppStorage(UDValues.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
+  @AppStorage(UDValues.sadPreference) var sadPreference
   
   // Local state manager for notification times
   @State var chosenNotifTime: Date = defaultNotificationDate
@@ -52,49 +53,62 @@ struct SettingsView: View {
         Section(
           header: Text("Notifications")
         ) {
-          Toggle(isOn: $notifsEnabled) {
+          Toggle(isOn: $notifsEnabled.animation()) {
             Text("Enable Daily Notifications")
-          }.toggleStyle(SwitchToggleStyle(tint: .accentColor))
-          
-          
-          DatePicker(
-            "Notification Time",
-            selection: $chosenNotifTime,
-            displayedComponents: [.hourAndMinute]
-          ).onChange(of: chosenNotifTime) { _ in
-            notifTime = chosenNotifTime.timeIntervalSince1970
-            notificationManager.adjustSchedule()
-          }.disabled(!notifsEnabled)
-          
-          DisclosureGroup(
-            isExpanded: $fragmentSettingsVisible,
-            content: {
-              ForEach(notificationFragments, id: \.label) { fragment in
-                Toggle(fragment.label, isOn: fragment.value)
-                  .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                  .disabled(!notifsEnabled)
-              }
-              
-              VStack(alignment: .leading) {
-                Text("Notification Preview")
-                  .font(.caption)
-                  .foregroundColor(.secondary)
-                NotificationPreview()
-              }.padding(.vertical, 8)
-            },
-            label: {
-              Button(action: { withAnimation { self.fragmentSettingsVisible.toggle() } }) {
-                HStack {
-                  Text("Customise Notification Content").foregroundColor(.primary)
-                  Spacer()
-                }.contentShape(Rectangle())
-              }
-            }
-          )
-          
+          }
         }
         
-        Section(header: Text("Siri")) {
+        if notifsEnabled {
+          Section {
+            DatePicker(
+              "Notification Time",
+              selection: $chosenNotifTime,
+              displayedComponents: [.hourAndMinute]
+            ).onChange(of: chosenNotifTime) { _ in
+              notifTime = chosenNotifTime.timeIntervalSince1970
+              notificationManager.adjustSchedule()
+            }
+            
+            DisclosureGroup(
+              isExpanded: $fragmentSettingsVisible,
+              content: {
+                ForEach(notificationFragments, id: \.label) { fragment in
+                  Toggle(fragment.label, isOn: fragment.value)
+                }
+                
+                VStack(alignment: .leading) {
+                  Text("Notification Preview")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                  NotificationPreview()
+                }.padding(.vertical, 8)
+              },
+              label: {
+                Button(action: { withAnimation { self.fragmentSettingsVisible.toggle() } }) {
+                  HStack {
+                    Text("Customise Notification Content").foregroundColor(.primary)
+                    Spacer()
+                  }.contentShape(Rectangle())
+                }
+              }
+            )
+          }
+          
+          Section(footer: Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")) {
+            Picker("SAD Adjustment", selection: $sadPreference) {
+              Section {
+                ForEach(SADPreference.allCases, id: \.self) { preference in
+                  Text(preference.rawValue)
+                }
+              }
+            }
+          }
+        }
+        
+        Section(
+          header: Text("Siri"),
+          footer: Text("Create more Solstice shortcuts in the Shortcuts app")
+        ) {
           VStack(alignment: .leading) {
             Text("View Remaining Daylight")
               .padding(.bottom, 1)
@@ -110,8 +124,6 @@ struct SettingsView: View {
           Button(action: { UIApplication.shared.open(URL(string: "shortcuts://")!) }) {
             Label("Open Shortcuts App", systemImage: "square.2.stack.3d")
           }
-          
-          Text("Create more Solstice shortcuts in the Shortcuts app").font(.caption).foregroundColor(.secondary)
         }
       }
       .navigationTitle(Text("Settings"))

@@ -90,9 +90,10 @@ struct SundialView: View {
               .frame(height: 1, alignment: .top),
             alignment: .top
           )
-          .offset(y: (offset * waveSize) + scrimCompensation / 2)
+          .offset(y: (offset * waveSize) + scrimCompensation)
       }
       .clipShape(Rectangle())
+      .drawingGroup()
       .overlay(SundialInnerShadowOverlay())
       .animation(sundialAnimation)
       .onAppear {

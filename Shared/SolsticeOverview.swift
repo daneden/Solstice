@@ -13,46 +13,37 @@ struct SolsticeOverview: View {
   @Binding var activeSheet: SheetPresentationState?
   
   var body: some View {
-    VStack(alignment: .leading) {
+    Group {
       if let placeName = getPlaceName() {
         Button(action: {
           self.activeSheet = .location
         }) {
-        Label(placeName, systemImage: "location.fill")
-          .font(Font.subheadline.bold())
-        }
-        .buttonStyle(SecondaryButtonStyle())
+          Label(placeName, systemImage: "location.fill")
+        }.buttonStyle(BorderlessButtonStyle())
       }
       
-      Text("\(calculator.differenceString) daylight today than yesterday.")
-        .lineLimit(4)
-        .font(.largeTitle)
-        .padding(.vertical).fixedSize(horizontal: false, vertical: true)
+      // MARK: Sunrise
       
-      // MARK: Metadata
-      VStack(alignment: .leading, spacing: 12) {
-        // MARK: Sunrise
-        Divider()
-        if let begins = calculator.today.begins {
-          HStack {
-            Label("Sunrise", systemImage: "sunrise.fill")
-            Spacer()
-            Text("\(begins, style: .time)")
-          }
+      if let begins = calculator.today.begins {
+        HStack {
+          Label("Sunrise", systemImage: "sunrise.fill")
+          Spacer()
+          Text("\(begins, style: .time)")
         }
-        
-        // MARK: Sunset
-        Divider()
-        if let ends = calculator.today.ends {
-          HStack {
-            Label("Sunset", systemImage: "sunset.fill")
-            Spacer()
-            Text("\(ends, style: .time)")
-          }
+      }
+      
+      // MARK: Sunset
+      
+      if let ends = calculator.today.ends {
+        HStack {
+          Label("Sunset", systemImage: "sunset.fill")
+          Spacer()
+          Text("\(ends, style: .time)")
         }
-        
-        // MARK: Duration
-        Divider()
+      }
+      
+      // MARK: Duration
+      VStack(alignment: .leading, spacing: 8) {
         if let duration = calculator.today.duration {
           HStack {
             Label("Total Daylight", systemImage: "sun.max")
@@ -63,12 +54,12 @@ struct SolsticeOverview: View {
         
         if calculator.today.ends.isInFuture && calculator.today.begins.isInPast {
           HStack {
-            Text("Total Remaining")
+            Label("Total Remaining", systemImage: "hourglass")
             Spacer()
             Text("\(Date().distance(to: calculator.today.ends).colloquialTimeString)")
           }.font(.footnote).foregroundColor(.secondary)
         }
-      }
+      }.padding(.vertical, 4)
     }
   }
   

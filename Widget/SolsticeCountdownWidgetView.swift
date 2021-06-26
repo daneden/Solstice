@@ -22,7 +22,7 @@ struct SolsticeCountdownWidgetView: View {
     case .systemSmall:
       return .headline
     default:
-      return .title
+      return .title2
     }
   }
   
@@ -33,8 +33,8 @@ struct SolsticeCountdownWidgetView: View {
           .font(displaySize)
         Spacer()
         Text("\(date, style: .relative) until sunset")
-          .font(displaySize)
-          .lineLimit(nil)
+          .font(displaySize.weight(.medium))
+          .lineLimit(3)
         
         Text("\(date, style: .time)")
           .font(.footnote)
@@ -43,8 +43,8 @@ struct SolsticeCountdownWidgetView: View {
           .font(displaySize)
         Spacer()
         Text("\(date, style: .relative) until sunrise")
-          .font(displaySize)
-          .lineLimit(nil)
+          .font(displaySize.weight(.medium))
+          .lineLimit(3)
         
         Text("\(date, style: .time)")
           .font(.footnote)

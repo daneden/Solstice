@@ -13,7 +13,10 @@ struct NotificationPreview: View {
   var bodyContent: String = ""
   
   init() {
-    let content = notificationManager.buildNotificationContent(for: Date())
+    guard let content = notificationManager.buildNotificationContent(for: Date(), in: .preview) else {
+      return
+    }
+    
     title = content.title
     bodyContent = content.body
   }

@@ -15,6 +15,12 @@ let defaultNotificationDate = Calendar.current.date(bySettingHour: 8, minute: 0,
 let solsticeSuiteName = "group.me.daneden.Solstice"
 let solsticeUDStore = UserDefaults(suiteName: solsticeSuiteName)
 
+enum SADPreference: String, CaseIterable, RawRepresentable {
+  case none = "No change"
+  case removeDifference = "Remove daylight gain/loss"
+  case suppressNotifications = "Suppress notifications altogether"
+}
+
 struct UDValues {
   typealias Value = UDValuePair
   
@@ -30,6 +36,7 @@ struct UDValues {
   static let notificationsIncludeDaylightDuration: Value = ("notifsIncludeDaylightDuration", true)
   static let notificationsIncludeDaylightChange: Value = ("notifsIncludeDaylightChange", true)
   static let notificationsIncludeSolsticeCountdown: Value = ("notifsIncludeSolsticeCountdown", false)
+  static let sadPreference: Value<SADPreference> = ("sadPreverence", .none)
   
   // Cached Location Results
   static let locations: Value<[Location]> = ("locations", [])

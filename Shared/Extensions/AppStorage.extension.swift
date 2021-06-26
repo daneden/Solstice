@@ -19,4 +19,8 @@ extension AppStorage {
   init(_ kv: UDValuePair<Value>) where Value == TimeInterval {
     self.init(wrappedValue: kv.value, kv.key, store: solsticeUDStore)
   }
+  
+  init(_ kv: UDValuePair<Value>) where Value: RawRepresentable, Value.RawValue == String {
+    self.init(wrappedValue: kv.value, kv.key, store: solsticeUDStore)
+  }
 }

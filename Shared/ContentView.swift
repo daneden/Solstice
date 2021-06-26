@@ -28,47 +28,71 @@ struct ContentView: View {
   
   @State var activeSheet: SheetPresentationState?
   
+  var waveSize: CGFloat = 80
+  @State var isPickingDate = false
+  
   var body: some View {
-    ZStack(alignment: .top) {
-      ScrollView {
-        Group {
-          VStack {
-            Spacer(minLength: 64)
-            SolarTimeMachine(
-              dateOffset: $dateOffset,
-              selectedDate: $selectedDate
-            )
-            Spacer()
+    NavigationView {
+      List {
+        VStack(alignment: .leading) {
+          SundialView(waveSize: waveSize)
+            .frame(maxWidth: .infinity, idealHeight: waveSize * 2.5)
+            .padding(.top)
             
-            SolsticeOverview(activeSheet: $activeSheet)
-          }
-          
-          Divider()
-          
-          VStack(alignment: .leading, spacing: 12) {
-            Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
-            
-            Divider()
-            
-            SunCalendarView()
-          }
+          Text("\(calculator.differenceString) daylight today than yesterday.")
+            .lineLimit(4)
+            .font(.system(.title, design: .rounded).weight(.medium))
+            .padding(.vertical)
         }
-        .padding()
+        
+        SolsticeOverview(activeSheet: $activeSheet)
+        
+        DisclosureGroup(
+          isExpanded: $isPickingDate,
+          content: {
+            Slider(value: $dateOffset, in: -182...182, step: 1,
+                   minimumValueLabel: Text("Past").font(.caption),
+                   maximumValueLabel: Text("Future").font(.caption)) {
+              Text("Chosen date: \(selectedDate, style: .date)")
+            }
+            .accentColor(.systemFill)
+            .foregroundColor(.secondary)
+            
+            Button(action: { withAnimation { dateOffset = 0 }}) {
+              HStack {
+                Label("Reset", systemImage: "arrow.counterclockwise")
+                Spacer()
+              }
+              .contentShape(Rectangle())
+            }.disabled(dateOffset == 0).buttonStyle(BorderlessButtonStyle())
+          },
+          label: {
+            HStack {
+              Label("\(selectedDate, style: .date)", systemImage: "calendar.badge.clock")
+              Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .onTapGesture {
+              withAnimation { isPickingDate.toggle() }
+            }
+          }
+        )
+        
+        Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
+          .padding(.vertical, 8)
+        
+        SunCalendarView()
+          .padding(.vertical, 8)
       }
-      
-      LinearGradient(gradient: .init(colors: [Color.systemBackground.opacity(0.95), Color.systemBackground.opacity(0.1)]), startPoint: .center, endPoint: .bottom)
-        .frame(height: 88).edgesIgnoringSafeArea(.top)
-      
-      HStack {
-        Spacer()
+      .toolbar {
         Button(action: { self.activeSheet = .settings }) {
           Label("Settings", systemImage: "gearshape")
-            .labelStyle(IconOnlyLabelStyle())
         }
-        .buttonStyle(SecondaryButtonStyle())
-      }.padding()
+      }
+      .navigationTitle("Solstice")
     }
-    .accentColor(.systemTeal)
+    .accentColor(.accentColor)
     .sheet(item: $activeSheet) { item in
       switch item {
       case .settings:

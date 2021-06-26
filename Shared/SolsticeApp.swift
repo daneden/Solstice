@@ -30,7 +30,6 @@ struct SolsticeApp: App {
       .onDisappear {
         (UIApplication.shared.delegate as! AppDelegate).submitBackgroundTask()
       }
-      .accentColor(.accentColor)
       .navigationViewStyle(StackNavigationViewStyle())
     }
   }
