@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SundialView: View {
+  @Environment(\.colorScheme) var colorScheme
   @ObservedObject var calculator: SolarCalculator = .shared
   var waveSize: CGFloat = 80.0
   
@@ -19,18 +20,11 @@ struct SundialView: View {
   }
   
   /**
-   Creates a margin around the sundial to clip the sun's shadow/glow
-   */
-  private var scrimCompensation: CGFloat {
-    waveSize / 2
-  }
-  
-  /**
    Determines the proportion of the day that has daylight
    */
   private var offset: CGFloat {
-    let daylightBegins = calculator.today.begins
-    let daylightEnds = calculator.today.ends
+    let daylightBegins = calculator.today.nauticalBegins
+    let daylightEnds = calculator.today.nauticalEnds
     let daylightLength = daylightBegins.distance(to: daylightEnds)
     let dayLength = dayBegins.distance(to: dayEnds)
     
@@ -67,81 +61,103 @@ struct SundialView: View {
   }
   
   var body: some View {
-    GeometryReader { geometry in
-      ZStack {
-        SundialWave(size: waveSize, phase: phase)
+    Canvas { context, size in
+      let sunSize = 24.0
+      let trackWidth = 2.0
+      let sunSizeOffset = sunSize / 2
+      
+      let x = (currentPosition * size.width) - sunSizeOffset
+      let y = ((size.height / 2) + (sin((currentPosition * .pi * 2) + phase) * waveSize)) - sunSizeOffset
+      
+      context.drawLayer { context in
+        // Draw above-horizon elements
+        context.clip(to: Path(CGRect(origin: .zero, size: size.applying(CGAffineTransform(scaleX: 1.0, y: offset)))))
         
-        SundialSun(
-          frameWidth: geometry.size.width,
-          position: currentPosition,
-          phase: phase,
-          arcSize: waveSize
+        context.stroke(
+          wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phase),
+          with: .color(.opaqueSeparator),
+          lineWidth: trackWidth
         )
         
-        Color.systemBackground.opacity(0.55)
-          .frame(height: (waveSize * 2) - (waveSize * offset) + scrimCompensation)
-          .overlay(
-            Color.tertiarySystemGroupedBackground
-              .frame(height: 1, alignment: .top),
-            alignment: .top
-          )
-          .offset(y: (offset * waveSize) + scrimCompensation)
+        context.fill(
+          Path(ellipseIn: CGRect(x: x, y: y, width: sunSize, height: sunSize)),
+          with: .color(.primary)
+        )
+        
+        context.addFilter(.blur(radius: 10))
+        context.fill(
+          Path(ellipseIn: CGRect(x: x, y: y, width: sunSize, height: sunSize)),
+          with: .color(.primary.opacity(colorScheme == .dark ? 0.5 : 0.25))
+        )
       }
-      .clipShape(Rectangle())
-      .drawingGroup()
-      .overlay(SundialInnerShadowOverlay())
+      
+      context.drawLayer { context in
+        // Draw below-horizon elements
+        let strokeWidth = 2.0
+        let strokeOffset = strokeWidth / 2
+        
+        context.clip(to: Path(CGRect(origin: CGPoint(x: 0, y: size.height * offset), size: size.applying(CGAffineTransform(scaleX: 1.0, y: offset)))))
+        
+        context.stroke(
+          wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phase),
+          with: .color(.opaqueSeparator.opacity(0.45)),
+          lineWidth: trackWidth
+        )
+        
+        context.fill(
+          Path(ellipseIn: CGRect(x: x, y: y, width: sunSize, height: sunSize)),
+          with: .color(.systemBackground)
+        )
+        
+        context.stroke(
+          Path(ellipseIn: CGRect(x: x + strokeOffset, y: y + strokeOffset, width: sunSize - strokeWidth, height: sunSize - strokeWidth)),
+          with: .color(.primary.opacity(0.75)),
+          lineWidth: strokeWidth
+        )
+      }
+      
+      let overlayPathRect = CGRect(x: 0, y: (size.height * offset) - 1, width: size.width, height: size.height * 2)
+      context.stroke(Path(overlayPathRect), with: .color(.primary.opacity(0.15)))
+      
     }
-  }
-}
-
-struct SundialWave: View {
-  var size: CGFloat
-  var phase: CGFloat
-  var strokeWidth: CGFloat = 2.0
-  
-  var body: some View {
-    Wave(
-      amplitude: size,
-      frequency: .pi * 2,
-      phase: phase
-    )
-    .stroke(Color.opaqueSeparator, lineWidth: strokeWidth)
-  }
-}
-
-
-struct SundialSun: View {
-  @Environment(\.widgetFamily) var family
-  
-  @State var circleSize: CGFloat = 22.0
-  var sunColor = Color.primary
-  var frameWidth: CGFloat
-  var position: CGFloat
-  var phase: CGFloat
-  var arcSize: CGFloat
-  
-  var n: CGFloat {
-    position + phase
+    .overlay(SundialInnerShadowOverlay())
   }
   
-  var isWidget: Bool {
-    family == .systemLarge || family == .systemSmall || family == .systemMedium
-  }
-  
-  var body: some View {
-    let waveLength = frameWidth / (.pi * 2)
-    let relativeX = (position * frameWidth) / max(waveLength, 1.0)
-    let sine = sin(phase + relativeX)
-    let y = arcSize * sine
+  func wavePath(in size: CGSize, amplitude: CGFloat, frequency: CGFloat, phase: CGFloat = 0) -> Path {
+    let path = UIBezierPath()
     
-    Circle()
-      .frame(width: circleSize)
-      .foregroundColor(sunColor)
-      .shadow(color: sunColor.opacity(isWidget ? 0.4 : 0.6), radius: isWidget ? 5 : 10, x: 0.0, y: 0.0)
-      .offset(
-        x: (frameWidth * fmod(position, 1)) - (frameWidth / 2),
-        y: y
-      )
+    // calculate some important values up front
+    let width = CGFloat(size.width)
+    let height = CGFloat(size.height)
+    // let midWidth = width / 2
+    let midHeight = height / 2
+    
+    // split our total width up based on the frequency
+    let wavelength = width / frequency
+    
+    // plot the starting point
+    var relativeX = 0 / max(wavelength, 1.0)
+    var sine = sin(phase + relativeX)
+    var y = amplitude * sine + midHeight
+    
+    path.move(to: CGPoint(x: 0, y: y))
+    
+    // now count across individual horizontal points one by one
+    for x in stride(from: 0, through: width, by: 1) {
+      // find our current position relative to the wavelength
+      relativeX = x / wavelength
+      
+      // calculate the sine of that position
+      sine = sin(phase + relativeX)
+      
+      // multiply that sine by our strength to determine final offset, then move it down to the middle of our view
+      y = amplitude * sine + midHeight
+      
+      // add a line to here
+      path.addLine(to: CGPoint(x: x, y: y))
+    }
+    
+    return Path(path.cgPath)
   }
 }
 

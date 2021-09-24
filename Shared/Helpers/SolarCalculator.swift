@@ -16,6 +16,8 @@ typealias DaylightTime = (minutes: Int, seconds: Int)
 struct Daylight: Hashable {
   var begins: Date
   var ends: Date
+  var nauticalBegins = Date()
+  var nauticalEnds = Date()
   
   static var Default = Daylight(begins: Date(), ends: Date())
   
@@ -95,10 +97,13 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   private func createDaylight(from solar: Solar) -> Daylight {
-    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+    if let sunrise = solar.sunrise, let sunset = solar.sunset,
+       let bSunrise = solar.nauticalSunrise, let bSunset = solar.nauticalSunset {
       return Daylight(
         begins: applyTimezoneOffset(to: sunrise),
-        ends: applyTimezoneOffset(to: sunset)
+        ends: applyTimezoneOffset(to: sunset),
+        nauticalBegins: applyTimezoneOffset(to: bSunrise),
+        nauticalEnds: applyTimezoneOffset(to: bSunset)
       )
     }
     

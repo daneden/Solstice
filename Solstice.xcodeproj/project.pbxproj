@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		711AE5EA25A5ADC500B363BA /* WaveShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5E925A5ADC500B363BA /* WaveShape.swift */; };
 		711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
 		711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5FB25A5B35700B363BA /* VisualEffectView.swift */; };
 		711AE60B25A6711C00B363BA /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE60A25A6711C00B363BA /* LandingView.swift */; };
@@ -59,7 +58,6 @@
 		71C8843925A90A2D0009F2A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C8843825A90A2D0009F2A1 /* Assets.xcassets */; };
 		71C8843D25A90A2D0009F2A1 /* WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		71C8844725A90A3E0009F2A1 /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
-		71C8844D25A90A420009F2A1 /* WaveShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5E925A5ADC500B363BA /* WaveShape.swift */; };
 		71C8845325A90A830009F2A1 /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
 		71C8845F25A90A880009F2A1 /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
@@ -118,7 +116,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		711AE5E925A5ADC500B363BA /* WaveShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveShape.swift; sourceTree = "<group>"; };
 		711AE5F425A5B2FA00B363BA /* SundialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SundialView.swift; sourceTree = "<group>"; };
 		711AE5FB25A5B35700B363BA /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		711AE60A25A6711C00B363BA /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
@@ -299,7 +296,6 @@
 				71C884C225A91D060009F2A1 /* NotificationManager.swift */,
 				7190094625A4D98C002ED383 /* Solar.swift */,
 				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
-				711AE5E925A5ADC500B363BA /* WaveShape.swift */,
 				719A3FB925AF9ECA003BE97D /* Filler.swift */,
 				71ABE16725C5A83100A52F35 /* LocationService.swift */,
 			);
@@ -514,7 +510,6 @@
 				719A3FBA25AF9ECA003BE97D /* Filler.swift in Sources */,
 				711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */,
 				712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */,
-				711AE5EA25A5ADC500B363BA /* WaveShape.swift in Sources */,
 				71E5001425B77C5000C43609 /* NotificationPreview.swift in Sources */,
 				71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */,
 				7190094725A4D98C002ED383 /* Solar.swift in Sources */,
@@ -545,7 +540,6 @@
 			files = (
 				71C8847125A90AA20009F2A1 /* Color.extension.swift in Sources */,
 				71C8843725A90A2D0009F2A1 /* Widget.swift in Sources */,
-				71C8844D25A90A420009F2A1 /* WaveShape.swift in Sources */,
 				719A3FBC25AF9ECA003BE97D /* Filler.swift in Sources */,
 				71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */,
 				71C8846525A90A9C0009F2A1 /* Date.extension.swift in Sources */,
