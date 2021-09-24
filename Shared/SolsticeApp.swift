@@ -31,6 +31,7 @@ struct SolsticeApp: App {
         (UIApplication.shared.delegate as! AppDelegate).submitBackgroundTask()
       }
       .navigationViewStyle(StackNavigationViewStyle())
+      .symbolRenderingMode(.hierarchical)
     }
   }
 }

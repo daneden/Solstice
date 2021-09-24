@@ -147,6 +147,9 @@ struct SettingsView: View {
     .onChange(of: notificationFragments.map { $0.value.wrappedValue }) { _ in
       notificationManager.adjustSchedule()
     }
+    .onChange(of: sadPreference) { _ in
+      notificationManager.adjustSchedule()
+    }
   }
 }
 

@@ -55,6 +55,7 @@ struct SolsticeOverview: View {
         if calculator.today.ends.isInFuture && calculator.today.begins.isInPast {
           HStack {
             Label("Total Remaining", systemImage: "hourglass")
+              .symbolRenderingMode(.monochrome)
             Spacer()
             Text("\(Date().distance(to: calculator.today.ends).colloquialTimeString)")
           }.font(.footnote).foregroundColor(.secondary)
@@ -67,8 +68,9 @@ struct SolsticeOverview: View {
     let sublocality = location.placemark?.subLocality
     let locality = location.placemark?.locality
     
-    let filtered = [sublocality, locality].filter { $0 != nil } as! [String]
-    let builtString = filtered.joined(separator: ", ")
+    let builtString = [sublocality, locality]
+      .compactMap { $0 }
+      .joined(separator: ", ")
     
     return builtString.count == 0 ? "Current Location" : builtString
   }
