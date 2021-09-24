@@ -27,87 +27,87 @@ struct ContentView: View {
   @State var locationPickerVisible = false
   
   @State var activeSheet: SheetPresentationState?
-  
-  var waveSize: CGFloat = 80
   @State var isPickingDate = false
   
   var body: some View {
-    NavigationView {
-      List {
-        VStack(alignment: .leading) {
-          SundialView(waveSize: waveSize)
-            .frame(maxWidth: .infinity, idealHeight: waveSize * 2.5)
-            .padding(.top)
+    GeometryReader { geom in
+      NavigationView {
+        List {
+          VStack(alignment: .leading) {
+            SundialView(waveSize: geom.size.height * 0.12)
+              .frame(maxWidth: .infinity, idealHeight: geom.size.height * 0.12 * 2.5)
+              .padding(.top)
             
-          Text("\(calculator.differenceString) daylight today than yesterday.")
-            .lineLimit(4)
-            .font(.system(.title, design: .rounded).weight(.medium))
-            .padding(.vertical)
-        }
-        
-        SolsticeOverview(activeSheet: $activeSheet)
-        
-        DisclosureGroup(
-          isExpanded: $isPickingDate,
-          content: {
-            Slider(value: $dateOffset, in: -182...182, step: 1,
-                   minimumValueLabel: Text("Past").font(.caption),
-                   maximumValueLabel: Text("Future").font(.caption)) {
-              Text("Chosen date: \(selectedDate, style: .date)")
-            }
-            .accentColor(.systemFill)
-            .foregroundColor(.secondary)
-            
-            Button(action: { withAnimation { dateOffset = 0 }}) {
+            Text("\(calculator.differenceString) daylight today than yesterday.")
+              .lineLimit(4)
+              .font(.system(.title, design: .rounded).weight(.medium))
+              .padding(.vertical)
+          }
+          
+          SolsticeOverview(activeSheet: $activeSheet)
+          
+          DisclosureGroup(
+            isExpanded: $isPickingDate,
+            content: {
+              Slider(value: $dateOffset, in: -182...182, step: 1,
+                     minimumValueLabel: Text("Past").font(.caption),
+                     maximumValueLabel: Text("Future").font(.caption)) {
+                Text("Chosen date: \(selectedDate, style: .date)")
+              }
+                     .accentColor(.systemFill)
+                     .foregroundColor(.secondary)
+              
+              Button(action: { withAnimation { dateOffset = 0 }}) {
+                HStack {
+                  Label("Reset", systemImage: "arrow.counterclockwise")
+                  Spacer()
+                }
+                .contentShape(Rectangle())
+              }.disabled(dateOffset == 0).buttonStyle(BorderlessButtonStyle())
+            },
+            label: {
               HStack {
-                Label("Reset", systemImage: "arrow.counterclockwise")
+                Label("\(selectedDate, style: .date)", systemImage: "calendar.badge.clock")
                 Spacer()
               }
+              .frame(maxWidth: .infinity)
               .contentShape(Rectangle())
-            }.disabled(dateOffset == 0).buttonStyle(BorderlessButtonStyle())
-          },
-          label: {
-            HStack {
-              Label("\(selectedDate, style: .date)", systemImage: "calendar.badge.clock")
-              Spacer()
+              .onTapGesture {
+                withAnimation { isPickingDate.toggle() }
+              }
             }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-            .onTapGesture {
-              withAnimation { isPickingDate.toggle() }
-            }
+          )
+          
+          Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
+            .padding(.vertical, 8)
+          
+          SunCalendarView()
+            .padding(.vertical, 8)
+        }
+        .listStyle(.plain)
+        .toolbar {
+          Button(action: { self.activeSheet = .settings }) {
+            Label("Settings", systemImage: "gearshape")
           }
-        )
-        
-        Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
-          .padding(.vertical, 8)
-        
-        SunCalendarView()
-          .padding(.vertical, 8)
+        }
+        .navigationTitle("Solstice")
       }
-      .listStyle(.plain)
-      .toolbar {
-        Button(action: { self.activeSheet = .settings }) {
-          Label("Settings", systemImage: "gearshape")
+      .accentColor(.accentColor)
+      .sheet(item: $activeSheet) { item in
+        switch item {
+        case .settings:
+          SettingsView()
+        case .location:
+          LocationPickerView()
         }
       }
-      .navigationTitle("Solstice")
-    }
-    .accentColor(.accentColor)
-    .sheet(item: $activeSheet) { item in
-      switch item {
-      case .settings:
-        SettingsView()
-      case .location:
-        LocationPickerView()
+      .onChange(of: dateOffset) { value in
+        self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
+        self.calculator.dateOffset = value
       }
-    }
-    .onChange(of: dateOffset) { value in
-      self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-      self.calculator.dateOffset = value
-    }
-    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-      if dateOffset == 0 { selectedDate = Date() }
+      .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+        if dateOffset == 0 { selectedDate = Date() }
+      }
     }
   }
   

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SunCalendarView: View {
+  @Environment(\.horizontalSizeClass) var sizeClass
   @ObservedObject var solarCalculator = SolarCalculator.shared
   var daylightArray: [Daylight] = []
   
@@ -43,10 +44,10 @@ struct SunCalendarView: View {
               Color.accentColor
                 .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
                 .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
-                .frame(width: 12, height: self.calculateDaylightForMonth(month) * 200)
+                .frame(height: self.calculateDaylightForMonth(month) * 200)
                 .cornerRadius(4)
               
-              Text("\(self.monthAbbreviationFromInt(index))")
+              Text("\(self.monthAbbreviationFromInt(index, veryShort: sizeClass != .regular))")
                 .font(.caption)
                 .foregroundColor(.secondary)
             }.id(month)
@@ -97,15 +98,14 @@ struct SunCalendarView: View {
     return current == longest ? 1.0 : CGFloat(current / longest)
   }
   
-  func monthAbbreviationFromInt(_ month: Int) -> String {
-    let ma = Calendar.current.veryShortMonthSymbols
+  func monthAbbreviationFromInt(_ month: Int, veryShort: Bool = true) -> String {
+    let ma = veryShort ? Calendar.current.veryShortMonthSymbols : Calendar.current.shortMonthSymbols
     return ma[month]
   }
 }
 
 struct SunCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-      SunCalendarView(
-      )
+      SunCalendarView()
     }
 }
