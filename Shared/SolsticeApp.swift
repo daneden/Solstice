@@ -22,9 +22,15 @@ struct SolsticeApp: App {
               locationManager.start()
             }
         } else if locationManager.status == .notDetermined {
-          LandingView()
+          VStack {
+            LandingView()
+              .frame(maxWidth: 500)
+          }
         } else {
-          PermissionDeniedView()
+          VStack {
+            PermissionDeniedView()
+              .frame(maxWidth: 500)
+          }
         }
       }
       .onDisappear {
