@@ -77,8 +77,12 @@ struct SundialView: View {
         
         context.stroke(
           wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
-          with: .color(.opaqueSeparator),
-          lineWidth: trackWidth
+          with: .linearGradient(
+            Gradient(colors: [.primary.opacity(0.4), .primary.opacity(0.1)]),
+            startPoint: CGPoint(x: 0, y: 0),
+            endPoint: CGPoint(x: 0, y: size.height)
+          ),
+          lineWidth: trackWidth * 1.25
         )
         
         context.fill(

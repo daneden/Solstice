@@ -22,26 +22,6 @@ struct SolsticeOverview: View {
         }.buttonStyle(BorderlessButtonStyle())
       }
       
-      // MARK: Sunrise
-      
-      if let begins = calculator.today.begins {
-        HStack {
-          Label("Sunrise", systemImage: "sunrise.fill")
-          Spacer()
-          Text("\(begins, style: .time)")
-        }
-      }
-      
-      // MARK: Sunset
-      
-      if let ends = calculator.today.ends {
-        HStack {
-          Label("Sunset", systemImage: "sunset.fill")
-          Spacer()
-          Text("\(ends, style: .time)")
-        }
-      }
-      
       // MARK: Duration
       VStack(alignment: .leading, spacing: 8) {
         if let duration = calculator.today.duration {
@@ -61,6 +41,32 @@ struct SolsticeOverview: View {
           }.font(.footnote).foregroundColor(.secondary)
         }
       }.padding(.vertical, 4)
+      
+      // MARK: Sunrise
+      if let begins = calculator.today.begins {
+        HStack {
+          Label("Sunrise", systemImage: "sunrise.fill")
+          Spacer()
+          Text("\(begins, style: .time)")
+        }
+      }
+      
+      if let peak = calculator.today.peak {
+        HStack {
+          Label("Culmination", systemImage: "sun.max.fill")
+          Spacer()
+          Text("\(peak, style: .time)")
+        }
+      }
+      
+      // MARK: Sunset
+      if let ends = calculator.today.ends {
+        HStack {
+          Label("Sunset", systemImage: "sunset.fill")
+          Spacer()
+          Text("\(ends, style: .time)")
+        }
+      }
     }
   }
   

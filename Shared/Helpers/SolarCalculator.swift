@@ -61,11 +61,11 @@ class SolarCalculator: NSObject, ObservableObject {
     super.init()
     updateBaseDate()
     
-//    clock.chime(every: .seconds(5))
-//      .sink { [unowned self] (value: Absolute<Second>) in
-//        updateBaseDate()
-//      }
-//      .store(in: &cancellables)
+    clock.chime(every: .seconds(5))
+      .sink { [unowned self] (value: Absolute<Second>) in
+        updateBaseDate()
+      }
+      .store(in: &cancellables)
   }
   
   func updateBaseDate() {
