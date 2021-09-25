@@ -22,9 +22,9 @@ struct SundialView: View {
   /**
    Determines the proportion of the day that has daylight
    */
-  private var offset: CGFloat {
-    let daylightBegins = calculator.today.nauticalBegins
-    let daylightEnds = calculator.today.nauticalEnds
+  private var daylightProportion: CGFloat {
+    let daylightBegins = calculator.today.begins
+    let daylightEnds = calculator.today.ends
     let daylightLength = daylightBegins.distance(to: daylightEnds)
     let dayLength = dayBegins.distance(to: dayEnds)
     
@@ -34,17 +34,19 @@ struct SundialView: View {
   /**
    Determines the current time as a percentage of the day length
    */
-  private var currentPosition: CGFloat {
+  private var currentTime: CGFloat {
     let dayLength = dayBegins.distance(to: dayEnds)
     
-    let position = CGFloat(dayBegins.distance(to: calculator.baseDate) / dayLength)
+    let dst = calculator.timezone.daylightSavingTimeOffset(for: calculator.baseDate)
+    
+    let position = CGFloat((dayBegins.distance(to: calculator.baseDate) - dst) / dayLength)
     return position
   }
   
   /**
    Determines the offset of noon compared to the sun's peak
    */
-  private var phase: CGFloat {
+  private var phaseOffset: CGFloat {
     let peak = calculator.today.peak ?? Date()
     let noon = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: peak)!
     let distanceFromNoon = noon.distance(to: peak)
@@ -63,18 +65,18 @@ struct SundialView: View {
   var body: some View {
     Canvas { context, size in
       let sunSize = 24.0
-      let trackWidth = 2.0
+      let trackWidth = 3.0
       let sunSizeOffset = sunSize / 2
       
-      let x = (currentPosition * size.width) - sunSizeOffset
-      let y = ((size.height / 2) + (sin((currentPosition * .pi * 2) + phase) * waveSize)) - sunSizeOffset
+      let x = (currentTime * size.width) - sunSizeOffset
+      let y = ((size.height / 2) + (sin((currentTime * .pi * 2) + phaseOffset) * waveSize)) - sunSizeOffset
       
+      // Draw above-horizon elements
       context.drawLayer { context in
-        // Draw above-horizon elements
-        context.clip(to: Path(CGRect(origin: .zero, size: size.applying(CGAffineTransform(scaleX: 1.0, y: offset)))))
+        context.clip(to: Path(CGRect(origin: .zero, size: size.applying(CGAffineTransform(scaleX: 1.0, y: daylightProportion)))))
         
         context.stroke(
-          wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phase),
+          wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
           with: .color(.opaqueSeparator),
           lineWidth: trackWidth
         )
@@ -91,15 +93,18 @@ struct SundialView: View {
         )
       }
       
+      // Draw below-horizon elements
       context.drawLayer { context in
-        // Draw below-horizon elements
         let strokeWidth = 2.0
         let strokeOffset = strokeWidth / 2
         
-        context.clip(to: Path(CGRect(origin: CGPoint(x: 0, y: size.height * offset), size: size.applying(CGAffineTransform(scaleX: 1.0, y: offset)))))
+        context.clip(to: Path(CGRect(
+          origin: CGPoint(x: 0, y: size.height * daylightProportion),
+          size: size
+        )))
         
         context.stroke(
-          wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phase),
+          wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
           with: .color(.opaqueSeparator.opacity(0.45)),
           lineWidth: trackWidth
         )
@@ -116,8 +121,8 @@ struct SundialView: View {
         )
       }
       
-      let overlayPathRect = CGRect(x: 0, y: (size.height * offset) - 1, width: size.width, height: size.height * 2)
-      context.stroke(Path(overlayPathRect), with: .color(.primary.opacity(0.15)))
+      let overlayPathRect = CGRect(x: 0, y: (size.height * daylightProportion) - 1, width: size.width, height: size.height * 2)
+      context.stroke(Path(overlayPathRect), with: .color(.primary.opacity(0.25)), lineWidth: 1)
       
     }
     .overlay(SundialInnerShadowOverlay())

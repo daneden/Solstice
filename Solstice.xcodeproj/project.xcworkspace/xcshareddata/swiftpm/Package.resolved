@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Solar",
+        "repositoryURL": "https://github.com/ceeK/Solar",
+        "state": {
+          "branch": null,
+          "revision": "c2b96f2d5fb7f835b91cefac5e83101f54643901",
+          "version": "3.0.1"
+        }
+      },
+      {
         "package": "Time",
         "repositoryURL": "https://github.com/davedelong/time",
         "state": {

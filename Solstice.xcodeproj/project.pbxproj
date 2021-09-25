@@ -24,7 +24,6 @@
 		7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090525A4D6D2002ED383 /* SolsticeApp.swift */; };
 		7190093025A4D6D5002ED383 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090625A4D6D2002ED383 /* ContentView.swift */; };
 		7190093225A4D6D5002ED383 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7190090725A4D6D5002ED383 /* Assets.xcassets */; };
-		7190094725A4D98C002ED383 /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
 		7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
 		719A3FBA25AF9ECA003BE97D /* Filler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A3FB925AF9ECA003BE97D /* Filler.swift */; };
 		719A3FBC25AF9ECA003BE97D /* Filler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A3FB925AF9ECA003BE97D /* Filler.swift */; };
@@ -34,7 +33,6 @@
 		71B8EA0225C6FE09008E44F6 /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71B8EA0125C6FE09008E44F6 /* Time */; };
 		71B8EA0625C6FE39008E44F6 /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71B8EA0525C6FE39008E44F6 /* Time */; };
 		71C0418326230DFB00A828AC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
-		71C0418D26230E0300A828AC /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
 		71C0419726230E0B00A828AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
 		71C041A126230E1500A828AC /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
@@ -51,6 +49,9 @@
 		71C04216262321BD00A828AC /* IntentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C04214262321BD00A828AC /* IntentButton.swift */; };
 		71C0421C262321CF00A828AC /* IntentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C0421B262321CF00A828AC /* IntentView.swift */; };
 		71C0421D262321CF00A828AC /* IntentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C0421B262321CF00A828AC /* IntentView.swift */; };
+		71C04D9326FF2357000DD492 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 71C04D9226FF2357000DD492 /* Solar */; };
+		71C04D9526FF23A8000DD492 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 71C04D9426FF23A8000DD492 /* Solar */; };
+		71C04D9726FF23AD000DD492 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 71C04D9626FF23AD000DD492 /* Solar */; };
 		71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */; };
 		71C8843225A90A2D0009F2A1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C8843125A90A2D0009F2A1 /* WidgetKit.framework */; };
 		71C8843425A90A2D0009F2A1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C8843325A90A2D0009F2A1 /* SwiftUI.framework */; };
@@ -60,7 +61,6 @@
 		71C8844725A90A3E0009F2A1 /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
 		71C8845325A90A830009F2A1 /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
-		71C8845F25A90A880009F2A1 /* Solar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094625A4D98C002ED383 /* Solar.swift */; };
 		71C8846525A90A9C0009F2A1 /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71C8846B25A90A9F0009F2A1 /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
 		71C8847125A90AA20009F2A1 /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
@@ -133,7 +133,6 @@
 		7190090725A4D6D5002ED383 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7190090C25A4D6D5002ED383 /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7190090F25A4D6D5002ED383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7190094625A4D98C002ED383 /* Solar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solar.swift; sourceTree = "<group>"; };
 		7190094D25A4D9C2002ED383 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		719A3FB925AF9ECA003BE97D /* Filler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filler.swift; sourceTree = "<group>"; };
 		71A36C1E25A6065F004F527B /* Date.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.extension.swift; sourceTree = "<group>"; };
@@ -173,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71C04D9726FF23AD000DD492 /* Solar in Frameworks */,
 				71350CC626230BBA00F5F96E /* Intents.framework in Frameworks */,
 				71C041CA26230E3A00A828AC /* Time in Frameworks */,
 			);
@@ -182,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71C04D9326FF2357000DD492 /* Solar in Frameworks */,
 				71B8EA0225C6FE09008E44F6 /* Time in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,6 +193,7 @@
 			files = (
 				71C8843425A90A2D0009F2A1 /* SwiftUI.framework in Frameworks */,
 				71C8843225A90A2D0009F2A1 /* WidgetKit.framework in Frameworks */,
+				71C04D9526FF23A8000DD492 /* Solar in Frameworks */,
 				71B8EA0625C6FE39008E44F6 /* Time in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,7 +296,6 @@
 				71C884D525A9B93D0009F2A1 /* Constants.swift */,
 				7190094D25A4D9C2002ED383 /* LocationManager.swift */,
 				71C884C225A91D060009F2A1 /* NotificationManager.swift */,
-				7190094625A4D98C002ED383 /* Solar.swift */,
 				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
 				719A3FB925AF9ECA003BE97D /* Filler.swift */,
 				71ABE16725C5A83100A52F35 /* LocationService.swift */,
@@ -355,6 +356,7 @@
 			name = SolsticeIntents;
 			packageProductDependencies = (
 				71C041C926230E3A00A828AC /* Time */,
+				71C04D9626FF23AD000DD492 /* Solar */,
 			);
 			productName = SolsticeIntents;
 			productReference = 71350CC526230BBA00F5F96E /* SolsticeIntents.appex */;
@@ -378,6 +380,7 @@
 			name = "Solstice (iOS)";
 			packageProductDependencies = (
 				71B8EA0125C6FE09008E44F6 /* Time */,
+				71C04D9226FF2357000DD492 /* Solar */,
 			);
 			productName = "Solstice (iOS)";
 			productReference = 7190090C25A4D6D5002ED383 /* Solstice.app */;
@@ -398,6 +401,7 @@
 			name = WidgetExtension;
 			packageProductDependencies = (
 				71B8EA0525C6FE39008E44F6 /* Time */,
+				71C04D9426FF23A8000DD492 /* Solar */,
 			);
 			productName = WidgetExtension;
 			productReference = 71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */;
@@ -434,6 +438,7 @@
 			mainGroup = 719008FF25A4D6D2002ED383;
 			packageReferences = (
 				71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */,
+				71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */,
 			);
 			productRefGroup = 7190090D25A4D6D5002ED383 /* Products */;
 			projectDirPath = "";
@@ -491,7 +496,6 @@
 				71C041A126230E1500A828AC /* LocationService.swift in Sources */,
 				71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */,
 				71C041D9262310EB00A828AC /* Date.extension.swift in Sources */,
-				71C0418D26230E0300A828AC /* Solar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,7 +516,6 @@
 				712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */,
 				71E5001425B77C5000C43609 /* NotificationPreview.swift in Sources */,
 				71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */,
-				7190094725A4D98C002ED383 /* Solar.swift in Sources */,
 				7190093025A4D6D5002ED383 /* ContentView.swift in Sources */,
 				71C0421C262321CF00A828AC /* IntentView.swift in Sources */,
 				71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */,
@@ -544,7 +547,6 @@
 				71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */,
 				71C8846525A90A9C0009F2A1 /* Date.extension.swift in Sources */,
 				71E5006D25B863DA00C43609 /* AppStorage.extension.swift in Sources */,
-				71C8845F25A90A880009F2A1 /* Solar.swift in Sources */,
 				71C884A625A911D20009F2A1 /* VisualEffectView.swift in Sources */,
 				711DFB3725AE03700004AC46 /* ShakeGesture.swift in Sources */,
 				71E5004625B8384000C43609 /* UIScreen.extension.swift in Sources */,
@@ -888,6 +890,14 @@
 				minimumVersion = 0.9.1;
 			};
 		};
+		71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ceeK/Solar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -905,6 +915,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
 			productName = Time;
+		};
+		71C04D9226FF2357000DD492 /* Solar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */;
+			productName = Solar;
+		};
+		71C04D9426FF23A8000DD492 /* Solar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */;
+			productName = Solar;
+		};
+		71C04D9626FF23AD000DD492 /* Solar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */;
+			productName = Solar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
