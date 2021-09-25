@@ -10,7 +10,9 @@ import SwiftUI
 struct SundialView: View {
   @Environment(\.colorScheme) var colorScheme
   @ObservedObject var calculator: SolarCalculator = .shared
-  var waveSize: CGFloat = 80.0
+  
+  var sunSize = 24.0
+  var trackWidth = 3.0
   
   private var dayBegins: Date {
     calculator.baseDate.startOfDay
@@ -64,8 +66,7 @@ struct SundialView: View {
   
   var body: some View {
     Canvas { context, size in
-      let sunSize = 24.0
-      let trackWidth = 3.0
+      let waveSize = (size.height * 0.55) - (sunSize * 2)
       let sunSizeOffset = sunSize / 2
       
       let x = (currentTime * size.width) - sunSizeOffset

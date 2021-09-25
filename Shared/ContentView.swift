@@ -34,8 +34,8 @@ struct ContentView: View {
       NavigationView {
         List {
           VStack(alignment: .leading) {
-            SundialView(waveSize: geom.size.height * 0.12)
-              .frame(maxWidth: .infinity, idealHeight: geom.size.height * 0.12 * 2.5)
+            SundialView()
+              .frame(maxWidth: .infinity, idealHeight: geom.size.height * 0.3)
               .padding(.top)
             
             Text("\(calculator.differenceString) daylight today than yesterday.")

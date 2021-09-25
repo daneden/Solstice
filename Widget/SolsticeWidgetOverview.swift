@@ -13,62 +13,71 @@ struct SolsticeWidgetOverview: View {
   @ObservedObject var location = LocationManager.shared
   
   var body: some View {
-    VStack(alignment: .leading) {
-      if family == .systemLarge {
-        SundialView().padding(.horizontal, -20)
-        Spacer()
+    ZStack(alignment: .bottomLeading) {
+      GeometryReader { geom in
+        if family != .systemSmall {
+          SundialView(sunSize: 16.0, trackWidth: 1.5)
+            .padding(.horizontal, -20)
+            .frame(maxHeight: 200)
+          
+          if family == .systemMedium {
+            VStack {
+              Spacer()
+              Color.systemBackground
+                .frame(width: geom.size.width / 2, height: geom.size.height / 1.25)
+                .blur(radius: 20)
+            }
+          }
+        }
       }
       
-      Filler()
-      
-      Image("Solstice-Icon")
-        .resizable()
-        .frame(width: 16, height: 16)
-      if let duration = calculator.today.duration.colloquialTimeString {
-        Text("Daylight today:")
-          .font(.caption)
-        
-        Text("\(duration)")
-          .lineLimit(4)
-          .font(Font.system(family == .systemSmall ? .footnote : .headline, design: .rounded).bold().leading(.tight))
-          .fixedSize(horizontal: false, vertical: true)
-      }
-      
-      Spacer()
-        
-      if family != .systemSmall {
-        Text("\(calculator.differenceString) than yesterday.")
-          .lineLimit(4)
-          .font(.caption)
-          .foregroundColor(.secondary)
-          .fixedSize(horizontal: false, vertical: true)
+      VStack(alignment: .leading, spacing: 4) {
+        Image("Solstice-Icon")
+          .resizable()
+          .frame(width: 16, height: 16)
         
         Spacer()
         
-        HStack {
-          if let begins = calculator.today.begins {
-            Label("\(begins, style: .time)", systemImage: "sunrise.fill")
-          }
+        if let duration = calculator.today.duration.colloquialTimeString {
+          Text("Daylight today:")
+            .font(.caption)
           
-          Spacer()
+          Text("\(duration)")
+            .lineLimit(4)
+            .font(Font.system(family == .systemSmall ? .footnote : .headline, design: .rounded).bold().leading(.tight))
+            .fixedSize(horizontal: false, vertical: true)
+        }
           
-          if let ends = calculator.today.ends {
-            Label("\(ends, style: .time)", systemImage: "sunset.fill")
-          }
-        }.font(.caption)
-      } else {
-        Spacer()
-        
-        VStack(alignment: .leading) {
-          if let begins = calculator.today.begins {
-            Label("\(begins, style: .time)", systemImage: "sunrise.fill")
-          }
+        if family != .systemSmall {
+          Text("\(calculator.differenceString) than yesterday.")
+            .lineLimit(4)
+            .font(.caption)
+            .foregroundColor(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
           
-          if let ends = calculator.today.ends {
-            Label("\(ends, style: .time)", systemImage: "sunset.fill")
-          }
-        }.font(.caption).foregroundColor(.secondary)
-      }
+          HStack {
+            if let begins = calculator.today.begins {
+              Label("\(begins, style: .time)", systemImage: "sunrise.fill")
+            }
+            
+            Spacer()
+            
+            if let ends = calculator.today.ends {
+              Label("\(ends, style: .time)", systemImage: "sunset.fill")
+            }
+          }.font(.caption)
+        } else {
+          VStack(alignment: .leading) {
+            if let begins = calculator.today.begins {
+              Label("\(begins, style: .time)", systemImage: "sunrise.fill")
+            }
+            
+            if let ends = calculator.today.ends {
+              Label("\(ends, style: .time)", systemImage: "sunset.fill")
+            }
+          }.font(.caption).foregroundColor(.secondary)
+        }
+      }.symbolRenderingMode(.hierarchical).imageScale(.large)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
