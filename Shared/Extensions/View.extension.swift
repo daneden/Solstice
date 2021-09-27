@@ -26,14 +26,3 @@ extension View {
     #endif
   }
 }
-
-struct SecondaryButtonStyle: ButtonStyle {
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .foregroundColor(.secondary)
-      .padding(6)
-      .padding(.horizontal, 4)
-      .background(VisualEffectView.SystemThinMaterial())
-      .cornerRadius(8)
-  }
-}

@@ -34,18 +34,20 @@ struct ContentView: View {
       NavigationView {
         List {
           VStack(alignment: .leading) {
-            SundialView()
-              .frame(maxWidth: .infinity, idealHeight: geom.size.height * 0.3)
-              .padding(.top)
+            SundialView(sunSize: isWatch ? 12 : 24, trackWidth: isWatch ? 2 : 3)
+              .padding(.horizontal, -20)
+              .frame(maxWidth: .infinity, idealHeight: max(geom.size.height * 0.3, 120))
             
             Text("\(calculator.differenceString) daylight today than yesterday.")
               .lineLimit(4)
-              .font(.system(.title, design: .rounded).weight(.medium))
-              .padding(.vertical)
+              .fixedSize(horizontal: false, vertical: true)
+              .font(.system(isWatch ? .body : .title, design: .rounded).weight(.medium))
+              .padding(.bottom)
           }
           
           SolsticeOverview(activeSheet: $activeSheet)
           
+          #if !os(watchOS)
           DisclosureGroup(
             isExpanded: $isPickingDate,
             content: {
@@ -77,6 +79,7 @@ struct ContentView: View {
               }
             }
           )
+          #endif
           
           Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
             .padding(.vertical, 8)
@@ -85,14 +88,21 @@ struct ContentView: View {
             .padding(.vertical, 8)
         }
         .listStyle(.plain)
+        #if !os(watchOS)
         .toolbar {
           Button(action: { self.activeSheet = .settings }) {
             Label("Settings", systemImage: "gearshape")
           }
         }
+        #endif
         .navigationTitle("Solstice")
       }
       .accentColor(.accentColor)
+      .onChange(of: dateOffset) { value in
+        self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
+        self.calculator.dateOffset = value
+      }
+      #if os(iOS)
       .sheet(item: $activeSheet) { item in
         switch item {
         case .settings:
@@ -101,13 +111,10 @@ struct ContentView: View {
           LocationPickerView()
         }
       }
-      .onChange(of: dateOffset) { value in
-        self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-        self.calculator.dateOffset = value
-      }
       .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
         if dateOffset == 0 { selectedDate = Date() }
       }
+      #endif
     }
   }
   

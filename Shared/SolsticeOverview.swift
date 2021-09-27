@@ -12,9 +12,11 @@ struct SolsticeOverview: View {
   @ObservedObject var location = LocationManager.shared
   @Binding var activeSheet: SheetPresentationState?
   
+  @State var showingRemaining = false
+  
   var body: some View {
     Group {
-      if let placeName = getPlaceName() {
+      if !isWatch, let placeName = getPlaceName() {
         Button(action: {
           self.activeSheet = .location
         }) {
@@ -23,28 +25,28 @@ struct SolsticeOverview: View {
       }
       
       // MARK: Duration
-      VStack(alignment: .leading, spacing: 8) {
-        if let duration = calculator.today.duration {
-          HStack {
+      if let duration = calculator.today.duration {
+        AdaptiveStack {
+          if showingRemaining && calculator.today.ends.isInFuture && calculator.today.begins.isInPast {
+            Label("Remaining", systemImage: "hourglass")
+              .symbolRenderingMode(.monochrome)
+            Spacer()
+            Text("\(Date().distance(to: calculator.today.ends).colloquialTimeString)")
+          } else {
             Label("Total Daylight", systemImage: "sun.max")
             Spacer()
             Text("\(duration.colloquialTimeString)")
           }
+        }.onTapGesture {
+          withAnimation(.interactiveSpring()) {
+            showingRemaining.toggle()
+          }
         }
-        
-        if calculator.today.ends.isInFuture && calculator.today.begins.isInPast {
-          HStack {
-            Label("Total Remaining", systemImage: "hourglass")
-              .symbolRenderingMode(.monochrome)
-            Spacer()
-            Text("\(Date().distance(to: calculator.today.ends).colloquialTimeString)")
-          }.font(.footnote).foregroundColor(.secondary)
-        }
-      }.padding(.vertical, 4)
+      }
       
       // MARK: Sunrise
       if let begins = calculator.today.begins {
-        HStack {
+        AdaptiveStack {
           Label("Sunrise", systemImage: "sunrise.fill")
           Spacer()
           Text("\(begins, style: .time)")
@@ -52,7 +54,7 @@ struct SolsticeOverview: View {
       }
       
       if let peak = calculator.today.peak {
-        HStack {
+        AdaptiveStack {
           Label("Culmination", systemImage: "sun.max.fill")
           Spacer()
           Text("\(peak, style: .time)")
@@ -61,7 +63,7 @@ struct SolsticeOverview: View {
       
       // MARK: Sunset
       if let ends = calculator.today.ends {
-        HStack {
+        AdaptiveStack {
           Label("Sunset", systemImage: "sunset.fill")
           Spacer()
           Text("\(ends, style: .time)")
@@ -79,6 +81,26 @@ struct SolsticeOverview: View {
       .joined(separator: ", ")
     
     return builtString.count == 0 ? "Current Location" : builtString
+  }
+}
+
+struct AdaptiveStack<Content: View>: View {
+  var content: () -> Content
+  
+  init(@ViewBuilder content: @escaping () -> Content) {
+    self.content = content
+  }
+  
+  var body: some View {
+    if isWatch {
+      VStack(alignment: .leading) {
+        content()
+      }
+    } else {
+      HStack {
+        content()
+      }
+    }
   }
 }
 

@@ -15,6 +15,8 @@ let defaultNotificationDate = Calendar.current.date(bySettingHour: 8, minute: 0,
 let solsticeSuiteName = "group.me.daneden.Solstice"
 let solsticeUDStore = UserDefaults(suiteName: solsticeSuiteName)
 
+let isWatch = TARGET_OS_WATCH == 1
+
 enum SADPreference: String, CaseIterable, RawRepresentable {
   case none = "No change"
   case removeDifference = "Remove daylight gain/loss"
@@ -38,8 +40,10 @@ struct UDValues {
   static let notificationsIncludeSolsticeCountdown: Value = ("notifsIncludeSolsticeCountdown", false)
   static let sadPreference: Value<SADPreference> = ("sadPreverence", .none)
   
+  #if !os(watchOS)
   // Cached Location Results
   static let locations: Value<[Location]> = ("locations", [])
+  #endif
 }
 
 let stiffSpringAnimation = Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.3)

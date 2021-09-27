@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct SunCalendarView: View {
+  #if !os(watchOS)
   @Environment(\.horizontalSizeClass) var sizeClass
+  #endif
   @ObservedObject var solarCalculator = SolarCalculator.shared
   var daylightArray: [Daylight] = []
+  @ScaledMetric var barHeight = 100
+  @ScaledMetric var captionSize = isWatch ? 8 : 14
   
   var currentMonth: Int {
     let month = Calendar.current.component(.month, from: solarCalculator.baseDate)
@@ -40,20 +44,25 @@ struct SunCalendarView: View {
             }
             
             VStack {
-              Text("\(self.hoursOfDaylightForMonth(month))").font(.caption)
+              Text("\(self.hoursOfDaylightForMonth(month))")
               Color.accentColor
                 .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
                 .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
-                .frame(height: self.calculateDaylightForMonth(month) * 200)
+                .frame(height: self.calculateDaylightForMonth(month) * barHeight)
                 .cornerRadius(4)
               
+              #if !os(watchOS)
               Text("\(self.monthAbbreviationFromInt(index, veryShort: sizeClass != .regular))")
-                .font(.caption)
                 .foregroundColor(.secondary)
+              #else
+              Text("\(self.monthAbbreviationFromInt(index))")
+                .foregroundColor(.secondary)
+              #endif
             }.id(month)
           }
         }
       }
+      .font(.system(size: captionSize).weight(isWatch ? .semibold : .regular))
       .padding(.bottom)
     }
   }

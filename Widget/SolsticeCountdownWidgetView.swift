@@ -50,10 +50,10 @@ struct SolsticeCountdownWidgetView: View {
           .font(.footnote)
       }
     }
-    .foregroundColor(isDaytime ? Color.systemOrange : Color.systemIndigo)
+    .foregroundColor(isDaytime ? .orange : .indigo)
     .padding()
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(isDaytime ? Color.systemYellow.opacity(0.2) : Color.systemIndigo.opacity(0.1))
+    .background(isDaytime ? Color.yellow.opacity(0.2) : Color.indigo.opacity(0.1))
     .colorScheme(isDaytime ? .light : .dark)
   }
   

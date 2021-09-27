@@ -9,7 +9,10 @@ import Foundation
 import Combine
 import CoreLocation
 import SwiftUI
+
+#if !os(watchOS)
 import WidgetKit
+#endif
 
 class LocationManager: NSObject, ObservableObject {
   @AppStorage(UDValues.cachedLatitude) var latitude {
@@ -20,7 +23,6 @@ class LocationManager: NSObject, ObservableObject {
     didSet { self.geocode() }
   }
   
-  let objectWillChange = PassthroughSubject<Void, Never>()
   static let shared = LocationManager()
   
   private let locationManager = CLLocationManager()
@@ -37,8 +39,9 @@ class LocationManager: NSObject, ObservableObject {
       }
       self.geocode()
       
+      #if !os(watchOS)
       WidgetCenter.shared.reloadAllTimelines()
-      objectWillChange.send()
+      #endif
     }
   }
   
@@ -99,8 +102,6 @@ extension LocationManager: CLLocationManagerDelegate {
     guard let location = locations.last else { return }
     self.location = location
     self.geocode()
-    
-    self.objectWillChange.send()
   }
 }
 

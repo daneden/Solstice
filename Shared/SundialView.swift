@@ -130,7 +130,18 @@ struct SundialView: View {
       context.stroke(Path(overlayPathRect), with: .color(.primary.opacity(0.25)), lineWidth: 1)
       
     }
-    .overlay(SundialInnerShadowOverlay())
+    .mask {
+      LinearGradient(
+        stops: [
+          Gradient.Stop(color: .clear, location: 0),
+          Gradient.Stop(color: .black, location: 0.1),
+          Gradient.Stop(color: .black, location: 0.9),
+          Gradient.Stop(color: .clear, location: 1),
+        ],
+        startPoint: .leading,
+        endPoint: .trailing
+      )
+    }
   }
   
   func wavePath(in size: CGSize, amplitude: CGFloat, frequency: CGFloat, phase: CGFloat = 0) -> Path {

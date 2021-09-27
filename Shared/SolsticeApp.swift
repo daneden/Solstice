@@ -9,7 +9,9 @@ import SwiftUI
 
 @main
 struct SolsticeApp: App {
+  #if os(iOS)
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  #endif
   @ObservedObject var locationManager = LocationManager.shared
   
   var body: some Scene {
@@ -33,9 +35,11 @@ struct SolsticeApp: App {
           }
         }
       }
+      #if os(iOS)
       .onDisappear {
         (UIApplication.shared.delegate as! AppDelegate).submitBackgroundTask()
       }
+      #endif
       .navigationViewStyle(StackNavigationViewStyle())
       .symbolRenderingMode(.hierarchical)
     }
