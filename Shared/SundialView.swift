@@ -78,11 +78,7 @@ struct SundialView: View {
         
         context.stroke(
           wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
-          with: .linearGradient(
-            Gradient(colors: [.primary.opacity(0.4), .primary.opacity(0.1)]),
-            startPoint: CGPoint(x: 0, y: 0),
-            endPoint: CGPoint(x: 0, y: size.height)
-          ),
+          with: .color(.secondary.opacity(0.55)),
           lineWidth: trackWidth * 1.25
         )
         
@@ -91,16 +87,16 @@ struct SundialView: View {
           with: .color(.primary)
         )
         
-        context.addFilter(.blur(radius: 10))
+        context.addFilter(.blur(radius: sunSize / 2))
         context.fill(
           Path(ellipseIn: CGRect(x: x, y: y, width: sunSize, height: sunSize)),
-          with: .color(.primary.opacity(colorScheme == .dark ? 0.5 : 0.25))
+          with: .color(.primary.opacity(colorScheme == .dark ? 0.65 : 0.35))
         )
       }
       
       // Draw below-horizon elements
       context.drawLayer { context in
-        let strokeWidth = 2.0
+        let strokeWidth = trackWidth
         let strokeOffset = strokeWidth / 2
         
         context.clip(to: Path(CGRect(
@@ -110,7 +106,7 @@ struct SundialView: View {
         
         context.stroke(
           wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
-          with: .color(.opaqueSeparator.opacity(0.45)),
+          with: .color(.secondary.opacity(0.45)),
           lineWidth: trackWidth
         )
         
@@ -121,7 +117,7 @@ struct SundialView: View {
         
         context.stroke(
           Path(ellipseIn: CGRect(x: x + strokeOffset, y: y + strokeOffset, width: sunSize - strokeWidth, height: sunSize - strokeWidth)),
-          with: .color(.primary.opacity(0.75)),
+          with: .color(.primary.opacity(0.8)),
           lineWidth: strokeWidth
         )
       }
