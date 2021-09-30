@@ -79,7 +79,7 @@ struct SundialView: View {
         context.stroke(
           wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
           with: .color(.secondary.opacity(0.55)),
-          lineWidth: trackWidth * 1.25
+          lineWidth: trackWidth
         )
         
         context.fill(

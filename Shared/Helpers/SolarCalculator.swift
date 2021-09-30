@@ -12,6 +12,19 @@ import SwiftUI
 import Time
 import Solar
 
+enum SolarEventType {
+  case sunrise(at: Date), sunset(at: Date)
+  
+  func date() -> Date {
+    switch self {
+    case .sunrise(let at):
+      return at
+    case .sunset(let at):
+      return at
+    }
+  }
+}
+
 typealias DaylightTime = (minutes: Int, seconds: Int)
 
 struct Daylight: Hashable {
@@ -127,6 +140,16 @@ class SolarCalculator: NSObject, ObservableObject {
       return coords
     } else {
       return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+  }
+  
+  func getNextSolarEvent() -> SolarEventType {
+    if today.begins.isInFuture {
+      return .sunrise(at: today.begins)
+    } else if today.ends.isInFuture {
+      return .sunset(at: today.ends)
+    } else {
+      return .sunrise(at: tomorrow.begins)
     }
   }
   

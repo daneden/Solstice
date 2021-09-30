@@ -13,6 +13,8 @@
 		711AE61225A718BF00B363BA /* PermissionDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE61125A718BF00B363BA /* PermissionDeniedView.swift */; };
 		711DFB3525AE03700004AC46 /* ShakeGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DFB3425AE03700004AC46 /* ShakeGesture.swift */; };
 		712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712F90FA25AF439400CC8D7E /* SunCalendarView.swift */; };
+		7133BCD2270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7133BCD1270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift */; };
+		7133BCD3270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7133BCD1270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift */; };
 		71350CC626230BBA00F5F96E /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71D1BB972622240400A17E47 /* Intents.framework */; };
 		71350CC926230BBA00F5F96E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71350CC826230BBA00F5F96E /* IntentHandler.swift */; };
 		71350CDD26230BBA00F5F96E /* SolsticeIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 71350CC526230BBA00F5F96E /* SolsticeIntents.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -182,6 +184,7 @@
 		711AE61125A718BF00B363BA /* PermissionDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDeniedView.swift; sourceTree = "<group>"; };
 		711DFB3425AE03700004AC46 /* ShakeGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeGesture.swift; sourceTree = "<group>"; };
 		712F90FA25AF439400CC8D7E /* SunCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunCalendarView.swift; sourceTree = "<group>"; };
+		7133BCD1270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EllipticalEdgeMaskModifier.swift"; sourceTree = "<group>"; };
 		71350CC526230BBA00F5F96E /* SolsticeIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SolsticeIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		71350CC826230BBA00F5F96E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		71350CCA26230BBA00F5F96E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -409,6 +412,7 @@
 				71A36C1E25A6065F004F527B /* Date.extension.swift */,
 				7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */,
 				71682AE125DD923400487ECA /* View.extension.swift */,
+				7133BCD1270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -704,6 +708,7 @@
 				71864DA92701A97200DE03CB /* SolarCalculator.swift in Sources */,
 				71864DA72701A97200DE03CB /* Filler.swift in Sources */,
 				71864DA02701A8FA00DE03CB /* PermissionDeniedView.swift in Sources */,
+				7133BCD3270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift in Sources */,
 				71864D882701A82900DE03CB /* NotificationView.swift in Sources */,
 				71864DA22701A8FA00DE03CB /* LandingView.swift in Sources */,
 				71864D9D2701A8FA00DE03CB /* SunCalendarView.swift in Sources */,
@@ -742,6 +747,7 @@
 				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
 				71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */,
+				7133BCD2270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift in Sources */,
 				711AE60B25A6711C00B363BA /* LandingView.swift in Sources */,
 				71C04215262321BD00A828AC /* IntentButton.swift in Sources */,
 				711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */,
