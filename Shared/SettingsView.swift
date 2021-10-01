@@ -104,27 +104,6 @@ struct SettingsView: View {
             }
           }
         }
-        
-        Section(
-          header: Text("Siri"),
-          footer: Text("Create more Solstice shortcuts in the Shortcuts app")
-        ) {
-          VStack(alignment: .leading) {
-            Text("View Remaining Daylight")
-              .padding(.bottom, 1)
-            
-            Text("Add a shortcut to Siri to quickly find out how much daylight is left.")
-              .font(.footnote)
-              .foregroundColor(.secondary)
-            
-            IntentView(intent: viewRemainingDaylightIntent)
-              .padding(.bottom, 8)
-          }.padding(.vertical, 4)
-          
-          Button(action: { UIApplication.shared.open(URL(string: "shortcuts://")!) }) {
-            Label("Open Shortcuts App", systemImage: "square.2.stack.3d")
-          }
-        }
       }
       .navigationTitle(Text("Settings"))
       .toolbar {
