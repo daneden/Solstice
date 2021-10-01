@@ -76,17 +76,27 @@ struct SundialView: View {
       context.drawLayer { context in
         context.clip(to: Path(CGRect(origin: .zero, size: size.applying(CGAffineTransform(scaleX: 1.0, y: daylightProportion)))))
         
+        // Wave shape
         context.stroke(
           wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
           with: .color(.secondary.opacity(0.55)),
           lineWidth: trackWidth
         )
         
+        // Sun
         context.fill(
           Path(ellipseIn: CGRect(x: x, y: y, width: sunSize, height: sunSize)),
           with: .color(.primary)
         )
         
+        // Shadow/highlight on sun
+        context.addFilter(.blur(radius: sunSize / 4))
+        context.fill(
+          Path(ellipseIn: CGRect(x: x + (sunSize / 4), y: y + (sunSize / 4), width: sunSize / 2, height: sunSize / 2)),
+          with: .color(.systemBackground.opacity(0.25))
+        )
+        
+        // Sun's glow
         context.addFilter(.blur(radius: sunSize / 2))
         context.fill(
           Path(ellipseIn: CGRect(x: x, y: y, width: sunSize, height: sunSize)),
@@ -175,25 +185,5 @@ struct SundialView: View {
     }
     
     return Path(path.cgPath)
-  }
-}
-
-struct SundialInnerShadowOverlay: View {
-  var body: some View {
-    HStack {
-      LinearGradient(
-        gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
-        startPoint: .leading,
-        endPoint: .trailing
-      )
-        .frame(width: 40)
-      Spacer()
-      LinearGradient(
-        gradient: Gradient(colors: [.systemBackground, Color.systemBackground.opacity(0)]),
-        startPoint: .trailing,
-        endPoint: .leading
-      )
-        .frame(width: 40)
-    }
   }
 }

@@ -24,7 +24,8 @@ struct SolsticeWidgetOverview: View {
             VStack {
               Spacer()
               Color.systemBackground
-                .frame(width: geom.size.width / 2, height: geom.size.height / 1.25)
+                .frame(width: geom.size.width, height: geom.size.height / 1.25)
+                .padding(.leading, geom.size.width * -0.5)
                 .blur(radius: 20)
             }
           }

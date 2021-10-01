@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		711AE5F525A5B2FA00B363BA /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
-		711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5FB25A5B35700B363BA /* VisualEffectView.swift */; };
 		711AE60B25A6711C00B363BA /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE60A25A6711C00B363BA /* LandingView.swift */; };
 		711AE61225A718BF00B363BA /* PermissionDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE61125A718BF00B363BA /* PermissionDeniedView.swift */; };
 		711DFB3525AE03700004AC46 /* ShakeGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DFB3425AE03700004AC46 /* ShakeGesture.swift */; };
@@ -93,7 +92,6 @@
 		71C8847125A90AA20009F2A1 /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
 		71C8849425A90DE50009F2A1 /* SolsticeWidgetOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8848825A90DD40009F2A1 /* SolsticeWidgetOverview.swift */; };
 		71C8849A25A910450009F2A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7190090725A4D6D5002ED383 /* Assets.xcassets */; };
-		71C884A625A911D20009F2A1 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884A525A911D20009F2A1 /* VisualEffectView.swift */; };
 		71C884BC25A913770009F2A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884BB25A913770009F2A1 /* SettingsView.swift */; };
 		71C884C325A91D060009F2A1 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884C225A91D060009F2A1 /* NotificationManager.swift */; };
 		71C884D625A9B93D0009F2A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
@@ -179,7 +177,6 @@
 
 /* Begin PBXFileReference section */
 		711AE5F425A5B2FA00B363BA /* SundialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SundialView.swift; sourceTree = "<group>"; };
-		711AE5FB25A5B35700B363BA /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		711AE60A25A6711C00B363BA /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
 		711AE61125A718BF00B363BA /* PermissionDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDeniedView.swift; sourceTree = "<group>"; };
 		711DFB3425AE03700004AC46 /* ShakeGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeGesture.swift; sourceTree = "<group>"; };
@@ -223,7 +220,6 @@
 		71C8843825A90A2D0009F2A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71C8843A25A90A2D0009F2A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71C8848825A90DD40009F2A1 /* SolsticeWidgetOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetOverview.swift; sourceTree = "<group>"; };
-		71C884A525A911D20009F2A1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		71C884BB25A913770009F2A1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		71C884C225A91D060009F2A1 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C884D525A9B93D0009F2A1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -355,17 +351,18 @@
 		7190090425A4D6D2002ED383 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				71C883FF25A7AF9F0009F2A1 /* Extensions */,
-				71E5001225B77C4300C43609 /* Helper Views */,
-				71C8840425A7AFC80009F2A1 /* Helpers */,
-				7190090725A4D6D5002ED383 /* Assets.xcassets */,
 				7190090625A4D6D2002ED383 /* ContentView.swift */,
 				711AE60A25A6711C00B363BA /* LandingView.swift */,
 				711AE61125A718BF00B363BA /* PermissionDeniedView.swift */,
+				71C884BB25A913770009F2A1 /* SettingsView.swift */,
 				7190090525A4D6D2002ED383 /* SolsticeApp.swift */,
 				71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */,
 				712F90FA25AF439400CC8D7E /* SunCalendarView.swift */,
 				711AE5F425A5B2FA00B363BA /* SundialView.swift */,
+				7190090725A4D6D5002ED383 /* Assets.xcassets */,
+				71C883FF25A7AF9F0009F2A1 /* Extensions */,
+				71E5001225B77C4300C43609 /* Helper Views */,
+				71C8840425A7AFC80009F2A1 /* Helpers */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -387,7 +384,6 @@
 			children = (
 				7190090F25A4D6D5002ED383 /* Info.plist */,
 				71864DB62701ABEE00DE03CB /* Helpers */,
-				71C884BB25A913770009F2A1 /* SettingsView.swift */,
 				71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */,
 			);
 			path = iOS;
@@ -448,7 +444,6 @@
 				71C8843825A90A2D0009F2A1 /* Assets.xcassets */,
 				71C8843A25A90A2D0009F2A1 /* Info.plist */,
 				71C8848825A90DD40009F2A1 /* SolsticeWidgetOverview.swift */,
-				71C884A525A911D20009F2A1 /* VisualEffectView.swift */,
 				71D1BC322622F39D00A17E47 /* SolsticeCountdownWidgetView.swift */,
 			);
 			path = Widget;
@@ -459,7 +454,6 @@
 			children = (
 				71C042052623217B00A828AC /* Intent Views */,
 				71E5001325B77C5000C43609 /* NotificationPreview.swift */,
-				711AE5FB25A5B35700B363BA /* VisualEffectView.swift */,
 				71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */,
 			);
 			path = "Helper Views";
@@ -731,7 +725,6 @@
 				7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */,
 				719A3FBA25AF9ECA003BE97D /* Filler.swift in Sources */,
-				711AE5FC25A5B35700B363BA /* VisualEffectView.swift in Sources */,
 				712F90FB25AF439400CC8D7E /* SunCalendarView.swift in Sources */,
 				71E5001425B77C5000C43609 /* NotificationPreview.swift in Sources */,
 				71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */,
@@ -767,7 +760,6 @@
 				71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */,
 				71C8846525A90A9C0009F2A1 /* Date.extension.swift in Sources */,
 				71E5006D25B863DA00C43609 /* AppStorage.extension.swift in Sources */,
-				71C884A625A911D20009F2A1 /* VisualEffectView.swift in Sources */,
 				71C8849425A90DE50009F2A1 /* SolsticeWidgetOverview.swift in Sources */,
 				71D1BC332622F39D00A17E47 /* SolsticeCountdownWidgetView.swift in Sources */,
 				71C8844725A90A3E0009F2A1 /* SundialView.swift in Sources */,

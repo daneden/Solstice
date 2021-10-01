@@ -13,7 +13,7 @@ struct SunCalendarView: View {
   #endif
   @ObservedObject var solarCalculator = SolarCalculator.shared
   var daylightArray: [Daylight] = []
-  @ScaledMetric var barHeight = 100
+  @ScaledMetric var barHeight = isWatch ? 100 : 200
   @ScaledMetric var captionSize = isWatch ? 8 : 14
   
   var currentMonth: Int {

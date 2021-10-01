@@ -67,9 +67,9 @@ class SolarCalculator: NSObject, ObservableObject {
     didSet { updateBaseDate() }
   }
   
-  @Published var baseDate = Date()
+  @Published var baseDate: Date
   
-  init(baseDate: Date = Date()) {
+  init(baseDate: Date = .now) {
     self.baseDate = baseDate
     super.init()
     updateBaseDate()

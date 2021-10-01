@@ -117,13 +117,11 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       eventString = "Sunset"
     }
     
-    let formatter = RelativeDateTimeFormatter()
-    
     switch family {
     case .utilitarianLarge, .modularLarge:
-      textProvider = CLKTextProvider(format: "\(eventString) \(formatter.localizedString(for: solarEvent.date(), relativeTo: .now))")
+      textProvider = CLKTextProvider(format: "\(eventString) at \(solarEvent.date().formatted(date: .omitted, time: .shortened))")
     default:
-      textProvider = CLKRelativeDateTextProvider(date: solarEvent.date(), style: .natural, units: [.hour, .minute, .second])
+      textProvider = CLKTimeTextProvider(date: solarEvent.date())
     }
     
     let imageProvider = CLKImageProvider(onePieceImage: UIImage(systemName: viewIconName)!)
@@ -163,7 +161,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     case .modularLarge:
       return CLKComplicationTemplateModularLargeStandardBody(
         headerImageProvider: imageProvider,
-        headerTextProvider: CLKTimeTextProvider(date: solarEvent.date()),
+        headerTextProvider: CLKRelativeDateTextProvider(date: solarEvent.date(), style: .natural, units: [.hour, .minute, .second]),
         body1TextProvider: textProvider
       )
     default:

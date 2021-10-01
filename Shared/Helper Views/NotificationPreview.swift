@@ -22,13 +22,24 @@ struct NotificationPreview: View {
   }
   
     var body: some View {
-      VStack(alignment: .leading) {
-        Text(title).font(Font.footnote.bold())
-        Text(bodyContent).font(Font.footnote.leading(.tight))
+      HStack {
+        Image("notificationPreviewAppIcon")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(width: 20, height: 20)
+        
+        VStack(alignment: .leading) {
+          Text(title).font(Font.footnote.bold())
+          Text(bodyContent).font(Font.footnote.leading(.tight))
+            .fixedSize(horizontal: false, vertical: true)
+            .lineLimit(4)
+        }
+        
+        Spacer(minLength: 0)
       }
       .padding(.vertical, 8)
       .padding(.horizontal, 12)
-      .background(VisualEffectView.SystemMaterial())
+      .background(.regularMaterial)
       .cornerRadius(12)
     }
 }
