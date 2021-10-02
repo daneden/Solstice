@@ -69,7 +69,7 @@ struct ContentView: View {
             },
             label: {
               HStack {
-                Label("\(selectedDate, style: .date)", systemImage: "calendar.badge.clock")
+                Label("\(calculator.baseDate, style: .date)", systemImage: "calendar.badge.clock")
                 Spacer()
               }
               .frame(maxWidth: .infinity)

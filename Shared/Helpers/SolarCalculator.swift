@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import CoreLocation
 import SwiftUI
-import Time
 import Solar
 
 enum SolarEventType {
@@ -56,9 +55,6 @@ class SolarCalculator: NSObject, ObservableObject {
   @AppStorage(UDValues.cachedLatitude) private var latitude
   @AppStorage(UDValues.cachedLongitude) private var longitude
   
-  private var cancellables = [AnyCancellable]()
-  private(set) var clock = Clock.system
-  
   @Published var dateOffset = 0.0 {
     didSet { updateBaseDate() }
   }
@@ -73,23 +69,13 @@ class SolarCalculator: NSObject, ObservableObject {
     self.baseDate = baseDate
     super.init()
     updateBaseDate()
-    
-    clock.chime(every: .seconds(5))
-      .sink { [unowned self] (value: Absolute<Second>) in
-        updateBaseDate()
-      }
-      .store(in: &cancellables)
   }
   
   func updateBaseDate() {
-    clock = clock.converting(to: timezone)
-    
     var offset = DateComponents()
     offset.day = Int(dateOffset)
     
-    let date = clock
-      .thisInstant()
-      .date
+    let date = Date.now
     
     let offsetDate = applyTimezoneOffset(to: Calendar.current.date(byAdding: offset, to: date)!)
     

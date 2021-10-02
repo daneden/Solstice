@@ -40,7 +40,6 @@
 		71864DA92701A97200DE03CB /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71864DAA2701A97200DE03CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
 		71864DAB2701A97200DE03CB /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
-		71864DAD2701A9E000DE03CB /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71864DAC2701A9E000DE03CB /* Time */; };
 		71864DAF2701A9E000DE03CB /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 71864DAE2701A9E000DE03CB /* Solar */; };
 		71864DB02701ABB200DE03CB /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
 		71864DB12701ABB200DE03CB /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
@@ -56,15 +55,12 @@
 		71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71ABE16925C5A83100A52F35 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
-		71B8EA0225C6FE09008E44F6 /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71B8EA0125C6FE09008E44F6 /* Time */; };
-		71B8EA0625C6FE39008E44F6 /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71B8EA0525C6FE39008E44F6 /* Time */; };
 		71C0418326230DFB00A828AC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71C0419726230E0B00A828AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
 		71C041A126230E1500A828AC /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5006A25B863DA00C43609 /* AppStorage.extension.swift */; };
 		71C041B526230E2600A828AC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190094D25A4D9C2002ED383 /* LocationManager.swift */; };
 		71C041BF26230E2C00A828AC /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
-		71C041CA26230E3A00A828AC /* Time in Frameworks */ = {isa = PBXBuildFile; productRef = 71C041C926230E3A00A828AC /* Time */; };
 		71C041D9262310EB00A828AC /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71C041F926231D1A00A828AC /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71350CC826230BBA00F5F96E /* IntentHandler.swift */; };
 		71C04D9326FF2357000DD492 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 71C04D9226FF2357000DD492 /* Solar */; };
@@ -232,7 +228,6 @@
 			files = (
 				71C04D9726FF23AD000DD492 /* Solar in Frameworks */,
 				71350CC626230BBA00F5F96E /* Intents.framework in Frameworks */,
-				71C041CA26230E3A00A828AC /* Time in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,7 +236,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71864DAF2701A9E000DE03CB /* Solar in Frameworks */,
-				71864DAD2701A9E000DE03CB /* Time in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,7 +244,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71C04D9326FF2357000DD492 /* Solar in Frameworks */,
-				71B8EA0225C6FE09008E44F6 /* Time in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +254,6 @@
 				71C8843425A90A2D0009F2A1 /* SwiftUI.framework in Frameworks */,
 				71C8843225A90A2D0009F2A1 /* WidgetKit.framework in Frameworks */,
 				71C04D9526FF23A8000DD492 /* Solar in Frameworks */,
-				71B8EA0625C6FE39008E44F6 /* Time in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,7 +444,6 @@
 			);
 			name = SolsticeIntents;
 			packageProductDependencies = (
-				71C041C926230E3A00A828AC /* Time */,
 				71C04D9626FF23AD000DD492 /* Solar */,
 			);
 			productName = SolsticeIntents;
@@ -490,7 +481,6 @@
 			);
 			name = "WatchSolstice WatchKit Extension";
 			packageProductDependencies = (
-				71864DAC2701A9E000DE03CB /* Time */,
 				71864DAE2701A9E000DE03CB /* Solar */,
 			);
 			productName = "WatchSolstice WatchKit Extension";
@@ -516,7 +506,6 @@
 			);
 			name = "Solstice (iOS)";
 			packageProductDependencies = (
-				71B8EA0125C6FE09008E44F6 /* Time */,
 				71C04D9226FF2357000DD492 /* Solar */,
 			);
 			productName = "Solstice (iOS)";
@@ -537,7 +526,6 @@
 			);
 			name = WidgetExtension;
 			packageProductDependencies = (
-				71B8EA0525C6FE39008E44F6 /* Time */,
 				71C04D9426FF23A8000DD492 /* Solar */,
 			);
 			productName = WidgetExtension;
@@ -580,7 +568,6 @@
 			);
 			mainGroup = 719008FF25A4D6D2002ED383;
 			packageReferences = (
-				71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */,
 				71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */,
 			);
 			productRefGroup = 7190090D25A4D6D5002ED383 /* Products */;
@@ -1222,14 +1209,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/davedelong/time";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.1;
-			};
-		};
 		71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
@@ -1241,30 +1220,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		71864DAC2701A9E000DE03CB /* Time */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
-			productName = Time;
-		};
 		71864DAE2701A9E000DE03CB /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
-		};
-		71B8EA0125C6FE09008E44F6 /* Time */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
-			productName = Time;
-		};
-		71B8EA0525C6FE39008E44F6 /* Time */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
-			productName = Time;
-		};
-		71C041C926230E3A00A828AC /* Time */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 71B8EA0025C6FE09008E44F6 /* XCRemoteSwiftPackageReference "time" */;
-			productName = Time;
 		};
 		71C04D9226FF2357000DD492 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;

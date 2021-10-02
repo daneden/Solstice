@@ -18,11 +18,13 @@ struct SolsticeApp: App {
     WindowGroup {
       Group {
         if locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse {
-          ContentView()
-            .environmentObject(locationManager)
-            .onAppear {
-              locationManager.start()
-            }
+          TimelineView(.everyMinute) { context in
+            ContentView()
+              .environmentObject(locationManager)
+              .onAppear {
+                locationManager.start()
+              }
+          }
         } else if locationManager.status == .notDetermined {
           VStack {
             LandingView()

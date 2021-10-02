@@ -31,7 +31,8 @@ struct SolsticeOverview: View {
             Label("Remaining", systemImage: "hourglass")
               .symbolRenderingMode(.monochrome)
             Spacer()
-            Text("\(Date().distance(to: calculator.today.ends).colloquialTimeString)")
+            Text(calculator.today.ends, style: .timer)
+              .monospacedDigit()
           } else {
             Label("Total Daylight", systemImage: "sun.max")
             Spacer()
