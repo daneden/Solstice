@@ -12,6 +12,8 @@ import SwiftUI
 
 #if !os(watchOS)
 import WidgetKit
+#else
+import ClockKit
 #endif
 
 class LocationManager: NSObject, ObservableObject {
@@ -41,6 +43,11 @@ class LocationManager: NSObject, ObservableObject {
       
       #if !os(watchOS)
       WidgetCenter.shared.reloadAllTimelines()
+      #else
+      let complicationServer = CLKComplicationServer.sharedInstance()
+      for complication in complicationServer.activeComplications ?? [] {
+        complicationServer.reloadTimeline(for: complication)
+      }
       #endif
     }
   }
