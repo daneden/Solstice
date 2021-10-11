@@ -26,14 +26,13 @@ let solarEventSupportedFamilies: [CLKComplicationFamily] = [
   .modularLarge
 ]
 
-enum ComplicationKind: String, CaseIterable {
+enum ComplicationKind: String, CaseIterable, RawRepresentable {
   case sundial, solarEvent
 }
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
   
   // MARK: - Complication Configuration
-  
   func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
     let descriptors = [
       CLKComplicationDescriptor(identifier: ComplicationKind.sundial.rawValue, displayName: "Sundial", supportedFamilies: sundialSupportedFamilies),
@@ -44,12 +43,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     handler(descriptors)
   }
   
-  func handleSharedComplicationDescriptors(_ complicationDescriptors: [CLKComplicationDescriptor]) {
-    // Do any necessary work to support these newly shared complication descriptors
-  }
-  
   // MARK: - Timeline Configuration
-  
   func getTimelineEndDate(for complication: CLKComplication, withHandler handler: @escaping (Date?) -> Void) {
     // Indicate that the app can provide timeline entries until the end of today’s date.
     handler(Date().endOfDay)
@@ -61,29 +55,6 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   // MARK: - Timeline Population
-  
-  func createTimelineEntry(for complication: CLKComplication, date: Date) -> CLKComplicationTimelineEntry? {
-    let template: CLKComplicationTemplate?
-    
-    switch complication.identifier {
-    case "solarEvent":
-      template = getSolarEventComplicationTemplate(for: complication.family)
-    case "sundial":
-      template = getSundialComplicationTemplate(for: complication.family)
-    default:
-      template = nil
-    }
-    
-    if let template = template {
-      return CLKComplicationTimelineEntry(
-        date: Date(),
-        complicationTemplate: template
-      )
-    } else {
-      return nil
-    }
-  }
-  
   func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
     handler(createTimelineEntry(for: complication, date: .now))
   }
@@ -113,7 +84,6 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   // MARK: - Sample Templates
-  
   func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
     // This method will be called once per supported complication, and the results will be cached
     switch complication.identifier {
@@ -123,6 +93,30 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       handler(getSundialComplicationTemplate(for: complication.family))
     default:
       handler(nil)
+    }
+  }
+}
+
+extension ComplicationController {
+  func createTimelineEntry(for complication: CLKComplication, date: Date) -> CLKComplicationTimelineEntry? {
+    let template: CLKComplicationTemplate?
+    
+    switch complication.identifier {
+    case "solarEvent":
+      template = getSolarEventComplicationTemplate(for: complication.family, at: date)
+    case "sundial":
+      template = getSundialComplicationTemplate(for: complication.family, at: date)
+    default:
+      template = nil
+    }
+    
+    if let template = template {
+      return CLKComplicationTimelineEntry(
+        date: Date(),
+        complicationTemplate: template
+      )
+    } else {
+      return nil
     }
   }
   
