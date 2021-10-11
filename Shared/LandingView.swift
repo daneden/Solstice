@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct LandingView: View {
+  let iconSize: CGFloat = isWatch ? 24 : 48
+  
   var body: some View {
     ScrollView {
       VStack(alignment: .leading) {
         Image("Solstice-Icon")
           .resizable()
-          .frame(width: 48, height: 48)
+          .frame(width: iconSize, height: iconSize)
           .padding(.bottom)
         
         Text("Solstice tells you how much daylight there is today compared to yesterday.")
-          .font(.largeTitle)
+          .font(isWatch ? .headline : .largeTitle)
         
         Text("For savouring the minutes you have, or looking forward to the minutes you'll gain.")
           .padding(.vertical)
