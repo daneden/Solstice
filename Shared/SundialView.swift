@@ -72,8 +72,8 @@ struct SundialView: View {
       let x = (currentTime * size.width) - sunSizeOffset
       let y = ((size.height / 2) + (sin((currentTime * .pi * 2) + phaseOffset) * waveSize)) - sunSizeOffset
       
-      let overlayPathRect = CGRect(x: 0, y: (size.height * daylightProportion), width: size.width, height: size.height * 2)
-      context.stroke(Path(overlayPathRect), with: .color(.primary.opacity(0.25)), lineWidth: 0.5)
+      let horizonRect = CGRect(x: 0, y: (size.height * daylightProportion) + 0.5, width: size.width, height: size.height * 2)
+      context.stroke(Path(horizonRect), with: .color(.primary.opacity(0.25)), lineWidth: 0.5)
 
       
       // Draw above-horizon elements
