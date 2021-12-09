@@ -38,7 +38,7 @@ struct ContentView: View {
               .padding(.horizontal, -20)
               .frame(maxWidth: .infinity, idealHeight: max(geom.size.height * 0.3, 120))
             
-            Text("\(calculator.differenceString) daylight today than yesterday.")
+            Text(calculator.differenceString)
               .lineLimit(4)
               .fixedSize(horizontal: false, vertical: true)
               .font(.system(isWatch ? .body : .title, design: .rounded).weight(.medium))
@@ -54,7 +54,10 @@ struct ContentView: View {
               Slider(value: $dateOffset, in: -182...182, step: 1,
                      minimumValueLabel: Text("Past").font(.caption),
                      maximumValueLabel: Text("Future").font(.caption)) {
-                Text("Chosen date: \(selectedDate, style: .date)")
+                HStack {
+                  Text("Chosen date: \(selectedDate, style: .date)")
+                  
+                }
               }
                      .accentColor(.systemFill)
                      .foregroundColor(.secondary)
@@ -69,7 +72,13 @@ struct ContentView: View {
             },
             label: {
               HStack {
-                Label("\(calculator.baseDate, style: .date)", systemImage: "calendar.badge.clock")
+                Label {
+                  Text(selectedDate, style: .date)
+                    .fontWeight(selectedDate.isToday ? .regular : .semibold)
+                    .capsuleAppearance(on: !selectedDate.isToday)
+                } icon: {
+                  Image(systemName: "calendar.badge.clock")
+                }
                 Spacer()
               }
               .frame(maxWidth: .infinity)
@@ -125,7 +134,8 @@ struct ContentView: View {
     
     let differenceString = difference.colloquialTimeString
     let differenceComparator = difference >= 0 ? "more" : "less"
-    return "\(differenceString) \(differenceComparator) daylight today than at the previous solstice."
+    let comparedToDate = calculator.baseDate.isToday ? "today" : "on this day"
+    return "\(differenceString) \(differenceComparator) daylight \(comparedToDate) than at the previous solstice."
   }
   
   var nextSolsticeDistance: String {

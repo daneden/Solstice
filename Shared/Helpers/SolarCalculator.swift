@@ -196,6 +196,12 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   var differenceString: String {
+    let formatter = DateFormatter()
+    formatter.doesRelativeDateFormatting = true
+    formatter.dateStyle = .long
+    formatter.formattingContext = .middleOfSentence
+    
+    let yesterday = baseDate.isToday ? yesterday : SolarCalculator(baseDate: .now).today
     var string = today.difference(from: yesterday).colloquialTimeString
     
     if today.difference(from: yesterday) >= 0 {
@@ -203,6 +209,8 @@ class SolarCalculator: NSObject, ObservableObject {
     } else {
       string += " less"
     }
+    
+    string += " daylight \(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
     
     return string
   }

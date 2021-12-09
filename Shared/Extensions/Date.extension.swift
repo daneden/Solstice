@@ -37,4 +37,9 @@ extension Date {
   }
   
   var isInFuture: Bool { !isInPast }
+  
+  var isToday: Bool {
+    let calendar = Calendar.current
+    return calendar.isDateInToday(self)
+  }
 }

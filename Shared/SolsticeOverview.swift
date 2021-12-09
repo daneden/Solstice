@@ -45,25 +45,22 @@ struct SolsticeOverview: View {
         }
       }
       
-      // MARK: Sunrise
-      if let begins = calculator.today.begins {
+      // MARK: Sunrise, culmination, and sunset times
+      if let begins = calculator.today.begins,
+         let peak = calculator.today.peak,
+         let ends = calculator.today.ends {
         AdaptiveStack {
           Label("Sunrise", systemImage: "sunrise.fill")
           Spacer()
           Text("\(begins, style: .time)")
         }
-      }
-      
-      if let peak = calculator.today.peak {
+        
         AdaptiveStack {
           Label("Culmination", systemImage: "sun.max.fill")
           Spacer()
           Text("\(peak, style: .time)")
         }
-      }
-      
-      // MARK: Sunset
-      if let ends = calculator.today.ends {
+        
         AdaptiveStack {
           Label("Sunset", systemImage: "sunset.fill")
           Spacer()

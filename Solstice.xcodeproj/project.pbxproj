@@ -93,6 +93,8 @@
 		71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */; };
 		71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF3525A51AF800CCC2FC /* Color.extension.swift */; };
+		71F2258E27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2258D27621238008F88F9 /* View+CapsuleAppearance.swift */; };
+		71F2258F27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2258D27621238008F88F9 /* View+CapsuleAppearance.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,6 +221,7 @@
 		71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
 		71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarCalculator.swift; sourceTree = "<group>"; };
 		71EECF3525A51AF800CCC2FC /* Color.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.extension.swift; sourceTree = "<group>"; };
+		71F2258D27621238008F88F9 /* View+CapsuleAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CapsuleAppearance.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +381,7 @@
 				7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */,
 				71682AE125DD923400487ECA /* View.extension.swift */,
 				7133BCD1270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift */,
+				71F2258D27621238008F88F9 /* View+CapsuleAppearance.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -666,6 +670,7 @@
 				71864DA22701A8FA00DE03CB /* LandingView.swift in Sources */,
 				71864D9D2701A8FA00DE03CB /* SunCalendarView.swift in Sources */,
 				71864DB42701ABB200DE03CB /* View.extension.swift in Sources */,
+				71F2258F27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */,
 				71864DAB2701A97200DE03CB /* LocationManager.swift in Sources */,
 				71864DAA2701A97200DE03CB /* Constants.swift in Sources */,
 			);
@@ -693,6 +698,7 @@
 				711AE61225A718BF00B363BA /* PermissionDeniedView.swift in Sources */,
 				71C884BC25A913770009F2A1 /* SettingsView.swift in Sources */,
 				71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */,
+				71F2258E27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */,
 				7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
 				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
@@ -1056,7 +1062,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = iphoneos;
@@ -1083,7 +1089,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = iphoneos;
