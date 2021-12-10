@@ -198,7 +198,7 @@ class SolarCalculator: NSObject, ObservableObject {
   var differenceString: String {
     let formatter = DateFormatter()
     formatter.doesRelativeDateFormatting = true
-    formatter.dateStyle = .long
+    formatter.dateStyle = .medium
     formatter.formattingContext = .middleOfSentence
     
     let yesterday = baseDate.isToday ? yesterday : SolarCalculator(baseDate: .now).today
@@ -210,7 +210,7 @@ class SolarCalculator: NSObject, ObservableObject {
       string += " less"
     }
     
-    string += " daylight \(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
+    string += " daylight \(baseDate.isToday ? "" : "on ")\(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
     
     return string
   }
