@@ -210,7 +210,15 @@ class SolarCalculator: NSObject, ObservableObject {
       string += " less"
     }
     
-    string += " daylight \(baseDate.isToday ? "" : "on ")\(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
+    // Check if the base date formatted as a string contains numbers.
+    // If it does, this means it's presented as an absolute date, and should
+    // be rendered as “on {date}”; if not, it’s presented as a relative date,
+    // and should be presented as “{yesterday/today/tomorrow}”
+    let baseDateString = formatter.string(from: baseDate)
+    let decimalCharacters = CharacterSet.decimalDigits
+    let decimalRange = baseDateString.rangeOfCharacter(from: decimalCharacters)
+    
+    string += " daylight \(decimalRange == nil ? "" : "on ")\(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
     
     return string
   }
