@@ -13,6 +13,7 @@ import BackgroundTasks
 class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
   // General notification settings
   @AppStorage(UDValues.notificationTime) var notifTime
+  @AppStorage(UDValues.notificationsEnabled) var notificationsEnabled
   
   // Notification fragment settings
   @AppStorage(UDValues.notificationsIncludeSunTimes) var notifsIncludeSunTimes
@@ -21,12 +22,23 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   @AppStorage(UDValues.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
   @AppStorage(UDValues.sadPreference) var sadPreference
   
-  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+  ) {
     print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
     
     DispatchQueue.global(qos: .background).async {
       self.scheduleNotifications()
     }
+  }
+  
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse
+  ) async {
+    self.notificationCenter.removeAllDeliveredNotifications()
   }
   
   static let shared = NotificationManager()
@@ -79,6 +91,11 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   
   // MARK: Notification scheduler
   func scheduleNotifications(from task: BGAppRefreshTask? = nil) {
+    if !notificationsEnabled {
+      self.notificationCenter.removeAllPendingNotificationRequests()
+      return
+    }
+    
     self.getPending { requests in
       for index in 1..<64 {
         let now = Date()
