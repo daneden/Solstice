@@ -10,6 +10,7 @@ import Combine
 import CoreLocation
 import SwiftUI
 import Solar
+import OSLog
 
 enum SolarEventType {
   case sunrise(at: Date), sunset(at: Date)
@@ -97,14 +98,17 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   private func createDaylight(from solar: Solar) -> Daylight {
-    if let sunrise = solar.sunrise, let sunset = solar.sunset,
-       let bSunrise = solar.nauticalSunrise, let bSunset = solar.nauticalSunset {
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      let nauticalSunrise = solar.nauticalSunrise ?? sunrise
+      let nauticalSunset = solar.nauticalSunset ?? sunset
       return Daylight(
         begins: applyTimezoneOffset(to: sunrise),
         ends: applyTimezoneOffset(to: sunset),
-        nauticalBegins: applyTimezoneOffset(to: bSunrise),
-        nauticalEnds: applyTimezoneOffset(to: bSunset)
+        nauticalBegins: applyTimezoneOffset(to: nauticalSunrise),
+        nauticalEnds: applyTimezoneOffset(to: nauticalSunset)
       )
+    } else {
+      os_log("Unable to create Daylight object from Solar object; reverting to default Daylight object, which may cause bugs.")
     }
     
     return .Default
