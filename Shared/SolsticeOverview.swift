@@ -21,7 +21,8 @@ struct SolsticeOverview: View {
           self.activeSheet = .location
         }) {
           Label(placeName, systemImage: "location.fill")
-        }.buttonStyle(BorderlessButtonStyle())
+            .foregroundColor(.accentColor)
+        }
       }
       
       // MARK: Duration
