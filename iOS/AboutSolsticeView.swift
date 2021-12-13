@@ -74,10 +74,10 @@ struct AboutSolsticeView: View {
         }
         .symbolRenderingMode(.multicolor)
         .disabled(purchaseInProgress)
-        
-        Link(destination: appStoreReviewURL) {
-          Label("Leave a review", systemImage: "star")
-        }
+      }
+      
+      Link(destination: appStoreReviewURL) {
+        Label("Leave a review", systemImage: "star")
       }
     }
     .listStyle(.grouped)
