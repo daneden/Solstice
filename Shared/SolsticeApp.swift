@@ -52,7 +52,9 @@ struct SolsticeApp: App {
         #if os(iOS)
         if sessionCount >= 3,
            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-          SKStoreReviewController.requestReview(in: windowScene)
+          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            SKStoreReviewController.requestReview(in: windowScene)
+          }
         }
         #endif
       }
