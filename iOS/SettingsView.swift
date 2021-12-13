@@ -104,6 +104,12 @@ struct SettingsView: View {
             }
           }
         }
+        
+        Section {
+          NavigationLink(destination: AboutSolsticeView()) {
+            Label("About", systemImage: "info.circle")
+          }
+        }
       }
       .navigationTitle(Text("Settings"))
       .toolbar {

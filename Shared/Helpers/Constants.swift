@@ -48,3 +48,9 @@ struct UDValues {
 
 let stiffSpringAnimation = Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.3)
 let easingSpringAnimation = Animation.interactiveSpring(response: 0.4, dampingFraction: 0.8, blendDuration: 1)
+
+let iapProductIDs = Set([
+  "me.daneden.Solstice.iap.tip.small",
+  "me.daneden.Solstice.iap.tip.medium",
+  "me.daneden.Solstice.iap.tip.large"
+])
