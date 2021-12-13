@@ -107,7 +107,7 @@ struct SettingsView: View {
         
         Section {
           NavigationLink(destination: AboutSolsticeView()) {
-            Label("About", systemImage: "info.circle")
+            Label("About Solstice", systemImage: "info.circle")
           }
         }
       }

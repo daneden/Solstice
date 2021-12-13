@@ -30,8 +30,13 @@ struct AboutSolsticeView: View {
     }
   }
   
+  var appStoreReviewURL: URL {
+    URL(string: "https://apps.apple.com/app/id1547580907?action=write-review")!
+  }
+  
   @State var products: [Product] = []
   @State var latestTransaction: StoreKit.Transaction?
+  @State var purchaseInProgress = false
   
   var body: some View {
     List {
@@ -51,7 +56,9 @@ struct AboutSolsticeView: View {
               .padding(.vertical, 4)
           }
           
-          ForEach(products, id: \.id) { product in
+          ForEach(products.sorted(by: { lhs, rhs in
+            lhs.price > rhs.price
+          }), id: \.id) { product in
             Button(action: {
               Task.init {
                 self.latestTransaction = try await purchaseProduct(product)
@@ -66,8 +73,11 @@ struct AboutSolsticeView: View {
           }
         }
         .symbolRenderingMode(.multicolor)
-        .transition(.slide
-        )
+        .disabled(purchaseInProgress)
+        
+        Link(destination: appStoreReviewURL) {
+          Label("Leave a review", systemImage: "star")
+        }
       }
     }
     .listStyle(.grouped)
@@ -86,7 +96,11 @@ struct AboutSolsticeView: View {
   }
   
   func purchaseProduct(_ product: Product) async throws -> StoreKit.Transaction {
+    purchaseInProgress = true
+    
     let result = try await product.purchase()
+    
+    purchaseInProgress = false
     
     switch result {
     case .pending:
