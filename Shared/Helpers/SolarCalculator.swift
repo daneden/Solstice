@@ -53,8 +53,8 @@ struct Daylight: Hashable {
 
 class SolarCalculator: NSObject, ObservableObject {
   static var shared = SolarCalculator()
-  @AppStorage(UDValues.cachedLatitude) private var latitude
-  @AppStorage(UDValues.cachedLongitude) private var longitude
+  @AppStorage(UDValues.cachedLatitude) var latitude
+  @AppStorage(UDValues.cachedLongitude) var longitude
   
   @Published var dateOffset = 0.0 {
     didSet { updateBaseDate() }

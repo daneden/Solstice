@@ -6,6 +6,7 @@
 //
 
 import Intents
+import Solar
 
 class IntentHandler: INExtension {
   override func handler(for intent: INIntent) -> Any {
@@ -71,6 +72,76 @@ class ViewRemainingDaylightIntentHandler: NSObject, ViewRemainingDaylightIntentH
       completion(ViewRemainingDaylightIntentResponse.success(daylight: result))
     } else {
       completion(ViewRemainingDaylightIntentResponse.failure(error: "There was a problem calculating today’s remaining daylight. Open Solstice to see the latest information."))
+    }
+  }
+}
+
+class GetSunriseTimeIntentHandler: NSObject, GetSunriseTimeIntentHandling {
+  func resolveDate(for intent: GetSunriseTimeIntent) async -> INDateComponentsResolutionResult {
+    if let date = intent.date {
+      return .success(with: date)
+    } else {
+      return .unsupported()
+    }
+  }
+  
+  func resolveLocation(for intent: GetSunriseTimeIntent) async -> INPlacemarkResolutionResult {
+    if let location = intent.location {
+      return location.location == nil ? .disambiguation(with: [location]) : .success(with: location)
+    } else {
+      return .unsupported()
+    }
+  }
+  
+  func handle(intent: GetSunriseTimeIntent) async -> GetSunriseTimeIntentResponse {
+    if let dateComponents = intent.date,
+       let date = dateComponents.date,
+       let placemark = intent.location,
+       let location = placemark.location?.coordinate {
+      let solar = Solar(for: date, coordinate: location)
+      
+      if let sunriseTime = solar?.sunrise {
+        return .success(sunriseTime: Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: sunriseTime), date: dateComponents, location: placemark)
+      } else {
+        return GetSunriseTimeIntentResponse(code: .failure, userActivity: nil)
+      }
+    } else {
+      return GetSunriseTimeIntentResponse(code: .failure, userActivity: nil)
+    }
+  }
+}
+
+class GetSunsetTimeIntentHandler: NSObject, GetSunsetTimeIntentHandling {
+  func resolveDate(for intent: GetSunsetTimeIntent) async -> INDateComponentsResolutionResult {
+    if let date = intent.date {
+      return .success(with: date)
+    } else {
+      return .unsupported()
+    }
+  }
+  
+  func resolveLocation(for intent: GetSunsetTimeIntent) async -> INPlacemarkResolutionResult {
+    if let location = intent.location {
+      return .success(with: location)
+    } else {
+      return .unsupported()
+    }
+  }
+  
+  func handle(intent: GetSunsetTimeIntent) async -> GetSunsetTimeIntentResponse {
+    if let dateComponents = intent.date,
+       let date = dateComponents.date,
+       let placemark = intent.location,
+       let location = placemark.location?.coordinate {
+      let solar = Solar(for: date, coordinate: location)
+      
+      if let sunsetTime = solar?.sunset {
+        return .success(sunsetTime: Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: sunsetTime), date: dateComponents, location: placemark)
+      } else {
+        return GetSunsetTimeIntentResponse(code: .failure, userActivity: nil)
+      }
+    } else {
+      return GetSunsetTimeIntentResponse(code: .failure, userActivity: nil)
     }
   }
 }

@@ -30,6 +30,8 @@
 			<array/>
 			<key>IntentsSupported</key>
 			<array>
+				<string>GetSunriseTimeIntent</string>
+				<string>GetSunsetTimeIntent</string>
 				<string>ViewDaylightIntent</string>
 				<string>ViewRemainingDaylightIntent</string>
 			</array>
