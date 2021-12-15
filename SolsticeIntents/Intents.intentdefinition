@@ -137,7 +137,7 @@
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>ui2NLN</string>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>${result}</string>
+						<string>${result} of daylight on ${date}</string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>ZvRTIv</string>
 						<key>INIntentResponseCodeName</key>
@@ -159,24 +159,35 @@
 					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>2</integer>
+				<integer>6</integer>
 				<key>INIntentResponseOutput</key>
 				<string>result</string>
 				<key>INIntentResponseParameters</key>
 				<array>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
-						<string>Daylight</string>
+						<string>Result</string>
 						<key>INIntentResponseParameterDisplayNameID</key>
-						<string>WDvFul</string>
+						<string>oTPNml</string>
 						<key>INIntentResponseParameterDisplayPriority</key>
 						<integer>1</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDefaultUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataMaximumUnit</key>
+							<string>Hours</string>
+							<key>INIntentResponseParameterMetadataMinimumUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataUnit</key>
+							<string>Multiple</string>
+						</dict>
 						<key>INIntentResponseParameterName</key>
 						<string>result</string>
 						<key>INIntentResponseParameterTag</key>
-						<integer>1</integer>
+						<integer>4</integer>
 						<key>INIntentResponseParameterType</key>
-						<string>String</string>
+						<string>TimeInterval</string>
 					</dict>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
@@ -191,6 +202,35 @@
 						<integer>2</integer>
 						<key>INIntentResponseParameterType</key>
 						<string>String</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Date</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>nJbhyj</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Short</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Template</string>
+							<key>INIntentResponseParameterMetadataTemplate</key>
+							<string>MMM d, y</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>l6fHNf</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Date</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>date</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>6</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
 					</dict>
 				</array>
 			</dict>
@@ -246,11 +286,11 @@
 				<array>
 					<dict>
 						<key>INIntentResponseCodeConciseFormatString</key>
-						<string>${daylight}</string>
+						<string>${result}</string>
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>kSpQyR</string>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>${daylight}</string>
+						<string>${result} of daylight remaining today. </string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>uqTlEd</string>
 						<key>INIntentResponseCodeName</key>
@@ -270,26 +310,51 @@
 						<key>INIntentResponseCodeName</key>
 						<string>failure</string>
 					</dict>
+					<dict>
+						<key>INIntentResponseCodeConciseFormatString</key>
+						<string>No more daylight today; the sun will rise again tomorrow at ${nextSunriseTime}.</string>
+						<key>INIntentResponseCodeConciseFormatStringID</key>
+						<string>4Cr2HG</string>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>No more daylight today; the sun will rise again tomorrow at ${nextSunriseTime}.</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>UZacpK</string>
+						<key>INIntentResponseCodeName</key>
+						<string>noDaylightRemaining</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>2</integer>
+				<integer>7</integer>
 				<key>INIntentResponseOutput</key>
-				<string>daylight</string>
+				<string>result</string>
 				<key>INIntentResponseParameters</key>
 				<array>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
-						<string>Daylight Remaining</string>
+						<string>Result</string>
 						<key>INIntentResponseParameterDisplayNameID</key>
-						<string>IneCpV</string>
+						<string>ldH6QP</string>
 						<key>INIntentResponseParameterDisplayPriority</key>
 						<integer>1</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDefaultUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataMaximumUnit</key>
+							<string>Days</string>
+							<key>INIntentResponseParameterMetadataMinimumUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataUnit</key>
+							<string>Multiple</string>
+						</dict>
 						<key>INIntentResponseParameterName</key>
-						<string>daylight</string>
+						<string>result</string>
 						<key>INIntentResponseParameterTag</key>
-						<integer>1</integer>
+						<integer>4</integer>
 						<key>INIntentResponseParameterType</key>
-						<string>String</string>
+						<string>TimeInterval</string>
 					</dict>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
@@ -304,6 +369,33 @@
 						<integer>2</integer>
 						<key>INIntentResponseParameterType</key>
 						<string>String</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Next Sunrise Time</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>kAw5c7</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Style</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>ZA8Dqp</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Short</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Time</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>nextSunriseTime</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>7</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
 					</dict>
 				</array>
 			</dict>
@@ -526,7 +618,7 @@
 							<key>INIntentResponseParameterMetadataFormat</key>
 							<string>Template</string>
 							<key>INIntentResponseParameterMetadataTemplate</key>
-							<string>MMM d, y</string>
+							<string>MMM d, yyy</string>
 							<key>INIntentResponseParameterMetadataTemplateID</key>
 							<string>cNoiY9</string>
 							<key>INIntentResponseParameterMetadataTimeStyle</key>
@@ -770,9 +862,7 @@
 							<key>INIntentResponseParameterMetadataDateStyle</key>
 							<string>Short</string>
 							<key>INIntentResponseParameterMetadataFormat</key>
-							<string>Template</string>
-							<key>INIntentResponseParameterMetadataTemplate</key>
-							<string>MMM d, y</string>
+							<string>Style</string>
 							<key>INIntentResponseParameterMetadataTemplateID</key>
 							<string>ZnTU7c</string>
 							<key>INIntentResponseParameterMetadataTimeStyle</key>

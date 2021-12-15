@@ -26,56 +26,43 @@ class IntentHandler: INExtension {
 }
 
 class ViewDaylightIntentHandler: NSObject, ViewDaylightIntentHandling {
-  func handle(intent: ViewDaylightIntent, completion: @escaping (ViewDaylightIntentResponse) -> Void) {
-    if let date = intent.date?.date! {
+  func handle(intent: ViewDaylightIntent) async -> ViewDaylightIntentResponse {
+    if let date = intent.date?.date {
       let solarCalculator = SolarCalculator(baseDate: date)
       let duration = solarCalculator.today.duration
       
-      let formatter = DateFormatter()
-      formatter.dateStyle = .medium
-      
-      let string = "\(duration.colloquialTimeString) of daylight on \(formatter.string(from: date))"
-      completion(ViewDaylightIntentResponse.success(result: string))
+      return .success(result: NSNumber(value: duration), date: Calendar.autoupdatingCurrent.dateComponents(Set(Calendar.Component.allCases), from: date))
     } else {
-      completion(ViewDaylightIntentResponse.failure(error: "Unable to calculate daylight; the date provided may be invalid."))
+      return .failure(error: "Unable to calculate daylight; the date provided may be invalid.")
     }
   }
   
-  func resolveDate(for intent: ViewDaylightIntent, with completion: @escaping (ViewDaylightDateResolutionResult) -> Void) {
+  func resolveDate(for intent: ViewDaylightIntent) async -> ViewDaylightDateResolutionResult {
     if let date = intent.date {
-      completion(ViewDaylightDateResolutionResult.success(with: date))
+      return .success(with: date)
     } else {
-      completion(ViewDaylightDateResolutionResult.unsupported(forReason: .invalidDate))
+      return .needsValue()
     }
   }
 }
 
 class ViewRemainingDaylightIntentHandler: NSObject, ViewRemainingDaylightIntentHandling {
-  func handle(intent: ViewRemainingDaylightIntent, completion: @escaping (ViewRemainingDaylightIntentResponse) -> Void) {
+  func handle(intent: ViewRemainingDaylightIntent) async -> ViewRemainingDaylightIntentResponse {
     let calculator = SolarCalculator()
     let isDaytime = calculator.today.begins.isInPast && calculator.today.ends.isInFuture
     
-    let relativeFormatter = RelativeDateTimeFormatter()
-    let now = Date()
-    
-    let formatter = DateFormatter()
-    formatter.dateStyle = .none
-    formatter.timeStyle = .short
-    
-    var result: String?
-    
     if isDaytime {
-      result = "There’s \(now.distance(to: calculator.today.ends).colloquialTimeString) of daylight left today. The sun sets at \(formatter.string(from: calculator.today.ends))."
+      return .success(
+        result: NSNumber(value: Date().distance(to: calculator.today.ends))
+      )
     } else if calculator.today.ends.isInPast {
-      result = "No more daylight today. The sun set \(relativeFormatter.localizedString(for: calculator.today.ends, relativeTo: now)) and rises again \(relativeFormatter.localizedString(for: calculator.tomorrow.begins, relativeTo: now))."
+      return .noDaylightRemaining(
+        nextSunriseTime: Calendar.autoupdatingCurrent.dateComponents(Set(Calendar.Component.allCases), from: calculator.tomorrow.begins)
+      )
     } else if calculator.today.begins.isInFuture {
-      result = "\(calculator.today.duration.colloquialTimeString) of daylight today. The sun rises \(relativeFormatter.localizedString(for: calculator.today.begins, relativeTo: now))."
-    }
-    
-    if let result = result {
-      completion(ViewRemainingDaylightIntentResponse.success(daylight: result))
+      return .success(result: NSNumber(value: calculator.today.duration))
     } else {
-      completion(ViewRemainingDaylightIntentResponse.failure(error: "There was a problem calculating today’s remaining daylight. Open Solstice to see the latest information."))
+      return .failure(error: "Something went wrong")
     }
   }
 }

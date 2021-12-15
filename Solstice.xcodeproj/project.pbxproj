@@ -17,8 +17,8 @@
 		71350CC626230BBA00F5F96E /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71D1BB972622240400A17E47 /* Intents.framework */; };
 		71350CC926230BBA00F5F96E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71350CC826230BBA00F5F96E /* IntentHandler.swift */; };
 		71350CDD26230BBA00F5F96E /* SolsticeIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 71350CC526230BBA00F5F96E /* SolsticeIntents.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		71350CE926230BD600F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; };
-		71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; };
+		71350CE926230BD600F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
+		71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
 		715935FB27674FA000F03F29 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 715935FA27674FA000F03F29 /* StoreKit.framework */; };
 		715935FD27674FC100F03F29 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 715935FC27674FC100F03F29 /* README.md */; };
