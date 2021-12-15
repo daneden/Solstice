@@ -325,6 +325,10 @@
 			<string>Calculate the sunrise time on a given date in a given location</string>
 			<key>INIntentDescriptionID</key>
 			<string>lREhZc</string>
+			<key>INIntentInput</key>
+			<string>date</string>
+			<key>INIntentKeyParameter</key>
+			<string>date</string>
 			<key>INIntentLastParameterTag</key>
 			<integer>4</integer>
 			<key>INIntentManagedParameterCombinations</key>
@@ -361,8 +365,6 @@
 			<array>
 				<dict>
 					<key>INIntentParameterConfigurable</key>
-					<true/>
-					<key>INIntentParameterCustomDisambiguation</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
 					<string>Date</string>
@@ -402,26 +404,6 @@
 							<string>mQtYkK</string>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Primary</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${date}’.</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>A2QgtI</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>DisambiguationIntroduction</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${date}’?</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>jSpbcN</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>Confirmation</string>
 						</dict>
 					</array>
 					<key>INIntentParameterSupportsResolution</key>
@@ -519,7 +501,7 @@
 							<key>INIntentResponseParameterMetadataTemplateID</key>
 							<string>WsUGOo</string>
 							<key>INIntentResponseParameterMetadataTimeStyle</key>
-							<string>Full</string>
+							<string>Medium</string>
 							<key>INIntentResponseParameterMetadataType</key>
 							<string>Time</string>
 						</dict>
@@ -540,15 +522,17 @@
 						<key>INIntentResponseParameterMetadata</key>
 						<dict>
 							<key>INIntentResponseParameterMetadataDateStyle</key>
-							<string>Medium</string>
+							<string>Short</string>
 							<key>INIntentResponseParameterMetadataFormat</key>
-							<string>Style</string>
+							<string>Template</string>
+							<key>INIntentResponseParameterMetadataTemplate</key>
+							<string>MMM d, y</string>
 							<key>INIntentResponseParameterMetadataTemplateID</key>
 							<string>cNoiY9</string>
 							<key>INIntentResponseParameterMetadataTimeStyle</key>
 							<string>Full</string>
 							<key>INIntentResponseParameterMetadataType</key>
-							<string>DateTime</string>
+							<string>Date</string>
 						</dict>
 						<key>INIntentResponseParameterName</key>
 						<string>date</string>
@@ -763,7 +747,7 @@
 							<key>INIntentResponseParameterMetadataTemplateID</key>
 							<string>trLlP6</string>
 							<key>INIntentResponseParameterMetadataTimeStyle</key>
-							<string>Full</string>
+							<string>Medium</string>
 							<key>INIntentResponseParameterMetadataType</key>
 							<string>Time</string>
 						</dict>
@@ -784,9 +768,11 @@
 						<key>INIntentResponseParameterMetadata</key>
 						<dict>
 							<key>INIntentResponseParameterMetadataDateStyle</key>
-							<string>Medium</string>
+							<string>Short</string>
 							<key>INIntentResponseParameterMetadataFormat</key>
-							<string>Style</string>
+							<string>Template</string>
+							<key>INIntentResponseParameterMetadataTemplate</key>
+							<string>MMM d, y</string>
 							<key>INIntentResponseParameterMetadataTemplateID</key>
 							<string>ZnTU7c</string>
 							<key>INIntentResponseParameterMetadataTimeStyle</key>

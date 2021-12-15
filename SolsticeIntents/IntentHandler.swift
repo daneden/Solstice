@@ -15,6 +15,10 @@ class IntentHandler: INExtension {
       return ViewDaylightIntentHandler()
     case is ViewRemainingDaylightIntent:
       return ViewRemainingDaylightIntentHandler()
+    case is GetSunsetTimeIntent:
+      return GetSunsetTimeIntentHandler()
+    case is GetSunriseTimeIntent:
+      return GetSunriseTimeIntentHandler()
     default:
       return self
     }
@@ -77,19 +81,21 @@ class ViewRemainingDaylightIntentHandler: NSObject, ViewRemainingDaylightIntentH
 }
 
 class GetSunriseTimeIntentHandler: NSObject, GetSunriseTimeIntentHandling {
+  private let calendar = Calendar.autoupdatingCurrent
+  
   func resolveDate(for intent: GetSunriseTimeIntent) async -> INDateComponentsResolutionResult {
     if let date = intent.date {
       return .success(with: date)
     } else {
-      return .unsupported()
+      return .needsValue()
     }
   }
   
   func resolveLocation(for intent: GetSunriseTimeIntent) async -> INPlacemarkResolutionResult {
     if let location = intent.location {
-      return location.location == nil ? .disambiguation(with: [location]) : .success(with: location)
+      return .success(with: location)
     } else {
-      return .unsupported()
+      return .needsValue()
     }
   }
   
@@ -98,10 +104,15 @@ class GetSunriseTimeIntentHandler: NSObject, GetSunriseTimeIntentHandling {
        let date = dateComponents.date,
        let placemark = intent.location,
        let location = placemark.location?.coordinate {
+      let resultDateComponents = calendar.dateComponents([.day, .month, .year], from: date)
       let solar = Solar(for: date, coordinate: location)
       
       if let sunriseTime = solar?.sunrise {
-        return .success(sunriseTime: Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: sunriseTime), date: dateComponents, location: placemark)
+        return .success(
+          sunriseTime: calendar.dateComponents(Set(Calendar.Component.allCases), from: sunriseTime),
+          date: resultDateComponents,
+          location: placemark
+        )
       } else {
         return GetSunriseTimeIntentResponse(code: .failure, userActivity: nil)
       }
@@ -112,11 +123,12 @@ class GetSunriseTimeIntentHandler: NSObject, GetSunriseTimeIntentHandling {
 }
 
 class GetSunsetTimeIntentHandler: NSObject, GetSunsetTimeIntentHandling {
+  private let calendar = Calendar.autoupdatingCurrent
   func resolveDate(for intent: GetSunsetTimeIntent) async -> INDateComponentsResolutionResult {
     if let date = intent.date {
       return .success(with: date)
     } else {
-      return .unsupported()
+      return .needsValue()
     }
   }
   
@@ -124,7 +136,7 @@ class GetSunsetTimeIntentHandler: NSObject, GetSunsetTimeIntentHandling {
     if let location = intent.location {
       return .success(with: location)
     } else {
-      return .unsupported()
+      return .needsValue()
     }
   }
   
@@ -133,10 +145,15 @@ class GetSunsetTimeIntentHandler: NSObject, GetSunsetTimeIntentHandling {
        let date = dateComponents.date,
        let placemark = intent.location,
        let location = placemark.location?.coordinate {
+      let resultDateComponents = calendar.dateComponents([.day, .month, .year], from: date)
       let solar = Solar(for: date, coordinate: location)
       
       if let sunsetTime = solar?.sunset {
-        return .success(sunsetTime: Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: sunsetTime), date: dateComponents, location: placemark)
+        return .success(
+          sunsetTime: calendar.dateComponents(Set(Calendar.Component.allCases), from: sunsetTime),
+          date: resultDateComponents,
+          location: placemark
+        )
       } else {
         return GetSunsetTimeIntentResponse(code: .failure, userActivity: nil)
       }
