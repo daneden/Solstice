@@ -27,11 +27,22 @@ class IntentHandler: INExtension {
 
 class ViewDaylightIntentHandler: NSObject, ViewDaylightIntentHandling {
   func handle(intent: ViewDaylightIntent) async -> ViewDaylightIntentResponse {
-    if let date = intent.date?.date {
-      let solarCalculator = SolarCalculator(baseDate: date)
-      let duration = solarCalculator.today.duration
+    if let date = intent.date?.date,
+       let placemark = intent.location,
+       let location = placemark.location?.coordinate {
+      let solar = Solar(for: date, coordinate: location)
       
-      return .success(result: NSNumber(value: duration), date: Calendar.autoupdatingCurrent.dateComponents(Set(Calendar.Component.allCases), from: date))
+      guard let sunrise = solar?.sunrise, let sunset = solar?.sunset else {
+        return .failure(error: "Unable to calculate daylight; the date provided may be invalid.")
+      }
+      
+      let duration = sunrise.distance(to: sunset)
+      
+      return .success(
+        result: NSNumber(value: duration),
+        date: Calendar.autoupdatingCurrent.dateComponents(Set(Calendar.Component.allCases), from: date),
+        location: placemark
+      )
     } else {
       return .failure(error: "Unable to calculate daylight; the date provided may be invalid.")
     }
@@ -40,6 +51,14 @@ class ViewDaylightIntentHandler: NSObject, ViewDaylightIntentHandling {
   func resolveDate(for intent: ViewDaylightIntent) async -> ViewDaylightDateResolutionResult {
     if let date = intent.date {
       return .success(with: date)
+    } else {
+      return .needsValue()
+    }
+  }
+  
+  func resolveLocation(for intent: ViewDaylightIntent) async -> INPlacemarkResolutionResult {
+    if let location = intent.location {
+      return .success(with: location)
     } else {
       return .needsValue()
     }

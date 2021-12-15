@@ -30,10 +30,10 @@
 			<key>INIntentKeyParameter</key>
 			<string>date</string>
 			<key>INIntentLastParameterTag</key>
-			<integer>2</integer>
+			<integer>4</integer>
 			<key>INIntentManagedParameterCombinations</key>
 			<dict>
-				<key>date</key>
+				<key>date,location</key>
 				<dict>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
@@ -49,16 +49,18 @@
 			<string>ViewDaylight</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
-				<key>date</key>
+				<key>date,location</key>
 				<dict>
 					<key>INIntentParameterCombinationIsLinked</key>
+					<true/>
+					<key>INIntentParameterCombinationIsPrimary</key>
 					<true/>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
 					<string>View daylight for ${date}</string>
 					<key>INIntentParameterCombinationTitleID</key>
-					<string>6YvyDM</string>
+					<string>j2Uuyj</string>
 				</dict>
 			</dict>
 			<key>INIntentParameters</key>
@@ -99,7 +101,7 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Which date would you like to see daylight for?</string>
+							<string>On which date?</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
 							<string>KsjApk</string>
 							<key>INIntentParameterPromptDialogType</key>
@@ -126,6 +128,48 @@
 						</dict>
 					</array>
 				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Location</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>O3jEev</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>2</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataType</key>
+						<string>Name</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>location</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>In which location?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>pkhuvX</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>4</integer>
+					<key>INIntentParameterType</key>
+					<string>Placemark</string>
+				</dict>
 			</array>
 			<key>INIntentResponse</key>
 			<dict>
@@ -137,7 +181,7 @@
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>ui2NLN</string>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>${result} of daylight on ${date}</string>
+						<string>${result} of daylight on ${date} in ${location}</string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>ZvRTIv</string>
 						<key>INIntentResponseCodeName</key>
@@ -159,7 +203,7 @@
 					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>6</integer>
+				<integer>9</integer>
 				<key>INIntentResponseOutput</key>
 				<string>result</string>
 				<key>INIntentResponseParameters</key>
@@ -231,6 +275,20 @@
 						<integer>6</integer>
 						<key>INIntentResponseParameterType</key>
 						<string>DateComponents</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Location</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>iecydw</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>4</integer>
+						<key>INIntentResponseParameterName</key>
+						<string>location</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>9</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>Placemark</string>
 					</dict>
 				</array>
 			</dict>
