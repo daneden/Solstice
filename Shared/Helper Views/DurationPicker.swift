@@ -10,9 +10,11 @@ import SwiftUI
 
 struct DurationPicker: UIViewRepresentable {
   @Binding var duration: TimeInterval
+  var style: UIDatePickerStyle = .automatic
   
   func makeUIView(context: Context) -> UIDatePicker {
     let datePicker = UIDatePicker()
+    datePicker.preferredDatePickerStyle = style
     datePicker.datePickerMode = .countDownTimer
     datePicker.addTarget(context.coordinator, action: #selector(Coordinator.updateDuration), for: .valueChanged)
     return datePicker

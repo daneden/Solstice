@@ -22,7 +22,7 @@ struct NotificationSchedulePicker: View {
         DatePicker("Notification time", selection: $notificationSettings.notificationDate, displayedComponents: [.hourAndMinute])
       case .relativeTime:
         Group {
-          DurationPicker(duration: $notificationSettings.relativeOffset).datePickerStyle(.compact)
+          DurationPicker(duration: $notificationSettings.relativeOffset)
         }
       }
     }
