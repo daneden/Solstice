@@ -59,6 +59,8 @@
 		71A36C1F25A6065F004F527B /* Date.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A36C1E25A6065F004F527B /* Date.extension.swift */; };
 		71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71ABE16925C5A83100A52F35 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
+		71B5454C276B3CDB0027716A /* NotificationSchedulePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5454B276B3CDB0027716A /* NotificationSchedulePicker.swift */; };
+		71B54550276B53050027716A /* DurationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5454F276B53050027716A /* DurationPicker.swift */; };
 		71C0418326230DFB00A828AC /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
 		71C0419726230E0B00A828AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C884D525A9B93D0009F2A1 /* Constants.swift */; };
 		71C041A126230E1500A828AC /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
@@ -208,6 +210,8 @@
 		719A3FB925AF9ECA003BE97D /* Filler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filler.swift; sourceTree = "<group>"; };
 		71A36C1E25A6065F004F527B /* Date.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.extension.swift; sourceTree = "<group>"; };
 		71ABE16725C5A83100A52F35 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		71B5454B276B3CDB0027716A /* NotificationSchedulePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSchedulePicker.swift; sourceTree = "<group>"; };
+		71B5454F276B53050027716A /* DurationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
 		71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeOverview.swift; sourceTree = "<group>"; };
 		71C8842F25A90A2D0009F2A1 /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C8843125A90A2D0009F2A1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -358,6 +362,7 @@
 				71C883FF25A7AF9F0009F2A1 /* Extensions */,
 				71E5001225B77C4300C43609 /* Helper Views */,
 				71C8840425A7AFC80009F2A1 /* Helpers */,
+				71B5454B276B3CDB0027716A /* NotificationSchedulePicker.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -444,6 +449,7 @@
 			children = (
 				71E5001325B77C5000C43609 /* NotificationPreview.swift */,
 				71E5007D25BC4BFF00C43609 /* LocationPickerView.swift */,
+				71B5454F276B53050027716A /* DurationPicker.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -719,7 +725,9 @@
 				711AE61225A718BF00B363BA /* PermissionDeniedView.swift in Sources */,
 				71C884BC25A913770009F2A1 /* SettingsView.swift in Sources */,
 				71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */,
+				71B54550276B53050027716A /* DurationPicker.swift in Sources */,
 				71F2258E27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */,
+				71B5454C276B3CDB0027716A /* NotificationSchedulePicker.swift in Sources */,
 				7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
 				71EECF2F25A5123A00CCC2FC /* SolarCalculator.swift in Sources */,
 				7190092E25A4D6D5002ED383 /* SolsticeApp.swift in Sources */,
@@ -795,7 +803,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.SolsticeIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -820,7 +828,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.SolsticeIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -854,7 +862,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -888,7 +896,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -916,7 +924,7 @@
 				IBSC_MODULE = WatchSolstice_WatchKit_Extension;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = me.daneden.Solstice;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = watchos;
@@ -943,7 +951,7 @@
 				IBSC_MODULE = WatchSolstice_WatchKit_Extension;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = me.daneden.Solstice;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = watchos;
@@ -1084,7 +1092,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = iphoneos;
@@ -1111,7 +1119,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = iphoneos;
@@ -1138,7 +1146,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1165,7 +1173,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
