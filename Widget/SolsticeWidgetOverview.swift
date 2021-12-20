@@ -39,7 +39,7 @@ struct SolsticeWidgetOverview: View {
         
         Spacer()
         
-        if let duration = calculator.today.duration.colloquialTimeString {
+        if let duration = calculator.today.duration.localizedString {
           Text("Daylight today:")
             .font(.caption)
           

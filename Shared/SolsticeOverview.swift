@@ -37,7 +37,7 @@ struct SolsticeOverview: View {
           } else {
             Label("Total Daylight", systemImage: "sun.max")
             Spacer()
-            Text("\(duration.colloquialTimeString)")
+            Text("\(duration.localizedString)")
           }
         }.onTapGesture {
           withAnimation(.interactiveSpring()) {

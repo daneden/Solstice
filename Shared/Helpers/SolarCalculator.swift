@@ -206,7 +206,7 @@ class SolarCalculator: NSObject, ObservableObject {
     formatter.formattingContext = .middleOfSentence
     
     let yesterday = baseDate.isToday ? yesterday : SolarCalculator(baseDate: .now).today
-    var string = today.difference(from: yesterday).colloquialTimeString
+    var string = today.difference(from: yesterday).localizedString
     
     if today.difference(from: yesterday) >= 0 {
       string += " more"

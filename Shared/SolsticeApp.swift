@@ -14,7 +14,6 @@ struct SolsticeApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #endif
   @ObservedObject var locationManager = LocationManager.shared
-  @AppStorage("sessionCount") var sessionCount = 0
   
   var body: some Scene {
     WindowGroup {
@@ -46,18 +45,6 @@ struct SolsticeApp: App {
       #endif
       .navigationViewStyle(StackNavigationViewStyle())
       .symbolRenderingMode(.hierarchical)
-      .onAppear {
-        sessionCount += 1
-        
-        #if os(iOS)
-        if sessionCount >= 3,
-           let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            SKStoreReviewController.requestReview(in: windowScene)
-          }
-        }
-        #endif
-      }
     }
   }
 }

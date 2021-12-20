@@ -132,7 +132,7 @@ struct ContentView: View {
     let today = calculator.today
     let difference = today.difference(from: prevSolsticeDaylight)
     
-    let differenceString = difference.colloquialTimeString
+    let differenceString = difference.localizedString
     let differenceComparator = difference >= 0 ? "more" : "less"
     let comparedToDate = calculator.baseDate.isToday ? "today" : "on this day"
     return "\(differenceString) \(differenceComparator) daylight \(comparedToDate) than at the previous solstice."

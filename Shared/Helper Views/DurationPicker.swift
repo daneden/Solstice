@@ -14,7 +14,6 @@ struct DurationPicker: UIViewRepresentable {
   
   func makeUIView(context: Context) -> UIDatePicker {
     let datePicker = UIDatePicker()
-    datePicker.preferredDatePickerStyle = style
     datePicker.datePickerMode = .countDownTimer
     datePicker.addTarget(context.coordinator, action: #selector(Coordinator.updateDuration), for: .valueChanged)
     return datePicker
@@ -22,6 +21,7 @@ struct DurationPicker: UIViewRepresentable {
   
   func updateUIView(_ datePicker: UIDatePicker, context: Context) {
     datePicker.countDownDuration = duration
+    datePicker.preferredDatePickerStyle = style
   }
   
   func makeCoordinator() -> Coordinator {
@@ -40,3 +40,10 @@ struct DurationPicker: UIViewRepresentable {
     }
   }
 }
+
+struct DurationPicker_Previews: PreviewProvider {
+  static var previews: some View {
+    DurationPicker(duration: .constant(600))
+  }
+}
+
