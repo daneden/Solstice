@@ -74,7 +74,7 @@ struct SunCalendarView: View {
       year: todayComponents.year,
       month: 1,
       day: 15,
-      hour: 0,
+      hour: 12,
       minute: 0,
       second: 0
     )
@@ -87,6 +87,10 @@ struct SunCalendarView: View {
       
       monthsOfDaylight.append(calculator.today)
       
+      if calculator.today.duration == 0 {
+        print(calculator.today)
+      }
+      
       date = Calendar.current.date(byAdding: .month, value: 1, to: date)!
     }
     
@@ -98,7 +102,7 @@ struct SunCalendarView: View {
   }
   
   func calculateDaylightForMonth(_ month: Daylight) -> CGFloat {
-    let longest = daylightArray.reduce(0) { (record, currentDaylight) -> TimeInterval in
+    let longest = daylightArray.reduce(1.0) { (record, currentDaylight) -> TimeInterval in
       currentDaylight.duration > record ? currentDaylight.duration : record
     }
     

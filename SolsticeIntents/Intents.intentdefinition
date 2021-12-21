@@ -9,11 +9,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>scOT2R</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>20D91</string>
+	<string>21A559</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>12D4e</string>
+	<string>13A1030d</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>12.4</string>
+	<string>13.1</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -30,10 +30,10 @@
 			<key>INIntentKeyParameter</key>
 			<string>date</string>
 			<key>INIntentLastParameterTag</key>
-			<integer>2</integer>
+			<integer>4</integer>
 			<key>INIntentManagedParameterCombinations</key>
 			<dict>
-				<key>date</key>
+				<key>date,location</key>
 				<dict>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
@@ -49,16 +49,18 @@
 			<string>ViewDaylight</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
-				<key>date</key>
+				<key>date,location</key>
 				<dict>
 					<key>INIntentParameterCombinationIsLinked</key>
+					<true/>
+					<key>INIntentParameterCombinationIsPrimary</key>
 					<true/>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
 					<string>View daylight for ${date}</string>
 					<key>INIntentParameterCombinationTitleID</key>
-					<string>6YvyDM</string>
+					<string>j2Uuyj</string>
 				</dict>
 			</dict>
 			<key>INIntentParameters</key>
@@ -99,7 +101,7 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Which date would you like to see daylight for?</string>
+							<string>On which date?</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
 							<string>KsjApk</string>
 							<key>INIntentParameterPromptDialogType</key>
@@ -126,6 +128,48 @@
 						</dict>
 					</array>
 				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Location</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>O3jEev</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>2</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataType</key>
+						<string>Name</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>location</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>In which location?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>pkhuvX</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>4</integer>
+					<key>INIntentParameterType</key>
+					<string>Placemark</string>
+				</dict>
 			</array>
 			<key>INIntentResponse</key>
 			<dict>
@@ -137,7 +181,7 @@
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>ui2NLN</string>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>${result}</string>
+						<string>${result} of daylight on ${date} in ${location}</string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>ZvRTIv</string>
 						<key>INIntentResponseCodeName</key>
@@ -159,24 +203,35 @@
 					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>2</integer>
+				<integer>9</integer>
 				<key>INIntentResponseOutput</key>
 				<string>result</string>
 				<key>INIntentResponseParameters</key>
 				<array>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
-						<string>Daylight</string>
+						<string>Result</string>
 						<key>INIntentResponseParameterDisplayNameID</key>
-						<string>WDvFul</string>
+						<string>oTPNml</string>
 						<key>INIntentResponseParameterDisplayPriority</key>
 						<integer>1</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDefaultUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataMaximumUnit</key>
+							<string>Hours</string>
+							<key>INIntentResponseParameterMetadataMinimumUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataUnit</key>
+							<string>Multiple</string>
+						</dict>
 						<key>INIntentResponseParameterName</key>
 						<string>result</string>
 						<key>INIntentResponseParameterTag</key>
-						<integer>1</integer>
+						<integer>4</integer>
 						<key>INIntentResponseParameterType</key>
-						<string>String</string>
+						<string>TimeInterval</string>
 					</dict>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
@@ -191,6 +246,49 @@
 						<integer>2</integer>
 						<key>INIntentResponseParameterType</key>
 						<string>String</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Date</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>nJbhyj</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Short</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Template</string>
+							<key>INIntentResponseParameterMetadataTemplate</key>
+							<string>MMM d, y</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>l6fHNf</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Date</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>date</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>6</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Location</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>iecydw</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>4</integer>
+						<key>INIntentResponseParameterName</key>
+						<string>location</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>9</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>Placemark</string>
 					</dict>
 				</array>
 			</dict>
@@ -246,11 +344,11 @@
 				<array>
 					<dict>
 						<key>INIntentResponseCodeConciseFormatString</key>
-						<string>${daylight}</string>
+						<string>${result}</string>
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>kSpQyR</string>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>${daylight}</string>
+						<string>${result} of daylight remaining today. </string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>uqTlEd</string>
 						<key>INIntentResponseCodeName</key>
@@ -270,26 +368,51 @@
 						<key>INIntentResponseCodeName</key>
 						<string>failure</string>
 					</dict>
+					<dict>
+						<key>INIntentResponseCodeConciseFormatString</key>
+						<string>No more daylight today; the sun will rise again tomorrow at ${nextSunriseTime}.</string>
+						<key>INIntentResponseCodeConciseFormatStringID</key>
+						<string>4Cr2HG</string>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>No more daylight today; the sun will rise again tomorrow at ${nextSunriseTime}.</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>UZacpK</string>
+						<key>INIntentResponseCodeName</key>
+						<string>noDaylightRemaining</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>2</integer>
+				<integer>7</integer>
 				<key>INIntentResponseOutput</key>
-				<string>daylight</string>
+				<string>result</string>
 				<key>INIntentResponseParameters</key>
 				<array>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
-						<string>Daylight Remaining</string>
+						<string>Result</string>
 						<key>INIntentResponseParameterDisplayNameID</key>
-						<string>IneCpV</string>
+						<string>ldH6QP</string>
 						<key>INIntentResponseParameterDisplayPriority</key>
 						<integer>1</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDefaultUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataMaximumUnit</key>
+							<string>Days</string>
+							<key>INIntentResponseParameterMetadataMinimumUnit</key>
+							<string>Seconds</string>
+							<key>INIntentResponseParameterMetadataUnit</key>
+							<string>Multiple</string>
+						</dict>
 						<key>INIntentResponseParameterName</key>
-						<string>daylight</string>
+						<string>result</string>
 						<key>INIntentResponseParameterTag</key>
-						<integer>1</integer>
+						<integer>4</integer>
 						<key>INIntentResponseParameterType</key>
-						<string>String</string>
+						<string>TimeInterval</string>
 					</dict>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
@@ -305,6 +428,33 @@
 						<key>INIntentResponseParameterType</key>
 						<string>String</string>
 					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Next Sunrise Time</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>kAw5c7</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Style</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>ZA8Dqp</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Short</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Time</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>nextSunriseTime</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>7</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
+					</dict>
 				</array>
 			</dict>
 			<key>INIntentTitle</key>
@@ -315,6 +465,500 @@
 			<string>Custom</string>
 			<key>INIntentVerb</key>
 			<string>Do</string>
+		</dict>
+		<dict>
+			<key>INIntentCategory</key>
+			<string>download</string>
+			<key>INIntentConfigurable</key>
+			<true/>
+			<key>INIntentDescription</key>
+			<string>Calculate the sunrise time on a given date in a given location</string>
+			<key>INIntentDescriptionID</key>
+			<string>lREhZc</string>
+			<key>INIntentInput</key>
+			<string>date</string>
+			<key>INIntentKeyParameter</key>
+			<string>date</string>
+			<key>INIntentLastParameterTag</key>
+			<integer>4</integer>
+			<key>INIntentManagedParameterCombinations</key>
+			<dict>
+				<key>date,location</key>
+				<dict>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Get Sunrise Time</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>ZlobP4</string>
+					<key>INIntentParameterCombinationUpdatesLinked</key>
+					<true/>
+				</dict>
+			</dict>
+			<key>INIntentName</key>
+			<string>GetSunriseTime</string>
+			<key>INIntentParameterCombinations</key>
+			<dict>
+				<key>date,location</key>
+				<dict>
+					<key>INIntentParameterCombinationIsLinked</key>
+					<true/>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Get Sunrise Time</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>KIiYyF</string>
+				</dict>
+			</dict>
+			<key>INIntentParameters</key>
+			<array>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Date</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>eS4zfc</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>1</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataDateStyle</key>
+						<string>Full</string>
+						<key>INIntentParameterMetadataFormat</key>
+						<string>Style</string>
+						<key>INIntentParameterMetadataTemplateID</key>
+						<string>zDXzy0</string>
+						<key>INIntentParameterMetadataTimeStyle</key>
+						<string>Full</string>
+						<key>INIntentParameterMetadataType</key>
+						<string>Date</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>date</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>On which date?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>mQtYkK</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>2</integer>
+					<key>INIntentParameterType</key>
+					<string>DateComponents</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Location</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>0mu9U6</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>2</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataType</key>
+						<string>Name</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>location</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>In which location?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>8SKqjW</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>4</integer>
+					<key>INIntentParameterType</key>
+					<string>Placemark</string>
+				</dict>
+			</array>
+			<key>INIntentResponse</key>
+			<dict>
+				<key>INIntentResponseCodes</key>
+				<array>
+					<dict>
+						<key>INIntentResponseCodeConciseFormatString</key>
+						<string>${sunriseTime}</string>
+						<key>INIntentResponseCodeConciseFormatStringID</key>
+						<string>KOPoiM</string>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>The sun rises at ${sunriseTime} on ${date} in ${location}.</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>HTfs7w</string>
+						<key>INIntentResponseCodeName</key>
+						<string>success</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>INIntentResponseCodeName</key>
+						<string>failure</string>
+					</dict>
+				</array>
+				<key>INIntentResponseLastParameterTag</key>
+				<integer>8</integer>
+				<key>INIntentResponseOutput</key>
+				<string>sunriseTime</string>
+				<key>INIntentResponseParameters</key>
+				<array>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Sunrise Time</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>gA50O5</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>1</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Medium</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Style</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>WsUGOo</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Medium</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Time</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>sunriseTime</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>2</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Date</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>O9hvP6</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>2</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Short</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Template</string>
+							<key>INIntentResponseParameterMetadataTemplate</key>
+							<string>MMM d, yyy</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>cNoiY9</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Date</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>date</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>6</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Location</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>1ZuxVK</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterName</key>
+						<string>location</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>8</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>Placemark</string>
+					</dict>
+				</array>
+			</dict>
+			<key>INIntentTitle</key>
+			<string>Get Sunrise Time</string>
+			<key>INIntentTitleID</key>
+			<string>iqrPzm</string>
+			<key>INIntentType</key>
+			<string>Custom</string>
+			<key>INIntentVerb</key>
+			<string>Get</string>
+		</dict>
+		<dict>
+			<key>INIntentCategory</key>
+			<string>download</string>
+			<key>INIntentConfigurable</key>
+			<true/>
+			<key>INIntentDescription</key>
+			<string>Calculate the sunset time on a given date in a given location</string>
+			<key>INIntentDescriptionID</key>
+			<string>liXq5a</string>
+			<key>INIntentLastParameterTag</key>
+			<integer>4</integer>
+			<key>INIntentManagedParameterCombinations</key>
+			<dict>
+				<key>date,location</key>
+				<dict>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Get Sunset Time</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>SIK9g9</string>
+					<key>INIntentParameterCombinationUpdatesLinked</key>
+					<true/>
+				</dict>
+			</dict>
+			<key>INIntentName</key>
+			<string>GetSunsetTime</string>
+			<key>INIntentParameterCombinations</key>
+			<dict>
+				<key>date,location</key>
+				<dict>
+					<key>INIntentParameterCombinationIsLinked</key>
+					<true/>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Get Sunset Time</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>YLqAic</string>
+				</dict>
+			</dict>
+			<key>INIntentParameters</key>
+			<array>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Date</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>J2RqjN</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>1</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataDateStyle</key>
+						<string>Full</string>
+						<key>INIntentParameterMetadataFormat</key>
+						<string>Style</string>
+						<key>INIntentParameterMetadataTemplateID</key>
+						<string>dalUpc</string>
+						<key>INIntentParameterMetadataTimeStyle</key>
+						<string>Full</string>
+						<key>INIntentParameterMetadataType</key>
+						<string>Date</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>date</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>On which date?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>q6KIB2</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>2</integer>
+					<key>INIntentParameterType</key>
+					<string>DateComponents</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Location</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>otgCqr</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>2</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataType</key>
+						<string>Name</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>location</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>In which location?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>aNMToG</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>4</integer>
+					<key>INIntentParameterType</key>
+					<string>Placemark</string>
+				</dict>
+			</array>
+			<key>INIntentResponse</key>
+			<dict>
+				<key>INIntentResponseCodes</key>
+				<array>
+					<dict>
+						<key>INIntentResponseCodeConciseFormatString</key>
+						<string>${sunsetTime}</string>
+						<key>INIntentResponseCodeConciseFormatStringID</key>
+						<string>UPPl5o</string>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>The sun sets at ${sunsetTime} on ${date} in ${location}</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>EZnPpw</string>
+						<key>INIntentResponseCodeName</key>
+						<string>success</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>INIntentResponseCodeName</key>
+						<string>failure</string>
+					</dict>
+				</array>
+				<key>INIntentResponseLastParameterTag</key>
+				<integer>7</integer>
+				<key>INIntentResponseOutput</key>
+				<string>sunsetTime</string>
+				<key>INIntentResponseParameters</key>
+				<array>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Sunset Time</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>MjQS2g</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>1</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Style</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>trLlP6</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Medium</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Time</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>sunsetTime</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Date</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>2DT1Zv</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>2</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataDateStyle</key>
+							<string>Short</string>
+							<key>INIntentResponseParameterMetadataFormat</key>
+							<string>Style</string>
+							<key>INIntentResponseParameterMetadataTemplateID</key>
+							<string>ZnTU7c</string>
+							<key>INIntentResponseParameterMetadataTimeStyle</key>
+							<string>Full</string>
+							<key>INIntentResponseParameterMetadataType</key>
+							<string>Date</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>date</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>5</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>DateComponents</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Location</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>dN2Cic</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>3</integer>
+						<key>INIntentResponseParameterName</key>
+						<string>location</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>7</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>Placemark</string>
+					</dict>
+				</array>
+			</dict>
+			<key>INIntentTitle</key>
+			<string>Get Sunset Time</string>
+			<key>INIntentTitleID</key>
+			<string>Rhi18E</string>
+			<key>INIntentType</key>
+			<string>Custom</string>
+			<key>INIntentVerb</key>
+			<string>Get</string>
 		</dict>
 	</array>
 	<key>INTypes</key>

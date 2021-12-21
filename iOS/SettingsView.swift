@@ -8,15 +8,20 @@
 import SwiftUI
 import UserNotifications
 
+#if os(iOS)
+import StoreKit
+#endif
+
 typealias NotificationFragment = (label: String, value: Binding<Bool>)
 
 struct SettingsView: View {
+  @AppStorage("sessionCount") var sessionCount = 0
   @Environment(\.presentationMode) var presentationMode
   @ObservedObject var notificationManager = NotificationManager.shared
   
   // General notification settings
   @AppStorage(UDValues.notificationsEnabled) var notifsEnabled
-  @AppStorage(UDValues.notificationTime) var notifTime
+  @AppStorage(UDValues.NotificationSettings.notificationTime) var notifTime
   
   // Notification fragment settings
   @AppStorage(UDValues.notificationsIncludeSunTimes) var notifsIncludeSunTimes
@@ -27,9 +32,6 @@ struct SettingsView: View {
   
   // Local state manager for notification times
   @State var chosenNotifTime: Date = defaultNotificationDate
-  
-  // Disclosure group visibility toggle
-  @State var fragmentSettingsVisible = false
   
   init() {
     chosenNotifTime = Date(timeIntervalSince1970: notifTime)
@@ -60,38 +62,22 @@ struct SettingsView: View {
         
         if notifsEnabled {
           Section {
-            DatePicker(
-              "Notification Time",
-              selection: $chosenNotifTime,
-              displayedComponents: [.hourAndMinute]
-            ).onChange(of: chosenNotifTime) { _ in
-              notifTime = chosenNotifTime.timeIntervalSince1970
-              notificationManager.adjustSchedule()
-            }
+            NotificationSchedulePicker()
             
-            DisclosureGroup(
-              isExpanded: $fragmentSettingsVisible,
-              content: {
-                ForEach(notificationFragments, id: \.label) { fragment in
-                  Toggle(fragment.label, isOn: fragment.value)
-                }
-                
-                VStack(alignment: .leading) {
-                  Text("Notification Preview")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                  NotificationPreview()
-                }.padding(.vertical, 8)
-              },
-              label: {
-                Button(action: { withAnimation { self.fragmentSettingsVisible.toggle() } }) {
-                  HStack {
-                    Text("Customise Notification Content").foregroundColor(.primary)
-                    Spacer()
-                  }.contentShape(Rectangle())
-                }
+            DisclosureGroup {
+              ForEach(notificationFragments, id: \.label) { fragment in
+                Toggle(fragment.label, isOn: fragment.value)
               }
-            )
+              
+              VStack(alignment: .leading) {
+                Text("Notification Preview")
+                  .font(.caption)
+                  .foregroundColor(.secondary)
+                NotificationPreview()
+              }.padding(.vertical, 8)
+            } label: {
+              Text("Customise Notification Content").foregroundColor(.primary)
+            }
           }
           
           Section(footer: Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")) {
@@ -102,6 +88,12 @@ struct SettingsView: View {
                 }
               }
             }
+          }
+        }
+        
+        Section {
+          NavigationLink(destination: AboutSolsticeView()) {
+            Label("About Solstice", systemImage: "info.circle")
           }
         }
       }
@@ -128,6 +120,18 @@ struct SettingsView: View {
     }
     .onChange(of: sadPreference) { _ in
       notificationManager.adjustSchedule()
+    }
+    .onDisappear {
+      sessionCount += 1
+      
+#if os(iOS)
+      if sessionCount >= 3,
+         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+          SKStoreReviewController.requestReview(in: windowScene)
+        }
+      }
+#endif
     }
   }
 }

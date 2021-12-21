@@ -1,0 +1,63 @@
+{
+  "identifier" : "BF33BCC5",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.79",
+      "familyShareable" : false,
+      "internalID" : "02AED5C4",
+      "localizations" : [
+        {
+          "description" : "Enough to buy Dan a snack. Thanks!",
+          "displayName" : "Small Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "me.daneden.Solstice.iap.tip.small",
+      "referenceName" : "Small Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "F74AA919",
+      "localizations" : [
+        {
+          "description" : "Enough to buy Dan a snack & coffee. Thanks!",
+          "displayName" : "Medium Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "me.daneden.Solstice.iap.tip.medium",
+      "referenceName" : "Medium Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "C2D84DBD",
+      "localizations" : [
+        {
+          "description" : "Enough to buy Dan a bite to eat. Thanks!",
+          "displayName" : "Large Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "me.daneden.Solstice.iap.tip.large",
+      "referenceName" : "Large Tip",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}

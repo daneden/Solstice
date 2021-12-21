@@ -32,6 +32,8 @@
 	<string>Use Siri to quickly find out about today’s remaining daylight</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>GetSunriseTimeIntent</string>
+		<string>GetSunsetTimeIntent</string>
 		<string>ViewDaylightIntent</string>
 		<string>ViewRemainingDaylightIntent</string>
 	</array>

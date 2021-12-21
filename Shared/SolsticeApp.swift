@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 @main
 struct SolsticeApp: App {

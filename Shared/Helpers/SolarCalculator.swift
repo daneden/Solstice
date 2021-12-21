@@ -10,6 +10,7 @@ import Combine
 import CoreLocation
 import SwiftUI
 import Solar
+import OSLog
 
 enum SolarEventType {
   case sunrise(at: Date), sunset(at: Date)
@@ -52,8 +53,8 @@ struct Daylight: Hashable {
 
 class SolarCalculator: NSObject, ObservableObject {
   static var shared = SolarCalculator()
-  @AppStorage(UDValues.cachedLatitude) private var latitude
-  @AppStorage(UDValues.cachedLongitude) private var longitude
+  @AppStorage(UDValues.cachedLatitude) var latitude
+  @AppStorage(UDValues.cachedLongitude) var longitude
   
   @Published var dateOffset = 0.0 {
     didSet { updateBaseDate() }
@@ -97,14 +98,17 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   private func createDaylight(from solar: Solar) -> Daylight {
-    if let sunrise = solar.sunrise, let sunset = solar.sunset,
-       let bSunrise = solar.nauticalSunrise, let bSunset = solar.nauticalSunset {
+    if let sunrise = solar.sunrise, let sunset = solar.sunset {
+      let nauticalSunrise = solar.nauticalSunrise ?? sunrise
+      let nauticalSunset = solar.nauticalSunset ?? sunset
       return Daylight(
         begins: applyTimezoneOffset(to: sunrise),
         ends: applyTimezoneOffset(to: sunset),
-        nauticalBegins: applyTimezoneOffset(to: bSunrise),
-        nauticalEnds: applyTimezoneOffset(to: bSunset)
+        nauticalBegins: applyTimezoneOffset(to: nauticalSunrise),
+        nauticalEnds: applyTimezoneOffset(to: nauticalSunset)
       )
+    } else {
+      os_log("Unable to create Daylight object from Solar object; reverting to default Daylight object, which may cause bugs.")
     }
     
     return .Default
@@ -196,13 +200,29 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   var differenceString: String {
-    var string = today.difference(from: yesterday).colloquialTimeString
+    let formatter = DateFormatter()
+    formatter.doesRelativeDateFormatting = true
+    formatter.dateStyle = .medium
+    formatter.formattingContext = .middleOfSentence
+    
+    let yesterday = baseDate.isToday ? yesterday : SolarCalculator(baseDate: .now).today
+    var string = today.difference(from: yesterday).localizedString
     
     if today.difference(from: yesterday) >= 0 {
       string += " more"
     } else {
       string += " less"
     }
+    
+    // Check if the base date formatted as a string contains numbers.
+    // If it does, this means it's presented as an absolute date, and should
+    // be rendered as “on {date}”; if not, it’s presented as a relative date,
+    // and should be presented as “{yesterday/today/tomorrow}”
+    let baseDateString = formatter.string(from: baseDate)
+    let decimalCharacters = CharacterSet.decimalDigits
+    let decimalRange = baseDateString.rangeOfCharacter(from: decimalCharacters)
+    
+    string += " daylight \(decimalRange == nil ? "" : "on ")\(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
     
     return string
   }

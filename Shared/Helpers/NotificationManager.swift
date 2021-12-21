@@ -12,7 +12,8 @@ import BackgroundTasks
 
 class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
   // General notification settings
-  @AppStorage(UDValues.notificationTime) var notifTime
+  @AppStorage(UDValues.NotificationSettings.notificationTime) var notifTime
+  @AppStorage(UDValues.notificationsEnabled) var notificationsEnabled
   
   // Notification fragment settings
   @AppStorage(UDValues.notificationsIncludeSunTimes) var notifsIncludeSunTimes
@@ -21,12 +22,28 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   @AppStorage(UDValues.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
   @AppStorage(UDValues.sadPreference) var sadPreference
   
-  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+  @AppStorage(UDValues.NotificationSettings.scheduleType) var scheduleType
+  @AppStorage(UDValues.NotificationSettings.relation) var relation
+  @AppStorage(UDValues.NotificationSettings.relativeOffset) var relativeOffset
+  @AppStorage(UDValues.NotificationSettings.relativity) var relativity
+  
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+  ) {
     print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
     
     DispatchQueue.global(qos: .background).async {
       self.scheduleNotifications()
     }
+  }
+  
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse
+  ) async {
+    self.notificationCenter.removeAllDeliveredNotifications()
   }
   
   static let shared = NotificationManager()
@@ -79,33 +96,48 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   
   // MARK: Notification scheduler
   func scheduleNotifications(from task: BGAppRefreshTask? = nil) {
+    if !notificationsEnabled {
+      self.notificationCenter.removeAllPendingNotificationRequests()
+      return
+    }
+    
     self.getPending { requests in
       for index in 1..<64 {
-        let now = Date()
-        let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
-        let targetDate = Calendar.current.date(byAdding: .day, value: index, to: now)!
-        let targetNotificationTime = Calendar.current.date(
-          bySettingHour: components.hour ?? 8,
-          minute: components.minute ?? 0,
-          second: 0,
-          of: targetDate
-        )!
+        var notificationTriggerDate: Date
+        let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+        
+        
+        switch self.scheduleType {
+        case .specificTime:
+          let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
+          notificationTriggerDate = Calendar.current.date(
+            bySettingHour: components.hour ?? 8,
+            minute: components.minute ?? 0,
+            second: 0,
+            of: targetDate
+          )!
+        case .relativeTime:
+          let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+          let solarCalculator = SolarCalculator(baseDate: date)
+          let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
+          notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
+        }
         
         // Generate an ID for this notification and remove any current pending
         // notifs for the same target time
-        let id = targetNotificationTime.description
+        let id = Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate).description
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
         
         let content = UNMutableNotificationContent()
         
-        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month, .year], from: targetNotificationTime)
+        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month, .year], from: notificationTriggerDate)
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: triggerDate,
           repeats: false
         )
         
-        guard let notifContent = self.buildNotificationContent(for: targetNotificationTime) else {
+        guard let notifContent = self.buildNotificationContent(for: notificationTriggerDate) else {
           if let task = task {
             task.setTaskCompleted(success: true)
           }
@@ -144,9 +176,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     
     let solsticeCalculator = SolarCalculator(baseDate: date)
     let suntimes = solsticeCalculator.today
-    let duration = suntimes.duration.colloquialTimeString
+    let duration = suntimes.duration.localizedString
     let difference = suntimes.difference(from: solsticeCalculator.yesterday)
-    let differenceString = difference.colloquialTimeString
+    let differenceString = difference.localizedString
     
     if difference < 0 && sadPreference == .suppressNotifications && context != .preview {
       return nil
