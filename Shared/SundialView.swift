@@ -72,9 +72,16 @@ struct SundialView: View {
       let x = (currentTime * size.width) - sunSizeOffset
       let y = ((size.height / 2) + (sin((currentTime * .pi * 2) + phaseOffset) * waveSize)) - sunSizeOffset
       
+      let horizonRect = CGRect(x: 0, y: (size.height * daylightProportion) + 0.5, width: size.width, height: size.height * 2)
+      context.stroke(Path(horizonRect), with: .color(.primary.opacity(0.25)), lineWidth: 0.5)
+
+      
       // Draw above-horizon elements
       context.drawLayer { context in
-        context.clip(to: Path(CGRect(origin: .zero, size: size.applying(CGAffineTransform(scaleX: 1.0, y: daylightProportion)))))
+        context.clip(to: Path(CGRect(
+          origin: .zero,
+          size: CGSize(width: size.width, height: (size.height * daylightProportion) + 1)
+        )))
         
         // Wave shape
         context.stroke(
@@ -110,13 +117,13 @@ struct SundialView: View {
         let strokeOffset = strokeWidth / 2
         
         context.clip(to: Path(CGRect(
-          origin: CGPoint(x: 0, y: size.height * daylightProportion),
+          origin: CGPoint(x: 0, y: (size.height * daylightProportion) + 0.5),
           size: size
         )))
         
         context.stroke(
           wavePath(in: size, amplitude: waveSize, frequency: .pi * 2, phase: phaseOffset),
-          with: .color(.secondary.opacity(0.45)),
+          with: .color(.secondary.opacity(0.35)),
           lineWidth: trackWidth
         )
         
@@ -131,10 +138,6 @@ struct SundialView: View {
           lineWidth: strokeWidth
         )
       }
-      
-      let overlayPathRect = CGRect(x: 0, y: (size.height * daylightProportion) - 1, width: size.width, height: size.height * 2)
-      context.stroke(Path(overlayPathRect), with: .color(.primary.opacity(0.25)), lineWidth: 1)
-      
     }
     .mask {
       LinearGradient(
