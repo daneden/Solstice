@@ -106,6 +106,11 @@ struct UDValues {
     /// The offset in seconds between the notification and the chosen solar event
     static let relativeOffset: Value<TimeInterval> = ("notificationRelativeOffset", 30 * 60)
   }
+  
+  #if !os(watchOS)
+  // Cached Location Results
+  static let locations: Value<Set<Location>> = ("locations", [])
+  #endif
 }
 
 // MARK: Animation Globals
@@ -119,42 +124,3 @@ let iapProductIDs = Set([
   "me.daneden.Solstice.iap.tip.medium",
   "me.daneden.Solstice.iap.tip.large"
 ])
-
-// MARK: Location Bookmarks
-struct Location: Codable, Identifiable, Hashable {
-  var id: String {
-    "\(name.hashValue)-\(latitude.hashValue)-\(longitude.hashValue)"
-  }
-  
-  var name: String
-  var region: String?
-  var latitude: Double
-  var longitude: Double
-}
-
-typealias BookmarkedLocations = Set<Location>
-
-extension BookmarkedLocations: RawRepresentable {
-  public init?(rawValue: String) {
-    guard let data = rawValue.data(using: .utf8),
-          let result = try? JSONDecoder().decode(BookmarkedLocations.self, from: data)
-    else {
-      return nil
-    }
-    self = result
-  }
-  
-  public var rawValue: String {
-    guard let data = try? JSONEncoder().encode(self),
-          let result = String(data: data, encoding: .utf8)
-    else {
-      return "[]"
-    }
-    return result
-  }
-}
-
-extension UDValues {
-  // Cached Location Results
-  static let locations: Value<BookmarkedLocations> = ("locations", [])
-}

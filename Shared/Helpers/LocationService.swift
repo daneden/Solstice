@@ -11,6 +11,38 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
+struct Location: Identifiable, Hashable {
+  static func == (lhs: Location, rhs: Location) -> Bool {
+    lhs.hashValue == rhs.hashValue
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+    hasher.combine(name)
+    hasher.combine(coordinates?.longitude ?? 0)
+    hasher.combine(coordinates?.latitude ?? 0)
+  }
+  
+  var id = UUID()
+  var name: String
+  @State var coordinates: CLLocationCoordinate2D?
+  
+  init(name: String) {
+    self.name = name
+    
+    findCoordinates()
+  }
+  
+  mutating func findCoordinates() {
+    let geocoder = CLGeocoder()
+    geocoder.geocodeAddressString(name) { [self] (response, error) in
+      if let response = response, !response.isEmpty {
+        self.coordinates = response[0].location?.coordinate
+      }
+    }
+  }
+}
+
 class LocationService: NSObject, ObservableObject {
   static let shared = LocationService()
   

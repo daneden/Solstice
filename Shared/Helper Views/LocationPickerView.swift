@@ -14,8 +14,6 @@ struct LocationPickerView: View {
   @EnvironmentObject var locationService: LocationService
   @State var currentCompletion: MKLocalSearchCompletion?
   
-  var onSelection: (Location?) -> Void = { _ in }
-  
   private let searchRequest = MKLocalSearch.Request()
   
   var body: some View {
@@ -34,6 +32,10 @@ struct LocationPickerView: View {
                   .foregroundColor(.secondary)
               }
             }
+          }
+          
+          Button(action: { useCurrentLocation() }) {
+            Label("Use Current Location", systemImage: "location.fill")
           }
         }
         
@@ -68,10 +70,7 @@ struct LocationPickerView: View {
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
-                  buildMKMapItem(from: completionResult) { location in
-                    self.presentationMode.wrappedValue.dismiss()
-                    onSelection(location)
-                  }
+                  buildMKMapItem(from: completionResult)
                   locationService.queryFragment = completionResult.title
                 }
               }
@@ -82,13 +81,10 @@ struct LocationPickerView: View {
     }
   }
   
-  func buildMKMapItem(
-    from searchCompletion: MKLocalSearchCompletion,
-    with completion: @escaping (Location?) -> Void = { _ in }
-  ) {
-    currentCompletion = searchCompletion
+  func buildMKMapItem(from completion: MKLocalSearchCompletion) {
+    currentCompletion = completion
     
-    searchRequest.naturalLanguageQuery = "\(searchCompletion.title), \(searchCompletion.subtitle)"
+    searchRequest.naturalLanguageQuery = "\(completion.title), \(completion.subtitle)"
     MKLocalSearch(request: searchRequest).start { (response, error) in
       if let error = error {
         print(error.localizedDescription)
@@ -98,23 +94,19 @@ struct LocationPickerView: View {
          !response.mapItems.isEmpty {
         let item = response.mapItems[0]
         let coords = item.placemark.coordinate
-        let clLocation = CLLocation(latitude: coords.latitude, longitude: coords.longitude)
-        locationManager.location = clLocation
-        
-        let location = Location(
-          name: item.placemark.name!,
-          region: searchCompletion.subtitle,
-          latitude: coords.latitude,
-          longitude: coords.longitude
-        )
-        
-        completion(location)
-      } else {
-        completion(nil)
+        let location = CLLocation(latitude: coords.latitude, longitude: coords.longitude)
+        locationManager.location = location
+        self.presentationMode.wrappedValue.dismiss()
       }
       
       currentCompletion = nil
     }
+  }
+  
+  func useCurrentLocation() {
+    locationService.queryFragment = ""
+    locationManager.resetLocation()
+    self.presentationMode.wrappedValue.dismiss()
   }
 }
 

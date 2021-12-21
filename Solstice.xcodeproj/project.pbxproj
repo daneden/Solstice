@@ -21,8 +21,6 @@
 		71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71350CE826230BD600F5F96E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
 		7153BF6B2771F5AD00E60406 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090525A4D6D2002ED383 /* SolsticeApp.swift */; };
-		7153BF6E27722F1000E60406 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7153BF6D27722F1000E60406 /* MainView.swift */; };
-		7153BF7127722F8900E60406 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7153BF6D27722F1000E60406 /* MainView.swift */; };
 		715935FB27674FA000F03F29 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 715935FA27674FA000F03F29 /* StoreKit.framework */; };
 		715935FD27674FC100F03F29 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 715935FC27674FC100F03F29 /* README.md */; };
 		715935FF2767500F00F03F29 /* AboutSolsticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715935FE2767500F00F03F29 /* AboutSolsticeView.swift */; };
@@ -187,7 +185,6 @@
 		71350CCA26230BBA00F5F96E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71350CE826230BD600F5F96E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.extension.swift; sourceTree = "<group>"; };
-		7153BF6D27722F1000E60406 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		715935FA27674FA000F03F29 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		715935FC27674FC100F03F29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		715935FE2767500F00F03F29 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
@@ -356,7 +353,6 @@
 			children = (
 				7190090625A4D6D2002ED383 /* ContentView.swift */,
 				711AE60A25A6711C00B363BA /* LandingView.swift */,
-				7153BF6D27722F1000E60406 /* MainView.swift */,
 				711AE61125A718BF00B363BA /* PermissionDeniedView.swift */,
 				7190090525A4D6D2002ED383 /* SolsticeApp.swift */,
 				71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */,
@@ -689,7 +685,6 @@
 				71864D8A2701A82900DE03CB /* ComplicationController.swift in Sources */,
 				71864DB12701ABB200DE03CB /* Date.extension.swift in Sources */,
 				71864DB02701ABB200DE03CB /* AppStorage.extension.swift in Sources */,
-				7153BF7127722F8900E60406 /* MainView.swift in Sources */,
 				71864DB52701ABB200DE03CB /* Color.extension.swift in Sources */,
 				7153BF6B2771F5AD00E60406 /* SolsticeApp.swift in Sources */,
 				71864DB22701ABB200DE03CB /* TimeInterval.extension.swift in Sources */,
@@ -718,7 +713,6 @@
 				71E5004425B8384000C43609 /* UIScreen.extension.swift in Sources */,
 				715935FF2767500F00F03F29 /* AboutSolsticeView.swift in Sources */,
 				71C884E325A9C3DA0009F2A1 /* AppDelegate.swift in Sources */,
-				7153BF6E27722F1000E60406 /* MainView.swift in Sources */,
 				7190094E25A4D9C2002ED383 /* LocationManager.swift in Sources */,
 				71C8841225A7B1150009F2A1 /* SolsticeOverview.swift in Sources */,
 				719A3FBA25AF9ECA003BE97D /* Filler.swift in Sources */,
