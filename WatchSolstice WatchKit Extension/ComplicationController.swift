@@ -206,7 +206,7 @@ extension ComplicationController {
       sunSize = 8
     }
     
-    let sundial = SundialView(calculator: calculator, sunSize: sunSize, trackWidth: 2)
+    let sundial = SundialView(sunSize: sunSize, trackWidth: 2).environmentObject(calculator)
     
     let rectangularSundialView = ZStack(alignment: .bottom) {
       HStack {
@@ -240,13 +240,12 @@ extension ComplicationController {
       return CLKComplicationTemplateGraphicExtraLargeCircularView(sundial.ellipticalEdgeMask())
     case .graphicBezel:
       let textProvider: CLKTextProvider
-      let formatter = RelativeDateTimeFormatter()
       
       switch calculator.getNextSolarEvent() {
       case .sunrise(let at):
-        textProvider = CLKTextProvider(format: "Sunrise \(formatter.localizedString(for: at, relativeTo: .now))")
+        textProvider = CLKTextProvider(format: "Sunrise \(at.formatted(.relative(presentation: .named)))")
       case .sunset(let at):
-        textProvider = CLKTextProvider(format: "Sunset \(formatter.localizedString(for: at, relativeTo: .now))")
+        textProvider = CLKTextProvider(format: "Sunset \(at.formatted(.relative(presentation: .named)))")
       }
       
       return CLKComplicationTemplateGraphicBezelCircularText(

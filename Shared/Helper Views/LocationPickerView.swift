@@ -10,7 +10,8 @@ import MapKit
 
 struct LocationPickerView: View {
   @Environment(\.presentationMode) var presentationMode
-  @ObservedObject var locationService = LocationService.shared
+  @EnvironmentObject var locationManager: LocationManager
+  @EnvironmentObject var locationService: LocationService
   @State var currentCompletion: MKLocalSearchCompletion?
   
   private let searchRequest = MKLocalSearch.Request()
@@ -94,7 +95,7 @@ struct LocationPickerView: View {
         let item = response.mapItems[0]
         let coords = item.placemark.coordinate
         let location = CLLocation(latitude: coords.latitude, longitude: coords.longitude)
-        LocationManager.shared.location = location
+        locationManager.location = location
         self.presentationMode.wrappedValue.dismiss()
       }
       
@@ -104,7 +105,7 @@ struct LocationPickerView: View {
   
   func useCurrentLocation() {
     locationService.queryFragment = ""
-    LocationManager.shared.resetLocation()
+    locationManager.resetLocation()
     self.presentationMode.wrappedValue.dismiss()
   }
 }
@@ -112,5 +113,7 @@ struct LocationPickerView: View {
 struct LocationPickerView_Previews: PreviewProvider {
   static var previews: some View {
     LocationPickerView()
+      .environmentObject(LocationManager())
+      .environmentObject(LocationService())
   }
 }

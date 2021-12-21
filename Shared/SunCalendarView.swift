@@ -11,18 +11,14 @@ struct SunCalendarView: View {
   #if !os(watchOS)
   @Environment(\.horizontalSizeClass) var sizeClass
   #endif
-  @ObservedObject var solarCalculator = SolarCalculator.shared
-  var daylightArray: [Daylight] = []
+  @ObservedObject var solarCalculator = SolarCalculator()
+  @State var daylightArray: [Daylight] = []
   @ScaledMetric var barHeight = isWatch ? 100 : 200
   @ScaledMetric var captionSize = isWatch ? 8 : 14
   
   var currentMonth: Int {
     let month = Calendar.current.component(.month, from: solarCalculator.baseDate)
     return month - 1
-  }
-  
-  init() {
-    self.daylightArray = self.calculateMonthlyDaylight()
   }
   
   var body: some View {
@@ -64,6 +60,8 @@ struct SunCalendarView: View {
       }
       .font(.system(size: captionSize).weight(isWatch ? .semibold : .regular))
       .padding(.bottom)
+    }.onAppear {
+      daylightArray = self.calculateMonthlyDaylight()
     }
   }
   
@@ -84,13 +82,7 @@ struct SunCalendarView: View {
     
     for _ in 1...12 {
       calculator.baseDate = date
-      
       monthsOfDaylight.append(calculator.today)
-      
-      if calculator.today.duration == 0 {
-        print(calculator.today)
-      }
-      
       date = Calendar.current.date(byAdding: .month, value: 1, to: date)!
     }
     

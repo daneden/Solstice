@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LandingView: View {
+  @EnvironmentObject var locationManager: LocationManager
   let iconSize: CGFloat = isWatch ? 24 : 48
   
   var body: some View {
@@ -27,7 +28,7 @@ struct LandingView: View {
         Text("In order for Solstice to calculate the sun’s position, it needs to access your location.")
           .padding(.bottom)
         
-        Button(action: { LocationManager.shared.requestAuthorization() }) {
+        Button(action: { locationManager.requestAuthorization() }) {
           Label("Grant location access", systemImage: "location.fill")
             .frame(maxWidth: .infinity)
             .font(Font.subheadline.bold())

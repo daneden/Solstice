@@ -196,13 +196,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       content.title = "Today’s Daylight"
     }
     
-    let formatter = DateFormatter()
-    formatter.timeStyle = .short
-    formatter.dateStyle = .none
-    
     if self.notifsIncludeSunTimes {
-      content.body += "The sun rises at \(formatter.string(from: suntimes.begins)) "
-      content.body += "and sets at \(formatter.string(from: suntimes.ends)). "
+      content.body += "The sun rises at \(suntimes.begins.formatted(.dateTime.hour().minute())) "
+      content.body += "and sets at \(suntimes.ends.formatted(.dateTime.hour().minute())). "
     }
     
     if self.notifsIncludeDaylightDuration {
@@ -216,9 +212,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     }
     
     if self.notifsIncludeSolsticeCountdown {
-      let formatter = RelativeDateTimeFormatter()
-      let string = formatter.localizedString(for: solsticeCalculator.nextSolstice, relativeTo: Date())
-      content.body += "The next solstice is \(string). "
+      content.body += "The next solstice is \(solsticeCalculator.nextSolstice.formatted(.relative(presentation: .named))). "
     }
     
     /**

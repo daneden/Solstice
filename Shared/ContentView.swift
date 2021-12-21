@@ -19,7 +19,7 @@ enum SheetPresentationState: Identifiable {
 
 struct ContentView: View {
   @EnvironmentObject var locationManager: LocationManager
-  @ObservedObject var calculator = SolarCalculator.shared
+  @EnvironmentObject var calculator: SolarCalculator
   @State var selectedDate = Date()
   @State var dateOffset = 0.0
   @State var settingsVisible = false
@@ -93,7 +93,7 @@ struct ContentView: View {
           Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
             .padding(.vertical, 8)
           
-          SunCalendarView()
+          SunCalendarView(solarCalculator: calculator)
             .padding(.vertical, 8)
         }
         .listStyle(.plain)
@@ -118,6 +118,7 @@ struct ContentView: View {
           SettingsView()
         case .location:
           LocationPickerView()
+            .environmentObject(locationManager)
         }
       }
       .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in

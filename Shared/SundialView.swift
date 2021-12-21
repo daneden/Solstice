@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SundialView: View {
   @Environment(\.colorScheme) var colorScheme
-  @ObservedObject var calculator: SolarCalculator = .shared
+  @EnvironmentObject var calculator: SolarCalculator
   
   var sunSize = 24.0
   var trackWidth = 3.0
@@ -37,9 +37,11 @@ struct SundialView: View {
    Determines the current time as a percentage of the day length
    */
   private var currentTime: CGFloat {
+    let currentTimeComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: .now)
+    let date = Calendar.autoupdatingCurrent.date(bySettingHour: currentTimeComponents.hour!, minute: currentTimeComponents.minute!, second: currentTimeComponents.second!, of: calculator.baseDate)!
     let dayLength = dayBegins.distance(to: dayEnds)
     
-    let dst = calculator.timezone.daylightSavingTimeOffset(for: calculator.baseDate)
+    let dst = calculator.timezone.daylightSavingTimeOffset(for: date)
     
     let position = CGFloat((dayBegins.distance(to: calculator.baseDate) - dst) / dayLength)
     return position

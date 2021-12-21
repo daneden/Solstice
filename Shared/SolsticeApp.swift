@@ -12,20 +12,19 @@ import StoreKit
 struct SolsticeApp: App {
   #if os(iOS)
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  @StateObject var locationService = LocationService()
   #endif
-  @ObservedObject var locationManager = LocationManager.shared
+  @ObservedObject var locationManager = LocationManager()
   
   var body: some Scene {
     WindowGroup {
       Group {
-        if locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse {
-          TimelineView(.everyMinute) { context in
-            ContentView()
-              .environmentObject(locationManager)
-              .onAppear {
-                locationManager.start()
-              }
-          }
+        if locationManager.locationAvailable {
+          ContentView()
+            .environmentObject(SolarCalculator(locationManager: locationManager))
+            .onAppear {
+              locationManager.start()
+            }
         } else if locationManager.status == .notDetermined {
           VStack {
             LandingView()
@@ -38,10 +37,12 @@ struct SolsticeApp: App {
           }
         }
       }
+      .environmentObject(locationManager)
       #if os(iOS)
       .onDisappear {
         (UIApplication.shared.delegate as! AppDelegate).submitBackgroundTask()
       }
+      .environmentObject(locationService)
       #endif
       .navigationViewStyle(StackNavigationViewStyle())
       .symbolRenderingMode(.hierarchical)

@@ -13,7 +13,6 @@ extension TimeInterval {
     formatter.unitsStyle = .short
     formatter.allowedUnits = [.hour, .minute, .second]
     let string = formatter.string(from: abs(self)) ?? ""
-    
     return string
   }
 }

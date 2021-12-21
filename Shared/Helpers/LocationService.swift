@@ -11,7 +11,18 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-struct Location: Identifiable {
+struct Location: Identifiable, Hashable {
+  static func == (lhs: Location, rhs: Location) -> Bool {
+    lhs.hashValue == rhs.hashValue
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+    hasher.combine(name)
+    hasher.combine(coordinates?.longitude ?? 0)
+    hasher.combine(coordinates?.latitude ?? 0)
+  }
+  
   var id = UUID()
   var name: String
   @State var coordinates: CLLocationCoordinate2D?

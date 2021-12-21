@@ -70,7 +70,6 @@ struct UDValues {
   static let cachedLatitude: Value = ("cachedLatitude", 51.5074)
   static let cachedLongitude: Value = ("cachedLongitude", 0.1278)
   
-  
   // MARK: Notifications
   /// The user preference for whether notifications are enabled
   static let notificationsEnabled: Value = ("notifsEnabled", false)
@@ -110,7 +109,7 @@ struct UDValues {
   
   #if !os(watchOS)
   // Cached Location Results
-  static let locations: Value<[Location]> = ("locations", [])
+  static let locations: Value<Set<Location>> = ("locations", [])
   #endif
 }
 

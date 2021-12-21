@@ -14,8 +14,8 @@ enum SunEvent {
 
 struct SolsticeCountdownWidgetView: View {
   @Environment(\.widgetFamily) var family
-  var calculator = SolarCalculator()
-  @ObservedObject var location = LocationManager.shared
+  @EnvironmentObject var calculator: SolarCalculator
+  @EnvironmentObject var location: LocationManager
   
   var displaySize: Font {
     switch family {
