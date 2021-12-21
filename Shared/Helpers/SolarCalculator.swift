@@ -52,22 +52,24 @@ struct Daylight: Hashable {
 }
 
 class SolarCalculator: NSObject, ObservableObject {
-  static var shared = SolarCalculator()
-  @AppStorage(UDValues.cachedLatitude) var latitude
-  @AppStorage(UDValues.cachedLongitude) var longitude
+  var locationManager: LocationManager
+  
+  var latitude: Double { locationManager.latitude }
+  var longitude: Double { locationManager.longitude }
   
   @Published var dateOffset = 0.0 {
     didSet { updateBaseDate() }
   }
   
-  @Published var timezone = TimeZone.current {
-    didSet { updateBaseDate() }
+  var timezone: TimeZone {
+    locationManager.placemark?.timeZone ?? TimeZone.current
   }
   
   @Published var baseDate: Date
   
-  init(baseDate: Date = .now) {
+  init(baseDate: Date = .now, locationManager: LocationManager = LocationManager()) {
     self.baseDate = baseDate
+    self.locationManager = locationManager
     super.init()
     updateBaseDate()
   }
@@ -122,7 +124,6 @@ class SolarCalculator: NSObject, ObservableObject {
     return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
   }
   
-  private let locationManager = LocationManager.shared
   private var coords: CLLocationCoordinate2D {
     if let coords =
           locationManager.location?.coordinate,

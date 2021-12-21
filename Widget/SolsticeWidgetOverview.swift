@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SolsticeWidgetOverview: View {
   @Environment(\.widgetFamily) var family
-  var calculator = SolarCalculator()
-  @ObservedObject var location = LocationManager.shared
+  @EnvironmentObject var calculator: SolarCalculator
+  @EnvironmentObject var location: LocationManager
   
   var body: some View {
     ZStack(alignment: .bottomLeading) {

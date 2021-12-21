@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SolsticeOverview: View {
-  @ObservedObject var calculator = SolarCalculator.shared
-  @ObservedObject var location = LocationManager.shared
+  @EnvironmentObject var calculator: SolarCalculator
+  @EnvironmentObject var location: LocationManager
   @Binding var activeSheet: SheetPresentationState?
   
   @State var showingRemaining = false

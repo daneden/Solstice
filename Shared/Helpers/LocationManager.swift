@@ -16,7 +16,24 @@ import WidgetKit
 import ClockKit
 #endif
 
+enum LocationType {
+  case real(withAuthorizationStatus: CLAuthorizationStatus)
+  case synthesized(location: CLLocation)
+}
+
 class LocationManager: NSObject, ObservableObject {
+  private (set) var locationType: LocationType = .real(withAuthorizationStatus: .notDetermined)
+  
+  var locationAvailable: Bool {
+    if case .real(let status) = locationType, status.isAuthorized {
+      return true
+    } else if case .synthesized(_) = locationType {
+      return true
+    } else {
+      return false
+    }
+  }
+  
   @AppStorage(UDValues.cachedLatitude) var latitude {
     didSet { self.geocode() }
   }
@@ -24,8 +41,6 @@ class LocationManager: NSObject, ObservableObject {
   @AppStorage(UDValues.cachedLongitude) var longitude {
     didSet { self.geocode() }
   }
-  
-  static let shared = LocationManager()
   
   private let locationManager = CLLocationManager()
   private let geocoder = CLGeocoder()
@@ -62,9 +77,15 @@ class LocationManager: NSObject, ObservableObject {
     self.status = self.locationManager.authorizationStatus
     self.location = CLLocation(latitude: latitude, longitude: longitude)
     
-    if self.status == .authorizedAlways || self.status == .authorizedWhenInUse {
+    if let status = self.status, status.isAuthorized {
       self.start()
+      self.locationType = .real(withAuthorizationStatus: status)
     }
+  }
+  
+  func manuallySetLocation(to location: CLLocation) {
+    self.location = location
+    self.locationType = .synthesized(location: location)
   }
   
   func requestAuthorization(completionBlock: @escaping () -> Void?) {
@@ -85,18 +106,20 @@ class LocationManager: NSObject, ObservableObject {
     guard let location = self.location else { return }
     geocoder.reverseGeocodeLocation(location, completionHandler: { (places, error) in
       if error == nil {
-        self.placemark = places?[0]
-        SolarCalculator.shared.timezone = places?[0].timeZone ?? .current
+        self.placemark = places?.first
       } else {
         self.placemark = nil
       }
-      
-      self.objectWillChange.send()
     })
   }
   
   func resetLocation() {
+    if status?.isAuthorized == nil {
+      requestAuthorization()
+    }
+    
     self.location = locationManager.location
+    self.locationType = .real(withAuthorizationStatus: status!)
   }
 }
 
@@ -106,9 +129,11 @@ extension LocationManager: CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    guard let location = locations.last else { return }
-    self.location = location
-    self.geocode()
+    if case .real(_) = locationType {
+      guard let location = locations.last else { return }
+      self.location = location
+      self.geocode()
+    }
   }
 }
 
@@ -119,5 +144,28 @@ extension CLLocation {
   
   var longitude: Double {
     return self.coordinate.longitude
+  }
+}
+
+extension CLAuthorizationStatus {
+  var isAuthorized: Bool {
+    switch self {
+    case .authorizedAlways:
+      return true
+    case .authorizedWhenInUse:
+      return true
+    #if os(iOS)
+    case .authorized:
+      return true
+    #endif
+    case .notDetermined:
+      return false
+    case .restricted:
+      return false
+    case .denied:
+      return false
+    @unknown default:
+      return false
+    }
   }
 }
