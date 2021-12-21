@@ -54,6 +54,7 @@ class LocationManager: NSObject, ObservableObject {
         self.latitude = latitude
         self.longitude = longitude
       }
+      
       self.geocode()
       
       #if !os(watchOS)
@@ -86,6 +87,7 @@ class LocationManager: NSObject, ObservableObject {
   func manuallySetLocation(to location: CLLocation) {
     self.location = location
     self.locationType = .synthesized(location: location)
+    self.geocode()
   }
   
   func requestAuthorization(completionBlock: @escaping () -> Void?) {
