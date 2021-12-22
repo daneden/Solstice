@@ -20,8 +20,11 @@ struct DurationPicker: UIViewRepresentable {
   }
   
   func updateUIView(_ datePicker: UIDatePicker, context: Context) {
-    datePicker.countDownDuration = duration
+    DispatchQueue.main.async {
+      datePicker.countDownDuration = duration
+    }
     datePicker.preferredDatePickerStyle = style
+    context.coordinator.updateDuration(datePicker: datePicker)
   }
   
   func makeCoordinator() -> Coordinator {
@@ -36,7 +39,9 @@ struct DurationPicker: UIViewRepresentable {
     }
     
     @objc func updateDuration(datePicker: UIDatePicker) {
-      parent.duration = datePicker.countDownDuration
+      DispatchQueue.main.async {
+        self.parent.duration = datePicker.countDownDuration
+      }
     }
   }
 }
