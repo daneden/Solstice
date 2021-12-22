@@ -381,13 +381,13 @@
 		7190090E25A4D6D5002ED383 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				7190090525A4D6D2002ED383 /* SolsticeApp.swift */,
 				7190090F25A4D6D5002ED383 /* Info.plist */,
 				715936002767557900F03F29 /* StoreKitConfiguration.storekit */,
 				715935FE2767500F00F03F29 /* AboutSolsticeView.swift */,
 				71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */,
 				71B5454B276B3CDB0027716A /* NotificationSchedulePicker.swift */,
 				71C884BB25A913770009F2A1 /* SettingsView.swift */,
+				7190090525A4D6D2002ED383 /* SolsticeApp.swift */,
 				71864DB62701ABEE00DE03CB /* Helpers */,
 			);
 			path = iOS;

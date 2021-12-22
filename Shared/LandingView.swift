@@ -90,7 +90,9 @@ struct LandingView: View {
             Spacer()
             
             Group {
-              Button(action: { locationManager.requestAuthorization() }) {
+              Button(action: { locationManager.requestAuthorization() {
+                self.presentationMode.wrappedValue.dismiss()
+              } }) {
                 Label("Continue with location", systemImage: "location.fill")
                   .frame(maxWidth: .infinity)
                   .font(.headline)
