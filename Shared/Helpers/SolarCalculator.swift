@@ -145,33 +145,12 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   var prevSolstice: Date {
-    let components = Calendar.current.dateComponents([.month, .day, .year], from: todaysDate)
-    guard let month = components.month,
-          let day = components.day,
-          let year = components.year else { return Date() }
-    
-    if month >= 12 && day >= 22 {
-      return Calendar.current.date(from: DateComponents(year: year, month: 12, day: 22))!
-    } else if (month >= 6 && day >= 22) || month >= 7 {
-      return Calendar.current.date(from: DateComponents(year: year, month: 6, day: 22))!
-    } else {
-      return Calendar.current.date(from: DateComponents(year: year - 1, month: 12, day: 22))!
-    }
+    let index = Date.solstices.firstIndex(where: { $0.isInFuture })!
+    return Date.solstices[index - 1]
   }
   
   var nextSolstice: Date {
-    let components = Calendar.current.dateComponents([.month, .day, .year], from: todaysDate)
-    guard let month = components.month,
-          let day = components.day,
-          let year = components.year else { return Date() }
-    
-    if month >= 12 && day >= 22 {
-      return Calendar.current.date(from: DateComponents(year: year + 1, month: 6, day: 22))!
-    } else if (month >= 6 && day >= 22) || month >= 7 {
-      return Calendar.current.date(from: DateComponents(year: year, month: 12, day: 22))!
-    } else {
-      return Calendar.current.date(from: DateComponents(year: year, month: 6, day: 22))!
-    }
+    Date.solstices.first(where: { $0.isInFuture }) ?? .now
   }
   
   var prevSolsticeDaylight: Daylight {

@@ -21,6 +21,10 @@
 		7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */; };
 		714C472D277385FF00E7CF93 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C472C277385FC00E7CF93 /* SolsticeApp.swift */; };
 		714C472F2773876000E7CF93 /* PermissionRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C472E2773876000E7CF93 /* PermissionRequiredView.swift */; };
+		714C47402773921E00E7CF93 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */; };
+		714C47412773921E00E7CF93 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */; };
+		714C47422773921E00E7CF93 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */; };
+		714C47432773921E00E7CF93 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */; };
 		715935FB27674FA000F03F29 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 715935FA27674FA000F03F29 /* StoreKit.framework */; };
 		715935FD27674FC100F03F29 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 715935FC27674FC100F03F29 /* README.md */; };
 		715935FF2767500F00F03F29 /* AboutSolsticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715935FE2767500F00F03F29 /* AboutSolsticeView.swift */; };
@@ -136,6 +140,36 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		714C47362773909200E7CF93 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		714C473A2773909800E7CF93 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		714C473E277390A300E7CF93 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		71864D712701A7D500DE03CB /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -185,6 +219,7 @@
 		7148B47225A7AB700047CC6F /* TimeInterval.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.extension.swift; sourceTree = "<group>"; };
 		714C472C277385FC00E7CF93 /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		714C472E2773876000E7CF93 /* PermissionRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionRequiredView.swift; sourceTree = "<group>"; };
+		714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
 		715935FA27674FA000F03F29 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		715935FC27674FC100F03F29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		715935FE2767500F00F03F29 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
@@ -417,6 +452,7 @@
 				71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */,
 				719A3FB925AF9ECA003BE97D /* Filler.swift */,
 				71ABE16725C5A83100A52F35 /* LocationService.swift */,
+				714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -465,6 +501,7 @@
 				71350CC126230BBA00F5F96E /* Sources */,
 				71350CC226230BBA00F5F96E /* Frameworks */,
 				71350CC326230BBA00F5F96E /* Resources */,
+				714C473A2773909800E7CF93 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -502,6 +539,7 @@
 				71864D782701A82900DE03CB /* Sources */,
 				71864D792701A82900DE03CB /* Frameworks */,
 				71864D7A2701A82900DE03CB /* Resources */,
+				714C473E277390A300E7CF93 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -547,6 +585,7 @@
 				71C8842B25A90A2D0009F2A1 /* Sources */,
 				71C8842C25A90A2D0009F2A1 /* Frameworks */,
 				71C8842D25A90A2D0009F2A1 /* Resources */,
+				714C47362773909200E7CF93 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -669,6 +708,7 @@
 				71C041B526230E2600A828AC /* LocationManager.swift in Sources */,
 				71C041BF26230E2C00A828AC /* TimeInterval.extension.swift in Sources */,
 				71C041A126230E1500A828AC /* LocationService.swift in Sources */,
+				714C47422773921E00E7CF93 /* SolsticeCalculator.swift in Sources */,
 				71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */,
 				71FA4C03276A049100099029 /* CalendarComponent+Extra.swift in Sources */,
 				71C041D9262310EB00A828AC /* Date.extension.swift in Sources */,
@@ -686,6 +726,7 @@
 				71864D862701A82900DE03CB /* NotificationController.swift in Sources */,
 				71864D8A2701A82900DE03CB /* ComplicationController.swift in Sources */,
 				71864DB12701ABB200DE03CB /* Date.extension.swift in Sources */,
+				714C47432773921E00E7CF93 /* SolsticeCalculator.swift in Sources */,
 				71864DB02701ABB200DE03CB /* AppStorage.extension.swift in Sources */,
 				714C472D277385FF00E7CF93 /* SolsticeApp.swift in Sources */,
 				71864DB52701ABB200DE03CB /* Color.extension.swift in Sources */,
@@ -710,6 +751,7 @@
 				71EECF3625A51AF800CCC2FC /* Color.extension.swift in Sources */,
 				71C884C325A91D060009F2A1 /* NotificationManager.swift in Sources */,
 				711DFB3525AE03700004AC46 /* ShakeGesture.swift in Sources */,
+				714C47402773921E00E7CF93 /* SolsticeCalculator.swift in Sources */,
 				71682AE225DD923400487ECA /* View.extension.swift in Sources */,
 				71E5004425B8384000C43609 /* UIScreen.extension.swift in Sources */,
 				715935FF2767500F00F03F29 /* AboutSolsticeView.swift in Sources */,
@@ -750,6 +792,7 @@
 				719A3FBC25AF9ECA003BE97D /* Filler.swift in Sources */,
 				71C8845925A90A860009F2A1 /* LocationManager.swift in Sources */,
 				71C8846525A90A9C0009F2A1 /* Date.extension.swift in Sources */,
+				714C47412773921E00E7CF93 /* SolsticeCalculator.swift in Sources */,
 				71E5006D25B863DA00C43609 /* AppStorage.extension.swift in Sources */,
 				71C8849425A90DE50009F2A1 /* SolsticeWidgetOverview.swift in Sources */,
 				71D1BC332622F39D00A17E47 /* SolsticeCountdownWidgetView.swift in Sources */,

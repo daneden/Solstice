@@ -43,3 +43,17 @@ extension Date {
     return calendar.isDateInToday(self)
   }
 }
+
+extension Date {
+  static var solstices: [Date] {
+    let year = Calendar.autoupdatingCurrent.component(.year, from: .now)
+    var result: [Date] = []
+    
+    for currentYear in year-10...year+10 {
+      result.append(SolsticeCalculator.juneSolstice(year: currentYear))
+      result.append(SolsticeCalculator.decemberSolstice(year: currentYear))
+    }
+    
+    return result
+  }
+}
