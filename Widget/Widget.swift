@@ -9,18 +9,47 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-  func placeholder(in context: Context) -> SimpleEntry {
-    SimpleEntry(date: Date())
+  func placeholder(in context: Context) -> SolsticeWidgetEntry {
+    SolsticeWidgetEntry(date: Date())
   }
   
-  func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-    let entry = SimpleEntry(date: Date())
+  func getSnapshot(in context: Context, completion: @escaping (SolsticeWidgetEntry) -> ()) {
+    let entry = SolsticeWidgetEntry(date: Date())
     completion(entry)
   }
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    var entries: [SolsticeWidgetEntry] = []
+    
+    let solarCalculator = SolarCalculator()
+    let calendar = Calendar.autoupdatingCurrent
+    let dayStarts = calendar.component(.hour, from: solarCalculator.today.begins)
+    let dayEnds = calendar.component(.hour, from: solarCalculator.today.ends)
+    
+    for hour in 0...23 {
+      let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: .now)!
+      let isRelevantHour: Bool = hour == dayStarts || hour == dayEnds
+      var duration: TimeInterval
+      
+      switch hour {
+      case dayStarts:
+        duration = Date.now.distance(to: solarCalculator.today.begins)
+      case dayEnds:
+        duration = Date.now.distance(to: solarCalculator.today.ends)
+      default:
+        duration = 0
+      }
+      
+      entries.append(
+        SolsticeWidgetEntry(
+          date: date,
+          relevance: isRelevantHour ? nil : .init(score: 10, duration: duration)
+        )
+      )
+    }
+    
     let timeline = Timeline(
-      entries: [SimpleEntry(date: Date())],
+      entries: entries,
       policy: .atEnd
     )
     
@@ -28,8 +57,9 @@ struct Provider: TimelineProvider {
   }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct SolsticeWidgetEntry: TimelineEntry {
   let date: Date
+  var relevance: TimelineEntryRelevance? = nil
 }
 
 struct SolsticeWidgetOverviewEntryView: View {
@@ -96,7 +126,7 @@ struct SolsticeCountdownWidget: Widget {
 
 struct Widget_Previews: PreviewProvider {
   static var previews: some View {
-    SolsticeWidgetOverviewEntryView(entry: SimpleEntry(date: Date()))
+    SolsticeWidgetOverviewEntryView(entry: SolsticeWidgetEntry(date: Date()))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }
