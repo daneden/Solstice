@@ -10,6 +10,7 @@ import StoreKit
 
 @main
 struct SolsticeApp: App {
+  @AppStorage("sessionCount") var sessionCount = 0
   @ObservedObject var locationManager = LocationManager()
   
   var body: some Scene {
@@ -24,6 +25,7 @@ struct SolsticeApp: App {
       .onAppear {
         locationManager.requestAuthorization()
         locationManager.start()
+        sessionCount += 1
       }
       .environmentObject(locationManager)
       .environmentObject(SolarCalculator(locationManager: locationManager))

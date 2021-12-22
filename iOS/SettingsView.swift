@@ -122,12 +122,10 @@ struct SettingsView: View {
       notificationManager.adjustSchedule()
     }
     .onDisappear {
-      sessionCount += 1
-      
 #if os(iOS)
       if sessionCount >= 3,
          let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.async {
           SKStoreReviewController.requestReview(in: windowScene)
         }
       }
