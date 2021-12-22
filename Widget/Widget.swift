@@ -35,9 +35,13 @@ struct SimpleEntry: TimelineEntry {
 struct SolsticeWidgetOverviewEntryView: View {
   var entry: Provider.Entry
   
+  @StateObject var locationManager = LocationManager()
+  
   var body: some View {
     Group {
       SolsticeWidgetOverview()
+        .environmentObject(locationManager)
+        .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
     }
     .padding()
     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -48,8 +52,12 @@ struct SolsticeWidgetOverviewEntryView: View {
 struct SolsticeCountdownWidgetEntryView: View {
   var entry: Provider.Entry
   
+  @StateObject var locationManager = LocationManager()
+  
   var body: some View {
     SolsticeCountdownWidgetView()
+      .environmentObject(locationManager)
+      .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
   }
 }
 
