@@ -145,12 +145,12 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   var prevSolstice: Date {
-    let index = Date.solstices.firstIndex(where: { $0.isInFuture })!
+    let index = Date.solstices.firstIndex(where: { $0 > baseDate })!
     return Date.solstices[index - 1]
   }
   
   var nextSolstice: Date {
-    Date.solstices.first(where: { $0.isInFuture }) ?? .now
+    Date.solstices.first(where: { $0 > baseDate }) ?? .now
   }
   
   var prevSolsticeDaylight: Daylight {
