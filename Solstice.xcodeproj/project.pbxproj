@@ -41,7 +41,6 @@
 		71864D9D2701A8FA00DE03CB /* SunCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712F90FA25AF439400CC8D7E /* SunCalendarView.swift */; };
 		71864D9E2701A8FA00DE03CB /* SundialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE5F425A5B2FA00B363BA /* SundialView.swift */; };
 		71864DA12701A8FA00DE03CB /* SolsticeOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */; };
-		71864DA22701A8FA00DE03CB /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE60A25A6711C00B363BA /* LandingView.swift */; };
 		71864DA32701A8FA00DE03CB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7190090625A4D6D2002ED383 /* ContentView.swift */; };
 		71864DA72701A97200DE03CB /* Filler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A3FB925AF9ECA003BE97D /* Filler.swift */; };
 		71864DA92701A97200DE03CB /* SolarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EECF2E25A5123A00CCC2FC /* SolarCalculator.swift */; };
@@ -389,7 +388,6 @@
 			isa = PBXGroup;
 			children = (
 				7190090625A4D6D2002ED383 /* ContentView.swift */,
-				711AE60A25A6711C00B363BA /* LandingView.swift */,
 				71C8841125A7B1150009F2A1 /* SolsticeOverview.swift */,
 				712F90FA25AF439400CC8D7E /* SunCalendarView.swift */,
 				711AE5F425A5B2FA00B363BA /* SundialView.swift */,
@@ -420,6 +418,7 @@
 				715936002767557900F03F29 /* StoreKitConfiguration.storekit */,
 				715935FE2767500F00F03F29 /* AboutSolsticeView.swift */,
 				71C884E225A9C3DA0009F2A1 /* AppDelegate.swift */,
+				711AE60A25A6711C00B363BA /* LandingView.swift */,
 				71B5454B276B3CDB0027716A /* NotificationSchedulePicker.swift */,
 				71C884BB25A913770009F2A1 /* SettingsView.swift */,
 				7190090525A4D6D2002ED383 /* SolsticeApp.swift */,
@@ -735,7 +734,6 @@
 				71864DA72701A97200DE03CB /* Filler.swift in Sources */,
 				7133BCD3270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift in Sources */,
 				71864D882701A82900DE03CB /* NotificationView.swift in Sources */,
-				71864DA22701A8FA00DE03CB /* LandingView.swift in Sources */,
 				71864D9D2701A8FA00DE03CB /* SunCalendarView.swift in Sources */,
 				71864DB42701ABB200DE03CB /* View.extension.swift in Sources */,
 				71F2258F27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */,

@@ -44,7 +44,7 @@ struct LandingViewGradient {
   }
   
   static func getCurrentPalette() -> [Color] {
-    let timeAsIndex = (Calendar.autoupdatingCurrent.component(.hour, from: .now) - 4) % 6
+    let timeAsIndex = Int(Double(Calendar.autoupdatingCurrent.component(.hour, from: .now) + 8) / 6) % colors.count
     return colors[timeAsIndex]
   }
 }
@@ -79,6 +79,7 @@ struct LandingView: View {
               
               Text("Solstice tells you how much daylight there is today compared to yesterday.")
                 .font(isWatch ? .headline : .largeTitle)
+                .fontWeight(.semibold)
               
               Text("For savouring the minutes you have, or looking forward to the minutes you'll gain.")
                 .padding(.vertical)
