@@ -11,10 +11,8 @@ import StoreKit
 @main
 struct SolsticeApp: App {
   @Environment(\.scenePhase) var scenePhase
-  #if os(iOS)
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @StateObject var locationService = LocationService()
-  #endif
   @ObservedObject var locationManager = LocationManager()
   
   @AppStorage(UDValues.onboarding) var onboarding
@@ -32,6 +30,10 @@ struct SolsticeApp: App {
         }
       }
       .onAppear {
+        if let status = locationManager.status, status.isAuthorized {
+          onboarding = false
+        }
+        
         locationManager.start()
       }
       .fullScreenCover(isPresented: $onboarding) {
@@ -49,12 +51,10 @@ struct SolsticeApp: App {
       }
       .environmentObject(locationManager)
       .environmentObject(SolarCalculator(locationManager: locationManager))
-      #if os(iOS)
       .onDisappear {
         (UIApplication.shared.delegate as! AppDelegate).submitBackgroundTask()
       }
       .environmentObject(locationService)
-      #endif
       .navigationViewStyle(StackNavigationViewStyle())
       .symbolRenderingMode(.hierarchical)
     }

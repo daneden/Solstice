@@ -41,6 +41,9 @@ struct SunCalendarView: View {
             
             VStack {
               Text("\(self.hoursOfDaylightForMonth(month))")
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
+                .scaledToFit()
               Color.accentColor
                 .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
                 .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
