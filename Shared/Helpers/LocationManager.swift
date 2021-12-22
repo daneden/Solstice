@@ -77,15 +77,25 @@ class LocationManager: NSObject, ObservableObject {
     self.status = self.locationManager.authorizationStatus
     self.location = CLLocation(latitude: latitude, longitude: longitude)
     
-    if let status = self.status, status.isAuthorized {
+    self.updateLocationType()
+  }
+  
+  func updateLocationType() {
+    if let status = self.status {
+      // If the locationType is already set as `.real`, we should update it
+      if case .real(_) = locationType {
+        self.locationType = .real(withAuthorizationStatus: status)
+      }
+      
       self.start()
-      self.locationType = .real(withAuthorizationStatus: status)
     }
   }
   
   func manuallySetLocation(to location: CLLocation) {
     self.location = location
     self.locationType = .synthesized(location: location)
+    self.stop()
+    self.objectWillChange.send()
   }
   
   func requestAuthorization(completionBlock: @escaping () -> Void?) {
@@ -99,7 +109,21 @@ class LocationManager: NSObject, ObservableObject {
   }
   
   func start() {
-    self.locationManager.startUpdatingLocation()
+    if locationAvailable {
+      #if os(watchOS)
+      self.locationManager.startUpdatingLocation()
+      #else
+      self.locationManager.startMonitoringSignificantLocationChanges()
+      #endif
+    }
+  }
+  
+  func stop() {
+    #if os(watchOS)
+    self.locationManager.stopUpdatingLocation()
+    #else
+    self.locationManager.stopMonitoringSignificantLocationChanges()
+    #endif
   }
   
   private func geocode() {
@@ -114,10 +138,7 @@ class LocationManager: NSObject, ObservableObject {
   }
   
   func resetLocation() {
-    if status?.isAuthorized == nil {
-      requestAuthorization()
-    }
-    
+    self.start()
     self.location = locationManager.location
     self.locationType = .real(withAuthorizationStatus: status!)
   }

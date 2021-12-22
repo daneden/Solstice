@@ -12,7 +12,16 @@ struct SolsticeOverview: View {
   @EnvironmentObject var location: LocationManager
   @Binding var activeSheet: SheetPresentationState?
   
-  @State var showingRemaining = false
+  @State private var showingRemaining = false
+  
+  var locationButtonImageName: String {
+    switch location.locationType {
+    case .real(let status) where status.isAuthorized:
+      return "location.fill"
+    default:
+      return "location"
+    }
+  }
   
   var body: some View {
     Group {
@@ -20,7 +29,7 @@ struct SolsticeOverview: View {
         Button(action: {
           self.activeSheet = .location
         }) {
-          Label(placeName, systemImage: "location.fill")
+          Label(placeName, systemImage: locationButtonImageName)
             .foregroundColor(.accentColor)
         }
       }

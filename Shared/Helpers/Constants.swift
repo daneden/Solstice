@@ -66,6 +66,9 @@ typealias UDValuePair<T> = (key: String, value: T)
 struct UDValues {
   typealias Value = UDValuePair
   
+  // MARK: Onboarding
+  static let onboarding: Value = ("onboarding", true)
+  
   // MARK: Location Caching
   static let cachedLatitude: Value = ("cachedLatitude", 51.5074)
   static let cachedLongitude: Value = ("cachedLongitude", 0.1278)

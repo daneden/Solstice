@@ -16,6 +16,8 @@ struct LocationPickerView: View {
   
   private let searchRequest = MKLocalSearch.Request()
   
+  @State private var showLocationWarning = false
+  
   var body: some View {
     NavigationView {
       Form {
@@ -78,6 +80,23 @@ struct LocationPickerView: View {
           }
         }
       }.navigationTitle(Text("Choose Location"))
+        .toolbar {
+          Button("Close") { self.presentationMode.wrappedValue.dismiss() }
+        }
+        .alert("Location Permission Needed",
+               isPresented: $showLocationWarning,
+               actions: {
+          Button("Open Settings") {
+            let url = URL(string: UIApplication.openSettingsURLString)!
+            UIApplication.shared.open(url, options: [:])
+          }
+          
+          Button("Cancel") {
+            showLocationWarning = false
+          }
+        }, message: {
+          Text("Open Settings and allow Solstice to access your location to enable this feature.")
+        })
     }
   }
   
@@ -95,7 +114,7 @@ struct LocationPickerView: View {
         let item = response.mapItems[0]
         let coords = item.placemark.coordinate
         let location = CLLocation(latitude: coords.latitude, longitude: coords.longitude)
-        locationManager.location = location
+        locationManager.manuallySetLocation(to: location)
         self.presentationMode.wrappedValue.dismiss()
       }
       
@@ -104,9 +123,17 @@ struct LocationPickerView: View {
   }
   
   func useCurrentLocation() {
-    locationService.queryFragment = ""
-    locationManager.resetLocation()
-    self.presentationMode.wrappedValue.dismiss()
+    if locationManager.locationAvailable {
+      locationService.queryFragment = ""
+      locationManager.resetLocation()
+      self.presentationMode.wrappedValue.dismiss()
+    } else if case .real(let status) = locationManager.locationType,
+              status == .notDetermined {
+      locationManager.requestAuthorization()
+      self.presentationMode.wrappedValue.dismiss()
+    } else {
+      showLocationWarning = true
+    }
   }
 }
 
