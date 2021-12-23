@@ -202,7 +202,7 @@ class SolarCalculator: NSObject, ObservableObject {
     let decimalCharacters = CharacterSet.decimalDigits
     let decimalRange = baseDateString.rangeOfCharacter(from: decimalCharacters)
     
-    string += " daylight \(decimalRange == nil ? "" : "on ")\(formatter.string(from: baseDate)) than \(formatter.string(from: yesterday.begins))."
+    string += " daylight \(decimalRange == nil ? "" : "on ")\(baseDateString) than \(formatter.string(from: yesterday.begins))."
     
     return string
   }

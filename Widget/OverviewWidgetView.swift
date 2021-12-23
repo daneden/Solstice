@@ -10,6 +10,7 @@ import WidgetKit
 
 struct OverviewWidgetView: View {
   @Environment(\.widgetFamily) var family
+  @Environment(\.sizeCategory) var sizeCategory
   @EnvironmentObject var calculator: SolarCalculator
   @EnvironmentObject var location: LocationManager
   
@@ -34,15 +35,19 @@ struct OverviewWidgetView: View {
       }
       
       VStack(alignment: .leading, spacing: 4) {
-        Image("Solstice-Icon")
-          .resizable()
-          .frame(width: 16, height: 16)
+        if sizeCategory < .extraLarge {
+          Image("Solstice-Icon")
+            .resizable()
+            .frame(width: 16, height: 16)
+        }
         
         Spacer()
         
         if let duration = calculator.today.duration.localizedString {
-          Text("Daylight today:")
-            .font(.caption)
+          if sizeCategory < .extraLarge {
+            Text("Daylight today:")
+              .font(.caption)
+          }
           
           Text("\(duration)")
             .lineLimit(4)
@@ -90,14 +95,26 @@ struct OverviewWidgetView: View {
 struct SolsticeWidgetOverview_Previews: PreviewProvider {
   static var previews: some View {
     Group {
-      OverviewWidgetView()
-        .previewContext(WidgetPreviewContext(family: .systemExtraLarge))
-      OverviewWidgetView()
-        .previewContext(WidgetPreviewContext(family: .systemLarge))
-      OverviewWidgetView()
-        .previewContext(WidgetPreviewContext(family: .systemMedium))
-      OverviewWidgetView()
-        .previewContext(WidgetPreviewContext(family: .systemSmall))
+      Group {
+        ForEach(WidgetFamily.allCases, id: \.self) { family in
+          OverviewWidgetView()
+            .previewContext(WidgetPreviewContext(family: family))
+        }
+      }
+      
+      Group {
+        ForEach(WidgetFamily.allCases, id: \.self) { family in
+          OverviewWidgetView()
+            .previewContext(WidgetPreviewContext(family: family))
+        }
+      }
+      .dynamicTypeSize(.accessibility1)
     }.environmentObject(SolarCalculator())
+  }
+}
+
+extension WidgetFamily: CaseIterable {
+  public static var allCases: [WidgetFamily] {
+    [.systemExtraLarge, .systemLarge, .systemMedium, .systemSmall]
   }
 }
