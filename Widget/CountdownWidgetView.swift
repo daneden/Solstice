@@ -24,12 +24,13 @@ enum SunEvent {
 
 struct CountdownWidgetView: View {
   @Environment(\.widgetFamily) var family
+  @Environment(\.sizeCategory) var sizeCategory
   @EnvironmentObject var calculator: SolarCalculator
   
   var displaySize: Font {
     switch family {
     case .systemSmall:
-      return .headline
+      return sizeCategory < .extraLarge ? .headline : .footnote
     default:
       return .title2
     }
