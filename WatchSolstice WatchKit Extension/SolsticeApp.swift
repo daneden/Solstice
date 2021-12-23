@@ -12,12 +12,14 @@ import StoreKit
 struct SolsticeApp: App {
   @AppStorage("sessionCount") var sessionCount = 0
   @ObservedObject var locationManager = LocationManager()
+  @StateObject var sheetPresentation = SheetPresentationManager()
   
   var body: some Scene {
     WindowGroup {
       Group {
         if let status = locationManager.status, status.isAuthorized {
           ContentView()
+            .environmentObject(sheetPresentation)
         } else {
           PermissionRequiredView()
         }

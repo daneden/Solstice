@@ -9,24 +9,16 @@ import SwiftUI
 import Combine
 import CoreLocation
 
-enum SheetPresentationState: Identifiable {
-  case settings, location
-  
-  var id: Int {
-    hashValue
-  }
-}
-
 struct ContentView: View {
   @EnvironmentObject var locationManager: LocationManager
   @EnvironmentObject var calculator: SolarCalculator
+  @EnvironmentObject var sheetPresentation: SheetPresentationManager
+  
   @State var selectedDate = Date()
   @State var dateOffset = 0.0
   @State var settingsVisible = false
   @State var timeTravelVisible = false
   @State var locationPickerVisible = false
-  
-  @State var activeSheet: SheetPresentationState?
   @State var isPickingDate = false
   
   var body: some View {
@@ -45,7 +37,8 @@ struct ContentView: View {
               .padding(.bottom)
           }
           
-          SolsticeOverview(activeSheet: $activeSheet)
+          SolsticeOverview()
+            .environmentObject(sheetPresentation)
           
           #if !os(watchOS)
           DisclosureGroup(
@@ -99,7 +92,7 @@ struct ContentView: View {
         .listStyle(.plain)
         #if !os(watchOS)
         .toolbar {
-          Button(action: { self.activeSheet = .settings }) {
+          Button(action: { self.sheetPresentation.activeSheet = .settings }) {
             Label("Settings", systemImage: "gearshape")
           }
         }
@@ -112,7 +105,7 @@ struct ContentView: View {
         self.calculator.dateOffset = value
       }
       #if os(iOS)
-      .sheet(item: $activeSheet) { item in
+      .sheet(item: $sheetPresentation.activeSheet) { item in
         switch item {
         case .settings:
           SettingsView()
@@ -148,5 +141,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
+      .environmentObject(SheetPresentationManager())
   }
 }

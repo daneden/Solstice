@@ -16,17 +16,16 @@ struct SolsticeApp: App {
   @ObservedObject var locationManager = LocationManager()
   
   @AppStorage(UDValues.onboarding) var onboarding
-  @State var placeholder = false
-  @State var sheet: SheetPresentationState?
+  @StateObject var sheetPresentation = SheetPresentationManager()
   
   var body: some Scene {
     WindowGroup {
       Group {
-        if placeholder {
-          ContentView(activeSheet: sheet)
-            .redacted(reason: .placeholder)
+        if onboarding {
+          ProgressView()
         } else {
-          ContentView(activeSheet: sheet)
+          ContentView()
+            .environmentObject(sheetPresentation)
         }
       }
       .onAppear {
@@ -40,10 +39,8 @@ struct SolsticeApp: App {
         LandingView()
       }
       .onChange(of: onboarding) { newValue in
-        placeholder = onboarding
-        
         if !locationManager.locationAvailable && !onboarding {
-          sheet = .location
+          sheetPresentation.activeSheet = .location
         }
       }
       .onChange(of: scenePhase) { _ in

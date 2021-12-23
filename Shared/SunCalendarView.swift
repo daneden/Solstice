@@ -114,6 +114,13 @@ struct SunCalendarView: View {
 
 struct SunCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-      SunCalendarView()
+      Group {
+        SunCalendarView()
+          .padding()
+        
+        SunCalendarView()
+          .padding()
+          .dynamicTypeSize(.accessibility1)
+      }
     }
 }

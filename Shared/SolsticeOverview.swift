@@ -10,7 +10,7 @@ import SwiftUI
 struct SolsticeOverview: View {
   @EnvironmentObject var calculator: SolarCalculator
   @EnvironmentObject var location: LocationManager
-  @Binding var activeSheet: SheetPresentationState?
+  @EnvironmentObject var sheetPresentation: SheetPresentationManager
   
   @State private var showingRemaining = false
   
@@ -27,7 +27,7 @@ struct SolsticeOverview: View {
     Group {
       if !isWatch, let placeName = getPlaceName() {
         Button(action: {
-          self.activeSheet = .location
+          self.sheetPresentation.activeSheet = .location
         }) {
           Label(placeName, systemImage: locationButtonImageName)
             .foregroundColor(.accentColor)
@@ -114,6 +114,7 @@ struct AdaptiveStack<Content: View>: View {
 
 struct SolsticeOverview_Previews: PreviewProvider {
   static var previews: some View {
-    SolsticeOverview(activeSheet: .constant(nil))
+    SolsticeOverview()
+      .environmentObject(SheetPresentationManager())
   }
 }

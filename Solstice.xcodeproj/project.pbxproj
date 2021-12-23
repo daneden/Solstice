@@ -27,6 +27,8 @@
 		714C47432773921E00E7CF93 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */; };
 		714DEC822774BAD300DBB8A3 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DEC812774BAD300DBB8A3 /* SkyGradient.swift */; };
 		714DEC832774BAD300DBB8A3 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DEC812774BAD300DBB8A3 /* SkyGradient.swift */; };
+		714DEC85277517A800DBB8A3 /* SheetPresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DEC84277517A800DBB8A3 /* SheetPresentationManager.swift */; };
+		714DEC86277517A800DBB8A3 /* SheetPresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DEC84277517A800DBB8A3 /* SheetPresentationManager.swift */; };
 		715935FB27674FA000F03F29 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 715935FA27674FA000F03F29 /* StoreKit.framework */; };
 		715935FD27674FC100F03F29 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 715935FC27674FC100F03F29 /* README.md */; };
 		715935FF2767500F00F03F29 /* AboutSolsticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715935FE2767500F00F03F29 /* AboutSolsticeView.swift */; };
@@ -222,6 +224,7 @@
 		714C472E2773876000E7CF93 /* PermissionRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionRequiredView.swift; sourceTree = "<group>"; };
 		714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
 		714DEC812774BAD300DBB8A3 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
+		714DEC84277517A800DBB8A3 /* SheetPresentationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationManager.swift; sourceTree = "<group>"; };
 		715935FA27674FA000F03F29 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		715935FC27674FC100F03F29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		715935FE2767500F00F03F29 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
@@ -455,6 +458,7 @@
 				719A3FB925AF9ECA003BE97D /* Filler.swift */,
 				71ABE16725C5A83100A52F35 /* LocationService.swift */,
 				714C473F2773921E00E7CF93 /* SolsticeCalculator.swift */,
+				714DEC84277517A800DBB8A3 /* SheetPresentationManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -735,6 +739,7 @@
 				71864DB52701ABB200DE03CB /* Color.extension.swift in Sources */,
 				71864DB22701ABB200DE03CB /* TimeInterval.extension.swift in Sources */,
 				71864DA92701A97200DE03CB /* SolarCalculator.swift in Sources */,
+				714DEC86277517A800DBB8A3 /* SheetPresentationManager.swift in Sources */,
 				71864DA72701A97200DE03CB /* Filler.swift in Sources */,
 				7133BCD3270658C3007B172B /* View+EllipticalEdgeMaskModifier.swift in Sources */,
 				71864D882701A82900DE03CB /* NotificationView.swift in Sources */,
@@ -765,6 +770,7 @@
 				71E5001425B77C5000C43609 /* NotificationPreview.swift in Sources */,
 				71ABE16825C5A83100A52F35 /* LocationService.swift in Sources */,
 				7190093025A4D6D5002ED383 /* ContentView.swift in Sources */,
+				714DEC85277517A800DBB8A3 /* SheetPresentationManager.swift in Sources */,
 				71350CF226230BF800F5F96E /* Intents.intentdefinition in Sources */,
 				714DEC822774BAD300DBB8A3 /* SkyGradient.swift in Sources */,
 				71E5006B25B863DA00C43609 /* AppStorage.extension.swift in Sources */,
