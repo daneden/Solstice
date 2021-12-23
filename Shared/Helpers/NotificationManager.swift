@@ -87,9 +87,11 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   }
   
   func adjustSchedule() {
+    print("Removing scheduled notifications")
     self.notificationCenter.removeAllPendingNotificationRequests()
     
-    DispatchQueue.main.async {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      print("Rebuilding and scheduling notifications")
       self.scheduleNotifications()
     }
   }
@@ -101,68 +103,69 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       return
     }
     
-    self.getPending { requests in
-      for index in 1..<64 {
-        var notificationTriggerDate: Date
-        let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-        
-        
-        switch self.scheduleType {
-        case .specificTime:
-          let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
-          notificationTriggerDate = Calendar.current.date(
-            bySettingHour: components.hour ?? 8,
-            minute: components.minute ?? 0,
-            second: 0,
-            of: targetDate
-          )!
-        case .relativeTime:
-          let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-          let solarCalculator = SolarCalculator(baseDate: date)
-          let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
-          notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
-        }
-        
-        // Generate an ID for this notification and remove any current pending
-        // notifs for the same target time
-        let id = Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate).description
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
-        
-        let content = UNMutableNotificationContent()
-        
-        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month, .year], from: notificationTriggerDate)
-        
-        let trigger = UNCalendarNotificationTrigger(
-          dateMatching: triggerDate,
-          repeats: false
-        )
-        
-        guard let notifContent = self.buildNotificationContent(for: notificationTriggerDate) else {
-          if let task = task {
-            task.setTaskCompleted(success: true)
-          }
-          return
-        }
-        
-        content.title = notifContent.title
-        content.body = notifContent.body
-        
-        let request = UNNotificationRequest(
-          identifier: id,
-          content: content,
-          trigger: trigger
-        )
-          
-        UNUserNotificationCenter.current().add(request) { error in
-          if let error = error {
-            print(error.localizedDescription)
-          }
-        }
+    //
+    for index in 1..<64 {
+      var notificationTriggerDate: Date
+      let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+      
+      
+      switch self.scheduleType {
+      case .specificTime:
+        let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
+        notificationTriggerDate = Calendar.current.date(
+          bySettingHour: components.hour ?? 8,
+          minute: components.minute ?? 0,
+          second: 0,
+          of: targetDate
+        )!
+      case .relativeTime:
+        let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+        let solarCalculator = SolarCalculator(baseDate: date)
+        let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
+        notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
       }
       
-      if let task = task {
-        task.setTaskCompleted(success: true)
+      // Generate an ID for this notification and remove any current pending
+      // notifs for the same target time
+      let id = "me.daneden.Solstice.notification.\(Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate).hashValue)"
+      UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
+      
+      let content = UNMutableNotificationContent()
+      
+      let triggerDate = Calendar.current.dateComponents(Set(Calendar.Component.allCases), from: notificationTriggerDate)
+      
+      let trigger = UNCalendarNotificationTrigger(
+        dateMatching: triggerDate,
+        repeats: false
+      )
+      
+      guard let notifContent = self.buildNotificationContent(for: notificationTriggerDate) else {
+        if let task = task {
+          task.setTaskCompleted(success: true)
+        }
+        return
       }
+      
+      content.title = notifContent.title
+      content.body = notifContent.body
+      
+      let request = UNNotificationRequest(
+        identifier: id,
+        content: content,
+        trigger: trigger
+      )
+        
+      UNUserNotificationCenter.current().add(request) { error in
+        if let error = error {
+          print(error.localizedDescription)
+        } else {
+          print("Scheduled notification: \(request.identifier) at \(triggerDate.date?.formatted() ?? "unknown date")")
+        }
+      }
+    }
+      
+    if let task = task {
+      task.setTaskCompleted(success: true)
     }
   }
   

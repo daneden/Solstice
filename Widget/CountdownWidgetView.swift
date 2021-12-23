@@ -52,7 +52,7 @@ struct CountdownWidgetView: View {
     }
     .monospacedDigit()
     .padding()
-    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 2)
+    .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(LinearGradient(colors: SkyGradient.getCurrentPalette(), startPoint: .top, endPoint: .bottom))
     .colorScheme(.dark)
