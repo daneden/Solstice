@@ -49,7 +49,7 @@ extension Date {
     let year = Calendar.autoupdatingCurrent.component(.year, from: .now)
     var result: [Date] = []
     
-    for currentYear in year-10...year+10 {
+    for currentYear in year-1...year+1 {
       result.append(SolsticeCalculator.juneSolstice(year: currentYear))
       result.append(SolsticeCalculator.decemberSolstice(year: currentYear))
     }

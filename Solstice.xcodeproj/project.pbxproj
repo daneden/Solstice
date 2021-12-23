@@ -319,7 +319,6 @@
 		71350CC726230BBA00F5F96E /* SolsticeIntents */ = {
 			isa = PBXGroup;
 			children = (
-				71864CED2700AD9B00DE03CB /* SolsticeIntents.entitlements */,
 				71350CC826230BBA00F5F96E /* IntentHandler.swift */,
 				71350CCA26230BBA00F5F96E /* Info.plist */,
 				71350CE826230BD600F5F96E /* Intents.intentdefinition */,
@@ -373,6 +372,7 @@
 			children = (
 				715935FC27674FC100F03F29 /* README.md */,
 				71CDF93825AA398900C93BCD /* WidgetExtension.entitlements */,
+				71864CED2700AD9B00DE03CB /* SolsticeIntents.entitlements */,
 				71CDF93725AA395500C93BCD /* Solstice.entitlements */,
 				7190090425A4D6D2002ED383 /* Shared */,
 				7190090E25A4D6D5002ED383 /* iOS */,
