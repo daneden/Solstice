@@ -8,18 +8,18 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: TimelineProvider {
-  func placeholder(in context: Context) -> SolsticeWidgetEntry {
-    SolsticeWidgetEntry(date: Date())
+struct SolsticeWidgetTimelineProvider: TimelineProvider {
+  func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
+    SolsticeWidgetTimelineEntry(date: Date())
   }
   
-  func getSnapshot(in context: Context, completion: @escaping (SolsticeWidgetEntry) -> ()) {
-    let entry = SolsticeWidgetEntry(date: Date())
+  func getSnapshot(in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> ()) {
+    let entry = SolsticeWidgetTimelineEntry(date: Date())
     completion(entry)
   }
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-    var entries: [SolsticeWidgetEntry] = []
+    var entries: [SolsticeWidgetTimelineEntry] = []
     
     let solarCalculator = SolarCalculator()
     let calendar = Calendar.autoupdatingCurrent
@@ -41,7 +41,7 @@ struct Provider: TimelineProvider {
       }
       
       entries.append(
-        SolsticeWidgetEntry(
+        SolsticeWidgetTimelineEntry(
           date: date,
           relevance: isRelevantHour ? nil : .init(score: 10, duration: duration)
         )
@@ -57,38 +57,9 @@ struct Provider: TimelineProvider {
   }
 }
 
-struct SolsticeWidgetEntry: TimelineEntry {
+struct SolsticeWidgetTimelineEntry: TimelineEntry {
   let date: Date
   var relevance: TimelineEntryRelevance? = nil
-}
-
-struct SolsticeWidgetOverviewEntryView: View {
-  var entry: Provider.Entry
-  
-  @StateObject var locationManager = LocationManager()
-  
-  var body: some View {
-    Group {
-      OverviewWidgetView()
-        .environmentObject(locationManager)
-        .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
-    }
-    .padding()
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color.systemBackground)
-  }
-}
-
-struct SolsticeCountdownWidgetEntryView: View {
-  var entry: Provider.Entry
-  
-  @StateObject var locationManager = LocationManager()
-  
-  var body: some View {
-    CountdownWidgetView()
-      .environmentObject(locationManager)
-      .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
-  }
 }
 
 @main
@@ -102,9 +73,13 @@ struct SolsticeWidgets: WidgetBundle {
 struct SolsticeOverviewWidget: Widget {
   let kind: String = "OverviewWidget"
   
+  @StateObject var locationManager = LocationManager()
+  
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: Provider()) { entry in
-      SolsticeWidgetOverviewEntryView(entry: entry)
+    StaticConfiguration(kind: kind, provider: SolsticeWidgetTimelineProvider()) { entry in
+      OverviewWidgetView()
+        .environmentObject(locationManager)
+        .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
     }
     .configurationDisplayName("Daylight Today")
     .description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
@@ -115,18 +90,12 @@ struct SolsticeCountdownWidget: Widget {
   let kind: String = "CountdownWidget"
   
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: Provider()) { entry in
-      SolsticeCountdownWidgetEntryView(entry: entry)
+    StaticConfiguration(kind: kind, provider: SolsticeWidgetTimelineProvider()) { entry in
+      CountdownWidgetView()
+        .environmentObject(SolarCalculator(baseDate: entry.date))
     }
     .configurationDisplayName("Sunrise/Sunset Countdown")
     .description("See the time remaining until the next sunrise/sunset")
     .supportedFamilies([.systemSmall, .systemMedium])
-  }
-}
-
-struct Widget_Previews: PreviewProvider {
-  static var previews: some View {
-    SolsticeWidgetOverviewEntryView(entry: SolsticeWidgetEntry(date: Date()))
-      .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }

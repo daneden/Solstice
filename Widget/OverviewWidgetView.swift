@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct OverviewWidgetView: View {
   @Environment(\.widgetFamily) var family
@@ -24,7 +25,7 @@ struct OverviewWidgetView: View {
             VStack {
               Spacer()
               Color.systemBackground
-                .frame(width: geom.size.width, height: geom.size.height / 1.25)
+                .frame(width: geom.size.width, height: min(geom.size.height / 1.25, 100))
                 .padding(.leading, geom.size.width * -0.5)
                 .blur(radius: 20)
             }
@@ -80,12 +81,23 @@ struct OverviewWidgetView: View {
         }
       }.symbolRenderingMode(.hierarchical).imageScale(.large)
     }
+    .padding()
     .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color.systemBackground)
   }
 }
 
 struct SolsticeWidgetOverview_Previews: PreviewProvider {
   static var previews: some View {
-    OverviewWidgetView()
+    Group {
+      OverviewWidgetView()
+        .previewContext(WidgetPreviewContext(family: .systemExtraLarge))
+      OverviewWidgetView()
+        .previewContext(WidgetPreviewContext(family: .systemLarge))
+      OverviewWidgetView()
+        .previewContext(WidgetPreviewContext(family: .systemMedium))
+      OverviewWidgetView()
+        .previewContext(WidgetPreviewContext(family: .systemSmall))
+    }.environmentObject(SolarCalculator())
   }
 }
