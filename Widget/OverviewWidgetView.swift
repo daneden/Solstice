@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SolsticeWidgetOverview: View {
+struct OverviewWidgetView: View {
   @Environment(\.widgetFamily) var family
   @EnvironmentObject var calculator: SolarCalculator
   @EnvironmentObject var location: LocationManager
@@ -50,7 +50,7 @@ struct SolsticeWidgetOverview: View {
         }
           
         if family != .systemSmall {
-          Text("\(calculator.differenceString) than yesterday.")
+          Text(calculator.differenceString)
             .lineLimit(4)
             .font(.caption)
             .foregroundColor(.secondary)
@@ -86,6 +86,6 @@ struct SolsticeWidgetOverview: View {
 
 struct SolsticeWidgetOverview_Previews: PreviewProvider {
   static var previews: some View {
-    SolsticeWidgetOverview()
+    OverviewWidgetView()
   }
 }

@@ -69,7 +69,7 @@ struct SolsticeWidgetOverviewEntryView: View {
   
   var body: some View {
     Group {
-      SolsticeWidgetOverview()
+      OverviewWidgetView()
         .environmentObject(locationManager)
         .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
     }
@@ -85,7 +85,7 @@ struct SolsticeCountdownWidgetEntryView: View {
   @StateObject var locationManager = LocationManager()
   
   var body: some View {
-    SolsticeCountdownWidgetView()
+    CountdownWidgetView()
       .environmentObject(locationManager)
       .environmentObject(SolarCalculator(baseDate: entry.date, locationManager: locationManager))
   }
