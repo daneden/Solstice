@@ -839,7 +839,7 @@
 		71350CE226230BBA00F5F96E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = SolsticeIntents/SolsticeIntents.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SolsticeIntents.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = YC249PY26F;
@@ -864,7 +864,7 @@
 		71350CE326230BBA00F5F96E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = SolsticeIntents/SolsticeIntents.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SolsticeIntents.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = YC249PY26F;
