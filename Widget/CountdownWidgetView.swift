@@ -40,7 +40,9 @@ struct CountdownWidgetView: View {
     VStack(alignment: .leading, spacing: 8) {
       Image(systemName: imageName)
         .font(displaySize)
-      Spacer()
+      
+      Spacer(minLength: 0)
+      
       Text("\(eventDate, style: .relative) until \(nextSunEvent.description)")
         .font(displaySize.weight(.medium))
         .lineLimit(3)
@@ -52,10 +54,12 @@ struct CountdownWidgetView: View {
         .fontWeight(.semibold)
     }
     .monospacedDigit()
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding()
     .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(LinearGradient(colors: SkyGradient.getCurrentPalette(), startPoint: .top, endPoint: .bottom))
+    .background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center))
+    .background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: calculator.today), startPoint: .top, endPoint: .bottom))
     .colorScheme(.dark)
   }
   

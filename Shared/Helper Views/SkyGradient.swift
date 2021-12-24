@@ -36,7 +36,7 @@ struct SkyGradient {
   ]
   
   static let night = [
-    Color(red: 0.087, green: 0.176, blue: 0.221),
+    Color(red: 0.007, green: 0.03, blue: 0.17),
     Color(red: 0.034, green: 0.146, blue: 0.258)
   ]
   
@@ -47,5 +47,28 @@ struct SkyGradient {
   static func getCurrentPalette() -> [Color] {
     let timeAsIndex = Int(Double(Calendar.autoupdatingCurrent.component(.hour, from: .now) + 8) / 6) % colors.count
     return colors[timeAsIndex]
+  }
+  
+  static func getCurrentPalette(for daylight: Daylight) -> [Color] {
+    let sunrise = daylight.begins.addingTimeInterval(-60 * 30)
+    let sunset = daylight.ends.addingTimeInterval(60 * 30)
+    
+    let colorsExcludingNight = colors.prefix(upTo: colors.count - 1)
+    
+    let nowComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: .now)
+    let now = Calendar.current.date(
+      bySettingHour: nowComponents.hour!,
+      minute: nowComponents.minute!,
+      second: nowComponents.second!,
+      of: daylight.begins
+    )!
+    
+    if now < sunrise || now > sunset {
+      return night
+    } else {
+      let index = floor((sunrise.distance(to: now) / daylight.duration) * Double(colorsExcludingNight.count))
+      
+      return colorsExcludingNight[Int(index)]
+    }
   }
 }
