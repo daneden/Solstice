@@ -110,17 +110,13 @@ class SolarCalculator: NSObject, ObservableObject {
         nauticalEnds: applyTimezoneOffset(to: nauticalSunset)
       )
     } else {
-      os_log("Unable to create Daylight object from Solar object; reverting to default Daylight object, which may cause bugs.")
+      print("Unable to create Daylight object from Solar object; reverting to default Daylight object, which may cause bugs.")
     }
     
     return .Default
   }
   
   private var baseDateAtNoon: Date {
-    return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
-  }
-  
-  private var todaysDate: Date {
     return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: baseDate)!
   }
   
@@ -154,27 +150,27 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   var prevSolsticeDaylight: Daylight {
-    guard let solar = Solar(for: prevSolstice, coordinate: coords) else { return .Default }
+    let solar = Solar(for: prevSolstice, coordinate: coords)!
     
     return createDaylight(from: solar)
   }
   
   var today: Daylight {
-    guard let solar = Solar(for: baseDateAtNoon, coordinate: coords) else { return .Default }
+    let solar = Solar(for: baseDateAtNoon, coordinate: coords)!
     
     return createDaylight(from: solar)
   }
   
   var yesterday: Daylight {
     let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: baseDateAtNoon)!
-    guard let solar = Solar(for: yesterday, coordinate: coords) else { return .Default }
+    let solar = Solar(for: yesterday, coordinate: coords)!
     
     return createDaylight(from: solar)
   }
   
   var tomorrow: Daylight {
     let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: baseDateAtNoon)!
-    guard let solar = Solar(for: tomorrow, coordinate: coords) else { return .Default }
+    let solar = Solar(for: tomorrow, coordinate: coords)!
     
     return createDaylight(from: solar)
   }

@@ -115,12 +115,6 @@ struct SettingsView: View {
         notificationManager.toggleNotifications(on: value, bindingTo: $notifsEnabled)
       }
     }
-    .onChange(of: notificationFragments.map { $0.value.wrappedValue }) { _ in
-      notificationManager.adjustSchedule()
-    }
-    .onChange(of: sadPreference) { _ in
-      notificationManager.adjustSchedule()
-    }
     .onDisappear {
 #if os(iOS)
       if sessionCount >= 3,

@@ -45,6 +45,12 @@ struct SolsticeApp: App {
       }
       .onChange(of: scenePhase) { _ in
         locationManager.updateLocationType()
+        
+        if scenePhase == .active {
+          NotificationManager.shared.removeDeliveredNotifications()
+        } else {
+          NotificationManager.shared.rescheduleNotifications()
+        }
       }
       .environmentObject(locationManager)
       .environmentObject(SolarCalculator(locationManager: locationManager))

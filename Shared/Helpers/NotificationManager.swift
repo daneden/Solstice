@@ -11,6 +11,8 @@ import SwiftUI
 import BackgroundTasks
 
 class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+  static let shared = NotificationManager()
+  
   // General notification settings
   @AppStorage(UDValues.NotificationSettings.notificationTime) var notifTime
   @AppStorage(UDValues.notificationsEnabled) var notificationsEnabled
@@ -26,6 +28,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   @AppStorage(UDValues.NotificationSettings.relation) var relation
   @AppStorage(UDValues.NotificationSettings.relativeOffset) var relativeOffset
   @AppStorage(UDValues.NotificationSettings.relativity) var relativity
+  
+  private let backgroundDispatchQueue = DispatchQueue(
+    label: "me.daneden.Solstice.backgroundDispatchQueue",
+    qos: .background,
+    attributes: [],
+    autoreleaseFrequency: .workItem,
+    target: nil
+  )
   
   func userNotificationCenter(
     _ center: UNUserNotificationCenter,
@@ -46,7 +56,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     self.notificationCenter.removeAllDeliveredNotifications()
   }
   
-  static let shared = NotificationManager()
   private let notificationCenter = UNUserNotificationCenter.current()
   
   func getPending(completionHandler: @escaping ([UNNotificationRequest]) -> Void) {
@@ -61,11 +70,10 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
    */
   func toggleNotifications(on enabled: Bool, bindingTo: Binding<Bool>? = nil) {
     if enabled {
-      notificationCenter.requestAuthorization(options: [.alert]) { success, error in
+      notificationCenter.requestAuthorization(options: [.alert, .provisional]) { success, error in
         if success {
           print("Enabled notifications")
-          self.adjustSchedule()
-          
+
           DispatchQueue.main.async {
             if let binding = bindingTo {
               binding.wrappedValue = true
@@ -82,15 +90,24 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
       }
     } else {
-      notificationCenter.removeAllPendingNotificationRequests()
+      self.removePendingNotificationRequests()
     }
   }
   
-  func adjustSchedule() {
+  func removeDeliveredNotifications() {
+    print("Removing delivered notifications")
+    notificationCenter.removeAllDeliveredNotifications()
+  }
+  
+  func removePendingNotificationRequests() {
     print("Removing scheduled notifications")
-    self.notificationCenter.removeAllPendingNotificationRequests()
+    notificationCenter.removeAllPendingNotificationRequests()
+  }
+  
+  func rescheduleNotifications() {
+    self.removePendingNotificationRequests()
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+    backgroundDispatchQueue.async {
       print("Rebuilding and scheduling notifications")
       self.scheduleNotifications()
     }
@@ -98,12 +115,19 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   
   // MARK: Notification scheduler
   func scheduleNotifications(from task: BGAppRefreshTask? = nil) {
-    if !notificationsEnabled {
-      self.notificationCenter.removeAllPendingNotificationRequests()
-      return
+    notificationCenter.getNotificationSettings { settings in
+      guard (settings.authorizationStatus == .authorized && settings.authorizationStatus == .provisional) ||
+          self.notificationsEnabled
+      else {
+        self.notificationCenter.removeAllPendingNotificationRequests()
+        return
+      }
     }
     
-    //
+    // UNUserNotificationCenter only lets you schedule up to 64 notifications,
+    // so we’ll use that full threshold
+    let solarCalculator = SolarCalculator()
+    
     for index in 1..<64 {
       var notificationTriggerDate: Date
       let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
@@ -120,13 +144,18 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         )!
       case .relativeTime:
         let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-        let solarCalculator = SolarCalculator(baseDate: date)
+        solarCalculator.baseDate = date
         let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
+        
+        if chosenEvent.isToday {
+          print("welp")
+        }
+        
         notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
       }
       
       // Generate an ID for this notification and remove any current pending
-      // notifs for the same target time
+      // notifs for the same target date
       let id = "me.daneden.Solstice.notification.\(Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate).hashValue)"
       UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
       
@@ -159,7 +188,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         if let error = error {
           print(error.localizedDescription)
         } else {
-          print("Scheduled notification: \(request.identifier) at \(triggerDate.date?.formatted() ?? "unknown date")")
+          print("Scheduled notification #\(index): \(request.identifier) at \(triggerDate.date?.formatted() ?? "unknown date")")
         }
       }
     }
