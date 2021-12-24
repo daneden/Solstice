@@ -146,11 +146,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
         solarCalculator.baseDate = date
         let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
-        
-        if chosenEvent.isToday {
-          print("welp")
-        }
-        
         notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
       }
       
