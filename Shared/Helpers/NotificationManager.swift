@@ -70,7 +70,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
    */
   func toggleNotifications(on enabled: Bool, bindingTo: Binding<Bool>? = nil) {
     if enabled {
-      notificationCenter.requestAuthorization(options: [.alert, .provisional]) { success, error in
+      notificationCenter.requestAuthorization(options: [.alert]) { success, error in
         if success {
           print("Enabled notifications")
 
