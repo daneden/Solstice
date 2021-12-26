@@ -116,6 +116,8 @@ struct SettingsView: View {
       }
     }
     .onDisappear {
+      notificationManager.rescheduleNotifications()
+      
 #if os(iOS)
       if sessionCount >= 3,
          let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {

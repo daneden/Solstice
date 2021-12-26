@@ -34,6 +34,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     do {
       try BGTaskScheduler.shared.submit(task)
+      print("Scheduled background task")
     } catch {
       print("Unable to submit task: \(error.localizedDescription)")
     }

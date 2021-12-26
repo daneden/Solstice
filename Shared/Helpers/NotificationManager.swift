@@ -124,72 +124,80 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       }
     }
     
-    // UNUserNotificationCenter only lets you schedule up to 64 notifications,
-    // so we’ll use that full threshold
-    let solarCalculator = SolarCalculator()
-    
-    for index in 1..<64 {
-      var notificationTriggerDate: Date
-      let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+    getPending { existingRequests in
+      // UNUserNotificationCenter only lets you schedule up to 64 notifications,
+      // so we’ll use that full threshold
+      let solarCalculator = SolarCalculator()
       
-      
-      switch self.scheduleType {
-      case .specificTime:
-        let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
-        notificationTriggerDate = Calendar.current.date(
-          bySettingHour: components.hour ?? 8,
-          minute: components.minute ?? 0,
-          second: 0,
-          of: targetDate
-        )!
-      case .relativeTime:
-        let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-        solarCalculator.baseDate = date
-        let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
-        notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
-      }
-      
-      // Generate an ID for this notification and remove any current pending
-      // notifs for the same target date
-      let id = "me.daneden.Solstice.notification.\(Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate).hashValue)"
-      UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
-      
-      let content = UNMutableNotificationContent()
-      
-      let triggerDate = Calendar.current.dateComponents(Set(Calendar.Component.allCases), from: notificationTriggerDate)
-      
-      let trigger = UNCalendarNotificationTrigger(
-        dateMatching: triggerDate,
-        repeats: false
-      )
-      
-      guard let notifContent = self.buildNotificationContent(for: notificationTriggerDate) else {
-        if let task = task {
-          task.setTaskCompleted(success: true)
-        }
-        return
-      }
-      
-      content.title = notifContent.title
-      content.body = notifContent.body
-      
-      let request = UNNotificationRequest(
-        identifier: id,
-        content: content,
-        trigger: trigger
-      )
+      for index in 1..<64 {
+        var notificationTriggerDate: Date
+        let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
         
-      UNUserNotificationCenter.current().add(request) { error in
-        if let error = error {
-          print(error.localizedDescription)
+        
+        switch self.scheduleType {
+        case .specificTime:
+          let components = Calendar.current.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: self.notifTime))
+          notificationTriggerDate = Calendar.current.date(
+            bySettingHour: components.hour ?? 8,
+            minute: components.minute ?? 0,
+            second: 0,
+            of: targetDate
+          )!
+        case .relativeTime:
+          let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+          solarCalculator.baseDate = date
+          let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
+          notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
+        }
+        
+        let idComponents = Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate)
+        let id = "me.daneden.Solstice.notification.\(idComponents.year!)-\(idComponents.month!)-\(idComponents.day!)"
+        
+        let content = UNMutableNotificationContent()
+        
+        let triggerDate = Calendar.current.dateComponents(Set(Calendar.Component.allCases), from: notificationTriggerDate)
+        
+        let trigger = UNCalendarNotificationTrigger(
+          dateMatching: triggerDate,
+          repeats: false
+        )
+        
+        guard let notifContent = self.buildNotificationContent(for: notificationTriggerDate) else {
+          if let task = task {
+            task.setTaskCompleted(success: true)
+          }
+          return
+        }
+        
+        content.title = notifContent.title
+        content.body = notifContent.body
+        
+        let request = UNNotificationRequest(
+          identifier: id,
+          content: content,
+          trigger: trigger
+        )
+        
+        // Avoid scheduling identical notifications
+        if let requestWithMatchingId = existingRequests.first(where: { $0.identifier == id }),
+           request.isApproximatelyEqual(to: requestWithMatchingId) {
+          print("Found existing notification, exiting early")
+          task?.setTaskCompleted(success: true)
+          return
         } else {
-          print("Scheduled notification #\(index): \(request.identifier) at \(triggerDate.date?.formatted() ?? "unknown date")")
+          self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [id])
+          
+          self.notificationCenter.add(request) { error in
+            if let error = error {
+              print(error.localizedDescription)
+            } else {
+              print("Scheduled notification #\(index): \(request.identifier) at \(triggerDate.date?.formatted() ?? "unknown date")")
+            }
+          }
         }
       }
-    }
       
-    if let task = task {
-      task.setTaskCompleted(success: true)
+      task?.setTaskCompleted(success: true)
     }
   }
   
@@ -254,3 +262,18 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
 }
 
 typealias NotificationContent = (title: String, body: String)
+
+extension UNNotificationRequest {
+  func isApproximatelyEqual(to otherRequest: UNNotificationRequest) -> Bool {
+    guard let selfTrigger = self.trigger, let otherTrigger = otherRequest.trigger else {
+      return false
+    }
+    
+    return (
+      self.identifier == otherRequest.identifier &&
+      self.content.title == otherRequest.content.title &&
+      self.content.body == otherRequest.content.body &&
+      selfTrigger.hashValue == otherTrigger.hashValue
+    )
+  }
+}
