@@ -116,7 +116,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   // MARK: Notification scheduler
   func scheduleNotifications(from task: BGAppRefreshTask? = nil) {
     notificationCenter.getNotificationSettings { settings in
-      guard (settings.authorizationStatus == .authorized && settings.authorizationStatus == .provisional) ||
+      guard (settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional) ||
           self.notificationsEnabled
       else {
         self.notificationCenter.removeAllPendingNotificationRequests()
