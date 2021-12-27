@@ -242,7 +242,6 @@
 		71864D8B2701A82A00DE03CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71864D8E2701A82A00DE03CB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		71864D902701A82A00DE03CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		71864D912701A82A00DE03CB /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		7190090525A4D6D2002ED383 /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7190090625A4D6D2002ED383 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7190090725A4D6D5002ED383 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -342,7 +341,6 @@
 		71864D802701A82900DE03CB /* WatchSolstice WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				71864D912701A82A00DE03CB /* PushNotificationPayload.apns */,
 				71864D902701A82A00DE03CB /* Info.plist */,
 				71864D892701A82900DE03CB /* ComplicationController.swift */,
 				71864D852701A82900DE03CB /* NotificationController.swift */,
@@ -910,7 +908,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WatchSolstice WatchKit Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "WatchSolstice WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = WatchSolstice_WatchKit_Extension.ComplicationController;
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to accurately measure the local sunrise/sunset times";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
@@ -944,7 +942,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WatchSolstice WatchKit Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "WatchSolstice WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = WatchSolstice_WatchKit_Extension.ComplicationController;
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to accurately measure the local sunrise/sunset times";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;

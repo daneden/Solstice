@@ -31,22 +31,23 @@ enum ComplicationKind: String, CaseIterable, RawRepresentable {
 }
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
+  private let locationManager = LocationManager()
   
   // MARK: - Complication Configuration
-  func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
+  func complicationDescriptors() async -> [CLKComplicationDescriptor] {
     let descriptors = [
       CLKComplicationDescriptor(identifier: ComplicationKind.sundial.rawValue, displayName: "Sundial", supportedFamilies: sundialSupportedFamilies),
       CLKComplicationDescriptor(identifier: ComplicationKind.solarEvent.rawValue, displayName: "Solar Event", supportedFamilies: solarEventSupportedFamilies)
     ]
     
     // Call the handler with the currently supported complication descriptors
-    handler(descriptors)
+    return descriptors
   }
   
   // MARK: - Timeline Configuration
-  func getTimelineEndDate(for complication: CLKComplication, withHandler handler: @escaping (Date?) -> Void) {
-    // Indicate that the app can provide timeline entries until the end of today’s date.
-    handler(Date().endOfDay)
+  func timelineEndDate(for complication: CLKComplication) async -> Date? {
+    // Indicate that the app can provide timeline entries until 24hrs from now.
+    return Date().addingTimeInterval(24 * 60 * 60)
   }
   
   func getPrivacyBehavior(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationPrivacyBehavior) -> Void) {
@@ -55,20 +56,20 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   // MARK: - Timeline Population
-  func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
-    handler(createTimelineEntry(for: complication, date: .now))
+  func currentTimelineEntry(for complication: CLKComplication) async -> CLKComplicationTimelineEntry? {
+    return createTimelineEntry(for: complication, date: .now)
   }
   
-  func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
+  func timelineEntries(for complication: CLKComplication, after date: Date, limit: Int) async -> [CLKComplicationTimelineEntry]? {
     // Call the handler with the timeline entries after the given date
-    let tenMinutes = 10.0 * 60.0
+    let halfHour = 30.0 * 60.0
     let twentyFourHours = 24.0 * 60.0 * 60.0
     
     // Create an array to hold the timeline entries.
-    var entries = [CLKComplicationTimelineEntry]()
+    var entries: [CLKComplicationTimelineEntry] = []
     
     // Calculate the start and end dates.
-    var current = date.addingTimeInterval(tenMinutes)
+    var current = date.addingTimeInterval(halfHour)
     let endDate = date.addingTimeInterval(twentyFourHours)
     
     // Create a timeline entry for every ten minutes from the starting time.
@@ -77,22 +78,24 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       if let entry = createTimelineEntry(for: complication, date: current) {
         entries.append(entry)
       }
-      current = current.addingTimeInterval(tenMinutes)
+      current = current.addingTimeInterval(halfHour)
     }
     
-    handler(entries)
+    print(entries.count)
+    
+    return entries
   }
   
   // MARK: - Sample Templates
-  func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
+  func localizableSampleTemplate(for complication: CLKComplication) async -> CLKComplicationTemplate? {
     // This method will be called once per supported complication, and the results will be cached
     switch complication.identifier {
     case "solarEvent":
-      handler(getSolarEventComplicationTemplate(for: complication.family))
+      return getSolarEventComplicationTemplate(for: complication.family)
     case "sundial":
-      handler(getSundialComplicationTemplate(for: complication.family))
+      return getSundialComplicationTemplate(for: complication.family)
     default:
-      handler(nil)
+      return nil
     }
   }
 }
@@ -121,10 +124,10 @@ extension ComplicationController {
   }
   
   func getSolarEventComplicationTemplate(for family: CLKComplicationFamily, at date: Date = .now) -> CLKComplicationTemplate? {
-    let calculator = SolarCalculator(baseDate: date)
+    var calculator: SolarCalculator? = SolarCalculator(baseDate: date, locationManager: locationManager)
     let viewIconName: String
     
-    let solarEvent = calculator.getNextSolarEvent()
+    let solarEvent = calculator!.getNextSolarEvent()
     
     let textProvider: CLKTextProvider
     
@@ -138,6 +141,8 @@ extension ComplicationController {
       viewIconName = "sunset.fill"
       eventString = "Sunset"
     }
+    
+    calculator = nil
     
     switch family {
     case .utilitarianLarge, .modularLarge:
@@ -192,7 +197,7 @@ extension ComplicationController {
   }
   
   func getSundialComplicationTemplate(for family: CLKComplicationFamily, at date: Date = .now) -> CLKComplicationTemplate? {
-    let calculator = SolarCalculator(baseDate: date)
+    let calculator = SolarCalculator(baseDate: date, locationManager: locationManager)
     let today = calculator.today
     
     let sunSize: CGFloat
