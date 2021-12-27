@@ -150,12 +150,17 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
         }
         
+        if notificationTriggerDate.isInPast {
+          print("Notification is scheduled for a time in the past (\(notificationTriggerDate.formatted()); skipping this instance")
+          continue
+        }
+        
         let idComponents = Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate)
         let id = "me.daneden.Solstice.notification.\(idComponents.year!)-\(idComponents.month!)-\(idComponents.day!)"
         
         let content = UNMutableNotificationContent()
         
-        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month, .year], from: notificationTriggerDate)
+        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month], from: notificationTriggerDate)
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: triggerDate,
@@ -190,12 +195,12 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           self.notificationCenter.add(request) { error in
             if let error = error {
               print(error.localizedDescription)
-            } else {
-              print("Scheduled notification #\(index): \(request.identifier) at \(triggerDate.date?.formatted() ?? "unknown date")")
             }
           }
         }
       }
+      
+      print("Done scheduling notifications")
       
       task?.setTaskCompleted(success: true)
     }
