@@ -88,9 +88,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   func localizableSampleTemplate(for complication: CLKComplication) async -> CLKComplicationTemplate? {
     // This method will be called once per supported complication, and the results will be cached
     switch complication.identifier {
-    case "solarEvent":
+    case ComplicationKind.solarEvent.rawValue:
       return getSolarEventComplicationTemplate(for: complication.family)
-    case "sundial":
+    case ComplicationKind.sundial.rawValue:
       return getSundialComplicationTemplate(for: complication.family)
     default:
       return nil
@@ -103,9 +103,9 @@ extension ComplicationController {
     let template: CLKComplicationTemplate?
     
     switch complication.identifier {
-    case "solarEvent":
+    case ComplicationKind.solarEvent.rawValue:
       template = getSolarEventComplicationTemplate(for: complication.family, at: date)
-    case "sundial":
+    case ComplicationKind.sundial.rawValue:
       template = getSundialComplicationTemplate(for: complication.family, at: date)
     default:
       template = nil
