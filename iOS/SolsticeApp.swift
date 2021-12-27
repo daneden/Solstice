@@ -48,9 +48,14 @@ struct SolsticeApp: App {
         
         if scenePhase == .active {
           NotificationManager.shared.removeDeliveredNotifications()
-        } else {
-          NotificationManager.shared.rescheduleNotifications()
+          NotificationManager.shared.removePendingNotificationRequests()
         }
+        
+        // Always reschedule notifications
+        // Since this function runs on the background thread and also doesn’t
+        // schedule identical notifications, this is safe to run on all
+        // scenePhase changes
+        NotificationManager.shared.rescheduleNotifications()
       }
       .environmentObject(locationManager)
       .environmentObject(SolarCalculator(locationManager: locationManager))

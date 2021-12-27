@@ -10,7 +10,7 @@ import UserNotifications
 import SwiftUI
 import BackgroundTasks
 
-class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+class NotificationManager: NSObject, ObservableObject {
   static let shared = NotificationManager()
   
   // General notification settings
@@ -36,25 +36,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     autoreleaseFrequency: .workItem,
     target: nil
   )
-  
-  func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
-    willPresent notification: UNNotification,
-    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-  ) {
-    print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
-    
-    DispatchQueue.global(qos: .background).async {
-      self.scheduleNotifications()
-    }
-  }
-  
-  func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
-    didReceive response: UNNotificationResponse
-  ) async {
-    self.notificationCenter.removeAllDeliveredNotifications()
-  }
   
   private let notificationCenter = UNUserNotificationCenter.current()
   
@@ -105,8 +86,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   }
   
   func rescheduleNotifications() {
-    self.removePendingNotificationRequests()
-    
     backgroundDispatchQueue.async {
       print("Rebuilding and scheduling notifications")
       self.scheduleNotifications()
@@ -115,24 +94,40 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   
   // MARK: Notification scheduler
   func scheduleNotifications(from task: BGAppRefreshTask? = nil) {
+    /**
+     This function should only fully execute if the user has granted notification permissions and the app’s
+     `notificationsEnabled` preference is `true`, otherwise we should exit and remove any pending
+     notification requests
+     */
     notificationCenter.getNotificationSettings { settings in
       guard (settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional) ||
           self.notificationsEnabled
       else {
         self.notificationCenter.removeAllPendingNotificationRequests()
+        task?.setTaskCompleted(success: true)
         return
       }
     }
     
+    /**
+     We want to get pending requests so we can avoid scheduling duplicate notifications.
+     */
     getPending { existingRequests in
-      // UNUserNotificationCenter only lets you schedule up to 64 notifications,
-      // so we’ll use that full threshold
+      /**
+       `UNUserNotificationCenter` limits scheduling to up to 64 requests. We’ll use that full
+       allowance since most users probably won’t be regularly opening the app.
+       
+       First, we’ll create a single instance of `SolarCalculator` that we can use to calculate relative
+       schedule triggers.
+       */
       let solarCalculator = SolarCalculator()
       
       for index in 0..<64 {
+        /**
+         We’ll schedule one notification per day for the next 64 days, including today
+         */
         var notificationTriggerDate: Date
         let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-        
         
         switch self.scheduleType {
         case .specificTime:
@@ -150,11 +145,16 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
         }
         
+        /**
+         Skip notifications scheduled for a date/time in the past
+         */
         if notificationTriggerDate.isInPast {
-          print("Notification is scheduled for a time in the past (\(notificationTriggerDate.formatted()); skipping this instance")
           continue
         }
         
+        /**
+         Create a unique ID based on the scheduled date of the notification
+         */
         let idComponents = Calendar.current.dateComponents([.day, .month, .year], from: notificationTriggerDate)
         let id = "me.daneden.Solstice.notification.\(idComponents.year!)-\(idComponents.month!)-\(idComponents.day!)"
         
@@ -168,9 +168,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         )
         
         guard let notifContent = self.buildNotificationContent(for: notificationTriggerDate) else {
-          if let task = task {
-            task.setTaskCompleted(success: true)
-          }
+          task?.setTaskCompleted(success: false)
           return
         }
         
@@ -183,13 +181,20 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
           trigger: trigger
         )
         
-        // Avoid scheduling identical notifications
+        /**
+         Avoid scheduling duplicate notifications. This checks to see whether there’s a notification with the
+         same ID (i.e. scheduled for the same date), and then checks whether their contents and triggers
+         are equal.
+         */
         if let requestWithMatchingId = existingRequests.first(where: { $0.identifier == id }),
            request.isApproximatelyEqual(to: requestWithMatchingId) {
           print("Found existing notification, exiting early")
-          task?.setTaskCompleted(success: true)
-          return
+          continue
         } else {
+          /**
+           This condition may match if there’s a notification with the same ID, but not the same contents/trigger,
+           in which case we’ll remove the duplicate and schedule our new notification.
+           */
           self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [id])
           
           self.notificationCenter.add(request) { error in
@@ -206,11 +211,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     }
   }
   
-  enum Context {
-    case preview, notification
-  }
-  
   // MARK: Notification content builder
+  /// Creates notification content from a given date. Can be used either for legitimate notifications or for
+  /// notification previews.
+  /// - Parameters:
+  ///   - date: The date for which to generate sunrise/sunset information.
+  ///   - context: The context in which this content will be used. This is to ensure that SAD preferences
+  ///   don't alter notification previews.
+  /// - Returns: A `NotificationContent` object appropriate for the context
   func buildNotificationContent(for date: Date, in context: Context = .notification) -> NotificationContent? {
     var content = (title: "", body: "")
     
@@ -266,19 +274,31 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
   }
 }
 
-typealias NotificationContent = (title: String, body: String)
+extension NotificationManager {
+  typealias NotificationContent = (title: String, body: String)
+  
+  enum Context {
+    case preview, notification
+  }
+}
 
-extension UNNotificationRequest {
-  func isApproximatelyEqual(to otherRequest: UNNotificationRequest) -> Bool {
-    guard let selfTrigger = self.trigger, let otherTrigger = otherRequest.trigger else {
-      return false
-    }
+extension NotificationManager: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+  ) {
+    print("Presenting notification! Assuming this was a daily notif, scheduling the next one...")
     
-    return (
-      self.identifier == otherRequest.identifier &&
-      self.content.title == otherRequest.content.title &&
-      self.content.body == otherRequest.content.body &&
-      selfTrigger.hashValue == otherTrigger.hashValue
-    )
+    DispatchQueue.global(qos: .background).async {
+      self.scheduleNotifications()
+    }
+  }
+  
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse
+  ) async {
+    self.notificationCenter.removeAllDeliveredNotifications()
   }
 }
