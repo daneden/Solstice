@@ -84,7 +84,6 @@ class SolarCalculator: NSObject, ObservableObject {
     
     DispatchQueue.main.async {
       self.baseDate = offsetDate
-      self.objectWillChange.send()
     }
   }
   

@@ -81,8 +81,6 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       current = current.addingTimeInterval(halfHour)
     }
     
-    print(entries.count)
-    
     return entries
   }
   
@@ -233,7 +231,7 @@ extension ComplicationController {
       .symbolRenderingMode(.hierarchical)
       
       sundial
-        .padding(.bottom, sunSize)
+        .padding(.bottom, sunSize / 2)
         .foregroundStyle(.primary, .secondary)
     }
     
