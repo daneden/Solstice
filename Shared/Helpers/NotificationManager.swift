@@ -129,7 +129,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
       // so we’ll use that full threshold
       let solarCalculator = SolarCalculator()
       
-      for index in 1..<64 {
+      for index in 0..<64 {
         var notificationTriggerDate: Date
         let targetDate = Calendar.current.date(byAdding: .day, value: index, to: .now)!
         
@@ -155,7 +155,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         
         let content = UNMutableNotificationContent()
         
-        let triggerDate = Calendar.current.dateComponents(Set(Calendar.Component.allCases), from: notificationTriggerDate)
+        let triggerDate = Calendar.current.dateComponents([.hour, .minute, .day, .month, .year], from: notificationTriggerDate)
         
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: triggerDate,
