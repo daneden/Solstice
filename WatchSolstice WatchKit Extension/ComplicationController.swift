@@ -112,7 +112,7 @@ extension ComplicationController {
     
     if let template = template {
       return CLKComplicationTimelineEntry(
-        date: Date(),
+        date: date,
         complicationTemplate: template
       )
     } else {
