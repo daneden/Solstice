@@ -142,6 +142,7 @@ extension ComplicationController {
       eventString = "Sunset"
     }
     
+    // Deinitialize calculator to prevent memory leaks
     calculator = nil
     
     switch family {
