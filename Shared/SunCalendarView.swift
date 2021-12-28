@@ -6,18 +6,20 @@
 //
 
 import SwiftUI
+import Solar
 
 struct SunCalendarView: View {
   #if !os(watchOS)
   @Environment(\.horizontalSizeClass) var sizeClass
   #endif
-  @ObservedObject var solarCalculator = SolarCalculator()
-  @State var daylightArray: [Daylight] = []
+  @EnvironmentObject var solarCalculator: SolarCalculator
+  @EnvironmentObject var locationManager: LocationManager
+  @State var daylightArray: [Solar] = []
   @ScaledMetric var barHeight = isWatch ? 100 : 200
   @ScaledMetric var captionSize = isWatch ? 8 : 14
   
   var currentMonth: Int {
-    let month = Calendar.current.component(.month, from: solarCalculator.baseDate)
+    let month = Calendar.current.component(.month, from: solarCalculator.date)
     return month - 1
   }
   
@@ -68,35 +70,33 @@ struct SunCalendarView: View {
     }
   }
   
-  func calculateMonthlyDaylight() -> [Daylight] {
-    let todayComponents = Calendar.current.dateComponents([.year], from: solarCalculator.baseDate)
-    var monthsOfDaylight: [Daylight] = []
-    let components = DateComponents(
-      year: todayComponents.year,
-      month: 1,
-      day: 15,
-      hour: 12,
-      minute: 0,
-      second: 0
-    )
+  func calculateMonthlyDaylight() -> [Solar] {
+    let todayComponents = Calendar.current.dateComponents([.year], from: solarCalculator.date)
+    var monthsOfDaylight: [Solar] = []
     
-    var date = Calendar.current.date(from: components)!
-    let calculator = SolarCalculator()
-    
-    for _ in 1...12 {
-      calculator.baseDate = date
-      monthsOfDaylight.append(calculator.today)
+    for month in 1...12 {
+      let components = DateComponents(
+        year: todayComponents.year,
+        month: month,
+        day: 15,
+        hour: 12,
+        minute: 0,
+        second: 0
+      )
+      var date = Calendar.current.date(from: components)!
+      
+      monthsOfDaylight.append(Solar(for: date, coordinate: locationManager.location!.coordinate)!)
       date = Calendar.current.date(byAdding: .month, value: 1, to: date)!
     }
     
     return monthsOfDaylight
   }
   
-  func hoursOfDaylightForMonth(_ month: Daylight) -> Int {
+  func hoursOfDaylightForMonth(_ month: Solar) -> Int {
     return Int(month.duration / 60 / 60)
   }
   
-  func calculateDaylightForMonth(_ month: Daylight) -> CGFloat {
+  func calculateDaylightForMonth(_ month: Solar) -> CGFloat {
     let longest = daylightArray.reduce(1.0) { (record, currentDaylight) -> TimeInterval in
       currentDaylight.duration > record ? currentDaylight.duration : record
     }
@@ -121,6 +121,6 @@ struct SunCalendarView_Previews: PreviewProvider {
         SunCalendarView()
           .padding()
           .dynamicTypeSize(.accessibility1)
-      }
+      }.environmentObject(SolarCalculator())
     }
 }

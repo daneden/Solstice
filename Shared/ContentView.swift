@@ -86,7 +86,7 @@ struct ContentView: View {
           Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
             .padding(.vertical, 8)
           
-          SunCalendarView(solarCalculator: calculator)
+          SunCalendarView()
             .padding(.vertical, 8)
         }
         .listStyle(.plain)
@@ -128,7 +128,7 @@ struct ContentView: View {
     
     let differenceString = difference.localizedString
     let differenceComparator = difference >= 0 ? "more" : "less"
-    let comparedToDate = calculator.baseDate.isToday ? "today" : "on this day"
+    let comparedToDate = calculator.date.isToday ? "today" : "on this day"
     return "\(differenceString) \(differenceComparator) daylight \(comparedToDate) than at the previous solstice."
   }
   

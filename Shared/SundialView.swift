@@ -15,10 +15,10 @@ struct SundialView: View {
   var trackWidth = 3.0
   
   private var dayBegins: Date {
-    calculator.baseDate.startOfDay
+    calculator.date.startOfDay
   }
   private var dayEnds: Date {
-    calculator.baseDate.endOfDay
+    calculator.date.endOfDay
   }
   
   /**
@@ -38,12 +38,12 @@ struct SundialView: View {
    */
   private var currentTime: CGFloat {
     let currentTimeComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: .now)
-    let date = Calendar.autoupdatingCurrent.date(bySettingHour: currentTimeComponents.hour!, minute: currentTimeComponents.minute!, second: currentTimeComponents.second!, of: calculator.baseDate)!
+    let date = Calendar.autoupdatingCurrent.date(bySettingHour: currentTimeComponents.hour!, minute: currentTimeComponents.minute!, second: currentTimeComponents.second!, of: calculator.date)!
     let dayLength = dayBegins.distance(to: dayEnds)
     
     let dst = calculator.timezone.daylightSavingTimeOffset(for: date)
     
-    let position = CGFloat((dayBegins.distance(to: calculator.baseDate) - dst) / dayLength)
+    let position = CGFloat((dayBegins.distance(to: calculator.date) - dst) / dayLength)
     return position
   }
   

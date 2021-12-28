@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Solar
 
 struct SkyGradient {
   static let dawn = [
@@ -49,7 +50,7 @@ struct SkyGradient {
     return colors[timeAsIndex]
   }
   
-  static func getCurrentPalette(for daylight: Daylight) -> [Color] {
+  static func getCurrentPalette(for daylight: Solar) -> [Color] {
     let sunrise = daylight.begins.addingTimeInterval(-60 * 30)
     let sunset = daylight.ends.addingTimeInterval(60 * 30)
     

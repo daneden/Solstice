@@ -35,6 +35,10 @@
 		715936012767557A00F03F29 /* StoreKitConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 715936002767557900F03F29 /* StoreKitConfiguration.storekit */; };
 		71682AE225DD923400487ECA /* View.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71682AE125DD923400487ECA /* View.extension.swift */; };
 		71832D252779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D242779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift */; };
+		71832D27277B11AC00CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
+		71832D28277B143400CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
+		71832D29277B143500CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
+		71832D2A277B143800CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
 		71864D772701A82900DE03CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71864D762701A82900DE03CB /* Assets.xcassets */; };
 		71864D7D2701A82900DE03CB /* WatchSolstice WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 71864D7C2701A82900DE03CB /* WatchSolstice WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		71864D862701A82900DE03CB /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71864D852701A82900DE03CB /* NotificationController.swift */; };
@@ -232,6 +236,7 @@
 		715936002767557900F03F29 /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		71682AE125DD923400487ECA /* View.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.extension.swift; sourceTree = "<group>"; };
 		71832D242779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationRequest+approximatelyEqual.swift"; sourceTree = "<group>"; };
+		71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Solar+SolsticeHelpers.swift"; sourceTree = "<group>"; };
 		71864CED2700AD9B00DE03CB /* SolsticeIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SolsticeIntents.entitlements; sourceTree = "<group>"; };
 		71864D742701A82800DE03CB /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71864D762701A82900DE03CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -445,6 +450,7 @@
 				71F2258D27621238008F88F9 /* View+CapsuleAppearance.swift */,
 				71FA4C00276A03E200099029 /* CalendarComponent+Extra.swift */,
 				71832D242779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift */,
+				71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -720,6 +726,7 @@
 				71C041AB26230E1E00A828AC /* AppStorage.extension.swift in Sources */,
 				71FA4C03276A049100099029 /* CalendarComponent+Extra.swift in Sources */,
 				71C041D9262310EB00A828AC /* Date.extension.swift in Sources */,
+				71832D29277B143500CB2903 /* Solar+SolsticeHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -748,6 +755,7 @@
 				71864DB42701ABB200DE03CB /* View.extension.swift in Sources */,
 				71F2258F27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */,
 				71864DAB2701A97200DE03CB /* LocationManager.swift in Sources */,
+				71832D28277B143400CB2903 /* Solar+SolsticeHelpers.swift in Sources */,
 				71864DAA2701A97200DE03CB /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -779,6 +787,7 @@
 				71E5007E25BC4BFF00C43609 /* LocationPickerView.swift in Sources */,
 				71832D252779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift in Sources */,
 				71B54550276B53050027716A /* DurationPicker.swift in Sources */,
+				71832D27277B11AC00CB2903 /* Solar+SolsticeHelpers.swift in Sources */,
 				71F2258E27621238008F88F9 /* View+CapsuleAppearance.swift in Sources */,
 				71B5454C276B3CDB0027716A /* NotificationSchedulePicker.swift in Sources */,
 				7148B47325A7AB700047CC6F /* TimeInterval.extension.swift in Sources */,
@@ -809,6 +818,7 @@
 				71D1BC332622F39D00A17E47 /* CountdownWidgetView.swift in Sources */,
 				71C8844725A90A3E0009F2A1 /* SundialView.swift in Sources */,
 				71C8846B25A90A9F0009F2A1 /* TimeInterval.extension.swift in Sources */,
+				71832D2A277B143800CB2903 /* Solar+SolsticeHelpers.swift in Sources */,
 				71C8845325A90A830009F2A1 /* SolarCalculator.swift in Sources */,
 				71ABE16925C5A83100A52F35 /* LocationService.swift in Sources */,
 				714DEC832774BAD300DBB8A3 /* SkyGradient.swift in Sources */,
