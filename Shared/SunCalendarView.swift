@@ -36,7 +36,7 @@ struct SunCalendarView: View {
           .font(.subheadline)
         Text("Based on the hours of daylight on the 15th day of each month this year")
           .fixedSize(horizontal: false, vertical: true)
-          .font(.caption)
+          .font(.footnote)
           .foregroundColor(.secondary)
       }
       
@@ -52,34 +52,34 @@ struct SunCalendarView: View {
                 Text("0")
                   .fixedSize()
               }
-              
+
               Divider()
             }
-            
+
             Text("H")
               .foregroundColor(.clear)
               .accessibility(hidden: true)
           }
         }
-        
+
         ForEach(daylightArray, id: \.self) { month in
           if let index = daylightArray.firstIndex(of: month) {
             if index != 0 {
               Spacer(minLength: 2)
             }
-            
+
             VStack {
               if !isWatch || daylightArray.firstIndex(of: month) == currentMonth {
                 Text("\(self.hoursOfDaylightForMonth(month))")
                   .lineLimit(1)
               }
-              
+
               Color.accentColor
                 .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
                 .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
                 .frame(height: self.calculateDaylightForMonth(month) * barHeight)
                 .cornerRadius(4)
-              
+
               #if !os(watchOS)
               Text("\(self.monthAbbreviationFromInt(index, veryShort: sizeClass != .regular))")
                 .foregroundColor(.secondary)
