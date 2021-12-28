@@ -51,9 +51,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     return Date().addingTimeInterval(24 * 60 * 60)
   }
   
-  func getPrivacyBehavior(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationPrivacyBehavior) -> Void) {
+  func privacyBehavior(for complication: CLKComplication) async -> CLKComplicationPrivacyBehavior {
     // Call the handler with your desired behavior when the device is locked
-    handler(.showOnLockScreen)
+    return .showOnLockScreen
+  }
+  
+  func timelineAnimationBehavior(for complication: CLKComplication) async -> CLKComplicationTimelineAnimationBehavior {
+    return .always
   }
   
   // MARK: - Timeline Population
