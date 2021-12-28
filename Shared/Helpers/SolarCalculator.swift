@@ -15,7 +15,7 @@ import OSLog
 enum SolarEvent {
   case sunrise(at: Date), sunset(at: Date)
   
-  func date() -> Date {
+  var date: Date {
     switch self {
     case .sunrise(let at):
       return at

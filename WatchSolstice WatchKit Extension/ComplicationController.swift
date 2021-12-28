@@ -61,16 +61,16 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   func timelineEntries(for complication: CLKComplication, after date: Date, limit: Int) async -> [CLKComplicationTimelineEntry]? {
-    // Call the handler with the timeline entries after the given date
-    let halfHour = 30.0 * 60.0
-    let twentyFourHours = 24.0 * 60.0 * 60.0
+    let increment = 20.0 * 60.0
     
     // Create an array to hold the timeline entries.
     var entries: [CLKComplicationTimelineEntry] = []
     
     // Calculate the start and end dates.
-    var current = date.addingTimeInterval(halfHour)
-    let endDate = date.addingTimeInterval(twentyFourHours)
+    var current = date.addingTimeInterval(increment)
+    guard let endDate = await timelineEndDate(for: complication) else {
+      return nil
+    }
     
     // Create a timeline entry for every ten minutes from the starting time.
     // Stop once you reach the limit or the end date.
@@ -78,7 +78,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       if let entry = createTimelineEntry(for: complication, date: current) {
         entries.append(entry)
       }
-      current = current.addingTimeInterval(halfHour)
+      current = current.addingTimeInterval(increment)
     }
     
     return entries
@@ -145,9 +145,9 @@ extension ComplicationController {
     
     switch family {
     case .utilitarianLarge, .modularLarge:
-      textProvider = CLKTextProvider(format: "\(eventString) at \(solarEvent.date().formatted(date: .omitted, time: .shortened))")
+      textProvider = CLKTextProvider(format: "\(eventString) at \(solarEvent.date.formatted(date: .omitted, time: .shortened))")
     default:
-      textProvider = CLKTimeTextProvider(date: solarEvent.date())
+      textProvider = CLKTimeTextProvider(date: solarEvent.date)
     }
     
     let imageProvider = CLKImageProvider(onePieceImage: UIImage(systemName: viewIconName)!)
@@ -187,7 +187,7 @@ extension ComplicationController {
     case .modularLarge:
       return CLKComplicationTemplateModularLargeStandardBody(
         headerImageProvider: imageProvider,
-        headerTextProvider: CLKRelativeDateTextProvider(date: solarEvent.date(), style: .natural, units: [.hour, .minute, .second]),
+        headerTextProvider: CLKRelativeDateTextProvider(date: solarEvent.date, style: .natural, units: [.hour, .minute, .second]),
         body1TextProvider: textProvider
       )
     default:
@@ -245,7 +245,7 @@ extension ComplicationController {
     case .graphicBezel:
       let textProvider: CLKTextProvider
       
-      switch calculator.getNextSolarEvent() {
+      switch today.nextSolarEvent {
       case .sunrise(let at):
         textProvider = CLKTextProvider(format: "Sunrise \(at.formatted(.relative(presentation: .named)))")
       case .sunset(let at):
