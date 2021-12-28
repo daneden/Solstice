@@ -14,12 +14,11 @@ struct ContentView: View {
   @EnvironmentObject var calculator: SolarCalculator
   @EnvironmentObject var sheetPresentation: SheetPresentationManager
   
-  @State var selectedDate = Date()
-  @State var dateOffset = 0.0
-  @State var settingsVisible = false
+  var selectedDate: Date {
+    calculator.date
+  }
+  
   @State var timeTravelVisible = false
-  @State var locationPickerVisible = false
-  @State var isPickingDate = false
   
   var body: some View {
     GeometryReader { geom in
@@ -41,46 +40,34 @@ struct ContentView: View {
             .environmentObject(sheetPresentation)
           
           #if !os(watchOS)
-          DisclosureGroup(
-            isExpanded: $isPickingDate,
-            content: {
-              Slider(value: $dateOffset, in: -182...182, step: 1,
-                     minimumValueLabel: Text("Past").font(.caption),
-                     maximumValueLabel: Text("Future").font(.caption)) {
-                HStack {
-                  Text("Chosen date: \(selectedDate, style: .date)")
-                  
-                }
-              }
-                     .accentColor(.systemFill)
-                     .foregroundColor(.secondary)
-              
-              Button(action: { withAnimation { dateOffset = 0 }}) {
-                HStack {
-                  Label("Reset", systemImage: "arrow.counterclockwise")
-                  Spacer()
-                }
-                .contentShape(Rectangle())
-              }.disabled(dateOffset == 0).buttonStyle(BorderlessButtonStyle())
-            },
-            label: {
+          DisclosureGroup {
+            Slider(value: $calculator.dateOffset, in: -182...182, step: 1,
+                   minimumValueLabel: Text("Past").font(.caption),
+                   maximumValueLabel: Text("Future").font(.caption)) {
               HStack {
-                Label {
-                  Text(selectedDate, style: .date)
-                    .fontWeight(selectedDate.isToday ? .regular : .semibold)
-                    .capsuleAppearance(on: !selectedDate.isToday)
-                } icon: {
-                  Image(systemName: "calendar.badge.clock")
-                }
-                Spacer()
-              }
-              .frame(maxWidth: .infinity)
-              .contentShape(Rectangle())
-              .onTapGesture {
-                withAnimation { isPickingDate.toggle() }
+                Text("Chosen date: \(selectedDate, style: .date)")
+                
               }
             }
-          )
+                   .accentColor(.systemFill)
+                   .foregroundColor(.secondary)
+            
+            Button(action: { withAnimation { calculator.dateOffset = 0 }}) {
+              HStack {
+                Label("Reset", systemImage: "arrow.counterclockwise")
+                Spacer()
+              }
+              .contentShape(Rectangle())
+            }.disabled(calculator.dateOffset == 0).buttonStyle(BorderlessButtonStyle())
+          } label: {
+            Label {
+              Text(selectedDate, style: .date)
+                .fontWeight(selectedDate.isToday ? .regular : .semibold)
+                .capsuleAppearance(on: !selectedDate.isToday)
+            } icon: {
+              Image(systemName: "calendar.badge.clock")
+            }
+          }
           #endif
           
           Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
@@ -100,10 +87,6 @@ struct ContentView: View {
         .navigationTitle("Solstice")
       }
       .accentColor(.accentColor)
-      .onChange(of: dateOffset) { value in
-        self.selectedDate = Calendar.current.date(byAdding: .day, value: Int(value), to: Date())!
-        self.calculator.dateOffset = value
-      }
       #if os(iOS)
       .sheet(item: $sheetPresentation.activeSheet) { item in
         switch item {
@@ -113,9 +96,6 @@ struct ContentView: View {
           LocationPickerView()
             .environmentObject(locationManager)
         }
-      }
-      .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-        if dateOffset == 0 { selectedDate = Date() }
       }
       #endif
     }
