@@ -9,6 +9,7 @@ import Foundation
 import UserNotifications
 import SwiftUI
 import BackgroundTasks
+import Solar
 
 class NotificationManager: NSObject, ObservableObject {
   static let shared = NotificationManager()
@@ -116,12 +117,7 @@ class NotificationManager: NSObject, ObservableObject {
       /**
        `UNUserNotificationCenter` limits scheduling to up to 64 requests. We’ll use that full
        allowance since most users probably won’t be regularly opening the app.
-       
-       First, we’ll create a single instance of `SolarCalculator` that we can use to calculate relative
-       schedule triggers.
        */
-      let solarCalculator = SolarCalculator()
-      
       for index in 0..<64 {
         /**
          We’ll schedule one notification per day for the next 64 days, including today
@@ -140,8 +136,8 @@ class NotificationManager: NSObject, ObservableObject {
           )!
         case .relativeTime:
           let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-          solarCalculator.baseDate = date
-          let chosenEvent = self.relation == .sunset ? solarCalculator.today.ends : solarCalculator.today.begins
+          let solar = Solar(for: date, coordinate: LocationManager().coordinate)!
+          let chosenEvent = self.relation == .sunset ? solar.ends : solar.begins
           notificationTriggerDate = chosenEvent.addingTimeInterval(self.relativeOffset * (self.relativity == .before ? -1 : 1))
         }
         
@@ -196,7 +192,6 @@ class NotificationManager: NSObject, ObservableObject {
            in which case we’ll remove the duplicate and schedule our new notification.
            */
           self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [id])
-          
           self.notificationCenter.add(request) { error in
             if let error = error {
               print(error.localizedDescription)
@@ -221,11 +216,13 @@ class NotificationManager: NSObject, ObservableObject {
   /// - Returns: A `NotificationContent` object appropriate for the context
   func buildNotificationContent(for date: Date, in context: Context = .notification) -> NotificationContent? {
     var content = (title: "", body: "")
+    let locationManager = LocationManager()
+    let solar = Solar(for: date, coordinate: locationManager.coordinate)!
+    let yesterday = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: date)!
+    let yesterdaySolar = Solar(for: yesterday, coordinate: locationManager.coordinate)!
     
-    let solsticeCalculator = SolarCalculator(baseDate: date)
-    let suntimes = solsticeCalculator.today
-    let duration = suntimes.duration.localizedString
-    let difference = suntimes.difference(from: solsticeCalculator.yesterday)
+    let duration = solar.duration.localizedString
+    let difference = solar.difference(from: yesterdaySolar)
     let differenceString = difference.localizedString
     
     if difference < 0 && sadPreference == .suppressNotifications && context != .preview {
@@ -245,8 +242,8 @@ class NotificationManager: NSObject, ObservableObject {
     }
     
     if self.notifsIncludeSunTimes {
-      content.body += "The sun rises at \(suntimes.begins.formatted(.dateTime.hour().minute())) "
-      content.body += "and sets at \(suntimes.ends.formatted(.dateTime.hour().minute())). "
+      content.body += "The sun rises at \(solar.begins.formatted(.dateTime.hour().minute())) "
+      content.body += "and sets at \(solar.ends.formatted(.dateTime.hour().minute())). "
     }
     
     if self.notifsIncludeDaylightDuration {
@@ -260,7 +257,7 @@ class NotificationManager: NSObject, ObservableObject {
     }
     
     if self.notifsIncludeSolsticeCountdown {
-      content.body += "The next solstice is \(solsticeCalculator.nextSolstice.formatted(.relative(presentation: .named))). "
+      content.body += "The next solstice is \(Date.nextSolstice(from: date).formatted(.relative(presentation: .named))). "
     }
     
     /**

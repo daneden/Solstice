@@ -66,4 +66,13 @@ extension Date {
     
     return result
   }
+  
+  static func prevSolstice(from date: Date) -> Date {
+    let index = Date.solstices.firstIndex(where: { $0 > date })!
+    return Date.solstices[index - 1]
+  }
+  
+  static func nextSolstice(from date: Date) -> Date {
+    Date.solstices.first(where: { $0 > date }) ?? .now
+  }
 }
