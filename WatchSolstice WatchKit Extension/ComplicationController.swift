@@ -214,7 +214,7 @@ extension ComplicationController {
       sunSize = 8
     }
     
-    let sundial = SundialView(sunSize: sunSize, trackWidth: 2).environmentObject(calculator)
+    let sundial = SundialView(sunSize: sunSize, trackWidth: 1.5).environmentObject(calculator)
     
     let rectangularSundialView = ZStack(alignment: .bottom) {
       HStack {
@@ -235,7 +235,6 @@ extension ComplicationController {
       .symbolRenderingMode(.hierarchical)
       
       sundial
-        .padding(.bottom, sunSize / 2)
         .foregroundStyle(.primary, .secondary)
     }
     
