@@ -23,7 +23,7 @@ struct SunCalendarView: View {
   @ScaledMetric var captionSize = isWatch ? 10 : 14
   
   var limitedSpace: Bool {
-    isWatch || typeSize >= .xLarge
+    isWatch || typeSize >= .xxLarge
   }
   
   var currentMonth: Int {
