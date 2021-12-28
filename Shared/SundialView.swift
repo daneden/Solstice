@@ -174,8 +174,8 @@ struct SundialView: View {
     
     path.move(to: CGPoint(x: 0, y: y))
     
-    // now count across individual horizontal points one by one
-    for x in stride(from: 0, through: width, by: 1) {
+    // now count across individual horizontal points 3px at a time
+    for x in stride(from: 0, through: width, by: 3) {
       // find our current position relative to the wavelength
       relativeX = x / wavelength
       
