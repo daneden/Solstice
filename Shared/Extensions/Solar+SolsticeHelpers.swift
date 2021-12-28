@@ -7,8 +7,13 @@
 
 import Foundation
 import Solar
+import CoreLocation
 
 extension Solar {
+  var location: CLLocation {
+    CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+  }
+  
   var duration: TimeInterval {
     if let sunrise = sunrise, let sunset = sunset {
       return sunrise.distance(to: sunset)
@@ -33,16 +38,16 @@ extension Solar {
   }
   
   var begins: Date {
-    sunrise!
+    sunrise!.applyingTimezoneOffset(timezone: location.timeZone)
   }
   
   var ends: Date {
-    sunset!
+    sunset!.applyingTimezoneOffset(timezone: location.timeZone)
   }
   
   var peak: Date? {
-    let interval = sunset!.timeIntervalSince(begins)
-    let peak = sunrise!.advanced(by: interval / 2)
+    let interval = ends.timeIntervalSince(begins)
+    let peak = begins.advanced(by: interval / 2)
     
     return peak
   }

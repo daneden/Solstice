@@ -28,18 +28,13 @@ enum SolarEvent {
 class SolarCalculator: NSObject, ObservableObject {
   private let calendar = Calendar.autoupdatingCurrent
   
-  var locationManager: LocationManager
-  
-  var latitude: Double { locationManager.latitude }
-  var longitude: Double { locationManager.longitude }
-  
+  @Published var locationManager: LocationManager
   @Published var dateOffset = 0.0
+  @Published var baseDate: Date
   
   var timezone: TimeZone {
-    locationManager.placemark?.timeZone ?? TimeZone.current
+    locationManager.location?.timeZone ?? TimeZone.current
   }
-  
-  @Published var baseDate: Date
   
   var date: Date {
     var offset = DateComponents()
@@ -47,36 +42,18 @@ class SolarCalculator: NSObject, ObservableObject {
     
     let date = Date.now
     
-    return applyTimezoneOffset(to: calendar.date(byAdding: offset, to: date)!)
+    return calendar.date(byAdding: offset, to: date)!.applyingTimezoneOffset(timezone: timezone)
   }
   
   init(baseDate: Date = .now, locationManager: LocationManager = LocationManager()) {
     self.baseDate = baseDate
     self.locationManager = locationManager
-    super.init()
   }
   
-  private func applyTimezoneOffset(to date: Date) -> Date {
-    let currentTimezone = TimeZone.current.secondsFromGMT()
-    let offsetTimezone = timezone.secondsFromGMT()
-    let offsetAmount = currentTimezone < offsetTimezone
-      ? max(currentTimezone, offsetTimezone) - min(currentTimezone, offsetTimezone)
-      : min(currentTimezone, offsetTimezone) - max(currentTimezone, offsetTimezone)
-
-    let components = DateComponents(second: offsetAmount)
-    return calendar.date(byAdding: components, to: date)!
-  }
-  
-  private var baseDateAtNoon: Date {
-    calendar.date(bySettingHour: 12, minute: 0, second: 0, of: date)!
-  }
-  
+  private var latitude: Double { locationManager.latitude }
+  private var longitude: Double { locationManager.longitude }
   private var coords: CLLocationCoordinate2D {
     CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-  }
-  
-  func getNextSolarEvent() -> SolarEvent {
-    return today.nextSolarEvent
   }
   
   var prevSolstice: Date {
@@ -89,20 +66,20 @@ class SolarCalculator: NSObject, ObservableObject {
   }
   
   var prevSolsticeDaylight: Solar {
-    return Solar(for: prevSolstice, coordinate: coords)!
+    Solar(for: prevSolstice, coordinate: coords)!
   }
   
   var today: Solar {
-    Solar(for: baseDateAtNoon, coordinate: coords)!
+    Solar(for: date, coordinate: coords)!
   }
   
   var yesterday: Solar {
-    let yesterday = calendar.date(byAdding: .day, value: -1, to: baseDateAtNoon)!
+    let yesterday = calendar.date(byAdding: .day, value: -1, to: date)!
     return Solar(for: yesterday, coordinate: coords)!
   }
   
   var tomorrow: Solar {
-    let tomorrow = calendar.date(byAdding: .day, value: 1, to: baseDateAtNoon)!
+    let tomorrow = calendar.date(byAdding: .day, value: 1, to: date)!
     return Solar(for: tomorrow, coordinate: coords)!
   }
   

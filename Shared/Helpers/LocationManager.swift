@@ -69,6 +69,10 @@ class LocationManager: NSObject, ObservableObject {
   
   @Published var placemark: CLPlacemark?
   
+  var coordinate: CLLocationCoordinate2D {
+    .init(latitude: latitude, longitude: longitude)
+  }
+  
   override init() {
     super.init()
     

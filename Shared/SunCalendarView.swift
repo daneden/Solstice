@@ -67,6 +67,8 @@ struct SunCalendarView: View {
       .padding(.bottom)
     }.onAppear {
       daylightArray = self.calculateMonthlyDaylight()
+    }.onChange(of: locationManager.location) { _ in
+      daylightArray = self.calculateMonthlyDaylight()
     }
   }
   

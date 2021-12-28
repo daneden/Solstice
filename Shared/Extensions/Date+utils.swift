@@ -32,8 +32,7 @@ extension Date {
   }
   
   var isInPast: Bool {
-    let now = Date()
-    return self < now
+    self < .now
   }
   
   var isInFuture: Bool { !isInPast }
@@ -41,6 +40,17 @@ extension Date {
   var isToday: Bool {
     let calendar = Calendar.current
     return calendar.isDateInToday(self)
+  }
+  
+  func applyingTimezoneOffset(timezone: TimeZone) -> Date {
+    let currentTimezone = TimeZone.current.secondsFromGMT()
+    let offsetTimezone = timezone.secondsFromGMT()
+    let offsetAmount = currentTimezone < offsetTimezone
+    ? max(currentTimezone, offsetTimezone) - min(currentTimezone, offsetTimezone)
+    : min(currentTimezone, offsetTimezone) - max(currentTimezone, offsetTimezone)
+    
+    let components = DateComponents(second: offsetAmount)
+    return Calendar.autoupdatingCurrent.date(byAdding: components, to: self)!
   }
 }
 

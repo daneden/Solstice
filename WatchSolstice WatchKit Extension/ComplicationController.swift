@@ -7,6 +7,7 @@
 
 import ClockKit
 import SwiftUI
+import Solar
 
 let sundialSupportedFamilies: [CLKComplicationFamily] = [
   .graphicRectangular,
@@ -122,14 +123,14 @@ extension ComplicationController {
   }
   
   func getSolarEventComplicationTemplate(for family: CLKComplicationFamily, at date: Date = .now) -> CLKComplicationTemplate? {
-    var calculator: SolarCalculator? = SolarCalculator(baseDate: date, locationManager: locationManager)
-    let viewIconName: String
+    guard let solar = Solar(for: date, coordinate: locationManager.coordinate) else {
+      return nil
+    }
     
-    let solarEvent = calculator!.getNextSolarEvent()
-    
-    let textProvider: CLKTextProvider
+    let solarEvent = solar.nextSolarEvent
     
     let eventString: String
+    let viewIconName: String
     
     switch solarEvent {
     case .sunrise(_):
@@ -140,8 +141,7 @@ extension ComplicationController {
       eventString = "Sunset"
     }
     
-    // Deinitialize calculator to prevent memory leaks
-    calculator = nil
+    let textProvider: CLKTextProvider
     
     switch family {
     case .utilitarianLarge, .modularLarge:
