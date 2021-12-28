@@ -9,14 +9,22 @@ import SwiftUI
 import Solar
 
 struct SunCalendarView: View {
+  @EnvironmentObject var solarCalculator: SolarCalculator
+  @EnvironmentObject var locationManager: LocationManager
+  
   #if !os(watchOS)
   @Environment(\.horizontalSizeClass) var sizeClass
   #endif
-  @EnvironmentObject var solarCalculator: SolarCalculator
-  @EnvironmentObject var locationManager: LocationManager
+  
+  @Environment(\.dynamicTypeSize) var typeSize
+  
   @State var daylightArray: [Solar] = []
   @ScaledMetric var barHeight = isWatch ? 100 : 200
   @ScaledMetric var captionSize = isWatch ? 10 : 14
+  
+  var limitedSpace: Bool {
+    isWatch || typeSize >= .xLarge
+  }
   
   var currentMonth: Int {
     let month = Calendar.current.component(.month, from: solarCalculator.date)
@@ -41,7 +49,7 @@ struct SunCalendarView: View {
       }
       
       HStack(alignment: .bottom) {
-        if isWatch {
+        if limitedSpace {
           VStack {
             HStack {
               VStack(alignment: .trailing) {
@@ -73,7 +81,7 @@ struct SunCalendarView: View {
             }
 
             VStack {
-              if !isWatch || daylightArray.firstIndex(of: month) == currentMonth {
+              if !limitedSpace || daylightArray.firstIndex(of: month) == currentMonth {
                 Text("\(self.hoursOfDaylightForMonth(month))")
                   .lineLimit(1)
               }
@@ -97,7 +105,9 @@ struct SunCalendarView: View {
       }
       .font(.system(size: captionSize).weight(isWatch ? .semibold : .regular))
       .padding(.bottom)
-    }.onAppear {
+    }
+    .fixedSize(horizontal: false, vertical: true)
+    .onAppear {
       daylightArray = self.calculateMonthlyDaylight()
     }.onChange(of: locationManager.location) { _ in
       daylightArray = self.calculateMonthlyDaylight()
