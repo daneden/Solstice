@@ -81,14 +81,14 @@ struct SunCalendarView: View {
             }
 
             VStack {
-              if !limitedSpace || daylightArray.firstIndex(of: month) == currentMonth {
+              if !limitedSpace || index == currentMonth {
                 Text("\(self.hoursOfDaylightForMonth(month))")
                   .lineLimit(1)
               }
 
               Color.accentColor
-                .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
-                .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
+                .saturation(index == currentMonth ? 1.0 : 0.0)
+                .opacity(index == currentMonth ? 1.0 : 0.5)
                 .frame(height: self.calculateDaylightForMonth(month) * barHeight)
                 .cornerRadius(4)
 
