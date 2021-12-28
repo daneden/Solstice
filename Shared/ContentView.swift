@@ -52,7 +52,7 @@ struct ContentView: View {
                    .accentColor(.systemFill)
                    .foregroundColor(.secondary)
             
-            Button(action: { withAnimation { calculator.dateOffset = 0 }}) {
+            Button(action: { calculator.dateOffset = 0 }) {
               HStack {
                 Label("Reset", systemImage: "arrow.counterclockwise")
                 Spacer()
