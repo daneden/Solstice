@@ -16,11 +16,17 @@ struct SunCalendarView: View {
   @EnvironmentObject var locationManager: LocationManager
   @State var daylightArray: [Solar] = []
   @ScaledMetric var barHeight = isWatch ? 100 : 200
-  @ScaledMetric var captionSize = isWatch ? 8 : 14
+  @ScaledMetric var captionSize = isWatch ? 10 : 14
   
   var currentMonth: Int {
     let month = Calendar.current.component(.month, from: solarCalculator.date)
     return month - 1
+  }
+  
+  var maxDaylight: Int {
+    daylightArray.reduce(0) { partialResult, month in
+       return max(hoursOfDaylightForMonth(month), partialResult)
+    }
   }
   
   var body: some View {
@@ -35,17 +41,39 @@ struct SunCalendarView: View {
       }
       
       HStack(alignment: .bottom) {
+        if isWatch {
+          VStack {
+            HStack {
+              VStack(alignment: .trailing) {
+                Text("\(maxDaylight)")
+                  .lineLimit(1)
+                  .fixedSize()
+                Spacer()
+                Text("0")
+                  .fixedSize()
+              }
+              
+              Divider()
+            }
+            
+            Text("H")
+              .foregroundColor(.clear)
+              .accessibility(hidden: true)
+          }
+        }
+        
         ForEach(daylightArray, id: \.self) { month in
           if let index = daylightArray.firstIndex(of: month) {
             if index != 0 {
-              Spacer()
+              Spacer(minLength: 2)
             }
             
             VStack {
-              Text("\(self.hoursOfDaylightForMonth(month))")
-                .minimumScaleFactor(0.5)
-                .lineLimit(1)
-                .scaledToFit()
+              if !isWatch || daylightArray.firstIndex(of: month) == currentMonth {
+                Text("\(self.hoursOfDaylightForMonth(month))")
+                  .lineLimit(1)
+              }
+              
               Color.accentColor
                 .saturation(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.0)
                 .opacity(daylightArray.firstIndex(of: month) == currentMonth ? 1.0 : 0.5)
