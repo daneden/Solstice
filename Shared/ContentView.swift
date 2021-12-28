@@ -76,6 +76,7 @@ struct ContentView: View {
           SunCalendarView()
             .padding(.vertical, 8)
         }
+        .labelStyle(AdaptiveLabelStyle())
         .listStyle(.plain)
         #if !os(watchOS)
         .toolbar {

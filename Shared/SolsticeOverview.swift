@@ -92,26 +92,6 @@ struct SolsticeOverview: View {
   }
 }
 
-struct AdaptiveStack<Content: View>: View {
-  var content: () -> Content
-  
-  init(@ViewBuilder content: @escaping () -> Content) {
-    self.content = content
-  }
-  
-  var body: some View {
-    if isWatch {
-      VStack(alignment: .leading) {
-        content()
-      }
-    } else {
-      HStack {
-        content()
-      }
-    }
-  }
-}
-
 struct SolsticeOverview_Previews: PreviewProvider {
   static var previews: some View {
     SolsticeOverview()
