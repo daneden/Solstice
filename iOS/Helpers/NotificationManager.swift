@@ -114,7 +114,7 @@ class NotificationManager: NSObject, ObservableObject {
      We want to get pending requests so we can avoid scheduling duplicate notifications.
      */
     getPending { existingRequests in
-      let locationManager = LocationManager()
+      let locationManager = LocationManager.shared
       /**
        `UNUserNotificationCenter` limits scheduling to up to 64 requests. We’ll use that full
        allowance since most users probably won’t be regularly opening the app.
@@ -217,7 +217,7 @@ class NotificationManager: NSObject, ObservableObject {
   /// - Returns: A `NotificationContent` object appropriate for the context
   func buildNotificationContent(for date: Date, in context: Context = .notification) -> NotificationContent? {
     var content = (title: "", body: "")
-    let locationManager = LocationManager()
+    let locationManager = LocationManager.shared
     let solar = Solar(for: date, coordinate: locationManager.coordinate)!
     let yesterday = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: date)!
     let yesterdaySolar = Solar(for: yesterday, coordinate: locationManager.coordinate)!

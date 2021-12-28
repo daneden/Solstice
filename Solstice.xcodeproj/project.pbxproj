@@ -38,14 +38,6 @@
 		71832D28277B143400CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
 		71832D29277B143500CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
 		71832D2A277B143800CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
-		71832D3B277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D38277B2C7600CB2903 /* TimeZoneLocate.swift */; };
-		71832D3C277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D38277B2C7600CB2903 /* TimeZoneLocate.swift */; };
-		71832D3D277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D38277B2C7600CB2903 /* TimeZoneLocate.swift */; };
-		71832D3E277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D38277B2C7600CB2903 /* TimeZoneLocate.swift */; };
-		71832D3F277B2C7600CB2903 /* timezones.json in Resources */ = {isa = PBXBuildFile; fileRef = 71832D3A277B2C7600CB2903 /* timezones.json */; };
-		71832D40277B2C7600CB2903 /* timezones.json in Resources */ = {isa = PBXBuildFile; fileRef = 71832D3A277B2C7600CB2903 /* timezones.json */; };
-		71832D41277B2C7600CB2903 /* timezones.json in Resources */ = {isa = PBXBuildFile; fileRef = 71832D3A277B2C7600CB2903 /* timezones.json */; };
-		71832D42277B2C7600CB2903 /* timezones.json in Resources */ = {isa = PBXBuildFile; fileRef = 71832D3A277B2C7600CB2903 /* timezones.json */; };
 		71832D45277B2E0300CB2903 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71832D46277B2E0700CB2903 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ABE16725C5A83100A52F35 /* LocationService.swift */; };
 		71864D772701A82900DE03CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71864D762701A82900DE03CB /* Assets.xcassets */; };
@@ -239,8 +231,6 @@
 		715936002767557900F03F29 /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		71832D242779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationRequest+approximatelyEqual.swift"; sourceTree = "<group>"; };
 		71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Solar+SolsticeHelpers.swift"; sourceTree = "<group>"; };
-		71832D38277B2C7600CB2903 /* TimeZoneLocate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneLocate.swift; sourceTree = "<group>"; };
-		71832D3A277B2C7600CB2903 /* timezones.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timezones.json; sourceTree = "<group>"; };
 		71864CED2700AD9B00DE03CB /* SolsticeIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SolsticeIntents.entitlements; sourceTree = "<group>"; };
 		71864D742701A82800DE03CB /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71864D762701A82900DE03CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -338,39 +328,6 @@
 			path = SolsticeIntents;
 			sourceTree = "<group>";
 		};
-		71832D36277B2C7600CB2903 /* TimeZoneLocate */ = {
-			isa = PBXGroup;
-			children = (
-				71832D37277B2C7600CB2903 /* Classes */,
-				71832D39277B2C7600CB2903 /* Assets */,
-			);
-			path = TimeZoneLocate;
-			sourceTree = "<group>";
-		};
-		71832D37277B2C7600CB2903 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				71832D38277B2C7600CB2903 /* TimeZoneLocate.swift */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		71832D39277B2C7600CB2903 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				71832D3A277B2C7600CB2903 /* timezones.json */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
-		71832D43277B2C7B00CB2903 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				71832D36277B2C7600CB2903 /* TimeZoneLocate */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
 		71864D752701A82800DE03CB /* WatchSolstice */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,7 +379,6 @@
 				715935FC27674FC100F03F29 /* README.md */,
 				71C8843025A90A2D0009F2A1 /* Frameworks */,
 				7190090E25A4D6D5002ED383 /* iOS */,
-				71832D43277B2C7B00CB2903 /* Library */,
 				7190090D25A4D6D5002ED383 /* Products */,
 				7190090425A4D6D2002ED383 /* Shared */,
 				71350CC726230BBA00F5F96E /* SolsticeIntents */,
@@ -704,7 +660,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71832D41277B2C7600CB2903 /* timezones.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,7 +677,6 @@
 			files = (
 				71864D8F2701A82A00DE03CB /* Preview Assets.xcassets in Resources */,
 				71864D8C2701A82A00DE03CB /* Assets.xcassets in Resources */,
-				71832D42277B2C7600CB2903 /* timezones.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,7 +684,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71832D3F277B2C7600CB2903 /* timezones.json in Resources */,
 				715936012767557A00F03F29 /* StoreKitConfiguration.storekit in Resources */,
 				715935FD27674FC100F03F29 /* README.md in Resources */,
 				7190093225A4D6D5002ED383 /* Assets.xcassets in Resources */,
@@ -743,7 +696,6 @@
 			files = (
 				71C8849A25A910450009F2A1 /* Assets.xcassets in Resources */,
 				71C8843925A90A2D0009F2A1 /* Assets.xcassets in Resources */,
-				71832D40277B2C7600CB2903 /* timezones.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,7 +706,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71832D3D277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */,
 				71C0419726230E0B00A828AC /* Constants.swift in Sources */,
 				71350CE926230BD600F5F96E /* Intents.intentdefinition in Sources */,
 				71C0418326230DFB00A828AC /* SolarCalculator.swift in Sources */,
@@ -776,7 +727,6 @@
 			files = (
 				71864D9E2701A8FA00DE03CB /* SundialView.swift in Sources */,
 				714C472F2773876000E7CF93 /* PermissionRequiredView.swift in Sources */,
-				71832D3E277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */,
 				71864DA32701A8FA00DE03CB /* ContentView.swift in Sources */,
 				71864DA12701A8FA00DE03CB /* SolsticeOverview.swift in Sources */,
 				71864D862701A82900DE03CB /* NotificationController.swift in Sources */,
@@ -837,7 +787,6 @@
 				71C041F926231D1A00A828AC /* IntentHandler.swift in Sources */,
 				71FA4C01276A03E200099029 /* CalendarComponent+Extra.swift in Sources */,
 				71C884D625A9B93D0009F2A1 /* Constants.swift in Sources */,
-				71832D3B277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,7 +807,6 @@
 				71832D45277B2E0300CB2903 /* LocationService.swift in Sources */,
 				71832D2A277B143800CB2903 /* Solar+SolsticeHelpers.swift in Sources */,
 				71C8845325A90A830009F2A1 /* SolarCalculator.swift in Sources */,
-				71832D3C277B2C7600CB2903 /* TimeZoneLocate.swift in Sources */,
 				714DEC832774BAD300DBB8A3 /* SkyGradient.swift in Sources */,
 				71C884D725A9B93D0009F2A1 /* Constants.swift in Sources */,
 			);

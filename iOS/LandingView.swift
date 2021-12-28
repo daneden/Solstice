@@ -83,6 +83,6 @@ struct LandingView: View {
 struct LandingView_Previews: PreviewProvider {
   static var previews: some View {
     LandingView()
-      .environmentObject(LocationManager())
+      .environmentObject(LocationManager.shared)
   }
 }

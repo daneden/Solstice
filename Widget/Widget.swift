@@ -73,7 +73,7 @@ struct SolsticeWidgets: WidgetBundle {
 struct SolsticeOverviewWidget: Widget {
   let kind: String = "OverviewWidget"
   
-  @StateObject var locationManager = LocationManager()
+  @StateObject var locationManager = LocationManager.shared
   
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: kind, provider: SolsticeWidgetTimelineProvider()) { entry in

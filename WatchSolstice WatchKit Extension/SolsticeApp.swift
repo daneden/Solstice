@@ -11,7 +11,7 @@ import StoreKit
 @main
 struct SolsticeApp: App {
   @AppStorage("sessionCount") var sessionCount = 0
-  @ObservedObject var locationManager = LocationManager()
+  @ObservedObject var locationManager = LocationManager.shared
   @StateObject var sheetPresentation = SheetPresentationManager()
   
   var body: some Scene {

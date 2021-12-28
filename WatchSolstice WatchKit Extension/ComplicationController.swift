@@ -32,7 +32,7 @@ enum ComplicationKind: String, CaseIterable, RawRepresentable {
 }
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
-  private let locationManager = LocationManager()
+  private let locationManager = LocationManager.shared
   
   // MARK: - Complication Configuration
   func complicationDescriptors() async -> [CLKComplicationDescriptor] {

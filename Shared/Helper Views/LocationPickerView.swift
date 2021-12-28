@@ -140,7 +140,7 @@ struct LocationPickerView: View {
 struct LocationPickerView_Previews: PreviewProvider {
   static var previews: some View {
     LocationPickerView()
-      .environmentObject(LocationManager())
+      .environmentObject(LocationManager.shared)
       .environmentObject(LocationService())
   }
 }

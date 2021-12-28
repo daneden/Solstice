@@ -33,7 +33,7 @@ class SolarCalculator: NSObject, ObservableObject {
   @Published var baseDate: Date
   
   var timezone: TimeZone {
-    locationManager.location?.timeZone ?? TimeZone.current
+    locationManager.placemark?.timeZone ?? TimeZone.current
   }
   
   var date: Date {
@@ -45,7 +45,7 @@ class SolarCalculator: NSObject, ObservableObject {
     return calendar.date(byAdding: offset, to: date)!.applyingTimezoneOffset(timezone: timezone)
   }
   
-  init(baseDate: Date = .now, locationManager: LocationManager = LocationManager()) {
+  init(baseDate: Date = .now, locationManager: LocationManager = LocationManager.shared) {
     self.baseDate = baseDate
     self.locationManager = locationManager
   }

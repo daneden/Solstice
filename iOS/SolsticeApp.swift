@@ -13,7 +13,7 @@ struct SolsticeApp: App {
   @Environment(\.scenePhase) var scenePhase
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @StateObject var locationService = LocationService()
-  @ObservedObject var locationManager = LocationManager()
+  @ObservedObject var locationManager = LocationManager.shared
   
   @AppStorage(UDValues.onboarding) var onboarding
   @StateObject var sheetPresentation = SheetPresentationManager()

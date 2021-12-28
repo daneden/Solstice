@@ -10,6 +10,10 @@ import Solar
 import CoreLocation
 
 extension Solar {
+  var timezone: TimeZone {
+    LocationManager.shared.placemark?.timeZone ?? .autoupdatingCurrent
+  }
+  
   var location: CLLocation {
     CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
   }
@@ -38,11 +42,11 @@ extension Solar {
   }
   
   var begins: Date {
-    sunrise!.applyingTimezoneOffset(timezone: location.timeZone)
+    sunrise!.applyingTimezoneOffset(timezone: timezone)
   }
   
   var ends: Date {
-    sunset!.applyingTimezoneOffset(timezone: location.timeZone)
+    sunset!.applyingTimezoneOffset(timezone: timezone)
   }
   
   var peak: Date? {

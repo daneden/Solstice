@@ -22,6 +22,8 @@ enum LocationType {
 }
 
 class LocationManager: NSObject, ObservableObject {
+  static let shared = LocationManager()
+  
   private (set) var locationType: LocationType = .real(withAuthorizationStatus: .notDetermined)
   
   var locationAvailable: Bool {
