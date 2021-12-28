@@ -65,7 +65,11 @@ struct SunCalendarView: View {
         ForEach(daylightArray, id: \.self) { month in
           if let index = daylightArray.firstIndex(of: month) {
             if index != 0 {
-              Spacer(minLength: 2)
+              if isWatch {
+                Spacer(minLength: 2)
+              } else {
+                Spacer()
+              }
             }
 
             VStack {
@@ -151,6 +155,8 @@ struct SunCalendarView_Previews: PreviewProvider {
         SunCalendarView()
           .padding()
           .dynamicTypeSize(.accessibility1)
-      }.environmentObject(SolarCalculator())
+      }
+      .environmentObject(SolarCalculator())
+      .environmentObject(LocationManager.shared)
     }
 }
