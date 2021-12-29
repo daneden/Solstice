@@ -39,7 +39,7 @@ struct SolsticeApp: App {
         LandingView()
       }
       .onChange(of: onboarding) { newValue in
-        if !locationManager.locationAvailable && !onboarding {
+        if !locationManager.locationAvailable && !onboarding && locationManager.status != .some(.notDetermined) {
           sheetPresentation.activeSheet = .location
         }
       }
