@@ -56,6 +56,10 @@ class SolarCalculator: NSObject, ObservableObject {
     CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
   }
   
+  var dateAtNoon: Date {
+    calendar.date(bySettingHour: 12, minute: 0, second: 0, of: date)!
+  }
+  
   var prevSolstice: Date {
     let index = Date.solstices.firstIndex(where: { $0 > date })!
     return Date.solstices[index - 1]
@@ -89,10 +93,10 @@ class SolarCalculator: NSObject, ObservableObject {
     formatter.dateStyle = .medium
     formatter.formattingContext = .middleOfSentence
     
-    let yesterday = date.isToday ? yesterday : Solar(for: .now, coordinate: coords)!
-    var string = today.difference(from: yesterday).localizedString
+    let comparator = dateAtNoon.isToday ? yesterday : Solar(for: .now.applyingTimezoneOffset(timezone: timezone), coordinate: coords)!
+    var string = today.difference(from: comparator).localizedString
     
-    if today.difference(from: yesterday) >= 0 {
+    if today.difference(from: comparator) >= 0 {
       string += " more"
     } else {
       string += " less"
@@ -106,7 +110,10 @@ class SolarCalculator: NSObject, ObservableObject {
     let decimalCharacters = CharacterSet.decimalDigits
     let decimalRange = baseDateString.rangeOfCharacter(from: decimalCharacters)
     
-    string += " daylight \(decimalRange == nil ? "" : "on ")\(baseDateString) than \(formatter.string(from: yesterday.sunrise!))."
+    let comparatorDate = comparator.date
+    let comparatorDateString = formatter.string(from: comparatorDate)
+    
+    string += " daylight \(decimalRange == nil ? "" : "on ")\(baseDateString) than \(comparatorDateString)."
     
     return string
   }

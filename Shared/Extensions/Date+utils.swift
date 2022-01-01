@@ -75,4 +75,8 @@ extension Date {
   static func nextSolstice(from date: Date) -> Date {
     Date.solstices.first(where: { $0 > date }) ?? .now
   }
+  
+  static var todayAtNoon: Date {
+    Calendar.autoupdatingCurrent.date(bySettingHour: 12, minute: 0, second: 0, of: .now)!
+  }
 }
