@@ -48,8 +48,19 @@ struct SolsticeWidgetTimelineProvider: TimelineProvider {
       )
     }
     
+    entries.append(contentsOf: [
+      SolsticeWidgetTimelineEntry(
+        date: solarCalculator.today.begins.addingTimeInterval(1),
+        relevance: .init(score: 10, duration: 60 * 10)
+      ),
+      SolsticeWidgetTimelineEntry(
+        date: solarCalculator.today.ends.addingTimeInterval(1),
+        relevance: .init(score: 10, duration: 60 * 10)
+      ),
+    ])
+    
     let timeline = Timeline(
-      entries: entries,
+      entries: entries.sorted(by: { $0.date < $1.date }),
       policy: .atEnd
     )
     
