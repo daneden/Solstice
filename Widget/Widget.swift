@@ -23,31 +23,15 @@ struct SolsticeWidgetTimelineProvider: TimelineProvider {
     
     let solarCalculator = SolarCalculator()
     let calendar = Calendar.autoupdatingCurrent
-    let dayStarts = calendar.component(.hour, from: solarCalculator.today.begins)
-    let dayEnds = calendar.component(.hour, from: solarCalculator.today.ends)
     
+    // Add one entry per hour
     for hour in 0...23 {
       let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: .now)!
-      let isRelevantHour: Bool = hour == dayStarts || hour == dayEnds
-      var duration: TimeInterval
-      
-      switch hour {
-      case dayStarts:
-        duration = Date.now.distance(to: solarCalculator.today.begins)
-      case dayEnds:
-        duration = Date.now.distance(to: solarCalculator.today.ends)
-      default:
-        duration = 0
-      }
-      
-      entries.append(
-        SolsticeWidgetTimelineEntry(
-          date: date,
-          relevance: isRelevantHour ? nil : .init(score: 10, duration: duration)
-        )
-      )
+      entries.append(SolsticeWidgetTimelineEntry(date: date))
     }
     
+    // Also add entries corresponding to one second after key events, with a
+    // high relevance score
     entries.append(contentsOf: [
       SolsticeWidgetTimelineEntry(
         date: solarCalculator.today.begins.addingTimeInterval(1),

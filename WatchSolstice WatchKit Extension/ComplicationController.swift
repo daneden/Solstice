@@ -67,9 +67,19 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func timelineEntries(for complication: CLKComplication, after date: Date, limit: Int) async -> [CLKComplicationTimelineEntry]? {
     let increment = 20.0 * 60.0
+    let calculator = SolarCalculator(baseDate: date)
     
     // Create an array to hold the timeline entries.
     var entries: [CLKComplicationTimelineEntry] = []
+    
+    // Begin by adding key events to the timeline
+    if let sunriseTimelineEntry = createTimelineEntry(for: complication, date: calculator.today.begins.addingTimeInterval(1)),
+       let sunsetTimelineEntry = createTimelineEntry(for: complication, date: calculator.today.ends.addingTimeInterval(1)) {
+      entries.append(contentsOf: [
+        sunriseTimelineEntry,
+        sunsetTimelineEntry,
+      ])
+    }
     
     // Calculate the start and end dates.
     var current = date.addingTimeInterval(increment)
@@ -86,7 +96,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       current = current.addingTimeInterval(increment)
     }
     
-    return entries
+    return entries.sorted { $0.date < $1.date }
   }
   
   // MARK: - Sample Templates
