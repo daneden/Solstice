@@ -7,8 +7,15 @@
 
 import WidgetKit
 import SwiftUI
+import Solar
+
+enum SolsticeWidgetKind: String {
+  case CountdownWidget, OverviewWidget
+}
 
 struct SolsticeWidgetTimelineProvider: TimelineProvider {
+  var widgetIdentifier: String?
+  
   func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
     SolsticeWidgetTimelineEntry(date: Date())
   }
@@ -20,32 +27,34 @@ struct SolsticeWidgetTimelineProvider: TimelineProvider {
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
     var entries: [SolsticeWidgetTimelineEntry] = []
+    let solar = Solar(coordinate: LocationManager.shared.coordinate)!
+
+    let currentDate = Date()
+    let distanceToSunrise = abs(currentDate.distance(to: solar.begins))
+    let distanceToSunset = abs(currentDate.distance(to: solar.ends))
+    let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
+    let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
+      ? .init(score: 10, duration: nearestEventDistance)
+      : nil
     
-    let solarCalculator = SolarCalculator()
-    let calendar = Calendar.autoupdatingCurrent
+    var nextUpdateDate = currentDate.addingTimeInterval(60 * 15)
     
-    // Add one entry per hour
-    for hour in 0...23 {
-      let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: .now)!
-      entries.append(SolsticeWidgetTimelineEntry(date: date))
+    if nextUpdateDate < solar.begins {
+      nextUpdateDate = solar.begins.addingTimeInterval(1)
+    } else if nextUpdateDate < solar.ends {
+      nextUpdateDate = solar.ends.addingTimeInterval(1)
     }
     
-    // Also add entries corresponding to one second after key events, with a
-    // high relevance score
-    entries.append(contentsOf: [
+    entries.append(
       SolsticeWidgetTimelineEntry(
-        date: solarCalculator.today.begins.addingTimeInterval(1),
-        relevance: .init(score: 10, duration: 60 * 10)
-      ),
-      SolsticeWidgetTimelineEntry(
-        date: solarCalculator.today.ends.addingTimeInterval(1),
-        relevance: .init(score: 10, duration: 60 * 10)
-      ),
-    ])
+        date: currentDate,
+        relevance: relevance
+      )
+    )
     
     let timeline = Timeline(
-      entries: entries.sorted(by: { $0.date < $1.date }),
-      policy: .atEnd
+      entries: entries,
+      policy: .after(nextUpdateDate)
     )
     
     completion(timeline)
@@ -85,7 +94,7 @@ struct SolsticeCountdownWidget: Widget {
   let kind: String = "CountdownWidget"
   
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: SolsticeWidgetTimelineProvider()) { entry in
+    StaticConfiguration(kind: kind, provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)) { entry in
       CountdownWidgetView()
         .environmentObject(SolarCalculator(baseDate: entry.date))
     }

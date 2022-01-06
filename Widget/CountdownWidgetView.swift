@@ -39,7 +39,7 @@ struct CountdownWidgetView: View {
   var body: some View {
     TimelineView(.everyMinute) { _ in
       VStack(alignment: .leading, spacing: 8) {
-        Image(systemName: imageName)
+        Image(systemName: currentEventImageName)
           .font(displaySize)
         
         Spacer(minLength: 0)
@@ -50,9 +50,8 @@ struct CountdownWidgetView: View {
           .fixedSize(horizontal: false, vertical: true)
           .frame(maxWidth: .infinity)
         
-        Text("\(eventDate, style: .time)")
-          .font(.footnote)
-          .fontWeight(.semibold)
+        Label("\(eventDate, style: .time)", systemImage: nextEventImageName)
+          .font(.footnote.weight(.semibold))
       }
       .monospacedDigit()
       .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -62,6 +61,8 @@ struct CountdownWidgetView: View {
       .background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center))
       .background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: calculator.today), startPoint: .top, endPoint: .bottom))
       .colorScheme(.dark)
+      .symbolRenderingMode(.hierarchical)
+      .symbolVariant(.fill)
     }
   }
   
@@ -79,12 +80,21 @@ struct CountdownWidgetView: View {
     }
   }
   
-  var imageName: String {
+  var currentEventImageName: String {
     switch nextSunEvent {
     case .sunrise(_):
       return "moon.stars"
     case .sunset(_):
       return "sun.max"
+    }
+  }
+  
+  var nextEventImageName: String {
+    switch nextSunEvent {
+    case .sunrise(_):
+      return "sunrise"
+    case .sunset(_):
+      return "sunset"
     }
   }
   
