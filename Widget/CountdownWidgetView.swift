@@ -37,33 +37,31 @@ struct CountdownWidgetView: View {
   }
   
   var body: some View {
-    TimelineView(.everyMinute) { _ in
-      VStack(alignment: .leading, spacing: 8) {
-        Image(systemName: currentEventImageName)
-          .font(displaySize)
-        
-        Spacer(minLength: 0)
-        
-        Text("\(eventDate, style: .relative) until \(nextSunEvent.description)")
-          .font(displaySize.weight(.medium))
-          .lineLimit(3)
-          .fixedSize(horizontal: false, vertical: true)
-          .frame(maxWidth: .infinity)
-        
-        Label("\(eventDate, style: .time)", systemImage: nextEventImageName)
-          .font(.footnote.weight(.semibold))
-      }
-      .monospacedDigit()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .padding()
-      .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center))
-      .background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: calculator.today), startPoint: .top, endPoint: .bottom))
-      .colorScheme(.dark)
-      .symbolRenderingMode(.hierarchical)
-      .symbolVariant(.fill)
+    VStack(alignment: .leading, spacing: 8) {
+      Image(systemName: currentEventImageName)
+        .font(displaySize)
+      
+      Spacer(minLength: 0)
+      
+      Text("\(eventDate, style: .relative) until \(nextSunEvent.description)")
+        .font(displaySize.weight(.medium))
+        .lineLimit(3)
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: .infinity)
+      
+      Label("\(eventDate, style: .time)", systemImage: nextEventImageName)
+        .font(.footnote.weight(.semibold))
     }
+    .monospacedDigit()
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .padding()
+    .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center))
+    .background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: calculator.today), startPoint: .top, endPoint: .bottom))
+    .colorScheme(.dark)
+    .symbolRenderingMode(.hierarchical)
+    .symbolVariant(.fill)
   }
   
   var isDaytime: Bool {

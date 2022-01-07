@@ -54,9 +54,9 @@ struct SolsticeWidgetTimelineProvider: TimelineProvider {
     
     let timeline = Timeline(
       entries: entries,
-      policy: .after(nextUpdateDate)
+      policy: .atEnd
     )
-    
+    print(timeline.entries, nextUpdateDate)
     completion(timeline)
   }
 }
