@@ -15,6 +15,17 @@ import OSLog
 enum SolarEvent {
   case sunrise(at: Date), sunset(at: Date)
   
+  var description: String {
+    switch self {
+    case .sunrise(_):
+      return "sunrise"
+    case .sunset(_):
+      return "sunset"
+    }
+  }
+  
+  var imageName: String { description }
+  
   var date: Date {
     switch self {
     case .sunrise(let at):
@@ -116,5 +127,22 @@ class SolarCalculator: NSObject, ObservableObject {
     string += " daylight \(decimalRange == nil ? "" : "on ")\(baseDateString) than \(comparatorDateString)."
     
     return string
+  }
+}
+
+// MARK: Convenience variables
+extension SolarCalculator {
+  var isDaytime: Bool {
+    today.begins.isInPast && today.ends.isInFuture
+  }
+  
+  var nextSunEvent: SolarEvent {
+    if isDaytime {
+      return .sunset(at: today.ends)
+    } else if today.begins.isInFuture {
+      return .sunrise(at: today.begins)
+    } else {
+      return .sunrise(at: tomorrow.begins)
+    }
   }
 }

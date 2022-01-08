@@ -40,9 +40,9 @@ struct SolsticeWidgetTimelineProvider: TimelineProvider {
     var nextUpdateDate = currentDate.addingTimeInterval(60 * 15)
     
     if nextUpdateDate < solar.begins {
-      nextUpdateDate = solar.begins.addingTimeInterval(1)
+      nextUpdateDate = solar.begins
     } else if nextUpdateDate < solar.ends {
-      nextUpdateDate = solar.ends.addingTimeInterval(1)
+      nextUpdateDate = solar.ends
     }
     
     entries.append(
@@ -54,9 +54,9 @@ struct SolsticeWidgetTimelineProvider: TimelineProvider {
     
     let timeline = Timeline(
       entries: entries,
-      policy: .atEnd
+      policy: .after(nextUpdateDate)
     )
-    print(timeline.entries, nextUpdateDate)
+
     completion(timeline)
   }
 }
@@ -94,9 +94,12 @@ struct SolsticeCountdownWidget: Widget {
   let kind: String = "CountdownWidget"
   
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)) { entry in
-      CountdownWidgetView()
-        .environmentObject(SolarCalculator(baseDate: entry.date))
+    StaticConfiguration(
+      kind: kind,
+      provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
+    ) { entry -> CountdownWidgetView in
+      let calc = SolarCalculator(baseDate: entry.date)
+      return CountdownWidgetView(solar: calc.today, nextSunEvent: calc.nextSunEvent)
     }
     .configurationDisplayName("Sunrise/Sunset Countdown")
     .description("See the time remaining until the next sunrise/sunset")

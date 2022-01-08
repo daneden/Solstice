@@ -67,7 +67,7 @@ struct SkyGradient {
     if now < sunrise || now > sunset {
       return night
     } else {
-      let index = floor((sunrise.distance(to: now) / daylight.duration) * Double(colorsExcludingNight.count))
+      let index = floor((sunrise.distance(to: now) / daylight.duration) * Double(colorsExcludingNight.count - 1))
       
       return colorsExcludingNight[Int(index)]
     }

@@ -7,25 +7,13 @@
 
 import SwiftUI
 import WidgetKit
-
-enum SunEvent {
-  case sunrise(at: Date)
-  case sunset(at: Date)
-  
-  var description: String {
-    switch self {
-    case .sunrise(_):
-      return "sunrise"
-    case .sunset(_):
-      return "sunset"
-    }
-  }
-}
+import Solar
 
 struct CountdownWidgetView: View {
   @Environment(\.widgetFamily) var family
   @Environment(\.sizeCategory) var sizeCategory
-  @EnvironmentObject var calculator: SolarCalculator
+  var solar: Solar
+  var nextSunEvent: SolarEvent
   
   var displaySize: Font {
     switch family {
@@ -43,39 +31,23 @@ struct CountdownWidgetView: View {
       
       Spacer(minLength: 0)
       
-      Text("\(eventDate, style: .relative) until \(nextSunEvent.description)")
+      Text("\(nextSunEvent.description) \(nextSunEvent.date.formatted(.relative(presentation: .named)))")
         .font(displaySize.weight(.medium))
         .lineLimit(3)
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity)
       
-      Label("\(eventDate, style: .time)", systemImage: nextEventImageName)
+      Label("\(nextSunEvent.date, style: .time)", systemImage: nextSunEvent.imageName)
         .font(.footnote.weight(.semibold))
     }
-    .monospacedDigit()
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding()
     .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center))
-    .background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: calculator.today), startPoint: .top, endPoint: .bottom))
+    .background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom))
     .colorScheme(.dark)
     .symbolRenderingMode(.hierarchical)
     .symbolVariant(.fill)
-  }
-  
-  var isDaytime: Bool {
-    calculator.today.begins.isInPast && calculator.today.ends.isInFuture
-  }
-  
-  var nextSunEvent: SunEvent {
-    if isDaytime {
-      return .sunset(at: calculator.today.ends)
-    } else if calculator.today.begins.isInFuture {
-      return .sunrise(at: calculator.today.begins)
-    } else {
-      return .sunrise(at: calculator.tomorrow.begins)
-    }
   }
   
   var currentEventImageName: String {
@@ -86,32 +58,16 @@ struct CountdownWidgetView: View {
       return "sun.max"
     }
   }
-  
-  var nextEventImageName: String {
-    switch nextSunEvent {
-    case .sunrise(_):
-      return "sunrise"
-    case .sunset(_):
-      return "sunset"
-    }
-  }
-  
-  var eventDate: Date {
-    switch nextSunEvent {
-    case .sunrise(let at):
-      return at
-    case .sunset(let at):
-      return at
-    }
-  }
 }
 
 struct SolsticeCountdownWidgetView_Previews: PreviewProvider {
   static var previews: some View {
-    Group {
-      CountdownWidgetView()
+    let calc = SolarCalculator()
+    
+    return Group {
+      CountdownWidgetView(solar: calc.today, nextSunEvent: calc.nextSunEvent)
         .previewContext(WidgetPreviewContext(family: .systemMedium))
-      CountdownWidgetView()
+      CountdownWidgetView(solar: calc.today, nextSunEvent: calc.nextSunEvent)
         .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
     .environmentObject(SolarCalculator())
