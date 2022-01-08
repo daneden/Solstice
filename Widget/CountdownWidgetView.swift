@@ -31,11 +31,13 @@ struct CountdownWidgetView: View {
       
       Spacer(minLength: 0)
       
-      Text("\(nextSunEvent.description) \(nextSunEvent.date.formatted(.relative(presentation: .named)))")
-        .font(displaySize.weight(.medium))
-        .lineLimit(3)
-        .fixedSize(horizontal: false, vertical: true)
-        .frame(maxWidth: .infinity)
+      HStack {
+        Text("\(nextSunEvent.description.localizedCapitalized) \(nextSunEvent.date.formatted(.relative(presentation: .numeric)))")
+          .font(displaySize.weight(.medium))
+          .lineLimit(3)
+          .fixedSize(horizontal: false, vertical: true)
+        Spacer(minLength: 0)
+      }
       
       Label("\(nextSunEvent.date, style: .time)", systemImage: nextSunEvent.imageName)
         .font(.footnote.weight(.semibold))
