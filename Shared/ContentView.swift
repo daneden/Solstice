@@ -10,9 +10,13 @@ import Combine
 import CoreLocation
 
 struct ContentView: View {
-  @EnvironmentObject var locationManager: LocationManager
-  @EnvironmentObject var calculator: SolarCalculator
-  @EnvironmentObject var sheetPresentation: SheetPresentationManager
+  @EnvironmentObject private var locationManager: LocationManager
+  @EnvironmentObject private var calculator: SolarCalculator
+  @EnvironmentObject private var sheetPresentation: SheetPresentationManager
+  
+  #if !os(watchOS)
+  @EnvironmentObject private var locationService: LocationService
+  #endif
   
   var selectedDate: Date {
     calculator.date
@@ -96,6 +100,7 @@ struct ContentView: View {
         case .location:
           LocationPickerView()
             .environmentObject(locationManager)
+            .environmentObject(locationService)
         }
       }
       #endif
