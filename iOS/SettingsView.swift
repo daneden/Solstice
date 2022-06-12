@@ -47,10 +47,7 @@ struct SettingsView: View {
   }
   
   var body: some View {
-    let viewRemainingDaylightIntent = ViewRemainingDaylightIntent()
-    viewRemainingDaylightIntent.suggestedInvocationPhrase = "How much daylight is left today?"
-    
-    return NavigationView {
+    NavigationView {
       Form {
         Section(
           header: Text("Notifications")

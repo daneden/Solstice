@@ -75,12 +75,9 @@ struct ContentView: View {
           #endif
           
           Label("The next solstice is \(nextSolsticeDistance).\n\(prevSolsticeDifference)", systemImage: "calendar")
-            .padding(.vertical, 8)
           
           SunCalendarView()
-            .padding(.vertical, 8)
         }
-        .labelStyle(AdaptiveLabelStyle())
         .listStyle(.plain)
         #if !os(watchOS)
         .toolbar {

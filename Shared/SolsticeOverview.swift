@@ -36,17 +36,20 @@ struct SolsticeOverview: View {
       
       // MARK: Duration
       if let duration = calculator.today.duration {
-        AdaptiveStack {
+        Group {
           if showingRemaining && calculator.today.ends.isInFuture && calculator.today.begins.isInPast {
-            Label("Remaining", systemImage: "hourglass")
-              .symbolRenderingMode(.monochrome)
-            Spacer()
-            Text(calculator.today.ends, style: .relative)
-              .monospacedDigit()
+            LabeledContent {
+              Text(calculator.today.ends, style: .relative)
+                .monospacedDigit()
+            } label: {
+              Label("Remaining", systemImage: "hourglass")
+            }
           } else {
-            Label("Total Daylight", systemImage: "sun.max")
-            Spacer()
-            Text("\(duration.localizedString)")
+            LabeledContent {
+              Text("\(duration.localizedString)")
+            } label: {
+              Label("Total Daylight", systemImage: "sun.max")
+            }
           }
         }.onTapGesture {
           withAnimation(.interactiveSpring()) {
@@ -59,22 +62,22 @@ struct SolsticeOverview: View {
       if let begins = calculator.today.begins,
          let peak = calculator.today.peak,
          let ends = calculator.today.ends {
-        AdaptiveStack {
-          Label("Sunrise", systemImage: "sunrise.fill")
-          Spacer()
+        LabeledContent {
           Text("\(begins, style: .time)")
+        } label: {
+          Label("Sunrise", systemImage: "sunrise.fill")
         }
         
-        AdaptiveStack {
-          Label("Culmination", systemImage: "sun.max.fill")
-          Spacer()
+        LabeledContent {
           Text("\(peak, style: .time)")
+        } label: {
+          Label("Culmination", systemImage: "sun.max.fill")
         }
         
-        AdaptiveStack {
-          Label("Sunset", systemImage: "sunset.fill")
-          Spacer()
+        LabeledContent {
           Text("\(ends, style: .time)")
+        } label: {
+          Label("Sunset", systemImage: "sunset.fill")
         }
       }
     }
