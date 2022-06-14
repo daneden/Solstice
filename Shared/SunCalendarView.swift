@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 import Solar
+import TimeIntervalFormatStyle
 
 extension Solar: Identifiable {
   public var id: Int {
@@ -34,8 +35,15 @@ struct SunCalendarView: View {
       Chart(daylightArray) { daylight in
         BarMark(
           x: .value("Month", daylight.date, unit: .month),
-          y: .value("Hours of Daylight", daylight.duration / 60 / 60)
+          y: .value("Hours of Daylight", daylight.duration)
         )
+      }
+      .chartYAxis {
+        AxisMarks { value in
+          AxisTick()
+          AxisGridLine()
+          AxisValueLabel(format: .timeInterval())
+        }
       }
       .animation(.default, value: daylightArray)
       .frame(minHeight: 128)

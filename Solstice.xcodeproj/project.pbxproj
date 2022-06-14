@@ -38,6 +38,8 @@
 		715F6DED285642D400FEA514 /* ViewDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F6DE6285642D400FEA514 /* ViewDaylight.swift */; };
 		715F6DEE285642D400FEA514 /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F6DE7285642D400FEA514 /* GetSunriseTime.swift */; };
 		715F6DEF285642D400FEA514 /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F6DE7285642D400FEA514 /* GetSunriseTime.swift */; };
+		717EFCBC2858B1B400A02B11 /* TimeIntervalFormatStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 717EFCBB2858B1B400A02B11 /* TimeIntervalFormatStyle */; };
+		717EFCBE2858B1EC00A02B11 /* TimeIntervalFormatStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 717EFCBD2858B1EC00A02B11 /* TimeIntervalFormatStyle */; };
 		71832D252779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D242779D74400CB2903 /* UNNotificationRequest+approximatelyEqual.swift */; };
 		71832D27277B11AC00CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
 		71832D28277B143400CB2903 /* Solar+SolsticeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71832D26277B11AC00CB2903 /* Solar+SolsticeHelpers.swift */; };
@@ -284,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71864DAF2701A9E000DE03CB /* Solar in Frameworks */,
+				717EFCBE2858B1EC00A02B11 /* TimeIntervalFormatStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +294,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717EFCBC2858B1B400A02B11 /* TimeIntervalFormatStyle in Frameworks */,
 				71C04D9326FF2357000DD492 /* Solar in Frameworks */,
 				715935FB27674FA000F03F29 /* StoreKit.framework in Frameworks */,
 			);
@@ -527,6 +531,9 @@
 			dependencies = (
 			);
 			name = WatchSolstice;
+			packageProductDependencies = (
+				717EFCBD2858B1EC00A02B11 /* TimeIntervalFormatStyle */,
+			);
 			productName = WatchSolstice;
 			productReference = 71864D742701A82800DE03CB /* Solstice.app */;
 			productType = "com.apple.product-type.application";
@@ -551,6 +558,7 @@
 			name = "Solstice (iOS)";
 			packageProductDependencies = (
 				71C04D9226FF2357000DD492 /* Solar */,
+				717EFCBB2858B1B400A02B11 /* TimeIntervalFormatStyle */,
 			);
 			productName = "Solstice (iOS)";
 			productReference = 7190090C25A4D6D5002ED383 /* Solstice.app */;
@@ -611,6 +619,7 @@
 			mainGroup = 719008FF25A4D6D2002ED383;
 			packageReferences = (
 				71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */,
+				717EFCBA2858B1B400A02B11 /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */,
 			);
 			productRefGroup = 7190090D25A4D6D5002ED383 /* Products */;
 			projectDirPath = "";
@@ -1197,6 +1206,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		717EFCBA2858B1B400A02B11 /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spanage/TimeIntervalFormatStyle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
@@ -1208,6 +1225,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		717EFCBB2858B1B400A02B11 /* TimeIntervalFormatStyle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 717EFCBA2858B1B400A02B11 /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */;
+			productName = TimeIntervalFormatStyle;
+		};
+		717EFCBD2858B1EC00A02B11 /* TimeIntervalFormatStyle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 717EFCBA2858B1B400A02B11 /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */;
+			productName = TimeIntervalFormatStyle;
+		};
 		71864DAE2701A9E000DE03CB /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 71C04D9126FF2357000DD492 /* XCRemoteSwiftPackageReference "Solar" */;
