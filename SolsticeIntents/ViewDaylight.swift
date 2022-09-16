@@ -10,42 +10,30 @@ import AppIntents
 import CoreLocation
 import Solar
 
-struct ViewDaylight: AppIntent, CustomIntentMigratedAppIntent {
-    static _const let intentClassName = "ViewDaylightIntent"
-    
+struct ViewDaylight: AppIntent {
     static var title: LocalizedStringResource = "View Daylight"
     static var description = IntentDescription("View how much daylight there is on a given day, based on the duration from that day’s sunrise to sunset.")
 
     @Parameter(title: "Date")
-    var date: Date?
+    var date: Date
 
     @Parameter(title: "Location")
-    var location: CLPlacemark?
+    var location: CLPlacemark
 
     static var parameterSummary: some ParameterSummary {
       Summary("Get the daylight duration on \(\.$date) in \(\.$location)")
     }
     
-    func perform() async throws -> some PerformResult {
-      guard let date else {
-        throw $date.requestValue("What date do you want to see the daylight for?")
-      }
-      
-      guard let location,
-            let coordinate = location.location?.coordinate else {
-        throw $location.requestValue("What location do you want to see the daylight for?")
+    func perform() async throws -> some IntentResult {
+      guard let coordinate = location.location?.coordinate else {
+        throw $location.needsValueError("What location do you want to see the daylight for?")
       }
       
       let solar = Solar(for: date, coordinate: coordinate)
       
-      guard let sunrise = solar?.sunrise,
-            let sunset = solar?.sunset else {
-        return .finished(value: TimeInterval(0), dialog: "Unable to calculate daylight; the date provided may be invalid.")
-      }
+			let duration = (solar?.sunrise ?? .now).distance(to: solar?.sunset ?? .now)
       
-      let duration = sunrise.distance(to: sunset)
-      
-      return .finished(value: duration)
+      return .result(value: duration)
     }
 }
 

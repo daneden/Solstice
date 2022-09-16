@@ -12,10 +12,10 @@
     {
       "identity" : "timeintervalformatstyle",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/spanage/TimeIntervalFormatStyle",
+      "location" : "https://github.com/daneden/TimeIntervalFormatStyle/",
       "state" : {
-        "revision" : "404e8b09837172eb33efba81ef08ea01267e1c34",
-        "version" : "1.0.1"
+        "branch" : "patch-1",
+        "revision" : "672abe3d60a2d7ccab97adbfb69ca69a5018a168"
       }
     }
   ],
