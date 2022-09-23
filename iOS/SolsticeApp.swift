@@ -14,6 +14,7 @@ struct SolsticeApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @StateObject var locationService = LocationService()
   @ObservedObject var locationManager = LocationManager.shared
+	var persistenceController = PersistenceController.shared
   
   @AppStorage(UDValues.onboarding) var onboarding
   @StateObject var sheetPresentation = SheetPresentationManager()
@@ -24,8 +25,23 @@ struct SolsticeApp: App {
         if onboarding {
           ProgressView()
         } else {
-          ContentView()
-            .environmentObject(sheetPresentation)
+					NavigationSplitView {
+						SidebarView()
+							.navigationDestination(for: ActiveLocation.self) { location in
+								ContentView()
+							}
+					} detail: {
+						ContentView()
+					}
+					.sheet(item: $sheetPresentation.activeSheet) { item in
+						switch item {
+						case .settings:
+							SettingsView()
+						case .location:
+							LocationPickerView()
+								.environmentObject(locationManager)
+						}
+					}
         }
       }
       .onAppear {
@@ -57,6 +73,7 @@ struct SolsticeApp: App {
         // scenePhase changes
         NotificationManager.shared.rescheduleNotifications()
       }
+			.environment(\.managedObjectContext, persistenceController.container.viewContext)
       .environmentObject(locationManager)
       .environmentObject(SolarCalculator(locationManager: locationManager))
       .onDisappear {
