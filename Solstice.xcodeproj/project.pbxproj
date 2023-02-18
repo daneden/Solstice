@@ -543,7 +543,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = .me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -572,7 +572,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = .me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = Solstice;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
