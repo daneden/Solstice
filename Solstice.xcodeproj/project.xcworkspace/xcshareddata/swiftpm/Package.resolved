@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/TimeIntervalFormatStyle/",
       "state" : {
-        "branch" : "patch-1",
-        "revision" : "672abe3d60a2d7ccab97adbfb69ca69a5018a168"
+        "branch" : "main",
+        "revision" : "fb5cd2f7180b27a2fc3b224340d8b2fce257572c"
       }
     }
   ],
