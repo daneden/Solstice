@@ -66,6 +66,7 @@
 		719846A928E992A200E866CE /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
 		719846AC28E9AA0E00E866CE /* Solar++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Solar++.swift"; sourceTree = "<group>"; };
 		719846AF28EEE48900E866CE /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
+		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
 		71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryRow.swift; sourceTree = "<group>"; };
 		71F641B829995ED000FE5AB5 /* DaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightChart.swift; sourceTree = "<group>"; };
 		71F641BA2999631D00FE5AB5 /* Date++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++.swift"; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 		7198468328E5895E00E866CE /* Solstice */ = {
 			isa = PBXGroup;
 			children = (
+				71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */,
 				7198469228E5895F00E866CE /* Info.plist */,
 				7198469828E5898500E866CE /* StoreKitConfiguration.storekit */,
 				719846A928E992A200E866CE /* AddLocationView.swift */,
@@ -456,12 +458,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Solstice/Preview Content\"";
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -490,12 +494,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Solstice/Preview Content\"";
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
