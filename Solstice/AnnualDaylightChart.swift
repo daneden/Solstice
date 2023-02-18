@@ -68,6 +68,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				}
 			}
 			.chartForegroundStyleScale(kvPairs)
+			.chartXScale(domain: 0...(60 * 60 * 24))
 		}
 	}
 	
