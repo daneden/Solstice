@@ -66,6 +66,13 @@ struct DetailView<Location: AnyLocation>: View {
 #if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)
 #endif
+			.toolbar {
+				ToolbarItem(id: "timeMachineToggle") {
+					Toggle(isOn: $timeMachine.isOn.animation()) {
+						Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+					}
+				}
+			}
 		}
 	}
 }
