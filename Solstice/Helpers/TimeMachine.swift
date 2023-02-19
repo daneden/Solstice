@@ -10,11 +10,11 @@ import Combine
 import SwiftUI
 
 class TimeMachine: ObservableObject {
-	@Published var timeTravelOffset: Double = 0.0
-	@Published var targetDate: Date = Date()
+	@Published var referenceDate = Date()
+	@Published var targetDate = Date()
 	
 	var date: Date {
-		Date().addingTimeInterval(Date().distance(to: targetDate))
+		referenceDate.addingTimeInterval(referenceDate.distance(to: targetDate))
 		//Calendar.autoupdatingCurrent.date(byAdding: .day, value: Int(timeTravelOffset), to: Date()) ?? Date()
 	}
 	
@@ -22,7 +22,6 @@ class TimeMachine: ObservableObject {
 	
 	func resetTimeMachine() {
 		withAnimation {
-			timeTravelOffset = 0
 			targetDate = Date()
 		}
 	}

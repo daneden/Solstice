@@ -14,11 +14,16 @@ struct SolsticeApp: App {
 
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
-				.environmentObject(timeMachine)
-				.environment(\.managedObjectContext, persistenceController.container.viewContext)
-				.symbolRenderingMode(.hierarchical)
-				.symbolVariant(.fill)
+			TimelineView(.everyMinute) { timeline in
+				ContentView()
+					.environmentObject(timeMachine)
+					.environment(\.managedObjectContext, persistenceController.container.viewContext)
+					.symbolRenderingMode(.hierarchical)
+					.symbolVariant(.fill)
+					.onChange(of: timeline.date) { newValue in
+						timeMachine.referenceDate = newValue
+					}
+			}
 		}
 	}
 }
