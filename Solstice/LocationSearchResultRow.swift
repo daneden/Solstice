@@ -9,51 +9,45 @@ import SwiftUI
 import MapKit
 
 
-struct AddLocationView: View {
+struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
-	@Environment(\.dismiss) private var dismiss
-	@StateObject var searchService = LocationSearchService()
+	@Environment(\.dismissSearch) private var dismiss
+	@ObservedObject var searchService: LocationSearchService
+	@State private var isAddingItem = false
+	
 	private let searchRequest = MKLocalSearch.Request()
+	var result: MKLocalSearchCompletion
 	
 	var body: some View {
-		Form {
-			ZStack(alignment: .trailing) {
-				TextField("Search for a location", text: $searchService.queryFragment)
-				Button {
-					searchService.queryFragment = ""
-				} label: {
-					Label("Clear", systemImage: "xmark.circle.fill")
-				}
-				.labelStyle(.iconOnly)
-				.foregroundStyle(.tertiary)
-				.opacity(searchService.queryFragment.isEmpty ? 0 : 1)
-			}
-			
-			ForEach(searchService.searchResults.filter { !$0.subtitle.isEmpty }, id: \.hashValue) { result in
-				VStack(alignment: .leading) {
-					Text(result.title)
+		HStack {
+			VStack(alignment: .leading) {
+				Text(result.title)
+				if !result.subtitle.isEmpty {
 					Text(result.subtitle)
 						.foregroundStyle(.secondary)
 						.font(.footnote)
-				}.onTapGesture {
-					Task {
-						await addLocation(from: result)
-						dismiss()
-					}
 				}
 			}
-		}
-		.navigationTitle("Add Location")
-		.toolbar {
-			Button {
-				dismiss()
-			} label: {
-				Text("Cancel")
+			
+			Spacer()
+			
+			if isAddingItem {
+				ProgressView()
+					.controlSize(.small)
 			}
 		}
+		.contentShape(Rectangle())
+		.onTapGesture {
+			Task {
+				await addLocation(from: result)
+				dismiss()
+			}
+		}
+		.disabled(isAddingItem)
 	}
 	
 	func addLocation(from completion: MKLocalSearchCompletion) async {
+		isAddingItem = true
 		searchRequest.naturalLanguageQuery = "\(completion.title), \(completion.subtitle)"
 		
 		do {
@@ -70,15 +64,18 @@ struct AddLocationView: View {
 				newLocation.longitude = coords.longitude
 				
 				try viewContext.save()
+				searchService.queryFragment = ""
 			}
 		} catch {
 			print(error)
 		}
+
+		isAddingItem = false
 	}
 }
 
-struct AddLocationView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddLocationView()
-    }
-}
+//struct AddLocationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LocationSearchResultRow()
+//    }
+//}

@@ -60,8 +60,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 						.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
 					}
 					
-					if let sunrise = solar.sunrise,
-						 let sunset = solar.sunset {
+					if let sunrise = solar.safeSunrise,
+						 let sunset = solar.safeSunset {
 						BarMark(
 							x: .value("Daylight", solar.date, unit: .month),
 							yStart: .value("Sunrise", solar.startOfDay.distance(to: sunrise) + tzOffset),

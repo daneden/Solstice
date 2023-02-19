@@ -15,6 +15,18 @@ struct TimeMachineView: View {
 				DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 					Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 				}
+				
+				#if os(iOS)
+				Slider(value: timeMachine.offset,
+							 in: -182...182,
+							 step: 1,
+							 minimumValueLabel: Text("Past").font(.caption),
+							 maximumValueLabel: Text("Future").font(.caption)) {
+					Text("\(Int(timeMachine.offset.wrappedValue)) days in the \(timeMachine.offset.wrappedValue > 0 ? "future" : "past")")
+				}
+				.tint(Color(UIColor.systemFill))
+				.foregroundStyle(.secondary)
+				#endif
 			}
     }
 }

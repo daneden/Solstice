@@ -8,23 +8,30 @@
 import SwiftUI
 import CoreData
 
+enum NavigationSelection: Hashable {
+	case currentLocation
+	case savedLocation(id: SavedLocation.ID)
+}
+
 struct ContentView: View {
+	@Environment(\.isSearching) private var isSearching
 	@Environment(\.managedObjectContext) private var viewContext
-	@EnvironmentObject var timeMachine: TimeMachine
-	@StateObject var currentLocation = CurrentLocation()
+	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
 		animation: .default)
 	private var items: FetchedResults<SavedLocation>
 	
-	@State private var addLocationSheetPresented = false
+	@State var navigationSelection: NavigationSelection? = .currentLocation
+	@StateObject var locationSearchService = LocationSearchService()
+	@StateObject var currentLocation = CurrentLocation()
+	
+	@EnvironmentObject var timeMachine: TimeMachine
 	
 	var body: some View {
 		NavigationView {
-			List {
-				#if !os(watchOS)
+			List(selection: $navigationSelection) {
 				TimeMachineView()
-				#endif
 				
 				Section {
 					NavigationLink {
@@ -32,6 +39,7 @@ struct ContentView: View {
 					} label: {
 						DaylightSummaryRow(location: currentLocation)
 					}
+					.tag(NavigationSelection.currentLocation)
 					
 					ForEach(items) { item in
 						NavigationLink {
@@ -39,25 +47,11 @@ struct ContentView: View {
 						} label: {
 							DaylightSummaryRow(location: item)
 						}
+						.tag(NavigationSelection.savedLocation(id: item.id))
 					}
 					.onDelete(perform: deleteItems)
 				} header: {
 					Label("Locations", systemImage: "map")
-				}
-			}
-			.toolbar {
-				ToolbarItem {
-					Button {
-						addLocationSheetPresented = true
-					} label: {
-						Label("Add Item", systemImage: "plus")
-					}
-				}
-				
-				ToolbarItem(id: "timeMachineToggle") {
-					Toggle(isOn: $timeMachine.isOn.animation()) {
-						Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-					}
 				}
 			}
 			.navigationTitle("Solstice")
@@ -68,26 +62,12 @@ struct ContentView: View {
 				.frame(width: 100, height: 100)
 				.aspectRatio(contentMode: .fit)
 		}
-		#if !os(watchOS)
-		.popover(isPresented: $addLocationSheetPresented) {
-			AddLocationView()
-				.presentationDetents([.medium, .large])
-		}
-		#endif
-	}
-	
-	private func addItem() {
-		withAnimation {
-			let newItem = SavedLocation(context: viewContext)
-			newItem.title = "New item at \(Date.now.formatted())"
-			
-			do {
-				try viewContext.save()
-			} catch {
-				// Replace this implementation with code to handle the error appropriately.
-				// fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				let nsError = error as NSError
-				fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		.searchable(text: $locationSearchService.queryFragment,
+								placement: .toolbar,
+								prompt: "Search cities or airports")
+		.searchSuggestions {
+			ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
+				LocationSearchResultRow(searchService: locationSearchService, result: result)
 			}
 		}
 	}

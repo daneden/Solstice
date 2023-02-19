@@ -50,7 +50,7 @@ class LocationSearchService: NSObject, ObservableObject {
 		case idle, noResults, isSearching, result
 		case error(String)
 	}
-	
+		
 	@Published var queryFragment = ""
 	@Published private(set) var status: LocationStatus = .idle
 	@Published private(set) var searchResults: [MKLocalSearchCompletion] = []
