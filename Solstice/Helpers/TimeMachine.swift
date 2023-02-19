@@ -10,19 +10,16 @@ import Combine
 import SwiftUI
 
 class TimeMachine: ObservableObject {
+	@Published var isOn = false
 	@Published var referenceDate = Date()
 	@Published var targetDate = Date()
 	
 	var date: Date {
-		referenceDate.addingTimeInterval(referenceDate.distance(to: targetDate))
-		//Calendar.autoupdatingCurrent.date(byAdding: .day, value: Int(timeTravelOffset), to: Date()) ?? Date()
-	}
-	
-	var isActive: Bool { !date.isToday }
-	
-	func resetTimeMachine() {
-		withAnimation {
-			targetDate = Date()
-		}
+		guard isOn else { return referenceDate }
+		let time = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: referenceDate)
+		return Calendar.autoupdatingCurrent.date(bySettingHour: time.hour ?? 0,
+																									 minute: time.minute ?? 0,
+																									 second: time.second ?? 0,
+																									 of: targetDate) ?? targetDate
 	}
 }

@@ -19,46 +19,47 @@ struct DetailView<Location: AnyLocation>: View {
 	var body: some View {
 		GeometryReader { geom in
 			Form {
-				if let solar = solar {
-					DaylightChart(solar: solar, timeZone: location.timeZone)
-						.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-						.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
-						.padding(.bottom)
-				}
-				
-				#if !os(macOS) && !os(watchOS)
+#if !os(macOS) && !os(watchOS)
 				TimeMachineView()
-				#endif
-				
-				LabeledContent {
-					Text("\(sunrise.distance(to: sunset).formatted(.timeInterval()))")
-				} label: {
-					Label("Total Daylight", systemImage: "hourglass")
-				}
-				
-				LabeledContent {
-					Text("\(sunrise, style: .time)")
-				} label: {
-					Label("Sunrise", systemImage: "sunrise")
-				}
-				
-				if let culmination = solar?.peak {
-					LabeledContent {
-						Text("\(culmination, style: .time)")
-					} label: {
-						Label("Culmination", systemImage: "sun.max")
+#endif
+				Section {
+					if let solar = solar {
+						DaylightChart(solar: solar, timeZone: location.timeZone)
+							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+							.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
+							.padding(.bottom)
 					}
+					
+					LabeledContent {
+						Text("\(sunrise.distance(to: sunset).formatted(.timeInterval()))")
+					} label: {
+						Label("Total Daylight", systemImage: "hourglass")
+					}
+					
+					LabeledContent {
+						Text("\(sunrise, style: .time)")
+					} label: {
+						Label("Sunrise", systemImage: "sunrise")
+					}
+					
+					if let culmination = solar?.peak {
+						LabeledContent {
+							Text("\(culmination, style: .time)")
+						} label: {
+							Label("Culmination", systemImage: "sun.max")
+						}
+					}
+					
+					LabeledContent {
+						Text("\(sunset, style: .time)")
+					} label: {
+						Label("Sunset", systemImage: "sunset")
+					}
+					
+					AnnualDaylightChart(location: location)
+						.frame(minHeight: geom.size.height * 0.4)
+						.padding(.vertical)
 				}
-				
-				LabeledContent {
-					Text("\(sunset, style: .time)")
-				} label: {
-					Label("Sunset", systemImage: "sunset")
-				}
-				
-				AnnualDaylightChart(location: location)
-					.frame(minHeight: geom.size.height * 0.4)
-					.padding(.vertical)
 			}
 			.formStyle(.grouped)
 			.navigationTitle(location.title ?? "Solstice")

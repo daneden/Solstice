@@ -23,11 +23,7 @@ struct ContentView: View {
 		NavigationView {
 			List {
 				#if !os(watchOS)
-				Section {
-					TimeMachineView()
-				} header: {
-					Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-				}
+				TimeMachineView()
 				#endif
 				
 				Section {
@@ -65,6 +61,15 @@ struct ContentView: View {
 				.foregroundStyle(.quaternary)
 				.frame(width: 100, height: 100)
 				.aspectRatio(contentMode: .fit)
+		}
+		.refreshable {
+			withAnimation { timeMachine.isOn.toggle() }
+		}
+		.onAppear {
+			#if !os(macOS)
+			UIRefreshControl.appearance().attributedTitle = NSAttributedString(string: "Pull down to Time Travel")
+			#endif
+			
 		}
 		#if !os(watchOS)
 		.sheet(isPresented: $addLocationSheetPresented) {

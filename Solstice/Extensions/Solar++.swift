@@ -10,11 +10,11 @@ import Solar
 
 extension Solar {
 	var safeSunrise: Date {
-		return sunrise ?? civilSunrise ?? nauticalSunrise ?? astronomicalSunrise ?? Calendar.autoupdatingCurrent.startOfDay(for: date)
+		return sunrise ?? civilSunrise ?? nauticalSunrise ?? astronomicalSunrise ?? startOfDay
 	}
 	
 	var safeSunset: Date {
-		return sunset ?? civilSunset ?? nauticalSunset ?? astronomicalSunset ?? Calendar.autoupdatingCurrent.date(byAdding: .day, value: 1, to: Calendar.autoupdatingCurrent.startOfDay(for: date)) ?? date
+		return sunset ?? civilSunset ?? nauticalSunset ?? astronomicalSunset ?? endOfDay
 	}
 	
 	var daylightDuration: TimeInterval {

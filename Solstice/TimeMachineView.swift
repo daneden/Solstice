@@ -11,27 +11,9 @@ struct TimeMachineView: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
     var body: some View {
-			DisclosureGroup {
+			if timeMachine.isOn {
 				DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
-					Text("Choose Date")
-				}
-				#if !os(macOS)
-				.datePickerStyle(.wheel)
-				#endif
-				
-				Button {
-					timeMachine.resetTimeMachine()
-				} label: {
-					Label("Reset Date", systemImage: "arrow.counterclockwise")
-				}
-				.disabled(timeMachine.date != timeMachine.targetDate)
-			} label: {
-				Label {
-					Text(timeMachine.date, style: .date)
-						.fontWeight(timeMachine.date.isToday ? .regular : .semibold)
-						.capsuleAppearance(on: !timeMachine.date.isToday)
-				} icon: {
-					Image(systemName: "calendar.badge.clock")
+					Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 				}
 			}
     }
