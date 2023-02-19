@@ -74,7 +74,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			.chartForegroundStyleScale(kvPairs)
 			.chartYScale(domain: 0...dayLength)
 			.chartYAxis {
-				AxisMarks(values: stride(from: 0.0, through: dayLength, by: 60 * 60 * 6).compactMap { $0 }) { value in
+				AxisMarks(values: stride(from: 0.0, through: dayLength, by: 60 * 60 * 4).compactMap { $0 }) { value in
 					AxisTick()
 					AxisGridLine()
 					AxisValueLabel {
