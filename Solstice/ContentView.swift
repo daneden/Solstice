@@ -69,10 +69,9 @@ struct ContentView: View {
 				.aspectRatio(contentMode: .fit)
 		}
 		#if !os(watchOS)
-		.sheet(isPresented: $addLocationSheetPresented) {
-			NavigationStack {
-				AddLocationView()
-			}
+		.popover(isPresented: $addLocationSheetPresented) {
+			AddLocationView()
+				.presentationDetents([.medium, .large])
 		}
 		#endif
 	}

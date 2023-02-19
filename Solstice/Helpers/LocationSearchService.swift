@@ -62,7 +62,8 @@ class LocationSearchService: NSObject, ObservableObject {
 		self.searchCompleter = searchCompleter
 		super.init()
 		self.searchCompleter.delegate = self
-		self.searchCompleter.resultTypes = [.address]
+		self.searchCompleter.resultTypes = [.address, .pointOfInterest]
+		self.searchCompleter.pointOfInterestFilter = .init(including: [.airport, .nationalPark])
 		
 		queryCancellable = $queryFragment
 			.receive(on: DispatchQueue.main)
