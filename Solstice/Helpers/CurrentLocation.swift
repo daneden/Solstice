@@ -34,6 +34,10 @@ class CurrentLocation: NSObject, ObservableObject, AnyLocation {
 	@Published private(set) var longitude: Double = 0
 	@Published private(set) var timeZoneIdentifier: String?
 	
+	var coordinate: CLLocationCoordinate2D {
+		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+	}
+	
 	static let shared = CurrentLocation()
 	private let locationManager = CLLocationManager()
 	private let geocoder = CLGeocoder()

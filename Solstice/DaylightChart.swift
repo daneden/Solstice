@@ -22,27 +22,32 @@ struct DaylightChart: View {
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
 	
+	var includesSummaryTitle = true
+	var hideXAxis = false
+	
 	var body: some View {
 		VStack(alignment: .leading) {
-			VStack(alignment: .leading) {
-				Text(solar.differenceString)
-					.font(.title2)
-					.fontWeight(.semibold)
-					.opacity(selectedEvent == nil ? 1 : 0)
-					.overlay(alignment: .leading) {
-						if let selectedEvent {
-							VStack(alignment: .leading) {
-								Text(selectedEvent.label)
-									.foregroundStyle(.secondary)
-								Text("\(selectedEvent.date, style: .time)")
-									.font(.title2)
+			if includesSummaryTitle {
+				VStack(alignment: .leading) {
+					Text(solar.differenceString)
+						.font(.title2)
+						.fontWeight(.semibold)
+						.opacity(selectedEvent == nil ? 1 : 0)
+						.overlay(alignment: .leading) {
+							if let selectedEvent {
+								VStack(alignment: .leading) {
+									Text(selectedEvent.label)
+										.foregroundStyle(.secondary)
+									Text("\(selectedEvent.date, style: .time)")
+										.font(.title2)
+								}
 							}
 						}
-					}
+				}
+				.padding()
+				.fontDesign(.rounded)
+				.fontWeight(.semibold)
 			}
-			.padding()
-			.fontDesign(.rounded)
-			.fontWeight(.semibold)
 			
 			TimelineView(.everyMinute) { time in
 				Chart {
@@ -61,6 +66,7 @@ struct DaylightChart: View {
 					}
 				}
 				.chartYAxis(.hidden)
+				.chartXAxis(hideXAxis ? .hidden : .automatic)
 				.chartYScale(domain: -1.2...1.2)
 				.chartXScale(domain: solar.startOfDay...solar.endOfDay)
 				.chartOverlay { proxy in
