@@ -12,7 +12,7 @@ struct TimeMachineView: View {
 	
     var body: some View {
 			DisclosureGroup {
-				DatePicker(selection: $timeMachine.targetDate, displayedComponents: [.date]) {
+				DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 					Text("Choose Date")
 				}
 				#if !os(macOS)
