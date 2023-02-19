@@ -20,6 +20,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 		.day: .yellow
 	]
 	
+	var dayLength: Double = 60 * 60 * 24
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			Label("Daylight by Month", systemImage: "chart.bar.xaxis")
@@ -70,7 +72,20 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				}
 			}
 			.chartForegroundStyleScale(kvPairs)
-			.chartXScale(domain: 0...(60 * 60 * 24))
+			.chartXScale(domain: 0...dayLength)
+			.chartXAxis {
+				AxisMarks(values: stride(from: 0.0, through: dayLength, by: 60 * 60 * 6).compactMap { $0 }) { value in
+					AxisTick()
+					AxisGridLine()
+					AxisValueLabel {
+						let startOfDay = Date().startOfDay
+						if let doubleValue = value.as(Double.self),
+							 let date = startOfDay.addingTimeInterval(doubleValue) {
+							Text("\(date, style: .time)")
+						}
+					}
+				}
+			}
 		}
 	}
 	
