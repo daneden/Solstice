@@ -57,7 +57,7 @@ struct DetailView<Location: AnyLocation>: View {
 				}
 				
 				AnnualDaylightChart(location: location)
-					.frame(minHeight: geom.size.height * 0.3)
+					.frame(minHeight: geom.size.height * 0.4)
 					.padding(.vertical)
 			}
 			.formStyle(.grouped)

@@ -33,9 +33,9 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 					if let astronomicalSunrise = solar.astronomicalSunrise,
 						 let astronomicalSunset = solar.astronomicalSunset {
 						BarMark(
-							xStart: .value("Astronomical Sunrise", solar.startOfDay.distance(to: astronomicalSunrise) + tzOffset),
-							xEnd: .value("Astronomical Sunset", solar.startOfDay.distance(to: astronomicalSunset) + tzOffset),
-							y: .value("Astronomical Twilight", solar.date, unit: .month)
+							x: .value("Astronomical Twilight", solar.date, unit: .month),
+							yStart: .value("Astronomical Sunrise", solar.startOfDay.distance(to: astronomicalSunrise) + tzOffset),
+							yEnd: .value("Astronomical Sunset", solar.startOfDay.distance(to: astronomicalSunset) + tzOffset)
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
 					}
@@ -43,9 +43,9 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 					if let nauticalSunrise = solar.nauticalSunrise,
 						 let nauticalSunset = solar.nauticalSunset {
 						BarMark(
-							xStart: .value("Nautical Sunrise", solar.startOfDay.distance(to: nauticalSunrise) + tzOffset),
-							xEnd: .value("Nautical Sunset", solar.startOfDay.distance(to: nauticalSunset) + tzOffset),
-							y: .value("Nautical Twilight", solar.date, unit: .month)
+							x: .value("Nautical Twilight", solar.date, unit: .month),
+							yStart: .value("Nautical Sunrise", solar.startOfDay.distance(to: nauticalSunrise) + tzOffset),
+							yEnd: .value("Nautical Sunset", solar.startOfDay.distance(to: nauticalSunset) + tzOffset)
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
 					}
@@ -53,9 +53,9 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 					if let civilSunrise = solar.civilSunrise,
 						 let civilSunset = solar.civilSunset {
 						BarMark(
-							xStart: .value("Civil Sunrise", solar.startOfDay.distance(to: civilSunrise) + tzOffset),
-							xEnd: .value("Civil Sunset", solar.startOfDay.distance(to: civilSunset) + tzOffset),
-							y: .value("Civil Twilight", solar.date, unit: .month)
+							x: .value("Civil Twilight", solar.date, unit: .month),
+							yStart: .value("Civil Sunrise", solar.startOfDay.distance(to: civilSunrise) + tzOffset),
+							yEnd: .value("Civil Sunset", solar.startOfDay.distance(to: civilSunset) + tzOffset)
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
 					}
@@ -63,17 +63,17 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 					if let sunrise = solar.sunrise,
 						 let sunset = solar.sunset {
 						BarMark(
-							xStart: .value("Sunrise", solar.startOfDay.distance(to: sunrise) + tzOffset),
-							xEnd: .value("Sunset", solar.startOfDay.distance(to: sunset) + tzOffset),
-							y: .value("Daylight", solar.date, unit: .month)
+							x: .value("Daylight", solar.date, unit: .month),
+							yStart: .value("Sunrise", solar.startOfDay.distance(to: sunrise) + tzOffset),
+							yEnd: .value("Sunset", solar.startOfDay.distance(to: sunset) + tzOffset)
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.day))
 					}
 				}
 			}
 			.chartForegroundStyleScale(kvPairs)
-			.chartXScale(domain: 0...dayLength)
-			.chartXAxis {
+			.chartYScale(domain: 0...dayLength)
+			.chartYAxis {
 				AxisMarks(values: stride(from: 0.0, through: dayLength, by: 60 * 60 * 6).compactMap { $0 }) { value in
 					AxisTick()
 					AxisGridLine()
