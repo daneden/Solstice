@@ -15,7 +15,7 @@
 		7106C87629A276B40007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
 		7106C87829A276B40007A7EC /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87429A276B40007A7EC /* Widget.intentdefinition */; };
 		7106C87929A276B40007A7EC /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87429A276B40007A7EC /* Widget.intentdefinition */; };
-		7106C87C29A276B40007A7EC /* WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7106C87C29A276B40007A7EC /* WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* WidgetExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
 		7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
@@ -489,6 +489,7 @@
 /* Begin PBXTargetDependency section */
 		7106C87B29A276B40007A7EC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 7106C86729A276B30007A7EC /* WidgetExtension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
 		};

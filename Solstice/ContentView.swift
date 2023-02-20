@@ -61,6 +61,7 @@ struct ContentView: View {
 				}
 			}
 			.navigationTitle("Solstice")
+			.navigationSplitViewColumnWidth(ideal: 256)
 			.searchable(text: $locationSearchService.queryFragment,
 									placement: .toolbar,
 									prompt: "Search cities or airports")

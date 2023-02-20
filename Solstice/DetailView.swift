@@ -94,7 +94,6 @@ struct DetailView<Location: AnyLocation>: View {
 							Text(relativeDateFormatter.localizedString(for: nextEquinox, relativeTo: date))
 						} label: {
 							Label("Next Equinox", systemImage: "circle.and.line.horizontal")
-								.symbolVariant(.none)
 						}
 					}
 					
