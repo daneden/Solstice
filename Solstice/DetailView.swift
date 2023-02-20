@@ -16,6 +16,17 @@ struct DetailView<Location: AnyLocation>: View {
 	@State private var showRemainingDaylight = false
 	@State private var timeTravelVisible = false
 	
+	var relativeDateFormatter: RelativeDateTimeFormatter {
+		let formatter = RelativeDateTimeFormatter()
+		return formatter
+	}
+	
+	var dateComponentsFormatter: DateComponentsFormatter {
+		let formatter = DateComponentsFormatter()
+		formatter.unitsStyle = .short
+		return formatter
+	}
+	
 	var body: some View {
 		GeometryReader { geom in
 			Form {
@@ -54,6 +65,37 @@ struct DetailView<Location: AnyLocation>: View {
 						Text("\(sunset, style: .time)")
 					} label: {
 						Label("Sunset", systemImage: "sunset")
+					}
+				}
+					
+				Section {
+					if let date = solar?.date,
+						 let nextSolstice = solar?.date.nextSolstice,
+						 let prevSolstice = solar?.date.previousSolstice,
+						 let nextEquinox = solar?.date.nextEquinox,
+						 let nextSolsticeSolar = Solar(for: nextSolstice, coordinate: solar?.coordinate ?? .init()),
+						 let previousSolsticeSolar = Solar(for: prevSolstice, coordinate: solar?.coordinate ?? .init()) {
+						let daylightDifference = abs((solar?.daylightDuration ?? 0) - previousSolsticeSolar.daylightDuration)
+						let nextGreaterThanPrevious = nextSolsticeSolar.daylightDuration > previousSolsticeSolar.daylightDuration
+						
+						VStack(alignment: .leading) {
+							LabeledContent {
+								Text(relativeDateFormatter.localizedString(for: nextSolstice, relativeTo: date))
+							} label: {
+								Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
+							}
+							
+							Text("\(dateComponentsFormatter.string(from: daylightDifference) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
+								.font(.caption)
+								.foregroundStyle(.secondary)
+						}
+						
+						LabeledContent {
+							Text(relativeDateFormatter.localizedString(for: nextEquinox, relativeTo: date))
+						} label: {
+							Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+								.symbolVariant(.none)
+						}
 					}
 					
 					AnnualDaylightChart(location: location)
