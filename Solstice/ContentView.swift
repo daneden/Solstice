@@ -29,7 +29,7 @@ struct ContentView: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	var body: some View {
-		NavigationStack {
+		NavigationSplitView {
 			List {
 				TimeMachineView()
 				
@@ -69,6 +69,8 @@ struct ContentView: View {
 					LocationSearchResultRow(searchService: locationSearchService, result: result)
 				}
 			}
+		} detail: {
+			placeholderView
 		}
 	}
 	

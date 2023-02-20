@@ -30,14 +30,14 @@ struct DetailView<Location: AnyLocation>: View {
 	var body: some View {
 		GeometryReader { geom in
 			Form {
-#if !os(macOS) && !os(watchOS)
+#if os(iOS)
 				TimeMachineView()
 #endif
 				Section {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-							.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
+//							.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
 							.padding(.bottom)
 					}
 					
