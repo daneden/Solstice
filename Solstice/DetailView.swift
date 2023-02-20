@@ -37,7 +37,7 @@ struct DetailView<Location: AnyLocation>: View {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-//							.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
+							.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
 							.padding(.bottom)
 					}
 					
