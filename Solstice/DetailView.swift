@@ -105,9 +105,6 @@ struct DetailView<Location: AnyLocation>: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle(location.title ?? "Solstice")
-#if os(iOS)
-			.navigationBarTitleDisplayMode(.inline)
-#endif
 			.toolbar {
 				ToolbarItem(id: "timeMachineToggle") {
 					Toggle(isOn: $timeMachine.isOn.animation()) {
