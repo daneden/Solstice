@@ -20,4 +20,11 @@ extension Date {
 		let calendar = Calendar.current
 		return calendar.isDateInToday(self)
 	}
+	
+	func withTimeZoneAdjustment(for timeZone: TimeZone?) -> Date {
+		guard let timeZone else { return self }
+		let dstOffset = timeZone.daylightSavingTimeOffset(for: self)
+		let tzOffset = timeZone.secondsFromGMT(for: self) - TimeZone.autoupdatingCurrent.secondsFromGMT(for: self)
+		return self.addingTimeInterval(dstOffset + TimeInterval(tzOffset))
+	}
 }

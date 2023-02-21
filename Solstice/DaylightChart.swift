@@ -90,7 +90,7 @@ struct DaylightChart: View {
 						.background(.background.opacity(0.2))
 						.mask(alignment: .bottom) {
 							Rectangle()
-								.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.addingTimeInterval(totalTimeZoneOffset))) ?? 0))
+								.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0))
 						}
 						
 						ZStack {
@@ -105,7 +105,7 @@ struct DaylightChart: View {
 						}
 						.mask(alignment: .top) {
 							Rectangle()
-								.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.addingTimeInterval(totalTimeZoneOffset))) ?? 0)
+								.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 						}
 					}
 					
@@ -114,7 +114,7 @@ struct DaylightChart: View {
 						.fill(.regularMaterial)
 #endif
 						.frame(width: geo.size.width, height: 2)
-						.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.addingTimeInterval(totalTimeZoneOffset))) ?? 0)
+						.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 					
 					if let selectedEvent {
 						Rectangle()
@@ -190,31 +190,19 @@ extension DaylightChart {
 	var relativeEventTimeString: String {
 		if let selectedEvent,
 			 Calendar.autoupdatingCurrent.isDateInToday(selectedEvent.date) {
-			return " (\(formatter.localizedString(for: selectedEvent.date, relativeTo: solar.date.addingTimeInterval(locationTimeZoneOffset))))"
+			return " (\(formatter.localizedString(for: selectedEvent.date, relativeTo: solar.date.withTimeZoneAdjustment(for: timeZone))))"
 		}
 		return ""
 	}
 	
 	var timeZoneAdjustedDate: Date {
-		solar.date.addingTimeInterval(totalTimeZoneOffset)
-	}
-	
-	var locationTimeZoneOffset: TimeInterval {
-		TimeInterval(timeZone.secondsFromGMT(for: solar.date)) - timeZone.daylightSavingTimeOffset(for: solar.date)
-	}
-	
-	var localTimeZoneOffset: TimeInterval {
-		TimeInterval(TimeZone.autoupdatingCurrent.secondsFromGMT(for: solar.date)) - TimeZone.autoupdatingCurrent.daylightSavingTimeOffset(for: solar.date)
-	}
-	
-	var totalTimeZoneOffset: TimeInterval {
-		localTimeZoneOffset + locationTimeZoneOffset
+		solar.date.withTimeZoneAdjustment(for: timeZone)
 	}
 	
 	var solarEvents: Array<Solar.Event> {
 		solar.events.map { event in
 			Solar.Event(label: event.label,
-									date: event.date.addingTimeInterval(totalTimeZoneOffset),
+									date: event.date.withTimeZoneAdjustment(for: timeZone),
 									phase: event.phase)
 		}
 		.compactMap { $0 }
@@ -224,13 +212,13 @@ extension DaylightChart {
 		stride(from: solar.startOfDay, through: solar.endOfDay, by: 60 * 30).compactMap { $0 }
 	}
 	
-	var startOfDay: Date { solar.startOfDay.addingTimeInterval(totalTimeZoneOffset) }
-	var endOfDay: Date { solar.endOfDay.addingTimeInterval(totalTimeZoneOffset) }
+	var startOfDay: Date { solar.startOfDay.withTimeZoneAdjustment(for: timeZone) }
+	var endOfDay: Date { solar.endOfDay.withTimeZoneAdjustment(for: timeZone) }
 	var dayLength: TimeInterval { startOfDay.distance(to: endOfDay) }
 	
 	var noonish: Date { startOfDay.addingTimeInterval(dayLength / 2) }
 	
-	var culminationDelta: TimeInterval { solar.peak.addingTimeInterval(totalTimeZoneOffset).distance(to: noonish) }
+	var culminationDelta: TimeInterval { solar.peak.withTimeZoneAdjustment(for: timeZone).distance(to: noonish) }
 	
 	var daylightProportion: Double { solar.daylightDuration / dayLength }
 	

@@ -53,7 +53,7 @@ struct DetailView<Location: ObservableLocation>: View {
 						Label("Sunrise", systemImage: "sunrise")
 					}
 					
-					if let culmination = solar?.peak {
+					if let culmination = solar?.peak.withTimeZoneAdjustment(for: timeZone) {
 						LabeledContent {
 							Text("\(culmination, style: .time)")
 						} label: {
@@ -135,12 +135,12 @@ extension DetailView {
 	
 	var sunrise: Date {
 		let returnValue = solar?.safeSunrise ?? .now
-		return returnValue.addingTimeInterval(TimeInterval(timeZone.secondsFromGMT(for: date)))
+		return returnValue.withTimeZoneAdjustment(for: timeZone)
 	}
 	
 	var sunset: Date {
 		let returnValue = solar?.safeSunset ?? .now
-		return returnValue.addingTimeInterval(TimeInterval(timeZone.secondsFromGMT(for: date)))
+		return returnValue.withTimeZoneAdjustment(for: timeZone)
 	}
 }
 

@@ -31,7 +31,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 					Text(location.title ?? "My Location")
 				}
 				
-				Text(sunrise...sunset)
+				Text(sunrise.withTimeZoneAdjustment(for: location.timeZone)...sunset.withTimeZoneAdjustment(for: location.timeZone))
 					.font(.footnote)
 					.foregroundColor(.secondary)
 			}
@@ -57,23 +57,11 @@ extension DaylightSummaryRow {
 	}
 	
 	var sunrise: Date {
-		var timezone: TimeZone = .autoupdatingCurrent
-		if let timezoneIdentifier = location.timeZoneIdentifier,
-			 let specifiedTimezone = TimeZone(identifier: timezoneIdentifier) {
-			timezone = specifiedTimezone
-		}
-		let returnValue = solar?.safeSunrise ?? .now
-		return returnValue.addingTimeInterval(TimeInterval(timezone.secondsFromGMT(for: date)))
+		solar?.safeSunrise ?? .now
 	}
 	
 	var sunset: Date {
-		var timezone: TimeZone = .autoupdatingCurrent
-		if let timezoneIdentifier = location.timeZoneIdentifier,
-			 let specifiedTimezone = TimeZone(identifier: timezoneIdentifier) {
-			timezone = specifiedTimezone
-		}
-		let returnValue = solar?.safeSunset ?? .now
-		return returnValue.addingTimeInterval(TimeInterval(timezone.secondsFromGMT(for: date)))
+		solar?.safeSunset ?? .now
 	}
 }
 

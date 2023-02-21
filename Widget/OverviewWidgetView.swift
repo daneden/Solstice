@@ -36,7 +36,7 @@ struct SolsticeWidgetLocation: AnyLocation {
 struct OverviewWidgetView: View {
 	@Environment(\.widgetFamily) private var family
 	@Environment(\.sizeCategory) private var sizeCategory
-	var detailedLocation: SolsticeWidgetLocation
+	var location: SolsticeWidgetLocation
 	
 	var entry: SolsticeWidgetTimelineEntry
 	
@@ -50,7 +50,7 @@ struct OverviewWidgetView: View {
 				if family != .systemSmall {
 					if let solar {
 						DaylightChart(solar: solar,
-													timeZone: detailedLocation.timeZone,
+													timeZone: location.timeZone,
 													includesSummaryTitle: false,
 													hideXAxis: true)
 						.padding(.horizontal, -20)
@@ -73,7 +73,7 @@ struct OverviewWidgetView: View {
 			
 			VStack(alignment: .leading, spacing: 4) {
 				if sizeCategory < .extraLarge {
-					if let title = detailedLocation.title {
+					if let title = location.title {
 						Label(title, systemImage: "location")
 							.font(.footnote.weight(.semibold))
 							.symbolVariant(.fill)
@@ -108,24 +108,24 @@ struct OverviewWidgetView: View {
 					}
 
 					HStack {
-						if let begins = solar?.safeSunrise {
+						if let begins = solar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone) {
 							Label("\(begins, style: .time)", systemImage: "sunrise.fill")
 						}
 
 						Spacer()
 
-						if let ends = solar?.safeSunset {
+						if let ends = solar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
 							Label("\(ends, style: .time)", systemImage: "sunset.fill")
 						}
 					}
 					.font(.caption.weight(.semibold))
 				} else {
 					VStack(alignment: .leading) {
-						if let begins = solar?.safeSunrise {
+						if let begins = solar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone) {
 							Label("\(begins, style: .time)", systemImage: "sunrise.fill")
 						}
 
-						if let ends = solar?.safeSunset {
+						if let ends = solar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
 							Label("\(ends, style: .time)", systemImage: "sunset.fill")
 						}
 					}.font(.caption).foregroundColor(.secondary)

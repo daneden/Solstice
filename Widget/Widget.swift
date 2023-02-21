@@ -15,64 +15,91 @@ enum SolsticeWidgetKind: String {
 }
 
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
-	func getLocation(for configuration: ConfigurationIntent) -> SolsticeWidgetLocation {
-		if let configurationLocation = configuration.location {
-			return SolsticeWidgetLocation(title: configurationLocation.name,
-																		subtitle: configurationLocation.locality,
-																		timeZoneIdentifier: configurationLocation.timeZone?.identifier,
-																		latitude: configurationLocation.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
-																		longitude: configurationLocation.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
-		} else {
-			return .defaultLocation
-		}
+	func getLocation(for placemark: CLPlacemark) -> SolsticeWidgetLocation {
+		return SolsticeWidgetLocation(title: placemark.locality,
+																	subtitle: placemark.country,
+																	timeZoneIdentifier: placemark.timeZone?.identifier,
+																	latitude: placemark.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
+																	longitude: placemark.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		let location = getLocation(for: configuration)
+		var clLocation: CLLocation
 		
-		let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
-		completion(entry)
+		if let configurationLocation = configuration.location?.location {
+			clLocation = configurationLocation
+		} else {
+			let currentLocation = CurrentLocation()
+			clLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
+		}
+		
+		CLGeocoder().reverseGeocodeLocation(clLocation) { placemarks, error in
+			guard let placemark = placemarks?.last,
+						error == nil else {
+				return completion(SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
+			}
+			
+			let location = getLocation(for: placemark)
+			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
+			return completion(entry)
+		}
 	}
 	
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
-		let location = getLocation(for: configuration)
+		var clLocation: CLLocation
 		
-		var entries: [SolsticeWidgetTimelineEntry] = []
-		
-		guard let solar = Solar(coordinate: location.coordinate) else {
-			return completion(Timeline(entries: [], policy: .atEnd))
+		if let configurationLocation = configuration.location?.location {
+			clLocation = configurationLocation
+		} else {
+			let currentLocation = CurrentLocation()
+			clLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
 		}
 		
-		let currentDate = Date()
-		let distanceToSunrise = abs(currentDate.distance(to: solar.safeSunrise))
-		let distanceToSunset = abs(currentDate.distance(to: solar.safeSunset))
-		let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
-		let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
-		? .init(score: 10, duration: nearestEventDistance)
-		: nil
-		
-		var nextUpdateDate = currentDate.addingTimeInterval(60 * 15)
-		
-		if nextUpdateDate < solar.safeSunrise {
-			nextUpdateDate = solar.safeSunrise
-		} else if nextUpdateDate < solar.safeSunset {
-			nextUpdateDate = solar.safeSunset
-		}
-		
-		entries.append(
-			SolsticeWidgetTimelineEntry(
-				date: currentDate,
-				location: location,
-				relevance: relevance
+		CLGeocoder().reverseGeocodeLocation(clLocation) { placemarks, error in
+			guard let placemark = placemarks?.last,
+						error == nil else {
+				return completion(Timeline(entries: [], policy: .atEnd))
+			}
+			
+			let location = getLocation(for: placemark)
+			
+			var entries: [SolsticeWidgetTimelineEntry] = []
+			
+			guard let solar = Solar(coordinate: location.coordinate) else {
+				return completion(Timeline(entries: [], policy: .atEnd))
+			}
+			
+			let currentDate = Date()
+			let distanceToSunrise = abs(currentDate.distance(to: solar.safeSunrise))
+			let distanceToSunset = abs(currentDate.distance(to: solar.safeSunset))
+			let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
+			let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
+			? .init(score: 10, duration: nearestEventDistance)
+			: nil
+			
+			var nextUpdateDate = currentDate.addingTimeInterval(60 * 15)
+			
+			if nextUpdateDate < solar.safeSunrise {
+				nextUpdateDate = solar.safeSunrise
+			} else if nextUpdateDate < solar.safeSunset {
+				nextUpdateDate = solar.safeSunset
+			}
+			
+			entries.append(
+				SolsticeWidgetTimelineEntry(
+					date: currentDate,
+					location: location,
+					relevance: relevance
+				)
 			)
-		)
-		
-		let timeline = Timeline(
-			entries: entries,
-			policy: .after(nextUpdateDate)
-		)
-		
-		completion(timeline)
+			
+			let timeline = Timeline(
+				entries: entries,
+				policy: .after(nextUpdateDate)
+			)
+			
+			completion(timeline)
+		}
 	}
 	
 	typealias Entry = SolsticeWidgetTimelineEntry
@@ -103,7 +130,7 @@ struct SolsticeOverviewWidget: Widget {
 			intent: ConfigurationIntent.self,
 			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
 		) { timelineEntry in
-			OverviewWidgetView(detailedLocation: timelineEntry.location, entry: timelineEntry)
+			OverviewWidgetView(location: timelineEntry.location, entry: timelineEntry)
 		}
 		.configurationDisplayName("Daylight Today")
 		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
