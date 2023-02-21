@@ -22,6 +22,21 @@ extension Solar {
 			self.date = date
 			self.phase = phase
 		}
+		
+		var imageName: String {
+			switch phase {
+			case .sunrise:
+				return "sunrise"
+			case .sunset:
+				return "sunset"
+			default:
+				return "sun.max"
+			}
+		}
+		
+		var description: String {
+			phase.rawValue
+		}
 	}
 	
 	enum Phase: String, Plottable {

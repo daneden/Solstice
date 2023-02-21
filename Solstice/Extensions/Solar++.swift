@@ -60,4 +60,8 @@ extension Solar {
 		
 		return string
 	}
+	
+	var nextSolarEvent: Event? {
+		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
+	}
 }

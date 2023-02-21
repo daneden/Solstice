@@ -146,7 +146,8 @@ struct SolsticeCountdownWidget: Widget {
 			intent: ConfigurationIntent.self,
 			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
 		) { timelineEntry in
-			Text("Sunrise/sunset countdown")
+			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
+			return CountdownWidgetView(solar: solar, nextSunEvent: solar.nextSolarEvent)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

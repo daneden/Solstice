@@ -28,6 +28,9 @@
 		7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
 		7106C88E29A27D330007A7EC /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7106C88F29A281440007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
+		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
+		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -108,6 +111,8 @@
 		7106C87529A276B40007A7EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7106C87729A276B40007A7EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetView.swift; sourceTree = "<group>"; };
+		7117008829A52ABE001BE478 /* CountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetView.swift; sourceTree = "<group>"; };
+		7117008A29A52B04001BE478 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -173,6 +178,7 @@
 			children = (
 				7106C87429A276B40007A7EC /* Widget.intentdefinition */,
 				7106C87729A276B40007A7EC /* Info.plist */,
+				7117008829A52ABE001BE478 /* CountdownWidgetView.swift */,
 				7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */,
 				7106C87229A276B40007A7EC /* Widget.swift */,
 				7106C86E29A276B40007A7EC /* WidgetBundle.swift */,
@@ -240,6 +246,7 @@
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
 				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
+				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -414,10 +421,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7106C87829A276B40007A7EC /* Widget.intentdefinition in Sources */,
+				7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				7106C88E29A27D330007A7EC /* DaylightChart.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
 				7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */,
 				7106C88829A2775C0007A7EC /* Solar+SolarEvent.swift in Sources */,
+				7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */,
 				7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */,
 				7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */,
 				7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */,
@@ -447,6 +456,7 @@
 				71F641C3299FD39E00FE5AB5 /* View+CapsuleAppearance.swift in Sources */,
 				71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */,
 				71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */,
+				7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */,
 				71F641C1299FCCFF00FE5AB5 /* TimeMachine.swift in Sources */,
 				719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */,
