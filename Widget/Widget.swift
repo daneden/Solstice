@@ -16,16 +16,38 @@ enum SolsticeWidgetKind: String {
 
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		let location = configuration.location?.location?.coordinate ?? CurrentLocation().coordinate
+		var location: SolsticeWidgetLocation
+		
+		if let configurationLocation = configuration.location {
+			location = SolsticeWidgetLocation(title: configurationLocation.name,
+																				subtitle: configurationLocation.locality,
+																				timeZoneIdentifier: configurationLocation.timeZone?.identifier,
+																				latitude: configurationLocation.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
+																				longitude: configurationLocation.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
+		} else {
+			location = .defaultLocation
+		}
+		
 		let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
 		completion(entry)
 	}
 	
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
-		let location = configuration.location?.location?.coordinate ?? CurrentLocation().coordinate
+		var location: SolsticeWidgetLocation
+		
+		if let configurationLocation = configuration.location {
+			location = SolsticeWidgetLocation(title: configurationLocation.name,
+																				subtitle: configurationLocation.locality,
+																				timeZoneIdentifier: configurationLocation.timeZone?.identifier,
+																				latitude: configurationLocation.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
+																				longitude: configurationLocation.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
+		} else {
+			location = .defaultLocation
+		}
+		
 		var entries: [SolsticeWidgetTimelineEntry] = []
 		
-		guard let solar = Solar(coordinate: location) else {
+		guard let solar = Solar(coordinate: location.coordinate) else {
 			return completion(Timeline(entries: [], policy: .atEnd))
 		}
 		
@@ -68,13 +90,13 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	var widgetIdentifier: String?
 	
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
-		SolsticeWidgetTimelineEntry(date: Date(), location: .init())
+		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
 	}
 }
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
-	var location: CLLocationCoordinate2D
+	var location: SolsticeWidgetLocation
 	var relevance: TimelineEntryRelevance? = nil
 }
 
@@ -89,7 +111,7 @@ struct SolsticeOverviewWidget: Widget {
 			intent: ConfigurationIntent.self,
 			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
 		) { timelineEntry in
-			OverviewWidgetView(entry: timelineEntry)
+			OverviewWidgetView(detailedLocation: timelineEntry.location, entry: timelineEntry)
 		}
 		.configurationDisplayName("Daylight Today")
 		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")

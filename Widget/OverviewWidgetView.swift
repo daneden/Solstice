@@ -10,21 +10,38 @@ import WidgetKit
 import Solar
 import CoreLocation
 
-struct SolsticeWidgetLocation {
-	var name: String
-	var timeZone: TimeZone
-	var location: CLLocationCoordinate2D
+struct SolsticeWidgetLocation: AnyLocation {
+	var title: String?
+	var subtitle: String?
+	var timeZoneIdentifier: String?
+	var latitude: Double
+	var longitude: Double
+	
+	var timeZone: TimeZone {
+		guard let timeZoneIdentifier else { return .autoupdatingCurrent }
+		return TimeZone(identifier: timeZoneIdentifier) ?? .autoupdatingCurrent
+	}
+	
+	var coordinate: CLLocationCoordinate2D {
+		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+	}
+	
+	static var defaultLocation = SolsticeWidgetLocation(title: "London",
+																											subtitle: "United Kingdom",
+																											timeZoneIdentifier: "GMT",
+																											latitude: 51.5072,
+																											longitude: -0.1276)
 }
 
 struct OverviewWidgetView: View {
 	@Environment(\.widgetFamily) private var family
 	@Environment(\.sizeCategory) private var sizeCategory
-	@State var detailedLocation: SolsticeWidgetLocation?
+	var detailedLocation: SolsticeWidgetLocation
 	
 	var entry: SolsticeWidgetTimelineEntry
 	
 	var solar: Solar? {
-		Solar(coordinate: entry.location)
+		Solar(coordinate: entry.location.coordinate)
 	}
 	
 	var body: some View {
@@ -33,9 +50,10 @@ struct OverviewWidgetView: View {
 				if family != .systemSmall {
 					if let solar {
 						DaylightChart(solar: solar,
-													timeZone: detailedLocation?.timeZone ?? .autoupdatingCurrent,
+													timeZone: detailedLocation.timeZone,
 													includesSummaryTitle: false,
 													hideXAxis: true)
+						.padding(.horizontal, -20)
 						.frame(maxHeight: 200)
 					}
 					
@@ -55,8 +73,10 @@ struct OverviewWidgetView: View {
 			
 			VStack(alignment: .leading, spacing: 4) {
 				if sizeCategory < .extraLarge {
-					if let detailedLocation {
-						Label(detailedLocation.name, systemImage: "location")
+					if let title = detailedLocation.title {
+						Label(title, systemImage: "location")
+							.font(.footnote.weight(.semibold))
+							.symbolVariant(.fill)
 					} else {
 						Image("Solstice-Icon")
 							.resizable()
@@ -97,7 +117,8 @@ struct OverviewWidgetView: View {
 						if let ends = solar?.safeSunset {
 							Label("\(ends, style: .time)", systemImage: "sunset.fill")
 						}
-					}.font(.caption)
+					}
+					.font(.caption.weight(.semibold))
 				} else {
 					VStack(alignment: .leading) {
 						if let begins = solar?.safeSunrise {
@@ -109,16 +130,7 @@ struct OverviewWidgetView: View {
 						}
 					}.font(.caption).foregroundColor(.secondary)
 				}
-			}.symbolRenderingMode(.hierarchical).imageScale(.large)
-		}
-		.task {
-			guard let placemark = try? await CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: entry.location.latitude, longitude: entry.location.longitude)).first else {
-				return
-			}
-			
-			detailedLocation = SolsticeWidgetLocation(name: placemark.name ?? "Unknown Location",
-																								timeZone: placemark.timeZone ?? .autoupdatingCurrent,
-																								location: entry.location)
+			}.symbolRenderingMode(.hierarchical)
 		}
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity)

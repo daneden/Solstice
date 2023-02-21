@@ -10,7 +10,7 @@ import Solar
 import CoreLocation
 import TimeIntervalFormatStyle
 
-struct DetailView<Location: AnyLocation>: View {
+struct DetailView<Location: ObservableLocation>: View {
 	@ObservedObject var location: Location
 	@EnvironmentObject var timeMachine: TimeMachine
 	@State private var showRemainingDaylight = false
