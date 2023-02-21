@@ -15,35 +15,27 @@ enum SolsticeWidgetKind: String {
 }
 
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
-	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		var location: SolsticeWidgetLocation
-		
+	func getLocation(for configuration: ConfigurationIntent) -> SolsticeWidgetLocation {
 		if let configurationLocation = configuration.location {
-			location = SolsticeWidgetLocation(title: configurationLocation.name,
-																				subtitle: configurationLocation.locality,
-																				timeZoneIdentifier: configurationLocation.timeZone?.identifier,
-																				latitude: configurationLocation.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
-																				longitude: configurationLocation.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
+			return SolsticeWidgetLocation(title: configurationLocation.name,
+																		subtitle: configurationLocation.locality,
+																		timeZoneIdentifier: configurationLocation.timeZone?.identifier,
+																		latitude: configurationLocation.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
+																		longitude: configurationLocation.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
 		} else {
-			location = .defaultLocation
+			return .defaultLocation
 		}
+	}
+	
+	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
+		let location = getLocation(for: configuration)
 		
 		let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
 		completion(entry)
 	}
 	
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
-		var location: SolsticeWidgetLocation
-		
-		if let configurationLocation = configuration.location {
-			location = SolsticeWidgetLocation(title: configurationLocation.name,
-																				subtitle: configurationLocation.locality,
-																				timeZoneIdentifier: configurationLocation.timeZone?.identifier,
-																				latitude: configurationLocation.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
-																				longitude: configurationLocation.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
-		} else {
-			location = .defaultLocation
-		}
+		let location = getLocation(for: configuration)
 		
 		var entries: [SolsticeWidgetTimelineEntry] = []
 		
