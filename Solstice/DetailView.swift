@@ -18,6 +18,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	var relativeDateFormatter: RelativeDateTimeFormatter {
 		let formatter = RelativeDateTimeFormatter()
+		formatter.dateTimeStyle = .named
+		formatter.formattingContext = .standalone
 		return formatter
 	}
 	
