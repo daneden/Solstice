@@ -27,13 +27,14 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
+		var isRealLocation = false
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
-			guard let placemark = placemarks?.first,
+			guard let placemark = placemarks?.last,
 						error == nil else {
 				return completion(SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
 			}
 			
-			let location = getLocation(for: placemark)
+			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
 			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
 			return completion(entry)
 		}
@@ -41,6 +42,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			currentLocation.requestLocation { location in
+				isRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
 			}
 		}
@@ -49,7 +51,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
 		var usingRealLocation = false
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
-			guard let placemark = placemarks?.first,
+			guard let placemark = placemarks?.last,
 						error == nil else {
 				return completion(Timeline(entries: [], policy: .atEnd))
 			}

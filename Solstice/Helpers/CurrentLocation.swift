@@ -65,7 +65,9 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 
 extension CurrentLocation: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		didUpdateLocationsCallback?(locations.first!)
+		if let location = locations.first {
+			didUpdateLocationsCallback?(location)
+		}
 		
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
