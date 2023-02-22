@@ -15,6 +15,10 @@ enum SolsticeWidgetKind: String {
 }
 
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
+	typealias Entry = SolsticeWidgetTimelineEntry
+	
+	typealias Intent = ConfigurationIntent
+	
 	var currentLocation = CurrentLocation()
 	
 	func getLocation(for placemark: CLPlacemark, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
@@ -106,11 +110,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 		}
 	}
 	
-	typealias Entry = SolsticeWidgetTimelineEntry
-	
-	typealias Intent = ConfigurationIntent
-	
-	var widgetIdentifier: String?
+	var widgetIdentifier: SolsticeWidgetKind?
 	
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
@@ -124,15 +124,13 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 }
 
 struct SolsticeOverviewWidget: Widget {
-	let kind: String = "OverviewWidget"
-	
 	@StateObject var locationManager = CurrentLocation()
 	
 	var body: some WidgetConfiguration {
 		IntentConfiguration(
-			kind: kind,
+			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
+			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: .OverviewWidget)
 		) { timelineEntry in
 			OverviewWidgetView(location: timelineEntry.location, entry: timelineEntry)
 		}
@@ -142,16 +140,14 @@ struct SolsticeOverviewWidget: Widget {
 }
 
 struct SolsticeCountdownWidget: Widget {
-	let kind: String = "CountdownWidget"
-	
 	var body: some WidgetConfiguration {
 		IntentConfiguration(
-			kind: kind,
+			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
+			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: .CountdownWidget)
 		) { timelineEntry in
 			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
-			return CountdownWidgetView(solar: solar, timeZone: timelineEntry.location.timeZone)
+			return CountdownWidgetView(solar: solar, location: timelineEntry.location)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

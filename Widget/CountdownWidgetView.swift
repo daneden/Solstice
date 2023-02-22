@@ -16,7 +16,11 @@ struct CountdownWidgetView: View {
 	var nextSolarEvent: Solar.Event? {
 		solar.nextSolarEvent
 	}
-	var timeZone: TimeZone
+	var location: SolsticeWidgetLocation
+	
+	var timeZone: TimeZone {
+		location.timeZone
+	}
 	
 	var displaySize: Font {
 		switch family {
@@ -30,8 +34,19 @@ struct CountdownWidgetView: View {
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8) {
 			if let nextSolarEvent {
-				Image(systemName: currentEventImageName)
-					.font(displaySize)
+				if let locationName = location.title {
+					Group {
+						if location.isRealLocation {
+							Text("\(locationName) \(Image(systemName: "location"))")
+						} else {
+							Text(locationName)
+						}
+					}
+					.font(.footnote.weight(.semibold))
+					.foregroundStyle(.secondary)
+					.symbolVariant(.fill)
+					.imageScale(.small)
+				}
 				
 				Spacer(minLength: 0)
 				
@@ -71,7 +86,7 @@ struct CountdownWidgetView: View {
 
 struct CountdownWigetView_Previews: PreviewProvider {
 	static var previews: some View {
-		CountdownWidgetView(solar: Solar(coordinate: .init())!, timeZone: .autoupdatingCurrent)
+		CountdownWidgetView(solar: Solar(coordinate: .init())!, location: .defaultLocation)
 			.previewContext(WidgetPreviewContext(family: .systemSmall))
 	}
 }
