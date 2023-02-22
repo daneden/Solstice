@@ -15,6 +15,8 @@ enum SolsticeWidgetKind: String {
 }
 
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
+	var currentLocation = CurrentLocation()
+	
 	func getLocation(for placemark: CLPlacemark) -> SolsticeWidgetLocation {
 		return SolsticeWidgetLocation(title: placemark.locality,
 																	subtitle: placemark.country,
@@ -24,17 +26,8 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		var clLocation: CLLocation
-		
-		if let configurationLocation = configuration.location?.location {
-			clLocation = configurationLocation
-		} else {
-			let currentLocation = CurrentLocation()
-			clLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
-		}
-		
-		CLGeocoder().reverseGeocodeLocation(clLocation) { placemarks, error in
-			guard let placemark = placemarks?.last,
+		let handler: CLGeocodeCompletionHandler = { placemarks, error in
+			guard let placemark = placemarks?.first,
 						error == nil else {
 				return completion(SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
 			}
@@ -43,20 +36,18 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
 			return completion(entry)
 		}
+		if let configurationLocation = configuration.location?.location {
+			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+		} else {
+			currentLocation.requestLocation { location in
+				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+			}
+		}
 	}
 	
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
-		var clLocation: CLLocation
-		
-		if let configurationLocation = configuration.location?.location {
-			clLocation = configurationLocation
-		} else {
-			let currentLocation = CurrentLocation()
-			clLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
-		}
-		
-		CLGeocoder().reverseGeocodeLocation(clLocation) { placemarks, error in
-			guard let placemark = placemarks?.last,
+		let handler: CLGeocodeCompletionHandler = { placemarks, error in
+			guard let placemark = placemarks?.first,
 						error == nil else {
 				return completion(Timeline(entries: [], policy: .atEnd))
 			}
@@ -99,6 +90,14 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			)
 			
 			completion(timeline)
+		}
+		
+		if let configurationLocation = configuration.location?.location {
+			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+		} else {
+			currentLocation.requestLocation { location in
+				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+			}
 		}
 	}
 	

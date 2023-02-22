@@ -51,6 +51,7 @@ struct OverviewWidgetView: View {
 					if let solar {
 						DaylightChart(solar: solar,
 													timeZone: location.timeZone,
+													eventTypes: [.sunrise, .sunset],
 													includesSummaryTitle: false,
 													hideXAxis: true)
 						.padding(.horizontal, -20)

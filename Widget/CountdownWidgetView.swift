@@ -52,7 +52,7 @@ struct CountdownWidgetView: View {
 		.padding()
 		.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center))
+		.background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center).blendMode(.plusDarker))
 		.background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom))
 		.colorScheme(.dark)
 		.symbolRenderingMode(.hierarchical)
@@ -66,5 +66,12 @@ struct CountdownWidgetView: View {
 		default:
 			return "sun.max"
 		}
+	}
+}
+
+struct CountdownWigetView_Previews: PreviewProvider {
+	static var previews: some View {
+		CountdownWidgetView(solar: Solar(coordinate: .init())!, timeZone: .autoupdatingCurrent)
+			.previewContext(WidgetPreviewContext(family: .systemSmall))
 	}
 }

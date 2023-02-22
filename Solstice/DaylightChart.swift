@@ -22,6 +22,7 @@ struct DaylightChart: View {
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
 	
+	var eventTypes: [Solar.Phase] = Solar.Phase.allCases
 	var includesSummaryTitle = true
 	var hideXAxis = false
 	
@@ -204,6 +205,11 @@ extension DaylightChart {
 			Solar.Event(label: event.label,
 									date: event.date.withTimeZoneAdjustment(for: timeZone),
 									phase: event.phase)
+		}
+		.filter { event in
+			eventTypes.contains { phase in
+				event?.phase == phase
+			}
 		}
 		.compactMap { $0 }
 	}
