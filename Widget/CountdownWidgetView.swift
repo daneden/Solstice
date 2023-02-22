@@ -13,7 +13,10 @@ struct CountdownWidgetView: View {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.sizeCategory) var sizeCategory
 	var solar: Solar
-	var nextSunEvent: Solar.Event?
+	var nextSolarEvent: Solar.Event? {
+		solar.nextSolarEvent
+	}
+	var timeZone: TimeZone
 	
 	var displaySize: Font {
 		switch family {
@@ -26,21 +29,21 @@ struct CountdownWidgetView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8) {
-			if let nextSunEvent {
+			if let nextSolarEvent {
 				Image(systemName: currentEventImageName)
 					.font(displaySize)
 				
 				Spacer(minLength: 0)
 				
 				HStack {
-					Text("\(nextSunEvent.description.localizedCapitalized) \(nextSunEvent.date.formatted(.relative(presentation: .numeric)))")
+					Text("\(nextSolarEvent.description.localizedCapitalized) \(nextSolarEvent.date.formatted(.relative(presentation: .numeric)))")
 						.font(displaySize.weight(.medium))
 						.lineLimit(3)
 						.fixedSize(horizontal: false, vertical: true)
 					Spacer(minLength: 0)
 				}
 				
-				Label("\(nextSunEvent.date, style: .time)", systemImage: nextSunEvent.imageName)
+				Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
 					.font(.footnote.weight(.semibold))
 			} else {
 				Text("Error")
@@ -57,12 +60,11 @@ struct CountdownWidgetView: View {
 	}
 	
 	var currentEventImageName: String {
-		return "moon.stars"
-//		switch nextSunEvent {
-//		case .sunrise(_):
-//			return "moon.stars"
-//		case .sunset(_):
-//			return "sun.max"
-//		}
+		switch nextSolarEvent?.phase {
+		case .sunrise:
+			return "moon.stars"
+		default:
+			return "sun.max"
+		}
 	}
 }

@@ -147,7 +147,7 @@ struct SolsticeCountdownWidget: Widget {
 			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: kind)
 		) { timelineEntry in
 			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
-			return CountdownWidgetView(solar: solar, nextSunEvent: solar.nextSolarEvent)
+			return CountdownWidgetView(solar: solar, timeZone: timelineEntry.location.timeZone)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

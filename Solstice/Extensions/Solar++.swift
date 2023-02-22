@@ -63,5 +63,14 @@ extension Solar {
 	
 	var nextSolarEvent: Event? {
 		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
+		?? tomorrow?.events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
+	}
+	
+	var tomorrow: Solar? {
+		guard let tomorrow = Calendar.autoupdatingCurrent.date(byAdding: .day, value: 1, to: date) else {
+			return nil
+		}
+		
+		return Solar(for: tomorrow, coordinate: coordinate)
 	}
 }
