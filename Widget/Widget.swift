@@ -17,12 +17,13 @@ enum SolsticeWidgetKind: String {
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	var currentLocation = CurrentLocation()
 	
-	func getLocation(for placemark: CLPlacemark) -> SolsticeWidgetLocation {
+	func getLocation(for placemark: CLPlacemark, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
 		return SolsticeWidgetLocation(title: placemark.locality,
 																	subtitle: placemark.country,
 																	timeZoneIdentifier: placemark.timeZone?.identifier,
 																	latitude: placemark.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
-																	longitude: placemark.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude)
+																	longitude: placemark.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude,
+																	isRealLocation: isRealLocation)
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
@@ -46,13 +47,14 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	}
 	
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
+		var usingRealLocation = false
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
 			guard let placemark = placemarks?.first,
 						error == nil else {
 				return completion(Timeline(entries: [], policy: .atEnd))
 			}
 			
-			let location = getLocation(for: placemark)
+			let location = getLocation(for: placemark, isRealLocation: usingRealLocation)
 			
 			var entries: [SolsticeWidgetTimelineEntry] = []
 			
@@ -96,6 +98,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			currentLocation.requestLocation { location in
+				usingRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
 			}
 		}

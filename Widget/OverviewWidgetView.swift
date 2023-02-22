@@ -16,6 +16,7 @@ struct SolsticeWidgetLocation: AnyLocation {
 	var timeZoneIdentifier: String?
 	var latitude: Double
 	var longitude: Double
+	var isRealLocation = false
 	
 	var timeZone: TimeZone {
 		guard let timeZoneIdentifier else { return .autoupdatingCurrent }
@@ -75,9 +76,16 @@ struct OverviewWidgetView: View {
 			VStack(alignment: .leading, spacing: 4) {
 				if sizeCategory < .extraLarge {
 					if let title = location.title {
-						Label(title, systemImage: "location")
+						Group {
+							if location.isRealLocation {
+								Text("\(title) \(Image(systemName: "location"))")
+							} else {
+								Text(title)
+							}
+						}
 							.font(.footnote.weight(.semibold))
 							.symbolVariant(.fill)
+							.imageScale(.small)
 					} else {
 						Image("Solstice-Icon")
 							.resizable()
