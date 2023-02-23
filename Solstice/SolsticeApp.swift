@@ -11,6 +11,7 @@ import OSLog
 
 @main
 struct SolsticeApp: App {
+	@AppStorage("testLastUpdated") var testLastUpdated = "never"
 	@Environment(\.scenePhase) var phase
 	@StateObject var timeMachine = TimeMachine()
 	let persistenceController = PersistenceController.shared
@@ -36,6 +37,9 @@ struct SolsticeApp: App {
 		}
 		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
 			os_log("SDTE: \(Date().formatted(date: .abbreviated, time: .standard)) Running background task with id: \(NotificationManager.backgroundTaskIdentifier)")
+			DispatchQueue.main.async {
+				testLastUpdated = Date().formatted()
+			}
 			await NotificationManager.scheduleNotification()
 		}
 	}
