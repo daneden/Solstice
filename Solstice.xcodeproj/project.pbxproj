@@ -252,10 +252,10 @@
 			children = (
 				719846AF28EEE48900E866CE /* CurrentLocation.swift */,
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
-				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
-				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
-				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
+				7117008A29A52B04001BE478 /* SkyGradient.swift */,
+				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
+				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
