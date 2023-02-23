@@ -36,7 +36,7 @@ struct SolsticeApp: App {
 		}
 		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
 			os_log("SDTE: \(Date().formatted(date: .abbreviated, time: .standard)) Running background task with id: \(NotificationManager.backgroundTaskIdentifier)")
-			NotificationManager.scheduleNotification()
+			await NotificationManager.scheduleNotification()
 		}
 	}
 }

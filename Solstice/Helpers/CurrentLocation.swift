@@ -96,8 +96,12 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		return locationManager.requestLocation()
 	}
 	
-	var isAuthorized: Bool {
-		switch locationManager.authorizationStatus {
+	static var authorizationStatus: CLAuthorizationStatus {
+		CLLocationManager().authorizationStatus
+	}
+	
+	static var isAuthorized: Bool {
+		switch authorizationStatus {
 		case .authorizedAlways, .authorizedWhenInUse: return true
 		default: return false
 		}
