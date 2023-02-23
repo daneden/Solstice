@@ -14,6 +14,8 @@ enum NavigationSelection: Hashable {
 }
 
 struct ContentView: View {
+	@AppStorage("testNotificationsEnabled") var testNotificationsEnabled = false
+	
 	@Environment(\.isSearching) private var isSearching
 	@Environment(\.managedObjectContext) private var viewContext
 	
@@ -32,6 +34,15 @@ struct ContentView: View {
 		NavigationSplitView {
 			List {
 				TimeMachineView()
+				
+				Toggle("Enable notifications", isOn: $testNotificationsEnabled)
+					.onChange(of: testNotificationsEnabled) { newValue in
+						Task {
+							if newValue == true {
+								testNotificationsEnabled = await NotificationManager.requestAuthorization() ?? false
+							}
+						}
+					}
 				
 				Section {
 					NavigationLink(value: NavigationSelection.currentLocation) {

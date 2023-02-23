@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import BackgroundTasks
+import OSLog
 
 @main
 struct SolsticeApp: App {
+	@Environment(\.scenePhase) var phase
 	@StateObject var timeMachine = TimeMachine()
 	let persistenceController = PersistenceController.shared
 
@@ -25,5 +28,20 @@ struct SolsticeApp: App {
 					}
 			}
 		}
+		.onChange(of: phase) { newPhase in
+			switch newPhase {
+			case .background: scheduleAppRefresh()
+			default: break
+			}
+		}
+		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
+			os_log("SDTE: \(Date().formatted(date: .abbreviated, time: .standard)) Running background task with id: \(NotificationManager.backgroundTaskIdentifier)")
+			NotificationManager.scheduleNotification()
+		}
 	}
+}
+
+func scheduleAppRefresh() {
+	let request = BGAppRefreshTaskRequest(identifier: NotificationManager.backgroundTaskIdentifier)
+	try? BGTaskScheduler.shared.submit(request)
 }
