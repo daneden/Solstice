@@ -31,47 +31,51 @@ struct CountdownWidgetView: View {
 		}
 	}
 	
+	var nextEventText: some View {
+		if let nextSolarEvent {
+			return Text("\(nextSolarEvent.description.localizedCapitalized) \(nextSolarEvent.date.formatted(.relative(presentation: .numeric)))")
+		} else {
+			return Text("Loading...")
+		}
+	}
+	
 	var body: some View {
-		VStack(alignment: .leading, spacing: 8) {
-			if let nextSolarEvent {
-				if let locationName = location.title {
-					Group {
-						if location.isRealLocation {
-							Text("\(locationName) \(Image(systemName: "location"))")
-						} else {
-							Text(locationName)
-						}
-					}
-					.font(.footnote.weight(.semibold))
-					.foregroundStyle(.secondary)
-					.symbolVariant(.fill)
-					.imageScale(.small)
-				}
-				
-				Spacer(minLength: 0)
-				
+		if let nextSolarEvent {
+			switch family {
+			case .accessoryInline:
 				HStack {
-					Text("\(nextSolarEvent.description.localizedCapitalized) \(nextSolarEvent.date.formatted(.relative(presentation: .numeric)))")
-						.font(displaySize.weight(.medium))
-						.lineLimit(3)
-						.fixedSize(horizontal: false, vertical: true)
-					Spacer(minLength: 0)
+					Image(systemName: nextSolarEvent.imageName)
+					nextEventText
 				}
-				
+			case .accessoryRectangular:
 				Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
-					.font(.footnote.weight(.semibold))
-			} else {
-				Text("Error")
+			default:
+				VStack(alignment: .leading, spacing: 8) {
+					WidgetLocationView(location: location)
+					
+					Spacer(minLength: 0)
+					
+					HStack {
+						nextEventText
+							.font(displaySize.weight(.medium))
+							.lineLimit(3)
+						
+						Spacer(minLength: 0)
+					}
+					
+					Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
+						.font(.footnote.weight(.semibold))
+				}
+				.padding()
+				.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
+				.background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center).blendMode(.plusDarker))
+				.background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom))
+				.colorScheme(.dark)
+				.symbolRenderingMode(.hierarchical)
+				.symbolVariant(.fill)
 			}
 		}
-		.padding()
-		.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.background(LinearGradient(colors: [.black.opacity(0.15), .clear], startPoint: .bottom, endPoint: .center).blendMode(.plusDarker))
-		.background(LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom))
-		.colorScheme(.dark)
-		.symbolRenderingMode(.hierarchical)
-		.symbolVariant(.fill)
 	}
 	
 	var currentEventImageName: String {

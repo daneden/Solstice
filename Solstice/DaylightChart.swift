@@ -86,7 +86,7 @@ struct DaylightChart: View {
 									x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
 									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
 								)
-								.shadow(color: .secondary.opacity(0.5), radius: 8)
+								.shadow(color: .secondary.opacity(0.5), radius: 2)
 						}
 						.background(.background.opacity(0.2))
 						.mask(alignment: .bottom) {
@@ -102,7 +102,7 @@ struct DaylightChart: View {
 									x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
 									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
 								)
-								.shadow(color: .secondary.opacity(0.5), radius: 8)
+								.shadow(color: .secondary.opacity(0.5), radius: 4)
 						}
 						.mask(alignment: .top) {
 							Rectangle()

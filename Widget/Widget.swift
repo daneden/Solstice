@@ -14,9 +14,14 @@ enum SolsticeWidgetKind: String {
 	case CountdownWidget, OverviewWidget
 }
 
+struct SolsticeWidgetTimelineEntry: TimelineEntry {
+	let date: Date
+	var location: SolsticeWidgetLocation
+	var relevance: TimelineEntryRelevance? = nil
+}
+
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	typealias Entry = SolsticeWidgetTimelineEntry
-	
 	typealias Intent = ConfigurationIntent
 	
 	var currentLocation = CurrentLocation()
@@ -53,14 +58,14 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	}
 	
 	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
-		var usingRealLocation = false
+		var isRealLocation = false
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
 			guard let placemark = placemarks?.last,
 						error == nil else {
 				return completion(Timeline(entries: [], policy: .atEnd))
 			}
 			
-			let location = getLocation(for: placemark, isRealLocation: usingRealLocation)
+			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
 			
 			var entries: [SolsticeWidgetTimelineEntry] = []
 			
@@ -104,23 +109,15 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			currentLocation.requestLocation { location in
-				usingRealLocation = true
+				isRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
 			}
 		}
 	}
 	
-	var widgetIdentifier: SolsticeWidgetKind?
-	
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
 	}
-}
-
-struct SolsticeWidgetTimelineEntry: TimelineEntry {
-	let date: Date
-	var location: SolsticeWidgetLocation
-	var relevance: TimelineEntryRelevance? = nil
 }
 
 struct SolsticeOverviewWidget: Widget {
@@ -130,12 +127,13 @@ struct SolsticeOverviewWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: .OverviewWidget)
+			provider: SolsticeWidgetTimelineProvider()
 		) { timelineEntry in
-			OverviewWidgetView(location: timelineEntry.location, entry: timelineEntry)
+			OverviewWidgetView(entry: timelineEntry)
 		}
 		.configurationDisplayName("Daylight Today")
 		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
+		.supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular])
 	}
 }
 
@@ -144,20 +142,13 @@ struct SolsticeCountdownWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: SolsticeWidgetTimelineProvider(widgetIdentifier: .CountdownWidget)
+			provider: SolsticeWidgetTimelineProvider()
 		) { timelineEntry in
 			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
 			return CountdownWidgetView(solar: solar, location: timelineEntry.location)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")
-		.supportedFamilies([.systemSmall, .systemMedium])
+		.supportedFamilies([.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular])
 	}
 }
-
-//struct Widget_Previews: PreviewProvider {
-//    static var previews: some View {
-//        WidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
-//            .previewContext(WidgetPreviewContext(family: .systemSmall))
-//    }
-//}
