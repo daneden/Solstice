@@ -47,5 +47,6 @@ struct SolsticeApp: App {
 
 func scheduleAppRefresh() {
 	let request = BGAppRefreshTaskRequest(identifier: NotificationManager.backgroundTaskIdentifier)
+	request.earliestBeginDate = Date().addingTimeInterval(60 * 60)
 	try? BGTaskScheduler.shared.submit(request)
 }
