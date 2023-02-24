@@ -79,7 +79,13 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 						let startOfDay = Date().startOfDay
 						if let doubleValue = value.as(Double.self),
 							 let date = startOfDay.addingTimeInterval(doubleValue) {
-							Text("\(date, style: .time)")
+							if doubleValue == 0 {
+								Text("Morning")
+							} else if doubleValue == dayLength {
+								Text("Evening")
+							} else {
+								Text("\(date, style: .time)")
+							}
 						}
 					}
 				}
