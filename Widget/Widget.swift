@@ -51,6 +51,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			currentLocation.requestLocation { location in
+				guard let location else { return }
 				isRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
 			}
@@ -109,6 +110,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			currentLocation.requestLocation { location in
+				guard let location else { return }
 				isRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
 			}

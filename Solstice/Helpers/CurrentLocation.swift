@@ -35,7 +35,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 	@Published private(set) var latitude: Double = 0
 	@Published private(set) var longitude: Double = 0
 	@Published private(set) var timeZoneIdentifier: String?
-	private var didUpdateLocationsCallback: ((CLLocation) -> Void)?
+	private var didUpdateLocationsCallback: ((CLLocation?) -> Void)?
 	
 	var coordinate: CLLocationCoordinate2D {
 		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -65,9 +65,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 
 extension CurrentLocation: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		if let location = locations.first {
-			didUpdateLocationsCallback?(location)
-		}
+		didUpdateLocationsCallback?(locations.last)
 		
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
@@ -76,7 +74,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	
 	@MainActor
 	func defaultDidUpdateLocationsCallback(_ locations: [CLLocation]) -> Void {
-		if let location = locations.first {
+		if let location = locations.last {
 			latitude = location.coordinate.latitude
 			longitude = location.coordinate.longitude
 			
@@ -91,7 +89,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		}
 	}
 	
-	func requestLocation(handler: @escaping (CLLocation) -> Void) {
+	func requestLocation(handler: @escaping (CLLocation?) -> Void) {
 		self.didUpdateLocationsCallback = handler
 		return locationManager.requestLocation()
 	}

@@ -20,11 +20,16 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	static func scheduleNotification() async {
 		guard CurrentLocation.isAuthorized else { return }
 		
-		let location: CLLocation = await withCheckedContinuation({ continuation in
+		let location: CLLocation? = await withCheckedContinuation({ continuation in
 			CurrentLocation().requestLocation { location in
 				continuation.resume(returning: location)
 			}
 		})
+		
+		guard let location else {
+			print("Could not retrieve user location")
+			return
+		}
 		
 		guard let notificationContent = buildNotificationContent(for: Date(), location: location) else {
 			return
@@ -34,7 +39,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		content.title = notificationContent.title
 		content.subtitle = notificationContent.body
 		
-		let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: Date().addingTimeInterval(60 * 60))
+		let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: Date().addingTimeInterval(5))
 		
 		let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
 		

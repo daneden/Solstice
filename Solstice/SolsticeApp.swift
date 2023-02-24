@@ -7,11 +7,10 @@
 
 import SwiftUI
 import BackgroundTasks
-import OSLog
+import UserNotifications
 
 @main
 struct SolsticeApp: App {
-	@AppStorage("testLastUpdated") var testLastUpdated = "never"
 	@Environment(\.scenePhase) var phase
 	@StateObject var timeMachine = TimeMachine()
 	let persistenceController = PersistenceController.shared
@@ -36,17 +35,31 @@ struct SolsticeApp: App {
 			}
 		}
 		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
-			os_log("SDTE: \(Date().formatted(date: .abbreviated, time: .standard)) Running background task with id: \(NotificationManager.backgroundTaskIdentifier)")
-			DispatchQueue.main.async {
-				testLastUpdated = Date().formatted()
+			scheduleAppRefresh()
+			await withTaskCancellationHandler {
+//				let notif = UNMutableNotificationContent()
+//				notif.title = "Hello world"
+//				notif.subtitle = "This is a test"
+//				let trigger = UNnotificationtrig
+				await NotificationManager.scheduleNotification()
+			} onCancel: {
+				print("Background task cancelled")
 			}
-			await NotificationManager.scheduleNotification()
 		}
 	}
 }
 
 func scheduleAppRefresh() {
+	let noonComponent = DateComponents(hour: 12)
+	let nextNoon = Calendar.autoupdatingCurrent.nextDate(after: Date(), matching: noonComponent, matchingPolicy: .nextTime)
+	
 	let request = BGAppRefreshTaskRequest(identifier: NotificationManager.backgroundTaskIdentifier)
-	request.earliestBeginDate = Date().addingTimeInterval(60 * 60)
-	try? BGTaskScheduler.shared.submit(request)
+	request.earliestBeginDate = nextNoon ?? .now
+	
+	do {
+		try BGTaskScheduler.shared.submit(request)
+		print("Scheduled bg task at \(Date().formatted())")
+	} catch {
+		print(error)
+	}
 }
