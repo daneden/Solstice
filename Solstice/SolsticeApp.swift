@@ -8,6 +8,7 @@
 import SwiftUI
 import BackgroundTasks
 import UserNotifications
+import OSLog
 
 @main
 struct SolsticeApp: App {
@@ -47,13 +48,14 @@ struct SolsticeApp: App {
 				
 				do {
 					try await UNUserNotificationCenter.current().add(request)
+					os_log("SDTE: Sent notification")
 				} catch {
-					print(error)
+					os_log("SDTE: \(error.localizedDescription)")
 				}
 				
 				// await NotificationManager.scheduleNotification()
 			} onCancel: {
-				print("Background task cancelled")
+				os_log("SDTE: bg task timed out")
 			}
 		}
 	}
@@ -68,7 +70,6 @@ func scheduleAppRefresh() {
 	
 	do {
 		try BGTaskScheduler.shared.submit(request)
-		print("Scheduled bg task for \(nextNoon ?? .now)")
 	} catch {
 		print(error)
 	}
