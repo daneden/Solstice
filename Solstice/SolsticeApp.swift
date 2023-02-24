@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
-import BackgroundTasks
 import UserNotifications
+import StoreKit
+
+#if canImport(BackgroundTasks)
+import BackgroundTasks
+#endif
 
 @main
 struct SolsticeApp: App {
@@ -21,13 +25,26 @@ struct SolsticeApp: App {
 				ContentView()
 					.environmentObject(timeMachine)
 					.environment(\.managedObjectContext, persistenceController.container.viewContext)
-					.symbolRenderingMode(.hierarchical)
-					.symbolVariant(.fill)
 					.onChange(of: timeline.date) { newValue in
 						timeMachine.referenceDate = newValue
 					}
+					.task {
+						for await result in Transaction.updates {
+							switch result {
+							case .verified(let transaction):
+								print("Transaction verified in listener")
+								
+								await transaction.finish()
+								
+								// Update the user's purchases...
+							case .unverified:
+								print("Transaction unverified")
+							}
+						}
+					}
 			}
 		}
+		#if os(iOS)
 		.onChange(of: phase) { newPhase in
 			switch newPhase {
 			case .background: scheduleAppRefresh()
@@ -53,9 +70,17 @@ struct SolsticeApp: App {
 			
 			// await NotificationManager.scheduleNotification()
 		}
+		#endif
+		
+		#if os(macOS)
+		Settings {
+			SettingsView()
+		}
+		#endif
 	}
 }
 
+#if os(iOS)
 func scheduleAppRefresh() {
 	let noonComponent = DateComponents(hour: 12)
 	let nextNoon = Calendar.autoupdatingCurrent.nextDate(after: Date(), matching: noonComponent, matchingPolicy: .nextTime)
@@ -69,3 +94,4 @@ func scheduleAppRefresh() {
 		print(error)
 	}
 }
+#endif

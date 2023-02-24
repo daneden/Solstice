@@ -15,6 +15,7 @@ enum NavigationSelection: Hashable {
 
 struct ContentView: View {
 	@AppStorage("testNotificationsEnabled") var testNotificationsEnabled = false
+	@State var settingsViewOpen = false
 	
 	@Environment(\.isSearching) private var isSearching
 	@Environment(\.managedObjectContext) private var viewContext
@@ -34,15 +35,6 @@ struct ContentView: View {
 		NavigationSplitView {
 			List {
 				TimeMachineView()
-				
-				Toggle("Enable notifications", isOn: $testNotificationsEnabled)
-					.onChange(of: testNotificationsEnabled) { newValue in
-						Task {
-							if newValue == true {
-								testNotificationsEnabled = await NotificationManager.requestAuthorization() ?? false
-							}
-						}
-					}
 				
 				Section {
 					NavigationLink(value: NavigationSelection.currentLocation) {
@@ -81,6 +73,20 @@ struct ContentView: View {
 					LocationSearchResultRow(searchService: locationSearchService, result: result)
 				}
 			}
+			#if os(iOS)
+			.toolbar {
+				Button {
+					settingsViewOpen.toggle()
+				} label: {
+					Label("Settings", systemImage: "gearshape")
+				}
+				.sheet(isPresented: $settingsViewOpen) {
+					NavigationStack {
+						SettingsView()
+					}
+				}
+			}
+			#endif
 		} detail: {
 			placeholderView
 		}

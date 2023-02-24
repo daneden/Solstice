@@ -29,6 +29,16 @@ struct DetailView<Location: ObservableLocation>: View {
 		return formatter
 	}
 	
+	var chartHeight: CGFloat {
+#if os(iOS)
+		300
+#elseif os(macOS)
+		300
+#elseif os(watchOS)
+		100
+#endif
+	}
+	
 	var body: some View {
 		GeometryReader { geom in
 			Form {
@@ -39,7 +49,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-							.frame(minHeight: 200, idealHeight: geom.size.height * 0.4)
+							.frame(height: chartHeight)
 							.padding(.bottom)
 					}
 					
@@ -100,7 +110,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					}
 					
 					AnnualDaylightChart(location: location)
-						.frame(minHeight: geom.size.height * 0.4)
+						.frame(height: chartHeight)
 						.padding(.vertical)
 				}
 			}

@@ -75,10 +75,10 @@ struct Preferences {
 	// MARK: Scheduling
 	struct NotificationSettings {
 		/// The type of notification schedule; either a specific time (specified in `notificationDate`) or relative to sunrise/sunset
-		static let scheduleType: Value<ScheduleType> = ("scheduleType", .specificTime)
+		static let scheduleType: Value<ScheduleType> = ("notificationScheduleType", .specificTime)
 		
 		/// The date/time for notification scheduling. Only the time will be used.
-		static let notificationTime: Value<TimeInterval> = ("notifTime", defaultNotificationDate.timeIntervalSince1970)
+		static let notificationTime: Value<Date> = ("notifTime", defaultNotificationDate)
 		
 		/// Which solar event notifications are sent relative to
 		static let relation: Value<Solar.Phase> = ("notificationRelation", .sunrise)
@@ -107,21 +107,27 @@ struct Preferences {
 	}
 }
 
-enum SADPreference: String, CaseIterable, RawRepresentable {
-	case none = "No change"
-	case removeDifference = "Remove daylight gain/loss"
-	case suppressNotifications = "Suppress notifications altogether"
+extension Preferences {
+	enum SADPreference: String, CaseIterable, RawRepresentable {
+		case none = "No change"
+		case removeDifference = "Remove daylight gain/loss"
+		case suppressNotifications = "Suppress notifications altogether"
+	}
 }
 
-enum ScheduleType: String, RawRepresentable, CaseIterable {
-	case specificTime, relativeTime
-	
-	var description: String {
-		switch self {
-		case .specificTime:
-			return "At a specific time"
-		case .relativeTime:
-			return "Relative to sunrise/sunset"
+extension Preferences.NotificationSettings {
+	enum ScheduleType: String, RawRepresentable, CaseIterable {
+		case specificTime, sunset, sunrise
+		
+		var description: String {
+			switch self {
+			case .specificTime:
+				return "a specific time"
+			case .sunset:
+				return "Sunset"
+			case .sunrise:
+				return "Sunrise"
+			}
 		}
 	}
 }
