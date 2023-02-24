@@ -8,7 +8,6 @@
 import SwiftUI
 import BackgroundTasks
 import UserNotifications
-import OSLog
 
 @main
 struct SolsticeApp: App {
@@ -37,26 +36,22 @@ struct SolsticeApp: App {
 		}
 		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
 			scheduleAppRefresh()
-			await withTaskCancellationHandler {
-				let notif = UNMutableNotificationContent()
-				notif.title = "Hello world"
-				notif.subtitle = "This is a test"
-				
-				let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5))
-				let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-				let request = UNNotificationRequest(identifier: UUID().uuidString, content: notif, trigger: trigger)
-				
-				do {
-					try await UNUserNotificationCenter.current().add(request)
-					os_log("SDTE: Sent notification")
-				} catch {
-					os_log("SDTE: \(error.localizedDescription)")
-				}
-				
-				// await NotificationManager.scheduleNotification()
-			} onCancel: {
-				os_log("SDTE: bg task timed out")
+			
+			let notif = UNMutableNotificationContent()
+			notif.title = "Hello world"
+			notif.body = "This is a test notification sent at \(Date().formatted())"
+			
+			let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5))
+			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+			let request = UNNotificationRequest(identifier: UUID().uuidString, content: notif, trigger: trigger)
+			
+			do {
+				try await UNUserNotificationCenter.current().add(request)
+			} catch {
+				print(error)
 			}
+			
+			// await NotificationManager.scheduleNotification()
 		}
 	}
 }
