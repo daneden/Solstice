@@ -37,11 +37,21 @@ struct SolsticeApp: App {
 		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
 			scheduleAppRefresh()
 			await withTaskCancellationHandler {
-//				let notif = UNMutableNotificationContent()
-//				notif.title = "Hello world"
-//				notif.subtitle = "This is a test"
-//				let trigger = UNnotificationtrig
-				await NotificationManager.scheduleNotification()
+				let notif = UNMutableNotificationContent()
+				notif.title = "Hello world"
+				notif.subtitle = "This is a test"
+				
+				let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5))
+				let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+				let request = UNNotificationRequest(identifier: UUID().uuidString, content: notif, trigger: trigger)
+				
+				do {
+					try await UNUserNotificationCenter.current().add(request)
+				} catch {
+					print(error)
+				}
+				
+				// await NotificationManager.scheduleNotification()
 			} onCancel: {
 				print("Background task cancelled")
 			}
@@ -58,7 +68,7 @@ func scheduleAppRefresh() {
 	
 	do {
 		try BGTaskScheduler.shared.submit(request)
-		print("Scheduled bg task at \(Date().formatted())")
+		print("Scheduled bg task for \(nextNoon ?? .now)")
 	} catch {
 		print(error)
 	}
