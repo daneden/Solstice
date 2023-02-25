@@ -97,21 +97,22 @@ struct NotificationSettings: View {
 				} label: {
 					Text("Customise Notification Content").foregroundColor(.primary)
 				}
-			}
-			
-			Section {
-				Picker(selection: $sadPreference) {
-					ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
-						Text(sadPreference.rawValue)
+				
+				Section {
+					Picker(selection: $sadPreference) {
+						ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
+							Text(sadPreference.rawValue)
+						}
+					} label: {
+						Text("SAD Preference")
 					}
-				} label: {
-					Text("SAD Preference")
+				} footer: {
+					Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
 				}
-			} footer: {
-				Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
 			}
+			.disabled(!notificationsEnabled)
 		}
-		.disabled(!notificationsEnabled)
+		
 	}
 }
 
