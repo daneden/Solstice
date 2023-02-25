@@ -33,7 +33,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 				
 				Text(sunrise.withTimeZoneAdjustment(for: location.timeZone)...sunset.withTimeZoneAdjustment(for: location.timeZone))
 					.font(.footnote)
-					.foregroundColor(.secondary)
+					.foregroundStyle(.secondary)
 			}
 			
 			Spacer()
