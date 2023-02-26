@@ -26,15 +26,20 @@ struct ContentView: View {
 	private var items: FetchedResults<SavedLocation>
 	
 	@State var navigationSelection: NavigationSelection? = .currentLocation
-	@StateObject var locationSearchService = LocationSearchService()
 	@StateObject var currentLocation = CurrentLocation()
+	
+	#if !os(watchOS)
+	@StateObject var locationSearchService = LocationSearchService()
+	#endif
 	
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	var body: some View {
 		NavigationSplitView {
 			List {
+				#if !os(watchOS)
 				TimeMachineView()
+				#endif
 				
 				Section {
 					NavigationLink(value: NavigationSelection.currentLocation) {
@@ -65,6 +70,7 @@ struct ContentView: View {
 			}
 			.navigationTitle("Solstice")
 			.navigationSplitViewColumnWidth(ideal: 256)
+			#if !os(watchOS)
 			.searchable(text: $locationSearchService.queryFragment,
 									placement: .toolbar,
 									prompt: "Search cities or airports")
@@ -73,6 +79,7 @@ struct ContentView: View {
 					LocationSearchResultRow(searchService: locationSearchService, result: result)
 				}
 			}
+			#endif
 			#if os(iOS)
 			.toolbar {
 				Button {

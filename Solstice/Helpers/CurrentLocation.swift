@@ -72,7 +72,9 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
+			#if !os(watchOS)
 			await NotificationManager.scheduleNotifications()
+			#endif
 		}
 	}
 	

@@ -44,6 +44,7 @@ struct SolsticeApp: App {
 					}
 			}
 		}
+		#if !os(watchOS)
 		.onChange(of: phase) { newValue in
 			switch newValue {
 			case .background:
@@ -52,6 +53,7 @@ struct SolsticeApp: App {
 				break
 			}
 		}
+		#endif
 		
 		#if os(macOS)
 		Settings {
