@@ -215,10 +215,10 @@
 		717F8BBA29A908D00015ECCB /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */,
 				717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */,
 				717F8BBB29A908E30015ECCB /* SettingsView.swift */,
 				718B136B29A918680001D4DC /* SupporterSettings.swift */,
-				71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -226,12 +226,12 @@
 		7198467828E5895E00E866CE = {
 			isa = PBXGroup;
 			children = (
-				71DB52AC29ABD17F00D62BB7 /* watchOS */,
 				718B136D29A918AD0001D4DC /* README.md */,
-				7198468328E5895E00E866CE /* Solstice */,
-				7106C86D29A276B40007A7EC /* Widget */,
-				7198468228E5895E00E866CE /* Products */,
 				71F641EE29A13C5300FE5AB5 /* Frameworks */,
+				7198468228E5895E00E866CE /* Products */,
+				7198468328E5895E00E866CE /* Solstice */,
+				71DB52AC29ABD17F00D62BB7 /* watchOS */,
+				7106C86D29A276B40007A7EC /* Widget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -294,12 +294,12 @@
 		719846AB28E9A9FF00E866CE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */,
 				71F641BA2999631D00FE5AB5 /* Date++.swift */,
 				719846AC28E9AA0E00E866CE /* Solar++.swift */,
 				71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */,
 				71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
-				717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
