@@ -43,7 +43,7 @@ struct NotificationSettings: View {
 	
 	var body: some View {
 		Form {
-			Toggle("Enable notifications", isOn: $notificationsEnabled)
+			Toggle("Enable Notifications", isOn: $notificationsEnabled)
 				.onChange(of: notificationsEnabled) { newValue in
 					Task {
 						if newValue == true {
@@ -91,12 +91,12 @@ struct NotificationSettings: View {
 					
 					VStack(alignment: .leading) {
 						Text("Notification Preview")
-							.font(.caption)
-							.foregroundColor(.secondary)
-						Text(NotificationManager.buildNotificationContent(for: Date(), location: .init(latitude: 0, longitude: 0), in: .preview)?.body ?? "Preview")
-					}.padding(.vertical, 8)
+							.font(.footnote)
+							.foregroundStyle(.secondary)
+						NotificationPreview()
+					}
 				} label: {
-					Text("Customise Notification Content").foregroundColor(.primary)
+					Text("Customise Notification Content")
 				}
 				
 				Section {
@@ -114,6 +114,42 @@ struct NotificationSettings: View {
 			.disabled(!notificationsEnabled)
 		}
 		
+	}
+}
+
+struct NotificationPreview: View {
+	var title: String = ""
+	var bodyContent: String = ""
+	
+	init() {
+		guard let content = NotificationManager.buildNotificationContent(for: Date(), location: .init(), in: .preview) else {
+			return
+		}
+		
+		title = content.title
+		bodyContent = content.body
+	}
+	
+	var body: some View {
+		HStack {
+			Image("notificationPreviewAppIcon")
+				.resizable()
+				.aspectRatio(contentMode: .fit)
+				.frame(width: 20, height: 20)
+			
+			VStack(alignment: .leading) {
+				Text(title).font(.footnote.bold())
+				Text(bodyContent).font(.footnote.leading(.tight))
+					.fixedSize(horizontal: false, vertical: true)
+					.lineLimit(4)
+			}
+			
+			Spacer(minLength: 0)
+		}
+		.padding(.vertical, 8)
+		.padding(.horizontal, 12)
+		.background(.regularMaterial)
+		.cornerRadius(12)
 	}
 }
 
