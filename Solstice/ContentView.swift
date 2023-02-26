@@ -26,13 +26,13 @@ struct ContentView: View {
 	private var items: FetchedResults<SavedLocation>
 	
 	@State var navigationSelection: NavigationSelection? = .currentLocation
-	@StateObject var currentLocation = CurrentLocation()
 	
 	#if !os(watchOS)
 	@StateObject var locationSearchService = LocationSearchService()
 	#endif
 	
 	@EnvironmentObject var timeMachine: TimeMachine
+	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
 		NavigationSplitView {

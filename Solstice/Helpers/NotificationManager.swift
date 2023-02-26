@@ -36,19 +36,21 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 	}
 	
-	static func scheduleNotifications() async {
+	static func scheduleNotifications(locationManager: CurrentLocation) async {
 		guard CurrentLocation.isAuthorized, notificationsEnabled else {
 			return await clearScheduledNotifications()
 		}
 		
-		let locationManager = CurrentLocation()
+		var location = locationManager.latestLocation
 		
-		let location: CLLocation? = await withCheckedContinuation({ continuation in
-			locationManager.requestLocation { location in
-				print("Made it to the callback")
-				continuation.resume(returning: location)
-			}
-		})
+		if location == nil {
+			location = await withCheckedContinuation({ continuation in
+				locationManager.requestLocation { location in
+					print("Made it to the callback")
+					continuation.resume(returning: location)
+				}
+			})
+		}
 		
 		guard let location else {
 			print("Could not retrieve user location")

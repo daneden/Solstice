@@ -51,8 +51,6 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-		locationManager.allowsBackgroundLocationUpdates = true
-		locationManager.showsBackgroundLocationIndicator = false
 		
 		if self.locationManager.authorizationStatus == .notDetermined {
 			self.locationManager.requestWhenInUseAuthorization()
@@ -73,9 +71,6 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
-			#if !os(watchOS)
-			await NotificationManager.scheduleNotifications()
-			#endif
 		}
 	}
 	

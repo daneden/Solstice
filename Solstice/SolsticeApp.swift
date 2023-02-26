@@ -16,7 +16,8 @@ import BackgroundTasks
 @main
 struct SolsticeApp: App {	
 	@Environment(\.scenePhase) var phase
-	@StateObject var timeMachine = TimeMachine()
+	@StateObject private var timeMachine = TimeMachine()
+	@StateObject private var currentLocation = CurrentLocation()
 	let persistenceController = PersistenceController.shared
 
 	var body: some Scene {
@@ -24,6 +25,7 @@ struct SolsticeApp: App {
 			TimelineView(.everyMinute) { timeline in
 				ContentView()
 					.environmentObject(timeMachine)
+					.environmentObject(currentLocation)
 					.environment(\.managedObjectContext, persistenceController.container.viewContext)
 					.onChange(of: timeline.date) { newValue in
 						timeMachine.referenceDate = newValue
@@ -48,7 +50,7 @@ struct SolsticeApp: App {
 		.onChange(of: phase) { newValue in
 			switch newValue {
 			case .background:
-				Task { await NotificationManager.scheduleNotifications() }
+				Task { await NotificationManager.scheduleNotifications(locationManager: currentLocation) }
 			default:
 				break
 			}
