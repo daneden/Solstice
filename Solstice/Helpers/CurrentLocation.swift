@@ -52,6 +52,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
 		locationManager.allowsBackgroundLocationUpdates = true
+		locationManager.showsBackgroundLocationIndicator = false
 		
 		if self.locationManager.authorizationStatus == .notDetermined {
 			self.locationManager.requestWhenInUseAuthorization()
