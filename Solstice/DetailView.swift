@@ -111,7 +111,6 @@ struct DetailView<Location: ObservableLocation>: View {
 					
 					AnnualDaylightChart(location: location)
 						.frame(height: chartHeight)
-						.padding(.vertical)
 				}
 			}
 			.formStyle(.grouped)
