@@ -44,33 +44,14 @@ struct SolsticeApp: App {
 					}
 			}
 		}
-		#if os(iOS)
-		.onChange(of: phase) { newPhase in
-			switch newPhase {
-			case .background: scheduleAppRefresh()
-			default: break
+		.onChange(of: phase) { newValue in
+			switch newValue {
+			case .background:
+				Task { await NotificationManager.scheduleNotifications() }
+			default:
+				break
 			}
 		}
-		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
-			scheduleAppRefresh()
-			
-			let notif = UNMutableNotificationContent()
-			notif.title = "Hello world"
-			notif.body = "This is a test notification sent at \(Date().formatted())"
-			
-			let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5))
-			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-			let request = UNNotificationRequest(identifier: UUID().uuidString, content: notif, trigger: trigger)
-			
-			do {
-				try await UNUserNotificationCenter.current().add(request)
-			} catch {
-				print(error)
-			}
-			
-			// await NotificationManager.scheduleNotification()
-		}
-		#endif
 		
 		#if os(macOS)
 		Settings {
@@ -79,19 +60,3 @@ struct SolsticeApp: App {
 		#endif
 	}
 }
-
-#if os(iOS)
-func scheduleAppRefresh() {
-	let noonComponent = DateComponents(hour: 12)
-	let nextNoon = Calendar.autoupdatingCurrent.nextDate(after: Date(), matching: noonComponent, matchingPolicy: .nextTime)
-	
-	let request = BGAppRefreshTaskRequest(identifier: NotificationManager.backgroundTaskIdentifier)
-	request.earliestBeginDate = nextNoon ?? .now
-	
-	do {
-		try BGTaskScheduler.shared.submit(request)
-	} catch {
-		print(error)
-	}
-}
-#endif

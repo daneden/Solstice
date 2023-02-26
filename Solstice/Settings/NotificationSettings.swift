@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Solar
+import CoreLocation
 
 fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool>)
 
@@ -92,7 +93,7 @@ struct NotificationSettings: View {
 						Text("Notification Preview")
 							.font(.caption)
 							.foregroundColor(.secondary)
-						Text("Preview here")
+						Text(NotificationManager.buildNotificationContent(for: Date(), location: .init(latitude: 0, longitude: 0), in: .preview)?.body ?? "Preview")
 					}.padding(.vertical, 8)
 				} label: {
 					Text("Customise Notification Content").foregroundColor(.primary)

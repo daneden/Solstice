@@ -9,19 +9,43 @@ import Foundation
 import UserNotifications
 import CoreLocation
 import Solar
+import SwiftUI
 
-class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
+	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
+	@AppStorage(Preferences.notificationsIncludeSunTimes) static var includeSunTimes
+	@AppStorage(Preferences.notificationsIncludeDaylightChange) static var includeDaylightChange
+	@AppStorage(Preferences.notificationsIncludeDaylightDuration) static var includeDaylightDuration
+	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) static var includeSolsticeCountdown
+	@AppStorage(Preferences.NotificationSettings.scheduleType) static var scheduleType
+	@AppStorage(Preferences.NotificationSettings.notificationTime) static var userPreferenceNotificationTime
+	@AppStorage(Preferences.NotificationSettings.relativeOffset) static var userPreferenceNotificationOffset
+	@AppStorage(Preferences.sadPreference) static var sadPreference
+	
 	static var backgroundTaskIdentifier = "me.daneden.Solstice.notificationScheduler"
 	
 	static func requestAuthorization() async -> Bool? {
 		return try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert])
 	}
 	
-	static func scheduleNotification() async {
-		guard CurrentLocation.isAuthorized else { return }
+	static func clearScheduledNotifications() async {
+		return UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+	}
+	
+	static func clearDeliveredNotifications() async {
+		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+	}
+	
+	static func scheduleNotifications() async {
+		guard CurrentLocation.isAuthorized, notificationsEnabled else {
+			return await clearScheduledNotifications()
+		}
+		
+		let locationManager = CurrentLocation()
 		
 		let location: CLLocation? = await withCheckedContinuation({ continuation in
-			CurrentLocation().requestLocation { location in
+			locationManager.requestLocation { location in
+				print("Made it to the callback")
 				continuation.resume(returning: location)
 			}
 		})
@@ -31,25 +55,44 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			return
 		}
 		
-		guard let notificationContent = buildNotificationContent(for: Date(), location: location) else {
-			return
-		}
-		
-		let content = UNMutableNotificationContent()
-		content.title = notificationContent.title
-		content.subtitle = notificationContent.body
-		
-		let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: Date().addingTimeInterval(5))
-		
-		let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-		
-		let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-		
-		// add our notification request
-		do {
-			try await UNUserNotificationCenter.current().add(request)
-		} catch {
-			print(error)
+		for i in 0...63 {
+			let date = Calendar.autoupdatingCurrent.date(byAdding: .day, value: i, to: Date()) ?? .now
+			var notificationDate: Date
+			
+			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
+				continue
+			}
+			
+			if scheduleType == .specificTime {
+				let scheduleComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
+				notificationDate = Calendar.autoupdatingCurrent.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+			} else {
+				let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
+				let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
+				let scheduleComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute], from: offsetDate)
+				notificationDate = Calendar.autoupdatingCurrent.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+			}
+			
+			guard let notificationContent = buildNotificationContent(for: date, location: location) else {
+				return
+			}
+			
+			let content = UNMutableNotificationContent()
+			content.title = notificationContent.title
+			content.subtitle = notificationContent.body
+			
+			let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
+			
+			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+			
+			let request = UNNotificationRequest(identifier: "me.daneden.Solstice.notification-\(notificationDate.ISO8601Format())", content: content, trigger: trigger)
+			
+			do {
+				try await UNUserNotificationCenter.current().add(request)
+				print("Scheduled notification with ID \(request.identifier)")
+			} catch {
+				print(error)
+			}
 		}
 	}
 	
@@ -64,15 +107,15 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	/// - Returns: A `NotificationContent` object appropriate for the context
 	static func buildNotificationContent(for date: Date, location: CLLocation, in context: Context = .notification) -> NotificationContent? {
 		var content = (title: "", body: "")
-		let solar = Solar(for: date, coordinate: location.coordinate)!
+		guard let solar = Solar(for: date, coordinate: location.coordinate) else { return nil }
 		
 		let duration = solar.daylightDuration.localizedString
 		let difference = solar.daylightDuration - solar.yesterday.daylightDuration
 		let differenceString = difference.localizedString
 		
-//		if difference < 0 && sadPreference == .suppressNotifications && context != .preview {
-//			return nil
-//		}
+		if difference < 0 && sadPreference == .suppressNotifications && context != .preview {
+			return nil
+		}
 		
 		let components = Calendar.current.dateComponents([.hour], from: date)
 		let hour = components.hour ?? 0
@@ -86,31 +129,31 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			content.title = "Today’s Daylight"
 		}
 		
-//		if self.notifsIncludeSunTimes {
-//			content.body += "The sun rises at \(solar.begins.formatted(.dateTime.hour().minute())) "
-//			content.body += "and sets at \(solar.ends.formatted(.dateTime.hour().minute())). "
-//		}
+		if includeSunTimes {
+			content.body += "The sun rises at \(solar.safeSunrise.formatted(.dateTime.hour().minute())) "
+			content.body += "and sets at \(solar.safeSunset.formatted(.dateTime.hour().minute())). "
+		}
 		
-//		if self.notifsIncludeDaylightDuration {
+		if includeDaylightDuration {
 			content.body += "\(duration) of daylight today. "
-//		}
+		}
 		
-//		if self.notifsIncludeDaylightChange {
-//			if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
-//				content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
-//			}
-//		}
+		if includeDaylightChange {
+			if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
+				content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
+			}
+		}
 		
-//		if self.notifsIncludeSolsticeCountdown {
-//			content.body += "The next solstice is \(Date.nextSolstice(from: date).formatted(.relative(presentation: .named))). "
-//		}
+		if includeSolsticeCountdown {
+			content.body += "The next solstice is \(solar.date.nextSolstice.formatted(.relative(presentation: .named))). "
+		}
 		
 		/**
 		 Fallthrough for when notification settings specify no content
 		 */
-//		if !self.notifsIncludeDaylightChange && !self.notifsIncludeDaylightDuration && !self.notifsIncludeSolsticeCountdown && !self.notifsIncludeSunTimes {
-//			content.body += "Open Solstice to see how today’s daylight has changed."
-//		}
+		if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
+			content.body += "Open Solstice to see how today’s daylight has changed."
+		}
 		
 		return content
 	}
