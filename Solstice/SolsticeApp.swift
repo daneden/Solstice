@@ -14,7 +14,7 @@ import BackgroundTasks
 #endif
 
 @main
-struct SolsticeApp: App {
+struct SolsticeApp: App {	
 	@Environment(\.scenePhase) var phase
 	@StateObject var timeMachine = TimeMachine()
 	let persistenceController = PersistenceController.shared

@@ -58,6 +58,7 @@
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71C8F4CF29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		71DB52AA29AB896500D62BB7 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		71F641B929995ED000FE5AB5 /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
@@ -148,6 +149,7 @@
 		71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetFamily++.swift"; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
+		71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
 		71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryRow.swift; sourceTree = "<group>"; };
 		71F641B829995ED000FE5AB5 /* DaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightChart.swift; sourceTree = "<group>"; };
 		71F641BA2999631D00FE5AB5 /* Date++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++.swift"; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */,
 				717F8BBB29A908E30015ECCB /* SettingsView.swift */,
 				718B136B29A918680001D4DC /* SupporterSettings.swift */,
+				71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */,
 				718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */,
+				71DB52AA29AB896500D62BB7 /* AppearanceSettings.swift in Sources */,
 				71F641C1299FCCFF00FE5AB5 /* TimeMachine.swift in Sources */,
 				719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */,
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
