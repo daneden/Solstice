@@ -81,7 +81,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			
 			let content = UNMutableNotificationContent()
 			content.title = notificationContent.title
-			content.subtitle = notificationContent.body
+			content.body = notificationContent.body
 			
 			let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
 			
