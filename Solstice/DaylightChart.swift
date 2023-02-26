@@ -197,7 +197,15 @@ extension DaylightChart {
 	}
 	
 	var timeZoneAdjustedDate: Date {
-		solar.date.withTimeZoneAdjustment(for: timeZone)
+		let date = solar.date
+		let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: solar.date.withTimeZoneAdjustment(for: timeZone))
+		
+		return Calendar.autoupdatingCurrent.date(
+			bySettingHour: components.hour ?? 0,
+			minute: components.minute ?? 0,
+			second: components.second ?? 0,
+			of: date
+		) ?? solar.date.withTimeZoneAdjustment(for: timeZone)
 	}
 	
 	var solarEvents: Array<Solar.Event> {
