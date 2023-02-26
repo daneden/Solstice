@@ -14,8 +14,7 @@ struct LocationSearchResultRow: View {
 	@Environment(\.dismissSearch) private var dismiss
 	@ObservedObject var searchService: LocationSearchService
 	@State private var isAddingItem = false
-	
-	private let searchRequest = MKLocalSearch.Request()
+
 	var result: MKLocalSearchCompletion
 	
 	var body: some View {
@@ -48,14 +47,14 @@ struct LocationSearchResultRow: View {
 	
 	func addLocation(from completion: MKLocalSearchCompletion) async {
 		isAddingItem = true
-		searchRequest.naturalLanguageQuery = "\(completion.title), \(completion.subtitle)"
+		let searchRequest = MKLocalSearch.Request(completion: completion)
 		
 		do {
 			let searchResult = try await MKLocalSearch(request: searchRequest).start()
 			if let item = searchResult.mapItems.first {
 				let coords = item.placemark.coordinate
 				let newLocation = SavedLocation(context: viewContext)
-				let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: coords.latitude, longitude: coords.longitude))
+				let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(item.placemark.location!)
 				
 				newLocation.title = completion.title
 				newLocation.subtitle = completion.subtitle
