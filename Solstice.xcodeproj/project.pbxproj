@@ -59,6 +59,7 @@
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71C8F4CF29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71DB52AA29AB896500D62BB7 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */; };
+		71DB52AE29ABD19B00D62BB7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52AD29ABD19B00D62BB7 /* ContentView.swift */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		71F641B929995ED000FE5AB5 /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
@@ -76,7 +77,6 @@
 		71F641DF29A13C2800FE5AB5 /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		71F641E129A13C2800FE5AB5 /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
 		71F641E229A13C3100FE5AB5 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198469D28E58CCD00E866CE /* DetailView.swift */; };
-		71F641E429A13C3100FE5AB5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		71F641E529A13C3100FE5AB5 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		71F641E629A13C3100FE5AB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		71F641E729A13C3100FE5AB5 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
@@ -150,7 +150,8 @@
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
 		71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
-		71DB52AB29AB8BED00D62BB7 /* Solstice-for-watchOS-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Solstice-for-watchOS-Watch-App-Info.plist"; sourceTree = "<group>"; };
+		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryRow.swift; sourceTree = "<group>"; };
 		71F641B829995ED000FE5AB5 /* DaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightChart.swift; sourceTree = "<group>"; };
 		71F641BA2999631D00FE5AB5 /* Date++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++.swift"; sourceTree = "<group>"; };
@@ -225,7 +226,7 @@
 		7198467828E5895E00E866CE = {
 			isa = PBXGroup;
 			children = (
-				71DB52AB29AB8BED00D62BB7 /* Solstice-for-watchOS-Watch-App-Info.plist */,
+				71DB52AC29ABD17F00D62BB7 /* watchOS */,
 				718B136D29A918AD0001D4DC /* README.md */,
 				7198468328E5895E00E866CE /* Solstice */,
 				7106C86D29A276B40007A7EC /* Widget */,
@@ -309,6 +310,15 @@
 				71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		71DB52AC29ABD17F00D62BB7 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
+				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
+			);
+			path = watchOS;
 			sourceTree = "<group>";
 		};
 		71F641EE29A13C5300FE5AB5 /* Frameworks */ = {
@@ -532,8 +542,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				71F641E729A13C3100FE5AB5 /* SolsticeApp.swift in Sources */,
-				71F641E429A13C3100FE5AB5 /* ContentView.swift in Sources */,
 				71F641E229A13C3100FE5AB5 /* DetailView.swift in Sources */,
+				71DB52AE29ABD19B00D62BB7 /* ContentView.swift in Sources */,
 				71C8F4CF29A38752009A86B4 /* SolsticeCalculator.swift in Sources */,
 				71F641DB29A13C2400FE5AB5 /* Solar+SolarEvent.swift in Sources */,
 				71F641EA29A13C3100FE5AB5 /* DaylightChart.swift in Sources */,
@@ -816,7 +826,7 @@
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Solstice-for-watchOS-Watch-App-Info.plist";
+				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
@@ -846,7 +856,7 @@
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Solstice-for-watchOS-Watch-App-Info.plist";
+				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;

@@ -35,22 +35,29 @@ struct DetailView<Location: ObservableLocation>: View {
 #elseif os(macOS)
 		300
 #elseif os(watchOS)
-		100
+		200
 #endif
 	}
 	
 	var body: some View {
 		GeometryReader { geom in
 			Form {
-#if os(iOS)
+				#if os(iOS)
 				TimeMachineView()
-#endif
+				#elseif os(watchOS)
+				if let locationTitle = location.title {
+					Label(locationTitle, systemImage: "location")
+				}
+				#endif
 				Section {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
+						#if os(watchOS)
+							.listRowBackground(Color.clear)
+						#endif
 					}
 					
 					LabeledContent {
@@ -115,6 +122,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle(location.title ?? "Solstice")
+			#if !os(watchOS)
 			.toolbar {
 				ToolbarItem(id: "timeMachineToggle") {
 					Toggle(isOn: $timeMachine.isOn.animation()) {
@@ -122,6 +130,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					}
 				}
 			}
+			#endif
 		}
 	}
 }

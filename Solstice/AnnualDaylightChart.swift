@@ -70,7 +70,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				}
 			}
 			.chartForegroundStyleScale(kvPairs)
-			.chartYScale(domain: (dayLength * -0.05)...(dayLength * 1.05))
+			.chartYScale(domain: minYValue...maxYValue)
 			.chartYAxis {
 				AxisMarks(values: stride(from: 0.0, through: dayLength, by: 60 * 60 * 4).compactMap { $0 }) { value in
 					AxisTick()
@@ -115,6 +115,32 @@ extension AnnualDaylightChart {
 		return dates.map { date in
 			return Solar(for: date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
 		}.compactMap { $0 }
+	}
+	
+	var maxYValue: Double {
+		monthlySolars.reduce(dayLength) { partialResult, solar in
+			let maxForSolar = [solar.astronomicalSunset, solar.nauticalSunset, solar.civilSunset, solar.safeSunset]
+				.compactMap { $0 }
+				.map { solar.startOfDay.distance(to: $0) }
+				.reduce(0.0) { partialResult, currentValue in
+					max(partialResult, currentValue)
+				}
+			
+			return max(maxForSolar, partialResult)
+		}
+	}
+	
+	var minYValue: Double {
+		monthlySolars.reduce(0.0) { partialResult, solar in
+			let minForSolar = [solar.astronomicalSunrise, solar.nauticalSunrise, solar.civilSunrise, solar.safeSunrise]
+				.compactMap { $0 }
+				.map { solar.startOfDay.distance(to: $0) }
+				.reduce(0.0) { partialResult, currentValue in
+					max(partialResult, currentValue)
+				}
+			
+			return min(minForSolar, partialResult)
+		}
 	}
 }
 

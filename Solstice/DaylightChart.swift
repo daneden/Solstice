@@ -26,12 +26,20 @@ struct DaylightChart: View {
 	var includesSummaryTitle = true
 	var hideXAxis = false
 	
+	var summaryFont: Font {
+		#if os(watchOS)
+		.headline
+		#else
+		.title2
+		#endif
+	}
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
 				VStack(alignment: .leading) {
 					Text(solar.differenceString)
-						.font(.title2)
+						.font(summaryFont)
 						.fontWeight(.semibold)
 						.opacity(selectedEvent == nil ? 1 : 0)
 						.overlay(alignment: .leading) {
@@ -72,6 +80,15 @@ struct DaylightChart: View {
 			.chartXScale(domain: solar.startOfDay...solar.endOfDay)
 			.chartOverlay { proxy in
 				GeometryReader { geo in
+					Rectangle()
+#if !os(watchOS)
+						.fill(.regularMaterial)
+#else
+						.fill(.tertiary)
+					#endif
+						.frame(width: geo.size.width, height: 1)
+						.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
+					
 					ZStack {
 						ZStack {
 							Circle()
@@ -109,13 +126,6 @@ struct DaylightChart: View {
 								.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 						}
 					}
-					
-					Rectangle()
-#if !os(watchOS)
-						.fill(.regularMaterial)
-#endif
-						.frame(width: geo.size.width, height: 2)
-						.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 					
 					if let selectedEvent {
 						Rectangle()

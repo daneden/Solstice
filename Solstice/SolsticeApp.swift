@@ -9,10 +9,6 @@ import SwiftUI
 import UserNotifications
 import StoreKit
 
-#if canImport(BackgroundTasks)
-import BackgroundTasks
-#endif
-
 @main
 struct SolsticeApp: App {	
 	@Environment(\.scenePhase) var phase
