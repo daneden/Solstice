@@ -31,7 +31,7 @@
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
-		71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
@@ -596,6 +596,7 @@
 		};
 		71475FE929ACF87E0031D576 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */;
 			targetProxy = 71475FE829ACF87E0031D576 /* PBXContainerItemProxy */;
 		};
