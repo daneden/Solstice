@@ -31,6 +31,7 @@
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
@@ -99,6 +100,13 @@
 			remoteGlobalIDString = 7106C86729A276B30007A7EC;
 			remoteInfo = WidgetExtension;
 		};
+		71475FE829ACF87E0031D576 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7198467928E5895E00E866CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 719F924229ACD1CC00C06921;
+			remoteInfo = "Solstice watchOS Watch App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -111,6 +119,17 @@
 				7106C87C29A276B40007A7EC /* WidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71475FEA29ACF87E0031D576 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -363,11 +382,13 @@
 				7198467E28E5895E00E866CE /* Frameworks */,
 				7198467F28E5895E00E866CE /* Resources */,
 				7106C88029A276B40007A7EC /* Embed Foundation Extensions */,
+				71475FEA29ACF87E0031D576 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				7106C87B29A276B40007A7EC /* PBXTargetDependency */,
+				71475FE929ACF87E0031D576 /* PBXTargetDependency */,
 			);
 			name = Solstice;
 			packageProductDependencies = (
@@ -572,6 +593,11 @@
 			platformFilter = ios;
 			target = 7106C86729A276B30007A7EC /* WidgetExtension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
+		};
+		71475FE929ACF87E0031D576 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */;
+			targetProxy = 71475FE829ACF87E0031D576 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
