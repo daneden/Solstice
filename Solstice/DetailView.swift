@@ -44,10 +44,6 @@ struct DetailView<Location: ObservableLocation>: View {
 			Form {
 				#if os(iOS)
 				TimeMachineView()
-				#elseif os(watchOS)
-				if let locationTitle = location.title {
-					Label(locationTitle, systemImage: "location")
-				}
 				#endif
 				Section {
 					if let solar = solar {
