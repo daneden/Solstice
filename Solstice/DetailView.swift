@@ -121,6 +121,9 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 			.formStyle(.grouped)
+			#if os(iOS)
+			.navigationTitleBarDisplayMode(.inline)
+			#endif
 			.navigationTitle(location.title ?? "Solstice")
 			#if !os(watchOS)
 			.toolbar {
