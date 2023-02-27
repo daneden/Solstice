@@ -100,6 +100,13 @@
 			remoteGlobalIDString = 7106C86729A276B30007A7EC;
 			remoteInfo = WidgetExtension;
 		};
+		71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7198467928E5895E00E866CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 719F924229ACD1CC00C06921;
+			remoteInfo = "Solstice watchOS Watch App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -380,6 +387,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				71AEB7AF29AD0F2100A7952D /* PBXTargetDependency */,
 				7106C87B29A276B40007A7EC /* PBXTargetDependency */,
 			);
 			name = Solstice;
@@ -585,6 +593,12 @@
 			platformFilter = ios;
 			target = 7106C86729A276B30007A7EC /* WidgetExtension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
+		};
+		71AEB7AF29AD0F2100A7952D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */;
+			targetProxy = 71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
