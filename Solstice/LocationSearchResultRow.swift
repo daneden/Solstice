@@ -12,7 +12,10 @@ import MapKit
 struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
+	
 	@ObservedObject var searchService: LocationSearchService
+	var savedItems: [SavedLocation] = []
+	
 	@State private var isAddingItem = false
 
 	var result: MKLocalSearchCompletion
@@ -53,6 +56,17 @@ struct LocationSearchResultRow: View {
 			let searchResult = try await MKLocalSearch(request: searchRequest).start()
 			if let item = searchResult.mapItems.first {
 				let coords = item.placemark.coordinate
+				
+				// Skip duplicate items
+				if let location = item.placemark.location,
+					 savedItems.contains(where: { savedLocation in
+					savedLocation.coordinate.distance(from: location) < 1000
+					 }) {
+					searchService.queryFragment = ""
+					isAddingItem = false
+					return
+				}
+				
 				let newLocation = SavedLocation(context: viewContext)
 				let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(item.placemark.location!)
 				
@@ -63,12 +77,12 @@ struct LocationSearchResultRow: View {
 				newLocation.longitude = coords.longitude
 				
 				try viewContext.save()
-				searchService.queryFragment = ""
 			}
 		} catch {
 			print(error)
 		}
-
+		
+		searchService.queryFragment = ""
 		isAddingItem = false
 	}
 }

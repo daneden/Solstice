@@ -27,6 +27,10 @@ extension AnyLocation {
 		
 		return timeZone
 	}
+	
+	var coordinate: CLLocation {
+		CLLocation(latitude: latitude, longitude: longitude)
+	}
 }
 
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation {

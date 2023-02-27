@@ -76,7 +76,7 @@ struct ContentView: View {
 									prompt: "Search cities or airports")
 			.searchSuggestions {
 				ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
-					LocationSearchResultRow(searchService: locationSearchService, result: result)
+					LocationSearchResultRow(searchService: locationSearchService, savedItems: Array(items), result: result)
 				}
 			}
 			#endif

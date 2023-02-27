@@ -100,13 +100,6 @@
 			remoteGlobalIDString = 7106C86729A276B30007A7EC;
 			remoteInfo = WidgetExtension;
 		};
-		71475FE829ACF87E0031D576 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7198467928E5895E00E866CE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 719F924229ACD1CC00C06921;
-			remoteInfo = "Solstice watchOS Watch App";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -388,7 +381,6 @@
 			);
 			dependencies = (
 				7106C87B29A276B40007A7EC /* PBXTargetDependency */,
-				71475FE929ACF87E0031D576 /* PBXTargetDependency */,
 			);
 			name = Solstice;
 			packageProductDependencies = (
@@ -593,12 +585,6 @@
 			platformFilter = ios;
 			target = 7106C86729A276B30007A7EC /* WidgetExtension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
-		};
-		71475FE929ACF87E0031D576 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */;
-			targetProxy = 71475FE829ACF87E0031D576 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -863,8 +849,9 @@
 				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate sunrise and sunset times";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = me.daneden.Solstice;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -896,8 +883,9 @@
 				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate sunrise and sunset times";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = me.daneden.Solstice;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
