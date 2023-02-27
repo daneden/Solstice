@@ -75,7 +75,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				notificationDate = Calendar.autoupdatingCurrent.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
 			}
 			
-			guard let notificationContent = buildNotificationContent(for: date, location: location) else {
+			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location) else {
 				return
 			}
 			
