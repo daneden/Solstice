@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-	@StateObject var currentLocation = CurrentLocation()
-	@StateObject var timeMachine = TimeMachine()
+	@EnvironmentObject var currentLocation: CurrentLocation
+	@EnvironmentObject var timeMachine: TimeMachine
 	
 	var body: some View {
 		NavigationStack {
