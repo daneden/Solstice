@@ -75,19 +75,17 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	}
 	
 	@MainActor
-	func defaultDidUpdateLocationsCallback(_ locations: [CLLocation]) -> Void {
+	func defaultDidUpdateLocationsCallback(_ locations: [CLLocation]) async -> Void {
 		if let location = locations.last {
 			latestLocation = location
 			latitude = location.coordinate.latitude
 			longitude = location.coordinate.longitude
 			
-			Task {
-				let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
-				if let firstResult = reverseGeocoded?.first {
-					title = firstResult.locality
-					subtitle = firstResult.country
-					timeZoneIdentifier = firstResult.timeZone?.identifier
-				}
+			let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
+			if let firstResult = reverseGeocoded?.first {
+				title = firstResult.locality
+				subtitle = firstResult.country
+				timeZoneIdentifier = firstResult.timeZone?.identifier
 			}
 		}
 	}
