@@ -27,32 +27,37 @@
       "size" : "32x32"
     },
     {
+      "filename" : "solstice-macos-128w.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
+      "filename" : "solstice-macos-256w 1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
+      "filename" : "solstice-macos-256w.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
+      "filename" : "solstice-macos-512w 1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
+      "filename" : "solstice-macos-512w.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
-      "filename" : "app-icon-1024@1x-1 3.png",
+      "filename" : "solstice-macos-1024w.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
