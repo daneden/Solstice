@@ -24,7 +24,8 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	typealias Entry = SolsticeWidgetTimelineEntry
 	typealias Intent = ConfigurationIntent
 	
-	var currentLocation = CurrentLocation()
+	private let currentLocation = CurrentLocation()
+	private let geocoder = CLGeocoder()
 	
 	func getLocation(for placemark: CLPlacemark, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
 		return SolsticeWidgetLocation(title: placemark.locality,
@@ -48,16 +49,16 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 			return completion(entry)
 		}
 		if let configurationLocation = configuration.location?.location {
-			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			if let location = currentLocation.latestLocation {
 				isRealLocation = true
-				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			} else {
 				currentLocation.requestLocation { location in
 					guard let location else { return }
 					isRealLocation = true
-					CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 				}
 			}
 		}
@@ -112,16 +113,16 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 		}
 		
 		if let configurationLocation = configuration.location?.location {
-			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
 			if let location = currentLocation.latestLocation {
 				isRealLocation = true
-				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			} else {
 				currentLocation.requestLocation { location in
 					guard let location else { return }
 					isRealLocation = true
-					CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 				}
 			}
 		}
