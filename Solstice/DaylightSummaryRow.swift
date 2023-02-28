@@ -9,6 +9,14 @@ import SwiftUI
 import Solar
 import CoreLocation
 
+fileprivate var daylightFormatter: DateComponentsFormatter {
+	let formatter = DateComponentsFormatter()
+	formatter.allowedUnits = [.hour, .minute]
+	formatter.unitsStyle = .abbreviated
+	
+	return formatter
+}
+
 struct DaylightSummaryRow<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	@ObservedObject var location: Location
@@ -38,7 +46,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 			
 			Spacer()
 			
-			Text(sunrise.distance(to: sunset).formatted(.timeInterval(allowedUnits: [.hour, .minute], unitsStyle: .abbreviated, zeroFormattingBehaviour: .pad)))
+			Text(daylightFormatter.string(from: sunrise.distance(to: sunset)) ?? "")
 				.font(.title)
 				.fontWeight(.light)
 				.foregroundStyle(.secondary)
@@ -66,7 +74,8 @@ extension DaylightSummaryRow {
 }
 
 struct DaylightSummaryRow_Previews: PreviewProvider {
-    static var previews: some View {
-        DaylightSummaryRow(location: CurrentLocation())
-    }
+	static var previews: some View {
+		DaylightSummaryRow(location: TemporaryLocation.placeholderLocation)
+			.environmentObject(TimeMachine())
+	}
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 import Solar
 import CoreLocation
-import TimeIntervalFormatStyle
+
 
 struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.managedObjectContext) var viewContext
@@ -60,7 +60,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					}
 					
 					LabeledContent {
-						Text("\(sunrise.distance(to: sunset).formatted(.timeInterval()))")
+						Text("\(dateComponentsFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
 					} label: {
 						Label("Total Daylight", systemImage: "hourglass")
 					}
@@ -184,7 +184,8 @@ struct DetailView_Previews: PreviewProvider {
 	static var previews: some View {
 		DetailView(
 			navigationSelection: .constant(nil),
-			location: CurrentLocation()
+			location: TemporaryLocation.placeholderLocation
 		)
+		.environmentObject(TimeMachine())
 	}
 }

@@ -146,6 +146,6 @@ extension AnnualDaylightChart {
 
 struct AnnualDaylightChart_Previews: PreviewProvider {
     static var previews: some View {
-			AnnualDaylightChart(location: CurrentLocation())
+			AnnualDaylightChart(location: TemporaryLocation.placeholderLocation)
     }
 }

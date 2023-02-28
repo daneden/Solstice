@@ -32,7 +32,8 @@ struct TimeMachineView: View {
 }
 
 struct TimeMachineView_Previews: PreviewProvider {
-    static var previews: some View {
-        TimeMachineView()
-    }
+	static var previews: some View {
+		TimeMachineView()
+			.environmentObject(TimeMachine())
+	}
 }

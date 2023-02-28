@@ -278,6 +278,11 @@ extension DaylightChart {
 
 struct DaylightChart_Previews: PreviewProvider {
 	static var previews: some View {
-		DaylightChart(solar: Solar(coordinate: CLLocationCoordinate2D(latitude: 51.50998, longitude: -0.1337))!, timeZone: .autoupdatingCurrent)
+		DaylightChart(
+			solar: Solar(
+				coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate
+			)!,
+			timeZone: .autoupdatingCurrent
+		)
 	}
 }
