@@ -11,6 +11,9 @@ import CoreLocation
 import TimeIntervalFormatStyle
 
 struct DetailView<Location: ObservableLocation>: View {
+	@Environment(\.managedObjectContext) var viewContext
+	
+	@Binding var navigationSelection: NavigationSelection?
 	@ObservedObject var location: Location
 	@EnvironmentObject var timeMachine: TimeMachine
 	@State private var showRemainingDaylight = false
@@ -42,18 +45,18 @@ struct DetailView<Location: ObservableLocation>: View {
 	var body: some View {
 		GeometryReader { geom in
 			Form {
-				#if os(iOS)
+#if os(iOS)
 				TimeMachineView()
-				#endif
+#endif
 				Section {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
-						#if os(watchOS)
+#if os(watchOS)
 							.listRowBackground(Color.clear)
-						#endif
+#endif
 					}
 					
 					LabeledContent {
@@ -82,7 +85,7 @@ struct DetailView<Location: ObservableLocation>: View {
 						Label("Sunset", systemImage: "sunset")
 					}
 				}
-					
+				
 				Section {
 					if let date = solar?.date,
 						 let nextSolstice = solar?.date.nextSolstice,
@@ -117,19 +120,33 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 			.formStyle(.grouped)
-			#if os(iOS)
+#if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)
-			#endif
+#endif
 			.navigationTitle(location.title ?? "Solstice")
-			#if !os(watchOS)
+#if !os(watchOS)
 			.toolbar {
 				ToolbarItem(id: "timeMachineToggle") {
 					Toggle(isOn: $timeMachine.isOn.animation()) {
 						Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
+
+				ToolbarItem {
+					if let location = location as? TemporaryLocation {
+						Button {
+							withAnimation {
+								if let id = try? location.saveLocation(to: viewContext) {
+									navigationSelection = .savedLocation(id: id)
+								}
+							}
+						} label: {
+							Label("Add", systemImage: "plus.circle")
+						}
+					}
+				}
 			}
-			#endif
+#endif
 		}
 	}
 }
@@ -165,6 +182,9 @@ extension DetailView {
 
 struct DetailView_Previews: PreviewProvider {
 	static var previews: some View {
-		DetailView(location: CurrentLocation())
+		DetailView(
+			navigationSelection: .constant(nil),
+			location: CurrentLocation()
+		)
 	}
 }

@@ -8,31 +8,6 @@
 import Foundation
 import CoreLocation
 
-protocol AnyLocation {
-	var title: String? { get }
-	var subtitle: String? { get }
-	var timeZoneIdentifier: String? { get }
-	var latitude: Double { get }
-	var longitude: Double { get }
-}
-
-protocol ObservableLocation: AnyLocation, ObservableObject { }
-
-extension AnyLocation {
-	var timeZone: TimeZone {
-		guard let timeZoneIdentifier,
-					let timeZone = TimeZone(identifier: timeZoneIdentifier) else {
-			return .autoupdatingCurrent
-		}
-		
-		return timeZone
-	}
-	
-	var coordinate: CLLocation {
-		CLLocation(latitude: latitude, longitude: longitude)
-	}
-}
-
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 	@Published private(set) var title: String?
 	@Published private(set) var subtitle: String?
@@ -115,5 +90,3 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		print(error)
 	}
 }
-
-extension SavedLocation: ObservableLocation { }

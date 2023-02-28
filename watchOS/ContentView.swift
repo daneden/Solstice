@@ -13,7 +13,10 @@ struct ContentView: View {
 	
 	var body: some View {
 		NavigationStack {
-			DetailView(location: currentLocation)
+			DetailView(
+				navigationSelection: .constant(nil),
+				location: currentLocation
+			)
 		}
 			.environmentObject(timeMachine)
 			.imageScale(.small)

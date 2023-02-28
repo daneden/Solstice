@@ -8,11 +8,6 @@
 import SwiftUI
 import CoreData
 
-enum NavigationSelection: Hashable {
-	case currentLocation
-	case savedLocation(id: SavedLocation.ID)
-}
-
 struct ContentView: View {
 	@AppStorage("testNotificationsEnabled") var testNotificationsEnabled = false
 	@State var settingsViewOpen = false
@@ -27,9 +22,9 @@ struct ContentView: View {
 	
 	@State var navigationSelection: NavigationSelection? = .currentLocation
 	
-	#if !os(watchOS)
+#if !os(watchOS)
 	@StateObject var locationSearchService = LocationSearchService()
-	#endif
+#endif
 	
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var currentLocation: CurrentLocation
@@ -37,9 +32,9 @@ struct ContentView: View {
 	var body: some View {
 		NavigationSplitView {
 			List(selection: $navigationSelection) {
-				#if !os(watchOS)
+#if !os(watchOS)
 				TimeMachineView()
-				#endif
+#endif
 				
 				Section {
 					DaylightSummaryRow(location: currentLocation)
@@ -56,17 +51,20 @@ struct ContentView: View {
 			}
 			.navigationTitle("Solstice")
 			.navigationSplitViewColumnWidth(ideal: 256)
-			#if !os(watchOS)
+#if !os(watchOS)
 			.searchable(text: $locationSearchService.queryFragment,
 									placement: .toolbar,
 									prompt: "Search cities or airports")
 			.searchSuggestions {
 				ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
-					LocationSearchResultRow(searchService: locationSearchService, savedItems: Array(items), result: result)
+					LocationSearchResultRow(
+						searchService: locationSearchService,
+						navigationSelection: $navigationSelection, result: result
+					)
 				}
 			}
-			#endif
-			#if os(iOS)
+#endif
+#if os(iOS)
 			.toolbar {
 				Button {
 					settingsViewOpen.toggle()
@@ -79,19 +77,30 @@ struct ContentView: View {
 					}
 				}
 			}
-			#endif
+#endif
 		} detail: {
 			switch navigationSelection {
-				case .currentLocation:
-					DetailView(location: currentLocation)
-				case .savedLocation(let id):
-					if let item = items.first(where: { $0.id == id }) {
-						DetailView(location: item)
-					} else {
-						placeholderView
-					}
-				default:
+			case .currentLocation:
+				DetailView(
+					navigationSelection: $navigationSelection,
+					location: currentLocation
+				)
+			case .savedLocation(let id):
+				if let item = items.first(where: { $0.id == id }) {
+					DetailView(
+						navigationSelection: $navigationSelection,
+						location: item
+					)
+				} else {
 					placeholderView
+				}
+			case .temporaryLocation(let location):
+				DetailView(
+					navigationSelection: $navigationSelection,
+					location: location
+				)
+			case .none:
+				placeholderView
 			}
 		}
 	}
@@ -119,13 +128,6 @@ struct ContentView: View {
 		}
 	}
 }
-
-private let itemFormatter: DateFormatter = {
-	let formatter = DateFormatter()
-	formatter.dateStyle = .short
-	formatter.timeStyle = .medium
-	return formatter
-}()
 
 struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {

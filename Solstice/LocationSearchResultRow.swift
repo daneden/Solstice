@@ -8,13 +8,12 @@
 import SwiftUI
 import MapKit
 
-
 struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
 	
 	@ObservedObject var searchService: LocationSearchService
-	var savedItems: [SavedLocation] = []
+	@Binding var navigationSelection: NavigationSelection?
 	
 	@State private var isAddingItem = false
 
@@ -41,49 +40,33 @@ struct LocationSearchResultRow: View {
 		.contentShape(Rectangle())
 		.onTapGesture {
 			Task {
-				await addLocation(from: result)
-				dismiss()
+				guard let temporaryLocation = try? await buildTemporaryLocation(from: result) else { return }
+				navigationSelection = .temporaryLocation(temporaryLocation)
 			}
 		}
-		.disabled(isAddingItem)
 	}
 	
-	func addLocation(from completion: MKLocalSearchCompletion) async {
+	func buildTemporaryLocation(from completion: MKLocalSearchCompletion) async throws -> TemporaryLocation? {
 		isAddingItem = true
 		let searchRequest = MKLocalSearch.Request(completion: completion)
-		
-		do {
-			let searchResult = try await MKLocalSearch(request: searchRequest).start()
-			if let item = searchResult.mapItems.first {
-				let coords = item.placemark.coordinate
-				
-				// Skip duplicate items
-				if let location = item.placemark.location,
-					 savedItems.contains(where: { savedLocation in
-					savedLocation.coordinate.distance(from: location) < 1000
-					 }) {
-					searchService.queryFragment = ""
-					isAddingItem = false
-					return
-				}
-				
-				let newLocation = SavedLocation(context: viewContext)
-				let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(item.placemark.location!)
-				
-				newLocation.title = completion.title
-				newLocation.subtitle = completion.subtitle
-				newLocation.timeZoneIdentifier = item.placemark.timeZone?.identifier ?? reverseGeocoding.first?.timeZone?.identifier
-				newLocation.latitude = coords.latitude
-				newLocation.longitude = coords.longitude
-				
-				try viewContext.save()
-			}
-		} catch {
-			print(error)
+		let searchResult = try await MKLocalSearch(request: searchRequest).start()
+		if let item = searchResult.mapItems.first {
+			let coords = item.placemark.coordinate
+
+			let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(item.placemark.location!)
+			searchService.queryFragment = ""
+			isAddingItem = false
+			
+			return TemporaryLocation(
+				title: completion.title,
+				subtitle: completion.subtitle,
+				timeZoneIdentifier: item.placemark.timeZone?.identifier ?? reverseGeocoding.first?.timeZone?.identifier,
+				latitude: coords.latitude,
+				longitude: coords.longitude
+			)
+		} else {
+			return nil
 		}
-		
-		searchService.queryFragment = ""
-		isAddingItem = false
 	}
 }
 
