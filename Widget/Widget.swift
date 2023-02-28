@@ -50,10 +50,15 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 		if let configurationLocation = configuration.location?.location {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
-			currentLocation.requestLocation { location in
-				guard let location else { return }
+			if let location = currentLocation.latestLocation {
 				isRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+			} else {
+				currentLocation.requestLocation { location in
+					guard let location else { return }
+					isRealLocation = true
+					CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+				}
 			}
 		}
 	}
@@ -109,10 +114,15 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 		if let configurationLocation = configuration.location?.location {
 			CLGeocoder().reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
-			currentLocation.requestLocation { location in
-				guard let location else { return }
+			if let location = currentLocation.latestLocation {
 				isRealLocation = true
 				CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+			} else {
+				currentLocation.requestLocation { location in
+					guard let location else { return }
+					isRealLocation = true
+					CLGeocoder().reverseGeocodeLocation(location, completionHandler: handler)
+				}
 			}
 		}
 	}
@@ -123,8 +133,6 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 }
 
 struct SolsticeOverviewWidget: Widget {
-	@StateObject var locationManager = CurrentLocation()
-	
 	var body: some WidgetConfiguration {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
