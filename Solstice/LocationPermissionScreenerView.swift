@@ -17,7 +17,11 @@ struct LocationPermissionScreenerView: View {
 			} label: {
 				Text("Set Up Location Access")
 			}
+			#if os(iOS)
 			.buttonStyle(.borderless)
+			#elseif os(macOS)
+			.buttonStyle(.bordered)
+			#endif
 		} header: {
 			Label("Location Permission", systemImage: "location")
 		} footer: {

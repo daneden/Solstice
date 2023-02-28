@@ -288,6 +288,7 @@
 				71F641B829995ED000FE5AB5 /* DaylightChart.swift */,
 				71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */,
 				7198469D28E58CCD00E866CE /* DetailView.swift */,
+				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
 				719846A928E992A200E866CE /* LocationSearchResultRow.swift */,
 				7198468D28E5895F00E866CE /* Persistence.swift */,
 				7198468428E5895E00E866CE /* SolsticeApp.swift */,
@@ -298,7 +299,6 @@
 				7198468A28E5895F00E866CE /* Preview Content */,
 				717F8BBA29A908D00015ECCB /* Settings */,
 				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
-				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
 			);
 			path = Solstice;
 			sourceTree = "<group>";
@@ -811,6 +811,7 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -849,6 +850,7 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
