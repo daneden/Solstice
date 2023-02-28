@@ -11,10 +11,6 @@ import Solar
 import Charts
 import CoreLocation
 
-func mapRange(_ value: Double, minX: Double, maxX: Double, minY: Double, maxY: Double) -> Double {
-	return minY + (maxY - minY) * ((value - minX) / (maxX - minX))
-}
-
 struct DaylightChart: View {
 	var solar: Solar
 	var timeZone: TimeZone
@@ -29,10 +25,14 @@ struct DaylightChart: View {
 	var summaryFont: Font {
 		#if os(watchOS)
 		.headline
+		#elseif os(macOS)
+		.title
 		#else
 		.title2
 		#endif
 	}
+	
+	var markSize: Double = 6
 	
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -53,7 +53,9 @@ struct DaylightChart: View {
 							}
 						}
 				}
+				#if !os(macOS)
 				.padding()
+				#endif
 				.fontDesign(.rounded)
 				.fontWeight(.semibold)
 			}
@@ -71,6 +73,7 @@ struct DaylightChart: View {
 										 || solarEvent.phase == .day
 										 || solarEvent.phase == .sunrise
 										 || solarEvent.phase == .sunset ? 0 : 1)
+						.symbolSize(markSize * .pi * 2)
 					}
 				}
 			}
@@ -98,7 +101,7 @@ struct DaylightChart: View {
 										.strokeBorder(style: StrokeStyle(lineWidth: 2))
 										.fill(.primary)
 								}
-								.frame(width: 20, height: 20)
+								.frame(width: markSize * 2.5, height: markSize * 2.5)
 								.position(
 									x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
 									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
@@ -114,7 +117,7 @@ struct DaylightChart: View {
 						ZStack {
 							Circle()
 								.fill(.primary)
-								.frame(width: 20, height: 20)
+								.frame(width: markSize * 2.5, height: markSize * 2.5)
 								.position(
 									x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
 									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
@@ -179,7 +182,7 @@ struct DaylightChart: View {
 						path.move(to: CGPoint(x: x, y: y))
 					}
 				}
-				.strokedPath(StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
+				.strokedPath(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
 				.fill(.linearGradient(stops: [
 					Gradient.Stop(color: .secondary.opacity(0), location: 0),
 					Gradient.Stop(color: .secondary.opacity(0.2), location: 2 / 6),

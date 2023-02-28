@@ -42,6 +42,14 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 	}
 	
+	var chartMarkSize: Double {
+		#if os(watchOS)
+		4
+		#else
+		8
+		#endif
+	}
+	
 	var body: some View {
 		GeometryReader { geom in
 			Form {
@@ -50,7 +58,7 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 				Section {
 					if let solar = solar {
-						DaylightChart(solar: solar, timeZone: location.timeZone)
+						DaylightChart(solar: solar, timeZone: location.timeZone, markSize: chartMarkSize)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
