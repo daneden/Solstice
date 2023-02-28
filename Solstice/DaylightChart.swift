@@ -108,7 +108,14 @@ struct DaylightChart: View {
 								)
 								.shadow(color: .secondary.opacity(0.5), radius: 2)
 						}
-						.background(.background.opacity(0.2))
+						.background {
+							Rectangle()
+								.fill(.clear)
+								.background(.background.opacity(0.3))
+								.mask {
+									LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+								}
+						}
 						.mask(alignment: .bottom) {
 							Rectangle()
 								.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0))
