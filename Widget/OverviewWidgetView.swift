@@ -61,7 +61,8 @@ struct OverviewWidgetView: View {
 														timeZone: location.timeZone,
 														eventTypes: [.sunrise, .sunset],
 														includesSummaryTitle: false,
-														hideXAxis: true)
+														hideXAxis: true,
+														markSize: 5)
 							.padding(.horizontal, -20)
 							.frame(maxHeight: 200)
 						}
