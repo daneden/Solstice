@@ -31,16 +31,10 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
 		latestLocation = locationManager.location
-		
-		if self.locationManager.authorizationStatus == .notDetermined {
-			self.locationManager.requestWhenInUseAuthorization()
-		}
-		
-#if os(watchOS)
-		self.locationManager.startUpdatingLocation()
-#else
-		self.locationManager.startMonitoringSignificantLocationChanges()
-#endif
+	}
+	
+	func requestAccess() {
+		self.locationManager.requestWhenInUseAuthorization()
 	}
 }
 
@@ -67,6 +61,16 @@ extension CurrentLocation: CLLocationManagerDelegate {
 				subtitle = firstResult.country
 				timeZoneIdentifier = firstResult.timeZone?.identifier
 			}
+		}
+	}
+	
+	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+		if CurrentLocation.isAuthorized {
+#if os(watchOS)
+			self.locationManager.startUpdatingLocation()
+#else
+			self.locationManager.startMonitoringSignificantLocationChanges()
+#endif
 		}
 	}
 	

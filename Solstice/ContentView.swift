@@ -13,6 +13,7 @@ struct ContentView: View {
 	@State var settingsViewOpen = false
 	
 	@Environment(\.isSearching) private var isSearching
+	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
 	
 	@FetchRequest(
@@ -20,7 +21,7 @@ struct ContentView: View {
 		animation: .default)
 	private var items: FetchedResults<SavedLocation>
 	
-	@State var navigationSelection: NavigationSelection? = .currentLocation
+	@State var navigationSelection: NavigationSelection?
 	
 #if !os(watchOS)
 	@StateObject var locationSearchService = LocationSearchService()
@@ -35,10 +36,15 @@ struct ContentView: View {
 #if !os(watchOS)
 				TimeMachineView()
 #endif
+				if CurrentLocation.authorizationStatus == .notDetermined {
+					LocationPermissionScreenerView()
+				}
 				
 				Section {
-					DaylightSummaryRow(location: currentLocation)
-						.tag(NavigationSelection.currentLocation)
+					if CurrentLocation.isAuthorized {
+						DaylightSummaryRow(location: currentLocation)
+							.tag(NavigationSelection.currentLocation)
+					}
 					
 					ForEach(items) { item in
 						DaylightSummaryRow(location: item)
@@ -62,6 +68,10 @@ struct ContentView: View {
 						navigationSelection: $navigationSelection, result: result
 					)
 				}
+			}
+			.onChange(of: navigationSelection) { _ in
+				locationSearchService.queryFragment = ""
+				dismissSearch()
 			}
 #endif
 #if os(iOS)

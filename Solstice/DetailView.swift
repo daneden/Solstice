@@ -92,6 +92,16 @@ struct DetailView<Location: ObservableLocation>: View {
 					} label: {
 						Label("Sunset", systemImage: "sunset")
 					}
+				} header: {
+					if location.timeZoneIdentifier != TimeZone.autoupdatingCurrent.identifier,
+						 !(location is CurrentLocation),
+						 let date = solar?.date {
+						HStack {
+							Text("Local Time")
+							Spacer()
+							Text(date.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+						}
+					}
 				}
 				
 				Section {

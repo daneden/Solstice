@@ -13,10 +13,17 @@ struct ContentView: View {
 	
 	var body: some View {
 		NavigationStack {
-			DetailView(
-				navigationSelection: .constant(nil),
-				location: currentLocation
-			)
+				switch CurrentLocation.authorizationStatus {
+				case .notDetermined:
+					LocationPermissionScreenerView()
+				case .authorizedAlways, .authorizedWhenInUse:
+					DetailView(
+						navigationSelection: .constant(nil),
+						location: currentLocation
+					)
+				case .denied, .restricted:
+					Text("Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac.")
+				}
 		}
 			.environmentObject(timeMachine)
 			.imageScale(.small)

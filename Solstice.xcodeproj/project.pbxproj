@@ -81,6 +81,8 @@
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B529AE1B1A00A7952D /* NavigationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */; };
 		71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */; };
+		71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */; };
+		71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E3E29A77D6000E40C01 /* WidgetFamily++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
@@ -173,6 +175,8 @@
 		719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solstice watchOS Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSelection.swift; sourceTree = "<group>"; };
+		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
+		71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
 		71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetFamily++.swift"; sourceTree = "<group>"; };
@@ -294,6 +298,7 @@
 				7198468A28E5895F00E866CE /* Preview Content */,
 				717F8BBA29A908D00015ECCB /* Settings */,
 				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
+				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
 			);
 			path = Solstice;
 			sourceTree = "<group>";
@@ -309,14 +314,14 @@
 		719846A628E991E800E866CE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */,
 				719846AF28EEE48900E866CE /* CurrentLocation.swift */,
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
+				71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
 				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
-				71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */,
-				71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -347,6 +352,7 @@
 			children = (
 				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
 				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
+				71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */,
 			);
 			path = watchOS;
 			sourceTree = "<group>";
@@ -564,6 +570,7 @@
 				71F641C1299FCCFF00FE5AB5 /* TimeMachine.swift in Sources */,
 				719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */,
 				71AEB7B529AE1B1A00A7952D /* NavigationSelection.swift in Sources */,
+				71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
 				7106C87929A276B40007A7EC /* Widget.intentdefinition in Sources */,
@@ -582,6 +589,7 @@
 				719F926D29ACD21300C06921 /* DaylightSummaryRow.swift in Sources */,
 				719F927529ACD21300C06921 /* Persistence.swift in Sources */,
 				719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */,
+				71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
