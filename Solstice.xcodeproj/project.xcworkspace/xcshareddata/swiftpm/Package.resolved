@@ -8,15 +8,6 @@
         "revision" : "c2b96f2d5fb7f835b91cefac5e83101f54643901",
         "version" : "3.0.1"
       }
-    },
-    {
-      "identity" : "timeintervalformatstyle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/daneden/TimeIntervalFormatStyle/",
-      "state" : {
-        "branch" : "main",
-        "revision" : "c36c00e8bdbb5473cd5411def3d2a6e04798bc73"
-      }
     }
   ],
   "version" : 2

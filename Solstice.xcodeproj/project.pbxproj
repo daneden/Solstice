@@ -49,7 +49,6 @@
 		7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 7198469828E5898500E866CE /* StoreKitConfiguration.storekit */; };
 		7198469C28E58CAA00E866CE /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7198469B28E58CAA00E866CE /* Solar */; };
 		7198469E28E58CCD00E866CE /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198469D28E58CCD00E866CE /* DetailView.swift */; };
-		719846A528E98AA200E866CE /* TimeIntervalFormatStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 719846A428E98AA200E866CE /* TimeIntervalFormatStyle */; };
 		719846A828E991FA00E866CE /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A728E991FA00E866CE /* LocationSearchService.swift */; };
 		719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A928E992A200E866CE /* LocationSearchResultRow.swift */; };
 		719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
@@ -73,7 +72,6 @@
 		719F928029ACD22100C06921 /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		719F928129ACD22100C06921 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		719F928329ACD24700C06921 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 719F928229ACD24700C06921 /* Solar */; };
-		719F928529ACD24700C06921 /* TimeIntervalFormatStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 719F928429ACD24700C06921 /* TimeIntervalFormatStyle */; };
 		719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		719F928829ACD29100C06921 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52AD29ABD19B00D62BB7 /* ContentView.swift */; };
 		71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
@@ -212,7 +210,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7198469C28E58CAA00E866CE /* Solar in Frameworks */,
-				719846A528E98AA200E866CE /* TimeIntervalFormatStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +218,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				719F928329ACD24700C06921 /* Solar in Frameworks */,
-				719F928529ACD24700C06921 /* TimeIntervalFormatStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,7 +404,6 @@
 			name = Solstice;
 			packageProductDependencies = (
 				7198469B28E58CAA00E866CE /* Solar */,
-				719846A428E98AA200E866CE /* TimeIntervalFormatStyle */,
 			);
 			productName = Solstice;
 			productReference = 7198468128E5895E00E866CE /* Solstice.app */;
@@ -429,7 +424,6 @@
 			name = "Solstice watchOS Watch App";
 			packageProductDependencies = (
 				719F928229ACD24700C06921 /* Solar */,
-				719F928429ACD24700C06921 /* TimeIntervalFormatStyle */,
 			);
 			productName = "Solstice watchOS Watch App";
 			productReference = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */;
@@ -467,7 +461,6 @@
 			mainGroup = 7198467828E5895E00E866CE;
 			packageReferences = (
 				7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */,
-				719846A328E98AA200E866CE /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */,
 			);
 			productRefGroup = 7198468228E5895E00E866CE /* Products */;
 			projectDirPath = "";
@@ -991,14 +984,6 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		719846A328E98AA200E866CE /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/daneden/TimeIntervalFormatStyle/";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1012,20 +997,10 @@
 			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
-		719846A428E98AA200E866CE /* TimeIntervalFormatStyle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 719846A328E98AA200E866CE /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */;
-			productName = TimeIntervalFormatStyle;
-		};
 		719F928229ACD24700C06921 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
-		};
-		719F928429ACD24700C06921 /* TimeIntervalFormatStyle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 719846A328E98AA200E866CE /* XCRemoteSwiftPackageReference "TimeIntervalFormatStyle" */;
-			productName = TimeIntervalFormatStyle;
 		};
 /* End XCSwiftPackageProductDependency section */
 
