@@ -134,6 +134,12 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 }
 
 struct SolsticeOverviewWidget: Widget {
+	#if os(iOS)
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular]
+	#elseif os(macOS)
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+	#endif
+	
 	var body: some WidgetConfiguration {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
@@ -144,11 +150,17 @@ struct SolsticeOverviewWidget: Widget {
 		}
 		.configurationDisplayName("Daylight Today")
 		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
-		.supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular])
+		.supportedFamilies(SolsticeOverviewWidget.supportedFamilies)
 	}
 }
 
 struct SolsticeCountdownWidget: Widget {
+#if os(iOS)
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular]
+#elseif os(macOS)
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
+#endif
+	
 	var body: some WidgetConfiguration {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
@@ -160,6 +172,6 @@ struct SolsticeCountdownWidget: Widget {
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")
-		.supportedFamilies([.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular])
+		.supportedFamilies(SolsticeCountdownWidget.supportedFamilies)
 	}
 }

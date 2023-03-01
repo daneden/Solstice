@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7106C86729A276B30007A7EC"
-               BuildableName = "WidgetExtension.appex"
-               BlueprintName = "WidgetExtension"
+               BuildableName = "iOS Widget Extension.appex"
+               BlueprintName = "iOS Widget Extension"
                ReferencedContainer = "container:Solstice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

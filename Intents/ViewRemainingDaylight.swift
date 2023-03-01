@@ -27,7 +27,6 @@ struct ViewRemainingDaylight: AppIntent {
 		}
 		
 		let solar = Solar(coordinate: coordinate)!
-		let isDaytime = solar.safeSunrise < .now && solar.safeSunset > .now
 		
 		var resultValue: TimeInterval
 		
@@ -35,7 +34,7 @@ struct ViewRemainingDaylight: AppIntent {
 		formatter.unitsStyle = .full
 		formatter.allowedUnits = [.hour, .minute, .second]
 		
-		if isDaytime {
+		if (solar.safeSunrise...solar.safeSunset).contains(.now) {
 			resultValue = Date().distance(to: solar.safeSunset)
 			return .result(
 				value: resultValue,
