@@ -40,3 +40,7 @@ struct ViewRemainingDaylight: AppIntent {
 		}
 	}
 }
+
+extension ViewRemainingDaylight: CustomIntentMigratedAppIntent {
+	static var intentClassName = "ViewRemainingDaylightIntent"
+}

@@ -34,3 +34,7 @@ struct GetSunsetTime: AppIntent {
 		return .result(value: solar?.sunset)
 	}
 }
+
+extension GetSunsetTime: CustomIntentMigratedAppIntent {
+	static var intentClassName = "GetSunsetTimeIntent"
+}

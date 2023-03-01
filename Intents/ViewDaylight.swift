@@ -36,3 +36,7 @@ struct ViewDaylight: AppIntent {
 		return .result(value: duration)
 	}
 }
+
+extension ViewDaylight: CustomIntentMigratedAppIntent {
+	static var intentClassName = "ViewDaylightTimeIntent"
+}
