@@ -21,7 +21,7 @@ struct ViewRemainingDaylight: AppIntent {
 		Summary("Get today's remaining daylight in \(\.$location)")
 	}
 	
-	func perform() async throws -> some IntentResult {
+	func perform() async throws -> some ReturnsValue & ProvidesDialog {
 		guard let coordinate = location.location?.coordinate else {
 			throw $location.needsValueError("What location do you want to see the daylight for?")
 		}
@@ -29,14 +29,36 @@ struct ViewRemainingDaylight: AppIntent {
 		let solar = Solar(coordinate: coordinate)!
 		let isDaytime = solar.safeSunrise < .now && solar.safeSunset > .now
 		
+		var resultValue: TimeInterval
+		
+		let formatter = DateComponentsFormatter()
+		formatter.unitsStyle = .full
+		formatter.allowedUnits = [.hour, .minute, .second]
+		
 		if isDaytime {
-			return .result(value: Date().distance(to: solar.safeSunset))
+			resultValue = Date().distance(to: solar.safeSunset)
+			return .result(
+				value: resultValue,
+				dialog: "\(formatter.string(from: resultValue) ?? "") of daylight left today"
+			)
 		} else if solar.safeSunset < .now {
-			return .result(value: TimeInterval(0))
+			resultValue = 0
+			return .result(
+				value: resultValue,
+				dialog: "No daylight left today. The sun set \(formatter.string(from: solar.safeSunset.distance(to: .now)) ?? "") ago."
+			)
 		} else if solar.safeSunrise > .now {
-			return .result(value: solar.daylightDuration)
+			resultValue = solar.daylightDuration
+			return .result(
+				value: resultValue,
+				dialog: "\(formatter.string(from: resultValue) ?? "") of daylight left today"
+			)
 		} else {
-			return .result(value: TimeInterval(0))
+			resultValue = 0
+			return .result(
+				value: resultValue,
+				dialog: "\(formatter.string(from: resultValue) ?? "") of daylight left today"
+			)
 		}
 	}
 }

@@ -24,16 +24,23 @@ struct ViewDaylight: AppIntent {
 		Summary("Get the daylight duration on \(\.$date) in \(\.$location)")
 	}
 	
-	func perform() async throws -> some IntentResult {
+	func perform() async throws -> some ReturnsValue & ProvidesDialog {
 		guard let coordinate = location.location?.coordinate else {
 			throw $location.needsValueError("What location do you want to see the daylight for?")
 		}
+		
+		let formatter = DateComponentsFormatter()
+		formatter.unitsStyle = .full
+		formatter.allowedUnits = [.hour, .minute, .second]
 		
 		let solar = Solar(for: date, coordinate: coordinate)
 		
 		let duration = (solar?.sunrise ?? .now).distance(to: solar?.sunset ?? .now)
 		
-		return .result(value: duration)
+		return .result(
+			value: duration,
+			dialog: "\(formatter.string(from: duration) ?? "") of daylight on \(date.formatted(date: .abbreviated, time: .omitted))"
+		)
 	}
 }
 
