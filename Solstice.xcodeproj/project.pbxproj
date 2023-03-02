@@ -245,7 +245,6 @@
 		7195120229AFBD61009D282F /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
 		7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7195125229B0B3D6009D282F /* iOS Widget Extension copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOS Widget Extension copy-Info.plist"; path = "/Users/dte/Developer/Solstice/iOS Widget Extension copy-Info.plist"; sourceTree = "<absolute>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -389,7 +388,6 @@
 				7198468328E5895E00E866CE /* Solstice */,
 				71DB52AC29ABD17F00D62BB7 /* watchOS */,
 				7106C86D29A276B40007A7EC /* Widget */,
-				7195125229B0B3D6009D282F /* iOS Widget Extension copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1009,7 +1007,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "iOS Widget Extension copy-Info.plist";
+				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
@@ -1041,7 +1039,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "iOS Widget Extension copy-Info.plist";
+				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
