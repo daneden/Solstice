@@ -50,10 +50,31 @@ struct OverviewWidgetView: View {
 	
 	var body: some View {
 		switch family {
+			#if !os(macOS)
+		case .accessoryCircular:
+			ZStack {
+				AccessoryWidgetBackground()
+				if let solar {
+					DaylightChart(
+						solar: solar,
+						timeZone: location.timeZone,
+						eventTypes: [.sunset, .sunrise],
+						includesSummaryTitle: false,
+						hideXAxis: true,
+						markSize: 2.5
+					)
+					.padding(.vertical, 8)
+				}
+			}
+			.widgetLabel {
+				Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
+			}
+			#endif
 		case .accessoryInline, .accessoryRectangular:
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 		default:
 			ZStack(alignment: .bottomLeading) {
+				#if !os(watchOS)
 				GeometryReader { geom in
 					if family != .systemSmall {
 						if let solar {
@@ -124,6 +145,7 @@ struct OverviewWidgetView: View {
 						}
 					}.font(.caption.weight(.medium))
 				}.symbolRenderingMode(.hierarchical)
+				#endif
 			}
 			.padding()
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -135,6 +157,10 @@ struct OverviewWidgetView: View {
 struct OverviewWidgetView_Previews: PreviewProvider {
 	static var previews: some View {
 		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
+		#if os(watchOS)
+			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
+		#else
 			.previewContext(WidgetPreviewContext(family: .systemMedium))
+		#endif
 	}
 }

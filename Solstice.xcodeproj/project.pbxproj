@@ -44,7 +44,6 @@
 		719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F729AF5CE1009D282F /* GetSunsetTime.swift */; };
 		719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F929AF5CF7009D282F /* ViewDaylight.swift */; };
 		719511FC29AF5D0E009D282F /* ViewRemainingDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511FB29AF5D0E009D282F /* ViewRemainingDaylight.swift */; };
-		719511FE29AFB964009D282F /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511FD29AFB964009D282F /* ComplicationController.swift */; };
 		7195120129AFBBEC009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
 		7195120829AFBDC5009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7195120929AFBDC5009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
@@ -70,6 +69,33 @@
 		7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		7195122B29AFBEA1009D282F /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7195122C29AFBEAD009D282F /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
+		7195123129B0B3D6009D282F /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87429A276B40007A7EC /* Widget.intentdefinition */; };
+		7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
+		7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
+		7195123429B0B3D6009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		7195123529B0B3D6009D282F /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
+		7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
+		7195123929B0B3D6009D282F /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
+		7195123A29B0B3D6009D282F /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
+		7195123B29B0B3D6009D282F /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
+		7195123C29B0B3D6009D282F /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
+		7195123D29B0B3D6009D282F /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
+		7195123E29B0B3D6009D282F /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
+		7195123F29B0B3D6009D282F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
+		7195124029B0B3D6009D282F /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
+		7195124129B0B3D6009D282F /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
+		7195124229B0B3D6009D282F /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
+		7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
+		7195124429B0B3D6009D282F /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
+		7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
+		7195124629B0B3D6009D282F /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
+		7195124829B0B3D6009D282F /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7195122E29B0B3D6009D282F /* Solar */; };
+		7195124929B0B3D6009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
+		7195124A29B0B3D6009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
+		7195124C29B0B3D6009D282F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
+		7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
+		7195125329B0B401009D282F /* watchOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -112,7 +138,6 @@
 		71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */; };
 		71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
-		71BD5E3E29A77D6000E40C01 /* WidgetFamily++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71DB52AA29AB896500D62BB7 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */; };
@@ -141,6 +166,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7195120629AFBDC5009D282F;
 			remoteInfo = "macOS Widget ExtensionExtension";
+		};
+		7195125429B0B401009D282F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7198467928E5895E00E866CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7195122D29B0B3D6009D282F;
+			remoteInfo = "watchOS Widget Extension copy";
 		};
 		71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -175,6 +207,17 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7195125629B0B401009D282F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7195125329B0B401009D282F /* watchOS Widget Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -198,10 +241,11 @@
 		719511F729AF5CE1009D282F /* GetSunsetTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunsetTime.swift; sourceTree = "<group>"; };
 		719511F929AF5CF7009D282F /* ViewDaylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDaylight.swift; sourceTree = "<group>"; };
 		719511FB29AF5D0E009D282F /* ViewRemainingDaylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRemainingDaylight.swift; sourceTree = "<group>"; };
-		719511FD29AFB964009D282F /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EllipticalEdgeMask.swift"; sourceTree = "<group>"; };
 		7195120229AFBD61009D282F /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
 		7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7195125229B0B3D6009D282F /* iOS Widget Extension copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOS Widget Extension copy-Info.plist"; path = "/Users/dte/Developer/Solstice/iOS Widget Extension copy-Info.plist"; sourceTree = "<absolute>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -223,7 +267,6 @@
 		71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
-		71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetFamily++.swift"; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
 		71DB52A929AB896500D62BB7 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
@@ -261,6 +304,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7195124729B0B3D6009D282F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7195124829B0B3D6009D282F /* Solar in Frameworks */,
+				7195124929B0B3D6009D282F /* SwiftUI.framework in Frameworks */,
+				7195124A29B0B3D6009D282F /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7198467E28E5895E00E866CE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -292,7 +345,6 @@
 				7106C86E29A276B40007A7EC /* WidgetBundle.swift */,
 				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7106C87529A276B40007A7EC /* Assets.xcassets */,
-				71BD5E3C29A77D5400E40C01 /* Extensions */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -337,6 +389,7 @@
 				7198468328E5895E00E866CE /* Solstice */,
 				71DB52AC29ABD17F00D62BB7 /* watchOS */,
 				7106C86D29A276B40007A7EC /* Widget */,
+				7195125229B0B3D6009D282F /* iOS Widget Extension copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -347,6 +400,7 @@
 				7106C86829A276B30007A7EC /* iOS Widget Extension.appex */,
 				719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */,
 				7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */,
+				7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -413,19 +467,10 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		71BD5E3C29A77D5400E40C01 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				71BD5E3D29A77D6000E40C01 /* WidgetFamily++.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		71DB52AC29ABD17F00D62BB7 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
 				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
-				719511FD29AFB964009D282F /* ComplicationController.swift */,
 				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
 				71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */,
 				719511FF29AFBBD2009D282F /* Extensions */,
@@ -485,6 +530,26 @@
 			productReference = 7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		7195122D29B0B3D6009D282F /* watchOS Widget Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7195124E29B0B3D6009D282F /* Build configuration list for PBXNativeTarget "watchOS Widget Extension" */;
+			buildPhases = (
+				7195123029B0B3D6009D282F /* Sources */,
+				7195124729B0B3D6009D282F /* Frameworks */,
+				7195124B29B0B3D6009D282F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "watchOS Widget Extension";
+			packageProductDependencies = (
+				7195122E29B0B3D6009D282F /* Solar */,
+			);
+			productName = WidgetExtension;
+			productReference = 7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7198468028E5895E00E866CE /* Solstice */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7198469528E5895F00E866CE /* Build configuration list for PBXNativeTarget "Solstice" */;
@@ -517,10 +582,12 @@
 				719F923F29ACD1CC00C06921 /* Sources */,
 				719F924029ACD1CC00C06921 /* Frameworks */,
 				719F924129ACD1CC00C06921 /* Resources */,
+				7195125629B0B401009D282F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7195125529B0B401009D282F /* PBXTargetDependency */,
 			);
 			name = "Solstice watchOS Watch App";
 			packageProductDependencies = (
@@ -571,9 +638,10 @@
 			projectRoot = "";
 			targets = (
 				7198468028E5895E00E866CE /* Solstice */,
-				7106C86729A276B30007A7EC /* iOS Widget Extension */,
-				7195120629AFBDC5009D282F /* macOS Widget ExtensionExtension */,
 				719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */,
+				7106C86729A276B30007A7EC /* iOS Widget Extension */,
+				7195122D29B0B3D6009D282F /* watchOS Widget Extension */,
+				7195120629AFBDC5009D282F /* macOS Widget ExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -593,6 +661,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7195124B29B0B3D6009D282F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7195124C29B0B3D6009D282F /* Assets.xcassets in Resources */,
+				7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,7 +704,6 @@
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
 				7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				7106C88E29A27D330007A7EC /* DaylightChart.swift in Sources */,
-				71BD5E3E29A77D6000E40C01 /* WidgetFamily++.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
 				7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */,
@@ -670,6 +746,34 @@
 				7195121A29AFBDFC009D282F /* Widget.swift in Sources */,
 				7195122B29AFBEA1009D282F /* DaylightChart.swift in Sources */,
 				7195121E29AFBE09009D282F /* WidgetLocationHeadingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7195123029B0B3D6009D282F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7195123129B0B3D6009D282F /* Widget.intentdefinition in Sources */,
+				7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */,
+				7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */,
+				7195123429B0B3D6009D282F /* SkyGradient.swift in Sources */,
+				7195123529B0B3D6009D282F /* DaylightChart.swift in Sources */,
+				7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */,
+				7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */,
+				7195123929B0B3D6009D282F /* TimeMachine.swift in Sources */,
+				7195123A29B0B3D6009D282F /* Solar+SolarEvent.swift in Sources */,
+				7195123B29B0B3D6009D282F /* CountdownWidgetView.swift in Sources */,
+				7195123C29B0B3D6009D282F /* OverviewWidgetView.swift in Sources */,
+				7195123D29B0B3D6009D282F /* WidgetBundle.swift in Sources */,
+				7195123E29B0B3D6009D282F /* CurrentLocation.swift in Sources */,
+				7195123F29B0B3D6009D282F /* Persistence.swift in Sources */,
+				7195124029B0B3D6009D282F /* WidgetLocationHeadingView.swift in Sources */,
+				7195124129B0B3D6009D282F /* Solar++.swift in Sources */,
+				7195124229B0B3D6009D282F /* Date++.swift in Sources */,
+				7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */,
+				7195124429B0B3D6009D282F /* Widget.swift in Sources */,
+				7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */,
+				7195124629B0B3D6009D282F /* Solstice.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,7 +833,6 @@
 				71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
-				719511FE29AFB964009D282F /* ComplicationController.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
 				719F926F29ACD21300C06921 /* DaylightChart.swift in Sources */,
 				719F927929ACD21A00C06921 /* Date++.swift in Sources */,
@@ -761,6 +864,11 @@
 			);
 			target = 7195120629AFBDC5009D282F /* macOS Widget ExtensionExtension */;
 			targetProxy = 7195121129AFBDC5009D282F /* PBXContainerItemProxy */;
+		};
+		7195125529B0B401009D282F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7195122D29B0B3D6009D282F /* watchOS Widget Extension */;
+			targetProxy = 7195125429B0B401009D282F /* PBXContainerItemProxy */;
 		};
 		71AEB7AF29AD0F2100A7952D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -888,6 +996,70 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7195124F29B0B3D6009D282F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS Widget Extension copy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7195125029B0B3D6009D282F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS Widget Extension copy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1172,6 +1344,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		7195124E29B0B3D6009D282F /* Build configuration list for PBXNativeTarget "watchOS Widget Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7195124F29B0B3D6009D282F /* Debug */,
+				7195125029B0B3D6009D282F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7198467C28E5895E00E866CE /* Build configuration list for PBXProject "Solstice" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1202,6 +1383,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7195122F29B0B3D6009D282F /* XCRemoteSwiftPackageReference "Solar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ceeK/Solar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
@@ -1221,6 +1410,11 @@
 		7195121729AFBDD9009D282F /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
+			productName = Solar;
+		};
+		7195122E29B0B3D6009D282F /* Solar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7195122F29B0B3D6009D282F /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
 		7198469B28E58CAA00E866CE /* Solar */ = {

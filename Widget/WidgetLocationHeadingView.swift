@@ -33,6 +33,10 @@ struct WidgetLocationView_Previews: PreviewProvider {
 			WidgetLocationView(location: SolsticeWidgetLocation(title: "London", latitude: 0, longitude: 0, isRealLocation: true))
 			WidgetLocationView(location: SolsticeWidgetLocation(title: "San Francisco", latitude: 0, longitude: 0))
 		}
+		#if os(watchOS)
+			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
+		#else
 			.previewContext(WidgetPreviewContext(family: .systemMedium))
+		#endif
 	}
 }

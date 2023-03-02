@@ -16,6 +16,11 @@ struct CountdownWidgetView: View {
 	var nextSolarEvent: Solar.Event? {
 		solar.nextSolarEvent
 	}
+	
+	var previousSolarEvent: Solar.Event? {
+		solar.previousSolarEvent
+	}
+	
 	var location: SolsticeWidgetLocation
 	
 	var timeZone: TimeZone {
@@ -33,22 +38,50 @@ struct CountdownWidgetView: View {
 	
 	var nextEventText: some View {
 		if let nextSolarEvent {
-			return Text("\(nextSolarEvent.description.localizedCapitalized) \(nextSolarEvent.date.formatted(.relative(presentation: .numeric)))")
+			return Text("\(nextSolarEvent.description.localizedCapitalized) in \(nextSolarEvent.date, style: .relative)")
 		} else {
 			return Text("Loading...")
 		}
 	}
 	
 	var body: some View {
-		if let nextSolarEvent {
+		if let nextSolarEvent,
+		   let previousSolarEvent {
 			switch family {
+				#if !os(macOS)
+			case .accessoryCircular:
+				ProgressView(timerInterval: previousSolarEvent.date...nextSolarEvent.date) {
+					nextEventText
+				} currentValueLabel: {
+					VStack {
+						Image(systemName: nextSolarEvent.imageName)
+							.font(.caption)
+							.widgetAccentable()
+						Text(nextSolarEvent.date, style: .timer)
+							.font(.footnote)
+					}
+				}
+				.progressViewStyle(.circular)
+				#endif
 			case .accessoryInline:
 				HStack {
 					Image(systemName: nextSolarEvent.imageName)
 					nextEventText
 				}
 			case .accessoryRectangular:
-				Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
+				Label {
+					HStack {
+						VStack(alignment: .leading) {
+							nextEventText
+								.font(.headline)
+								.widgetAccentable()
+							Text(nextSolarEvent.date, style: .time)
+						}
+						Spacer(minLength: 0)
+					}
+				} icon: {
+					Image(systemName: nextSolarEvent.imageName)
+				}
 			default:
 				VStack(alignment: .leading, spacing: 8) {
 					WidgetLocationView(location: location)
@@ -91,6 +124,10 @@ struct CountdownWidgetView: View {
 struct CountdownWigetView_Previews: PreviewProvider {
 	static var previews: some View {
 		CountdownWidgetView(solar: Solar(coordinate: .init())!, location: .defaultLocation)
+		#if os(watchOS)
+			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
+		#else
 			.previewContext(WidgetPreviewContext(family: .systemSmall))
+		#endif
 	}
 }

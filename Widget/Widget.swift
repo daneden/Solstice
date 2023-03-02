@@ -21,6 +21,12 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 }
 
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
+	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
+		return [
+			IntentRecommendation(intent: ConfigurationIntent(), description: "Current Location")
+		]
+	}
+	
 	typealias Entry = SolsticeWidgetTimelineEntry
 	typealias Intent = ConfigurationIntent
 	
@@ -138,6 +144,8 @@ struct SolsticeOverviewWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular]
 	#elseif os(macOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+	#elseif os(watchOS)
+	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular]
 	#endif
 	
 	var body: some WidgetConfiguration {
@@ -159,6 +167,8 @@ struct SolsticeCountdownWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular]
 #elseif os(macOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
+#elseif os(watchOS)
+	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular]
 #endif
 	
 	var body: some WidgetConfiguration {
