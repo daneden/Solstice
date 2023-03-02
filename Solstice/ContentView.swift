@@ -65,7 +65,9 @@ struct ContentView: View {
 				ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
 					LocationSearchResultRow(
 						searchService: locationSearchService,
-						navigationSelection: $navigationSelection, result: result
+						navigationSelection: $navigationSelection,
+						items: Array(items),
+						result: result
 					)
 				}
 			}

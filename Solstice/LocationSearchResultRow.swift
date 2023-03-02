@@ -14,6 +14,7 @@ struct LocationSearchResultRow: View {
 	
 	@ObservedObject var searchService: LocationSearchService
 	@Binding var navigationSelection: NavigationSelection?
+	var items: Array<SavedLocation> = []
 	
 	@State private var isAddingItem = false
 
@@ -40,18 +41,30 @@ struct LocationSearchResultRow: View {
 		.contentShape(Rectangle())
 		.onTapGesture {
 			Task {
-				guard let temporaryLocation = try? await buildTemporaryLocation(from: result) else { return }
-				navigationSelection = .temporaryLocation(temporaryLocation)
+				guard let location = try? await getLocation(from: result) else { return }
+				
+				if let location = location as? TemporaryLocation {
+					navigationSelection = .temporaryLocation(location)
+				} else if let location = location as? SavedLocation {
+					navigationSelection = .savedLocation(id: location.id)
+				}
 			}
 		}
 	}
 	
-	func buildTemporaryLocation(from completion: MKLocalSearchCompletion) async throws -> TemporaryLocation? {
+	func getLocation(from completion: MKLocalSearchCompletion) async throws -> (any ObservableLocation)? {
 		isAddingItem = true
 		let searchRequest = MKLocalSearch.Request(completion: completion)
 		let searchResult = try await MKLocalSearch(request: searchRequest).start()
 		if let item = searchResult.mapItems.first {
 			let coords = item.placemark.coordinate
+			
+			if let location = item.placemark.location,
+				 let savedLocation = items.first(where: { savedLocation in
+					 savedLocation.coordinate.distance(from: location) < 1000
+				 }) {
+				return savedLocation
+			}
 
 			let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(item.placemark.location!)
 			searchService.queryFragment = ""
