@@ -141,7 +141,7 @@ struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 
 struct SolsticeOverviewWidget: Widget {
 	#if os(iOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular]
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular, .accessoryCircular]
 	#elseif os(macOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
 	#elseif os(watchOS)
@@ -164,7 +164,7 @@ struct SolsticeOverviewWidget: Widget {
 
 struct SolsticeCountdownWidget: Widget {
 #if os(iOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular]
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular, .accessoryCircular]
 #elseif os(macOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
 #elseif os(watchOS)
