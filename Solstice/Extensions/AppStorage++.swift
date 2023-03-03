@@ -105,18 +105,6 @@ struct Preferences {
 			 4 * 60 * 60
 		]
 	}
-	
-	// MARK: App Appearance
-	static var appColorScheme: Value<SolsticeColorScheme> = ("appColorScheme", .system)
-}
-
-extension Preferences {
-	enum SolsticeColorScheme: String, CaseIterable, RawRepresentable {
-		case system = "Automatic (System)"
-		case dark = "Dark"
-		case light = "Light"
-		case locationBased = "Automatic (Location Daylight)"
-	}
 }
 
 extension Preferences {

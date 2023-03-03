@@ -17,12 +17,6 @@ struct SettingsView: View {
 						Label("Notifications", systemImage: "app.badge")
 					}
 				
-				AppearanceSettings()
-					.frame(idealWidth: 300, idealHeight: 400)
-					.tabItem {
-						Label("Appearance", systemImage: "paintbrush")
-					}
-				
 				SupporterSettings()
 					.frame(idealWidth: 300, idealHeight: 600)
 					.tabItem {
