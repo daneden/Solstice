@@ -73,13 +73,17 @@ struct OverviewWidgetView: View {
 		case .accessoryInline:
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 		case .accessoryRectangular:
-			VStack(alignment: .leading) {
-				Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
-					.font(.headline)
-				if let solar {
-					Text(solar.safeSunrise...solar.safeSunset)
-						.foregroundStyle(.secondary)
+			Label {
+				VStack(alignment: .leading) {
+					Text(solar?.daylightDuration.localizedString ?? "Loading...")
+						.font(.headline)
+					if let solar {
+						Text(solar.safeSunrise...solar.safeSunset)
+							.foregroundStyle(.secondary)
+					}
 				}
+			} icon: {
+				Image(systemName: "sun.max")
 			}
 		default:
 			ZStack(alignment: .bottomLeading) {
