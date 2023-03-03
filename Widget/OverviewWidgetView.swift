@@ -70,8 +70,17 @@ struct OverviewWidgetView: View {
 				Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 			}
 			#endif
-		case .accessoryInline, .accessoryRectangular:
+		case .accessoryInline:
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
+		case .accessoryRectangular:
+			VStack(alignment: .leading) {
+				Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
+					.font(.headline)
+				if let solar {
+					Text(solar.safeSunrise...solar.safeSunset)
+						.foregroundStyle(.secondary)
+				}
+			}
 		default:
 			ZStack(alignment: .bottomLeading) {
 				#if !os(watchOS)
