@@ -44,6 +44,14 @@ struct CountdownWidgetView: View {
 		}
 	}
 	
+	var widgetProgressFormatter: DateComponentsFormatter {
+		let formatter = DateComponentsFormatter()
+		formatter.unitsStyle = .abbreviated
+		formatter.maximumUnitCount = 2
+		
+		return formatter
+	}
+	
 	var body: some View {
 		if let nextSolarEvent,
 		   let previousSolarEvent {
@@ -56,10 +64,9 @@ struct CountdownWidgetView: View {
 					VStack {
 						Image(systemName: nextSolarEvent.imageName)
 							.font(.caption)
-						Text(nextSolarEvent.date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .narrow, capitalizationContext: .standalone))
+						Text(widgetProgressFormatter.string(from: Date(), to: nextSolarEvent.date) ?? "Loading...")
 							.font(.footnote)
 					}
-					.widgetAccentable(false)
 				}
 				.progressViewStyle(.circular)
 				.widgetAccentable()

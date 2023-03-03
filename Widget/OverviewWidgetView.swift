@@ -74,13 +74,20 @@ struct OverviewWidgetView: View {
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 		case .accessoryRectangular:
 			Label {
-				VStack(alignment: .leading) {
-					Text(solar?.daylightDuration.localizedString ?? "Loading...")
-						.font(.headline)
-					if let solar {
-						Text(solar.safeSunrise...solar.safeSunset)
-							.foregroundStyle(.secondary)
+				HStack {
+					VStack(alignment: .leading) {
+						Text("Daylight Today")
+							.font(.headline)
+							.widgetAccentable()
+						
+						Text(solar?.daylightDuration.localizedString ?? "Loading...")
+							
+						if let solar {
+							Text(solar.safeSunrise...solar.safeSunset)
+								.foregroundStyle(.secondary)
+						}
 					}
+					Spacer(minLength: 0)
 				}
 			} icon: {
 				Image(systemName: "sun.max")
