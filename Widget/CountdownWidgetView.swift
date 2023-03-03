@@ -47,7 +47,7 @@ struct CountdownWidgetView: View {
 	var widgetProgressFormatter: DateComponentsFormatter {
 		let formatter = DateComponentsFormatter()
 		formatter.unitsStyle = .abbreviated
-		formatter.maximumUnitCount = 2
+		formatter.maximumUnitCount = 1
 		
 		return formatter
 	}
