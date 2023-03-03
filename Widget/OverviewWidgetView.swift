@@ -91,6 +91,7 @@ struct OverviewWidgetView: View {
 				}
 			} icon: {
 				Image(systemName: "sun.max")
+					.widgetAccentable()
 			}
 		default:
 			ZStack(alignment: .bottomLeading) {
