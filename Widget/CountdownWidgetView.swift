@@ -65,7 +65,6 @@ struct CountdownWidgetView: View {
 						Image(systemName: nextSolarEvent.imageName)
 							.font(.caption)
 						Text(widgetProgressFormatter.string(from: Date(), to: nextSolarEvent.date) ?? "Loading...")
-							.font(.footnote)
 					}
 				}
 				.progressViewStyle(.circular)
