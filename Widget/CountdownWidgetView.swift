@@ -57,7 +57,7 @@ struct CountdownWidgetView: View {
 						Image(systemName: nextSolarEvent.imageName)
 							.font(.caption)
 							.widgetAccentable()
-						Text(nextSolarEvent.date, style: .timer)
+						Text(nextSolarEvent.date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .narrow, capitalizationContext: .standalone))
 							.font(.footnote)
 					}
 				}
