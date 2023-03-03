@@ -23,7 +23,7 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
 	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
 		return [
-			IntentRecommendation(intent: ConfigurationIntent(), description: "Current Location")
+			IntentRecommendation(intent: ConfigurationIntent(), description: "Solstice")
 		]
 	}
 	
