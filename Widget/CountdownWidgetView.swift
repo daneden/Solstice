@@ -56,12 +56,13 @@ struct CountdownWidgetView: View {
 					VStack {
 						Image(systemName: nextSolarEvent.imageName)
 							.font(.caption)
-							.widgetAccentable()
 						Text(nextSolarEvent.date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .narrow, capitalizationContext: .standalone))
 							.font(.footnote)
 					}
+					.widgetAccentable(false)
 				}
 				.progressViewStyle(.circular)
+				.widgetAccentable()
 				#endif
 			case .accessoryInline:
 				HStack {
