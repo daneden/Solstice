@@ -64,7 +64,7 @@ struct CountdownWidgetView: View {
 					VStack {
 						Image(systemName: nextSolarEvent.imageName)
 							.font(.caption)
-						Text(nextSolarEvent.date, style: .relative)
+						Text(nextSolarEvent.date, style: .time)
 					}
 				}
 				.progressViewStyle(.circular)
@@ -76,18 +76,14 @@ struct CountdownWidgetView: View {
 					nextEventText
 				}
 			case .accessoryRectangular:
-				Label {
-					HStack {
-						VStack(alignment: .leading) {
-							nextEventText
-								.font(.headline)
-								.widgetAccentable()
-							Text(nextSolarEvent.date, style: .time)
-						}
-						Spacer(minLength: 0)
+				HStack {
+					VStack(alignment: .leading) {
+						nextEventText
+							.font(.headline)
+							.widgetAccentable()
+						Text(nextSolarEvent.date, style: .time)
 					}
-				} icon: {
-					Image(systemName: nextSolarEvent.imageName)
+					Spacer(minLength: 0)
 				}
 			default:
 				VStack(alignment: .leading, spacing: 8) {
