@@ -73,7 +73,6 @@ struct OverviewWidgetView: View {
 		case .accessoryInline:
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 		case .accessoryRectangular:
-			Label {
 				HStack {
 					VStack(alignment: .leading) {
 						Text("Daylight Today")
@@ -89,10 +88,6 @@ struct OverviewWidgetView: View {
 					}
 					Spacer(minLength: 0)
 				}
-			} icon: {
-				Image(systemName: "sun.max")
-					.widgetAccentable()
-			}
 		default:
 			ZStack(alignment: .bottomLeading) {
 				#if !os(watchOS)
