@@ -15,7 +15,7 @@ extension TimeZone {
 	
 	func differenceStringFromLocalTime(for date: Date) -> String {
 		let difference = differenceFromLocalTime(for: date)
-		let prefix = difference >= 0 ? "+" : "-"
+		let prefix = difference >= 0 ? "+" : ""
 		return "\(prefix)\(difference.abbreviatedHourString)"
 	}
 }
