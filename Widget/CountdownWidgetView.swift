@@ -64,7 +64,7 @@ struct CountdownWidgetView: View {
 					VStack {
 						Image(systemName: nextSolarEvent.imageName)
 							.font(.caption)
-						Text(widgetProgressFormatter.string(from: Date(), to: nextSolarEvent.date) ?? "Loading...")
+						Text(nextSolarEvent.date, style: .relative)
 					}
 				}
 				.progressViewStyle(.circular)
