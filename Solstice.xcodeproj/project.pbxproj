@@ -98,6 +98,11 @@
 		7195125329B0B401009D282F /* watchOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7195125829B48ECD009D282F /* TimeZone++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195125729B48ECD009D282F /* TimeZone++.swift */; };
 		7195125929B48ECD009D282F /* TimeZone++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195125729B48ECD009D282F /* TimeZone++.swift */; };
+		7195126129B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
+		7195126229B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
+		7195126329B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
+		7195126429B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
+		7195126529B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -247,6 +252,7 @@
 		7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125729B48ECD009D282F /* TimeZone++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone++.swift"; sourceTree = "<group>"; };
+		7195126029B492EB009D282F /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -352,6 +358,7 @@
 		717F8BBA29A908D00015ECCB /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				7195126029B492EB009D282F /* DefaultData.sqlite */,
 				717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */,
 				717F8BBB29A908E30015ECCB /* SettingsView.swift */,
 				718B136B29A918680001D4DC /* SupporterSettings.swift */,
@@ -651,6 +658,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7106C88F29A281440007A7EC /* Assets.xcassets in Resources */,
+				7195126329B492EB009D282F /* DefaultData.sqlite in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -660,6 +668,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */,
+				7195126529B492EB009D282F /* DefaultData.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,6 +677,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7195124C29B0B3D6009D282F /* Assets.xcassets in Resources */,
+				7195126429B492EB009D282F /* DefaultData.sqlite in Resources */,
 				7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -676,6 +686,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7195126129B492EB009D282F /* DefaultData.sqlite in Resources */,
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
@@ -688,6 +699,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				719F927229ACD21300C06921 /* Assets.xcassets in Resources */,
+				7195126229B492EB009D282F /* DefaultData.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
