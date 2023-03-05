@@ -99,7 +99,7 @@ struct DetailView<Location: ObservableLocation>: View {
 						HStack {
 							Text("Local Time")
 							Spacer()
-							Text(date.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+							Text("\(date.withTimeZoneAdjustment(for: location.timeZone), style: .time) (\(timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
 						}
 					}
 				}
