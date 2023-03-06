@@ -154,6 +154,7 @@ struct DaylightChart: View {
 					Rectangle()
 						.fill(Color.clear)
 						.contentShape(Rectangle())
+					#if os(iOS)
 						.gesture(DragGesture()
 							.onChanged { value in
 								let start = geo[proxy.plotAreaFrame].origin.x
@@ -167,6 +168,22 @@ struct DaylightChart: View {
 							.onEnded { _ in
 								selectedEvent = nil
 							})
+					#elseif os(macOS)
+						.onContinuousHover { value in
+							switch value {
+							case .active(let point):
+								let start = geo[proxy.plotAreaFrame].origin.x
+								let xCurrent = point.x - start
+								
+								if let date: Date = proxy.value(atX: xCurrent),
+									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 && $0.phase != .currentTime }){
+									selectedEvent = nearestEvent
+								}
+							case .ended:
+								selectedEvent = nil
+							}
+						}
+					#endif
 				}
 			}
 			.chartBackground { proxy in
