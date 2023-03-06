@@ -60,6 +60,13 @@ struct ContentView: View {
 					ForEach(items) { item in
 						DaylightSummaryRow(location: item)
 							.tag(NavigationSelection.savedLocation(id: item.id))
+							.contextMenu {
+								Button(role: .destructive) {
+									deleteItem(item)
+								} label: {
+									Label("Delete Location", systemImage: "trash")
+								}
+							}
 					}
 					.onDelete(perform: deleteItems)
 				} header: {
@@ -143,10 +150,19 @@ struct ContentView: View {
 			do {
 				try viewContext.save()
 			} catch {
-				// Replace this implementation with code to handle the error appropriately.
-				// fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				let nsError = error as NSError
-				fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+				print(error)
+			}
+		}
+	}
+	
+	private func deleteItem(_ item: SavedLocation) {
+		withAnimation {
+			viewContext.delete(item)
+			
+			do {
+				try viewContext.save()
+			} catch {
+				print(error)
 			}
 		}
 	}
