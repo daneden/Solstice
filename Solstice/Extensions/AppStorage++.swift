@@ -72,6 +72,9 @@ struct Preferences {
 	/// The user preference for how notifications are altered during periods of lessening daylight
 	static let sadPreference: Value<SADPreference> = ("sadPreverence", .none)
 	
+	static let cachedLatitude: Value<Double> = ("cachedLatitude", 0)
+	static let cachedLongitude: Value<Double> = ("cachedLongitude", 0)
+	
 	// MARK: Scheduling
 	struct NotificationSettings {
 		/// The type of notification schedule; either a specific time (specified in `notificationDate`) or relative to sunrise/sunset

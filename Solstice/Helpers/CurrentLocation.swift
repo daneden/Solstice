@@ -29,7 +29,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 		super.init()
 
 		locationManager.delegate = self
-		locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
 		latestLocation = locationManager.location
 	}
 	
@@ -66,11 +66,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
 		if CurrentLocation.isAuthorized {
-#if os(watchOS)
-			self.locationManager.startUpdatingLocation()
-#else
-			self.locationManager.startMonitoringSignificantLocationChanges()
-#endif
+			self.locationManager.requestLocation()
 		}
 	}
 	
