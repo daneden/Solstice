@@ -63,9 +63,9 @@ struct CountdownWidgetView: View {
 				} currentValueLabel: {
 					VStack {
 						Image(systemName: nextSolarEvent.imageName)
-							.font(.caption)
 						Text(nextSolarEvent.date, style: .time)
 					}
+					.font(.caption)
 				}
 				.progressViewStyle(.circular)
 				.widgetAccentable()
