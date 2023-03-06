@@ -67,6 +67,10 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 					}
 					
+					if let prevEvent = solar?.previousSolarEvent {
+						Text(prevEvent.date, style: .time)
+					}
+					
 					LabeledContent {
 						Text("\(dateComponentsFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
 					} label: {

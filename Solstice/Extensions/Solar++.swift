@@ -67,8 +67,8 @@ extension Solar {
 	}
 	
 	var previousSolarEvent: Event? {
-		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date < date })
-		?? yesterday.events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date < date })
+		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
+		?? yesterday.events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
 	}
 	
 	var tomorrow: Solar? {
