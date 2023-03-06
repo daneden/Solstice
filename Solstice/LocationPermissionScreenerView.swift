@@ -15,7 +15,7 @@ struct LocationPermissionScreenerView: View {
 			Button {
 				currentLocation.requestAccess()
 			} label: {
-				Text("Set Up Location Access")
+				Text("Set Up Location Services")
 			}
 			#if os(iOS)
 			.buttonStyle(.borderless)
@@ -23,9 +23,9 @@ struct LocationPermissionScreenerView: View {
 			.buttonStyle(.bordered)
 			#endif
 		} header: {
-			Label("Location Permission", systemImage: "location")
+			Label("Location Services", systemImage: "location")
 		} footer: {
-			Text("Set up location access to see sunrise and sunset times for your current location in the app, widgets, and notifications")
+			Text("Set up location services to see sunrise and sunset times for your current location in the app, widgets, and notifications")
 		}
 		.navigationTitle("Solstice")
 	}

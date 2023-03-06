@@ -41,6 +41,17 @@ struct ContentView: View {
 				}
 				
 				Section {
+					if !CurrentLocation.isAuthorized && items.isEmpty {
+						VStack {
+							Text("No locations")
+								.font(.headline)
+							Text("Search for a location or enable location services")
+						}
+						.frame(maxWidth: .infinity)
+						.multilineTextAlignment(.center)
+						.foregroundStyle(.secondary)
+					}
+					
 					if CurrentLocation.isAuthorized {
 						DaylightSummaryRow(location: currentLocation)
 							.tag(NavigationSelection.currentLocation)
