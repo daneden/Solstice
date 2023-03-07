@@ -12,10 +12,11 @@ import CoreLocation
 
 struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.managedObjectContext) var viewContext
+	@Environment(\.dismiss) var dismiss
 	
-	@Binding var navigationSelection: NavigationSelection?
 	@ObservedObject var location: Location
 	@EnvironmentObject var timeMachine: TimeMachine
+	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
 	@State private var timeTravelVisible = false
 	
@@ -139,9 +140,10 @@ struct DetailView<Location: ObservableLocation>: View {
 				ToolbarItem {
 					if let location = location as? TemporaryLocation {
 						Button {
+							dismiss()
 							withAnimation {
 								if let id = try? location.saveLocation(to: viewContext) {
-									navigationSelection = .savedLocation(id: id)
+									navigationState.navigationSelection = .savedLocation(id: id)
 								}
 							}
 						} label: {
@@ -204,10 +206,7 @@ extension DetailView {
 
 struct DetailView_Previews: PreviewProvider {
 	static var previews: some View {
-		DetailView(
-			navigationSelection: .constant(nil),
-			location: TemporaryLocation.placeholderLocation
-		)
+		DetailView(location: TemporaryLocation.placeholderLocation)
 		.environmentObject(TimeMachine())
 	}
 }

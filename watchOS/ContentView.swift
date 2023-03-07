@@ -17,10 +17,7 @@ struct ContentView: View {
 				case .notDetermined:
 					LocationPermissionScreenerView()
 				case .authorizedAlways, .authorizedWhenInUse:
-					DetailView(
-						navigationSelection: .constant(nil),
-						location: currentLocation
-					)
+					DetailView(location: currentLocation)
 				case .denied, .restricted:
 					Text("Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac.")
 				@unknown default:

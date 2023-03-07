@@ -17,6 +17,8 @@ struct ContentView: View {
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
 	
+	@EnvironmentObject var navigationState: NavigationStateManager
+	
 	@State private var itemSortDimension = SortingFunction.timezone
 	@State private var itemSortOrder = SortOrder.forward
 	
@@ -24,8 +26,6 @@ struct ContentView: View {
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
 		animation: .default)
 	private var items: FetchedResults<SavedLocation>
-	
-	@State var navigationSelection: NavigationSelection?
 	
 #if !os(watchOS)
 	@StateObject var locationSearchService = LocationSearchService()
@@ -36,7 +36,7 @@ struct ContentView: View {
 	
 	var body: some View {
 		NavigationSplitView {
-			List(selection: $navigationSelection) {
+			List(selection: $navigationState.navigationSelection) {
 #if !os(watchOS)
 				TimeMachineView()
 #endif
@@ -87,15 +87,10 @@ struct ContentView: View {
 				ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
 					LocationSearchResultRow(
 						searchService: locationSearchService,
-						navigationSelection: $navigationSelection,
 						items: Array(items),
 						result: result
 					)
 				}
-			}
-			.onChange(of: navigationSelection) { _ in
-				locationSearchService.queryFragment = ""
-				dismissSearch()
 			}
 #endif
 
@@ -138,28 +133,26 @@ struct ContentView: View {
 #endif
 			}
 		} detail: {
-			switch navigationSelection {
+			switch navigationState.navigationSelection {
 			case .currentLocation:
-				DetailView(
-					navigationSelection: $navigationSelection,
-					location: currentLocation
-				)
+				DetailView(location: currentLocation)
 			case .savedLocation(let id):
 				if let item = items.first(where: { $0.id == id }) {
-					DetailView(
-						navigationSelection: $navigationSelection,
-						location: item
-					)
+					DetailView(location: item)
 				} else {
 					placeholderView
 				}
 			case .temporaryLocation(let location):
-				DetailView(
-					navigationSelection: $navigationSelection,
-					location: location
-				)
+				DetailView(location: location)
 			case .none:
 				placeholderView
+			}
+		}
+		.sheet(item: $navigationState.temporaryLocation) { value in
+			if let value {
+				NavigationView {
+					DetailView(location: value)
+				}
 			}
 		}
 	}

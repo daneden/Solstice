@@ -12,8 +12,9 @@ struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
 	
+	@EnvironmentObject var navigationState: NavigationStateManager
 	@ObservedObject var searchService: LocationSearchService
-	@Binding var navigationSelection: NavigationSelection?
+	
 	var items: Array<SavedLocation> = []
 	
 	@State private var isAddingItem = false
@@ -44,9 +45,9 @@ struct LocationSearchResultRow: View {
 				guard let location = try? await getLocation(from: result) else { return }
 				
 				if let location = location as? TemporaryLocation {
-					navigationSelection = .temporaryLocation(location)
+					navigationState.temporaryLocation = location
 				} else if let location = location as? SavedLocation {
-					navigationSelection = .savedLocation(id: location.id)
+					navigationState.navigationSelection = .savedLocation(id: location.id)
 				}
 			}
 		}

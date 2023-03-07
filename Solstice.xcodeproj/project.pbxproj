@@ -115,6 +115,8 @@
 		7195128429B73341009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195128529B73344009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195128629B7334F009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		7195128829B7BCBD009D282F /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128729B7BCBD009D282F /* NavigationStateManager.swift */; };
+		7195128929B7BCBD009D282F /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128729B7BCBD009D282F /* NavigationStateManager.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -273,6 +275,7 @@
 		7195126729B63268009D282F /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
 		7195126829B63268009D282F /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
 		7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLabeledContent.swift; sourceTree = "<group>"; };
+		7195128729B7BCBD009D282F /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -496,6 +499,7 @@
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
 				71A2BDE529B747940071ACE9 /* Globals.swift */,
+				7195128729B7BCBD009D282F /* NavigationStateManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -863,6 +867,7 @@
 				717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */,
 				717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */,
 				71F641B929995ED000FE5AB5 /* DaylightChart.swift in Sources */,
+				7195128829B7BCBD009D282F /* NavigationStateManager.swift in Sources */,
 				71F641BF299B7C7000FE5AB5 /* Solar+SolarEvent.swift in Sources */,
 				71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */,
 				71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */,
@@ -900,6 +905,7 @@
 				719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */,
 				71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */,
+				7195128929B7BCBD009D282F /* NavigationStateManager.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
 				7195125929B48ECD009D282F /* TimeZone++.swift in Sources */,

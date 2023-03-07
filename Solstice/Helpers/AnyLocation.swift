@@ -81,3 +81,9 @@ extension TemporaryLocation {
 		return TemporaryLocation(title: "London", subtitle: "England", timeZoneIdentifier: "GMT", latitude: 51.5072, longitude: -0.1276)
 	}
 }
+
+extension TemporaryLocation: Identifiable {
+	var id: Int {
+		hashValue
+	}
+}
