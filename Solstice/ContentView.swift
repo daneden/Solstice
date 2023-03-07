@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import Solar
 
 struct ContentView: View {
 	@AppStorage("testNotificationsEnabled") var testNotificationsEnabled = false
@@ -15,6 +16,9 @@ struct ContentView: View {
 	@Environment(\.isSearching) private var isSearching
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
+	
+	@State private var itemSortOrder = SortingFunction.timezone
+	@State private var order = SortOrder.forward
 	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
@@ -29,6 +33,32 @@ struct ContentView: View {
 	
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var currentLocation: CurrentLocation
+	
+	var sortedItems: [SavedLocation] {
+		items.sorted { lhs, rhs in
+			switch itemSortOrder {
+			case .timezone:
+				switch order {
+				case .forward:
+					return lhs.timeZone.secondsFromGMT() < rhs.timeZone.secondsFromGMT()
+				case .reverse:
+					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
+				}
+			case .daylightDuration:
+				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate.coordinate),
+							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate.coordinate) else {
+					return true
+				}
+				
+				switch order {
+				case .forward:
+					return lhsSolar.daylightDuration < rhsSolar.daylightDuration
+				case .reverse:
+					return lhsSolar.daylightDuration > rhsSolar.daylightDuration
+				}
+			}
+		}
+	}
 	
 	var body: some View {
 		NavigationSplitView {
@@ -57,7 +87,7 @@ struct ContentView: View {
 							.tag(NavigationSelection.currentLocation)
 					}
 					
-					ForEach(items) { item in
+					ForEach(sortedItems) { item in
 						DaylightSummaryRow(location: item)
 							.tag(NavigationSelection.savedLocation(id: item.id))
 							.contextMenu {
@@ -94,8 +124,9 @@ struct ContentView: View {
 				dismissSearch()
 			}
 #endif
-#if os(iOS)
+
 			.toolbar {
+#if os(iOS)
 				Button {
 					settingsViewOpen.toggle()
 				} label: {
@@ -106,8 +137,31 @@ struct ContentView: View {
 						SettingsView()
 					}
 				}
-			}
 #endif
+				Menu {
+					Picker(selection: $itemSortOrder.animation()) {
+						Text("Timezone")
+							.tag(SortingFunction.timezone)
+						
+						Text("Daylight Duration")
+							.tag(SortingFunction.daylightDuration)
+					} label: {
+						Text("Sort by")
+					}
+
+					Picker(selection: $order.animation()) {
+						Text("Ascending")
+							.tag(SortOrder.forward)
+						
+						Text("Descending")
+							.tag(SortOrder.reverse)
+					} label: {
+						Text("Order")
+					}
+				} label: {
+					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+				}
+			}
 		} detail: {
 			switch navigationSelection {
 			case .currentLocation:
@@ -145,7 +199,7 @@ struct ContentView: View {
 	
 	private func deleteItems(offsets: IndexSet) {
 		withAnimation {
-			offsets.map { items[$0] }.forEach(viewContext.delete)
+			offsets.map { sortedItems[$0] }.forEach(viewContext.delete)
 			
 			do {
 				try viewContext.save()
@@ -165,6 +219,12 @@ struct ContentView: View {
 				print(error)
 			}
 		}
+	}
+}
+
+extension ContentView {
+	private enum SortingFunction {
+		case timezone, daylightDuration
 	}
 }
 

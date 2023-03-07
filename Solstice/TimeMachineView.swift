@@ -17,7 +17,7 @@ struct TimeMachineView: View {
 				}
 				
 				#if os(iOS)
-				Slider(value: timeMachine.offset,
+				Slider(value: timeMachine.offset.animation(),
 							 in: -182...182,
 							 step: 1,
 							 minimumValueLabel: Text("Past").font(.caption),
