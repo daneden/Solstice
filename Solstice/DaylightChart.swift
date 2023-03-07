@@ -96,6 +96,7 @@ struct DaylightChart: View {
 						ZStack {
 							Circle()
 								.fill(.background)
+								.blendMode(.normal)
 								.overlay {
 									Circle()
 										.strokeBorder(style: StrokeStyle(lineWidth: 2))
@@ -112,6 +113,7 @@ struct DaylightChart: View {
 							Rectangle()
 								.fill(.clear)
 								.background(.background.opacity(0.3))
+								.blendMode(.overlay)
 								.mask {
 									LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
 								}

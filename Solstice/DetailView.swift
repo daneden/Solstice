@@ -59,9 +59,14 @@ struct DetailView<Location: ObservableLocation>: View {
 				Section {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone, markSize: chartMarkSize)
+							.blendMode(.plusLighter)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
+							.listRowBackground(
+								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
+							)
+							.colorScheme(.dark)
 #if os(watchOS)
 							.listRowBackground(Color.clear)
 #endif
