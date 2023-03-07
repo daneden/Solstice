@@ -34,22 +34,29 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 					if location is CurrentLocation {
 						Image(systemName: "location")
 							.imageScale(.small)
+							.foregroundStyle(.secondary)
+							.symbolVariant(.fill)
 					}
 					
 					Text(location.title ?? "My Location")
 				}
 				
-				Text(sunrise.withTimeZoneAdjustment(for: location.timeZone)...sunset.withTimeZoneAdjustment(for: location.timeZone))
-					.font(.footnote)
-					.foregroundStyle(.secondary)
+				if let subtitle = location.subtitle {
+					Text(subtitle)
+						.foregroundColor(.secondary)
+						.font(.footnote)
+				}
 			}
 			
 			Spacer()
 			
-			Text(daylightFormatter.string(from: sunrise.distance(to: sunset)) ?? "")
-				.font(.title)
-				.fontWeight(.light)
-				.foregroundStyle(.secondary)
+			VStack(alignment: .trailing) {
+				Text(daylightFormatter.string(from: sunrise.distance(to: sunset)) ?? "")
+					.foregroundStyle(.secondary)
+				Text(sunrise.withTimeZoneAdjustment(for: location.timeZone)...sunset.withTimeZoneAdjustment(for: location.timeZone))
+					.font(.footnote)
+					.foregroundStyle(.tertiary)
+			}
 		}
 		.padding(.vertical, 4)
 	}
