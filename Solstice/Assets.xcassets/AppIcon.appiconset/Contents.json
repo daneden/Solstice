@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "App Icon.png",
+      "filename" : "app-icon.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -63,7 +63,7 @@
       "size" : "512x512"
     },
     {
-      "filename" : "App Icon 1.png",
+      "filename" : "app-icon-watch.png",
       "idiom" : "universal",
       "platform" : "watchos",
       "size" : "1024x1024"
