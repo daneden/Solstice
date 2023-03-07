@@ -67,27 +67,27 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 					}
 					
-					LabeledContent {
+					AdaptiveLabeledContent {
 						Text("\(dateComponentsFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
 					} label: {
 						Label("Total Daylight", systemImage: "hourglass")
 					}
 					
-					LabeledContent {
+					AdaptiveLabeledContent {
 						Text("\(sunrise, style: .time)")
 					} label: {
 						Label("Sunrise", systemImage: "sunrise")
 					}
 					
 					if let culmination = solar?.peak.withTimeZoneAdjustment(for: timeZone) {
-						LabeledContent {
+						AdaptiveLabeledContent {
 							Text("\(culmination, style: .time)")
 						} label: {
 							Label("Culmination", systemImage: "sun.max")
 						}
 					}
 					
-					LabeledContent {
+					AdaptiveLabeledContent {
 						Text("\(sunset, style: .time)")
 					} label: {
 						Label("Sunset", systemImage: "sunset")
@@ -115,18 +115,22 @@ struct DetailView<Location: ObservableLocation>: View {
 						let nextGreaterThanPrevious = nextSolsticeSolar.daylightDuration > previousSolsticeSolar.daylightDuration
 						
 						VStack(alignment: .leading) {
-							LabeledContent {
+							AdaptiveLabeledContent {
 								Text(relativeDateFormatter.localizedString(for: nextSolstice, relativeTo: date))
 							} label: {
 								Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 							}
 							
-							Text("\(dateComponentsFormatter.string(from: daylightDifference) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
-								.font(.caption)
-								.foregroundStyle(.secondary)
+							Label {
+								Text("\(dateComponentsFormatter.string(from: daylightDifference) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
+									.font(.caption)
+									.foregroundStyle(.secondary)
+							} icon: {
+								Color.clear.frame(width: 0, height: 0)
+							}
 						}
 						
-						LabeledContent {
+						AdaptiveLabeledContent {
 							Text(relativeDateFormatter.localizedString(for: nextEquinox, relativeTo: date))
 						} label: {
 							Label("Next Equinox", systemImage: "circle.and.line.horizontal")
