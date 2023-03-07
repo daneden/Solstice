@@ -151,6 +151,16 @@ struct DetailView<Location: ObservableLocation>: View {
 						}
 					}
 				}
+				
+				if navigationState.temporaryLocation != nil {
+					ToolbarItem(placement: .cancellationAction) {
+						Button {
+							navigationState.temporaryLocation = nil
+						} label: {
+							Text("Close")
+						}
+					}
+				}
 			}
 #endif
 		}

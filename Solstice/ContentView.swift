@@ -150,7 +150,7 @@ struct ContentView: View {
 		}
 		.sheet(item: $navigationState.temporaryLocation) { value in
 			if let value {
-				NavigationView {
+				NavigationStack {
 					DetailView(location: value)
 				}
 			}
