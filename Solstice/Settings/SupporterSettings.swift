@@ -56,6 +56,14 @@ struct SupporterSettings: View {
 				}
 			}
 			
+			Section {
+				Link(destination: URL(string: "https://github.com/ceeK/Solar")!) {
+					Text("ceeK/Solar")
+				}
+			} header: {
+				Text("Open Source Acknowledgements")
+			}
+			
 			if !products.isEmpty {
 				Section(header: Label("Leave a tip", systemImage: "heart")) {
 					if latestTransaction != nil {
