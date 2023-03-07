@@ -63,11 +63,18 @@ struct DetailView<Location: ObservableLocation>: View {
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
+						#if os(macOS)
+							.background(
+								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
+									.padding(-12)
+							)
+							.colorScheme(.dark)
+						#elseif os(iOS)
 							.listRowBackground(
 								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
 							)
 							.colorScheme(.dark)
-#if os(watchOS)
+#elseif os(watchOS)
 							.listRowBackground(Color.clear)
 #endif
 					}
