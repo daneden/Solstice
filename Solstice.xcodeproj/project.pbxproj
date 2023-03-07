@@ -30,7 +30,6 @@
 		7106C88F29A281440007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
-		7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
@@ -58,7 +57,6 @@
 		7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
 		7195122029AFBE6E009D282F /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		7195122129AFBE71009D282F /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
-		7195122229AFBE79009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195122329AFBE7F009D282F /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7195122429AFBE83009D282F /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		7195122529AFBE88009D282F /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
@@ -72,7 +70,6 @@
 		7195123129B0B3D6009D282F /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87429A276B40007A7EC /* Widget.intentdefinition */; };
 		7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
-		7195123429B0B3D6009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195123529B0B3D6009D282F /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
@@ -115,6 +112,9 @@
 		7195127229B63268009D282F /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 7195126829B63268009D282F /* DefaultData.sqlite-shm */; };
 		7195128129B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */; };
 		7195128229B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */; };
+		7195128429B73341009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		7195128529B73344009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		7195128629B7334F009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -414,6 +414,7 @@
 		7195127F29B713D6009D282F /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
+				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */,
 			);
 			path = "Helper Views";
@@ -486,7 +487,6 @@
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
 				71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
-				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
 			);
@@ -757,7 +757,6 @@
 				7106C87829A276B40007A7EC /* Widget.intentdefinition in Sources */,
 				71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */,
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
-				7117008C29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				7106C88E29A27D330007A7EC /* DaylightChart.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
@@ -768,6 +767,7 @@
 				7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */,
 				7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */,
 				7106C88929A277680007A7EC /* Persistence.swift in Sources */,
+				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
 				7106C88529A2775C0007A7EC /* Solar++.swift in Sources */,
 				7106C88629A2775C0007A7EC /* Date++.swift in Sources */,
@@ -785,7 +785,7 @@
 				7195122829AFBE91009D282F /* Solar+SolarEvent.swift in Sources */,
 				7195122929AFBE94009D282F /* TimeInterval++.swift in Sources */,
 				7195121C29AFBE02009D282F /* CountdownWidgetView.swift in Sources */,
-				7195122229AFBE79009D282F /* SkyGradient.swift in Sources */,
+				7195128529B73344009D282F /* SkyGradient.swift in Sources */,
 				7195121929AFBDEB009D282F /* Widget.intentdefinition in Sources */,
 				7195121B29AFBDFF009D282F /* OverviewWidgetView.swift in Sources */,
 				7195122129AFBE71009D282F /* CurrentLocation.swift in Sources */,
@@ -811,7 +811,6 @@
 				7195123129B0B3D6009D282F /* Widget.intentdefinition in Sources */,
 				7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */,
 				7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */,
-				7195123429B0B3D6009D282F /* SkyGradient.swift in Sources */,
 				7195123529B0B3D6009D282F /* DaylightChart.swift in Sources */,
 				7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */,
 				7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */,
@@ -822,6 +821,7 @@
 				7195123D29B0B3D6009D282F /* WidgetBundle.swift in Sources */,
 				7195123E29B0B3D6009D282F /* CurrentLocation.swift in Sources */,
 				7195123F29B0B3D6009D282F /* Persistence.swift in Sources */,
+				7195128629B7334F009D282F /* SkyGradient.swift in Sources */,
 				7195124029B0B3D6009D282F /* WidgetLocationHeadingView.swift in Sources */,
 				7195124129B0B3D6009D282F /* Solar++.swift in Sources */,
 				7195124229B0B3D6009D282F /* Date++.swift in Sources */,

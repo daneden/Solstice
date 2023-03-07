@@ -25,10 +25,20 @@ struct AdaptiveLabeledContent<Label: View, Content: View>: View {
 				label()
 			}
 			
-			VStack(alignment: .leading) {
+			VStack(alignment: .leading, spacing: 4) {
 				label()
-				content()
-					.foregroundStyle(.secondary)
+				
+				if Label.self is SwiftUI.Label<Text, Image>.Type {
+					SwiftUI.Label {
+						content()
+							.foregroundStyle(.secondary)
+					} icon: {
+						Color.clear.frame(width: 0, height: 0)
+					}
+				} else {
+					content()
+						.foregroundStyle(.secondary)
+				}
 			}
 		}
 	}
