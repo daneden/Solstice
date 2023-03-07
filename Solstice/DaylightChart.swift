@@ -12,6 +12,8 @@ import Charts
 import CoreLocation
 
 struct DaylightChart: View {
+	@Environment(\.colorScheme) var colorScheme
+	
 	var solar: Solar
 	var timeZone: TimeZone
 	
@@ -96,7 +98,6 @@ struct DaylightChart: View {
 						ZStack {
 							Circle()
 								.fill(.background)
-								.blendMode(.normal)
 								.overlay {
 									Circle()
 										.strokeBorder(style: StrokeStyle(lineWidth: 2))
@@ -108,6 +109,7 @@ struct DaylightChart: View {
 									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
 								)
 								.shadow(color: .secondary.opacity(0.5), radius: 2)
+								.blendMode(.normal)
 						}
 						.background {
 							Rectangle()
@@ -222,15 +224,10 @@ struct DaylightChart: View {
 }
 
 extension DaylightChart {
-	var formatter: RelativeDateTimeFormatter {
-		let formatter = RelativeDateTimeFormatter()
-		return formatter
-	}
-	
 	var relativeEventTimeString: String {
 		if let selectedEvent,
 			 Calendar.autoupdatingCurrent.isDateInToday(selectedEvent.date) {
-			return " (\(formatter.localizedString(for: selectedEvent.date, relativeTo: solar.date.withTimeZoneAdjustment(for: timeZone))))"
+			return " (\(relativeDateFormatter.localizedString(for: selectedEvent.date, relativeTo: solar.date.withTimeZoneAdjustment(for: timeZone))))"
 		}
 		return ""
 	}

@@ -23,6 +23,8 @@ struct ContentView: View {
 					)
 				case .denied, .restricted:
 					Text("Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac.")
+				@unknown default:
+					fatalError()
 				}
 		}
 			.environmentObject(timeMachine)

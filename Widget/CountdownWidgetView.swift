@@ -44,14 +44,6 @@ struct CountdownWidgetView: View {
 		}
 	}
 	
-	var widgetProgressFormatter: DateComponentsFormatter {
-		let formatter = DateComponentsFormatter()
-		formatter.unitsStyle = .abbreviated
-		formatter.maximumUnitCount = 1
-		
-		return formatter
-	}
-	
 	var body: some View {
 		if let nextSolarEvent,
 		   let previousSolarEvent {

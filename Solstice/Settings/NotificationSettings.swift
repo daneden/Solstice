@@ -26,12 +26,6 @@ struct NotificationSettings: View {
 	
 	@AppStorage(Preferences.sadPreference) var sadPreference
 	
-	var timeIntervalFormatter: DateComponentsFormatter {
-		let formatter = DateComponentsFormatter()
-		formatter.unitsStyle = .short
-		return formatter
-	}
-	
 	fileprivate var notificationFragments: [NotificationFragment] {
 		[
 			(label: "Sunrise/sunset times", value: $notifsIncludeSunTimes),

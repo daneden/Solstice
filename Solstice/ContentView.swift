@@ -17,8 +17,8 @@ struct ContentView: View {
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
 	
-	@State private var itemSortOrder = SortingFunction.timezone
-	@State private var order = SortOrder.forward
+	@State private var itemSortDimension = SortingFunction.timezone
+	@State private var itemSortOrder = SortOrder.forward
 	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
@@ -33,32 +33,6 @@ struct ContentView: View {
 	
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var currentLocation: CurrentLocation
-	
-	var sortedItems: [SavedLocation] {
-		items.sorted { lhs, rhs in
-			switch itemSortOrder {
-			case .timezone:
-				switch order {
-				case .forward:
-					return lhs.timeZone.secondsFromGMT() < rhs.timeZone.secondsFromGMT()
-				case .reverse:
-					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
-				}
-			case .daylightDuration:
-				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate.coordinate),
-							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate.coordinate) else {
-					return true
-				}
-				
-				switch order {
-				case .forward:
-					return lhsSolar.daylightDuration < rhsSolar.daylightDuration
-				case .reverse:
-					return lhsSolar.daylightDuration > rhsSolar.daylightDuration
-				}
-			}
-		}
-	}
 	
 	var body: some View {
 		NavigationSplitView {
@@ -126,6 +100,30 @@ struct ContentView: View {
 #endif
 
 			.toolbar {
+				Menu {
+					Picker(selection: $itemSortDimension.animation()) {
+						Text("Timezone")
+							.tag(SortingFunction.timezone)
+						
+						Text("Daylight Duration")
+							.tag(SortingFunction.daylightDuration)
+					} label: {
+						Text("Sort by")
+					}
+					
+					Picker(selection: $itemSortOrder.animation()) {
+						Text("Ascending")
+							.tag(SortOrder.forward)
+						
+						Text("Descending")
+							.tag(SortOrder.reverse)
+					} label: {
+						Text("Order")
+					}
+				} label: {
+					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+				}
+				
 #if os(iOS)
 				Button {
 					settingsViewOpen.toggle()
@@ -138,29 +136,6 @@ struct ContentView: View {
 					}
 				}
 #endif
-				Menu {
-					Picker(selection: $itemSortOrder.animation()) {
-						Text("Timezone")
-							.tag(SortingFunction.timezone)
-						
-						Text("Daylight Duration")
-							.tag(SortingFunction.daylightDuration)
-					} label: {
-						Text("Sort by")
-					}
-
-					Picker(selection: $order.animation()) {
-						Text("Ascending")
-							.tag(SortOrder.forward)
-						
-						Text("Descending")
-							.tag(SortOrder.reverse)
-					} label: {
-						Text("Order")
-					}
-				} label: {
-					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
-				}
 			}
 		} detail: {
 			switch navigationSelection {
@@ -225,6 +200,32 @@ struct ContentView: View {
 extension ContentView {
 	private enum SortingFunction {
 		case timezone, daylightDuration
+	}
+	
+	private var sortedItems: [SavedLocation] {
+		items.sorted { lhs, rhs in
+			switch itemSortDimension {
+			case .timezone:
+				switch itemSortOrder {
+				case .forward:
+					return lhs.timeZone.secondsFromGMT() < rhs.timeZone.secondsFromGMT()
+				case .reverse:
+					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
+				}
+			case .daylightDuration:
+				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate.coordinate),
+							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate.coordinate) else {
+					return true
+				}
+				
+				switch itemSortOrder {
+				case .forward:
+					return lhsSolar.daylightDuration < rhsSolar.daylightDuration
+				case .reverse:
+					return lhsSolar.daylightDuration > rhsSolar.daylightDuration
+				}
+			}
+		}
 	}
 }
 

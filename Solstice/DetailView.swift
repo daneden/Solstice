@@ -19,37 +19,6 @@ struct DetailView<Location: ObservableLocation>: View {
 	@State private var showRemainingDaylight = false
 	@State private var timeTravelVisible = false
 	
-	var relativeDateFormatter: RelativeDateTimeFormatter {
-		let formatter = RelativeDateTimeFormatter()
-		formatter.dateTimeStyle = .named
-		formatter.formattingContext = .standalone
-		return formatter
-	}
-	
-	var dateComponentsFormatter: DateComponentsFormatter {
-		let formatter = DateComponentsFormatter()
-		formatter.unitsStyle = .short
-		return formatter
-	}
-	
-	var chartHeight: CGFloat {
-#if os(iOS)
-		300
-#elseif os(macOS)
-		300
-#elseif os(watchOS)
-		200
-#endif
-	}
-	
-	var chartMarkSize: Double {
-		#if os(watchOS)
-		4
-		#else
-		8
-		#endif
-	}
-	
 	var body: some View {
 		GeometryReader { geom in
 			Form {
@@ -59,17 +28,18 @@ struct DetailView<Location: ObservableLocation>: View {
 				Section {
 					if let solar = solar {
 						DaylightChart(solar: solar, timeZone: location.timeZone, markSize: chartMarkSize)
-							.blendMode(.plusLighter)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
 						#if os(macOS)
+							.blendMode(.plusLighter)
 							.background(
 								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
 									.padding(-12)
 							)
 							.colorScheme(.dark)
 						#elseif os(iOS)
+							.blendMode(.plusLighter)
 							.listRowBackground(
 								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
 							)
@@ -80,7 +50,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					}
 					
 					AdaptiveLabeledContent {
-						Text("\(dateComponentsFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
+						Text("\(timeIntervalFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
 					} label: {
 						Label("Total Daylight", systemImage: "hourglass")
 					}
@@ -134,7 +104,7 @@ struct DetailView<Location: ObservableLocation>: View {
 							}
 							
 							Label {
-								Text("\(dateComponentsFormatter.string(from: daylightDifference) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
+								Text("\(timeIntervalFormatter.string(from: daylightDifference) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
 									.font(.caption)
 									.foregroundStyle(.secondary)
 							} icon: {
@@ -211,6 +181,24 @@ extension DetailView {
 	var sunset: Date {
 		let returnValue = solar?.safeSunset ?? .now
 		return returnValue.withTimeZoneAdjustment(for: timeZone)
+	}
+	
+	var chartHeight: CGFloat {
+#if os(iOS)
+		300
+#elseif os(macOS)
+		300
+#elseif os(watchOS)
+		200
+#endif
+	}
+	
+	var chartMarkSize: Double {
+#if os(watchOS)
+		4
+#else
+		8
+#endif
 	}
 }
 

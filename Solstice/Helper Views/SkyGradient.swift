@@ -17,17 +17,17 @@ struct SkyGradient {
 	
 	static let morning = [
 		Color(red: 0.11, green: 0.573, blue: 0.824),
-		Color(red: 0.949, green: 0.988, blue: 0.996)
+		Color(red: 0.749, green: 0.788, blue: 0.896)
 	]
 	
 	static let noon = [
-		Color(red: 0.184, green: 0.502, blue: 0.929),
-		Color(red: 0.337, green: 0.8, blue: 0.949)
+		Color(red: 0.184, green: 0.6, blue: 0.9),
+		Color(red: 0.4, green: 0.8, blue: 0.93)
 	]
 	
 	static let afternoon = [
 		Color(red: 0, green: 0.353, blue: 0.655),
-		Color(red: 1, green: 0.992, blue: 0.894)
+		Color(red: 1, green: 0.942, blue: 0.854)
 	]
 	
 	static let evening = [
@@ -70,6 +70,16 @@ struct SkyGradient {
 			let index = floor((sunrise.distance(to: now) / daylight.daylightDuration) * Double(colorsExcludingNight.count - 1))
 			
 			return colorsExcludingNight[Int(index)]
+		}
+	}
+}
+
+struct SkyGradient_Previews: PreviewProvider {
+	static var previews: some View {
+		HStack(spacing: 0) {
+			ForEach(SkyGradient.colors, id: \.self) { gradientStops in
+				LinearGradient(colors: gradientStops, startPoint: .top, endPoint: .bottom)
+			}
 		}
 	}
 }
