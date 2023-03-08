@@ -86,10 +86,9 @@ struct DaylightChart: View {
 				GeometryReader { geo in
 					Group {
 						Rectangle()
-							.fill(.secondary)
+							.fill(.tertiary)
 							.frame(width: geo.size.width, height: 1)
 							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
-							.blendMode(.normal)
 						
 						ZStack {
 							ZStack {
@@ -111,11 +110,11 @@ struct DaylightChart: View {
 							.background {
 								Rectangle()
 									.fill(.clear)
-									.background(.background.opacity(0.3))
-									.blendMode(.overlay)
+									.background(.background.opacity(0.8))
 									.mask {
 										LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
 									}
+									.blendMode(.overlay)
 							}
 							.mask(alignment: .bottom) {
 								Rectangle()
