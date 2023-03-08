@@ -80,7 +80,7 @@ struct DaylightChart: View {
 			}
 			.chartYAxis(.hidden)
 			.chartXAxis(hideXAxis ? .hidden : .automatic)
-			.chartYScale(domain: -1.2...1.2)
+			.chartYScale(domain: -1.5...1.5)
 			.chartXScale(domain: solar.startOfDay...solar.endOfDay)
 			.chartOverlay { proxy in
 				GeometryReader { geo in
