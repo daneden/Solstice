@@ -46,11 +46,32 @@ struct DaylightChart: View {
 						.opacity(selectedEvent == nil ? 1 : 0)
 						.overlay(alignment: .leading) {
 							if let selectedEvent {
-								VStack(alignment: .leading) {
-									Text(selectedEvent.label)
-										.foregroundStyle(.secondary)
-									Text("\(selectedEvent.date, style: .time)")
-										.font(.title2)
+								HStack {
+									VStack(alignment: .leading) {
+										Text(selectedEvent.label)
+										Text(selectedEvent.date, style: .time)
+											.foregroundStyle(.secondary)
+									}
+									
+									Spacer()
+									
+									if let currentX {
+										VStack(alignment: .trailing) {
+											Text(currentX, style: .time)
+												.foregroundStyle(.secondary)
+											
+											Group {
+												if currentX < solar.safeSunrise {
+													Text("\(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunrise))!) until sunrise")
+												} else if currentX < solar.safeSunset {
+													Text("\(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunset))!) until sunset")
+												} else if currentX > solar.safeSunset {
+													Text("\(timeIntervalFormatter.string(from: currentX.distance(to: solar.tomorrow?.safeSunrise ?? .now))!) until sunrise")
+												}
+											}
+											.foregroundStyle(.tertiary)
+										}
+									}
 								}
 							}
 						}
@@ -138,17 +159,17 @@ struct DaylightChart: View {
 						}
 					}
 					
-					if let selectedEvent {
+					if let currentX {
 						Rectangle()
 							.fill(.primary)
 							.frame(width: 2, height: geo.size.height)
-							.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+							.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
 							.overlay {
 								Rectangle()
 									.stroke(style: StrokeStyle(lineWidth: 1))
 									.fill(.background)
 									.frame(width: 2, height: geo.size.height)
-									.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
 							}
 					}
 					
@@ -161,14 +182,18 @@ struct DaylightChart: View {
 							.onChanged { value in
 								let start = geo[proxy.plotAreaFrame].origin.x
 								let xCurrent = value.location.x - start
+								let date: Date? = proxy.value(atX: xCurrent)
 								
-								if let date: Date = proxy.value(atX: xCurrent),
+								currentX = date
+								
+								if let date,
 									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 && $0.phase != .currentTime }){
 									selectedEvent = nearestEvent
 								}
 							}
 							.onEnded { _ in
 								selectedEvent = nil
+								currentX = nil
 							})
 #elseif os(macOS)
 						.onContinuousHover { value in
@@ -176,13 +201,18 @@ struct DaylightChart: View {
 							case .active(let point):
 								let start = geo[proxy.plotAreaFrame].origin.x
 								let xCurrent = point.x - start
+								let date: Date? = proxy.value(atX: xCurrent)
 								
-								if let date: Date = proxy.value(atX: xCurrent),
+								currentX = date
+								
+								if let date,
 									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 && $0.phase != .currentTime }){
 									selectedEvent = nearestEvent
+									currentX = date
 								}
 							case .ended:
 								selectedEvent = nil
+								currentX = nil
 							}
 						}
 #endif
