@@ -93,7 +93,7 @@ struct DaylightChart: View {
 						ZStack {
 							ZStack {
 								Circle()
-									.fill(.background)
+									.fill(.black)
 									.overlay {
 										Circle()
 											.strokeBorder(style: StrokeStyle(lineWidth: max(1, markSize / 4)))
