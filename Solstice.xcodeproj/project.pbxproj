@@ -117,6 +117,7 @@
 		7195128629B7334F009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195128829B7BCBD009D282F /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128729B7BCBD009D282F /* NavigationStateManager.swift */; };
 		7195128929B7BCBD009D282F /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128729B7BCBD009D282F /* NavigationStateManager.swift */; };
+		7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -403,7 +404,6 @@
 		719511FF29AFBBD2009D282F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -493,13 +493,13 @@
 			children = (
 				71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */,
 				719846AF28EEE48900E866CE /* CurrentLocation.swift */,
+				71A2BDE529B747940071ACE9 /* Globals.swift */,
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
 				71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */,
+				7195128729B7BCBD009D282F /* NavigationStateManager.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
-				71A2BDE529B747940071ACE9 /* Globals.swift */,
-				7195128729B7BCBD009D282F /* NavigationStateManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -514,6 +514,7 @@
 				71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */,
 				7195125729B48ECD009D282F /* TimeZone++.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
+				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -884,6 +885,7 @@
 				71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
+				7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */,
 				7106C87929A276B40007A7EC /* Widget.intentdefinition in Sources */,
 				7198469128E5895F00E866CE /* Solstice.xcdatamodeld in Sources */,
 				719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */,

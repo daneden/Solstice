@@ -10,11 +10,11 @@ import UserNotifications
 import StoreKit
 
 @main
-struct SolsticeApp: App {	
+struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var timeMachine = TimeMachine()
 	@StateObject private var currentLocation = CurrentLocation()
-	@StateObject private var navigationState = NavigationStateManager()
+	
 	let persistenceController = PersistenceController.shared
 
 	var body: some Scene {
@@ -23,7 +23,6 @@ struct SolsticeApp: App {
 				ContentView()
 					.environmentObject(timeMachine)
 					.environmentObject(currentLocation)
-					.environmentObject(navigationState)
 					.environment(\.managedObjectContext, persistenceController.container.viewContext)
 					.onChange(of: timeline.date) { newValue in
 						timeMachine.referenceDate = newValue

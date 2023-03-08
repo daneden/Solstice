@@ -7,8 +7,7 @@
 
 import Foundation
 
-enum NavigationSelection: Hashable {
+enum NavigationSelection: Hashable, Codable {
 	case currentLocation
-	case savedLocation(id: SavedLocation.ID)
-	case temporaryLocation(_ location: TemporaryLocation)
+	case savedLocation(id: UUID?)
 }

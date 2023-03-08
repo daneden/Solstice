@@ -83,3 +83,10 @@ struct PersistenceController {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
 }
+
+extension SavedLocation {
+	public override func awakeFromInsert() {
+		super.awakeFromInsert()
+		uuid = UUID()
+	}
+}

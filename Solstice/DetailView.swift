@@ -147,7 +147,7 @@ struct DetailView<Location: ObservableLocation>: View {
 								}
 							}
 						} label: {
-							Label("Add", systemImage: "plus.circle")
+							Label("Save Location", systemImage: "plus.circle")
 						}
 					}
 				}

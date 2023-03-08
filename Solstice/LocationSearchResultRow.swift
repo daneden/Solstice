@@ -46,8 +46,8 @@ struct LocationSearchResultRow: View {
 				
 				if let location = location as? TemporaryLocation {
 					navigationState.temporaryLocation = location
-				} else if let location = location as? SavedLocation {
-					navigationState.navigationSelection = .savedLocation(id: location.id)
+				} else if let locationId = (location as? SavedLocation)?.uuid {
+					navigationState.navigationSelection = .savedLocation(id: locationId)
 				}
 			}
 		}

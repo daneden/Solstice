@@ -62,7 +62,6 @@ struct DaylightChart: View {
 				.fontWeight(.semibold)
 			}
 			
-			
 			Chart {
 				ForEach(solarEvents) { solarEvent in
 					if solarEvent.phase != .currentTime {
@@ -85,75 +84,77 @@ struct DaylightChart: View {
 			.chartXScale(domain: solar.startOfDay...solar.endOfDay)
 			.chartOverlay { proxy in
 				GeometryReader { geo in
-					Rectangle()
+					Group {
+						Rectangle()
 #if !os(watchOS)
-						.fill(.regularMaterial)
+							.fill(.regularMaterial)
 #else
-						.fill(.tertiary)
-					#endif
-						.frame(width: geo.size.width, height: 1)
-						.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
-					
-					ZStack {
-						ZStack {
-							Circle()
-								.fill(.background)
-								.overlay {
-									Circle()
-										.strokeBorder(style: StrokeStyle(lineWidth: 2))
-										.fill(.primary)
-								}
-								.frame(width: markSize * 2.5, height: markSize * 2.5)
-								.position(
-									x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
-									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
-								)
-								.shadow(color: .secondary.opacity(0.5), radius: 2)
-								.blendMode(.normal)
-						}
-						.background {
-							Rectangle()
-								.fill(.clear)
-								.background(.background.opacity(0.3))
-								.blendMode(.overlay)
-								.mask {
-									LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-								}
-						}
-						.mask(alignment: .bottom) {
-							Rectangle()
-								.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0))
-						}
+							.fill(.tertiary)
+#endif
+							.frame(width: geo.size.width, height: 1)
+							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 						
 						ZStack {
-							Circle()
-								.fill(.primary)
-								.frame(width: markSize * 2.5, height: markSize * 2.5)
-								.position(
-									x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
-									y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
-								)
-								.shadow(color: .secondary.opacity(0.5), radius: 4)
-						}
-						.mask(alignment: .top) {
-							Rectangle()
-								.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
-						}
-					}
-					
-					if let selectedEvent {
-						Rectangle()
-							.fill(.primary)
-							.frame(width: 2, height: geo.size.height)
-							.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
-							.overlay {
-								Rectangle()
-									.stroke(style: StrokeStyle(lineWidth: 1))
+							ZStack {
+								Circle()
 									.fill(.background)
-									.frame(width: 2, height: geo.size.height)
-									.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+									.overlay {
+										Circle()
+											.strokeBorder(style: StrokeStyle(lineWidth: max(1, markSize / 4)))
+											.fill(.primary)
+									}
+									.frame(width: markSize * 2.5, height: markSize * 2.5)
+									.position(
+										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
+										y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
+									)
+									.shadow(color: .secondary.opacity(0.5), radius: 2)
+									.blendMode(.normal)
 							}
-					}
+							.background {
+								Rectangle()
+									.fill(.clear)
+									.background(.background.opacity(0.3))
+									.blendMode(.overlay)
+									.mask {
+										LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+									}
+							}
+							.mask(alignment: .bottom) {
+								Rectangle()
+									.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0))
+							}
+							
+							ZStack {
+								Circle()
+									.fill(.primary)
+									.frame(width: markSize * 2.5, height: markSize * 2.5)
+									.position(
+										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
+										y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
+									)
+									.shadow(color: .secondary.opacity(0.5), radius: 4)
+							}
+							.mask(alignment: .top) {
+								Rectangle()
+									.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
+							}
+						}
+						
+						if let selectedEvent {
+							Rectangle()
+								.fill(.primary)
+								.frame(width: 2, height: geo.size.height)
+								.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+								.overlay {
+									Rectangle()
+										.stroke(style: StrokeStyle(lineWidth: 1))
+										.fill(.background)
+										.frame(width: 2, height: geo.size.height)
+										.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+								}
+						}
+					}.drawingGroup()
 					
 					Rectangle()
 						.fill(Color.clear)

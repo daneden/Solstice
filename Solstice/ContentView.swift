@@ -10,14 +10,13 @@ import CoreData
 import Solar
 
 struct ContentView: View {
-	@AppStorage("testNotificationsEnabled") var testNotificationsEnabled = false
+	@SceneStorage("navigationState") private var navigationStateData: Data?
 	@State var settingsViewOpen = false
+	@StateObject private var navigationState = NavigationStateManager()
 	
 	@Environment(\.isSearching) private var isSearching
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
-	
-	@EnvironmentObject var navigationState: NavigationStateManager
 	
 	@State private var itemSortDimension = SortingFunction.timezone
 	@State private var itemSortOrder = SortOrder.forward
@@ -63,7 +62,7 @@ struct ContentView: View {
 					
 					ForEach(sortedItems) { item in
 						DaylightSummaryRow(location: item)
-							.tag(NavigationSelection.savedLocation(id: item.id))
+							.tag(NavigationSelection.savedLocation(id: item.uuid))
 							.contextMenu {
 								Button(role: .destructive) {
 									deleteItem(item)
@@ -78,7 +77,7 @@ struct ContentView: View {
 				}
 			}
 			.navigationTitle("Solstice")
-			.navigationSplitViewColumnWidth(ideal: 256)
+			.navigationSplitViewColumnWidth(ideal: 300)
 #if !os(watchOS)
 			.searchable(text: $locationSearchService.queryFragment,
 									placement: .toolbar,
@@ -137,13 +136,11 @@ struct ContentView: View {
 			case .currentLocation:
 				DetailView(location: currentLocation)
 			case .savedLocation(let id):
-				if let item = items.first(where: { $0.id == id }) {
+				if let item = items.first(where: { $0.uuid == id }) {
 					DetailView(location: item)
 				} else {
 					placeholderView
 				}
-			case .temporaryLocation(let location):
-				DetailView(location: location)
 			case .none:
 				placeholderView
 			}
@@ -153,6 +150,32 @@ struct ContentView: View {
 				NavigationStack {
 					DetailView(location: value)
 				}
+				#if os(macOS)
+				.frame(minWidth: 600, minHeight: 400)
+				#endif
+			}
+		}
+		.environmentObject(navigationState)
+		.task(priority: TaskPriority.background) {
+			items.forEach { item in
+				if item.uuid == nil {
+					item.uuid = UUID()
+				}
+				
+				do {
+					try viewContext.save()
+				} catch {
+					print(error)
+				}
+			}
+		}
+		.task {
+			if let navigationStateData {
+				navigationState.jsonData = navigationStateData
+			}
+			
+			for await _ in navigationState.objectWillChangeSequence {
+				navigationStateData = navigationState.jsonData
 			}
 		}
 	}

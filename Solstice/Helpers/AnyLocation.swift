@@ -51,7 +51,7 @@ class TemporaryLocation: ObservableLocation {
 		self.longitude = longitude
 	}
 	
-	func saveLocation(to context: NSManagedObjectContext) throws -> SavedLocation.ID {
+	func saveLocation(to context: NSManagedObjectContext) throws -> UUID? {
 		let savedLocation = SavedLocation(context: context)
 		savedLocation.title = title
 		savedLocation.subtitle = subtitle
@@ -60,7 +60,7 @@ class TemporaryLocation: ObservableLocation {
 		savedLocation.latitude = latitude
 
 		try context.save()
-		return savedLocation.id
+		return savedLocation.uuid
 	}
 }
 
