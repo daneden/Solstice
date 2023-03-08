@@ -70,7 +70,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 					)
 					.frame(width: 36, height: 36)
 #if !os(watchOS)
-					.background(.regularMaterial)
+					.background(.ultraThinMaterial)
 #endif
 					.ellipticalEdgeMask()
 				}
