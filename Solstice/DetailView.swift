@@ -173,7 +173,7 @@ extension DetailView {
 	}
 	
 	var solar: Solar? {
-		Solar(for: date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+		Solar(for: date.addingTimeInterval(15000), coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
 	}
 	
 	var timeZone: TimeZone {
@@ -218,5 +218,6 @@ struct DetailView_Previews: PreviewProvider {
 	static var previews: some View {
 		DetailView(location: TemporaryLocation.placeholderLocation)
 		.environmentObject(TimeMachine())
+		.environmentObject(NavigationStateManager())
 	}
 }

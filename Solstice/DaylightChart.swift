@@ -25,13 +25,13 @@ struct DaylightChart: View {
 	var hideXAxis = false
 	
 	var summaryFont: Font {
-		#if os(watchOS)
+#if os(watchOS)
 		.headline
-		#elseif os(macOS)
+#elseif os(macOS)
 		.title
-		#else
+#else
 		.title2
-		#endif
+#endif
 	}
 	
 	var markSize: Double = 6
@@ -55,9 +55,9 @@ struct DaylightChart: View {
 							}
 						}
 				}
-				#if !os(macOS)
+#if !os(macOS)
 				.padding()
-				#endif
+#endif
 				.fontDesign(.rounded)
 				.fontWeight(.semibold)
 			}
@@ -86,14 +86,15 @@ struct DaylightChart: View {
 				GeometryReader { geo in
 					Group {
 						Rectangle()
-							.fill(.primary)
+							.fill(.secondary)
 							.frame(width: geo.size.width, height: 1)
 							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
+							.blendMode(.normal)
 						
 						ZStack {
 							ZStack {
 								Circle()
-									.fill(.black)
+									.fill(.background)
 									.overlay {
 										Circle()
 											.strokeBorder(style: StrokeStyle(lineWidth: max(1, markSize / 4)))
@@ -136,26 +137,27 @@ struct DaylightChart: View {
 									.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 							}
 						}
-						
-						if let selectedEvent {
-							Rectangle()
-								.fill(.primary)
-								.frame(width: 2, height: geo.size.height)
-								.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
-								.overlay {
-									Rectangle()
-										.stroke(style: StrokeStyle(lineWidth: 1))
-										.fill(.background)
-										.frame(width: 2, height: geo.size.height)
-										.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
-								}
-						}
-					}.drawingGroup()
+					}
+					
+					if let selectedEvent {
+						Rectangle()
+							.fill(.primary)
+							.frame(width: 2, height: geo.size.height)
+							.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+							.overlay {
+								Rectangle()
+									.stroke(style: StrokeStyle(lineWidth: 1))
+									.fill(.background)
+									.frame(width: 2, height: geo.size.height)
+									.position(x: proxy.position(forX: selectedEvent.date) ?? 0, y: geo.size.height / 2)
+							}
+					}
+					
 					
 					Rectangle()
 						.fill(Color.clear)
 						.contentShape(Rectangle())
-					#if os(iOS)
+#if os(iOS)
 						.gesture(DragGesture()
 							.onChanged { value in
 								let start = geo[proxy.plotAreaFrame].origin.x
@@ -169,7 +171,7 @@ struct DaylightChart: View {
 							.onEnded { _ in
 								selectedEvent = nil
 							})
-					#elseif os(macOS)
+#elseif os(macOS)
 						.onContinuousHover { value in
 							switch value {
 							case .active(let point):
@@ -184,7 +186,7 @@ struct DaylightChart: View {
 								selectedEvent = nil
 							}
 						}
-					#endif
+#endif
 				}
 			}
 			.chartBackground { proxy in
