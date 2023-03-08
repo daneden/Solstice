@@ -86,11 +86,7 @@ struct DaylightChart: View {
 				GeometryReader { geo in
 					Group {
 						Rectangle()
-#if !os(watchOS)
-							.fill(.regularMaterial)
-#else
 							.fill(.tertiary)
-#endif
 							.frame(width: geo.size.width, height: 1)
 							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 						
