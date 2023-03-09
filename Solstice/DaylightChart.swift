@@ -181,14 +181,13 @@ struct DaylightChart: View {
 									.strokeBorder(style: StrokeStyle(lineWidth: 1))
 									.fill(.background)
 									.opacity(0.75)
-									.blendMode(.plusDarker)
+									.blendMode(.normal)
 							}
 							.frame(width: markSize * 2, height: markSize * 2)
 							.position(
 								x: proxy.position(forX: currentX) ?? 0,
 								y: proxy.position(forY: yValue(for: currentX)) ?? 0
 							)
-							.blendMode(.normal)
 					}
 					
 					
