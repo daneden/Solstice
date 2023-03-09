@@ -50,7 +50,7 @@ struct SolsticeApp: App {
 				Task { await NotificationManager.scheduleNotifications(locationManager: currentLocation) }
 			#endif
 			default:
-				currentLocation.requestLocation()
+				currentLocation.requestLocation() { _ in }
 			}
 		}
 		
