@@ -43,16 +43,16 @@ struct SolsticeApp: App {
 					}
 			}
 		}
-		#if !os(watchOS)
 		.onChange(of: phase) { newValue in
 			switch newValue {
+			#if !os(watchOS)
 			case .background:
 				Task { await NotificationManager.scheduleNotifications(locationManager: currentLocation) }
+			#endif
 			default:
-				break
+				currentLocation.requestLocation()
 			}
 		}
-		#endif
 		
 		#if os(macOS)
 		Settings {
