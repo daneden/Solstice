@@ -40,9 +40,12 @@ struct DaylightChart: View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
 				VStack(alignment: .leading) {
-					Text(solar.differenceString)
-						.font(summaryFont)
-						.fontWeight(.semibold)
+					HStack {
+						Text(solar.differenceString)
+							.font(summaryFont)
+							.fontWeight(.semibold)
+						Spacer(minLength: 0)
+					}
 						.opacity(selectedEvent == nil ? 1 : 0)
 						.overlay(alignment: .leading) {
 							if let selectedEvent {
@@ -62,11 +65,11 @@ struct DaylightChart: View {
 											
 											Group {
 												if currentX < solar.safeSunrise {
-													Text("\(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunrise))!) until sunrise")
+													Text("Sunrise in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunrise))!)")
 												} else if currentX < solar.safeSunset {
-													Text("\(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunset))!) until sunset")
+													Text("Sunset in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunset))!)")
 												} else if currentX > solar.safeSunset {
-													Text("\(timeIntervalFormatter.string(from: currentX.distance(to: solar.tomorrow?.safeSunrise ?? .now))!) until sunrise")
+													Text("Sunrise in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.tomorrow?.safeSunrise ?? solar.endOfDay))!)")
 												}
 											}
 											.foregroundStyle(.tertiary)
@@ -171,6 +174,21 @@ struct DaylightChart: View {
 									.frame(width: 2, height: geo.size.height)
 									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
 							}
+						Circle()
+							.fill(.primary)
+							.overlay {
+								Circle()
+									.strokeBorder(style: StrokeStyle(lineWidth: 1))
+									.fill(.background)
+									.opacity(0.75)
+									.blendMode(.plusDarker)
+							}
+							.frame(width: markSize * 2, height: markSize * 2)
+							.position(
+								x: proxy.position(forX: currentX) ?? 0,
+								y: proxy.position(forY: yValue(for: currentX)) ?? 0
+							)
+							.blendMode(.normal)
 					}
 					
 					
