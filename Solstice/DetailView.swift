@@ -156,11 +156,11 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 	
 	var chartRenderedAsImage: Image? {
-		guard let image = ImageRenderer(content: daylightChartView).uiImage else {
+		guard let image = ImageRenderer(content: daylightChartView).cgImage else {
 			return nil
 		}
 		
-		return Image(uiImage: image)
+		return Image(cgImage: image)
 	}
 	
 	var daylightChartView: some View {
