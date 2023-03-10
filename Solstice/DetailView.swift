@@ -160,7 +160,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			return nil
 		}
 		
-		return Image(cgImage: image)
+		return Image(image)
 	}
 	
 	var daylightChartView: some View {
