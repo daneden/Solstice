@@ -229,11 +229,9 @@ extension DetailView {
 	}
 	
 	var chartHeight: CGFloat {
-#if os(iOS)
+#if !os(watchOS)
 		300
-#elseif os(macOS)
-		300
-#elseif os(watchOS)
+#else
 		200
 #endif
 	}

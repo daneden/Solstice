@@ -36,7 +36,9 @@ struct LocationSearchResultRow: View {
 			
 			if isAddingItem {
 				ProgressView()
+				#if !os(tvOS)
 					.controlSize(.small)
+				#endif
 			}
 		}
 		.contentShape(Rectangle())

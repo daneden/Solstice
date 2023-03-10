@@ -79,9 +79,8 @@ struct ContentView: View {
 			}
 			.navigationTitle("Solstice")
 			.navigationSplitViewColumnWidth(ideal: 300)
-#if !os(watchOS)
+#if !os(watchOS) && !os(tvOS)
 			.searchable(text: $locationSearchService.queryFragment,
-									placement: .toolbar,
 									prompt: "Search cities or airports")
 			.searchSuggestions {
 				ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
@@ -95,6 +94,7 @@ struct ContentView: View {
 #endif
 
 			.toolbar {
+				#if !os(tvOS)
 				Menu {
 					Menu {
 						Picker(selection: $itemSortDimension.animation()) {
@@ -126,6 +126,7 @@ struct ContentView: View {
 				} label: {
 					Label("View Options", systemImage: "eye.circle")
 				}
+				#endif
 				
 #if os(iOS)
 				Button {

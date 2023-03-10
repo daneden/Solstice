@@ -12,9 +12,11 @@ struct TimeMachineView: View {
 	
     var body: some View {
 			if timeMachine.isOn {
+				#if !os(tvOS)
 				DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 					Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 				}
+				#endif
 				
 				#if os(iOS)
 				Slider(value: timeMachine.offset.animation(),

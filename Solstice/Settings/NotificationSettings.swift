@@ -11,6 +11,13 @@ import CoreLocation
 
 fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool>)
 
+#if os(tvOS)
+struct NotificationSettings: View {
+	var body: some View {
+		Text("Hi")
+	}
+}
+#else
 struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsEnabled) var notificationsEnabled
 	
@@ -118,6 +125,7 @@ struct NotificationSettings: View {
 		
 	}
 }
+#endif
 
 struct NotificationPreview: View {
 	var title: String = ""

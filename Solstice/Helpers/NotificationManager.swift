@@ -33,7 +33,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	}
 	
 	static func clearDeliveredNotifications() async {
+		#if !os(tvOS)
 		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+		#endif
 	}
 	
 	static func scheduleNotifications(locationManager: CurrentLocation) async {
@@ -80,8 +82,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			}
 			
 			let content = UNMutableNotificationContent()
+			
+			#if !os(tvOS)
 			content.title = notificationContent.title
 			content.body = notificationContent.body
+			#endif
 			
 			let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
 			
