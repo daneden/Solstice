@@ -33,12 +33,14 @@ struct DetailView<Location: ObservableLocation>: View {
 						.frame(height: chartHeight)
 						.padding(.bottom)
 						.contextMenu {
+							#if !os(tvOS)
 							if let chartRenderedAsImage {
 								ShareLink(
 									item: chartRenderedAsImage,
 									preview: SharePreview("Daylight in \(location.title ?? "my location")", image: chartRenderedAsImage)
 								)
 							}
+							#endif
 						}
 					
 					AdaptiveLabeledContent {
