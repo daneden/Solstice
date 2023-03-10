@@ -30,6 +30,8 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 				Section {
 					daylightChartView
+						.frame(height: chartHeight)
+						.padding(.bottom)
 						.contextMenu {
 							if let chartRenderedAsImage {
 								ShareLink(
@@ -156,8 +158,32 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 	
 	var chartRenderedAsImage: Image? {
-		let imageRenderer = ImageRenderer(content: daylightChartView)
-		imageRenderer.scale = 2
+		let view = VStack {
+			daylightChartView
+			
+			HStack {
+				Label {
+					Text("Solstice")
+				} icon: {
+					Image("Solstice-Icon")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.frame(width: 16)
+				}
+				.font(.headline)
+				
+				Spacer()
+				
+				Text(location.title ?? "My Location")
+					.foregroundStyle(.secondary)
+			}
+			.padding()
+			.background(.background)
+		}
+			.frame(width: 500, height: 500)
+		
+		let imageRenderer = ImageRenderer(content: view)
+		imageRenderer.scale = 3
 		#if os(macOS)
 		guard let image = imageRenderer.nsImage else {
 			return nil
@@ -183,8 +209,6 @@ struct DetailView<Location: ObservableLocation>: View {
 					markSize: chartMarkSize
 				)
 				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-				.frame(height: chartHeight)
-				.padding(.bottom)
 #if os(macOS) || os(iOS)
 				.blendMode(.plusLighter)
 				.background(
