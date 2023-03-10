@@ -21,6 +21,8 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	@ObservedObject var location: Location
 	
+	@AppStorage(Preferences.listViewShowComplication) private var showComplication
+	
 	@State private var showRemainingDaylight = false
 	
 	var isCurrentLocation: Bool {
@@ -59,7 +61,8 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 						.foregroundStyle(.tertiary)
 				}
 				
-				if let solar {
+				if let solar,
+					 showComplication {
 					DaylightChart(
 						solar: solar,
 						timeZone: location.timeZone,

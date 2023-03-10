@@ -18,8 +18,9 @@ struct ContentView: View {
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
 	
-	@State private var itemSortDimension = SortingFunction.timezone
-	@State private var itemSortOrder = SortOrder.forward
+	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
+	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
+	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
@@ -95,27 +96,35 @@ struct ContentView: View {
 
 			.toolbar {
 				Menu {
-					Picker(selection: $itemSortDimension.animation()) {
-						Text("Timezone")
-							.tag(SortingFunction.timezone)
+					Menu {
+						Picker(selection: $itemSortDimension.animation()) {
+							Text("Timezone")
+								.tag(Preferences.SortingFunction.timezone)
+							
+							Text("Daylight Duration")
+								.tag(Preferences.SortingFunction.daylightDuration)
+						} label: {
+							Text("Sort by")
+						}
 						
-						Text("Daylight Duration")
-							.tag(SortingFunction.daylightDuration)
+						Picker(selection: $itemSortOrder.animation()) {
+							Text("Ascending")
+								.tag(SortOrder.forward)
+							
+							Text("Descending")
+								.tag(SortOrder.reverse)
+						} label: {
+							Text("Order")
+						}
 					} label: {
-						Text("Sort by")
+						Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
 					}
 					
-					Picker(selection: $itemSortOrder.animation()) {
-						Text("Ascending")
-							.tag(SortOrder.forward)
-						
-						Text("Descending")
-							.tag(SortOrder.reverse)
-					} label: {
-						Text("Order")
+					Toggle(isOn: $showComplication.animation()) {
+						Text("Show chart in list")
 					}
 				} label: {
-					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+					Label("View Options", systemImage: "eye.circle")
 				}
 				
 #if os(iOS)
@@ -214,10 +223,6 @@ struct ContentView: View {
 }
 
 extension ContentView {
-	private enum SortingFunction {
-		case timezone, daylightDuration
-	}
-	
 	private var sortedItems: [SavedLocation] {
 		items.sorted { lhs, rhs in
 			switch itemSortDimension {

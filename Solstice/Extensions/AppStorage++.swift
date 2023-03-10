@@ -108,6 +108,20 @@ struct Preferences {
 			 4 * 60 * 60
 		]
 	}
+	
+	// MARK: Appearance
+	enum SortingFunction: String, Codable, RawRepresentable {
+		case timezone, daylightDuration
+	}
+	
+	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", .graphical)
+	
+	#if !os(watchOS)
+	static let listViewOrderBy: Value<SortingFunction> = ("listViewOrderBy", .timezone)
+	#endif
+	
+	static let listViewSortOrder: Value<SortOrder> = ("listViewSortOrder", .forward)
+	static let listViewShowComplication: Value<Bool> = ("listViewShowComplication", showComplicationDefaultValue)
 }
 
 extension Preferences {
@@ -133,4 +147,34 @@ extension Preferences.NotificationSettings {
 			}
 		}
 	}
+}
+
+extension SortOrder: RawRepresentable {
+	public init?(rawValue: String) {
+		guard let data = rawValue.data(using: .utf8),
+					let result = try? JSONDecoder().decode(SortOrder.self, from: data)
+		else {
+			return nil
+		}
+		self = result
+	}
+	
+	public var rawValue: String {
+		guard let data = try? JSONEncoder().encode(self),
+					let result = String(data: data, encoding: .utf8)
+		else {
+			return ""
+		}
+		return result
+	}
+	
+	public typealias RawValue = String
+}
+
+fileprivate var showComplicationDefaultValue: Bool {
+	#if os(macOS)
+	true
+	#else
+	false
+	#endif
 }

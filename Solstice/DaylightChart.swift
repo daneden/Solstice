@@ -356,6 +356,13 @@ extension DaylightChart {
 	}
 }
 
+extension DaylightChart {
+	enum Appearance: String, Codable {
+		case normal = "Normal",
+				 graphical = "Graphical"
+	}
+}
+
 struct DaylightChart_Previews: PreviewProvider {
 	static var previews: some View {
 		DaylightChart(

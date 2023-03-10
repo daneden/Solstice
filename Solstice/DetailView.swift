@@ -20,6 +20,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	@State private var showRemainingDaylight = false
 	@State private var timeTravelVisible = false
 	
+	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
+	
 	var body: some View {
 		GeometryReader { geom in
 			Form {
@@ -27,33 +29,15 @@ struct DetailView<Location: ObservableLocation>: View {
 				TimeMachineView()
 #endif
 				Section {
-					if let solar = solar {
-						DaylightChart(
-							solar: solar,
-							timeZone: location.timeZone,
-							scrubbable: true,
-							markSize: chartMarkSize
-						)
-							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-							.frame(height: chartHeight)
-							.padding(.bottom)
-						#if os(macOS)
-							.blendMode(.plusLighter)
-							.background(
-								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
-									.padding(-12)
-							)
-							.colorScheme(.dark)
-						#elseif os(iOS)
-							.blendMode(.plusLighter)
-							.listRowBackground(
-								LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
-							)
-							.colorScheme(.dark)
-#elseif os(watchOS)
-							.listRowBackground(Color.clear)
-#endif
-					}
+					daylightChartView
+						.contextMenu {
+							if let chartRenderedAsImage {
+								ShareLink(
+									item: chartRenderedAsImage,
+									preview: SharePreview("Daylight in \(location.title ?? "my location")", image: chartRenderedAsImage)
+								)
+							}
+						}
 					
 					AdaptiveLabeledContent {
 						Text("\(timeIntervalFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
@@ -168,6 +152,40 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 #endif
+		}
+	}
+	
+	var chartRenderedAsImage: Image? {
+		guard let image = ImageRenderer(content: daylightChartView).uiImage else {
+			return nil
+		}
+		
+		return Image(uiImage: image)
+	}
+	
+	var daylightChartView: some View {
+		Group {
+			if let solar = solar {
+				DaylightChart(
+					solar: solar,
+					timeZone: location.timeZone,
+					scrubbable: true,
+					markSize: chartMarkSize
+				)
+				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+				.frame(height: chartHeight)
+				.padding(.bottom)
+#if os(macOS) || os(iOS)
+				.blendMode(.plusLighter)
+				.background(
+					LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
+						.padding(-12)
+				)
+				.colorScheme(.dark)
+#elseif os(watchOS)
+				.listRowBackground(Color.clear)
+#endif
+			}
 		}
 	}
 }
