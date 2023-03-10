@@ -23,6 +23,7 @@ struct DaylightChart: View {
 	var eventTypes: [Solar.Phase] = Solar.Phase.allCases
 	var includesSummaryTitle = true
 	var hideXAxis = false
+	var scrubbable = false
 	
 	var summaryFont: Font {
 #if os(watchOS)
@@ -197,6 +198,10 @@ struct DaylightChart: View {
 #if os(iOS)
 						.gesture(DragGesture()
 							.onChanged { value in
+								if !scrubbable {
+									return
+								}
+								
 								let start = geo[proxy.plotAreaFrame].origin.x
 								let xCurrent = value.location.x - start
 								let date: Date? = proxy.value(atX: xCurrent)
@@ -214,6 +219,10 @@ struct DaylightChart: View {
 							})
 #elseif os(macOS)
 						.onContinuousHover { value in
+							if !scrubbable {
+								return
+							}
+							
 							switch value {
 							case .active(let point):
 								let start = geo[proxy.plotAreaFrame].origin.x

@@ -28,7 +28,12 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 				Section {
 					if let solar = solar {
-						DaylightChart(solar: solar, timeZone: location.timeZone, markSize: chartMarkSize)
+						DaylightChart(
+							solar: solar,
+							timeZone: location.timeZone,
+							scrubbable: true,
+							markSize: chartMarkSize
+						)
 							.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 							.frame(height: chartHeight)
 							.padding(.bottom)
