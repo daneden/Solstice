@@ -19,13 +19,15 @@ struct AdaptiveLabeledContent<Label: View, Content: View>: View {
 	
 	var body: some View {
 		ViewThatFits {
+			#if !os(watchOS)
 			LabeledContent {
 				content()
 			} label: {
 				label()
 			}
+			#endif
 			
-			VStack(alignment: .leading, spacing: 4) {
+			VStack(alignment: .leading, spacing: 2) {
 				label()
 				
 				if Label.self is SwiftUI.Label<Text, Image>.Type {
