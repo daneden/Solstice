@@ -186,7 +186,6 @@ struct DetailView<Location: ObservableLocation>: View {
 			.padding()
 			
 			daylightChartView
-				.foregroundStyle(chartAppearance == .graphical ? .white : .black)
 				.clipShape(
 					RoundedRectangle(
 						cornerRadius: 16,
@@ -218,15 +217,15 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			.padding()
 		}
-			.background(.white)
-			.foregroundStyle(.black)
+			.background(.black)
+			.foregroundStyle(.white)
 			.clipShape(
 				RoundedRectangle(
 					cornerRadius: 20,
 					style: .continuous
 				)
 			)
-			.frame(width: 360, height: 640)
+			.frame(width: 540, height: 720)
 		
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
