@@ -193,7 +193,7 @@ struct DetailView<Location: ObservableLocation>: View {
 						style: .continuous
 					)
 				)
-				.padding()
+				.padding(.horizontal)
 				
 			
 			HStack {
