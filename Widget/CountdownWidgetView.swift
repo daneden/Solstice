@@ -61,6 +61,7 @@ struct CountdownWidgetView: View {
 				}
 				.progressViewStyle(.circular)
 				.widgetAccentable()
+				.widgetLabel { nextEventText }
 				#endif
 			case .accessoryInline:
 				HStack {
