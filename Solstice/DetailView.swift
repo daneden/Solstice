@@ -186,11 +186,6 @@ struct DetailView<Location: ObservableLocation>: View {
 			.padding()
 			
 			daylightChartView
-				.if(chartAppearance == .simple) { view in
-					view
-						.background(.white)
-						.foregroundStyle(.black)
-				}
 			
 			HStack {
 				VStack(alignment: .leading) {
@@ -214,8 +209,8 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			.padding()
 		}
-			.background(.black)
-			.foregroundStyle(.white)
+			.background(.white)
+			.foregroundStyle(.black)
 			.frame(width: 540, height: 960)
 		
 		let imageRenderer = ImageRenderer(content: view)
