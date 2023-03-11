@@ -22,7 +22,17 @@ struct LocationSearchResultRow: View {
 	var result: MKLocalSearchCompletion
 	
 	var body: some View {
-		HStack {
+		Button {
+			Task {
+				guard let location = try? await getLocation(from: result) else { return }
+				
+				if let location = location as? TemporaryLocation {
+					navigationState.temporaryLocation = location
+				} else if let locationId = (location as? SavedLocation)?.uuid {
+					navigationState.navigationSelection = .savedLocation(id: locationId)
+				}
+			}
+		} label: {
 			VStack(alignment: .leading) {
 				Text(result.title)
 				if !result.subtitle.isEmpty {
@@ -42,17 +52,7 @@ struct LocationSearchResultRow: View {
 			}
 		}
 		.contentShape(Rectangle())
-		.onTapGesture {
-			Task {
-				guard let location = try? await getLocation(from: result) else { return }
-				
-				if let location = location as? TemporaryLocation {
-					navigationState.temporaryLocation = location
-				} else if let locationId = (location as? SavedLocation)?.uuid {
-					navigationState.navigationSelection = .savedLocation(id: locationId)
-				}
-			}
-		}
+		.foregroundStyle(.primary)
 	}
 	
 	func getLocation(from completion: MKLocalSearchCompletion) async throws -> (any ObservableLocation)? {

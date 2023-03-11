@@ -520,8 +520,8 @@
 				71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */,
 				7195125729B48ECD009D282F /* TimeZone++.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
-				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
 				7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */,
+				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

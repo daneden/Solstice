@@ -9,11 +9,11 @@ import Foundation
 import CoreLocation
 
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
-	@Published private(set) var title: String?
-	@Published private(set) var subtitle: String?
+	@Published var title: String?
+	@Published var subtitle: String?
 	@Published private(set) var latitude: Double = 0
 	@Published private(set) var longitude: Double = 0
-	@Published private(set) var timeZoneIdentifier: String?
+	@Published var timeZoneIdentifier: String?
 	@Published private(set) var latestLocation: CLLocation?
 	private var didUpdateLocationsCallback: ((CLLocation?) -> Void)?
 	
