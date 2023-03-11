@@ -187,6 +187,14 @@ struct DetailView<Location: ObservableLocation>: View {
 			
 			daylightChartView
 				.foregroundStyle(chartAppearance == .graphical ? .white : .black)
+				.clipShape(
+					RoundedRectangle(
+						cornerRadius: 16,
+						style: .continuous
+					)
+				)
+				.padding()
+				
 			
 			HStack {
 				VStack(alignment: .leading) {
@@ -212,6 +220,12 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 			.background(.white)
 			.foregroundStyle(.black)
+			.clipShape(
+				RoundedRectangle(
+					cornerRadius: 20,
+					style: .continuous
+				)
+			)
 			.frame(width: 540, height: 960)
 		
 		let imageRenderer = ImageRenderer(content: view)
