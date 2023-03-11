@@ -231,6 +231,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
+		imageRenderer.isOpaque = false
 		#if os(macOS)
 		guard let image = imageRenderer.nsImage else {
 			return nil
