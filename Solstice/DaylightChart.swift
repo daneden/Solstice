@@ -271,6 +271,7 @@ struct DaylightChart: View {
 					Gradient.Stop(color: .secondary.opacity(0.6), location: 1),
 				], startPoint: .bottom, endPoint: .top))
 			}
+			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
 		}
 	}
@@ -357,8 +358,8 @@ extension DaylightChart {
 }
 
 extension DaylightChart {
-	enum Appearance: String, Codable {
-		case normal = "Normal",
+	enum Appearance: String, Codable, CaseIterable {
+		case simple = "Simple",
 				 graphical = "Graphical"
 	}
 }

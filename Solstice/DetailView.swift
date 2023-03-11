@@ -30,6 +30,7 @@ struct DetailView<Location: ObservableLocation>: View {
 #endif
 				Section {
 					daylightChartView
+						.frame(height: chartHeight)
 						.contextMenu {
 							#if !os(tvOS)
 							if let chartRenderedAsImage {
@@ -39,6 +40,14 @@ struct DetailView<Location: ObservableLocation>: View {
 								)
 							}
 							#endif
+							
+							Picker(selection: $chartAppearance.animation()) {
+								ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+									Text(appearance.rawValue)
+								}
+							} label: {
+								Label("Appearance", systemImage: "paintpalette")
+							}
 						}
 					
 					AdaptiveLabeledContent {
@@ -159,39 +168,53 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	var chartRenderedAsImage: Image? {
 		let view = VStack {
+			HStack {
+				Label {
+					Text("Solstice")
+				} icon: {
+					Image("Solstice-Icon")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.frame(width: 16)
+				}
+				.font(.headline)
+				
+				Spacer()
+			}
+			.padding()
+			
 			daylightChartView
+				.if(chartAppearance == .simple) { view in
+					view
+						.background(.white)
+						.foregroundStyle(.black)
+				}
 			
 			HStack {
 				VStack(alignment: .leading) {
-					Label {
-						Text("Solstice")
-					} icon: {
-						Image("Solstice-Icon")
-							.resizable()
-							.aspectRatio(contentMode: .fit)
-							.frame(width: 16)
-					}
-					.font(.headline)
-					
 					Text(location.title ?? "My Location")
-						.foregroundStyle(.secondary)
+						.font(.headline)
+					
+					if let duration = solar?.daylightDuration.localizedString {
+						Text("\(duration) of daylight")
+							.foregroundStyle(.secondary)
+					}
 				}
 				
 				Spacer()
 				
 				VStack(alignment: .trailing) {
-					Label("\(sunrise, style: .time)", systemImage: "sunrise")
+					Text("Sunrise: \(sunrise, style: .time)")
 					
-					Label("\(sunset, style: .time)", systemImage: "sunset")
+					Text("Sunset: \(sunset, style: .time)")
 				}
 				.foregroundStyle(.secondary)
-				.symbolRenderingMode(.hierarchical)
 			}
 			.padding()
 		}
-			.background()
-			.frame(width: 500, height: 500)
-			.preferredColorScheme(.dark)
+			.background(.black)
+			.foregroundStyle(.white)
+			.frame(width: 540, height: 960)
 		
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
@@ -220,16 +243,19 @@ struct DetailView<Location: ObservableLocation>: View {
 					markSize: chartMarkSize
 				)
 				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-				.frame(height: chartHeight)
 				.padding(.bottom)
+				.if(chartAppearance == .graphical) { view in
+					view
 #if os(macOS) || os(iOS)
-				.blendMode(.plusLighter)
-				.background(
-					LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
-						.padding(-12)
-				)
-				.colorScheme(.dark)
-#elseif os(watchOS)
+						.blendMode(.plusLighter)
+						.background(
+							LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
+								.padding(-12)
+						)
+						.colorScheme(.dark)
+#endif
+				}
+#if os(watchOS)
 				.listRowBackground(Color.clear)
 #endif
 			}

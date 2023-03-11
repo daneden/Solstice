@@ -118,6 +118,11 @@
 		7195128829B7BCBD009D282F /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128729B7BCBD009D282F /* NavigationStateManager.swift */; };
 		7195128929B7BCBD009D282F /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128729B7BCBD009D282F /* NavigationStateManager.swift */; };
 		7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
+		7195128C29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
+		7195128D29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
+		7195128E29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
+		7195128F29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
+		7195129029BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468928E5895F00E866CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -277,6 +282,7 @@
 		7195126829B63268009D282F /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
 		7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLabeledContent.swift; sourceTree = "<group>"; };
 		7195128729B7BCBD009D282F /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
+		7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConditionalModifier.swift"; sourceTree = "<group>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -515,6 +521,7 @@
 				7195125729B48ECD009D282F /* TimeZone++.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
 				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
+				7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -787,6 +794,7 @@
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
 				7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */,
+				7195128E29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -811,6 +819,7 @@
 				7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */,
 				7195122429AFBE83009D282F /* TimeMachine.swift in Sources */,
 				7195122029AFBE6E009D282F /* AnyLocation.swift in Sources */,
+				7195129029BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7195122629AFBE8B009D282F /* Date++.swift in Sources */,
 				7195121A29AFBDFC009D282F /* Widget.swift in Sources */,
 				7195122B29AFBEA1009D282F /* DaylightChart.swift in Sources */,
@@ -843,6 +852,7 @@
 				7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */,
 				7195124429B0B3D6009D282F /* Widget.swift in Sources */,
 				7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */,
+				7195128F29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7195124629B0B3D6009D282F /* Solstice.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -888,6 +898,7 @@
 				7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */,
 				7106C87929A276B40007A7EC /* Widget.intentdefinition in Sources */,
 				7198469128E5895F00E866CE /* Solstice.xcdatamodeld in Sources */,
+				7195128C29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -898,6 +909,7 @@
 			files = (
 				719F927829ACD21A00C06921 /* Solar++.swift in Sources */,
 				719F928129ACD22100C06921 /* SkyGradient.swift in Sources */,
+				7195128D29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7195120129AFBBEC009D282F /* View+EllipticalEdgeMask.swift in Sources */,
 				719F928829ACD29100C06921 /* ContentView.swift in Sources */,
 				719F927B29ACD21A00C06921 /* TimeInterval++.swift in Sources */,
