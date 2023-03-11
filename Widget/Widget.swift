@@ -145,7 +145,7 @@ struct SolsticeOverviewWidget: Widget {
 	#elseif os(macOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
 	#elseif os(watchOS)
-	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular]
+	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 	#endif
 	
 	var body: some WidgetConfiguration {
@@ -168,7 +168,7 @@ struct SolsticeCountdownWidget: Widget {
 #elseif os(macOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
 #elseif os(watchOS)
-	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular]
+	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 #endif
 	
 	var body: some WidgetConfiguration {

@@ -38,7 +38,7 @@ struct CountdownWidgetView: View {
 	
 	var nextEventText: some View {
 		if let nextSolarEvent {
-			return Text("\(nextSolarEvent.description.localizedCapitalized) in \(nextSolarEvent.date, style: .relative)")
+			return Text("\(nextSolarEvent.description.localizedCapitalized) in \(Text(nextSolarEvent.date, style: .relative))")
 		} else {
 			return Text("Loading...")
 		}
@@ -67,6 +67,14 @@ struct CountdownWidgetView: View {
 					Image(systemName: nextSolarEvent.imageName)
 					nextEventText
 				}
+			#if os(watchOS)
+			case .accessoryCorner:
+				Label {
+					nextEventText
+				} icon: {
+					Image(systemName: nextSolarEvent.imageName)
+				}
+			#endif
 			case .accessoryRectangular:
 				HStack {
 					VStack(alignment: .leading) {

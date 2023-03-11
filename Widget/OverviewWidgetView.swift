@@ -50,7 +50,7 @@ struct OverviewWidgetView: View {
 	
 	var body: some View {
 		switch family {
-			#if !os(macOS)
+		#if !os(macOS)
 		case .accessoryCircular:
 			ZStack {
 				AccessoryWidgetBackground()
@@ -69,7 +69,11 @@ struct OverviewWidgetView: View {
 			.widgetLabel {
 				Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 			}
-			#endif
+		#endif
+		#if os(watchOS)
+		case .accessoryCorner:
+			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
+		#endif
 		case .accessoryInline:
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
 		case .accessoryRectangular:
