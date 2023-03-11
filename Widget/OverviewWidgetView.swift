@@ -73,7 +73,9 @@ struct OverviewWidgetView: View {
 		#if os(watchOS)
 		case .accessoryCorner:
 			Image(systemName: "sun.max")
-			Text(solar?.daylightDuration.localizedString ?? "Loading...")
+				.widgetLabel {
+					Text(solar?.daylightDuration.localizedString ?? "Loading...")
+				}
 		#endif
 		case .accessoryInline:
 			Label(solar?.daylightDuration.localizedString ?? "Loading...", systemImage: "sun.max")
