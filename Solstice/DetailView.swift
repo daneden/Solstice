@@ -41,6 +41,7 @@ struct DetailView<Location: ObservableLocation>: View {
 							}
 							#endif
 							
+							#if !os(watchOS)
 							Picker(selection: $chartAppearance.animation()) {
 								ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 									Text(appearance.rawValue)
@@ -48,6 +49,7 @@ struct DetailView<Location: ObservableLocation>: View {
 							} label: {
 								Label("Appearance", systemImage: "paintpalette")
 							}
+							#endif
 						}
 					
 					AdaptiveLabeledContent {
