@@ -186,6 +186,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			.padding()
 			
 			daylightChartView
+				.foregroundStyle(chartAppearance == .graphical ? .white : .black)
 			
 			HStack {
 				VStack(alignment: .leading) {
