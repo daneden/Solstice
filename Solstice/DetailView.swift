@@ -192,7 +192,9 @@ struct DetailView<Location: ObservableLocation>: View {
 						style: .continuous
 					)
 				)
-				.padding(.horizontal)
+				.if(chartAppearance == .graphical) { view in
+					view.padding(.horizontal)
+				}
 				
 			
 			HStack {
