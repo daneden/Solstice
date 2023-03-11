@@ -226,7 +226,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					style: .continuous
 				)
 			)
-			.frame(width: 540, height: 960)
+			.frame(width: 360, height: 640)
 		
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
