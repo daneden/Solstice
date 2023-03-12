@@ -37,9 +37,6 @@ struct ContentView: View {
 	var body: some View {
 		NavigationSplitView {
 			List(selection: $navigationState.navigationSelection) {
-#if !os(watchOS)
-				TimeMachineView()
-#endif
 				if CurrentLocation.authorizationStatus == .notDetermined {
 					LocationPermissionScreenerView()
 				}

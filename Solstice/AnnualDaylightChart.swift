@@ -32,8 +32,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 						 let astronomicalSunset = solar.astronomicalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 						BarMark(
 							x: .value("Astronomical Twilight", solar.date, unit: .month),
-							yStart: .value("Astronomical Sunrise", solar.startOfDay.distance(to: astronomicalSunrise)),
-							yEnd: .value("Astronomical Sunset", solar.startOfDay.distance(to: astronomicalSunset))
+							yStart: .value("Astronomical Sunrise", max(0, solar.startOfDay.distance(to: astronomicalSunrise))),
+							yEnd: .value("Astronomical Sunset", min(dayLength, solar.startOfDay.distance(to: astronomicalSunset)))
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
 					}
@@ -42,8 +42,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 						 let nauticalSunset = solar.nauticalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 						BarMark(
 							x: .value("Nautical Twilight", solar.date, unit: .month),
-							yStart: .value("Nautical Sunrise", solar.startOfDay.distance(to: nauticalSunrise)),
-							yEnd: .value("Nautical Sunset", solar.startOfDay.distance(to: nauticalSunset))
+							yStart: .value("Nautical Sunrise", max(0, solar.startOfDay.distance(to: nauticalSunrise))),
+							yEnd: .value("Nautical Sunset", min(dayLength, solar.startOfDay.distance(to: nauticalSunset)))
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
 					}
@@ -52,8 +52,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 						 let civilSunset = solar.civilSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 						BarMark(
 							x: .value("Civil Twilight", solar.date, unit: .month),
-							yStart: .value("Civil Sunrise", solar.startOfDay.distance(to: civilSunrise)),
-							yEnd: .value("Civil Sunset", solar.startOfDay.distance(to: civilSunset))
+							yStart: .value("Civil Sunrise", max(0, solar.startOfDay.distance(to: civilSunrise))),
+							yEnd: .value("Civil Sunset", min(dayLength, solar.startOfDay.distance(to: civilSunset)))
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
 					}
@@ -62,15 +62,15 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 						 let sunset = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
 						BarMark(
 							x: .value("Daylight", solar.date, unit: .month),
-							yStart: .value("Sunrise", solar.startOfDay.distance(to: sunrise)),
-							yEnd: .value("Sunset", solar.startOfDay.distance(to: sunset))
+							yStart: .value("Sunrise", max(0, solar.startOfDay.distance(to: sunrise))),
+							yEnd: .value("Sunset", min(dayLength, solar.startOfDay.distance(to: sunset)))
 						)
 						.foregroundStyle(by: .value("Phase", Solar.Phase.day))
 					}
 				}
 			}
 			.chartForegroundStyleScale(kvPairs)
-			.chartYScale(domain: minYValue...maxYValue)
+			.chartYScale(domain: 0...dayLength)
 			.chartYAxis {
 				AxisMarks(values: stride(from: 0.0, through: dayLength, by: 60 * 60 * 4).compactMap { $0 }) { value in
 					AxisTick()
@@ -115,32 +115,6 @@ extension AnnualDaylightChart {
 		return dates.map { date in
 			return Solar(for: date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
 		}.compactMap { $0 }
-	}
-	
-	var maxYValue: Double {
-		monthlySolars.reduce(dayLength) { partialResult, solar in
-			let maxForSolar = [solar.astronomicalSunset, solar.nauticalSunset, solar.civilSunset, solar.safeSunset]
-				.compactMap { $0 }
-				.map { solar.startOfDay.distance(to: $0) }
-				.reduce(0.0) { partialResult, currentValue in
-					max(partialResult, currentValue)
-				}
-			
-			return max(maxForSolar, partialResult)
-		}
-	}
-	
-	var minYValue: Double {
-		monthlySolars.reduce(0.0) { partialResult, solar in
-			let minForSolar = [solar.astronomicalSunrise, solar.nauticalSunrise, solar.civilSunrise, solar.safeSunrise]
-				.compactMap { $0 }
-				.map { solar.startOfDay.distance(to: $0) }
-				.reduce(0.0) { partialResult, currentValue in
-					max(partialResult, currentValue)
-				}
-			
-			return min(minForSolar, partialResult)
-		}
 	}
 }
 

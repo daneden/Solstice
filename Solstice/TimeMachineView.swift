@@ -12,7 +12,7 @@ struct TimeMachineView: View {
 	
     var body: some View {
 			if timeMachine.isOn {
-				#if !os(tvOS)
+				#if !os(tvOS) && !os(watchOS)
 				DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 					Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 				}
@@ -28,6 +28,15 @@ struct TimeMachineView: View {
 				}
 				.tint(Color(UIColor.systemFill))
 				.foregroundStyle(.secondary)
+				#elseif os(watchOS)
+				Stepper(value: timeMachine.offset, in: -182...182, format: .number) {
+					VStack {
+						Text("Days from now")
+						Text(timeMachine.date, style: .date)
+							.foregroundStyle(.secondary)
+							.font(.footnote)
+					}
+				}
 				#endif
 			}
     }

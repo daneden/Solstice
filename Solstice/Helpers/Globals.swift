@@ -17,6 +17,6 @@ var timeIntervalFormatter: DateComponentsFormatter {
 var relativeDateFormatter: RelativeDateTimeFormatter {
 	let formatter = RelativeDateTimeFormatter()
 	formatter.dateTimeStyle = .named
-	formatter.formattingContext = .standalone
+	formatter.formattingContext = .beginningOfSentence
 	return formatter
 }

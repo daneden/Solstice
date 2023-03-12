@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
+	@StateObject var navigationState = NavigationStateManager()
 	
 	var body: some View {
 		NavigationStack {
@@ -24,7 +25,7 @@ struct ContentView: View {
 					fatalError()
 				}
 		}
-			.environmentObject(timeMachine)
+			.environmentObject(navigationState)
 			.imageScale(.small)
 			.navigationTitle("Solstice")
 	}

@@ -25,9 +25,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	var body: some View {
 		GeometryReader { geom in
 			Form {
-#if os(iOS)
 				TimeMachineView()
-#endif
+				
 				Section {
 					daylightChartView
 						.frame(height: chartHeight)
@@ -101,7 +100,11 @@ struct DetailView<Location: ObservableLocation>: View {
 						
 						VStack(alignment: .leading) {
 							AdaptiveLabeledContent {
-								Text(relativeDateFormatter.localizedString(for: nextSolstice, relativeTo: date))
+								if nextSolstice.startOfDay == date.startOfDay {
+									Text("Today")
+								} else {
+									Text(relativeDateFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+								}
 							} label: {
 								Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 							}
@@ -116,7 +119,11 @@ struct DetailView<Location: ObservableLocation>: View {
 						}
 						
 						AdaptiveLabeledContent {
-							Text(relativeDateFormatter.localizedString(for: nextEquinox, relativeTo: date))
+							if nextEquinox.startOfDay == date.startOfDay {
+								Text("Today")
+							} else {
+								Text(relativeDateFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+							}
 						} label: {
 							Label("Next Equinox", systemImage: "circle.and.line.horizontal")
 						}
@@ -127,15 +134,11 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 			.formStyle(.grouped)
-#if os(iOS)
-			.navigationBarTitleDisplayMode(.inline)
-#endif
 			.navigationTitle(location.title ?? "Solstice")
-#if !os(watchOS)
 			.toolbar {
 				ToolbarItem(id: "timeMachineToggle") {
 					Toggle(isOn: $timeMachine.isOn.animation()) {
-						Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+						Label("\(timeMachine.isOn ? "Disable" : "Enable") Time Travel", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
 
@@ -164,7 +167,6 @@ struct DetailView<Location: ObservableLocation>: View {
 					}
 				}
 			}
-#endif
 		}
 	}
 	
