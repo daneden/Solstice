@@ -73,6 +73,7 @@ struct CountdownWidgetView: View {
 				Image(systemName: nextSolarEvent.imageName)
 					.font(.title)
 					.imageScale(.large)
+					.symbolVariant(.fill)
 					.widgetLabel { nextEventText }
 			#endif
 			case .accessoryRectangular:

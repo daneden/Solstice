@@ -75,6 +75,7 @@ struct OverviewWidgetView: View {
 			Image(systemName: "sun.max")
 				.font(.title)
 				.imageScale(.large)
+				.symbolVariant(.fill)
 				.widgetLabel {
 					Text(solar?.daylightDuration.localizedString ?? "Loading...")
 				}
