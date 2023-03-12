@@ -71,10 +71,13 @@ struct CountdownWidgetView: View {
 			#if os(watchOS)
 			case .accessoryCorner:
 				Image(systemName: nextSolarEvent.imageName)
-					.font(.title)
-					.imageScale(.large)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
 					.symbolVariant(.fill)
-					.widgetLabel { nextEventText }
+					.foregroundStyle(.tint)
+					.widgetLabel {
+						Text("\(nextSolarEvent.date, style: .time), \(nextSolarEvent.date, style: .relative)")
+					}
 			#endif
 			case .accessoryRectangular:
 				HStack {

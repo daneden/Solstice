@@ -13,6 +13,7 @@ class TimeMachine: ObservableObject {
 	@Published var isOn = false
 	@Published var referenceDate = Date()
 	@Published var targetDate = Date()
+	@Published var controlsVisible = false
 	
 	var offset: Binding<Double> {
 		Binding<Double>(get: {

@@ -13,17 +13,18 @@ import CoreLocation
 
 struct DaylightChart: View {
 	@Environment(\.colorScheme) var colorScheme
-	
-	var solar: Solar
-	var timeZone: TimeZone
-	
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
 	
+	var solar: Solar
+	var timeZone: TimeZone
 	var eventTypes: [Solar.Phase] = Solar.Phase.allCases
+	
+	var appearance = Appearance.simple
 	var includesSummaryTitle = true
 	var hideXAxis = false
 	var scrubbable = false
+	var markSize: Double = 6
 	
 	var summaryFont: Font {
 #if os(watchOS)
@@ -35,8 +36,6 @@ struct DaylightChart: View {
 #endif
 	}
 	
-	var markSize: Double = 6
-	
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
@@ -45,6 +44,7 @@ struct DaylightChart: View {
 						Text(solar.differenceString)
 							.font(summaryFont)
 							.fontWeight(.semibold)
+							.lineLimit(10)
 						Spacer(minLength: 0)
 					}
 						.opacity(selectedEvent == nil ? 1 : 0)
@@ -273,6 +273,15 @@ struct DaylightChart: View {
 			}
 			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
+		}
+		.if(appearance == .graphical) { view in
+			view
+				.blendMode(.plusLighter)
+				.background(
+					LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
+						.padding(-12)
+				)
+				.colorScheme(.dark)
 		}
 	}
 	

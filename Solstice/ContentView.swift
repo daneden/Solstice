@@ -37,6 +37,18 @@ struct ContentView: View {
 	var body: some View {
 		NavigationSplitView {
 			List(selection: $navigationState.navigationSelection) {
+				if timeMachine.isOn {
+					Section {
+						VStack(alignment: .leading) {
+							Text("Time Machine Active")
+							Text(timeMachine.date, style: .date)
+								.foregroundStyle(.secondary)
+						}
+					} footer: {
+						
+					}
+				}
+				
 				if CurrentLocation.authorizationStatus == .notDetermined {
 					LocationPermissionScreenerView()
 				}

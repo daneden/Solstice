@@ -59,6 +59,7 @@ struct OverviewWidgetView: View {
 						solar: solar,
 						timeZone: location.timeZone,
 						eventTypes: [.sunset, .sunrise],
+						appearance: .graphical,
 						includesSummaryTitle: false,
 						hideXAxis: true,
 						markSize: 2.5
@@ -72,10 +73,11 @@ struct OverviewWidgetView: View {
 		#endif
 		#if os(watchOS)
 		case .accessoryCorner:
-			Image(systemName: "sun.max")
-				.font(.title)
-				.imageScale(.large)
+			Image("Solstice-Icon")
+				.resizable()
+				.aspectRatio(contentMode: .fit)
 				.symbolVariant(.fill)
+				.foregroundStyle(.tint)
 				.widgetLabel {
 					Text(solar?.daylightDuration.localizedString ?? "Loading...")
 				}

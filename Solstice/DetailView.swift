@@ -25,8 +25,11 @@ struct DetailView<Location: ObservableLocation>: View {
 	var body: some View {
 		GeometryReader { geom in
 			Form {
-				TimeMachineView()
-				
+				#if !os(watchOS)
+				if timeMachine.isOn {
+					TimeMachineView()
+				}
+				#endif
 				Section {
 					daylightChartView
 						.frame(height: chartHeight)
@@ -50,6 +53,10 @@ struct DetailView<Location: ObservableLocation>: View {
 							}
 							#endif
 						}
+						.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+#if os(watchOS)
+						.listRowBackground(Color.clear)
+#endif
 					
 					AdaptiveLabeledContent {
 						Text("\(timeIntervalFormatter.string(from: sunrise.distance(to: sunset)) ?? "")")
@@ -136,35 +143,52 @@ struct DetailView<Location: ObservableLocation>: View {
 			.formStyle(.grouped)
 			.navigationTitle(location.title ?? "Solstice")
 			.toolbar {
-				ToolbarItem(id: "timeMachineToggle") {
-					Toggle(isOn: $timeMachine.isOn.animation()) {
-						Label("\(timeMachine.isOn ? "Disable" : "Enable") Time Travel", systemImage: "clock.arrow.2.circlepath")
-					}
-				}
-
-				ToolbarItem {
-					if let location = location as? TemporaryLocation {
-						Button {
-							dismiss()
-							withAnimation {
-								if let id = try? location.saveLocation(to: viewContext) {
-									navigationState.navigationSelection = .savedLocation(id: id)
-								}
-							}
-						} label: {
-							Label("Save Location", systemImage: "plus.circle")
+				toolbarItems
+			}
+		}
+	}
+	
+	@ToolbarContentBuilder
+	var toolbarItems: some ToolbarContent {
+		ToolbarItem(id: "timeMachineToggle") {
+			#if os(watchOS)
+			Button {
+				timeMachine.controlsVisible.toggle()
+			} label: {
+				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+			}
+			.sheet(isPresented: $timeMachine.controlsVisible) {
+				TimeMachineView()
+			}
+			#else
+			Toggle(isOn: $timeMachine.isOn.animation()) {
+				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+			}
+			#endif
+			
+		}
+		
+		ToolbarItem {
+			if let location = location as? TemporaryLocation {
+				Button {
+					dismiss()
+					withAnimation {
+						if let id = try? location.saveLocation(to: viewContext) {
+							navigationState.navigationSelection = .savedLocation(id: id)
 						}
 					}
+				} label: {
+					Label("Save Location", systemImage: "plus.circle")
 				}
-				
-				if navigationState.temporaryLocation != nil {
-					ToolbarItem(placement: .cancellationAction) {
-						Button {
-							navigationState.temporaryLocation = nil
-						} label: {
-							Text("Close")
-						}
-					}
+			}
+		}
+		
+		if navigationState.temporaryLocation != nil {
+			ToolbarItem(placement: .cancellationAction) {
+				Button {
+					navigationState.temporaryLocation = nil
+				} label: {
+					Text("Close")
 				}
 			}
 		}
@@ -249,32 +273,16 @@ struct DetailView<Location: ObservableLocation>: View {
 		#endif
 	}
 	
+	@ViewBuilder
 	var daylightChartView: some View {
-		Group {
-			if let solar = solar {
-				DaylightChart(
-					solar: solar,
-					timeZone: location.timeZone,
-					scrubbable: true,
-					markSize: chartMarkSize
-				)
-				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-				.padding(.bottom)
-				.if(chartAppearance == .graphical) { view in
-					view
-#if os(macOS) || os(iOS)
-						.blendMode(.plusLighter)
-						.background(
-							LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
-								.padding(-12)
-						)
-						.colorScheme(.dark)
-#endif
-				}
-#if os(watchOS)
-				.listRowBackground(Color.clear)
-#endif
-			}
+		if let solar = solar {
+			DaylightChart(
+				solar: solar,
+				timeZone: location.timeZone,
+				appearance: chartAppearance, scrubbable: true,
+				markSize: chartMarkSize
+			)
+			.padding(.bottom)
 		}
 	}
 }

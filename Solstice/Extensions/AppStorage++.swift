@@ -116,7 +116,7 @@ struct Preferences {
 		case timezone, daylightDuration
 	}
 	
-	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", .graphical)
+	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", chartAppearanceDefaultValue)
 	
 	#if !os(watchOS)
 	static let listViewOrderBy: Value<SortingFunction> = ("listViewOrderBy", .timezone)
@@ -178,5 +178,13 @@ fileprivate var showComplicationDefaultValue: Bool {
 	true
 	#else
 	false
+	#endif
+}
+
+fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance {
+	#if os(watchOS) || os(tvOS)
+	.simple
+	#else
+	.graphical
 	#endif
 }
