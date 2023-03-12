@@ -71,6 +71,8 @@ struct CountdownWidgetView: View {
 			#if os(watchOS)
 			case .accessoryCorner:
 				Image(systemName: nextSolarEvent.imageName)
+					.font(.title)
+					.imageScale(.large)
 					.widgetLabel { nextEventText }
 			#endif
 			case .accessoryRectangular:
