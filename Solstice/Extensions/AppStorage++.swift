@@ -10,21 +10,23 @@ import Solar
 
 fileprivate let defaultNotificationDate = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
 
+fileprivate let store = UserDefaults(suiteName: "group.me.daneden.Solstice")
+
 extension AppStorage {
 	init(_ kv: AppStorageKVPair<Value>) where Value == String {
-		self.init(wrappedValue: kv.value, kv.key, store: .standard)
+		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
 	
 	init(_ kv: AppStorageKVPair<Value>) where Value == Bool {
-		self.init(wrappedValue: kv.value, kv.key, store: .standard)
+		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
 	
 	init(_ kv: AppStorageKVPair<Value>) where Value == TimeInterval {
-		self.init(wrappedValue: kv.value, kv.key, store: .standard)
+		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
 	
 	init(_ kv: AppStorageKVPair<Value>) where Value: RawRepresentable, Value.RawValue == String {
-		self.init(wrappedValue: kv.value, kv.key, store: .standard)
+		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
 }
 

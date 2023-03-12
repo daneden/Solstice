@@ -7,12 +7,27 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
+	@AppStorage(Preferences.cachedLatitude) private var cachedLatitude
+	@AppStorage(Preferences.cachedLongitude) private var cachedLongitude
+	
 	@Published var title: String?
 	@Published var subtitle: String?
-	@Published private(set) var latitude: Double = 0
-	@Published private(set) var longitude: Double = 0
+	
+	@Published private(set) var latitude: Double = 0 {
+		didSet {
+			cachedLatitude = latitude
+		}
+	}
+	
+	@Published private(set) var longitude: Double = 0 {
+		didSet {
+			cachedLongitude = longitude
+		}
+	}
+	
 	@Published var timeZoneIdentifier: String?
 	@Published private(set) var latestLocation: CLLocation?
 	private var didUpdateLocationsCallback: ((CLLocation?) -> Void)?
@@ -28,6 +43,9 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 	override init() {
 		super.init()
 
+		latitude = cachedLatitude
+		longitude = cachedLongitude
+		
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
 		latestLocation = locationManager.location
