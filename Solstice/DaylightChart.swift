@@ -26,65 +26,10 @@ struct DaylightChart: View {
 	var scrubbable = false
 	var markSize: Double = 6
 	
-	var summaryFont: Font {
-#if os(watchOS)
-		.headline
-#elseif os(macOS)
-		.title
-#else
-		.title2
-#endif
-	}
-	
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
-				VStack(alignment: .leading) {
-					HStack {
-						Text(solar.differenceString)
-							.font(summaryFont)
-							.fontWeight(.semibold)
-							.lineLimit(10)
-						Spacer(minLength: 0)
-					}
-						.opacity(selectedEvent == nil ? 1 : 0)
-						.overlay(alignment: .leading) {
-							if let selectedEvent {
-								HStack {
-									VStack(alignment: .leading) {
-										Text(selectedEvent.label)
-										Text(selectedEvent.date, style: .time)
-											.foregroundStyle(.secondary)
-									}
-									
-									Spacer()
-									
-									if let currentX {
-										VStack(alignment: .trailing) {
-											Text(currentX, style: .time)
-												.foregroundStyle(.secondary)
-											
-											Group {
-												if currentX < solar.safeSunrise {
-													Text("Sunrise in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunrise))!)")
-												} else if currentX < solar.safeSunset {
-													Text("Sunset in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunset))!)")
-												} else if currentX > solar.safeSunset {
-													Text("Sunrise in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.tomorrow?.safeSunrise ?? solar.endOfDay))!)")
-												}
-											}
-											.foregroundStyle(.tertiary)
-										}
-									}
-								}
-							}
-						}
-				}
-#if !os(macOS)
-				.padding()
-#endif
-				.fontDesign(.rounded)
-				.fontWeight(.semibold)
+				DaylightSummaryTitle(solar: solar, event: selectedEvent, currentX: currentX)
 			}
 			
 			Chart {
@@ -274,6 +219,7 @@ struct DaylightChart: View {
 			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
 		}
+		.padding(.vertical)
 		.if(appearance == .graphical) { view in
 			view
 				.blendMode(.plusLighter)

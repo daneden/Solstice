@@ -20,3 +20,19 @@ var relativeDateFormatter: RelativeDateTimeFormatter {
 	formatter.formattingContext = .beginningOfSentence
 	return formatter
 }
+
+var chartHeight: CGFloat {
+#if !os(watchOS)
+	300
+#else
+	200
+#endif
+}
+
+var chartMarkSize: Double {
+#if os(watchOS)
+	4
+#else
+	8
+#endif
+	}
