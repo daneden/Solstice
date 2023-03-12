@@ -158,7 +158,9 @@ struct DetailView<Location: ObservableLocation>: View {
 				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 			}
 			.sheet(isPresented: $timeMachine.controlsVisible) {
-				TimeMachineView()
+				Form {
+					TimeMachineView()
+				}
 			}
 			#else
 			Toggle(isOn: $timeMachine.isOn.animation()) {

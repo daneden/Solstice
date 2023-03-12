@@ -12,7 +12,7 @@ struct TimeMachineView: View {
 	
 #if os(watchOS) || os(macOS)
 	var body: some View {
-		Form {
+		Section {
 			Toggle(isOn: $timeMachine.isOn.animation()) {
 				Text("Enable Time Travel")
 			}
@@ -21,13 +21,12 @@ struct TimeMachineView: View {
 				controls
 			}.disabled(!timeMachine.isOn)
 		}
-		.formStyle(.grouped)
 	}
-	#else
+#else
 	var body: some View {
 		controls
 	}
-	#endif
+#endif
 	
 	@ViewBuilder
 	var controls: some View {
