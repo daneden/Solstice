@@ -52,7 +52,10 @@ struct DetailView<Location: ObservableLocation>: View {
 			toolbarItems
 		}
 		.task(id: timeMachine.date, priority: .background) {
-			withAnimation {
+			if solar != nil && timeMachine.isOn {
+				try? await Task.sleep(nanoseconds: 1_000_000_000)
+			}
+			withAnimation(.interactiveSpring()) {
 				solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
 			}
 		}
