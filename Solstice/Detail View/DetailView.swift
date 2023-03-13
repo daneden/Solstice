@@ -51,7 +51,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		.toolbar {
 			toolbarItems
 		}
-		.task(id: timeMachine.date, priority: .low) {
+		.task(id: timeMachine.date, priority: .background) {
 			withAnimation {
 				solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
 			}
