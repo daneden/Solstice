@@ -34,9 +34,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				DailyOverview(solar: solar, location: location)
 			}
 			
-			if let solar {
-				AnnualOverview(solar: solar, location: location)
-			}
+			AnnualOverview(location: location)
 		}
 		.formStyle(.grouped)
 		.navigationTitle(location.title ?? "Solstice")

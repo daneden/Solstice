@@ -37,7 +37,7 @@ struct TimeMachineView: View {
 #endif
 		
 		#if os(iOS)
-		Slider(value: timeMachine.offset.animation(),
+		Slider(value: timeMachine.offset,
 					 in: -182...182,
 					 step: 1,
 					 minimumValueLabel: Text("Past").font(.caption),
@@ -49,15 +49,20 @@ struct TimeMachineView: View {
 		#endif
 		
 		#if os(watchOS)
-		Stepper(value: timeMachine.offset, in: -182...182, format: .number) {
-			VStack {
-				Text("Day\(abs(timeMachine.offset.wrappedValue) == 1 ? "s" : "") in the \(timeMachine.offset.wrappedValue < 0 ? "past" : "future")")
-				Text(timeMachine.date, style: .date)
-					.foregroundStyle(.secondary)
-					.font(.footnote)
-			}
+		Stepper(
+			value: $timeMachine.targetDate,
+			in: dateRange,
+			step: TimeInterval(60 * 60 * 24)
+		) {
+			Text(timeMachine.offset.wrappedValue, format: .number)
 		}
 		#endif
+	}
+	
+	var dateRange: ClosedRange<Date> {
+		let begin = Calendar.autoupdatingCurrent.date(byAdding: .month, value: -6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
+		let end = Calendar.autoupdatingCurrent.date(byAdding: .month, value: 6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
+		return begin...end
 	}
 }
 

@@ -9,17 +9,18 @@ import SwiftUI
 import Solar
 
 struct AnnualOverview<Location: AnyLocation>: View {
-	var solar: Solar
+	@EnvironmentObject var timeMachine: TimeMachine
 	var location: Location
 	
 	var body: some View {
 		Section {
-			if let date = solar.date,
-				 let nextSolstice = solar.date.nextSolstice,
-				 let prevSolstice = solar.date.previousSolstice,
-				 let nextEquinox = solar.date.nextEquinox,
-				 let nextSolsticeSolar = Solar(for: nextSolstice, coordinate: solar.coordinate),
-				 let previousSolsticeSolar = Solar(for: prevSolstice, coordinate: solar.coordinate) {
+			if let date = timeMachine.date,
+				 let nextSolstice = date.nextSolstice,
+				 let prevSolstice = date.previousSolstice,
+				 let nextEquinox = date.nextEquinox,
+				 let solar = Solar(for: date, coordinate: location.coordinate.coordinate),
+				 let nextSolsticeSolar = Solar(for: nextSolstice, coordinate: location.coordinate.coordinate),
+				 let previousSolsticeSolar = Solar(for: prevSolstice, coordinate: location.coordinate.coordinate) {
 				let daylightDifference = abs(solar.daylightDuration - previousSolsticeSolar.daylightDuration)
 				let nextGreaterThanPrevious = nextSolsticeSolar.daylightDuration > previousSolsticeSolar.daylightDuration
 				
@@ -32,14 +33,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						}
 					} label: {
 						Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
-					}
-					
-					Label {
-						Text("\(timeIntervalFormatter.string(from: daylightDifference) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
-							.font(.caption)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
 					}
 				}
 				
@@ -63,7 +56,9 @@ struct AnnualOverview<Location: AnyLocation>: View {
 struct AnnualOverview_Previews: PreviewProvider {
 	static var previews: some View {
 		Form {
-			AnnualOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate)!, location: TemporaryLocation.placeholderLocation)
+			TimeMachineView()
+			AnnualOverview(location: TemporaryLocation.placeholderLocation)
 		}
+		.environmentObject(TimeMachine())
 	}
 }
