@@ -218,6 +218,9 @@ struct DaylightChart: View {
 			}
 			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
+			.if(!hideXAxis) { view in
+				view.padding(.bottom)
+			}
 		}
 		.if(appearance == .graphical) { view in
 			view

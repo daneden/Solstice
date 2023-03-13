@@ -19,6 +19,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
 	@State private var timeTravelVisible = false
+	@State private var solar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
@@ -32,6 +33,15 @@ struct DetailView<Location: ObservableLocation>: View {
 			
 			if let solar {
 				DailyOverview(solar: solar, location: location)
+			} else {
+				ProgressView {
+					HStack {
+						Spacer()
+						Text("Calculating...")
+						Spacer()
+					}
+					.padding()
+				}
 			}
 			
 			AnnualOverview(location: location)
@@ -40,6 +50,11 @@ struct DetailView<Location: ObservableLocation>: View {
 		.navigationTitle(location.title ?? "Solstice")
 		.toolbar {
 			toolbarItems
+		}
+		.task(id: timeMachine.date, priority: .low) {
+			withAnimation {
+				solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
+			}
 		}
 	}
 	
@@ -89,12 +104,6 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 		}
-	}
-}
-
-extension DetailView {
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
 	}
 }
 

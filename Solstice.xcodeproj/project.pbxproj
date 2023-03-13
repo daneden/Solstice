@@ -407,6 +407,7 @@
 				713F7FF829BE843700BEA156 /* AnnualOverview.swift */,
 				713F7FFB29BE867E00BEA156 /* DailyOverview.swift */,
 				713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */,
+				7198469D28E58CCD00E866CE /* DetailView.swift */,
 			);
 			path = "Detail View";
 			sourceTree = "<group>";
@@ -497,7 +498,6 @@
 				7198468628E5895E00E866CE /* ContentView.swift */,
 				71F641B829995ED000FE5AB5 /* DaylightChart.swift */,
 				71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */,
-				7198469D28E58CCD00E866CE /* DetailView.swift */,
 				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
 				719846A928E992A200E866CE /* LocationSearchResultRow.swift */,
 				7198468428E5895E00E866CE /* SolsticeApp.swift */,
