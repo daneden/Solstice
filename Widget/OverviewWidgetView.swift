@@ -35,6 +35,7 @@ struct SolsticeWidgetLocation: AnyLocation {
 }
 
 struct OverviewWidgetView: View {
+	@Environment(\.widgetRenderingMode) private var renderingMode
 	@Environment(\.widgetFamily) private var family
 	@Environment(\.sizeCategory) private var sizeCategory
 	
@@ -59,7 +60,7 @@ struct OverviewWidgetView: View {
 						solar: solar,
 						timeZone: location.timeZone,
 						eventTypes: [.sunset, .sunrise],
-						appearance: .graphical,
+						appearance: renderingMode == .fullColor ? .graphical : .simple,
 						includesSummaryTitle: false,
 						hideXAxis: true,
 						markSize: 2.5

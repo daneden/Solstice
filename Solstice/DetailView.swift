@@ -58,7 +58,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 			#else
-			Toggle(isOn: $timeMachine.isOn.animation()) {
+			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
 				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 			}
 			#endif

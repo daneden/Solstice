@@ -403,6 +403,7 @@
 		713F7FF729BE83E800BEA156 /* Detail View */ = {
 			isa = PBXGroup;
 			children = (
+				71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */,
 				713F7FF829BE843700BEA156 /* AnnualOverview.swift */,
 				713F7FFB29BE867E00BEA156 /* DailyOverview.swift */,
 				713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */,
@@ -493,7 +494,6 @@
 				71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */,
 				7198469228E5895F00E866CE /* Info.plist */,
 				7198469828E5898500E866CE /* StoreKitConfiguration.storekit */,
-				71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */,
 				7198468628E5895E00E866CE /* ContentView.swift */,
 				71F641B829995ED000FE5AB5 /* DaylightChart.swift */,
 				71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */,

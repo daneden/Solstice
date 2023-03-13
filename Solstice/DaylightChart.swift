@@ -219,7 +219,6 @@ struct DaylightChart: View {
 			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
 		}
-		.padding(.vertical)
 		.if(appearance == .graphical) { view in
 			view
 				.blendMode(.plusLighter)

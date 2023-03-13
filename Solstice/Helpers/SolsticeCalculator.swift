@@ -137,14 +137,12 @@ extension Date {
 	var recentEquinoxes: [Date] {
 		let year = Calendar.autoupdatingCurrent.component(.year, from: self)
 		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
-		let marchEquinoxLastYear = SolsticeCalculator.marchEquinox(year: year - 1)
 		let marchEquinoxNextYear = SolsticeCalculator.marchEquinox(year: year + 1)
 		
 		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
-		let septemberEquinoxLastYear = SolsticeCalculator.septemberEquinox(year: year - 1)
 		let septemberEquinoxNextYear = SolsticeCalculator.septemberEquinox(year: year + 1)
 		
-		return [marchEquinox, marchEquinoxNextYear, marchEquinoxLastYear, septemberEquinox, septemberEquinoxNextYear, septemberEquinoxLastYear].sorted()
+		return [marchEquinox, marchEquinoxNextYear, septemberEquinox, septemberEquinoxNextYear].sorted()
 	}
 	
 	var previousSolstice: Date {
@@ -154,11 +152,6 @@ extension Date {
 	
 	var nextSolstice: Date {
 		recentSolstices.first(where: { $0 > self }) ?? .now
-	}
-	
-	var previousEquinox: Date {
-		let index = recentEquinoxes.firstIndex(where: { $0 > self })!
-		return recentEquinoxes[index - 1]
 	}
 	
 	var nextEquinox: Date {

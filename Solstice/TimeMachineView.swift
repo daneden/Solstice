@@ -10,10 +10,22 @@ import SwiftUI
 struct TimeMachineView: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
+	@State private var date = Date()
+	@State private var referenceDate = Date()
+	
+	var offset: Binding<Double> {
+		Binding<Double>(get: {
+			Double(Calendar.current.dateComponents([.day], from: date, to: referenceDate).day ?? 0)
+		}, set: { newValue in
+			date = Calendar.autoupdatingCurrent.date(byAdding: .day, value: Int(newValue), to: self.referenceDate) ?? self.referenceDate
+		})
+		
+	}
+	
 #if os(watchOS) || os(macOS)
 	var body: some View {
 		Section {
-			Toggle(isOn: $timeMachine.isOn.animation()) {
+			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
 				Text("Enable Time Travel")
 			}
 			

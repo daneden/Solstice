@@ -21,7 +21,6 @@ class TimeMachine: ObservableObject {
 		}, set: { newValue in
 			self.targetDate = Calendar.autoupdatingCurrent.date(byAdding: .day, value: Int(newValue), to: self.referenceDate) ?? self.referenceDate
 		})
-
 	}
 	
 	var date: Date {
