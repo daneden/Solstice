@@ -8,7 +8,7 @@
 import SwiftUI
 import Solar
 
-fileprivate let defaultNotificationDate = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
+fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
 
 fileprivate let store = UserDefaults(suiteName: "group.me.daneden.Solstice")
 

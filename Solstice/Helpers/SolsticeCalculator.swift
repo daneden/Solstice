@@ -122,7 +122,7 @@ struct SolsticeCalculator {
 
 extension Date {
 	var recentSolstices: [Date] {
-		let year = Calendar.autoupdatingCurrent.component(.year, from: self)
+		let year = calendar.component(.year, from: self)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 		let decemberSolsticeLastYear = SolsticeCalculator.decemberSolstice(year: year - 1)
 		let decemberSolsticeNextYear = SolsticeCalculator.decemberSolstice(year: year + 1)
@@ -135,7 +135,7 @@ extension Date {
 	}
 	
 	var recentEquinoxes: [Date] {
-		let year = Calendar.autoupdatingCurrent.component(.year, from: self)
+		let year = calendar.component(.year, from: self)
 		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
 		let marchEquinoxNextYear = SolsticeCalculator.marchEquinox(year: year + 1)
 		

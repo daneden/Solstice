@@ -10,8 +10,8 @@ import Solar
 import Charts
 
 extension Solar {
-	struct Event: Identifiable {
-		let id = UUID()
+	struct Event: Hashable, Identifiable {
+		var id: Int { hashValue }
 		let label: String
 		var date: Date
 		let phase: Phase
@@ -51,11 +51,11 @@ extension Solar {
 	}
 	
 	var startOfDay: Date {
-		Calendar.autoupdatingCurrent.startOfDay(for: date)
+		calendar.startOfDay(for: date)
 	}
 	
 	var endOfDay: Date {
-		Calendar.autoupdatingCurrent.date(byAdding: .day, value: 1, to: startOfDay) ?? date
+		calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? date
 	}
 	
 	private var culmination: Date {

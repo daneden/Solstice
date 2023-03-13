@@ -15,9 +15,9 @@ struct TimeMachineView: View {
 	
 	var offset: Binding<Double> {
 		Binding<Double>(get: {
-			Double(Calendar.current.dateComponents([.day], from: date, to: referenceDate).day ?? 0)
+			Double(calendar.dateComponents([.day], from: date, to: referenceDate).day ?? 0)
 		}, set: { newValue in
-			date = Calendar.autoupdatingCurrent.date(byAdding: .day, value: Int(newValue), to: self.referenceDate) ?? self.referenceDate
+			date = calendar.date(byAdding: .day, value: Int(newValue), to: self.referenceDate) ?? self.referenceDate
 		})
 		
 	}
@@ -43,7 +43,7 @@ struct TimeMachineView: View {
 	@ViewBuilder
 	var controls: some View {
 #if !os(tvOS) && !os(watchOS)
-		DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
+		DatePicker(selection: $timeMachine.targetDate, displayedComponents: [.date]) {
 			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 		}
 #endif
@@ -72,8 +72,8 @@ struct TimeMachineView: View {
 	}
 	
 	var dateRange: ClosedRange<Date> {
-		let begin = Calendar.autoupdatingCurrent.date(byAdding: .month, value: -6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
-		let end = Calendar.autoupdatingCurrent.date(byAdding: .month, value: 6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
+		let begin = calendar.date(byAdding: .month, value: -6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
+		let end = calendar.date(byAdding: .month, value: 6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
 		return begin...end
 	}
 }

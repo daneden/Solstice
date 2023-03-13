@@ -94,22 +94,22 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	}
 	
 	func isCurrentMonth(_ date: Date) -> Bool {
-		return Calendar.autoupdatingCurrent.date(date, matchesComponents: Calendar.autoupdatingCurrent.dateComponents([.month], from: Date()))
+		return calendar.date(date, matchesComponents: calendar.dateComponents([.month], from: Date()))
 	}
 }
 
 extension AnnualDaylightChart {
 	var monthlySolars: Array<Solar> {
-		guard let year = Calendar.autoupdatingCurrent.dateInterval(of: .year, for: Date()) else {
+		guard let year = calendar.dateInterval(of: .year, for: Date()) else {
 			return []
 		}
 		
-		var lastDate = Calendar.current.date(bySetting: .hour, value: 12, of: year.start) ?? year.start
+		var lastDate = calendar.date(bySetting: .hour, value: 12, of: year.start) ?? year.start
 		var dates: Array<Date> = []
 		
 		while lastDate < year.end {
 			dates.append(lastDate)
-			lastDate = Calendar.current.date(byAdding: .month, value: 1, to: lastDate)!
+			lastDate = calendar.date(byAdding: .month, value: 1, to: lastDate)!
 		}
 		
 		return dates.map { date in

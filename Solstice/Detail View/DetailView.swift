@@ -53,11 +53,25 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		.task(id: timeMachine.date, priority: .background) {
 			if solar != nil && timeMachine.isOn {
-				try? await Task.sleep(nanoseconds: 1_000_000_000)
+				do {
+					try await Task.sleep(nanoseconds: 1_000_000)
+					setSolarValue()
+				} catch {
+					
+				}
+			} else {
+				setSolarValue()
 			}
-			withAnimation(.interactiveSpring()) {
-				solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
-			}
+		}
+	}
+	
+	func setSolarValue() {
+		let newSolar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
+		
+		if solar == nil {
+			withAnimation { solar = newSolar }
+		} else {
+			solar = newSolar
 		}
 	}
 	

@@ -46,7 +46,7 @@ struct SkyGradient {
 	}
 	
 	static func getCurrentPalette() -> [Color] {
-		let timeAsIndex = Int(Double(Calendar.autoupdatingCurrent.component(.hour, from: .now) + 8) / 6) % colors.count
+		let timeAsIndex = Int(Double(calendar.component(.hour, from: .now) + 8) / 6) % colors.count
 		return colors[timeAsIndex]
 	}
 	
@@ -56,8 +56,8 @@ struct SkyGradient {
 		
 		let colorsExcludingNight = colors.prefix(upTo: colors.count - 1)
 		
-		let nowComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: .now)
-		let now = Calendar.current.date(
+		let nowComponents = calendar.dateComponents([.hour, .minute, .second], from: .now)
+		let now = calendar.date(
 			bySettingHour: nowComponents.hour!,
 			minute: nowComponents.minute!,
 			second: nowComponents.second!,

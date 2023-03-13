@@ -36,3 +36,5 @@ var chartMarkSize: Double {
 	8
 #endif
 	}
+
+let calendar = Calendar.autoupdatingCurrent

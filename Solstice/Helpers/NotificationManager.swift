@@ -60,7 +60,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 		
 		for i in 0...63 {
-			let date = Calendar.autoupdatingCurrent.date(byAdding: .day, value: i, to: Date()) ?? .now
+			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
 			var notificationDate: Date
 			
 			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
@@ -68,13 +68,13 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			}
 			
 			if scheduleType == .specificTime {
-				let scheduleComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
-				notificationDate = Calendar.autoupdatingCurrent.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
+				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
 			} else {
 				let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
 				let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
-				let scheduleComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute], from: offsetDate)
-				notificationDate = Calendar.autoupdatingCurrent.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
+				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
 			}
 			
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location) else {
@@ -88,7 +88,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			content.body = notificationContent.body
 			#endif
 			
-			let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
+			let components = calendar.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
 			
 			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
 			
@@ -124,7 +124,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			return nil
 		}
 		
-		let components = Calendar.current.dateComponents([.hour], from: date)
+		let components = calendar.dateComponents([.hour], from: date)
 		let hour = components.hour ?? 0
 		if hour >= 18 || hour < 3 {
 			content.title = "Good Evening"

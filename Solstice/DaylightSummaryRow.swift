@@ -24,6 +24,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	@State private var showRemainingDaylight = false
+	@State private var solar: Solar?
 	
 	var isCurrentLocation: Bool {
 		location is CurrentLocation
@@ -53,50 +54,36 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 				
 				Spacer()
 				
-				VStack(alignment: .trailing) {
-					Text(daylightFormatter.string(from: sunrise.distance(to: sunset)) ?? "")
-						.foregroundStyle(.secondary)
-					Text(sunrise.withTimeZoneAdjustment(for: location.timeZone)...sunset.withTimeZoneAdjustment(for: location.timeZone))
-						.font(.footnote)
-						.foregroundStyle(.tertiary)
-				}
-				
-				if let solar,
-					 showComplication {
-					DaylightChart(
-						solar: solar,
-						timeZone: location.timeZone,
-						eventTypes: [.sunrise, .sunset],
-						includesSummaryTitle: false,
-						hideXAxis: true,
-						markSize: 2
-					)
-					.frame(width: 36, height: 36)
+				if let solar {
+					VStack(alignment: .trailing) {
+						Text(daylightFormatter.string(from: solar.daylightDuration) ?? "")
+							.foregroundStyle(.secondary)
+						Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
+							.font(.footnote)
+							.foregroundStyle(.tertiary)
+					}
+					
+					if showComplication {
+						DaylightChart(
+							solar: solar,
+							timeZone: location.timeZone,
+							eventTypes: [.sunrise, .sunset],
+							includesSummaryTitle: false,
+							hideXAxis: true,
+							markSize: 2
+						)
+						.frame(width: 36, height: 36)
 #if !os(watchOS)
-					.background(.ultraThinMaterial)
+						.background(.ultraThinMaterial)
 #endif
-					.ellipticalEdgeMask()
+						.ellipticalEdgeMask()
+					}
 				}
 			}
 		.padding(.vertical, 4)
-	}
-}
-
-extension DaylightSummaryRow {
-	var date: Date {
-		timeMachine.date
-	}
-	
-	var solar: Solar? {
-		Solar(for: date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-	}
-	
-	var sunrise: Date {
-		solar?.safeSunrise ?? .now
-	}
-	
-	var sunset: Date {
-		solar?.safeSunset ?? .now
+		.task(id: timeMachine.date, priority: .background) {
+			solar = Solar(for: timeMachine.date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+		}
 	}
 }
 

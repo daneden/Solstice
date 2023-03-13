@@ -238,7 +238,7 @@ struct DaylightChart: View {
 extension DaylightChart {
 	var relativeEventTimeString: String {
 		if let selectedEvent,
-			 Calendar.autoupdatingCurrent.isDateInToday(selectedEvent.date) {
+			 calendar.isDateInToday(selectedEvent.date) {
 			return " (\(relativeDateFormatter.localizedString(for: selectedEvent.date, relativeTo: solar.date.withTimeZoneAdjustment(for: timeZone))))"
 		}
 		return ""
@@ -246,9 +246,9 @@ extension DaylightChart {
 	
 	var timeZoneAdjustedDate: Date {
 		let date = solar.date
-		let components = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second], from: solar.date.withTimeZoneAdjustment(for: timeZone))
+		let components = calendar.dateComponents([.hour, .minute, .second], from: solar.date.withTimeZoneAdjustment(for: timeZone))
 		
-		return Calendar.autoupdatingCurrent.date(
+		return calendar.date(
 			bySettingHour: components.hour ?? 0,
 			minute: components.minute ?? 0,
 			second: components.second ?? 0,

@@ -12,13 +12,11 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State var differenceFromPreviousSolstice: TimeInterval?
-	@State private var nextSolsticeDate = Date()
-	@State private var date = Date()
 	
 	var location: Location
 	
 	var month: Int {
-		Calendar.autoupdatingCurrent.dateComponents([.month], from: nextSolsticeDate).month ?? 6
+		calendar.dateComponents([.month], from: timeMachine.date.nextSolstice).month ?? 6
 	}
 	
 	var nextGreaterThanPrevious: Bool {
@@ -75,19 +73,10 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.frame(height: chartHeight)
 		}
 		.task(id: timeMachine.date, priority: .background) {
-			if timeMachine.isOn {
-				try? await Task.sleep(nanoseconds: 1_000_000_000)
-			}
-			
 			if let solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate),
 				 let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate.coordinate) {
-				withAnimation(.interactiveSpring()) {
-					differenceFromPreviousSolstice = previousSolsticeSolar.daylightDuration - solar.daylightDuration
-				}
+				differenceFromPreviousSolstice = previousSolsticeSolar.daylightDuration - solar.daylightDuration
 			}
-			
-			nextSolsticeDate = timeMachine.date.nextSolstice
-			date = timeMachine.date
 		}
 	}
 }

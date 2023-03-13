@@ -26,7 +26,7 @@ extension Solar {
 	}
 	
 	var yesterday: Solar {
-		let yesterdayDate = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: date) ?? date.addingTimeInterval(60 * 60 * 24 - 1)
+		let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: date) ?? date.addingTimeInterval(60 * 60 * 24 - 1)
 		return Solar(for: yesterdayDate, coordinate: coordinate)!
 	}
 	
@@ -72,7 +72,7 @@ extension Solar {
 	}
 	
 	var tomorrow: Solar? {
-		guard let tomorrow = Calendar.autoupdatingCurrent.date(byAdding: .day, value: 1, to: date) else {
+		guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: date) else {
 			return nil
 		}
 		
