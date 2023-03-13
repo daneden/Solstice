@@ -43,6 +43,17 @@ struct NotificationSettings: View {
 	}
 	
 	var body: some View {
+		#if os(iOS)
+		NavigationStack {
+			content
+		}
+		#else
+		content
+		#endif
+	}
+	
+	@ViewBuilder
+	var content: some View {
 		Form {
 			Toggle("Enable Notifications", isOn: $notificationsEnabled)
 				.onChange(of: notificationsEnabled) { newValue in
@@ -122,7 +133,7 @@ struct NotificationSettings: View {
 			}
 			.disabled(!notificationsEnabled)
 		}
-		
+		.navigationTitle("Notification Settings")
 	}
 }
 #endif

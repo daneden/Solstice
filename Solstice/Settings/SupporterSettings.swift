@@ -46,6 +46,17 @@ struct SupporterSettings: View {
 	@State var purchaseInProgress = false
 	
 	var body: some View {
+#if os(iOS)
+		NavigationStack {
+			content
+		}
+#else
+		content
+#endif
+	}
+	
+	@ViewBuilder
+	var content: some View {
 		Form {
 			Section(header: Text("About Solstice and its maker")) {
 				VStack(alignment: .leading, spacing: 16) {
@@ -95,7 +106,7 @@ struct SupporterSettings: View {
 				Label("Leave a review", systemImage: "star")
 			}
 		}
-		.navigationTitle("About")
+		.navigationTitle("About Solstice")
 		.task {
 			await fetchProducts()
 		}

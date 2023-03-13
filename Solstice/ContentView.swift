@@ -144,9 +144,7 @@ struct ContentView: View {
 					Label("Settings", systemImage: "gearshape")
 				}
 				.sheet(isPresented: $settingsViewOpen) {
-					NavigationStack {
-						SettingsView()
-					}
+					SettingsView()
 				}
 #endif
 			}
