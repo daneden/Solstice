@@ -29,6 +29,7 @@
 		7106C88F29A281440007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		71177D6E29C0F586006348EB /* WatchDatePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 71177D6D29C0F586006348EB /* WatchDatePicker */; };
 		713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */; };
 		713F7FF929BE843700BEA156 /* AnnualOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FF829BE843700BEA156 /* AnnualOverview.swift */; };
 		713F7FFA29BE843700BEA156 /* AnnualOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FF829BE843700BEA156 /* AnnualOverview.swift */; };
@@ -377,6 +378,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71177D6E29C0F586006348EB /* WatchDatePicker in Frameworks */,
 				719F928329ACD24700C06921 /* Solar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -693,6 +695,7 @@
 			name = "Solstice watchOS Watch App";
 			packageProductDependencies = (
 				719F928229ACD24700C06921 /* Solar */,
+				71177D6D29C0F586006348EB /* WatchDatePicker */,
 			);
 			productName = "Solstice watchOS Watch App";
 			productReference = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */;
@@ -733,6 +736,7 @@
 			mainGroup = 7198467828E5895E00E866CE;
 			packageReferences = (
 				7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */,
+				71177D6C29C0F586006348EB /* XCRemoteSwiftPackageReference "watch-date-picker" */,
 			);
 			productRefGroup = 7198468228E5895E00E866CE /* Products */;
 			projectDirPath = "";
@@ -1527,6 +1531,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		71177D6C29C0F586006348EB /* XCRemoteSwiftPackageReference "watch-date-picker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/freyaalminde/watch-date-picker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
 		7195122F29B0B3D6009D282F /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
@@ -1550,6 +1562,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
+		};
+		71177D6D29C0F586006348EB /* WatchDatePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71177D6C29C0F586006348EB /* XCRemoteSwiftPackageReference "watch-date-picker" */;
+			productName = WatchDatePicker;
 		};
 		7195121729AFBDD9009D282F /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;

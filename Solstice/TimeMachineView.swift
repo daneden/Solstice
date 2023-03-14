@@ -7,20 +7,16 @@
 
 import SwiftUI
 
+#if canImport(WatchDatePicker)
+import WatchDatePicker
+#endif
+
 struct TimeMachineView: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var date = Date()
 	@State private var referenceDate = Date()
 	
-	var offset: Binding<Double> {
-		Binding<Double>(get: {
-			Double(calendar.dateComponents([.day], from: date, to: referenceDate).day ?? 0)
-		}, set: { newValue in
-			date = calendar.date(byAdding: .day, value: Int(newValue), to: self.referenceDate) ?? self.referenceDate
-		})
-		
-	}
 	
 #if os(watchOS) || os(macOS)
 	var body: some View {
@@ -46,6 +42,8 @@ struct TimeMachineView: View {
 		DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 		}
+#elseif canImport(WatchDatePicker)
+		WatchDatePicker.DatePicker("Select Date", selection: $timeMachine.targetDate, mode: .date)
 #endif
 		
 		#if os(iOS) || os(macOS)
@@ -60,16 +58,6 @@ struct TimeMachineView: View {
 					 .tint(Color(UIColor.systemFill))
 						#endif
 					 .foregroundStyle(.secondary)
-		#endif
-		
-		#if os(watchOS)
-		Stepper(
-			value: $timeMachine.targetDate,
-			in: dateRange,
-			step: TimeInterval(60 * 60 * 24)
-		) {
-			Text(timeMachine.offset.wrappedValue, format: .number)
-		}
 		#endif
 	}
 	
