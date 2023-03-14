@@ -133,7 +133,7 @@ struct NotificationSettings: View {
 			}
 			.disabled(!notificationsEnabled)
 		}
-		.navigationTitle("Notification Settings")
+		.navigationTitle("Notifications")
 	}
 }
 #endif
