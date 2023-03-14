@@ -68,6 +68,15 @@ struct DetailView<Location: ObservableLocation>: View {
 				Form {
 					TimeMachineView()
 				}
+				.toolbar {
+					ToolbarItem(placement: .cancellationAction) {
+						Button {
+							timeMachine.controlsVisible.toggle()
+						} label: {
+							Text("Close")
+						}
+					}
+				}
 			}
 			#else
 			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
