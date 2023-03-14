@@ -19,7 +19,6 @@ struct DetailView<Location: ObservableLocation>: View {
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
 	@State private var timeTravelVisible = false
-	@State private var solar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
@@ -51,28 +50,10 @@ struct DetailView<Location: ObservableLocation>: View {
 		.toolbar {
 			toolbarItems
 		}
-		.task(id: timeMachine.date, priority: .background) {
-			if solar != nil && timeMachine.isOn {
-				do {
-					try await Task.sleep(nanoseconds: 1_000_000)
-					setSolarValue()
-				} catch {
-					
-				}
-			} else {
-				setSolarValue()
-			}
-		}
 	}
 	
-	func setSolarValue() {
-		let newSolar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
-		
-		if solar == nil {
-			withAnimation { solar = newSolar }
-		} else {
-			solar = newSolar
-		}
+	var solar: Solar? {
+		Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
 	}
 	
 	@ToolbarContentBuilder
