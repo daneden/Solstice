@@ -178,12 +178,12 @@ struct ContentView: View {
 				if item.uuid == nil {
 					item.uuid = UUID()
 				}
-				
-				do {
-					try viewContext.save()
-				} catch {
-					print(error)
-				}
+			}
+			
+			do {
+				try viewContext.save()
+			} catch {
+				print(error)
 			}
 		}
 		.task {

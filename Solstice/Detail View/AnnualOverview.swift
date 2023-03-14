@@ -15,16 +15,16 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	
 	var location: Location
 	
-	var month: Int {
+	var nextSolsticeMonth: Int {
 		calendar.dateComponents([.month], from: timeMachine.date.nextSolstice).month ?? 6
 	}
 	
 	var nextGreaterThanPrevious: Bool {
-		switch month {
+		switch nextSolsticeMonth {
 		case 6:
-			return location.latitude > 0 ? false : true
+			return location.latitude > 0
 		case 12:
-			return location.latitude > 0 ? true : false
+			return location.latitude < 0
 		default:
 			return true
 		}

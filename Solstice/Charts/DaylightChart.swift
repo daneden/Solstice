@@ -8,10 +8,8 @@
 import SwiftUI
 import Charts
 import Solar
-import CoreLocation
 
 struct DaylightChart: View {
-	@Environment(\.colorScheme) var colorScheme
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
 	
@@ -27,6 +25,10 @@ struct DaylightChart: View {
 	
 	@State private var solarEvents: [Solar.Event] = []
 	
+	var range: ClosedRange<Date> {
+		solar.startOfDay...solar.endOfDay
+	}
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
@@ -34,7 +36,7 @@ struct DaylightChart: View {
 			}
 			
 			Chart {
-				ForEach(solarEvents) { solarEvent in
+				ForEach(solarEvents.filter { range.contains($0.date) }) { solarEvent in
 					PointMark(
 						x: .value("Event Time", solarEvent.date ),
 						y: .value("Event", yValue(for: solarEvent.date ))
@@ -48,9 +50,9 @@ struct DaylightChart: View {
 				}
 			}
 			.chartYAxis(.hidden)
-			.chartXAxis(hideXAxis ? .hidden : .automatic)
 			.chartYScale(domain: -1.5...1.5)
-			.chartXScale(domain: solar.startOfDay...solar.endOfDay)
+			.chartXAxis(hideXAxis ? .hidden : .automatic)
+			.chartXScale(domain: range)
 			.chartOverlay { proxy in
 				GeometryReader { geo in
 					Group {
@@ -231,7 +233,7 @@ struct DaylightChart: View {
 				)
 				.colorScheme(.dark)
 		}
-		.task(id: solar.date) {
+		.task(id: solar.date, priority: .background) {
 			solarEvents = []
 			do {
 				try await Task.sleep(nanoseconds: 250_000_000)

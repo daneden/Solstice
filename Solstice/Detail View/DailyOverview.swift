@@ -14,6 +14,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solar: Solar
 	var location: Location
 	
+	@State var chartRenderedAsImage: Image?
+	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
 	var body: some View {
@@ -80,11 +82,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 				}
 			}
 		}
+		.task(id: timeMachine.date, priority: .background) {
+			chartRenderedAsImage = buildChartRenderedAsImage()
+		}
 	}
 }
 
 extension DailyOverview {
-	var chartRenderedAsImage: Image? {
+	func buildChartRenderedAsImage() -> Image? {
 		let view = VStack {
 			HStack {
 				Label {

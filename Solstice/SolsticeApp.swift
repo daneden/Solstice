@@ -15,6 +15,8 @@ struct SolsticeApp: App {
 	@StateObject private var timeMachine = TimeMachine()
 	@StateObject private var currentLocation = CurrentLocation()
 	
+	@State private var currentDate = Date()
+	
 	let persistenceController = PersistenceController.shared
 
 	var body: some Scene {

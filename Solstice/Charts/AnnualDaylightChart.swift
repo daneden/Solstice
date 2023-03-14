@@ -84,7 +84,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 							} else if doubleValue == dayLength {
 								Text("Evening")
 							} else {
-								Text("\(date, style: .time)")
+								Text(date, style: .time)
 							}
 						}
 					}

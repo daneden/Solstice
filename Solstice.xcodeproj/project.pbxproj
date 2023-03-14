@@ -26,7 +26,6 @@
 		7106C88929A277680007A7EC /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		7106C88B29A277740007A7EC /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7106C88A29A277740007A7EC /* Solar */; };
 		7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
-		7106C88E29A27D330007A7EC /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7106C88F29A281440007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
@@ -49,6 +48,11 @@
 		717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BBB29A908E30015ECCB /* SettingsView.swift */; };
 		718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718B136B29A918680001D4DC /* SupporterSettings.swift */; };
 		718B136E29A9196C0001D4DC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 718B136D29A918AD0001D4DC /* README.md */; };
+		7193E92629C0BA0B00103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
+		7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
+		7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
+		7193E92E29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
+		7193E92F29C0BAB400103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		719511F629AF5CB4009D282F /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F529AF5CB4009D282F /* GetSunriseTime.swift */; };
 		719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F729AF5CE1009D282F /* GetSunsetTime.swift */; };
 		719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F929AF5CF7009D282F /* ViewDaylight.swift */; };
@@ -75,12 +79,10 @@
 		7195122829AFBE91009D282F /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
 		7195122929AFBE94009D282F /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
 		7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
-		7195122B29AFBEA1009D282F /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7195122C29AFBEAD009D282F /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		7195123129B0B3D6009D282F /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87429A276B40007A7EC /* Widget.intentdefinition */; };
 		7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
-		7195123529B0B3D6009D282F /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
 		7195123929B0B3D6009D282F /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
@@ -148,7 +150,6 @@
 		719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
 		719F926D29ACD21300C06921 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */; };
-		719F926F29ACD21300C06921 /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		719F927029ACD21300C06921 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198469D28E58CCD00E866CE /* DetailView.swift */; };
 		719F927229ACD21300C06921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
@@ -183,7 +184,6 @@
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
-		71F641B929995ED000FE5AB5 /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
 		71F641BD299968BF00FE5AB5 /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
 		71F641BF299B7C7000FE5AB5 /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
@@ -403,7 +403,6 @@
 		713F7FF729BE83E800BEA156 /* Detail View */ = {
 			isa = PBXGroup;
 			children = (
-				71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */,
 				713F7FF829BE843700BEA156 /* AnnualOverview.swift */,
 				713F7FFB29BE867E00BEA156 /* DailyOverview.swift */,
 				713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */,
@@ -420,6 +419,23 @@
 				718B136B29A918680001D4DC /* SupporterSettings.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		7193E92B29C0BA1200103D6B /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */,
+				71F641B829995ED000FE5AB5 /* DaylightChart.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		7193E92C29C0BA2100103D6B /* List View */ = {
+			isa = PBXGroup;
+			children = (
+				71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */,
+			);
+			path = "List View";
 			sourceTree = "<group>";
 		};
 		719511F429AF5CA8009D282F /* Intents */ = {
@@ -464,7 +480,6 @@
 		7198467828E5895E00E866CE = {
 			isa = PBXGroup;
 			children = (
-				713F7FF529BE054400BEA156 /* Solstice watchOS Watch App.entitlements */,
 				718B136D29A918AD0001D4DC /* README.md */,
 				7195126629B6324C009D282F /* Data Model */,
 				71F641EE29A13C5300FE5AB5 /* Frameworks */,
@@ -491,21 +506,21 @@
 		7198468328E5895E00E866CE /* Solstice */ = {
 			isa = PBXGroup;
 			children = (
-				713F7FF729BE83E800BEA156 /* Detail View */,
 				71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */,
 				7198469228E5895F00E866CE /* Info.plist */,
 				7198469828E5898500E866CE /* StoreKitConfiguration.storekit */,
 				7198468628E5895E00E866CE /* ContentView.swift */,
-				71F641B829995ED000FE5AB5 /* DaylightChart.swift */,
-				71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */,
 				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
 				719846A928E992A200E866CE /* LocationSearchResultRow.swift */,
 				7198468428E5895E00E866CE /* SolsticeApp.swift */,
 				71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */,
 				7198468828E5895F00E866CE /* Assets.xcassets */,
+				7193E92B29C0BA1200103D6B /* Charts */,
+				713F7FF729BE83E800BEA156 /* Detail View */,
 				719846AB28E9A9FF00E866CE /* Extensions */,
 				7195127F29B713D6009D282F /* Helper Views */,
 				719846A628E991E800E866CE /* Helpers */,
+				7193E92C29C0BA2100103D6B /* List View */,
 				7198468A28E5895F00E866CE /* Preview Content */,
 				717F8BBA29A908D00015ECCB /* Settings */,
 			);
@@ -555,6 +570,7 @@
 		71DB52AC29ABD17F00D62BB7 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
+				713F7FF529BE054400BEA156 /* Solstice watchOS Watch App.entitlements */,
 				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
 				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
 				71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */,
@@ -802,7 +818,6 @@
 				7106C87829A276B40007A7EC /* Widget.intentdefinition in Sources */,
 				71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */,
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
-				7106C88E29A27D330007A7EC /* DaylightChart.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
 				7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */,
@@ -822,6 +837,7 @@
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
 				7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */,
 				7195128E29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
+				7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */,
 				7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -836,6 +852,7 @@
 				7195128529B73344009D282F /* SkyGradient.swift in Sources */,
 				7195121929AFBDEB009D282F /* Widget.intentdefinition in Sources */,
 				7195121B29AFBDFF009D282F /* OverviewWidgetView.swift in Sources */,
+				7193E92F29C0BAB400103D6B /* DaylightChart.swift in Sources */,
 				7195122129AFBE71009D282F /* CurrentLocation.swift in Sources */,
 				713F800329BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7195122C29AFBEAD009D282F /* Solstice.xcdatamodeld in Sources */,
@@ -850,7 +867,6 @@
 				7195129029BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7195122629AFBE8B009D282F /* Date++.swift in Sources */,
 				7195121A29AFBDFC009D282F /* Widget.swift in Sources */,
-				7195122B29AFBEA1009D282F /* DaylightChart.swift in Sources */,
 				7195121E29AFBE09009D282F /* WidgetLocationHeadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -862,7 +878,6 @@
 				7195123129B0B3D6009D282F /* Widget.intentdefinition in Sources */,
 				7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */,
 				7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */,
-				7195123529B0B3D6009D282F /* DaylightChart.swift in Sources */,
 				7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */,
 				7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */,
 				7195123929B0B3D6009D282F /* TimeMachine.swift in Sources */,
@@ -882,6 +897,7 @@
 				7195124429B0B3D6009D282F /* Widget.swift in Sources */,
 				7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */,
 				7195128F29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
+				7193E92E29C0BAB300103D6B /* DaylightChart.swift in Sources */,
 				7195124629B0B3D6009D282F /* Solstice.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -908,7 +924,6 @@
 				7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */,
 				717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */,
 				717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */,
-				71F641B929995ED000FE5AB5 /* DaylightChart.swift in Sources */,
 				7195128829B7BCBD009D282F /* NavigationStateManager.swift in Sources */,
 				71F641BF299B7C7000FE5AB5 /* Solar+SolarEvent.swift in Sources */,
 				713F7FFC29BE867E00BEA156 /* DailyOverview.swift in Sources */,
@@ -919,6 +934,7 @@
 				717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */,
 				71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */,
 				7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */,
+				7193E92629C0BA0B00103D6B /* DaylightChart.swift in Sources */,
 				719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */,
 				718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */,
 				71F641C1299FCCFF00FE5AB5 /* TimeMachine.swift in Sources */,
@@ -957,11 +973,11 @@
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
 				7195125929B48ECD009D282F /* TimeZone++.swift in Sources */,
-				719F926F29ACD21300C06921 /* DaylightChart.swift in Sources */,
 				719F927929ACD21A00C06921 /* Date++.swift in Sources */,
 				719F927729ACD21A00C06921 /* View+CapsuleAppearance.swift in Sources */,
 				719F927F29ACD22100C06921 /* NotificationManager.swift in Sources */,
 				71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */,
+				7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */,
 				7195128229B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */,
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,
 				719F927D29ACD22100C06921 /* CurrentLocation.swift in Sources */,
