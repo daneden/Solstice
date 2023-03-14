@@ -231,6 +231,7 @@ struct DaylightChart: View {
 				)
 				.colorScheme(.dark)
 		}
+		.drawingGroup()
 	}
 	
 }
