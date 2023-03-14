@@ -8,7 +8,6 @@
 import SwiftUI
 import Charts
 import Solar
-import Charts
 import CoreLocation
 
 struct DaylightChart: View {
