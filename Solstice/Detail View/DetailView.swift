@@ -18,7 +18,6 @@ struct DetailView<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
-	@State private var timeTravelVisible = false
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
