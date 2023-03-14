@@ -273,7 +273,7 @@
 		7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetView.swift; sourceTree = "<group>"; };
 		7117008829A52ABE001BE478 /* CountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetView.swift; sourceTree = "<group>"; };
 		7117008A29A52B04001BE478 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
-		713F7FF529BE054400BEA156 /* Solstice watchOS Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Solstice watchOS Watch App.entitlements"; sourceTree = "<group>"; };
+		713F7FF529BE054400BEA156 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
 		713F7FF829BE843700BEA156 /* AnnualOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualOverview.swift; sourceTree = "<group>"; };
 		713F7FFB29BE867E00BEA156 /* DailyOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOverview.swift; sourceTree = "<group>"; };
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
@@ -570,7 +570,7 @@
 		71DB52AC29ABD17F00D62BB7 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
-				713F7FF529BE054400BEA156 /* Solstice watchOS Watch App.entitlements */,
+				713F7FF529BE054400BEA156 /* Solstice.entitlements */,
 				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
 				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
 				71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */,
@@ -1402,7 +1402,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Solstice watchOS Watch App.entitlements";
+				CODE_SIGN_ENTITLEMENTS = watchOS/Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
@@ -1437,7 +1437,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Solstice watchOS Watch App.entitlements";
+				CODE_SIGN_ENTITLEMENTS = watchOS/Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
