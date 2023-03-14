@@ -21,20 +21,20 @@ var relativeDateFormatter: RelativeDateTimeFormatter = {
 	return formatter
 }()
 
-var chartHeight: CGFloat {
+var chartHeight: CGFloat = {
 #if !os(watchOS)
 	300
 #else
 	200
 #endif
-}
+}()
 
-var chartMarkSize: Double {
+var chartMarkSize: Double = {
 #if os(watchOS)
 	4
 #else
 	8
 #endif
-	}
+}()
 
 let calendar = Calendar.autoupdatingCurrent
