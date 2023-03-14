@@ -45,7 +45,6 @@ extension Solar {
 				 nautical = "Nautical Twilight",
 				 civil = "Civil Twilight",
 				 day = "Day",
-				 currentTime = "Current Time",
 				 sunrise = "Sunrise",
 				 sunset = "Sunset"
 	}

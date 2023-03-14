@@ -57,6 +57,16 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						}
 					}
 				}
+				.contextMenu {
+					Button {
+						withAnimation {
+							timeMachine.isOn = true
+							timeMachine.targetDate = nextSolstice
+						}
+					} label: {
+						Label("Jump to \(nextSolstice, style: .date)", systemImage: "clock.arrow.2.circlepath")
+					}
+				}
 				
 				AdaptiveLabeledContent {
 					if nextEquinox.startOfDay == date.startOfDay {
@@ -66,6 +76,16 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					}
 				} label: {
 					Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+				}
+				.contextMenu {
+					Button {
+						withAnimation {
+							timeMachine.isOn = true
+							timeMachine.targetDate = nextEquinox
+						}
+					} label: {
+						Label("Jump to \(nextEquinox, style: .date)", systemImage: "clock.arrow.2.circlepath")
+					}
 				}
 			}
 			

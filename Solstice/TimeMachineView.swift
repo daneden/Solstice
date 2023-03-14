@@ -43,20 +43,22 @@ struct TimeMachineView: View {
 	@ViewBuilder
 	var controls: some View {
 #if !os(tvOS) && !os(watchOS)
-		DatePicker(selection: $timeMachine.targetDate, displayedComponents: [.date]) {
+		DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 		}
 #endif
 		
-		#if os(iOS)
-		Slider(value: timeMachine.offset,
+		#if os(iOS) || os(macOS)
+		Slider(value: timeMachine.offset.animation(),
 					 in: -182...182,
-					 step: 1,
+					 step: 7,
 					 minimumValueLabel: Text("Past").font(.caption),
 					 maximumValueLabel: Text("Future").font(.caption)) {
-			Text("\(Int(timeMachine.offset.wrappedValue)) days in the \(timeMachine.offset.wrappedValue > 0 ? "future" : "past")")
+			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? "future" : "past")")
 		}
+						#if os(iOS)
 					 .tint(Color(UIColor.systemFill))
+						#endif
 					 .foregroundStyle(.secondary)
 		#endif
 		

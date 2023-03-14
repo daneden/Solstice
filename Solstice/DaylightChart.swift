@@ -23,7 +23,9 @@ struct DaylightChart: View {
 	var includesSummaryTitle = true
 	var hideXAxis = false
 	var scrubbable = false
-	var markSize: Double = 6
+	var markSize: CGFloat = 6
+	
+	@State private var solarEvents: [Solar.Event] = []
 	
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -33,18 +35,16 @@ struct DaylightChart: View {
 			
 			Chart {
 				ForEach(solarEvents) { solarEvent in
-					if solarEvent.phase != .currentTime {
-						PointMark(
-							x: .value("Event Time", solarEvent.date ),
-							y: .value("Event", yValue(for: solarEvent.date ))
-						)
-						.foregroundStyle(pointMarkColor(for: solarEvent.phase))
-						.opacity(solarEvent.phase == .night
-										 || solarEvent.phase == .day
-										 || solarEvent.phase == .sunrise
-										 || solarEvent.phase == .sunset ? 0 : 1)
-						.symbolSize(markSize * .pi * 2)
-					}
+					PointMark(
+						x: .value("Event Time", solarEvent.date ),
+						y: .value("Event", yValue(for: solarEvent.date ))
+					)
+					.foregroundStyle(pointMarkColor(for: solarEvent.phase))
+					.opacity(solarEvent.phase == .night
+									 || solarEvent.phase == .day
+									 || solarEvent.phase == .sunrise
+									 || solarEvent.phase == .sunset ? 0 : 1)
+					.symbolSize(markSize * .pi * 2)
 				}
 			}
 			.chartYAxis(.hidden)
@@ -153,7 +153,7 @@ struct DaylightChart: View {
 								currentX = date
 								
 								if let date,
-									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 && $0.phase != .currentTime }){
+									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 }){
 									selectedEvent = nearestEvent
 								}
 							}
@@ -176,7 +176,7 @@ struct DaylightChart: View {
 								currentX = date
 								
 								if let date,
-									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 && $0.phase != .currentTime }){
+									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 }){
 									selectedEvent = nearestEvent
 									currentX = date
 								}
@@ -220,6 +220,7 @@ struct DaylightChart: View {
 			.if(!hideXAxis) { view in
 				view.padding(.bottom)
 			}
+			.id(solar.date)
 		}
 		.if(appearance == .graphical) { view in
 			view
@@ -230,9 +231,37 @@ struct DaylightChart: View {
 				)
 				.colorScheme(.dark)
 		}
-		.drawingGroup()
+		.task(id: solar.date) {
+			solarEvents = []
+			do {
+				try await Task.sleep(nanoseconds: 250_000_000)
+				if solarEvents.isEmpty { resetSolarEvents() }
+			} catch {
+				
+			}
+		}
+		.onAppear {
+			resetSolarEvents()
+		}
 	}
 	
+	func resetSolarEvents() {
+		let events = solar.events.map { event in
+			Solar.Event(label: event.label,
+									date: event.date.withTimeZoneAdjustment(for: timeZone),
+									phase: event.phase)
+		}
+		.filter { event in
+			eventTypes.contains { phase in
+				event?.phase == phase
+			}
+		}
+		.compactMap { $0 }
+		
+		withAnimation {
+			solarEvents = events
+		}
+	}
 }
 
 extension DaylightChart {
@@ -254,20 +283,6 @@ extension DaylightChart {
 			second: components.second ?? 0,
 			of: date
 		) ?? solar.date.withTimeZoneAdjustment(for: timeZone)
-	}
-	
-	var solarEvents: Array<Solar.Event> {
-		solar.events.map { event in
-			Solar.Event(label: event.label,
-									date: event.date.withTimeZoneAdjustment(for: timeZone),
-									phase: event.phase)
-		}
-		.filter { event in
-			eventTypes.contains { phase in
-				event?.phase == phase
-			}
-		}
-		.compactMap { $0 }
 	}
 	
 	var hours: Array<Date> {
