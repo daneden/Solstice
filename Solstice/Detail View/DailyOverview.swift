@@ -51,7 +51,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Label("Total Daylight", systemImage: "hourglass")
 			}
 			
-			if solar.date.isToday {
+			if solar.date.withTimeZoneAdjustment(for: location.timeZone).isToday {
 				AdaptiveLabeledContent {
 					Text(timerInterval: solar.safeSunrise...solar.safeSunset)
 						.monospacedDigit()
