@@ -31,7 +31,7 @@ struct ContentView: View {
 	@StateObject var locationSearchService = LocationSearchService()
 #endif
 	
-	@EnvironmentObject var timeMachine: TimeMachine
+	@StateObject var timeMachine = TimeMachine()
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
@@ -88,7 +88,7 @@ struct ContentView: View {
 			}
 			.navigationTitle("Solstice")
 			.navigationSplitViewColumnWidth(ideal: 300)
-#if !os(watchOS) && !os(tvOS)
+#if !os(watchOS)
 			.searchable(text: $locationSearchService.queryFragment,
 									prompt: "Search cities or airports")
 			.searchSuggestions {
@@ -101,60 +101,16 @@ struct ContentView: View {
 				}
 			}
 #endif
-
 			.toolbar {
-				#if !os(tvOS)
-				Menu {
-					Menu {
-						Picker(selection: $itemSortDimension.animation()) {
-							Text("Timezone")
-								.tag(Preferences.SortingFunction.timezone)
-							
-							Text("Daylight Duration")
-								.tag(Preferences.SortingFunction.daylightDuration)
-						} label: {
-							Text("Sort by")
-						}
-						
-						Picker(selection: $itemSortOrder.animation()) {
-							Text("Ascending")
-								.tag(SortOrder.forward)
-							
-							Text("Descending")
-								.tag(SortOrder.reverse)
-						} label: {
-							Text("Order")
-						}
-					} label: {
-						Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
-					}
-					
-					Toggle(isOn: $showComplication.animation()) {
-						Text("Show chart in list")
-					}
-				} label: {
-					Label("View Options", systemImage: "eye.circle")
-				}
-				#endif
-				
-#if os(iOS)
-				Button {
-					settingsViewOpen.toggle()
-				} label: {
-					Label("Settings", systemImage: "gearshape")
-				}
-				.sheet(isPresented: $settingsViewOpen) {
-					SettingsView()
-				}
-#endif
+				toolbarItems
 			}
 		} detail: {
 			switch navigationState.navigationSelection {
 			case .currentLocation:
-				DetailView(location: currentLocation)
+				DetailView(location: currentLocation, timeMachine: timeMachine)
 			case .savedLocation(let id):
 				if let item = items.first(where: { $0.uuid == id }) {
-					DetailView(location: item)
+					DetailView(location: item, timeMachine: timeMachine)
 				} else {
 					placeholderView
 				}
@@ -173,6 +129,7 @@ struct ContentView: View {
 			}
 		}
 		.environmentObject(navigationState)
+		.environmentObject(timeMachine)
 		.task(priority: TaskPriority.background) {
 			items.forEach { item in
 				if item.uuid == nil {
@@ -227,6 +184,56 @@ struct ContentView: View {
 				print(error)
 			}
 		}
+	}
+	
+	@ToolbarContentBuilder
+	private var toolbarItems: some ToolbarContent {
+		ToolbarItem {
+			Menu {
+				Menu {
+					Picker(selection: $itemSortDimension.animation()) {
+						Text("Timezone")
+							.tag(Preferences.SortingFunction.timezone)
+						
+						Text("Daylight Duration")
+							.tag(Preferences.SortingFunction.daylightDuration)
+					} label: {
+						Text("Sort by")
+					}
+					
+					Picker(selection: $itemSortOrder.animation()) {
+						Text("Ascending")
+							.tag(SortOrder.forward)
+						
+						Text("Descending")
+							.tag(SortOrder.reverse)
+					} label: {
+						Text("Order")
+					}
+				} label: {
+					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+				}
+				
+				Toggle(isOn: $showComplication.animation()) {
+					Text("Show chart in list")
+				}
+			} label: {
+				Label("View Options", systemImage: "eye.circle")
+			}
+		}
+		
+#if os(iOS)
+		ToolbarItem {
+			Button {
+				settingsViewOpen.toggle()
+			} label: {
+				Label("Settings", systemImage: "gearshape")
+			}
+			.sheet(isPresented: $settingsViewOpen) {
+				SettingsView()
+			}
+		}
+#endif
 	}
 }
 

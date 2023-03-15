@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 import CoreData
 
-protocol AnyLocation {
+protocol AnyLocation: Hashable {
 	var title: String? { get set }
 	var subtitle: String? { get set }
 	var timeZoneIdentifier: String? { get set }

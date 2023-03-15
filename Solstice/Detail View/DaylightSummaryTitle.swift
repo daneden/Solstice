@@ -23,13 +23,17 @@ struct DaylightSummaryTitle: View {
 #endif
 	}
 	
+		private let formatter = Date.ComponentsFormatStyle.timeDuration
+	
     var body: some View {
 			VStack(alignment: .leading) {
 				HStack {
 					Text(solar.differenceString)
 						.font(summaryFont)
 						.fontWeight(.semibold)
-						.lineLimit(10)
+						.lineLimit(2)
+						.allowsTightening(true)
+						.minimumScaleFactor(0.8)
 					Spacer(minLength: 0)
 				}
 				.opacity(event == nil ? 1 : 0)
@@ -51,11 +55,11 @@ struct DaylightSummaryTitle: View {
 									
 									Group {
 										if currentX < solar.safeSunrise {
-											Text("Sunrise in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunrise))!)")
+											Text("Sunrise in \((currentX..<solar.safeSunrise).formatted(formatter))")
 										} else if currentX < solar.safeSunset {
-											Text("Sunset in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.safeSunset))!)")
+											Text("Sunset in \((currentX..<solar.safeSunset).formatted(formatter))")
 										} else if currentX > solar.safeSunset {
-											Text("Sunrise in \(timeIntervalFormatter.string(from: currentX.distance(to: solar.tomorrow?.safeSunrise ?? solar.endOfDay))!)")
+											Text("Sunrise in \((currentX..<(solar.tomorrow?.safeSunrise ?? solar.endOfDay)).formatted(formatter))")
 										}
 									}
 									.foregroundStyle(.tertiary)

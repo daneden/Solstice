@@ -270,7 +270,7 @@ extension DaylightChart {
 	var relativeEventTimeString: String {
 		if let selectedEvent,
 			 calendar.isDateInToday(selectedEvent.date) {
-			return " (\(relativeDateFormatter.localizedString(for: selectedEvent.date, relativeTo: solar.date.withTimeZoneAdjustment(for: timeZone))))"
+			return " (\((selectedEvent.date..<solar.date.withTimeZoneAdjustment(for: timeZone)).formatted(.timeDuration))"
 		}
 		return ""
 	}

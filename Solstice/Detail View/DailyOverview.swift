@@ -23,16 +23,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 			daylightChartView
 				.frame(height: chartHeight)
 				.contextMenu {
-#if !os(tvOS)
 					if let chartRenderedAsImage {
 						ShareLink(
 							item: chartRenderedAsImage,
 							preview: SharePreview("Daylight in \(location.title ?? "my location")", image: chartRenderedAsImage)
 						)
 					}
-#endif
-					
-#if !os(watchOS)
+
+					#if !os(watchOS)
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 							Text(appearance.rawValue)
@@ -40,17 +38,26 @@ struct DailyOverview<Location: AnyLocation>: View {
 					} label: {
 						Label("Appearance", systemImage: "paintpalette")
 					}
-#endif
+					#endif
 				}
 				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-#if os(watchOS)
+				#if os(watchOS)
 				.listRowBackground(Color.clear)
-#endif
+				#endif
 			
 			AdaptiveLabeledContent {
-				Text("\(timeIntervalFormatter.string(from: solar.safeSunrise.distance(to: solar.safeSunset)) ?? "")")
+				Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
 			} label: {
 				Label("Total Daylight", systemImage: "hourglass")
+			}
+			
+			if solar.date.isToday {
+				AdaptiveLabeledContent {
+					Text(timerInterval: solar.safeSunrise...solar.safeSunset)
+						.monospacedDigit()
+				} label: {
+					Label("Remaining Daylight", systemImage: "timer")
+				}
 			}
 			
 			AdaptiveLabeledContent {
@@ -181,6 +188,9 @@ extension DailyOverview {
 
 struct DailyOverview_Previews: PreviewProvider {
 	static var previews: some View {
-		DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate)!, location: TemporaryLocation.placeholderLocation)
+		Form {
+			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate)!, location: TemporaryLocation.placeholderLocation)
+		}
+		.environmentObject(TimeMachine())
 	}
 }

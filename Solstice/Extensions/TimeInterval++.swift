@@ -9,16 +9,10 @@ import Foundation
 
 extension TimeInterval {
 	var localizedString: String {
-		let string = timeIntervalFormatter.string(from: abs(self)) ?? ""
-		return string
+		Duration.seconds(abs(self)).formatted(.units(maximumUnitCount: 2))
 	}
 	
 	var abbreviatedHourString: String {
-		let formatter = DateComponentsFormatter()
-		formatter.unitsStyle = .abbreviated
-		formatter.allowedUnits = [.hour]
-		formatter.maximumUnitCount = 1
-		
-		return formatter.string(from: self) ?? ""
+		Duration.seconds(self).formatted(.units(allowed: [.hours]))
 	}
 }

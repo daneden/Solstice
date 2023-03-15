@@ -11,13 +11,6 @@ import CoreLocation
 
 fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool>)
 
-#if os(tvOS)
-struct NotificationSettings: View {
-	var body: some View {
-		Text("Hi")
-	}
-}
-#else
 struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsEnabled) var notificationsEnabled
 	
@@ -91,9 +84,9 @@ struct NotificationSettings: View {
 							ForEach(Preferences.NotificationSettings.relativeOffsetDetents, id: \.self) { timeInterval in
 								switch timeInterval {
 								case let x where x < 0:
-									Text("\(timeIntervalFormatter.string(from: abs(timeInterval)) ?? "") before")
+									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) before")
 								case let x where x > 0:
-									Text("\(timeIntervalFormatter.string(from: timeInterval) ?? "") after")
+									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
 								default:
 									Text("at \(scheduleType.description)")
 								}
@@ -136,7 +129,6 @@ struct NotificationSettings: View {
 		.navigationTitle("Notifications")
 	}
 }
-#endif
 
 struct NotificationPreview: View {
 	var title: String = ""

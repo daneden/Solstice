@@ -182,7 +182,7 @@ fileprivate var showComplicationDefaultValue: Bool {
 }
 
 fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance {
-	#if os(watchOS) || os(tvOS)
+	#if os(watchOS)
 	.simple
 	#else
 	.graphical

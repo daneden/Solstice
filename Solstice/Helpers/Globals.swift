@@ -7,20 +7,6 @@
 
 import Foundation
 
-var timeIntervalFormatter: DateComponentsFormatter = {
-	let formatter = DateComponentsFormatter()
-	formatter.maximumUnitCount = 2
-	formatter.unitsStyle = .short
-	return formatter
-}()
-
-var relativeDateFormatter: RelativeDateTimeFormatter = {
-	let formatter = RelativeDateTimeFormatter()
-	formatter.dateTimeStyle = .named
-	formatter.formattingContext = .beginningOfSentence
-	return formatter
-}()
-
 var chartHeight: CGFloat = {
 #if !os(watchOS)
 	300

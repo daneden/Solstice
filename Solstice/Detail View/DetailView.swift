@@ -15,7 +15,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.dismiss) var dismiss
 	
 	@ObservedObject var location: Location
-	@EnvironmentObject var timeMachine: TimeMachine
+	@StateObject var timeMachine = TimeMachine()
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
 	
@@ -49,6 +49,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		.toolbar {
 			toolbarItems
 		}
+		.environmentObject(timeMachine)
 	}
 	
 	var solar: Solar? {
@@ -115,8 +116,17 @@ struct DetailView<Location: ObservableLocation>: View {
 
 struct DetailView_Previews: PreviewProvider {
 	static var previews: some View {
-		DetailView(location: TemporaryLocation.placeholderLocation)
+		NavigationStack {
+			DetailView(location: TemporaryLocation.placeholderLocation)
+		}
 		.environmentObject(TimeMachine())
 		.environmentObject(NavigationStateManager())
+		.previewDisplayName("Detail View: Temporary Location")
+		
+		NavigationStack {
+			DetailView(location: CurrentLocation())
+		}
+		.environmentObject(NavigationStateManager())
+		.previewDisplayName("Detail View: Current Location")
 	}
 }

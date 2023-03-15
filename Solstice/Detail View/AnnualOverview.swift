@@ -30,18 +30,19 @@ struct AnnualOverview<Location: AnyLocation>: View {
 		}
 	}
 	
+	var date: Date { timeMachine.date }
+	var nextSolstice: Date { timeMachine.date.nextSolstice }
+	var nextEquinox: Date { timeMachine.date.nextEquinox }
+	
 	var body: some View {
 		Section {
-			if let date = timeMachine.date,
-				 let nextSolstice = timeMachine.date.nextSolstice,
-				 let nextEquinox = timeMachine.date.nextEquinox {
-				
+			Group {
 				VStack(alignment: .leading) {
 					AdaptiveLabeledContent {
 						if nextSolstice.startOfDay == date.startOfDay {
 							Text("Today")
 						} else {
-							Text(relativeDateFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+							Text("in \((date..<nextSolstice).formatted(.components(style: .abbreviated, fields: [.month, .week, .day])))")
 						}
 					} label: {
 						Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
@@ -49,7 +50,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					
 					if let differenceFromPreviousSolstice {
 						Label {
-							Text("\(timeIntervalFormatter.string(from: abs(differenceFromPreviousSolstice)) ?? "") \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
+							Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
 								.font(.caption)
 								.foregroundStyle(.secondary)
 						} icon: {
@@ -72,7 +73,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					if nextEquinox.startOfDay == date.startOfDay {
 						Text("Today")
 					} else {
-						Text(relativeDateFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+						Text("in \((date..<nextEquinox).formatted(.components(style: .abbreviated, fields: [.month, .week, .day])))")
 					}
 				} label: {
 					Label("Next Equinox", systemImage: "circle.and.line.horizontal")
@@ -91,12 +92,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			
 			AnnualDaylightChart(location: location)
 				.frame(height: chartHeight)
-		}
-		.task(id: timeMachine.date, priority: .background) {
-			if let solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate),
-				 let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate.coordinate) {
-				differenceFromPreviousSolstice = previousSolsticeSolar.daylightDuration - solar.daylightDuration
-			}
 		}
 	}
 }

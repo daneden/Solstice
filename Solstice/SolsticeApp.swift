@@ -12,7 +12,6 @@ import StoreKit
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
-	@StateObject private var timeMachine = TimeMachine()
 	@StateObject private var currentLocation = CurrentLocation()
 	
 	@State private var currentDate = Date()
@@ -21,29 +20,23 @@ struct SolsticeApp: App {
 
 	var body: some Scene {
 		WindowGroup {
-			TimelineView(.everyMinute) { timeline in
-				ContentView()
-					.environmentObject(timeMachine)
-					.environmentObject(currentLocation)
-					.environment(\.managedObjectContext, persistenceController.container.viewContext)
-					.onChange(of: timeline.date) { newValue in
-						timeMachine.referenceDate = newValue
-					}
-					.task {
-						for await result in Transaction.updates {
-							switch result {
-							case .verified(let transaction):
-								print("Transaction verified in listener")
-								
-								await transaction.finish()
-								
-								// Update the user's purchases...
-							case .unverified:
-								print("Transaction unverified")
-							}
+			ContentView()
+				.environmentObject(currentLocation)
+				.environment(\.managedObjectContext, persistenceController.container.viewContext)
+				.task {
+					for await result in Transaction.updates {
+						switch result {
+						case .verified(let transaction):
+							print("Transaction verified in listener")
+							
+							await transaction.finish()
+							
+							// Update the user's purchases...
+						case .unverified:
+							print("Transaction unverified")
 						}
 					}
-			}
+				}
 		}
 		.onChange(of: phase) { newValue in
 			switch newValue {
@@ -53,7 +46,6 @@ struct SolsticeApp: App {
 			#endif
 			default:
 				currentLocation.requestLocation() { _ in }
-				timeMachine.referenceDate = Date()
 			}
 		}
 		

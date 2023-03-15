@@ -38,8 +38,8 @@ struct TimeMachineView: View {
 	
 	@ViewBuilder
 	var controls: some View {
-#if !os(tvOS) && !os(watchOS)
-		DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
+#if !os(watchOS)
+		DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: .date) {
 			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 		}
 #elseif canImport(WatchDatePicker)
@@ -47,7 +47,7 @@ struct TimeMachineView: View {
 #endif
 		
 		#if os(iOS) || os(macOS)
-		Slider(value: timeMachine.offset.animation(),
+		Slider(value: timeMachine.offset,
 					 in: -182...182,
 					 step: 1,
 					 minimumValueLabel: Text("Past").font(.caption),
@@ -70,7 +70,9 @@ struct TimeMachineView: View {
 
 struct TimeMachineView_Previews: PreviewProvider {
 	static var previews: some View {
-		TimeMachineView()
+		Form {
+			TimeMachineView()
+		}
 			.environmentObject(TimeMachine())
 	}
 }

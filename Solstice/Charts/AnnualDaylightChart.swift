@@ -21,7 +21,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	]
 	
 	var dayLength: Double = 60 * 60 * 24
-	
+
 	var body: some View {
 		VStack(alignment: .leading) {
 			Label("Daylight by Month", systemImage: "chart.bar.xaxis")
@@ -115,6 +115,13 @@ extension AnnualDaylightChart {
 		return dates.map { date in
 			return Solar(for: date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
 		}.compactMap { $0 }
+	}
+}
+
+extension AnnualDaylightChart: Equatable {
+	static func == (lhs: AnnualDaylightChart<Location>, rhs: AnnualDaylightChart<Location>) -> Bool {
+		return lhs.location.latitude == rhs.location.latitude &&
+		lhs.location.longitude == rhs.location.longitude
 	}
 }
 
