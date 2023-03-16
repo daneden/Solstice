@@ -20,19 +20,34 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	var relevance: TimelineEntryRelevance? = nil
 }
 
-struct SolsticeWidgetTimelineProvider: IntentTimelineProvider {
+struct SolsticeOverviewWidgetTimelineProvider: SolsticeWidgetTimelineProvider {
+	internal let currentLocation = CurrentLocation()
+	internal let geocoder = CLGeocoder()
+	
 	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
 		return [
-			IntentRecommendation(intent: ConfigurationIntent(), description: "Solstice")
+			IntentRecommendation(intent: ConfigurationIntent(), description: "Overview")
 		]
 	}
+}
+
+struct SolsticeCountdownWidgetTimelineProvider: SolsticeWidgetTimelineProvider {
+	internal let currentLocation = CurrentLocation()
+	internal let geocoder = CLGeocoder()
 	
-	typealias Entry = SolsticeWidgetTimelineEntry
-	typealias Intent = ConfigurationIntent
-	
-	private let currentLocation = CurrentLocation()
-	private let geocoder = CLGeocoder()
-	
+	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
+		return [
+			IntentRecommendation(intent: ConfigurationIntent(), description: "Countdown")
+		]
+	}
+}
+
+protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
+	var currentLocation: CurrentLocation { get }
+	var geocoder: CLGeocoder { get }
+}
+
+extension SolsticeWidgetTimelineProvider {
 	func getLocation(for placemark: CLPlacemark, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
 		return SolsticeWidgetLocation(title: placemark.locality,
 																	subtitle: placemark.country,
@@ -152,7 +167,7 @@ struct SolsticeOverviewWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: SolsticeWidgetTimelineProvider()
+			provider: SolsticeOverviewWidgetTimelineProvider()
 		) { timelineEntry in
 			OverviewWidgetView(entry: timelineEntry)
 		}
@@ -175,7 +190,7 @@ struct SolsticeCountdownWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: SolsticeWidgetTimelineProvider()
+			provider: SolsticeCountdownWidgetTimelineProvider()
 		) { timelineEntry in
 			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
 			return CountdownWidgetView(solar: solar, location: timelineEntry.location)
