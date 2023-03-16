@@ -14,13 +14,21 @@ struct DaylightSummaryTitle: View {
 	var currentX: Date?
 	
 	var summaryFont: Font {
-#if os(watchOS)
+		#if os(watchOS)
 		.headline
-#elseif os(macOS)
+		#elseif os(macOS)
 		.title
-#else
+		#else
 		.title2
-#endif
+		#endif
+	}
+	
+	var summaryLineLimit: Int {
+		#if os(watchOS)
+		4
+		#else
+		2
+		#endif
 	}
 	
 		private let formatter = Date.ComponentsFormatStyle.timeDuration
@@ -31,7 +39,7 @@ struct DaylightSummaryTitle: View {
 					Text(solar.differenceString)
 						.font(summaryFont)
 						.fontWeight(.semibold)
-						.lineLimit(2)
+						.lineLimit(summaryLineLimit)
 						.allowsTightening(true)
 						.minimumScaleFactor(0.8)
 					Spacer(minLength: 0)

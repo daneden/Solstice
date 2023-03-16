@@ -119,7 +119,7 @@ struct DetailView_Previews: PreviewProvider {
 		NavigationStack {
 			DetailView(location: TemporaryLocation.placeholderLocation)
 		}
-		.environmentObject(TimeMachine())
+		.environmentObject(TimeMachine.preview)
 		.environmentObject(NavigationStateManager())
 		.previewDisplayName("Detail View: Temporary Location")
 		

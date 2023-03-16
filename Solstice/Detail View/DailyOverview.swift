@@ -18,6 +18,12 @@ struct DailyOverview<Location: AnyLocation>: View {
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
+	var solarDateIsInToday: Bool {
+		var calendar = Calendar.autoupdatingCurrent
+		calendar.timeZone = location.timeZone
+		return calendar.isDate(solar.date, inSameDayAs: Date())
+	}
+	
 	var body: some View {
 		Section {
 			daylightChartView
@@ -51,7 +57,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Label("Total Daylight", systemImage: "hourglass")
 			}
 			
-			if solar.date.withTimeZoneAdjustment(for: location.timeZone).isToday {
+			if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
 				AdaptiveLabeledContent {
 					Text(timerInterval: solar.safeSunrise...solar.safeSunset)
 						.monospacedDigit()
@@ -191,6 +197,6 @@ struct DailyOverview_Previews: PreviewProvider {
 		Form {
 			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate)!, location: TemporaryLocation.placeholderLocation)
 		}
-		.environmentObject(TimeMachine())
+		.environmentObject(TimeMachine.preview)
 	}
 }

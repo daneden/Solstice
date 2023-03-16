@@ -73,6 +73,6 @@ struct TimeMachineView_Previews: PreviewProvider {
 		Form {
 			TimeMachineView()
 		}
-			.environmentObject(TimeMachine())
+		.environmentObject(TimeMachine.preview)
 	}
 }

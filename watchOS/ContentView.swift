@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@EnvironmentObject var timeMachine: TimeMachine
+	@StateObject var timeMachine = TimeMachine()
 	@StateObject var navigationState = NavigationStateManager()
+	
+	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	
 	var body: some View {
 		NavigationStack {
@@ -25,9 +27,12 @@ struct ContentView: View {
 					fatalError()
 				}
 		}
+			.environmentObject(timeMachine)
 			.environmentObject(navigationState)
-			.imageScale(.small)
 			.navigationTitle("Solstice")
+			.onReceive(timer) { _ in
+				timeMachine.referenceDate = Date()
+			}
 	}
 	
 }

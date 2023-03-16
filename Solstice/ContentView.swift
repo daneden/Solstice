@@ -13,7 +13,9 @@ struct ContentView: View {
 	@SceneStorage("navigationState") private var navigationStateData: Data?
 	@State var settingsViewOpen = false
 	@StateObject private var navigationState = NavigationStateManager()
-	
+
+	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+
 	@Environment(\.isSearching) private var isSearching
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
@@ -38,15 +40,7 @@ struct ContentView: View {
 		NavigationSplitView {
 			List(selection: $navigationState.navigationSelection) {
 				if timeMachine.isOn {
-					Section {
-						VStack(alignment: .leading) {
-							Text("Time Machine Active")
-							Text(timeMachine.date, style: .date)
-								.foregroundStyle(.secondary)
-						}
-					} footer: {
-						
-					}
+					
 				}
 				
 				if CurrentLocation.authorizationStatus == .notDetermined {
@@ -151,6 +145,9 @@ struct ContentView: View {
 			for await _ in navigationState.objectWillChangeSequence {
 				navigationStateData = navigationState.jsonData
 			}
+		}
+		.onReceive(timer) { _ in
+			timeMachine.referenceDate = Date()
 		}
 	}
 	
@@ -269,7 +266,7 @@ struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		ContentView()
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.environmentObject(TimeMachine())
+			.environmentObject(TimeMachine.preview)
 			.environmentObject(CurrentLocation())
 	}
 }

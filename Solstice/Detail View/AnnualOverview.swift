@@ -8,10 +8,24 @@
 import SwiftUI
 import Solar
 
+fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
+	let formatter = RelativeDateTimeFormatter()
+	formatter.unitsStyle = .full
+	formatter.dateTimeStyle = .named
+	return formatter
+}
+
 struct AnnualOverview<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
-	@State var differenceFromPreviousSolstice: TimeInterval?
+	var differenceFromPreviousSolstice: TimeInterval? {
+		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate),
+			 let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate.coordinate) else {
+			return nil
+		}
+		
+		return previousSolsticeSolar.daylightDuration - solar.daylightDuration
+	}
 	
 	var location: Location
 	
@@ -39,11 +53,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			Group {
 				VStack(alignment: .leading) {
 					AdaptiveLabeledContent {
-						if nextSolstice.startOfDay == date.startOfDay {
-							Text("Today")
-						} else {
-							Text("in \((date..<nextSolstice).formatted(.components(style: .abbreviated, fields: [.month, .week, .day])))")
-						}
+						Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay) ?? "")
 					} label: {
 						Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 					}
@@ -70,11 +80,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				}
 				
 				AdaptiveLabeledContent {
-					if nextEquinox.startOfDay == date.startOfDay {
-						Text("Today")
-					} else {
-						Text("in \((date..<nextEquinox).formatted(.components(style: .abbreviated, fields: [.month, .week, .day])))")
-					}
+					Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay) ?? "")
 				} label: {
 					Label("Next Equinox", systemImage: "circle.and.line.horizontal")
 				}
@@ -103,6 +109,6 @@ struct AnnualOverview_Previews: PreviewProvider {
 			TimeMachineView()
 			AnnualOverview(location: TemporaryLocation.placeholderLocation)
 		}
-		.environmentObject(TimeMachine())
+		.environmentObject(TimeMachine.preview)
 	}
 }

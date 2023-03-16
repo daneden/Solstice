@@ -16,7 +16,10 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	@State private var showRemainingDaylight = false
-	@State private var solar: Solar?
+	
+	var solar: Solar? {
+		Solar(for: timeMachine.date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+	}
 	
 	var isCurrentLocation: Bool {
 		location is CurrentLocation
@@ -73,11 +76,6 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 				}
 			}
 		.padding(.vertical, 4)
-		.task(id: timeMachine.date, priority: .background) {
-			withAnimation {
-				solar = Solar(for: timeMachine.date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-			}
-		}
 	}
 }
 
@@ -86,6 +84,6 @@ struct DaylightSummaryRow_Previews: PreviewProvider {
 		List {
 			DaylightSummaryRow(location: TemporaryLocation.placeholderLocation)
 		}
-			.environmentObject(TimeMachine())
+		.environmentObject(TimeMachine.preview)
 	}
 }
