@@ -14,8 +14,6 @@ struct ContentView: View {
 	@State var settingsViewOpen = false
 	@StateObject private var navigationState = NavigationStateManager()
 
-	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-
 	@Environment(\.isSearching) private var isSearching
 	@Environment(\.dismissSearch) private var dismissSearch
 	@Environment(\.managedObjectContext) private var viewContext
@@ -33,7 +31,7 @@ struct ContentView: View {
 	@StateObject var locationSearchService = LocationSearchService()
 #endif
 	
-	@StateObject var timeMachine = TimeMachine()
+	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
@@ -101,10 +99,10 @@ struct ContentView: View {
 		} detail: {
 			switch navigationState.navigationSelection {
 			case .currentLocation:
-				DetailView(location: currentLocation, timeMachine: timeMachine)
+				DetailView(location: currentLocation)
 			case .savedLocation(let id):
 				if let item = items.first(where: { $0.uuid == id }) {
-					DetailView(location: item, timeMachine: timeMachine)
+					DetailView(location: item)
 				} else {
 					placeholderView
 				}
@@ -145,9 +143,6 @@ struct ContentView: View {
 			for await _ in navigationState.objectWillChangeSequence {
 				navigationStateData = navigationState.jsonData
 			}
-		}
-		.onReceive(timer) { _ in
-			timeMachine.referenceDate = Date()
 		}
 	}
 	

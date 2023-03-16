@@ -13,15 +13,17 @@ import StoreKit
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var currentLocation = CurrentLocation()
+	@StateObject private var timeMachine = TimeMachine()
 	
-	@State private var currentDate = Date()
+	private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	
-	let persistenceController = PersistenceController.shared
+	private let persistenceController = PersistenceController.shared
 
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
 				.environmentObject(currentLocation)
+				.environmentObject(timeMachine)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 				.task {
 					for await result in Transaction.updates {
@@ -36,6 +38,9 @@ struct SolsticeApp: App {
 							print("Transaction unverified")
 						}
 					}
+				}
+				.onReceive(timer) { _ in
+					timeMachine.referenceDate = Date()
 				}
 		}
 		.onChange(of: phase) { newValue in

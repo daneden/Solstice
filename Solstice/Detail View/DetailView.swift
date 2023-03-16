@@ -15,7 +15,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.dismiss) var dismiss
 	
 	@ObservedObject var location: Location
-	@StateObject var timeMachine = TimeMachine()
+	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
 	
@@ -49,7 +49,6 @@ struct DetailView<Location: ObservableLocation>: View {
 		.toolbar {
 			toolbarItems
 		}
-		.environmentObject(timeMachine)
 	}
 	
 	var solar: Solar? {
