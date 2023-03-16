@@ -48,12 +48,12 @@ protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == S
 }
 
 extension SolsticeWidgetTimelineProvider {
-	func getLocation(for placemark: CLPlacemark, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
-		return SolsticeWidgetLocation(title: placemark.locality,
-																	subtitle: placemark.country,
-																	timeZoneIdentifier: placemark.timeZone?.identifier,
-																	latitude: placemark.location?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
-																	longitude: placemark.location?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude,
+	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
+		return SolsticeWidgetLocation(title: placemark?.locality,
+																	subtitle: placemark?.country,
+																	timeZoneIdentifier: placemark?.timeZone?.identifier,
+																	latitude: placemark?.location?.coordinate.latitude ?? currentLocation.latestLocation?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
+																	longitude: placemark?.location?.coordinate.longitude ?? currentLocation.latestLocation?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude,
 																	isRealLocation: isRealLocation)
 	}
 	
@@ -74,9 +74,8 @@ extension SolsticeWidgetTimelineProvider {
 		if let configurationLocation = configuration.location?.location {
 			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
-			if let location = currentLocation.latestLocation {
-				isRealLocation = true
-				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+			if currentLocation.latestLocation != nil {
+				completion(SolsticeWidgetTimelineEntry(date: Date(), location: getLocation(isRealLocation: true)))
 			} else {
 				currentLocation.requestLocation { location in
 					guard let location else { return }
