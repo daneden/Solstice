@@ -59,6 +59,7 @@ extension SolsticeWidgetTimelineProvider {
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
 		var isRealLocation = false
+		
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
 			guard let placemark = placemarks?.last,
 						error == nil else {
@@ -69,6 +70,7 @@ extension SolsticeWidgetTimelineProvider {
 			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
 			return completion(entry)
 		}
+		
 		if let configurationLocation = configuration.location?.location {
 			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
@@ -151,52 +153,5 @@ extension SolsticeWidgetTimelineProvider {
 	
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
-	}
-}
-
-struct SolsticeOverviewWidget: Widget {
-	#if os(iOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular, .accessoryCircular]
-	#elseif os(macOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
-	#elseif os(watchOS)
-	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
-	#endif
-	
-	var body: some WidgetConfiguration {
-		IntentConfiguration(
-			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
-			intent: ConfigurationIntent.self,
-			provider: SolsticeOverviewWidgetTimelineProvider()
-		) { timelineEntry in
-			OverviewWidgetView(entry: timelineEntry)
-		}
-		.configurationDisplayName("Daylight Today")
-		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
-		.supportedFamilies(SolsticeOverviewWidget.supportedFamilies)
-	}
-}
-
-struct SolsticeCountdownWidget: Widget {
-#if os(iOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular, .accessoryCircular]
-#elseif os(macOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
-#elseif os(watchOS)
-	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
-#endif
-	
-	var body: some WidgetConfiguration {
-		IntentConfiguration(
-			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
-			intent: ConfigurationIntent.self,
-			provider: SolsticeCountdownWidgetTimelineProvider()
-		) { timelineEntry in
-			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
-			return CountdownWidgetView(solar: solar, location: timelineEntry.location)
-		}
-		.configurationDisplayName("Sunrise/Sunset Countdown")
-		.description("See the time remaining until the next sunrise/sunset")
-		.supportedFamilies(SolsticeCountdownWidget.supportedFamilies)
 	}
 }
