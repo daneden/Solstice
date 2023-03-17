@@ -53,7 +53,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			Group {
 				VStack(alignment: .leading) {
 					AdaptiveLabeledContent {
-						Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay) ?? "")
+						Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
 					} label: {
 						Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 					}
@@ -80,7 +80,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				}
 				
 				AdaptiveLabeledContent {
-					Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay) ?? "")
+					Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
 				} label: {
 					Label("Next Equinox", systemImage: "circle.and.line.horizontal")
 				}

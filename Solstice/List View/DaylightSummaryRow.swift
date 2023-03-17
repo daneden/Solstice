@@ -72,6 +72,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 						.background(.ultraThinMaterial)
 #endif
 						.ellipticalEdgeMask()
+						.transition(.scale(scale: 0, anchor: .trailing))
 					}
 				}
 			}

@@ -92,6 +92,7 @@ struct ContentView: View {
 					)
 				}
 			}
+			.id(timeMachine.isOn)
 #endif
 			.toolbar {
 				toolbarItems
