@@ -11,8 +11,12 @@ import WidgetKit
 struct WidgetLocationView: View {
 	var location: SolsticeWidgetLocation
 	
+	var locationName: String? {
+		(location.isRealLocation ? "Current Location" : nil)
+	}
+	
 	var body: some View {
-		if let locationName = location.title {
+		if let locationName {
 			Group {
 				if location.isRealLocation {
 					Text("\(locationName) \(Image(systemName: "location"))")
