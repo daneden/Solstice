@@ -48,7 +48,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 		
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
-		latestLocation = locationManager.location
+		latestLocation = locationManager.location ?? CLLocation(latitude: latitude, longitude: longitude)
 	}
 	
 	func requestAccess() {
