@@ -114,7 +114,9 @@ struct SupporterSettings: View {
 	
 	func fetchProducts() async {
 		do {
-			self.products = try await Product.products(for: iapProductIDs)
+			withAnimation {
+				self.products = try await Product.products(for: iapProductIDs)
+			}
 		} catch {
 			print("Unable to fetch products")
 		}
