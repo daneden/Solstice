@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimeMachineDeactivatorView: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@ObservedObject var timeMachine =  TimeMachine.shared
 	
 	var body: some View {
 		Button {

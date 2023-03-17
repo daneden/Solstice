@@ -10,7 +10,7 @@ import Solar
 import CoreLocation
 
 struct DaylightSummaryRow<Location: ObservableLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@ObservedObject var timeMachine =  TimeMachine.shared
 	@ObservedObject var location: Location
 	
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication

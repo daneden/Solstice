@@ -34,7 +34,6 @@ class TimeMachine: ObservableObject {
 }
 
 extension TimeMachine {
-	static var preview: TimeMachine {
-		.init()
-	}
+	static let preview = TimeMachine()
+	static let shared = TimeMachine()
 }

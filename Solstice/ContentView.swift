@@ -31,7 +31,7 @@ struct ContentView: View {
 	@StateObject var locationSearchService = LocationSearchService()
 #endif
 	
-	@EnvironmentObject var timeMachine: TimeMachine
+	@ObservedObject var timeMachine =  TimeMachine.shared
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
@@ -121,7 +121,6 @@ struct ContentView: View {
 			}
 		}
 		.environmentObject(navigationState)
-		.environmentObject(timeMachine)
 		.task(priority: TaskPriority.background) {
 			items.forEach { item in
 				if item.uuid == nil {

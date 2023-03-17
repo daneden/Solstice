@@ -12,7 +12,7 @@ import WatchDatePicker
 #endif
 
 struct TimeMachineView: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@ObservedObject var timeMachine =  TimeMachine.shared
 	
 	@State private var date = Date()
 	@State private var referenceDate = Date()
@@ -47,7 +47,7 @@ struct TimeMachineView: View {
 #endif
 		
 		#if os(iOS) || os(macOS)
-		Slider(value: timeMachine.offset,
+		Slider(value: timeMachine.offset.animation(),
 					 in: -182...182,
 					 step: 1,
 					 minimumValueLabel: Text("Past").font(.caption),

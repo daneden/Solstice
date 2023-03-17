@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@EnvironmentObject var timeMachine: TimeMachine
+	@ObservedObject var timeMachine =  TimeMachine.shared
 	@StateObject var navigationState = NavigationStateManager()
 	
 	var body: some View {

@@ -13,35 +13,33 @@ import StoreKit
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var currentLocation = CurrentLocation()
-	@StateObject private var timeMachine = TimeMachine()
-	
-	private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	
 	private let persistenceController = PersistenceController.shared
 
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
-				.environmentObject(currentLocation)
-				.environmentObject(timeMachine)
-				.environment(\.managedObjectContext, persistenceController.container.viewContext)
-				.task {
-					for await result in Transaction.updates {
-						switch result {
-						case .verified(let transaction):
-							print("Transaction verified in listener")
-							
-							await transaction.finish()
-							
-							// Update the user's purchases...
-						case .unverified:
-							print("Transaction unverified")
+			TimelineView(.everyMinute) { timeline in
+				ContentView()
+					.environmentObject(currentLocation)
+					.environment(\.managedObjectContext, persistenceController.container.viewContext)
+					.task {
+						for await result in Transaction.updates {
+							switch result {
+							case .verified(let transaction):
+								print("Transaction verified in listener")
+								
+								await transaction.finish()
+								
+								// Update the user's purchases...
+							case .unverified:
+								print("Transaction unverified")
+							}
 						}
 					}
-				}
-				.onReceive(timer) { _ in
-					timeMachine.referenceDate = Date()
-				}
+					.onChange(of: timeline.date) { newValue in
+						TimeMachine.shared.referenceDate = newValue
+					}
+			}
 		}
 		.onChange(of: phase) { newValue in
 			switch newValue {

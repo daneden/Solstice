@@ -16,7 +16,7 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 }
 
 struct AnnualOverview<Location: AnyLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@ObservedObject var timeMachine =  TimeMachine.shared
 	
 	var differenceFromPreviousSolstice: TimeInterval? {
 		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate),
