@@ -16,23 +16,19 @@ struct TimeMachineDeactivatorView: View {
 				timeMachine.isOn.toggle()
 			}
 		} label: {
-			HStack {
-				VStack(alignment: .leading) {
-					Text("Time Machine \(timeMachine.isOn ? "Active" : "Inactive")")
-					Text(timeMachine.date, style: .date)
-						.foregroundStyle(.secondary)
-				}
-				
-				Spacer()
-				
-				Image(systemName: "clock.arrow.2.circlepath")
+			VStack {
+				Label("Time Machine \(timeMachine.isOn ? "Active" : "Inactive")", systemImage: "clock.arrow.2.circlepath")
+					.labelStyle(.titleAndIcon)
+				Text(timeMachine.date, style: .date)
+					.foregroundStyle(.secondary)
 			}
+			.font(.footnote)
 			.contentShape(Rectangle())
 		}
 		#if os(macOS)
-		.buttonStyle(.plain)
+		.buttonStyle(.link)
 		#else
-		.buttonStyle(.borderedProminent)
+		.buttonStyle(.borderless)
 		#endif
 		.listRowBackground(Color.clear)
 		.listRowInsets(SwiftUI.EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))

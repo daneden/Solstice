@@ -36,47 +36,58 @@ struct ContentView: View {
 	
 	var body: some View {
 		NavigationSplitView {
-			List(selection: $navigationState.navigationSelection) {
-				if timeMachine.isOn {
-					TimeMachineDeactivatorView()
-				}
-				
-				if CurrentLocation.authorizationStatus == .notDetermined {
-					LocationPermissionScreenerView()
-				}
-				
-				Section {
-					if !CurrentLocation.isAuthorized && items.isEmpty {
-						VStack {
-							Text("No locations")
-								.font(.headline)
-							Text("Search for a location or enable location services")
-						}
-						.frame(maxWidth: .infinity)
-						.multilineTextAlignment(.center)
-						.foregroundStyle(.secondary)
+			ZStack(alignment: .bottom) {
+				List(selection: $navigationState.navigationSelection) {
+					if CurrentLocation.authorizationStatus == .notDetermined {
+						LocationPermissionScreenerView()
 					}
 					
-					if CurrentLocation.isAuthorized {
-						DaylightSummaryRow(location: currentLocation)
-							.tag(NavigationSelection.currentLocation)
-					}
-					
-					ForEach(sortedItems) { item in
-						DaylightSummaryRow(location: item)
-							.tag(NavigationSelection.savedLocation(id: item.uuid))
-							.contextMenu {
-								Button(role: .destructive) {
-									deleteItem(item)
-								} label: {
-									Label("Delete Location", systemImage: "trash")
-								}
+					Section {
+						if !CurrentLocation.isAuthorized && items.isEmpty {
+							VStack {
+								Text("No locations")
+									.font(.headline)
+								Text("Search for a location or enable location services")
 							}
+							.frame(maxWidth: .infinity)
+							.multilineTextAlignment(.center)
+							.foregroundStyle(.secondary)
+						}
+						
+						if CurrentLocation.isAuthorized {
+							DaylightSummaryRow(location: currentLocation)
+								.tag(NavigationSelection.currentLocation)
+						}
+						
+						ForEach(sortedItems) { item in
+							DaylightSummaryRow(location: item)
+								.tag(NavigationSelection.savedLocation(id: item.uuid))
+								.contextMenu {
+									Button(role: .destructive) {
+										deleteItem(item)
+									} label: {
+										Label("Delete Location", systemImage: "trash")
+									}
+								}
+						}
+						.onDelete(perform: deleteItems)
+					} header: {
+						Label("Locations", systemImage: "map")
 					}
-					.onDelete(perform: deleteItems)
-				} header: {
-					Label("Locations", systemImage: "map")
 				}
+				
+				#if os(macOS)
+				if timeMachine.isOn {
+					HStack {
+						Spacer()
+						TimeMachineDeactivatorView()
+						Spacer()
+					}
+						.padding(8)
+						.background(.ultraThinMaterial)
+						.ignoresSafeArea()
+				}
+				#endif
 			}
 			.navigationTitle("Solstice")
 			.navigationSplitViewColumnWidth(ideal: 300)
@@ -210,6 +221,12 @@ struct ContentView: View {
 			}
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
+			}
+		}
+		
+		if timeMachine.isOn {
+			ToolbarItem(placement: .bottomBar) {
+				TimeMachineDeactivatorView()
 			}
 		}
 #endif
