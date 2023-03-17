@@ -38,7 +38,9 @@ struct SolsticeApp: App {
 					}
 				}
 				.onReceive(timer) { _ in
-					TimeMachine.shared.referenceDate = Date()
+					Task(priority: .utility) {
+						TimeMachine.shared.referenceDate = Date()
+					}
 				}
 		}
 		.onChange(of: phase) { newValue in

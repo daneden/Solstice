@@ -113,21 +113,6 @@
 		7195125329B0B401009D282F /* watchOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7195125829B48ECD009D282F /* TimeZone++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195125729B48ECD009D282F /* TimeZone++.swift */; };
 		7195125929B48ECD009D282F /* TimeZone++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195125729B48ECD009D282F /* TimeZone++.swift */; };
-		7195126129B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
-		7195126229B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
-		7195126329B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
-		7195126429B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
-		7195126529B492EB009D282F /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7195126029B492EB009D282F /* DefaultData.sqlite */; };
-		7195126929B63268009D282F /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 7195126729B63268009D282F /* DefaultData.sqlite-wal */; };
-		7195126A29B63268009D282F /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 7195126729B63268009D282F /* DefaultData.sqlite-wal */; };
-		7195126B29B63268009D282F /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 7195126729B63268009D282F /* DefaultData.sqlite-wal */; };
-		7195126C29B63268009D282F /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 7195126729B63268009D282F /* DefaultData.sqlite-wal */; };
-		7195126D29B63268009D282F /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 7195126729B63268009D282F /* DefaultData.sqlite-wal */; };
-		7195126E29B63268009D282F /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 7195126829B63268009D282F /* DefaultData.sqlite-shm */; };
-		7195126F29B63268009D282F /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 7195126829B63268009D282F /* DefaultData.sqlite-shm */; };
-		7195127029B63268009D282F /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 7195126829B63268009D282F /* DefaultData.sqlite-shm */; };
-		7195127129B63268009D282F /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 7195126829B63268009D282F /* DefaultData.sqlite-shm */; };
-		7195127229B63268009D282F /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 7195126829B63268009D282F /* DefaultData.sqlite-shm */; };
 		7195128129B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */; };
 		7195128229B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */; };
 		7195128429B73341009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
@@ -179,6 +164,21 @@
 		71A2BDE829B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE929B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
+		71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
+		71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
+		71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
+		71A7E9E229C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
+		71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
+		71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
+		71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
+		71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
+		71A7E9E729C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
+		71A7E9E829C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
+		71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
+		71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
+		71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
+		71A7E9EC29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
+		71A7E9ED29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
 		71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
@@ -300,9 +300,6 @@
 		7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125729B48ECD009D282F /* TimeZone++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone++.swift"; sourceTree = "<group>"; };
-		7195126029B492EB009D282F /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
-		7195126729B63268009D282F /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
-		7195126829B63268009D282F /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
 		7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLabeledContent.swift; sourceTree = "<group>"; };
 		7195128729B7BCBD009D282F /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
 		7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConditionalModifier.swift"; sourceTree = "<group>"; };
@@ -322,6 +319,9 @@
 		719846AF28EEE48900E866CE /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
 		719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solstice watchOS Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A2BDE529B747940071ACE9 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
+		71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
+		71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSelection.swift; sourceTree = "<group>"; };
 		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
@@ -470,9 +470,9 @@
 		7195126629B6324C009D282F /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				7195126029B492EB009D282F /* DefaultData.sqlite */,
-				7195126829B63268009D282F /* DefaultData.sqlite-shm */,
-				7195126729B63268009D282F /* DefaultData.sqlite-wal */,
+				71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */,
+				71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */,
+				71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */,
 				7198468D28E5895F00E866CE /* Persistence.swift */,
 				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
 			);
@@ -768,9 +768,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7106C88F29A281440007A7EC /* Assets.xcassets in Resources */,
-				7195126329B492EB009D282F /* DefaultData.sqlite in Resources */,
-				7195127029B63268009D282F /* DefaultData.sqlite-shm in Resources */,
-				7195126B29B63268009D282F /* DefaultData.sqlite-wal in Resources */,
+				71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */,
+				71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -780,9 +780,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */,
-				7195126D29B63268009D282F /* DefaultData.sqlite-wal in Resources */,
-				7195127229B63268009D282F /* DefaultData.sqlite-shm in Resources */,
-				7195126529B492EB009D282F /* DefaultData.sqlite in Resources */,
+				71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */,
+				71A7E9ED29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A7E9E829C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,9 +791,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7195124C29B0B3D6009D282F /* Assets.xcassets in Resources */,
-				7195126429B492EB009D282F /* DefaultData.sqlite in Resources */,
-				7195127129B63268009D282F /* DefaultData.sqlite-shm in Resources */,
-				7195126C29B63268009D282F /* DefaultData.sqlite-wal in Resources */,
+				71A7E9E229C480D800CE4769 /* DefaultData.sqlite in Resources */,
+				71A7E9EC29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A7E9E729C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -802,12 +802,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7195126129B492EB009D282F /* DefaultData.sqlite in Resources */,
-				7195126E29B63268009D282F /* DefaultData.sqlite-shm in Resources */,
+				71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
+				71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
+				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
-				7195126929B63268009D282F /* DefaultData.sqlite-wal in Resources */,
 				7198468928E5895F00E866CE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -817,9 +817,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				719F927229ACD21300C06921 /* Assets.xcassets in Resources */,
-				7195126A29B63268009D282F /* DefaultData.sqlite-wal in Resources */,
-				7195126F29B63268009D282F /* DefaultData.sqlite-shm in Resources */,
-				7195126229B492EB009D282F /* DefaultData.sqlite in Resources */,
+				71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */,
+				71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -121,19 +121,6 @@ struct ContentView: View {
 			}
 		}
 		.environmentObject(navigationState)
-		.task(priority: TaskPriority.background) {
-			items.forEach { item in
-				if item.uuid == nil {
-					item.uuid = UUID()
-				}
-			}
-			
-			do {
-				try viewContext.save()
-			} catch {
-				print(error)
-			}
-		}
 		.task {
 			if let navigationStateData {
 				navigationState.jsonData = navigationStateData
