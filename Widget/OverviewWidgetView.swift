@@ -74,7 +74,7 @@ struct OverviewWidgetView: View {
 		#endif
 		#if os(watchOS)
 		case .accessoryCorner:
-			Image("Solstice-Icon")
+			Image(systemName: "sun.max")
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.symbolVariant(.fill)
