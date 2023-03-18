@@ -120,16 +120,32 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			return nil
 		}
 		
-		let components = calendar.dateComponents([.hour], from: date)
-		let hour = components.hour ?? 0
-		if hour >= 18 || hour < 3 {
-			content.title = "Good Evening"
-		} else if hour >= 3 && hour < 12 {
-			content.title = "Good Morning"
-		} else if hour >= 12 && hour < 18 {
-			content.title = "Good Afternoon"
+		let year = calendar.component(.year, from: date)
+		let juneSolstice = SolsticeCalculator.decemberSolstice(year: year)
+		let decemberSolstice = SolsticeCalculator.juneSolstice(year: year)
+		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
+		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
+		
+		if calendar.isDate(date, inSameDayAs: marchEquinox) {
+			content.title = "March Equinox Today"
+		} else if calendar.isDate(date, inSameDayAs: septemberEquinox) {
+			content.title = "September Equinox Today"
+		} else if calendar.isDate(date, inSameDayAs: juneSolstice) {
+			content.title = "June Solstice Today"
+		} else if calendar.isDate(date, inSameDayAs: decemberSolstice) {
+			content.title = "December Solstice Today"
 		} else {
-			content.title = "Today’s Daylight"
+			let components = calendar.dateComponents([.hour], from: date)
+			let hour = components.hour ?? 0
+			if hour >= 18 || hour < 3 {
+				content.title = "Good Evening"
+			} else if hour >= 3 && hour < 12 {
+				content.title = "Good Morning"
+			} else if hour >= 12 && hour < 18 {
+				content.title = "Good Afternoon"
+			} else {
+				content.title = "Today’s Daylight"
+			}
 		}
 		
 		if includeSunTimes {

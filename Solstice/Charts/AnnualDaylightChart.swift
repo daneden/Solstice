@@ -105,7 +105,7 @@ extension AnnualDaylightChart {
 		}
 		
 		var lastDate = calendar.date(bySetting: .day, value: 21, of: year.start) ?? year.start
-		lastDate = calendar.date(bySetting: .hour, value: 12, of lastDate) ?? lastDate
+		lastDate = calendar.date(bySetting: .hour, value: 12, of: lastDate) ?? lastDate
 		var dates: Array<Date> = []
 		
 		while lastDate < year.end {
