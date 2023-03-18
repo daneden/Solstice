@@ -26,7 +26,7 @@ struct TimeMachineDeactivatorView: View {
 			.contentShape(Rectangle())
 		}
 		#if os(macOS)
-		.buttonStyle(.link)
+		.buttonStyle(.plain)
 		#else
 		.buttonStyle(.borderless)
 		#endif
