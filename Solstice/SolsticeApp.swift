@@ -51,6 +51,7 @@ struct SolsticeApp: App {
 			#endif
 			default:
 				currentLocation.requestLocation() { _ in }
+				TimeMachine.shared.referenceDate = Date()
 			}
 		}
 		
