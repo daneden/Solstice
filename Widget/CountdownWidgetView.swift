@@ -55,7 +55,8 @@ struct CountdownWidgetView: View {
 				} currentValueLabel: {
 					VStack {
 						Image(systemName: nextSolarEvent.imageName)
-						Text(nextSolarEvent.date, style: .time)
+						Text(nextSolarEvent.date.formatted(.dateTime.hour(.defaultDigits(amPM: .omitted)).minute()))
+							.allowsTightening(true)
 					}
 					.font(.caption)
 				}
@@ -82,11 +83,15 @@ struct CountdownWidgetView: View {
 			case .accessoryRectangular:
 				HStack {
 					VStack(alignment: .leading) {
-						nextEventText
+						Text("\(Image(systemName: nextSolarEvent.imageName)) \(nextSolarEvent.label)")
 							.font(.headline)
 							.widgetAccentable()
+							.imageScale(.small)
+						Text(nextSolarEvent.date, style: .relative)
 						Text(nextSolarEvent.date, style: .time)
+							.foregroundColor(.secondary)
 					}
+					
 					Spacer(minLength: 0)
 				}
 			default:

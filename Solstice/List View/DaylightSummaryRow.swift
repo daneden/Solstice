@@ -42,7 +42,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 					if let subtitle = location.subtitle,
 						 !subtitle.isEmpty {
 						Text(subtitle)
-							.foregroundColor(.secondary)
+							.foregroundStyle(.secondary)
 							.font(.footnote)
 					}
 				}

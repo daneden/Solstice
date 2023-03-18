@@ -91,7 +91,7 @@ struct SupporterSettings: View {
 							}
 						}) {
 							LabeledContent {
-								Text(product.displayPrice).foregroundColor(.secondary)
+								Text(product.displayPrice).foregroundStyle(.secondary)
 							} label: {
 								Text(product.displayName)
 							}

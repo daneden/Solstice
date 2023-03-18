@@ -88,9 +88,10 @@ struct OverviewWidgetView: View {
 		case .accessoryRectangular:
 				HStack {
 					VStack(alignment: .leading) {
-						Text("Daylight Today")
+						Text("\(Image(systemName: "sun.max")) Daylight Today")
 							.font(.headline)
 							.widgetAccentable()
+							.imageScale(.small)
 						
 						Text(solar?.daylightDuration.localizedString ?? "Loading...")
 							
