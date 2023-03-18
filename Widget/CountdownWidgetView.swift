@@ -66,7 +66,7 @@ struct CountdownWidgetView: View {
 			case .accessoryInline:
 				HStack {
 					Image(systemName: nextSolarEvent.imageName)
-					nextEventText
+					Text("\(nextSolarEvent.date, style: .time), \(nextSolarEvent.date, style: .relative)")
 				}
 			#if os(watchOS)
 			case .accessoryCorner:
