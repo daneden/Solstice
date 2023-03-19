@@ -10,28 +10,22 @@ import CoreData
 import Solar
 
 struct ContentView: View {
-	@SceneStorage("navigationState") private var navigationStateData: Data?
-	@State var settingsViewOpen = false
-	@StateObject private var navigationState = NavigationStateManager()
-
-	@Environment(\.isSearching) private var isSearching
-	@Environment(\.dismissSearch) private var dismissSearch
-	@Environment(\.managedObjectContext) private var viewContext
-	
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
-	@FetchRequest(
-		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
-		animation: .default)
-	private var items: FetchedResults<SavedLocation>
+	@SceneStorage("navigationState") private var navigationStateData: Data?
 	
-	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
-	
-	@ObservedObject var timeMachine =  TimeMachine.shared
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
+	@StateObject var timeMachine = TimeMachine()
+	@StateObject private var navigationState = NavigationStateManager()
+	
+	@State private var settingsViewOpen = false
+	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
+	
+	@FetchRequest(sortDescriptors: []) private var items: FetchedResults<SavedLocation>
+			
 	var body: some View {
 		NavigationSplitView(columnVisibility: $sidebarVisibility) {
 			SidebarListView()
@@ -64,13 +58,15 @@ struct ContentView: View {
 			}
 		}
 		.environmentObject(navigationState)
+		.environmentObject(timeMachine)
 		.task {
-			if let navigationStateData {
-				navigationState.jsonData = navigationStateData
-			}
-			
 			for await _ in navigationState.objectWillChangeSequence {
 				navigationStateData = navigationState.jsonData
+			}
+		}
+		.onAppear {
+			if let navigationStateData {
+				navigationState.jsonData = navigationStateData
 			}
 		}
 	}

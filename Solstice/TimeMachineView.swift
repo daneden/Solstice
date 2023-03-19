@@ -12,7 +12,7 @@ import WatchDatePicker
 #endif
 
 struct TimeMachineView: View {
-	@ObservedObject var timeMachine =  TimeMachine.shared
+	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var date = Date()
 	@State private var referenceDate = Date()

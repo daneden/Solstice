@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimeMachineDeactivatorView: View {
-	@ObservedObject var timeMachine =  TimeMachine.shared
+	@EnvironmentObject var timeMachine: TimeMachine
 	
 	#if os(macOS)
 	var body: some View {

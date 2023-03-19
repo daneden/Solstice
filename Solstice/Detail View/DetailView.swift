@@ -15,7 +15,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.dismiss) var dismiss
 	
 	@ObservedObject var location: Location
-	@ObservedObject var timeMachine =  TimeMachine.shared
+	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@State private var showRemainingDaylight = false
 	

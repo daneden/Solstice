@@ -11,7 +11,7 @@ import Solar
 struct SidebarListView: View {
 	@EnvironmentObject var navigationState: NavigationStateManager
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@ObservedObject var timeMachine = TimeMachine.shared
+	@EnvironmentObject var timeMachine: TimeMachine
 	@Environment(\.managedObjectContext) private var viewContext
 	
 	@FetchRequest(
@@ -81,7 +81,6 @@ struct SidebarListView: View {
 				)
 			}
 		}
-		.id(timeMachine.isOn)
 	}
 }
 

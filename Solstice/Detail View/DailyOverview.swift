@@ -9,7 +9,7 @@ import SwiftUI
 import Solar
 
 struct DailyOverview<Location: AnyLocation>: View {
-	@ObservedObject var timeMachine =  TimeMachine.shared
+	@EnvironmentObject var timeMachine: TimeMachine
 
 	var solar: Solar
 	var location: Location
