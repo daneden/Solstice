@@ -28,9 +28,11 @@ struct TimeMachineDeactivatorView: View {
 		HStack {
 			VStack(alignment: .leading) {
 				Text("Time Travel \(timeMachine.isOn ? "Active" : "Inactive")")
+					.fontWeight(.semibold)
 				Text(timeMachine.date, style: .date)
 					.foregroundStyle(.secondary)
 			}
+			.font(.footnote)
 			
 			Spacer()
 			
@@ -42,6 +44,9 @@ struct TimeMachineDeactivatorView: View {
 				Text("Reset")
 			}
 			.buttonStyle(.bordered)
+			#if os(iOS)
+			.buttonBorderShape(.capsule)
+			#endif
 		}
 	}
 }

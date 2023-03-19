@@ -82,19 +82,23 @@ struct SupporterSettings: View {
 							.padding(.vertical, 4)
 					}
 					
-					ForEach(products.sorted(by: { lhs, rhs in
-						lhs.price > rhs.price
-					}), id: \.id) { product in
-						Button(action: {
-							Task.init {
-								self.latestTransaction = try await purchaseProduct(product)
-							}
-						}) {
-							LabeledContent {
-								Text(product.displayPrice).foregroundStyle(.secondary)
+					ForEach(products.sorted { $0.price > $1.price }, id: \.id) { product in
+						HStack {
+							Text(product.displayName)
+							
+							Spacer()
+							
+							Button {
+								Task {
+									self.latestTransaction = try await purchaseProduct(product)
+								}
 							} label: {
-								Text(product.displayName)
+								Text(product.displayPrice)
 							}
+							.buttonStyle(.bordered)
+							#if os(iOS)
+							.buttonBorderShape(.capsule)
+							#endif
 						}
 					}
 				}

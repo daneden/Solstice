@@ -62,11 +62,13 @@ struct SidebarListView: View {
 								Label("Delete Location", systemImage: "trash")
 							}
 						}
+						.animation(nil, value: sortedItems)
 				}
 				.onDelete(perform: deleteItems)
 			} header: {
 				Label("Locations", systemImage: "map")
 			}
+			.animation(.default, value: sortedItems)
 		}
 		.navigationTitle("Solstice")
 		.navigationSplitViewColumnWidth(ideal: 300)
