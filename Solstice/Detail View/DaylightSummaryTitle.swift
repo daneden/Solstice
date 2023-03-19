@@ -77,9 +77,12 @@ struct DaylightSummaryTitle: View {
 					}
 				}
 			}
-#if !os(macOS)
+			#if !os(macOS)
 			.scenePadding()
-#endif
+			#endif
+			#if os(watchOS)
+			.padding(.vertical)
+			#endif
 			.fontDesign(.rounded)
 			.fontWeight(.semibold)
     }
