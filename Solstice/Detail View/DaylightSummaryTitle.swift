@@ -78,7 +78,7 @@ struct DaylightSummaryTitle: View {
 				}
 			}
 #if !os(macOS)
-			.padding()
+			.scenePadding()
 #endif
 			.fontDesign(.rounded)
 			.fontWeight(.semibold)

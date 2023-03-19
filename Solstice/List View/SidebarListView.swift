@@ -26,58 +26,43 @@ struct SidebarListView: View {
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	var body: some View {
-		ZStack(alignment: .bottom) {
-			List(selection: $navigationState.navigationSelection) {
-				if CurrentLocation.authorizationStatus == .notDetermined {
-					LocationPermissionScreenerView()
-				}
-				
-				Section {
-					if !CurrentLocation.isAuthorized && items.isEmpty {
-						VStack {
-							Text("No locations")
-								.font(.headline)
-							Text("Search for a location or enable location services")
-						}
-						.frame(maxWidth: .infinity)
-						.multilineTextAlignment(.center)
-						.foregroundStyle(.secondary)
-					}
-					
-					if CurrentLocation.isAuthorized {
-						DaylightSummaryRow(location: currentLocation)
-							.tag(NavigationSelection.currentLocation)
-					}
-					
-					ForEach(sortedItems) { item in
-						DaylightSummaryRow(location: item)
-							.tag(NavigationSelection.savedLocation(id: item.uuid))
-							.contextMenu {
-								Button(role: .destructive) {
-									deleteItem(item)
-								} label: {
-									Label("Delete Location", systemImage: "trash")
-								}
-							}
-					}
-					.onDelete(perform: deleteItems)
-				} header: {
-					Label("Locations", systemImage: "map")
-				}
+		List(selection: $navigationState.navigationSelection) {
+			if CurrentLocation.authorizationStatus == .notDetermined {
+				LocationPermissionScreenerView()
 			}
 			
-#if os(macOS)
-			if timeMachine.isOn {
-				HStack {
-					Spacer()
-					TimeMachineDeactivatorView()
-					Spacer()
+			Section {
+				if !CurrentLocation.isAuthorized && items.isEmpty {
+					VStack {
+						Text("No locations")
+							.font(.headline)
+						Text("Search for a location or enable location services")
+					}
+					.frame(maxWidth: .infinity)
+					.multilineTextAlignment(.center)
+					.foregroundStyle(.secondary)
 				}
-				.padding(8)
-				.background(.ultraThinMaterial)
-				.ignoresSafeArea()
+				
+				if CurrentLocation.isAuthorized {
+					DaylightSummaryRow(location: currentLocation)
+						.tag(NavigationSelection.currentLocation)
+				}
+				
+				ForEach(sortedItems) { item in
+					DaylightSummaryRow(location: item)
+						.tag(NavigationSelection.savedLocation(id: item.uuid))
+						.contextMenu {
+							Button(role: .destructive) {
+								deleteItem(item)
+							} label: {
+								Label("Delete Location", systemImage: "trash")
+							}
+						}
+				}
+				.onDelete(perform: deleteItems)
+			} header: {
+				Label("Locations", systemImage: "map")
 			}
-#endif
 		}
 		.navigationTitle("Solstice")
 		.navigationSplitViewColumnWidth(ideal: 300)
@@ -150,7 +135,7 @@ extension SidebarListView {
 
 struct SidebarListView_Previews: PreviewProvider {
 	static var previews: some View {
-		Form {
+		NavigationStack {
 			SidebarListView()
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
