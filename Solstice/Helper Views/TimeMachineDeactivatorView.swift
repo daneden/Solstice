@@ -28,11 +28,10 @@ struct TimeMachineDeactivatorView: View {
 		HStack {
 			VStack(alignment: .leading) {
 				Text("Time Travel \(timeMachine.isOn ? "Active" : "Inactive")")
-					.fontWeight(.semibold)
+					.font(.headline)
 				Text(timeMachine.date, style: .date)
 					.foregroundStyle(.secondary)
 			}
-			.font(.footnote)
 			
 			Spacer()
 			

@@ -37,6 +37,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 						}
 						
 						Text(location.title ?? "My Location")
+							.lineLimit(2)
 					}
 					
 					if let subtitle = location.subtitle,
