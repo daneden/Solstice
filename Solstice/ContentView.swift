@@ -27,89 +27,17 @@ struct ContentView: View {
 		animation: .default)
 	private var items: FetchedResults<SavedLocation>
 	
-#if !os(watchOS)
-	@StateObject var locationSearchService = LocationSearchService()
-#endif
-	
-	@State var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
+	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 	
 	@ObservedObject var timeMachine =  TimeMachine.shared
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
 		NavigationSplitView(columnVisibility: $sidebarVisibility) {
-			ZStack(alignment: .bottom) {
-				List(selection: $navigationState.navigationSelection) {
-					if CurrentLocation.authorizationStatus == .notDetermined {
-						LocationPermissionScreenerView()
-					}
-					
-					Section {
-						if !CurrentLocation.isAuthorized && items.isEmpty {
-							VStack {
-								Text("No locations")
-									.font(.headline)
-								Text("Search for a location or enable location services")
-							}
-							.frame(maxWidth: .infinity)
-							.multilineTextAlignment(.center)
-							.foregroundStyle(.secondary)
-						}
-						
-						if CurrentLocation.isAuthorized {
-							DaylightSummaryRow(location: currentLocation)
-								.tag(NavigationSelection.currentLocation)
-						}
-						
-						ForEach(sortedItems) { item in
-							DaylightSummaryRow(location: item)
-								.tag(NavigationSelection.savedLocation(id: item.uuid))
-								.contextMenu {
-									Button(role: .destructive) {
-										deleteItem(item)
-									} label: {
-										Label("Delete Location", systemImage: "trash")
-									}
-								}
-						}
-						.onDelete(perform: deleteItems)
-					} header: {
-						Label("Locations", systemImage: "map")
-					}
+			SidebarListView()
+				.toolbar {
+					toolbarItems
 				}
-				
-				#if os(macOS)
-				if timeMachine.isOn {
-					HStack {
-						Spacer()
-						TimeMachineDeactivatorView()
-						Spacer()
-					}
-						.padding(8)
-						.background(.ultraThinMaterial)
-						.ignoresSafeArea()
-				}
-				#endif
-			}
-			.navigationTitle("Solstice")
-			.navigationSplitViewColumnWidth(ideal: 300)
-#if !os(watchOS)
-			.searchable(text: $locationSearchService.queryFragment,
-									prompt: "Search cities or airports")
-			.searchSuggestions {
-				ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
-					LocationSearchResultRow(
-						searchService: locationSearchService,
-						items: Array(items),
-						result: result
-					)
-				}
-			}
-			.id(timeMachine.isOn)
-#endif
-			.toolbar {
-				toolbarItems
-			}
 		} detail: {
 			switch navigationState.navigationSelection {
 			case .currentLocation:
@@ -153,30 +81,6 @@ struct ContentView: View {
 			.foregroundStyle(.quaternary)
 			.frame(width: 100, height: 100)
 			.aspectRatio(contentMode: .fit)
-	}
-	
-	private func deleteItems(offsets: IndexSet) {
-		withAnimation {
-			offsets.map { sortedItems[$0] }.forEach(viewContext.delete)
-			
-			do {
-				try viewContext.save()
-			} catch {
-				print(error)
-			}
-		}
-	}
-	
-	private func deleteItem(_ item: SavedLocation) {
-		withAnimation {
-			viewContext.delete(item)
-			
-			do {
-				try viewContext.save()
-			} catch {
-				print(error)
-			}
-		}
 	}
 	
 	@ToolbarContentBuilder
@@ -233,34 +137,6 @@ struct ContentView: View {
 			}
 		}
 #endif
-	}
-}
-
-extension ContentView {
-	private var sortedItems: [SavedLocation] {
-		items.sorted { lhs, rhs in
-			switch itemSortDimension {
-			case .timezone:
-				switch itemSortOrder {
-				case .forward:
-					return lhs.timeZone.secondsFromGMT() < rhs.timeZone.secondsFromGMT()
-				case .reverse:
-					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
-				}
-			case .daylightDuration:
-				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate.coordinate),
-							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate.coordinate) else {
-					return true
-				}
-				
-				switch itemSortOrder {
-				case .forward:
-					return lhsSolar.daylightDuration < rhsSolar.daylightDuration
-				case .reverse:
-					return lhsSolar.daylightDuration > rhsSolar.daylightDuration
-				}
-			}
-		}
 	}
 }
 
