@@ -62,8 +62,6 @@ struct SidebarListView: View {
 								Label("Delete Location", systemImage: "trash")
 							}
 						}
-						.animation(.default, value: sortedItems)
-
 				}
 				.onDelete(perform: deleteItems)
 				.id(timeMachine.date)
