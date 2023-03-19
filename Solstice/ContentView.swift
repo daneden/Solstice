@@ -31,11 +31,13 @@ struct ContentView: View {
 	@StateObject var locationSearchService = LocationSearchService()
 #endif
 	
+	@State var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
+	
 	@ObservedObject var timeMachine =  TimeMachine.shared
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
-		NavigationSplitView {
+		NavigationSplitView(columnVisibility: $sidebarVisibility) {
 			ZStack(alignment: .bottom) {
 				List(selection: $navigationState.navigationSelection) {
 					if CurrentLocation.authorizationStatus == .notDetermined {
@@ -122,6 +124,7 @@ struct ContentView: View {
 				placeholderView
 			}
 		}
+		.navigationSplitViewStyle(.balanced)
 		.sheet(item: $navigationState.temporaryLocation) { value in
 			if let value {
 				NavigationStack {
