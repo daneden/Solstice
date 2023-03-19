@@ -155,7 +155,7 @@ struct DaylightChart: View {
 								.onContinuousHover { value in
 									switch value {
 									case .active(let point):
-										scrub(to: point, in: geo)
+										scrub(to: point, in: geo, proxy: proxy)
 									case .ended:
 										selectedEvent = nil
 										currentX = nil

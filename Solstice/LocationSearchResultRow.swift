@@ -74,7 +74,7 @@ struct LocationSearchResultRow: View {
 			
 			return TemporaryLocation(
 				title: completion.title,
-				subtitle: completion.subtitle,
+				subtitle: completion.subtitle.isEmpty ? item.placemark.country : completion.subtitle,
 				timeZoneIdentifier: item.placemark.timeZone?.identifier ?? reverseGeocoding.first?.timeZone?.identifier,
 				latitude: coords.latitude,
 				longitude: coords.longitude
