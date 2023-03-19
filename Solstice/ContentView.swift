@@ -130,12 +130,6 @@ struct ContentView: View {
 				SettingsView()
 			}
 		}
-		
-		if timeMachine.isOn {
-			ToolbarItem(placement: .bottomBar) {
-				TimeMachineDeactivatorView()
-			}
-		}
 #endif
 	}
 }

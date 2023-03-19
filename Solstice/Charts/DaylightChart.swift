@@ -138,56 +138,31 @@ struct DaylightChart: View {
 					}
 					
 					
-					Rectangle()
-						.fill(Color.clear)
+					Color.clear
 						.contentShape(Rectangle())
-#if os(iOS)
-						.gesture(DragGesture()
-							.onChanged { value in
-								if !scrubbable {
-									return
+						.if(scrubbable) { view in
+							view
+								#if os(iOS)
+								.gesture(DragGesture()
+									.onChanged { value in
+										scrub(to: value.location, in: geo, proxy: proxy)
+									}
+									.onEnded { _ in
+										selectedEvent = nil
+										currentX = nil
+									})
+								#elseif os(macOS)
+								.onContinuousHover { value in
+									switch value {
+									case .active(let point):
+										scrub(to: point, in: geo)
+									case .ended:
+										selectedEvent = nil
+										currentX = nil
+									}
 								}
-								
-								let start = geo[proxy.plotAreaFrame].origin.x
-								let xCurrent = value.location.x - start
-								let date: Date? = proxy.value(atX: xCurrent)
-								
-								currentX = date
-								
-								if let date,
-									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 }){
-									selectedEvent = nearestEvent
-								}
-							}
-							.onEnded { _ in
-								selectedEvent = nil
-								currentX = nil
-							})
-#elseif os(macOS)
-						.onContinuousHover { value in
-							if !scrubbable {
-								return
-							}
-							
-							switch value {
-							case .active(let point):
-								let start = geo[proxy.plotAreaFrame].origin.x
-								let xCurrent = point.x - start
-								let date: Date? = proxy.value(atX: xCurrent)
-								
-								currentX = date
-								
-								if let date,
-									 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 }){
-									selectedEvent = nearestEvent
-									currentX = date
-								}
-							case .ended:
-								selectedEvent = nil
-								currentX = nil
-							}
+								#endif
 						}
-#endif
 				}
 			}
 			.chartBackground { proxy in
@@ -328,6 +303,20 @@ extension DaylightChart {
 	
 	func yValue(for date: Date) -> Double {
 		return sin(progressValue(for: date) * .pi * 2 - .pi / 2)
+	}
+	
+	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
+		let start = geo[proxy.plotAreaFrame].origin.x
+		let xCurrent = point.x - start
+		let date: Date? = proxy.value(atX: xCurrent)
+		
+		currentX = date
+		
+		if let date,
+			 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 }){
+			selectedEvent = nearestEvent
+			currentX = date
+		}
 	}
 }
 

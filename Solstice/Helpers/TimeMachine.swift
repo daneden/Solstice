@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
+@MainActor
 class TimeMachine: ObservableObject {
 	@Published var isOn = false
 	@Published var referenceDate = Date()

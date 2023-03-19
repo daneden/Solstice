@@ -10,28 +10,39 @@ import SwiftUI
 struct TimeMachineDeactivatorView: View {
 	@ObservedObject var timeMachine =  TimeMachine.shared
 	
+	#if os(macOS)
 	var body: some View {
-		Button {
-			withAnimation {
-				timeMachine.isOn.toggle()
-			}
+		label
+	}
+	#else
+	var body: some View {
+		DisclosureGroup {
+			TimeMachineView()
 		} label: {
-			VStack {
-				Label("Time Machine \(timeMachine.isOn ? "Active" : "Inactive")", systemImage: "clock.arrow.2.circlepath")
-					.labelStyle(.titleAndIcon)
+			label
+		}
+	}
+	#endif
+	
+	var label: some View {
+		HStack {
+			VStack(alignment: .leading) {
+				Text("Time Travel \(timeMachine.isOn ? "Active" : "Inactive")")
 				Text(timeMachine.date, style: .date)
 					.foregroundStyle(.secondary)
 			}
-			.font(.footnote)
-			.contentShape(Rectangle())
+			
+			Spacer()
+			
+			Button {
+				withAnimation(.interactiveSpring()) {
+					timeMachine.isOn.toggle()
+				}
+			} label: {
+				Text("Reset")
+			}
+			.buttonStyle(.bordered)
 		}
-		#if os(macOS)
-		.buttonStyle(.plain)
-		#else
-		.buttonStyle(.borderless)
-		#endif
-		.listRowBackground(Color.clear)
-		.listRowInsets(SwiftUI.EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 	}
 }
 

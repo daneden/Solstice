@@ -27,6 +27,10 @@ struct SidebarListView: View {
 	
 	var body: some View {
 		List(selection: $navigationState.navigationSelection) {
+			if timeMachine.isOn {
+				TimeMachineDeactivatorView()
+			}
+			
 			if CurrentLocation.authorizationStatus == .notDetermined {
 				LocationPermissionScreenerView()
 			}
