@@ -10,11 +10,11 @@ import Solar
 
 extension Solar {
 	var safeSunrise: Date {
-		return sunrise ?? civilSunrise ?? nauticalSunrise ?? astronomicalSunrise ?? startOfDay
+		return sunrise ?? startOfDay
 	}
 	
 	var safeSunset: Date {
-		return sunset ?? civilSunset ?? nauticalSunset ?? astronomicalSunset ?? endOfDay
+		return sunset ?? endOfDay
 	}
 	
 	var daylightDuration: TimeInterval {
