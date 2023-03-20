@@ -66,7 +66,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					if let differenceFromPreviousSolstice {
 						Label {
 							Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
-								.font(.caption)
+								.font(.footnote)
 								.foregroundStyle(.secondary)
 						} icon: {
 							Color.clear.frame(width: 0, height: 0)
@@ -99,11 +99,22 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						timeMachine.targetDate = longestDay.date
 					}
 				} label: {
-					AdaptiveLabeledContent {
+					VStack(alignment: .leading) {
 						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-						Text("\(longestDay.date, style: .date) (\(duration))")
-					} label: {
-						Label("Longest Day", systemImage: "sun.max")
+						
+						AdaptiveLabeledContent {
+							Text(longestDay.date, style: .date)
+						} label: {
+							Label("Longest Day", systemImage: "sun.max")
+						}
+						
+						Label {
+							Text("\(duration) of daylight")
+								.font(.footnote)
+								.foregroundStyle(.secondary)
+						} icon: {
+							Color.clear.frame(width: 0, height: 0)
+						}
 					}
 				}
 				
@@ -113,11 +124,22 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						timeMachine.targetDate = shortestDay.date
 					}
 				} label: {
-					AdaptiveLabeledContent {
+					VStack(alignment: .leading) {
 						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-						Text("\(shortestDay.date, style: .date) (\(duration))")
-					} label: {
-						Label("Shortest Day", systemImage: "sun.min")
+						
+						AdaptiveLabeledContent {
+							Text(shortestDay.date, style: .date)
+						} label: {
+							Label("Shortest Day", systemImage: "sun.min")
+						}
+						
+						Label {
+							Text("\(duration) of daylight")
+								.font(.footnote)
+								.foregroundStyle(.secondary)
+						} icon: {
+							Color.clear.frame(width: 0, height: 0)
+						}
 					}
 				}
 			}
