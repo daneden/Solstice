@@ -15,8 +15,6 @@ struct SolsticeApp: App {
 	@StateObject private var currentLocation = CurrentLocation()
 	
 	private let persistenceController = PersistenceController.shared
-	
-	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 
 	var body: some Scene {
 		WindowGroup {
@@ -37,11 +35,6 @@ struct SolsticeApp: App {
 						}
 					}
 				}
-				.onReceive(timer) { _ in
-					Task(priority: .utility) {
-						TimeMachine.shared.referenceDate = Date()
-					}
-				}
 		}
 		.onChange(of: phase) { newValue in
 			switch newValue {
@@ -51,7 +44,6 @@ struct SolsticeApp: App {
 			#endif
 			default:
 				currentLocation.requestLocation() { _ in }
-				TimeMachine.shared.referenceDate = Date()
 			}
 		}
 		

@@ -61,7 +61,7 @@ struct SkyGradient {
 		} else {
 			let index = floor((sunrise.distance(to: daylight.date) / daylight.daylightDuration) * Double(colorsExcludingNight.count - 1))
 			
-			return colorsExcludingNight[Int(index)]
+			return colorsExcludingNight[Int(min(Double(colorsExcludingNight.count - 1), index))]
 		}
 	}
 }

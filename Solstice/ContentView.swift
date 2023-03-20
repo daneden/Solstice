@@ -16,6 +16,7 @@ struct ContentView: View {
 	
 	@SceneStorage("navigationState") private var navigationStateData: Data?
 	
+	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	@StateObject var timeMachine = TimeMachine()
@@ -25,50 +26,58 @@ struct ContentView: View {
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 	
 	@FetchRequest(sortDescriptors: []) private var items: FetchedResults<SavedLocation>
+	
+	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 			
 	var body: some View {
-		NavigationSplitView(columnVisibility: $sidebarVisibility) {
-			SidebarListView()
-				.toolbar {
-					toolbarItems
-				}
-		} detail: {
-			switch navigationState.navigationSelection {
-			case .currentLocation:
-				DetailView(location: currentLocation)
-			case .savedLocation(let id):
-				if let item = items.first(where: { $0.uuid == id }) {
-					DetailView(location: item)
-				} else {
+			NavigationSplitView(columnVisibility: $sidebarVisibility) {
+				SidebarListView()
+					.toolbar {
+						toolbarItems
+					}
+			} detail: {
+				switch navigationState.navigationSelection {
+				case .currentLocation:
+					DetailView(location: currentLocation)
+				case .savedLocation(let id):
+					if let item = items.first(where: { $0.uuid == id }) {
+						DetailView(location: item)
+					} else {
+						placeholderView
+					}
+				case .none:
 					placeholderView
 				}
-			case .none:
-				placeholderView
 			}
-		}
-		.navigationSplitViewStyle(.balanced)
-		.sheet(item: $navigationState.temporaryLocation) { value in
-			if let value {
-				NavigationStack {
-					DetailView(location: value)
+			.navigationSplitViewStyle(.balanced)
+			.sheet(item: $navigationState.temporaryLocation) { value in
+				if let value {
+					NavigationStack {
+						DetailView(location: value)
+					}
+#if os(macOS)
+					.frame(minWidth: 600, minHeight: 400)
+#endif
 				}
-				#if os(macOS)
-				.frame(minWidth: 600, minHeight: 400)
-				#endif
 			}
-		}
-		.environmentObject(navigationState)
-		.environmentObject(timeMachine)
-		.task {
-			for await _ in navigationState.objectWillChangeSequence {
-				navigationStateData = navigationState.jsonData
+			.environmentObject(navigationState)
+			.environmentObject(timeMachine)
+			.task {
+				for await _ in navigationState.objectWillChangeSequence {
+					navigationStateData = navigationState.jsonData
+				}
 			}
-		}
-		.onAppear {
-			if let navigationStateData {
-				navigationState.jsonData = navigationStateData
+			.onAppear {
+				if let navigationStateData {
+					navigationState.jsonData = navigationStateData
+				}
 			}
-		}
+			.onChange(of: scenePhase) { _ in
+				timeMachine.referenceDate = Date()
+			}
+			.onReceive(timer) { _ in
+				timeMachine.referenceDate = Date()
+			}
 	}
 	
 	private var placeholderView: some View {

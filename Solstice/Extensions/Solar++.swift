@@ -10,11 +10,24 @@ import Solar
 
 extension Solar {
 	var safeSunrise: Date {
-		return sunrise ?? startOfDay
+		sunrise ?? startOfDay
 	}
 	
 	var safeSunset: Date {
-		return sunset ?? endOfDay
+		if let sunset {
+			return sunset
+		}
+		
+		guard let civilSunset,
+					let civilSunrise else {
+			return endOfDay
+		}
+		
+		if civilSunrise.distance(to: civilSunset) > (60 * 60 * 7) {
+			return endOfDay
+		} else {
+			return startOfDay.addingTimeInterval(0.1)
+		}
 	}
 	
 	var daylightDuration: TimeInterval {
