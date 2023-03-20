@@ -9,6 +9,14 @@ import Foundation
 import Solar
 
 extension Solar {
+	var fallbackSunrise: Date? {
+		sunrise ?? civilSunrise ?? nauticalSunrise ?? astronomicalSunrise
+	}
+	
+	var fallbackSunset: Date? {
+		sunset ?? civilSunset ?? nauticalSunset ?? astronomicalSunset
+	}
+	
 	var safeSunrise: Date {
 		sunrise ?? startOfDay
 	}
@@ -18,12 +26,12 @@ extension Solar {
 			return sunset
 		}
 		
-		guard let civilSunset,
-					let civilSunrise else {
+		guard let fallbackSunset,
+					let fallbackSunrise else {
 			return endOfDay
 		}
 		
-		if civilSunrise.distance(to: civilSunset) > (60 * 60 * 7) {
+		if fallbackSunrise.distance(to: fallbackSunset) > (60 * 60 * 7) {
 			return endOfDay
 		} else {
 			return startOfDay.addingTimeInterval(0.1)
@@ -31,11 +39,11 @@ extension Solar {
 	}
 	
 	var daylightDuration: TimeInterval {
-		safeSunrise.distance(to: safeSunset)
+		(fallbackSunrise ?? safeSunrise).distance(to: (fallbackSunset ?? safeSunset))
 	}
 	
 	var peak: Date {
-		safeSunrise.addingTimeInterval(abs(daylightDuration) / 2)
+		(fallbackSunrise ?? safeSunrise).addingTimeInterval(abs(daylightDuration) / 2)
 	}
 	
 	var yesterday: Solar {

@@ -84,7 +84,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 struct DaylightSummaryRow_Previews: PreviewProvider {
 	static var previews: some View {
 		List {
-			DaylightSummaryRow(location: TemporaryLocation.placeholderLocation)
+			DaylightSummaryRow(location: TemporaryLocation.placeholderLondon)
 		}
 		.environmentObject(TimeMachine.preview)
 	}

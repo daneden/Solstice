@@ -92,10 +92,6 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			}
 		}
 	}
-	
-	func isCurrentMonth(_ date: Date) -> Bool {
-		return calendar.date(date, matchesComponents: calendar.dateComponents([.month], from: Date()))
-	}
 }
 
 extension AnnualDaylightChart {
@@ -119,15 +115,13 @@ extension AnnualDaylightChart {
 	}
 }
 
-extension AnnualDaylightChart: Equatable {
-	static func == (lhs: AnnualDaylightChart<Location>, rhs: AnnualDaylightChart<Location>) -> Bool {
-		return lhs.location.latitude == rhs.location.latitude &&
-		lhs.location.longitude == rhs.location.longitude
-	}
-}
-
 struct AnnualDaylightChart_Previews: PreviewProvider {
     static var previews: some View {
-			AnnualDaylightChart(location: TemporaryLocation.placeholderLocation)
+			Form {
+				AnnualDaylightChart(location: TemporaryLocation.placeholderLondon)
+					.frame(minHeight: 300)
+				AnnualDaylightChart(location: TemporaryLocation.placeholderGreenland)
+					.frame(minHeight: 300)
+			}
     }
 }

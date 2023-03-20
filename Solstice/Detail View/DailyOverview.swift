@@ -195,7 +195,7 @@ extension DailyOverview {
 struct DailyOverview_Previews: PreviewProvider {
 	static var previews: some View {
 		Form {
-			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate)!, location: TemporaryLocation.placeholderLocation)
+			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate.coordinate)!, location: TemporaryLocation.placeholderLondon)
 		}
 		.environmentObject(TimeMachine.preview)
 	}

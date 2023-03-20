@@ -88,8 +88,12 @@ extension TemporaryLocation: Hashable, Equatable {
 
 
 extension TemporaryLocation {
-	static var placeholderLocation: TemporaryLocation {
+	static var placeholderLondon: TemporaryLocation {
 		return TemporaryLocation(title: "London", subtitle: "England", timeZoneIdentifier: "GMT", latitude: 51.5072, longitude: -0.1276)
+	}
+	
+	static var placeholderGreenland: TemporaryLocation {
+		return TemporaryLocation(title: "Greenland", subtitle: nil, timeZoneIdentifier: "WGT", latitude: 74.7277, longitude: -41.3450)
 	}
 }
 

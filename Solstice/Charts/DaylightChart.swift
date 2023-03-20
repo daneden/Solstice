@@ -331,7 +331,7 @@ struct DaylightChart_Previews: PreviewProvider {
 	static var previews: some View {
 		DaylightChart(
 			solar: Solar(
-				coordinate: TemporaryLocation.placeholderLocation.coordinate.coordinate
+				coordinate: TemporaryLocation.placeholderLondon.coordinate.coordinate
 			)!,
 			timeZone: .autoupdatingCurrent
 		)

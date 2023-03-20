@@ -116,7 +116,7 @@ struct DetailView<Location: ObservableLocation>: View {
 struct DetailView_Previews: PreviewProvider {
 	static var previews: some View {
 		NavigationStack {
-			DetailView(location: TemporaryLocation.placeholderLocation)
+			DetailView(location: TemporaryLocation.placeholderLondon)
 		}
 		.environmentObject(TimeMachine.preview)
 		.environmentObject(NavigationStateManager())

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@EnvironmentObject var timeMachine: TimeMachine
+	@StateObject var timeMachine = TimeMachine()
 	@StateObject var navigationState = NavigationStateManager()
 	
 	var body: some View {
@@ -26,6 +26,7 @@ struct ContentView: View {
 				}
 		}
 			.environmentObject(navigationState)
+			.environmentObject(timeMachine)
 			.navigationTitle("Solstice")
 	}
 	
