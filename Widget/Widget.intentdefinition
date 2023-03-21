@@ -3,13 +3,57 @@
 <plist version="1.0">
 <dict>
 	<key>INEnums</key>
-	<array/>
+	<array>
+		<dict>
+			<key>INEnumDisplayName</key>
+			<string>Location Type</string>
+			<key>INEnumDisplayNameID</key>
+			<string>kaVdqR</string>
+			<key>INEnumGeneratesHeader</key>
+			<true/>
+			<key>INEnumName</key>
+			<string>LocationType</string>
+			<key>INEnumType</key>
+			<string>Regular</string>
+			<key>INEnumValues</key>
+			<array>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Unknown</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>8IMGEK</string>
+					<key>INEnumValueName</key>
+					<string>unknown</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Use Current Location</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>ehh7uX</string>
+					<key>INEnumValueIndex</key>
+					<integer>1</integer>
+					<key>INEnumValueName</key>
+					<string>currentLocation</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Choose a Location</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>muRmZ1</string>
+					<key>INEnumValueIndex</key>
+					<integer>2</integer>
+					<key>INEnumValueName</key>
+					<string>customLocation</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
 	<key>INIntentDefinitionModelVersion</key>
 	<string>1.2</string>
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>22C5033e</string>
+	<string>22D68</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
 	<string>14C18</string>
 	<key>INIntentDefinitionToolsVersion</key>
@@ -28,7 +72,7 @@
 			<key>INIntentIneligibleForSuggestions</key>
 			<true/>
 			<key>INIntentLastParameterTag</key>
-			<integer>2</integer>
+			<integer>4</integer>
 			<key>INIntentName</key>
 			<string>Configuration</string>
 			<key>INIntentParameters</key>
@@ -41,9 +85,73 @@
 					<key>INIntentParameterDisplayName</key>
 					<string>Location</string>
 					<key>INIntentParameterDisplayNameID</key>
-					<string>UJZw1q</string>
+					<string>WsJwri</string>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>1</integer>
+					<key>INIntentParameterEnumType</key>
+					<string>LocationType</string>
+					<key>INIntentParameterEnumTypeNamespace</key>
+					<string>88xZPY</string>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataDefaultValue</key>
+						<string>currentLocation</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>locationType</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>There are ${count} options matching ‘${locationType}’.</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>knoqIJ</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>DisambiguationIntroduction</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>Just to confirm, you wanted ‘${locationType}’?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>4ecTeH</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Confirmation</string>
+						</dict>
+					</array>
+					<key>INIntentParameterSupportsResolution</key>
+					<true/>
+					<key>INIntentParameterTag</key>
+					<integer>4</integer>
+					<key>INIntentParameterType</key>
+					<string>Integer</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterCustomDisambiguation</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Choose Location</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>UJZw1q</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>2</integer>
 					<key>INIntentParameterMetadata</key>
 					<dict>
 						<key>INIntentParameterMetadataType</key>
@@ -90,6 +198,15 @@
 							<string>Confirmation</string>
 						</dict>
 					</array>
+					<key>INIntentParameterRelationship</key>
+					<dict>
+						<key>INIntentParameterRelationshipParentName</key>
+						<string>locationType</string>
+						<key>INIntentParameterRelationshipPredicateName</key>
+						<string>EnumHasExactValue</string>
+						<key>INIntentParameterRelationshipPredicateValue</key>
+						<string>customLocation</string>
+					</dict>
 					<key>INIntentParameterSupportsResolution</key>
 					<true/>
 					<key>INIntentParameterTag</key>

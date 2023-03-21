@@ -50,42 +50,49 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Section {
-			Button {
-				withAnimation {
-					timeMachine.isOn = true
-					timeMachine.targetDate = nextSolstice
+			VStack(alignment: .leading) {
+				AdaptiveLabeledContent {
+					Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+				} label: {
+					Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 				}
-			} label: {
-				VStack(alignment: .leading) {
-					AdaptiveLabeledContent {
-						Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-					} label: {
-						Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
-					}
-					
-					if let differenceFromPreviousSolstice {
-						Label {
-							Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
-								.font(.footnote)
-								.foregroundStyle(.secondary)
-						} icon: {
-							Color.clear.frame(width: 0, height: 0)
-						}
+				
+				if let differenceFromPreviousSolstice {
+					Label {
+						Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
+							.font(.footnote)
+							.foregroundStyle(.secondary)
+					} icon: {
+						Color.clear.frame(width: 0, height: 0)
 					}
 				}
 			}
-			
-			Button {
-				withAnimation {
-					timeMachine.isOn = true
-					timeMachine.targetDate = nextEquinox
-				}
-			} label: {
-				AdaptiveLabeledContent {
-					Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+			.swipeActions(edge: .leading) {
+				Button {
+					withAnimation {
+						timeMachine.isOn = true
+						timeMachine.targetDate = nextSolstice
+					}
 				} label: {
-					Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+					Label("Jump to \(nextSolstice, style: .date)", systemImage: "clock.arrow.2.circlepath")
 				}
+			}
+			
+			AdaptiveLabeledContent {
+				Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+			} label: {
+				Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+			}
+			.swipeActions(edge: .leading) {
+				Button {
+					withAnimation {
+						timeMachine.isOn = true
+						timeMachine.targetDate = nextEquinox
+					}
+				} label: {
+					Label("Jump to \(nextEquinox, style: .date)", systemImage: "clock.arrow.2.circlepath")
+				}
+				.backgroundStyle(.tint)
 			}
 			
 			AnnualDaylightChart(location: location)
@@ -93,53 +100,60 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			
 			if let shortestDay,
 				 let longestDay {
-				Button {
-					withAnimation {
-						timeMachine.isOn = true
-						timeMachine.targetDate = longestDay.date
+				
+				VStack(alignment: .leading) {
+					let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+					
+					AdaptiveLabeledContent {
+						Text(longestDay.date, style: .date)
+					} label: {
+						Label("Longest Day", systemImage: "sun.max")
 					}
-				} label: {
-					VStack(alignment: .leading) {
-						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-						
-						AdaptiveLabeledContent {
-							Text(longestDay.date, style: .date)
-						} label: {
-							Label("Longest Day", systemImage: "sun.max")
+					
+					Label {
+						Text("\(duration) of daylight")
+							.font(.footnote)
+							.foregroundStyle(.secondary)
+					} icon: {
+						Color.clear.frame(width: 0, height: 0)
+					}
+				}
+				.swipeActions(edge: .leading) {
+					Button {
+						withAnimation {
+							timeMachine.isOn = true
+							timeMachine.targetDate = longestDay.date
 						}
-						
-						Label {
-							Text("\(duration) of daylight")
-								.font(.footnote)
-								.foregroundStyle(.secondary)
-						} icon: {
-							Color.clear.frame(width: 0, height: 0)
-						}
+					} label: {
+						Label("Jump to \(longestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
 				
-				Button {
-					withAnimation {
-						timeMachine.isOn = true
-						timeMachine.targetDate = shortestDay.date
+				VStack(alignment: .leading) {
+					let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+					
+					AdaptiveLabeledContent {
+						Text(shortestDay.date, style: .date)
+					} label: {
+						Label("Shortest Day", systemImage: "sun.min")
 					}
-				} label: {
-					VStack(alignment: .leading) {
-						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-						
-						AdaptiveLabeledContent {
-							Text(shortestDay.date, style: .date)
-						} label: {
-							Label("Shortest Day", systemImage: "sun.min")
+					
+					Label {
+						Text("\(duration) of daylight")
+							.font(.footnote)
+							.foregroundStyle(.secondary)
+					} icon: {
+						Color.clear.frame(width: 0, height: 0)
+					}
+				}
+				.swipeActions(edge: .leading) {
+					Button {
+						withAnimation {
+							timeMachine.isOn = true
+							timeMachine.targetDate = shortestDay.date
 						}
-						
-						Label {
-							Text("\(duration) of daylight")
-								.font(.footnote)
-								.foregroundStyle(.secondary)
-						} icon: {
-							Color.clear.frame(width: 0, height: 0)
-						}
+					} label: {
+						Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
 			}

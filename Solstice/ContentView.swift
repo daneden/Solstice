@@ -81,7 +81,7 @@ struct ContentView: View {
 	}
 	
 	private var placeholderView: some View {
-		Image("Solstice-Icon")
+		Image("Solstice.SFSymbol")
 			.resizable()
 			.foregroundStyle(.quaternary)
 			.frame(width: 100, height: 100)

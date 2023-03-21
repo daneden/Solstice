@@ -105,15 +105,8 @@ extension DailyOverview {
 	func buildChartRenderedAsImage() -> Image? {
 		let view = VStack {
 			HStack {
-				Label {
-					Text("Solstice")
-				} icon: {
-					Image("Solstice-Icon")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.frame(width: 16)
-				}
-				.font(.headline)
+				Label("Solstice", image: "Solstice.SFSymbol")
+					.font(.headline)
 				
 				Spacer()
 			}
