@@ -32,7 +32,7 @@ struct DaylightChart: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
-				DaylightSummaryTitle(solar: solar, event: selectedEvent, currentX: currentX)
+				DaylightSummaryTitle(solar: solar, event: selectedEvent, currentX: currentX, timeZone: timeZone)
 			}
 			
 			Chart {
