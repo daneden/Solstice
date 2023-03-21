@@ -72,12 +72,11 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Label("Sunrise", systemImage: "sunrise")
 			}
 			
-			if let culmination = solar.peak.withTimeZoneAdjustment(for: location.timeZone) {
-				AdaptiveLabeledContent {
-					Text("\(culmination, style: .time)")
-				} label: {
-					Label("Culmination", systemImage: "sun.max")
-				}
+			let culmination = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
+			AdaptiveLabeledContent {
+				Text("\(culmination, style: .time)")
+			} label: {
+				Label("Culmination", systemImage: "sun.max")
 			}
 			
 			AdaptiveLabeledContent {
@@ -129,10 +128,9 @@ extension DailyOverview {
 					Text(location.title ?? "My Location")
 						.font(.headline)
 					
-					if let duration = solar.daylightDuration.localizedString {
-						Text("\(duration) of daylight")
-							.foregroundStyle(.secondary)
-					}
+					let duration = solar.daylightDuration.localizedString
+					Text("\(duration) of daylight")
+						.foregroundStyle(.secondary)
 				}
 				
 				Spacer()
