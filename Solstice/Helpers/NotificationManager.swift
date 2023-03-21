@@ -37,8 +37,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	}
 	
 	static func scheduleNotifications(locationManager: CurrentLocation) async {
+		// Always clear notifications when scheduling new ones
+		await clearScheduledNotifications()
+		
 		guard CurrentLocation.isAuthorized, notificationsEnabled else {
-			return await clearScheduledNotifications()
+			return
 		}
 		
 		var location = locationManager.latestLocation
