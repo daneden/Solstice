@@ -51,14 +51,12 @@ struct ContentView: View {
 			}
 			.navigationSplitViewStyle(.balanced)
 			.sheet(item: $navigationState.temporaryLocation) { value in
-				if let value {
 					NavigationStack {
 						DetailView(location: value)
 					}
 #if os(macOS)
 					.frame(minWidth: 600, minHeight: 400)
 #endif
-				}
 			}
 			.environmentObject(navigationState)
 			.environmentObject(timeMachine)
