@@ -52,6 +52,7 @@ struct SolsticeApp: App {
 		#if os(macOS)
 		Settings {
 			SettingsView()
+				.frame(maxWidth: 500)
 		}
 		#endif
 	}
