@@ -18,6 +18,8 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 struct AnnualOverview<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
+	@State private var isInformationSheetPresented = false
+	
 	var differenceFromPreviousSolstice: TimeInterval? {
 		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate),
 					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate.coordinate) else {
@@ -157,6 +159,29 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					}
 				}
 			}
+		} footer: {
+			#if !os(watchOS)
+			Button {
+				isInformationSheetPresented = true
+			} label: {
+				Label("Learn more about the equinox and solstice", systemImage: "info.circle")
+					.font(.footnote)
+			}
+			.buttonStyle(.automatic)
+			.sheet(isPresented: $isInformationSheetPresented) {
+				NavigationStack {
+					InformationSheetView()
+					#if os(macOS)
+						.frame(minWidth: 500, minHeight: 500)
+					#endif
+						.toolbar {
+							Button("Close") {
+								isInformationSheetPresented = false
+							}
+						}
+				}
+			}
+			#endif
 		}
 		.buttonStyle(.plain)
 	}
