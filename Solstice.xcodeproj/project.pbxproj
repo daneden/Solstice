@@ -188,9 +188,11 @@
 		71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */; };
 		71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */; };
 		71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */; };
+		71BB879729CC6C3A00AA6A9B /* Earth.scn in Resources */ = {isa = PBXBuildFile; fileRef = 71BB879629CC6C3A00AA6A9B /* Earth.scn */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		71E8DC2D29CB601800F3E1B4 /* InformationSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8DC2C29CB601800F3E1B4 /* InformationSheetView.swift */; };
 		71EAB72529C3479F00FA043F /* TimeMachineDeactivatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
@@ -330,11 +332,13 @@
 		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
+		71BB879629CC6C3A00AA6A9B /* Earth.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Earth.scn; sourceTree = "<group>"; };
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		71E8DC2C29CB601800F3E1B4 /* InformationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationSheetView.swift; sourceTree = "<group>"; };
 		71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineDeactivatorView.swift; sourceTree = "<group>"; };
 		71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryRow.swift; sourceTree = "<group>"; };
 		71F641B829995ED000FE5AB5 /* DaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightChart.swift; sourceTree = "<group>"; };
@@ -523,6 +527,7 @@
 		7198468328E5895E00E866CE /* Solstice */ = {
 			isa = PBXGroup;
 			children = (
+				71E8DC2829CB5FC700F3E1B4 /* Information Sheet */,
 				71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */,
 				7198469228E5895F00E866CE /* Info.plist */,
 				7198469828E5898500E866CE /* StoreKitConfiguration.storekit */,
@@ -595,6 +600,15 @@
 				719511FF29AFBBD2009D282F /* Extensions */,
 			);
 			path = watchOS;
+			sourceTree = "<group>";
+		};
+		71E8DC2829CB5FC700F3E1B4 /* Information Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				71BB879629CC6C3A00AA6A9B /* Earth.scn */,
+				71E8DC2C29CB601800F3E1B4 /* InformationSheetView.swift */,
+			);
+			path = "Information Sheet";
 			sourceTree = "<group>";
 		};
 		71F641EE29A13C5300FE5AB5 /* Frameworks */ = {
@@ -814,6 +828,7 @@
 				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				7198468928E5895F00E866CE /* Assets.xcassets in Resources */,
+				71BB879729CC6C3A00AA6A9B /* Earth.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -969,6 +984,7 @@
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
 				7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */,
+				71E8DC2D29CB601800F3E1B4 /* InformationSheetView.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
 				7106C87929A276B40007A7EC /* Widget.intentdefinition in Sources */,
 				7198469128E5895F00E866CE /* Solstice.xcdatamodeld in Sources */,
@@ -1068,7 +1084,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1098,7 +1114,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1130,7 +1146,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1161,7 +1177,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1191,7 +1207,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1223,7 +1239,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1376,7 +1392,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1415,7 +1431,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1450,7 +1466,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1485,7 +1501,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;

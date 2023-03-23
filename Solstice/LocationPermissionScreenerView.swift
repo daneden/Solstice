@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct LocationPermissionScreenerView: View {
+	@Environment(\.openURL) var openURL
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	var body: some View {
 		Section {
 			Button {
 				currentLocation.requestAccess()
+				#if os(macOS)
+				openURL.callAsFunction(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices")!)
+				#endif
 			} label: {
 				Text("Set Up Location Services")
 			}
