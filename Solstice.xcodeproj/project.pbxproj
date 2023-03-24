@@ -192,6 +192,8 @@
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D129CD862A00E30148 /* EarthNode.swift */; };
+		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
 		71E8DC2D29CB601800F3E1B4 /* InformationSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8DC2C29CB601800F3E1B4 /* InformationSheetView.swift */; };
 		71EAB72529C3479F00FA043F /* TimeMachineDeactivatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
@@ -336,6 +338,8 @@
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
+		71DAB3D129CD862A00E30148 /* EarthNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthNode.swift; sourceTree = "<group>"; };
+		71DAB3D329CD865800E30148 /* EarthScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthScene.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71E8DC2C29CB601800F3E1B4 /* InformationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationSheetView.swift; sourceTree = "<group>"; };
@@ -607,6 +611,8 @@
 			children = (
 				71BB879629CC6C3A00AA6A9B /* Earth.scn */,
 				71E8DC2C29CB601800F3E1B4 /* InformationSheetView.swift */,
+				71DAB3D129CD862A00E30148 /* EarthNode.swift */,
+				71DAB3D329CD865800E30148 /* EarthScene.swift */,
 			);
 			path = "Information Sheet";
 			sourceTree = "<group>";
@@ -946,8 +952,10 @@
 			files = (
 				719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */,
 				719846A828E991FA00E866CE /* LocationSearchService.swift in Sources */,
+				71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */,
 				7198468E28E5895F00E866CE /* Persistence.swift in Sources */,
 				7195128129B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */,
+				71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */,
 				71EAB72529C3479F00FA043F /* TimeMachineDeactivatorView.swift in Sources */,
 				7198468728E5895E00E866CE /* ContentView.swift in Sources */,
 				713F7FF929BE843700BEA156 /* AnnualOverview.swift in Sources */,

@@ -28,7 +28,7 @@ fileprivate enum Event: String, CaseIterable {
 }
 
 struct InformationSheetView: View {
-	@State var scene: SCNScene? = SCNScene(named: "Earth.scn")
+	@State var scene: SCNScene? = earthScene
 	@State fileprivate var event: Event = .juneSolstice
 	
 	var body: some View {
@@ -70,28 +70,6 @@ struct InformationSheetView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.onAppear {
-				let action = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: .pi * 2, z: 0, duration: 90))
-				
-				let node = scene?.rootNode.childNode(withName: "Earth", recursively: true)
-				node?.runAction(action)
-				
-				let sphere = SCNSphere(radius: 1.375)
-				
-				let material = SCNMaterial()
-				material.diffuse.contents = NativeColor.black
-				material.reflective.contents = NativeColor(red: 0, green: 0.6, blue: 1, alpha: 1)
-				material.reflective.intensity = 1
-				material.transparent.contents = NativeColor.black.withAlphaComponent(0.3)
-				material.transparencyMode = .default
-				material.fresnelExponent = 10
-				material.transparency = 0.5
-				
-				sphere.materials = [material]
-				
-				let newNode = SCNNode(geometry: sphere)
-				scene?.rootNode.addChildNode(newNode)
-			}
 			.onChange(of: event) { newValue in
 				var angle: CGFloat
 				switch newValue {
