@@ -42,7 +42,7 @@ class EarthScene: SCNScene {
 		let lightNode = SCNNode()
 		
 		lightNode.light = light
-		lightNode.position = SCNVector3(-50, 5, 0)
+		lightNode.position = SCNVector3(-100, 2, 0)
 		
 		self.lightAnchorNode = SCNNode()
 		self.lightAnchorNode?.addChildNode(lightNode)
