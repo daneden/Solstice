@@ -58,6 +58,10 @@ public class EarthNode : SCNNode {
 		atmosSphere.firstMaterial = atmosMaterial
 		atmosNode.geometry = atmosSphere
 		addChildNode(atmosNode)
+		
+		let action = SCNAction.rotate(by: .pi * -2, around: SCNVector3(x:0, y:1, z:0), duration: 360)
+		let repeatAction = SCNAction.repeatForever(action)
+		atmosNode.runAction(repeatAction)
 	}
 	
 	func addPoles() {
