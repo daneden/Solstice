@@ -10,7 +10,6 @@ import SceneKit
 import SpriteKit
 
 public class EarthNode : SCNNode {
-	
 	public override init() {
 		super.init()
 		build()
@@ -25,6 +24,7 @@ public class EarthNode : SCNNode {
 		addBody()
 		addClouds()
 		addPoles()
+		addEquator()
 		beginDailyRotation()
 	}
 	
@@ -40,7 +40,7 @@ public class EarthNode : SCNNode {
 		bodyMaterial.specular.contents = "Specular"
 		bodyMaterial.emission.contents = "Emission"
 		bodyMaterial.normal.contents = "Normal"
-		bodyMaterial.shininess = 0.5
+		bodyMaterial.shininess = 0.15
 		sphere.firstMaterial = bodyMaterial
 		bodyNode.geometry = sphere
 		addChildNode(bodyNode)
@@ -63,15 +63,29 @@ public class EarthNode : SCNNode {
 	func addPoles() {
 		// Poles
 		let poleNode = SCNNode()
-		let pole = SCNCylinder(radius: 0.01, height: 2.2)
+		let pole = SCNCylinder(radius: 0.005, height: 2.2)
 		poleNode.geometry = pole
 		
 		let poleMaterial = SCNMaterial()
+		poleMaterial.emission.contents = SKColor.red
 		poleMaterial.diffuse.contents = SKColor.red
 		pole.firstMaterial = poleMaterial
 		addChildNode(poleNode)
 	}
 	
+	func addEquator() {
+		// Equator
+		let equatorNode = SCNNode()
+		let equator = SCNCylinder(radius: 1.05, height: 0.01)
+		equatorNode.geometry = equator
+		
+		let equatorMaterial = SCNMaterial()
+		equatorMaterial.emission.contents = SKColor.systemOrange
+		equatorMaterial.diffuse.contents = SKColor.systemOrange
+		equatorMaterial.transparency = 0.15
+		equator.firstMaterial = equatorMaterial
+		addChildNode(equatorNode)
+	}
 	
 	func beginDailyRotation() {
 		let action = SCNAction.rotate(by: .pi * 2, around: SCNVector3(x:0, y:1, z:0), duration: 90)

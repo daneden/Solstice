@@ -28,7 +28,7 @@ fileprivate enum Event: String, CaseIterable {
 }
 
 struct InformationSheetView: View {
-	@State var scene: SCNScene? = earthScene
+	@State var scene: EarthScene? = EarthScene()
 	@State fileprivate var event: Event = .juneSolstice
 	
 	var body: some View {
@@ -93,7 +93,7 @@ struct InformationSheetView: View {
 				
 				action.timingMode = .easeOut
 				
-				if let node = scene?.rootNode.childNode(withName: "Sun Container", recursively: true) {
+				if let node = scene?.lightAnchorNode {
 					node.runAction(action)
 				}
 			}
@@ -109,8 +109,8 @@ struct InformationSheetView_Previews: PreviewProvider {
 	}
 }
 
-struct CustomSceneView: NativeViewRepresentable {
-	@Binding var scene: SCNScene?
+struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
+	@Binding var scene: Scene?
 	
 	func makeView(context: Context) -> SCNView {
 		let view = SCNView()
@@ -123,10 +123,7 @@ struct CustomSceneView: NativeViewRepresentable {
 		node?.rotation = .init(0, 0, 90, 0)
 		view.scene = scene
 		
-		let bloomFilter = CIFilter(name:"CIBloom")!
-		bloomFilter.setValue(0.2, forKey: "inputIntensity")
-		bloomFilter.setValue(4.0, forKey: "inputRadius")
-		scene?.rootNode.filters = [bloomFilter]
+		view.pointOfView?.camera?.fieldOfView = 35
 		
 		return view
 	}
