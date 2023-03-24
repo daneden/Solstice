@@ -27,7 +27,7 @@ fileprivate enum Event: String, CaseIterable {
 	}
 }
 
-struct InformationSheetView: View {
+struct EquinoxAndSolsticeInfoView: View {
 	@State var scene: EarthScene? = EarthScene()
 	@State fileprivate var event: Event = .juneSolstice
 	
@@ -65,7 +65,7 @@ struct InformationSheetView: View {
 					}
 					
 				} footer: {
-					Text("3D Model Source: [NASA Visualization Technology Applications and Development](https://solarsystem.nasa.gov/resources/2393/earth-3d-model/)")
+					Text("Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)")
 				}
 			}
 			.formStyle(.grouped)
@@ -104,7 +104,7 @@ struct InformationSheetView: View {
 struct InformationSheetView_Previews: PreviewProvider {
 	static var previews: some View {
 		NavigationStack {
-			InformationSheetView()
+			EquinoxAndSolsticeInfoView()
 		}
 	}
 }
