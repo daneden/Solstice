@@ -25,7 +25,7 @@ class EarthScene: SCNScene {
 		let earthNode = EarthNode()
 		let tiltNode = SCNNode()
 		
-		tiltNode.eulerAngles = SCNVector3(23.4 * (.pi / 180.0), .pi / 2, 0)
+		tiltNode.eulerAngles = SCNVector3(-23.4 * (.pi / 180.0), .pi / 2, 0)
 		tiltNode.addChildNode(earthNode)
 		self.rootNode.addChildNode(tiltNode)
 		
