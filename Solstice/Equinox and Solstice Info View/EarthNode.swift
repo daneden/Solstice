@@ -82,7 +82,6 @@ public class EarthNode : SCNNode {
 		let equatorMaterial = SCNMaterial()
 		equatorMaterial.emission.contents = SKColor.systemOrange
 		equatorMaterial.diffuse.contents = SKColor.systemOrange
-		equatorMaterial.transparency = 0.15
 		equator.firstMaterial = equatorMaterial
 		addChildNode(equatorNode)
 	}
