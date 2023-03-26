@@ -28,7 +28,9 @@ fileprivate enum Event: String, CaseIterable {
 }
 
 struct EquinoxAndSolsticeInfoView: View {
+	#if os(iOS)
 	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
+	#endif
 	@State var scene: EarthScene?
 	@State fileprivate var event: Event = .juneSolstice
 	
@@ -102,6 +104,7 @@ struct EquinoxAndSolsticeInfoView: View {
 					node.runAction(action)
 				}
 			}
+			#if os(iOS)
 			.task {
 				if await !resourceRequest.conditionallyBeginAccessingResources() {
 					do {
@@ -116,6 +119,7 @@ struct EquinoxAndSolsticeInfoView: View {
 			.onDisappear {
 				resourceRequest.endAccessingResources()
 			}
+			#endif
 		}
 	}
 }
