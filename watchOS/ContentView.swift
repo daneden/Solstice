@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@StateObject var timeMachine = TimeMachine()
 	@StateObject var navigationState = NavigationStateManager()
