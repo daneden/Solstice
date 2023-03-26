@@ -151,7 +151,6 @@ struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
 	func makeView(context: Context) -> SCNView {
 		let view = SCNView()
 		view.autoenablesDefaultLighting = false
-		view.antialiasingMode = .multisampling2X
 		view.backgroundColor = .clear
 		
 		let node = scene?.rootNode
