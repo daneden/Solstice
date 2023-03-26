@@ -12,6 +12,8 @@ struct ContentView: View {
 	@StateObject var timeMachine = TimeMachine()
 	@StateObject var navigationState = NavigationStateManager()
 	
+	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
+	
 	var body: some View {
 		NavigationStack {
 				switch CurrentLocation.authorizationStatus {
