@@ -25,6 +25,7 @@ public class EarthNode : SCNNode {
 		//addClouds()
 		addPoles()
 		addEquator()
+		runAction(.rotate(by: .pi * 1.5, around: SCNVector3(x: 0, y: 1, z: 0), duration: 0))
 		beginDailyRotation()
 	}
 	
