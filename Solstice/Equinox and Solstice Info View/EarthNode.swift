@@ -38,7 +38,6 @@ public class EarthNode : SCNNode {
 		let bodyMaterial = SCNMaterial()
 		bodyMaterial.diffuse.contents = "Diffuse"
 		bodyMaterial.specular.contents = "Specular"
-		bodyMaterial.specular.intensity = 0.3
 		bodyMaterial.emission.contents = "Emission"
 		bodyMaterial.normal.contents = "Normal"
 		bodyMaterial.normal.intensity = 0.5
