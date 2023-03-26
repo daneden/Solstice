@@ -53,12 +53,17 @@ struct EquinoxAndSolsticeInfoView: View {
 					if scene != nil {
 						CustomSceneView(scene: $scene)
 							.frame(height: min(geometry.size.width, 400))
+							.transition(.opacity)
 					} else {
 						#if os(iOS)
-						ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
-							Text("Loading...")
+						HStack {
+							Spacer()
+							ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
+								Text("Loading...")
+							}
+							.progressViewStyle(.circular)
+							Spacer()
 						}
-						.progressViewStyle(.circular)
 						.frame(height: min(geometry.size.width, 400))
 						#endif
 					}
