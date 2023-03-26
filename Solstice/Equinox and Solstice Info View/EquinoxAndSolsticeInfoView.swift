@@ -54,7 +54,9 @@ struct EquinoxAndSolsticeInfoView: View {
 						CustomSceneView(scene: $scene)
 							.frame(height: min(geometry.size.width, 400))
 					} else {
+						#if os(iOS)
 						ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0)
+						#endif
 					}
 					
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
@@ -104,8 +106,8 @@ struct EquinoxAndSolsticeInfoView: View {
 					node.runAction(action)
 				}
 			}
-			#if os(iOS)
 			.task {
+				#if os(iOS)
 				if await !resourceRequest.conditionallyBeginAccessingResources() {
 					do {
 						try await resourceRequest.beginAccessingResources()
@@ -113,9 +115,11 @@ struct EquinoxAndSolsticeInfoView: View {
 						print(error)
 					}
 				}
+				#endif
 				
 				scene = EarthScene()
 			}
+			#if os(iOS)
 			.onDisappear {
 				resourceRequest.endAccessingResources()
 			}
