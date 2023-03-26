@@ -22,7 +22,7 @@ public class EarthNode : SCNNode {
 	
 	func build() {
 		addBody()
-		addClouds()
+		//addClouds()
 		addPoles()
 		addEquator()
 		beginDailyRotation()
@@ -42,7 +42,6 @@ public class EarthNode : SCNNode {
 		bodyMaterial.emission.contents = "Emission"
 		bodyMaterial.normal.contents = "Normal"
 		bodyMaterial.normal.intensity = 0.5
-		bodyMaterial.shininess = 30
 		sphere.firstMaterial = bodyMaterial
 		bodyNode.geometry = sphere
 		addChildNode(bodyNode)
