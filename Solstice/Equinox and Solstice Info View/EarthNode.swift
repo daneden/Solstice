@@ -41,7 +41,8 @@ public class EarthNode : SCNNode {
 		bodyMaterial.specular.intensity = 0.3
 		bodyMaterial.emission.contents = "Emission"
 		bodyMaterial.normal.contents = "Normal"
-		bodyMaterial.shininess = 0.15
+		bodyMaterial.normal.intensity = 0.5
+		bodyMaterial.shininess = 30
 		sphere.firstMaterial = bodyMaterial
 		bodyNode.geometry = sphere
 		addChildNode(bodyNode)

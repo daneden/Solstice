@@ -28,7 +28,8 @@ fileprivate enum Event: String, CaseIterable {
 }
 
 struct EquinoxAndSolsticeInfoView: View {
-	@State var scene: EarthScene? = EarthScene()
+	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
+	@State var scene: EarthScene?
 	@State fileprivate var event: Event = .juneSolstice
 	
 	var body: some View {
@@ -47,8 +48,12 @@ struct EquinoxAndSolsticeInfoView: View {
 					}
 					.pickerStyle(.segmented)
 					
-					CustomSceneView(scene: $scene)
-						.frame(height: min(geometry.size.width, 400))
+					if scene != nil {
+						CustomSceneView(scene: $scene)
+							.frame(height: min(geometry.size.width, 400))
+					} else {
+						ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0)
+					}
 					
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					
@@ -96,6 +101,20 @@ struct EquinoxAndSolsticeInfoView: View {
 				if let node = scene?.lightAnchorNode {
 					node.runAction(action)
 				}
+			}
+			.task {
+				if await !resourceRequest.conditionallyBeginAccessingResources() {
+					do {
+						try await resourceRequest.beginAccessingResources()
+					} catch {
+						print(error)
+					}
+				}
+				
+				scene = EarthScene()
+			}
+			.onDisappear {
+				resourceRequest.endAccessingResources()
 			}
 		}
 	}
