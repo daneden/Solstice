@@ -74,7 +74,7 @@ struct CountdownWidgetView: View {
 				Image(systemName: nextSolarEvent.imageName)
 					.font(.title.bold())
 					.symbolVariant(.fill)
-					.complicationForeground()
+					.widgetAccentable()
 					.widgetLabel {
 						Text("\(nextSolarEvent.date, style: .time), \(nextSolarEvent.date, style: .relative)")
 					}
