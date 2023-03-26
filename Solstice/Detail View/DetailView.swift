@@ -24,12 +24,12 @@ struct DetailView<Location: ObservableLocation>: View {
 	var body: some View {
 		ScrollViewReader { scrollProxy in
 			Form {
-#if !os(watchOS)
+				#if !os(watchOS)
 				if timeMachine.isOn {
 					TimeMachineView()
 						.id("timeMachineView")
 				}
-#endif
+				#endif
 				
 				if let solar {
 					DailyOverview(solar: solar, location: location)
@@ -53,12 +53,16 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			.onChange(of: timeMachine.isOn) { newValue in
 				if newValue == true {
-					scrollProxy.scrollTo("timeMachineView")
+					withAnimation {
+						scrollProxy.scrollTo("timeMachineView")
+					}
 				}
 			}
 			.onChange(of: timeMachine.targetDate) { newValue in
 				if timeMachine.isOn {
-					scrollProxy.scrollTo("timeMachineView")
+					withAnimation {
+						scrollProxy.scrollTo("timeMachineView")
+					}
 				}
 			}
 		}
