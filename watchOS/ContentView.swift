@@ -30,6 +30,12 @@ struct ContentView: View {
 			.environmentObject(navigationState)
 			.environmentObject(timeMachine)
 			.navigationTitle("Solstice")
+			.onChange(of: scenePhase) { _ in
+				timeMachine.referenceDate = Date()
+			}
+			.onReceive(timer) { _ in
+				timeMachine.referenceDate = Date()
+			}
 	}
 	
 }
