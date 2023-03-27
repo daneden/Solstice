@@ -58,6 +58,28 @@ struct EquinoxAndSolsticeInfoView: View {
 		GeometryReader { geometry in
 			Form {
 				Section {
+					Group {
+						if scene != nil {
+							CustomSceneView(scene: $scene)
+								.frame(height: min(geometry.size.width, 400))
+								.transition(.opacity)
+						} else {
+#if os(iOS)
+							HStack {
+								Spacer()
+								ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
+									Text("Loading...")
+								}
+								.progressViewStyle(.circular)
+								Spacer()
+							}
+							.frame(height: min(geometry.size.width, 400))
+#endif
+						}
+					}
+					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+					.listRowSeparator(.hidden)
+					
 					Picker(selection: $selection.event.animation()) {
 						ForEach(Selection.Event.allCases, id: \.self) { eventType in
 							Text(eventType.rawValue)
@@ -65,7 +87,7 @@ struct EquinoxAndSolsticeInfoView: View {
 					} label: {
 						Text("View event:")
 					}
-					.pickerStyle(.segmented)
+					
 					
 					Group {
 						switch selection.event {
@@ -87,25 +109,7 @@ struct EquinoxAndSolsticeInfoView: View {
 							}
 						}
 					}
-					.pickerStyle(.segmented)
-					
-					if scene != nil {
-						CustomSceneView(scene: $scene)
-							.frame(height: min(geometry.size.width, 400))
-							.transition(.opacity)
-					} else {
-						#if os(iOS)
-						HStack {
-							Spacer()
-							ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
-								Text("Loading...")
-							}
-							.progressViewStyle(.circular)
-							Spacer()
-						}
-						.frame(height: min(geometry.size.width, 400))
-						#endif
-					}
+
 					
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					
