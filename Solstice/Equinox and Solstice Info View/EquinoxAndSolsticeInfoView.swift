@@ -16,37 +16,76 @@ typealias NativeViewRepresentable = NSViewRepresentable
 typealias NativeColor = NSColor
 #endif
 
-fileprivate enum Event: String, CaseIterable {
-	case marchEquinox = "March Equinox",
-			 juneSolstice = "June Solstice",
-			 septemberEquinox = "September Equinox",
-			 decemberSolstice = "December Solstice"
+fileprivate struct Selection: Codable, Hashable {
+	var event: Event = .solstice
+	var equinoxMonth: EquinoxMonth = .march
+	var solsticeMonth: SolsticeMonth = .june
 	
-	var shortName: String {
-		self.rawValue.split(separator: /\ /).first?.capitalized ?? ""
+	enum Event: String, CaseIterable, Codable {
+		case equinox = "Equinox", solstice = "Solstice"
+	}
+	
+	enum EquinoxMonth: String, CaseIterable, Codable {
+		case march = "March", september = "September"
+	}
+	
+	enum SolsticeMonth: String, CaseIterable, Codable {
+		case june = "June", december = "December"
+	}
+	
+	var sunAngle: CGFloat {
+		switch event {
+		case .equinox:
+			return equinoxMonth == .march
+				? -.pi / 2
+				: .pi / 2
+		case .solstice:
+			return solsticeMonth == .june
+			? 0
+			: .pi
+		}
 	}
 }
 
 struct EquinoxAndSolsticeInfoView: View {
+	@State private var selection: Selection = Selection()
 	#if os(iOS)
 	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
 	#endif
 	@State var scene: EarthScene?
-	@State fileprivate var event: Event = .juneSolstice
 	
 	var body: some View {
 		GeometryReader { geometry in
 			Form {
 				Section {
-					Picker(selection: $event) {
-						ForEach(Event.allCases, id: \.self) { eventName in
-							ViewThatFits {
-								Text(eventName.rawValue)
-								Text(eventName.shortName)
-							}
+					Picker(selection: $selection.event.animation()) {
+						ForEach(Selection.Event.allCases, id: \.self) { eventType in
+							Text(eventType.rawValue)
 						}
 					} label: {
-						Text("View:")
+						Text("View event:")
+					}
+					.pickerStyle(.segmented)
+					
+					Group {
+						switch selection.event {
+						case .equinox:
+							Picker(selection: $selection.equinoxMonth) {
+								ForEach(Selection.EquinoxMonth.allCases, id: \.self) { eventType in
+									Text(eventType.rawValue)
+								}
+							} label: {
+								Text("At month:")
+							}
+						case .solstice:
+							Picker(selection: $selection.solsticeMonth) {
+								ForEach(Selection.SolsticeMonth.allCases, id: \.self) { eventType in
+									Text(eventType.rawValue)
+								}
+							} label: {
+								Text("At month:")
+							}
+						}
 					}
 					.pickerStyle(.segmented)
 					
@@ -88,22 +127,10 @@ struct EquinoxAndSolsticeInfoView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.onChange(of: event) { newValue in
-				var angle: CGFloat
-				switch newValue {
-				case .marchEquinox:
-					angle = -.pi / 2
-				case .juneSolstice:
-					angle = 0
-				case .septemberEquinox:
-					angle = .pi / 2
-				case .decemberSolstice:
-					angle = .pi
-				}
-				
+			.onChange(of: selection) { newValue in
 				let action = SCNAction.rotateTo(
 					x: 0,
-					y: angle,
+					y: newValue.sunAngle,
 					z: 0,
 					duration: 1,
 					usesShortestUnitArc: true
