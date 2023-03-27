@@ -75,10 +75,9 @@ struct OverviewWidgetView: View {
 		#if os(watchOS)
 		case .accessoryCorner:
 			Image(systemName: "sun.max")
-				.resizable()
-				.aspectRatio(contentMode: .fit)
+				.font(.title.bold())
 				.symbolVariant(.fill)
-				.foregroundStyle(.tint)
+				.widgetAccentable()
 				.widgetLabel {
 					Text(solar?.daylightDuration.localizedString ?? "Loading...")
 				}

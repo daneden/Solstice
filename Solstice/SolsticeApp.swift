@@ -54,6 +54,11 @@ struct SolsticeApp: App {
 			SettingsView()
 				.frame(maxWidth: 500)
 		}
+		
+		Window("About Equinox and Solstices", id: "about-equinox-and-solstice") {
+			EquinoxAndSolsticeInfoView()
+		}
+		.defaultSize(width: 400, height: 650)
 		#endif
 	}
 }

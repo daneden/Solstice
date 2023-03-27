@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@StateObject var timeMachine = TimeMachine()
 	@StateObject var navigationState = NavigationStateManager()
+	
+	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 	
 	var body: some View {
 		NavigationStack {
@@ -28,6 +31,12 @@ struct ContentView: View {
 			.environmentObject(navigationState)
 			.environmentObject(timeMachine)
 			.navigationTitle("Solstice")
+			.onChange(of: scenePhase) { _ in
+				timeMachine.referenceDate = Date()
+			}
+			.onReceive(timer) { _ in
+				timeMachine.referenceDate = Date()
+			}
 	}
 	
 }

@@ -22,32 +22,49 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
 	var body: some View {
-		Form {
-			#if !os(watchOS)
-			if timeMachine.isOn {
-				TimeMachineView()
-			}
-			#endif
-			
-			if let solar {
-				DailyOverview(solar: solar, location: location)
-			} else {
-				ProgressView {
-					HStack {
-						Spacer()
-						Text("Calculating...")
-						Spacer()
+		ScrollViewReader { scrollProxy in
+			Form {
+				#if !os(watchOS)
+				if timeMachine.isOn {
+					TimeMachineView()
+						.id("timeMachineView")
+				}
+				#endif
+				
+				if let solar {
+					DailyOverview(solar: solar, location: location)
+				} else {
+					ProgressView {
+						HStack {
+							Spacer()
+							Text("Calculating...")
+							Spacer()
+						}
+						.padding()
 					}
-					.padding()
+				}
+				
+				AnnualOverview(location: location)
+			}
+			.formStyle(.grouped)
+			.navigationTitle(location.title ?? "Solstice")
+			.toolbar {
+				toolbarItems
+			}
+			.onChange(of: timeMachine.isOn) { newValue in
+				if newValue == true {
+					withAnimation {
+						scrollProxy.scrollTo("timeMachineView")
+					}
 				}
 			}
-			
-			AnnualOverview(location: location)
-		}
-		.formStyle(.grouped)
-		.navigationTitle(location.title ?? "Solstice")
-		.toolbar {
-			toolbarItems
+			.onChange(of: timeMachine.targetDate) { newValue in
+				if timeMachine.isOn {
+					withAnimation {
+						scrollProxy.scrollTo("timeMachineView")
+					}
+				}
+			}
 		}
 	}
 	
