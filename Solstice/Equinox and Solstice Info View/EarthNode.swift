@@ -10,7 +10,24 @@ import SceneKit
 import SpriteKit
 
 public class EarthNode : SCNNode {
+	var withClouds: Bool = true
+	var poles: Bool = true
+	var equator: Bool = true
+	var rotationAnimation: Bool = true
+	
 	public override init() {
+		super.init()
+		build()
+	}
+	
+	public init(withClouds: Bool = true,
+							poles: Bool = true,
+							equator: Bool = true,
+							rotationAnimation: Bool = true) {
+		self.withClouds = withClouds
+		self.poles = poles
+		self.equator = equator
+		self.rotationAnimation = rotationAnimation
 		super.init()
 		build()
 	}
@@ -22,11 +39,14 @@ public class EarthNode : SCNNode {
 	
 	func build() {
 		addBody()
-		//addClouds()
-		addPoles()
-		addEquator()
-		runAction(.rotate(by: .pi * 1.5, around: SCNVector3(x: 0, y: 1, z: 0), duration: 0))
-		beginDailyRotation()
+		
+		if withClouds { addClouds() }
+		if poles { addPoles() }
+		if equator { addEquator() }
+		
+		eulerAngles = SCNVector3(x: 0, y: -.pi / 2, z: 0)
+		
+		if rotationAnimation { beginDailyRotation() }
 	}
 	
 	func addBody() {
@@ -61,10 +81,6 @@ public class EarthNode : SCNNode {
 		atmosSphere.firstMaterial = atmosMaterial
 		atmosNode.geometry = atmosSphere
 		addChildNode(atmosNode)
-		
-		let action = SCNAction.rotate(by: .pi * -2, around: SCNVector3(x:0, y:1, z:0), duration: 360)
-		let repeatAction = SCNAction.repeatForever(action)
-		atmosNode.runAction(repeatAction)
 	}
 	
 	func addPoles() {
@@ -98,4 +114,8 @@ public class EarthNode : SCNNode {
 		let repeatAction = SCNAction.repeatForever(action)
 		runAction(repeatAction)
 	}
+}
+
+extension EarthNode {
+	static let naturalNoAnimation = EarthNode(poles: false, equator: false, rotationAnimation: false)
 }

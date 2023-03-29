@@ -8,11 +8,24 @@
 import SceneKit
 import SpriteKit
 
+#if os(iOS)
+typealias SKFloat = Float
+#elseif os(macOS)
+typealias SKFloat = CGFloat
+#endif
+
 class EarthScene: SCNScene {
 	var lightAnchorNode: SCNNode?
+	var earthNode: SCNNode = EarthNode()
 	
 	public override init() {
 		super.init()
+		build()
+	}
+	
+	public init(earthNode: EarthNode = EarthNode()) {
+		super.init()
+		self.earthNode = earthNode
 		build()
 	}
 	
@@ -22,7 +35,6 @@ class EarthScene: SCNScene {
 	}
 	
 	func build() {
-		let earthNode = EarthNode()
 		let tiltNode = SCNNode()
 		
 		tiltNode.eulerAngles = SCNVector3(-23.4 * (.pi / 180.0), .pi / 2, 0)
@@ -48,5 +60,31 @@ class EarthScene: SCNScene {
 		self.lightAnchorNode?.addChildNode(lightNode)
 		
 		self.rootNode.addChildNode(self.lightAnchorNode!)
+	}
+	
+	func simulateDate(_ date: Date) {
+		guard let yearRange = calendar.dateInterval(of: .year, for: date) else {
+			return
+		}
+		
+		let yearStart = yearRange.start.timeIntervalSinceReferenceDate
+		let yearEnd = yearRange.end.timeIntervalSinceReferenceDate
+		let yearProgress = (date.timeIntervalSinceReferenceDate - yearStart) / (yearEnd - yearStart)
+		let lightRotation = .pi * 2 * yearProgress
+		
+		self.lightAnchorNode?.eulerAngles = SCNVector3(x: 0, y: SKFloat(lightRotation - .pi), z: 0)
+		self.earthNode.eulerAngles = earthRotationAmount(for: date)
+	}
+	
+	func earthRotationAmount(for date: Date = Date()) -> SCNVector3 {
+		guard let dayRange = calendar.dateInterval(of: .day, for: date) else {
+			return .init()
+		}
+		
+		let dayStart = dayRange.start.timeIntervalSinceReferenceDate
+		let dayEnd = dayRange.end.timeIntervalSinceReferenceDate
+		let dayProgress = (date.timeIntervalSinceReferenceDate - dayStart) / (dayEnd - dayStart)
+		let earthRotation = .pi * 2 * dayProgress
+		return SCNVector3(x: 0, y: SKFloat(earthRotation - .pi / 2), z: 0)
 	}
 }

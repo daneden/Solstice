@@ -14,6 +14,9 @@ struct SolsticeWidgets: WidgetBundle {
 	var body: some Widget {
 		SolsticeOverviewWidget()
 		SolsticeCountdownWidget()
+		#if !os(watchOS)
+		SolsticeEquinoxSolsticeWidget()
+		#endif
 	}
 }
 
@@ -63,3 +66,22 @@ struct SolsticeCountdownWidget: Widget {
 		.supportedFamilies(SolsticeCountdownWidget.supportedFamilies)
 	}
 }
+
+#if !os(watchOS)
+struct SolsticeEquinoxSolsticeWidget: Widget {
+	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+	
+	var body: some WidgetConfiguration {
+		IntentConfiguration(
+			kind: SolsticeWidgetKind.EquinoxSolsticeWidget.rawValue,
+			intent: ConfigurationIntent.self,
+			provider: SolsticeOverviewWidgetTimelineProvider()
+		) { timelineEntry in
+			EquinoxSolsticeWidgetView(entry: timelineEntry)
+		}
+		.configurationDisplayName("Equinox and Solstice Countdown")
+		.description("See a model of the Earth and a countdown to the next equinox or solstice event")
+		.supportedFamilies(SolsticeEquinoxSolsticeWidget.supportedFamilies)
+	}
+}
+#endif

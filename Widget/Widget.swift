@@ -11,7 +11,7 @@ import Intents
 import Solar
 
 enum SolsticeWidgetKind: String {
-	case CountdownWidget, OverviewWidget
+	case CountdownWidget, OverviewWidget, EquinoxSolsticeWidget
 }
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
