@@ -109,7 +109,7 @@ struct EquinoxSolsticeWidgetView: View {
 		renderer.pointOfView?.constraints?.append(SCNLookAtConstraint(target: scene.earthNode))
 
 		scene.simulateDate(entry.date)
-		
+		SCNTransaction.flush()
 		return renderer.snapshot(atTime: 0, with: size, antialiasingMode: .none)
 	}
 	
