@@ -39,8 +39,9 @@ struct EquinoxSolsticeWidgetView: View {
 	@State var scene: EarthScene? = EarthScene()
 	
 	var body: some View {
+		GeometryReader { geo in 
 		ZStack {
-			if let image = renderImage() {
+			if let image = renderImage(size: geo.size) {
 				Canvas { context, size in
 					context.addFilter(.blur(radius: 0.15))
 					for _ in 0..<100 {
@@ -80,9 +81,10 @@ struct EquinoxSolsticeWidgetView: View {
 		.background(LinearGradient(colors: [.clear, .black.opacity(0.8)], startPoint: .top, endPoint: .bottom))
 		.background()
 		.preferredColorScheme(.dark)
+		}
 	}
 	
-	func renderImage() -> NativeImage? {
+	func renderImage(size: CGSize) -> NativeImage? {
 		let scene = EarthScene(earthNode: EarthNode.naturalNoAnimation)
 		let renderer = SCNRenderer(device: MTLCreateSystemDefaultDevice())
 		renderer.scene = scene
@@ -108,7 +110,7 @@ struct EquinoxSolsticeWidgetView: View {
 
 		scene.simulateDate(entry.date)
 		
-		return renderer.snapshot(atTime: 0, with: CGSize(width: 800, height: 800), antialiasingMode: .none)
+		return renderer.snapshot(atTime: 0, with: size, antialiasingMode: .none)
 	}
 	
 	var nextSolstice: Date {
