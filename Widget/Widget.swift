@@ -110,7 +110,7 @@ extension SolsticeWidgetTimelineProvider {
 			? .init(score: 10, duration: nearestEventDistance)
 			: nil
 			
-			var nextUpdateDate = currentDate.addingTimeInterval(60 * 15)
+			var nextUpdateDate = currentDate.addingTimeInterval(60 * 60)
 			
 			if nextUpdateDate < solar.safeSunrise {
 				nextUpdateDate = solar.safeSunrise
