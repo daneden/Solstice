@@ -41,33 +41,16 @@ fileprivate struct Selection: Codable, Hashable {
 
 struct EquinoxAndSolsticeInfoView: View {
 	@State private var selection: Selection = Selection()
-	#if os(iOS)
-	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
-	#endif
-	@State var scene: EarthScene?
+	@State var scene: EarthScene? = EarthScene()
 	
 	var body: some View {
 		GeometryReader { geometry in
 			Form {
 				Section {
 					Group {
-						if scene != nil {
-							CustomSceneView(scene: $scene)
-								.frame(height: min(geometry.size.width, 400))
-								.transition(.opacity)
-						} else {
-#if os(iOS)
-							HStack {
-								Spacer()
-								ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
-									Text("Loading...")
-								}
-								.progressViewStyle(.circular)
-								Spacer()
-							}
+						CustomSceneView(scene: $scene)
 							.frame(height: min(geometry.size.width, 400))
-#endif
-						}
+							.transition(.opacity)
 					}
 					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 					.listRowSeparator(.hidden)
@@ -79,7 +62,6 @@ struct EquinoxAndSolsticeInfoView: View {
 					} label: {
 						Text("View event:")
 					}
-					
 					
 					Group {
 						switch selection.event {
@@ -137,24 +119,6 @@ struct EquinoxAndSolsticeInfoView: View {
 					node.runAction(action)
 				}
 			}
-			.task {
-				#if os(iOS)
-				if await !resourceRequest.conditionallyBeginAccessingResources() {
-					do {
-						try await resourceRequest.beginAccessingResources()
-					} catch {
-						print(error)
-					}
-				}
-				#endif
-				
-				scene = EarthScene()
-			}
-			#if os(iOS)
-			.onDisappear {
-				resourceRequest.endAccessingResources()
-			}
-			#endif
 		}
 	}
 }
