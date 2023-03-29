@@ -17,11 +17,11 @@ typealias NativeImage = NSImage
 
 extension Image {
 	init(nativeImage: NativeImage) {
-		#if os(iOS)
+#if os(iOS)
 		self.init(uiImage: nativeImage)
-		#elseif os(macOS)
+#elseif os(macOS)
 		self.init(nsImage: nativeImage)
-		#endif
+#endif
 	}
 }
 
@@ -39,49 +39,49 @@ struct EquinoxSolsticeWidgetView: View {
 	@State var scene: EarthScene? = EarthScene()
 	
 	var body: some View {
-		GeometryReader { geo in 
-		ZStack {
-			if let image = renderImage(size: geo.size) {
-				Canvas { context, size in
-					context.addFilter(.blur(radius: 0.15))
-					for _ in 0..<100 {
-						let x = Double.random(in: 0..<size.width)
-						let y = Double.random(in: 0..<size.height)
-						let size = Double.random(in: 0.2..<2)
-						let opacity = Double.random(in: 0.3..<1)
-						context.opacity = opacity
-						context.blendMode = .plusLighter
-						context.draw(Image(systemName: "circle.fill"), in: CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: size, height: size)))
+		GeometryReader { geo in
+			ZStack {
+				if let image = renderImage(size: geo.size) {
+					Canvas { context, size in
+						context.addFilter(.blur(radius: 0.15))
+						for _ in 0..<100 {
+							let x = Double.random(in: 0..<size.width)
+							let y = Double.random(in: 0..<size.height)
+							let size = Double.random(in: 0.2..<2)
+							let opacity = Double.random(in: 0.3..<1)
+							context.opacity = opacity
+							context.blendMode = .plusLighter
+							context.draw(Image(systemName: "circle.fill"), in: CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: size, height: size)))
+						}
 					}
+					
+					Image(nativeImage: image)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
 				}
 				
-				Image(nativeImage: image)
-					.resizable()
-					.aspectRatio(contentMode: .fit)
-			}
-			
-			VStack {
-				Spacer()
-				HStack {
-					nextEventName
-						.fontWeight(.bold)
-					
+				VStack {
 					Spacer()
-					
-					Text(nextEvent, format: .relative(presentation: .named))
-					Text(nextEvent, style: .date)
-						.foregroundStyle(.secondary)
+					HStack {
+						nextEventName
+							.fontWeight(.bold)
+						
+						Spacer()
+						
+						Text(nextEvent, format: .relative(presentation: .named))
+						Text(nextEvent, style: .date)
+							.foregroundStyle(.secondary)
+					}
+					.font(.footnote)
+					.padding()
+					.shadow(radius: 6)
 				}
-				.font(.footnote)
-				.padding()
-				.shadow(radius: 6)
 			}
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.background(LinearGradient(colors: [.clear, .black.opacity(0.8)], startPoint: .top, endPoint: .bottom))
 		.background()
 		.preferredColorScheme(.dark)
-		}
 	}
 	
 	func renderImage(size: CGSize) -> NativeImage? {
@@ -107,7 +107,7 @@ struct EquinoxSolsticeWidgetView: View {
 		
 		renderer.pointOfView = cameraNode
 		renderer.pointOfView?.constraints?.append(SCNLookAtConstraint(target: scene.earthNode))
-
+		
 		scene.simulateDate(entry.date)
 		SCNTransaction.flush()
 		return renderer.snapshot(atTime: 0, with: size, antialiasingMode: .none)
