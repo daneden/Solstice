@@ -110,7 +110,8 @@ struct EquinoxSolsticeWidgetView: View {
 		
 		scene.simulateDate(entry.date)
 		SCNTransaction.flush()
-		return renderer.snapshot(atTime: 0, with: size, antialiasingMode: .none)
+		let scaledSize = CGSize(width: size.width * 2, height: size.height * 2)
+		return renderer.snapshot(atTime: 0, with: scaledSize, antialiasingMode: .none)
 	}
 	
 	var nextSolstice: Date {
