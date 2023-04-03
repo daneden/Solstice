@@ -95,7 +95,7 @@ extension SolsticeWidgetTimelineProvider {
 			
 			var entryDate = Date()
 			while entryDate < .now.endOfDay {
-				guard let solar = Solar(coordinate: widgetLocation.coordinate) else {
+				guard let solar = Solar(for: entryDate, coordinate: widgetLocation.coordinate) else {
 					return completion(Timeline(entries: entries, policy: .atEnd))
 				}
 				
