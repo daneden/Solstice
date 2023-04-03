@@ -46,7 +46,7 @@ extension OverviewWidgetView {
 						.font(.headline)
 						.widgetAccentable()
 						.imageScale(.small)
-						.allowsTightening()
+						.allowsTightening(true)
 					
 					if let relevantSolar {
 						Text(relevantSolar.daylightDuration.localizedString)
