@@ -38,6 +38,7 @@ extension OverviewWidgetView {
 	struct AccessoryRectangularView: View {
 		var isAfterTodaySunset: Bool
 		var relevantSolar: Solar?
+		var comparisonSolar: Solar?
 		
 		var body: some View {
 			HStack {
@@ -51,8 +52,14 @@ extension OverviewWidgetView {
 					if let relevantSolar {
 						Text(relevantSolar.daylightDuration.localizedString)
 						
-						Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
-							.foregroundStyle(.secondary)
+						if let comparisonSolar {
+							let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
+							Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(difference).formatted(.units(maximumUnitCount: 2)))")
+								.foregroundStyle(.secondary)
+						} else {
+							Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
+								.foregroundStyle(.secondary)
+						}
 					}
 				}
 				Spacer(minLength: 0)
