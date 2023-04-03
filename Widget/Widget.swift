@@ -58,7 +58,7 @@ extension SolsticeWidgetTimelineProvider {
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		let isRealLocation = configuration.location?.location == nil
+		let isRealLocation = configuration.location == nil
 		
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
 			guard let placemark = placemarks?.last,
@@ -83,7 +83,7 @@ extension SolsticeWidgetTimelineProvider {
 	
 	func getTimeline(for configuration: Intent, in context: TimelineProviderContext, completion: @escaping (Timeline<Entry>) -> Void) {
 		var entries: [Entry] = []
-		let realLocation = configuration.location?.location != nil
+		let realLocation = configuration.location == nil
 		
 		let handler: CLGeocodeCompletionHandler = { placemarks, _ in
 			guard let placemark = placemarks?.first else {
