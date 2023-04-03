@@ -117,6 +117,16 @@ extension SolsticeWidgetTimelineProvider {
 				entryDate = entryDate.addingTimeInterval(60 * 30)
 			}
 			
+			if let solar = Solar(coordinate: widgetLocation.coordinate) {
+				if Date() < solar.safeSunrise {
+					entries.append(SolsticeWidgetTimelineEntry(date: solar.safeSunrise.addingTimeInterval(1), location: widgetLocation))
+				}
+				
+				if Date() < solar.safeSunset {
+					entries.append(SolsticeWidgetTimelineEntry(date: solar.safeSunset.addingTimeInterval(1), location: widgetLocation))
+				}
+			}
+			
 			completion(Timeline(entries: entries, policy: .atEnd))
 		}
 		
