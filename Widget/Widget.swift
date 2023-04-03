@@ -58,7 +58,7 @@ extension SolsticeWidgetTimelineProvider {
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		var isRealLocation = false
+		let isRealLocation = configuration.location?.location == nil
 		
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
 			guard let placemark = placemarks?.last,
@@ -71,81 +71,61 @@ extension SolsticeWidgetTimelineProvider {
 			return completion(entry)
 		}
 		
-		if let configurationLocation = configuration.location?.location {
+		if let configurationLocation = configuration.location?.location ?? currentLocation.latestLocation {
 			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
-			if currentLocation.latestLocation != nil {
-				completion(SolsticeWidgetTimelineEntry(date: Date(), location: getLocation(isRealLocation: true)))
-			} else {
-				currentLocation.requestLocation { location in
-					guard let location else { return }
-					isRealLocation = true
-					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
-				}
+			currentLocation.requestLocation { location in
+				guard let location else { return }
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			}
 		}
 	}
 	
-	func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SolsticeWidgetTimelineEntry>) -> Void) {
-		var isRealLocation = false
-		let handler: CLGeocodeCompletionHandler = { placemarks, error in
-			guard let placemark = placemarks?.last,
-						error == nil else {
+	func getTimeline(for configuration: Intent, in context: TimelineProviderContext, completion: @escaping (Timeline<Entry>) -> Void) {
+		var entries: [Entry] = []
+		let realLocation = configuration.location?.location != nil
+		
+		let handler: CLGeocodeCompletionHandler = { placemarks, _ in
+			guard let placemark = placemarks?.first else {
 				return completion(Timeline(entries: [], policy: .atEnd))
 			}
 			
-			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
+			let widgetLocation = getLocation(for: placemark, isRealLocation: realLocation)
 			
-			var entries: [SolsticeWidgetTimelineEntry] = []
 			
-			guard let solar = Solar(coordinate: location.coordinate) else {
-				return completion(Timeline(entries: [], policy: .atEnd))
-			}
-			
-			let currentDate = Date()
-			let distanceToSunrise = abs(currentDate.distance(to: solar.safeSunrise))
-			let distanceToSunset = abs(currentDate.distance(to: solar.safeSunset))
-			let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
-			let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
-			? .init(score: 10, duration: nearestEventDistance)
-			: nil
-			
-			var nextUpdateDate = currentDate.addingTimeInterval(60 * 15)
-			
-			if nextUpdateDate < solar.safeSunrise {
-				nextUpdateDate = solar.safeSunrise
-			} else if nextUpdateDate < solar.safeSunset {
-				nextUpdateDate = solar.safeSunset
-			}
-			
-			entries.append(
-				SolsticeWidgetTimelineEntry(
-					date: currentDate,
-					location: location,
-					relevance: relevance
+			var entryDate = Date()
+			while entryDate < .now.endOfDay {
+				guard let solar = Solar(coordinate: widgetLocation.coordinate) else {
+					return completion(Timeline(entries: entries, policy: .atEnd))
+				}
+				
+				let distanceToSunrise = abs(entryDate.distance(to: solar.safeSunrise))
+				let distanceToSunset = abs(entryDate.distance(to: solar.safeSunset))
+				let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
+				let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
+				? .init(score: 10, duration: nearestEventDistance)
+				: nil
+				
+				entries.append(
+					SolsticeWidgetTimelineEntry(
+						date: entryDate,
+						location: widgetLocation,
+						relevance: relevance
+					)
 				)
-			)
+				
+				entryDate = entryDate.addingTimeInterval(60 * 30)
+			}
 			
-			let timeline = Timeline(
-				entries: entries,
-				policy: .after(nextUpdateDate)
-			)
-			
-			completion(timeline)
+			completion(Timeline(entries: entries, policy: .atEnd))
 		}
 		
-		if let configurationLocation = configuration.location?.location {
-			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+		if let location = configuration.location?.location ?? currentLocation.latestLocation {
+			geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 		} else {
-			if let location = currentLocation.latestLocation {
-				isRealLocation = true
+			currentLocation.requestLocation { location in
+				guard let location else { return completion(Timeline(entries: [], policy: .atEnd)) }
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
-			} else {
-				currentLocation.requestLocation { location in
-					guard let location else { return }
-					isRealLocation = true
-					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
-				}
 			}
 		}
 	}
