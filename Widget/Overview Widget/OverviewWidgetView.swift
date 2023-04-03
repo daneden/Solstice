@@ -38,6 +38,15 @@ struct OverviewWidgetView: View {
 		entry.location
 	}
 	
+	var displaySize: Font {
+		switch family {
+		case .systemSmall:
+			return sizeCategory < .extraLarge ? .headline : .footnote
+		default:
+			return .title2
+		}
+	}
+	
 	var body: some View {
 		if let solar {
 			switch family {
@@ -102,8 +111,9 @@ struct OverviewWidgetView: View {
 							
 							Text("\(duration)")
 								.lineLimit(4)
-								.font(Font.system(family == .systemSmall ? .footnote : .headline, design: .rounded))
+								.font(displaySize)
 								.fontWeight(.semibold)
+								.fontDesign(.rounded)
 								.fixedSize(horizontal: false, vertical: true)
 						}
 						
@@ -129,7 +139,7 @@ struct OverviewWidgetView: View {
 									}
 								}
 							}
-						}.font(.caption.weight(.medium))
+						}.font(.footnote.weight(.semibold))
 					}.symbolRenderingMode(.hierarchical)
 				#endif
 				}
