@@ -47,7 +47,7 @@ struct OverviewWidgetView: View {
 			case .accessoryInline:
 				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
 			case .accessoryRectangular:
-				AccessoryRectangularView(isAfterTodaySunset: isAfterTodaySunset, relevantSolar: relevantSolar)
+				AccessoryRectangularView(isAfterTodaySunset: isAfterTodaySunset, relevantSolar: relevantSolar, comparisonSolar: isAfterTodaySunset ? solar : nil)
 			#if os(watchOS)
 			case .accessoryCorner:
 				Image(systemName: "sun.max")
