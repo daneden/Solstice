@@ -9,6 +9,10 @@ import Foundation
 import CoreLocation
 import SwiftUI
 
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
+
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
 	@AppStorage(Preferences.cachedLatitude) private var cachedLatitude
 	@AppStorage(Preferences.cachedLongitude) private var cachedLongitude
@@ -64,6 +68,10 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
 		}
+		
+		#if canImport(WidgetKit)
+		WidgetCenter.shared.reloadAllTimelines()
+		#endif
 	}
 	
 	@MainActor

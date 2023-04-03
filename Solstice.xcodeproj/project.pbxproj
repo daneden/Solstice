@@ -72,7 +72,7 @@
 		7195120129AFBBEC009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
 		7195120829AFBDC5009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7195120929AFBDC5009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
-		7195121329AFBDC5009D282F /* macOS Widget ExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */; platformFilters = (macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7195121329AFBDC5009D282F /* macOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195120729AFBDC5009D282F /* macOS Widget Extension.appex */; platformFilters = (macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7195121829AFBDD9009D282F /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7195121729AFBDD9009D282F /* Solar */; };
 		7195121929AFBDEB009D282F /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87429A276B40007A7EC /* Widget.intentdefinition */; };
 		7195121A29AFBDFC009D282F /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
@@ -144,6 +144,25 @@
 		719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A928E992A200E866CE /* LocationSearchResultRow.swift */; };
 		719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
 		719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
+		7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
+		7198C40229DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
+		7198C40329DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
+		7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
+		7198C40729DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
+		7198C40829DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
+		7198C40A29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
+		7198C40B29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
+		7198C40C29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
+		7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
+		7198C40F29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
+		7198C41029DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
+		719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
+		719F557E29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
+		719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */; };
+		719F558229DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */; };
+		719F558529DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
+		719F558629DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
+		719F558729DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
 		719F926D29ACD21300C06921 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */; };
 		719F927029ACD21300C06921 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198469D28E58CCD00E866CE /* DetailView.swift */; };
@@ -245,7 +264,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				7195121329AFBDC5009D282F /* macOS Widget ExtensionExtension.appex in Embed Foundation Extensions */,
+				7195121329AFBDC5009D282F /* macOS Widget Extension.appex in Embed Foundation Extensions */,
 				7106C87C29A276B40007A7EC /* iOS Widget Extension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -305,7 +324,7 @@
 		719511FB29AF5D0E009D282F /* ViewRemainingDaylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRemainingDaylight.swift; sourceTree = "<group>"; };
 		7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EllipticalEdgeMask.swift"; sourceTree = "<group>"; };
 		7195120229AFBD61009D282F /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
-		7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7195120729AFBDC5009D282F /* macOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125729B48ECD009D282F /* TimeZone++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone++.swift"; sourceTree = "<group>"; };
 		7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLabeledContent.swift; sourceTree = "<group>"; };
@@ -326,6 +345,13 @@
 		719846A928E992A200E866CE /* LocationSearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultRow.swift; sourceTree = "<group>"; };
 		719846AC28E9AA0E00E866CE /* Solar++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Solar++.swift"; sourceTree = "<group>"; };
 		719846AF28EEE48900E866CE /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
+		7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetTimelineProvider.swift; sourceTree = "<group>"; };
+		7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetTimelineProvider.swift; sourceTree = "<group>"; };
+		7198C40929DB06A8009A457E /* CountdownWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidget.swift; sourceTree = "<group>"; };
+		7198C40D29DB06C1009A457E /* OverviewWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidget.swift; sourceTree = "<group>"; };
+		719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CountdownWidgetView+AccessoryWidgetViews.swift"; sourceTree = "<group>"; };
+		719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverviewWidgetView+AccessoryWidgetViews.swift"; sourceTree = "<group>"; };
+		719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetTimelineProvider.swift; sourceTree = "<group>"; };
 		719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solstice watchOS Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A2BDE529B747940071ACE9 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
@@ -413,12 +439,12 @@
 				7195120229AFBD61009D282F /* WidgetExtension.entitlements */,
 				7106C87429A276B40007A7EC /* Widget.intentdefinition */,
 				7106C87729A276B40007A7EC /* Info.plist */,
-				7117008829A52ABE001BE478 /* CountdownWidgetView.swift */,
-				7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */,
 				7106C87229A276B40007A7EC /* Widget.swift */,
 				7106C86E29A276B40007A7EC /* WidgetBundle.swift */,
-				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7106C87529A276B40007A7EC /* Assets.xcassets */,
+				7198C40429DB065F009A457E /* Countdown Widget */,
+				719F557B29DB0DB200D7AE8E /* Helpers */,
+				7198C3FF29DB0618009A457E /* Overview Widget */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -523,7 +549,7 @@
 				7198468128E5895E00E866CE /* Solstice.app */,
 				7106C86829A276B30007A7EC /* iOS Widget Extension.appex */,
 				719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */,
-				7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */,
+				7195120729AFBDC5009D282F /* macOS Widget Extension.appex */,
 				7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */,
 			);
 			name = Products;
@@ -595,6 +621,37 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		7198C3FF29DB0618009A457E /* Overview Widget */ = {
+			isa = PBXGroup;
+			children = (
+				7198C40D29DB06C1009A457E /* OverviewWidget.swift */,
+				7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */,
+				7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */,
+				719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */,
+			);
+			path = "Overview Widget";
+			sourceTree = "<group>";
+		};
+		7198C40429DB065F009A457E /* Countdown Widget */ = {
+			isa = PBXGroup;
+			children = (
+				7198C40929DB06A8009A457E /* CountdownWidget.swift */,
+				7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */,
+				7117008829A52ABE001BE478 /* CountdownWidgetView.swift */,
+				719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */,
+			);
+			path = "Countdown Widget";
+			sourceTree = "<group>";
+		};
+		719F557B29DB0DB200D7AE8E /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
+				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		71DB52AC29ABD17F00D62BB7 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -650,9 +707,9 @@
 			productReference = 7106C86829A276B30007A7EC /* iOS Widget Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		7195120629AFBDC5009D282F /* macOS Widget ExtensionExtension */ = {
+		7195120629AFBDC5009D282F /* macOS Widget Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7195121429AFBDC5009D282F /* Build configuration list for PBXNativeTarget "macOS Widget ExtensionExtension" */;
+			buildConfigurationList = 7195121429AFBDC5009D282F /* Build configuration list for PBXNativeTarget "macOS Widget Extension" */;
 			buildPhases = (
 				7195120329AFBDC5009D282F /* Sources */,
 				7195120429AFBDC5009D282F /* Frameworks */,
@@ -662,12 +719,12 @@
 			);
 			dependencies = (
 			);
-			name = "macOS Widget ExtensionExtension";
+			name = "macOS Widget Extension";
 			packageProductDependencies = (
 				7195121729AFBDD9009D282F /* Solar */,
 			);
 			productName = "macOS Widget ExtensionExtension";
-			productReference = 7195120729AFBDC5009D282F /* macOS Widget ExtensionExtension.appex */;
+			productReference = 7195120729AFBDC5009D282F /* macOS Widget Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		7195122D29B0B3D6009D282F /* watchOS Widget Extension */ = {
@@ -749,7 +806,7 @@
 					earth,
 				);
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					7106C86729A276B30007A7EC = {
 						CreatedOnToolsVersion = 14.2;
@@ -786,7 +843,7 @@
 				719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */,
 				7106C86729A276B30007A7EC /* iOS Widget Extension */,
 				7195122D29B0B3D6009D282F /* watchOS Widget Extension */,
-				7195120629AFBDC5009D282F /* macOS Widget ExtensionExtension */,
+				7195120629AFBDC5009D282F /* macOS Widget Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -866,22 +923,29 @@
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
 				7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
+				7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */,
+				719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
 				7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */,
 				7106C88829A2775C0007A7EC /* Solar+SolarEvent.swift in Sources */,
 				7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */,
+				7198C40A29DB06A8009A457E /* CountdownWidget.swift in Sources */,
 				7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */,
 				7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */,
 				7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */,
 				7106C88929A277680007A7EC /* Persistence.swift in Sources */,
 				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
+				719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88529A2775C0007A7EC /* Solar++.swift in Sources */,
 				71A2BDE829B747940071ACE9 /* Globals.swift in Sources */,
 				7106C88629A2775C0007A7EC /* Date++.swift in Sources */,
+				7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
+				7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
+				719F558529DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
 				7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */,
 				7195128E29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */,
@@ -897,17 +961,22 @@
 				7195122929AFBE94009D282F /* TimeInterval++.swift in Sources */,
 				7195121C29AFBE02009D282F /* CountdownWidgetView.swift in Sources */,
 				7195128529B73344009D282F /* SkyGradient.swift in Sources */,
+				7198C40329DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7195121929AFBDEB009D282F /* Widget.intentdefinition in Sources */,
 				7195121B29AFBDFF009D282F /* OverviewWidgetView.swift in Sources */,
 				7193E92F29C0BAB400103D6B /* DaylightChart.swift in Sources */,
+				7198C40829DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
+				7198C41029DB06C1009A457E /* OverviewWidget.swift in Sources */,
 				7195122129AFBE71009D282F /* CurrentLocation.swift in Sources */,
 				713F800329BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
+				7198C40C29DB06A8009A457E /* CountdownWidget.swift in Sources */,
 				7195122C29AFBEAD009D282F /* Solstice.xcdatamodeld in Sources */,
 				71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */,
 				7195122529AFBE88009D282F /* Solar++.swift in Sources */,
 				7195122729AFBE8E009D282F /* AppStorage++.swift in Sources */,
 				7195121D29AFBE06009D282F /* WidgetBundle.swift in Sources */,
 				7195122329AFBE7F009D282F /* SolsticeCalculator.swift in Sources */,
+				719F558729DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
 				7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */,
 				7195122429AFBE83009D282F /* TimeMachine.swift in Sources */,
 				7195122029AFBE6E009D282F /* AnyLocation.swift in Sources */,
@@ -928,22 +997,29 @@
 				7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */,
 				7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */,
 				7121DE0329C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
+				7198C40F29DB06C1009A457E /* OverviewWidget.swift in Sources */,
+				719F557E29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7195123829B0B3D6009D282F /* TimeInterval++.swift in Sources */,
 				7195123929B0B3D6009D282F /* TimeMachine.swift in Sources */,
 				7195123A29B0B3D6009D282F /* Solar+SolarEvent.swift in Sources */,
 				7195123B29B0B3D6009D282F /* CountdownWidgetView.swift in Sources */,
+				7198C40B29DB06A8009A457E /* CountdownWidget.swift in Sources */,
 				7195123C29B0B3D6009D282F /* OverviewWidgetView.swift in Sources */,
 				7195123D29B0B3D6009D282F /* WidgetBundle.swift in Sources */,
 				7195123E29B0B3D6009D282F /* CurrentLocation.swift in Sources */,
 				7195123F29B0B3D6009D282F /* Persistence.swift in Sources */,
 				7195128629B7334F009D282F /* SkyGradient.swift in Sources */,
 				7195124029B0B3D6009D282F /* WidgetLocationHeadingView.swift in Sources */,
+				719F558229DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7195124129B0B3D6009D282F /* Solar++.swift in Sources */,
 				71A2BDE929B747940071ACE9 /* Globals.swift in Sources */,
 				7195124229B0B3D6009D282F /* Date++.swift in Sources */,
+				7198C40729DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
+				7198C40229DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */,
 				713F800229BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7195124429B0B3D6009D282F /* Widget.swift in Sources */,
+				719F558629DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
 				7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */,
 				7195128F29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7193E92E29C0BAB300103D6B /* DaylightChart.swift in Sources */,
@@ -1061,7 +1137,7 @@
 			platformFilters = (
 				macos,
 			);
-			target = 7195120629AFBDC5009D282F /* macOS Widget ExtensionExtension */;
+			target = 7195120629AFBDC5009D282F /* macOS Widget Extension */;
 			targetProxy = 7195121129AFBDC5009D282F /* PBXContainerItemProxy */;
 		};
 		7195125529B0B401009D282F /* PBXTargetDependency */ = {
@@ -1146,6 +1222,7 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1177,6 +1254,7 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1540,7 +1618,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7195121429AFBDC5009D282F /* Build configuration list for PBXNativeTarget "macOS Widget ExtensionExtension" */ = {
+		7195121429AFBDC5009D282F /* Build configuration list for PBXNativeTarget "macOS Widget Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7195121529AFBDC5009D282F /* Debug */,
