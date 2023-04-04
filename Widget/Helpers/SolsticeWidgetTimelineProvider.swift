@@ -109,7 +109,7 @@ extension SolsticeWidgetTimelineProvider {
 					)
 				)
 				
-				entryDate = entryDate.addingTimeInterval(60 * 15)
+				entryDate = entryDate.addingTimeInterval(60 * 30)
 			}
 			
 			let solar = Solar(for: currentDate, coordinate: widgetLocation.coordinate)
