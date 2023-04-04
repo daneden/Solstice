@@ -59,6 +59,8 @@ extension SolsticeWidgetTimelineProvider {
 		let realLocation = configuration.location == nil
 		
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
+			let currentDate = Date()
+			let entryLimit = calendar.date(byAdding: .day, value: 1, to: currentDate)
 			guard let placemark = placemarks?.first,
 						error == nil else {
 				return completion(Timeline(entries: [], policy: .atEnd))
@@ -66,9 +68,8 @@ extension SolsticeWidgetTimelineProvider {
 			
 			let widgetLocation = getLocation(for: placemark, isRealLocation: realLocation)
 			
-			
-			var entryDate = Date()
-			while entryDate < .now.endOfDay {
+			var entryDate = currentDate
+			while entryDate < entryLimit ?? currentDate.endOfDay {
 				guard let solar = Solar(for: entryDate, coordinate: widgetLocation.coordinate) else {
 					return completion(Timeline(entries: entries, policy: .atEnd))
 				}
@@ -91,12 +92,14 @@ extension SolsticeWidgetTimelineProvider {
 				entryDate = entryDate.addingTimeInterval(60 * 15)
 			}
 			
-			if let solar = Solar(coordinate: widgetLocation.coordinate) {
-				if Date() < solar.safeSunrise {
+			let solar = Solar(for: currentDate, coordinate: widgetLocation.coordinate)
+			
+			if let solar {
+				if currentDate < solar.safeSunrise {
 					entries.append(SolsticeWidgetTimelineEntry(date: solar.safeSunrise.addingTimeInterval(1), location: widgetLocation))
 				}
 				
-				if Date() < solar.safeSunset {
+				if currentDate < solar.safeSunset {
 					entries.append(SolsticeWidgetTimelineEntry(date: solar.safeSunset.addingTimeInterval(1), location: widgetLocation))
 				}
 			}
@@ -105,7 +108,7 @@ extension SolsticeWidgetTimelineProvider {
 				lhs.date.compare(rhs.date) == .orderedAscending
 			})
 			
-			completion(Timeline(entries: entries, policy: .atEnd))
+			completion(Timeline(entries: entries, policy: .after(solar?.nextSolarEvent?.date ?? currentDate.endOfDay)))
 		}
 		
 		if let location = configuration.location?.location ?? currentLocation.latestLocation {

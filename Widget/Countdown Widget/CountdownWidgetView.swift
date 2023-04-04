@@ -33,16 +33,14 @@ struct CountdownWidgetView: View {
 			#endif // end watchOS
 			#endif // end !macOS
 			default:
-				VStack(alignment: .leading, spacing: 8) {
+				VStack(alignment: .leading, spacing: 4) {
 					WidgetLocationView(location: location)
 					
 					Spacer(minLength: 0)
 					
 					HStack {
 						nextEventText
-							.font(displaySize)
-							.fontDesign(.rounded)
-							.fontWeight(.semibold)
+							.widgetHeading()
 							.minimumScaleFactor(0.8)
 							.lineLimit(3)
 						
@@ -89,15 +87,6 @@ extension CountdownWidgetView {
 	
 	var timeZone: TimeZone {
 		location.timeZone
-	}
-	
-	var displaySize: Font {
-		switch family {
-		case .systemSmall:
-			return sizeCategory < .extraLarge ? .headline : .footnote
-		default:
-			return .title2
-		}
 	}
 	
 	var nextEventText: some View {

@@ -38,15 +38,6 @@ struct OverviewWidgetView: View {
 		entry.location
 	}
 	
-	var displaySize: Font {
-		switch family {
-		case .systemSmall:
-			return sizeCategory < .extraLarge ? .headline : .footnote
-		default:
-			return .title2
-		}
-	}
-	
 	var body: some View {
 		if let solar {
 			switch family {
@@ -111,9 +102,7 @@ struct OverviewWidgetView: View {
 							
 							Text("\(duration)")
 								.lineLimit(4)
-								.font(displaySize)
-								.fontWeight(.semibold)
-								.fontDesign(.rounded)
+								.widgetHeading()
 								.fixedSize(horizontal: false, vertical: true)
 						}
 						
@@ -127,7 +116,7 @@ struct OverviewWidgetView: View {
 									if let differenceString = relevantSolar?.differenceString {
 										Text(differenceString)
 											.lineLimit(4)
-											.font(.caption)
+											.font(.footnote)
 											.foregroundStyle(.secondary)
 											.fixedSize(horizontal: false, vertical: true)
 									}

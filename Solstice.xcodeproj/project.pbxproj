@@ -55,6 +55,9 @@
 		7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
+		7150EB5729DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
+		7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */; };
 		717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BBB29A908E30015ECCB /* SettingsView.swift */; };
@@ -313,6 +316,7 @@
 		713F7FFB29BE867E00BEA156 /* DailyOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOverview.swift; sourceTree = "<group>"; };
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
+		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
 		717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStorage++.swift"; sourceTree = "<group>"; };
 		717F8BBB29A908E30015ECCB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -648,6 +652,7 @@
 			children = (
 				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
 				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
+				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -935,6 +940,7 @@
 				7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */,
 				7106C88929A277680007A7EC /* Persistence.swift in Sources */,
 				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
+				7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
 				719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88529A2775C0007A7EC /* Solar++.swift in Sources */,
@@ -972,6 +978,7 @@
 				7198C40C29DB06A8009A457E /* CountdownWidget.swift in Sources */,
 				7195122C29AFBEAD009D282F /* Solstice.xcdatamodeld in Sources */,
 				71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */,
+				7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				7195122529AFBE88009D282F /* Solar++.swift in Sources */,
 				7195122729AFBE8E009D282F /* AppStorage++.swift in Sources */,
 				7195121D29AFBE06009D282F /* WidgetBundle.swift in Sources */,
@@ -1009,6 +1016,7 @@
 				7195123E29B0B3D6009D282F /* CurrentLocation.swift in Sources */,
 				7195123F29B0B3D6009D282F /* Persistence.swift in Sources */,
 				7195128629B7334F009D282F /* SkyGradient.swift in Sources */,
+				7150EB5729DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				7195124029B0B3D6009D282F /* WidgetLocationHeadingView.swift in Sources */,
 				719F558229DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7195124129B0B3D6009D282F /* Solar++.swift in Sources */,
