@@ -82,12 +82,18 @@ extension SolsticeWidgetTimelineProvider {
 				? .init(score: 10, duration: nearestEventDistance)
 				: nil
 				
+				#if os(macOS)
+				let prefersGraphicalAppearance = false
+				#else
+				let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular
+				#endif
+				
 				entries.append(
 					SolsticeWidgetTimelineEntry(
 						date: entryDate,
 						location: widgetLocation,
 						relevance: relevance,
-						prefersGraphicalAppearance: (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular
+						prefersGraphicalAppearance: prefersGraphicalAppearance
 					)
 				)
 				
