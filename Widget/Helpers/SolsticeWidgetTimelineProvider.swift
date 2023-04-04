@@ -13,6 +13,7 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
 	var location: SolsticeWidgetLocation
 	var relevance: TimelineEntryRelevance? = nil
+	var prefersGraphicalAppearance = false
 }
 
 protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
@@ -85,7 +86,8 @@ extension SolsticeWidgetTimelineProvider {
 					SolsticeWidgetTimelineEntry(
 						date: entryDate,
 						location: widgetLocation,
-						relevance: relevance
+						relevance: relevance,
+						prefersGraphicalAppearance: (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular
 					)
 				)
 				

@@ -13,7 +13,7 @@ import CoreLocation
 struct OverviewWidgetView: View {
 	@Environment(\.widgetRenderingMode) private var renderingMode
 	@Environment(\.widgetFamily) private var family
-	@Environment(\.sizeCategory) private var sizeCategory
+	@Environment(\.dynamicTypeSize) private var sizeCategory
 	
 	var entry: SolsticeWidgetTimelineEntry
 	
@@ -47,7 +47,13 @@ struct OverviewWidgetView: View {
 			case .accessoryInline:
 				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
 			case .accessoryRectangular:
-				AccessoryRectangularView(isAfterTodaySunset: isAfterTodaySunset, relevantSolar: relevantSolar, comparisonSolar: isAfterTodaySunset ? solar : nil)
+				AccessoryRectangularView(
+					isAfterTodaySunset: isAfterTodaySunset,
+					location: location,
+					relevantSolar: relevantSolar,
+					comparisonSolar: isAfterTodaySunset ? solar : nil,
+					prefersGraphicalAppearance: entry.prefersGraphicalAppearance
+				)
 			#if os(watchOS)
 			case .accessoryCorner:
 				Image(systemName: "sun.max")
@@ -88,14 +94,14 @@ struct OverviewWidgetView: View {
 					}
 					
 					VStack(alignment: .leading, spacing: 4) {
-						if sizeCategory < .extraLarge {
+						if sizeCategory < .xLarge {
 							WidgetLocationView(location: location)
 						}
 						
 						Spacer()
 						
 						if let duration = relevantSolar?.daylightDuration.localizedString {
-							if sizeCategory < .extraLarge {
+							if sizeCategory < .xLarge {
 								Text("Daylight \(isAfterTodaySunset ? "Tomorrow" : "Today")")
 									.font(.caption)
 							}
