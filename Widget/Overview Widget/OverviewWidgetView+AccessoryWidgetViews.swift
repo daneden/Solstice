@@ -55,6 +55,7 @@ extension OverviewWidgetView {
 					)
 					.fixedSize(horizontal: true, vertical: false)
 					.rectangularEdgeMask()
+					.edgesIgnoringSafeArea(.all)
 				}
 			} else {
 				HStack {
