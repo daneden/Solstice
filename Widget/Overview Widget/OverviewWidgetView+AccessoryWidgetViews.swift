@@ -53,6 +53,7 @@ extension OverviewWidgetView {
 						hideXAxis: true,
 						markSize: 4
 					)
+					.frame(maxWidth: .infinity)
 					.fixedSize(horizontal: true, vertical: false)
 					.rectangularEdgeMask()
 					.edgesIgnoringSafeArea(.all)
