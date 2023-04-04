@@ -19,6 +19,7 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
 	var currentLocation: CurrentLocation { get }
 	var geocoder: CLGeocoder { get }
+	static var widgetKind: SolsticeWidgetKind { get }
 }
 
 extension SolsticeWidgetTimelineProvider {
@@ -45,7 +46,7 @@ extension SolsticeWidgetTimelineProvider {
 			#if os(macOS)
 			let prefersGraphicalAppearance = false
 			#else
-			let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular
+			let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular && Self.widgetKind == .OverviewWidget
 			#endif
 			
 			let entry = SolsticeWidgetTimelineEntry(
@@ -96,7 +97,7 @@ extension SolsticeWidgetTimelineProvider {
 				#if os(macOS)
 				let prefersGraphicalAppearance = false
 				#else
-				let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular
+				let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular && Self.widgetKind == .OverviewWidget
 				#endif
 				
 				entries.append(

@@ -10,6 +10,7 @@ import WidgetKit
 import CoreLocation
 
 struct CountdownWidgetTimelineProvider: SolsticeWidgetTimelineProvider {
+	static let widgetKind: SolsticeWidgetKind = .CountdownWidget
 	internal let currentLocation = CurrentLocation()
 	internal let geocoder = CLGeocoder()
 	
