@@ -41,7 +41,18 @@ extension SolsticeWidgetTimelineProvider {
 			}
 			
 			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
-			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: location)
+			
+			#if os(macOS)
+			let prefersGraphicalAppearance = false
+			#else
+			let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular
+			#endif
+			
+			let entry = SolsticeWidgetTimelineEntry(
+				date: Date(),
+				location: location,
+				prefersGraphicalAppearance: prefersGraphicalAppearance
+			)
 			return completion(entry)
 		}
 		
