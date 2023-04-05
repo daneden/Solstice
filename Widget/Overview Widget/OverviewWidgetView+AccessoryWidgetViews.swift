@@ -54,7 +54,6 @@ extension OverviewWidgetView {
 						markSize: 4
 					)
 					.frame(maxWidth: .infinity)
-					.fixedSize(horizontal: true, vertical: false)
 					.rectangularEdgeMask()
 					.edgesIgnoringSafeArea(.all)
 				}
@@ -80,6 +79,7 @@ extension OverviewWidgetView {
 							}
 						}
 					}
+					
 					Spacer(minLength: 0)
 				}
 			}
