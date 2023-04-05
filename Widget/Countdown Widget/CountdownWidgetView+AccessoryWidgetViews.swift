@@ -36,7 +36,7 @@ extension CountdownWidgetView {
 				.font(.caption)
 			}
 			.progressViewStyle(.circular)
-			.widgetAccentable()
+			.tint(.accentColor)
 			.widgetLabel { nextEventText }
 		}
 		
@@ -72,7 +72,7 @@ extension CountdownWidgetView {
 			Image(systemName: nextEvent.imageName)
 				.font(.title.bold())
 				.symbolVariant(.fill)
-				.widgetAccentable()
+				.imageScale(.large)
 				.widgetLabel {
 					Text("\(nextEvent.date, style: .time), \(nextEvent.date, style: .relative)")
 				}
