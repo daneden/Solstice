@@ -14,6 +14,8 @@
 	<array>
 		<string>ConfigurationIntent</string>
 	</array>
+	<key>NSWidgetWantsLocation</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
