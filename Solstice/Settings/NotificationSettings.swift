@@ -57,11 +57,15 @@ struct NotificationSettings: View {
 					}
 				}
 			
-			if notificationsEnabled && !CurrentLocation.isAuthorized {
-				VStack(alignment: .leading) {
-					Label("Location Services Are Required", systemImage: "exclamationmark.triangle")
-						.font(.headline)
-					Text("Solstice’s notification send daily updates about the daylight in your current location. You will need to enable location services for Solstice in order to receive notifications.")
+			if notificationsEnabled && !CurrentLocation.isAuthorized {			
+				Label {
+					VStack(alignment: .leading) {
+						Text("Location Services Required")
+							.font(.headline)
+						Text("Solstice’s notification send daily updates about the daylight in your current location. You will need to enable location services for Solstice in order to receive notifications.")
+					}
+				} icon: {
+					Image(systemName: "exclamationmark.triangle")
 				}
 			}
 			
