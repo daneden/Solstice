@@ -102,7 +102,9 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	
 	func requestLocation(handler: @escaping (CLLocation?) -> Void) {
 		self.didUpdateLocationsCallback = handler
-		return locationManager.requestLocation()
+		locationManager.requestLocation()
+		locationManager.startUpdatingLocation()
+		return
 	}
 	
 	static var authorizationStatus: CLAuthorizationStatus {
