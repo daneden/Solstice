@@ -113,6 +113,8 @@ extension SolsticeWidgetTimelineProvider {
 					)
 				)
 				
+				print("Generating timeline entry for \(entryDate) in size \(context.displaySize)")
+				
 				entryDate = entryDate.addingTimeInterval(60 * 30)
 			}
 			
