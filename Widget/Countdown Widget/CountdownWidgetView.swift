@@ -49,7 +49,6 @@ struct CountdownWidgetView: View {
 					
 					Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
 						.font(.footnote.weight(.semibold))
-						.imageScale(.small)
 				}
 				.padding()
 				.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
