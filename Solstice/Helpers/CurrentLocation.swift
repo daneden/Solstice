@@ -88,6 +88,8 @@ extension CurrentLocation: CLLocationManagerDelegate {
 				timeZoneIdentifier = firstResult.timeZone?.identifier
 			}
 		}
+		
+		locationManager.stopUpdatingLocation()
 	}
 	
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
