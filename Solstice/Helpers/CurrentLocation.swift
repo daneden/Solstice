@@ -91,6 +91,10 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	}
 	
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+		#if canImport(WidgetKit)
+		WidgetCenter.shared.reloadAllTimelines()
+		#endif
+		
 		if CurrentLocation.isAuthorized {
 			self.locationManager.requestLocation()
 		}
@@ -110,6 +114,14 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		case .authorizedAlways, .authorizedWhenInUse: return true
 		default: return false
 		}
+	}
+	
+	var isAuthorizedForWidgetUpdates: Bool {
+		#if !os(watchOS)
+		locationManager.isAuthorizedForWidgetUpdates
+		#else
+		CurrentLocation.isAuthorized
+		#endif
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

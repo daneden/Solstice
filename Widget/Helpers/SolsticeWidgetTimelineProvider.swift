@@ -11,8 +11,8 @@ import Solar
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
-	var location: SolsticeWidgetLocation
-	var relevance: TimelineEntryRelevance? = nil
+	var location: SolsticeWidgetLocation?
+	var relevance: TimelineEntryRelevance?
 	var prefersGraphicalAppearance = false
 }
 
@@ -60,6 +60,10 @@ extension SolsticeWidgetTimelineProvider {
 		if let configurationLocation = configuration.location?.location ?? currentLocation.latestLocation {
 			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
+			guard currentLocation.isAuthorizedForWidgetUpdates else {
+				return completion(SolsticeWidgetTimelineEntry(date: Date()))
+			}
+			
 			currentLocation.requestLocation { location in
 				guard let location else { return }
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
@@ -134,6 +138,10 @@ extension SolsticeWidgetTimelineProvider {
 		if let location = configuration.location?.location ?? currentLocation.latestLocation {
 			geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 		} else {
+			guard currentLocation.isAuthorizedForWidgetUpdates else {
+				return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
+			}
+			
 			currentLocation.requestLocation { location in
 				guard let location else { return completion(Timeline(entries: [], policy: .atEnd)) }
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)

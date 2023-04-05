@@ -24,8 +24,7 @@ struct CountdownWidget: Widget {
 			intent: ConfigurationIntent.self,
 			provider: CountdownWidgetTimelineProvider()
 		) { timelineEntry in
-			let solar = Solar(for: timelineEntry.date, coordinate: timelineEntry.location.coordinate)!
-			return CountdownWidgetView(solar: solar, location: timelineEntry.location)
+			return CountdownWidgetView(entry: timelineEntry)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

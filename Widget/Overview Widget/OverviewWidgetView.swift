@@ -18,7 +18,8 @@ struct OverviewWidgetView: View {
 	var entry: SolsticeWidgetTimelineEntry
 	
 	var solar: Solar? {
-		Solar(for: entry.date, coordinate: entry.location.coordinate)
+		guard let location else { return nil }
+		return Solar(for: entry.date, coordinate: location.coordinate)
 	}
 	
 	var tomorrowSolar: Solar? {
@@ -34,12 +35,13 @@ struct OverviewWidgetView: View {
 		return solar.safeSunset < entry.date
 	}
 	
-	var location: SolsticeWidgetLocation {
+	var location: SolsticeWidgetLocation? {
 		entry.location
 	}
 	
 	var body: some View {
-		if let solar {
+		if let solar,
+			 let location {
 			switch family {
 			#if !os(macOS)
 			case .accessoryCircular:
@@ -142,6 +144,8 @@ struct OverviewWidgetView: View {
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
 				.background(.background)
 			}
+		} else {
+			WidgetMissingLocationView()
 		}
 	}
 }

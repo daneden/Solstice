@@ -13,11 +13,24 @@ struct CountdownWidgetView: View {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.sizeCategory) var sizeCategory
 	
-	var solar: Solar
-	var location: SolsticeWidgetLocation
+	var entry: SolsticeWidgetTimelineEntry
+	
+	var solar: Solar? {
+		guard let location = entry.location else {
+			return nil
+		}
+		
+		return Solar(for: entry.date, coordinate: location.coordinate)
+	}
+	
+	var location: SolsticeWidgetLocation? {
+		entry.location
+	}
 	
 	var body: some View {
-		if let nextSolarEvent,
+		if let solar,
+			 let location,
+			 let nextSolarEvent,
 			 let previousSolarEvent {
 			switch family {
 			#if !os(macOS)
@@ -71,21 +84,23 @@ struct CountdownWidgetView: View {
 				.symbolRenderingMode(.hierarchical)
 				.symbolVariant(.fill)
 			}
+		} else {
+			WidgetMissingLocationView()
 		}
 	}
 }
 
 extension CountdownWidgetView {
 	var nextSolarEvent: Solar.Event? {
-		solar.nextSolarEvent
+		solar?.nextSolarEvent
 	}
 	
 	var previousSolarEvent: Solar.Event? {
-		solar.previousSolarEvent
+		solar?.previousSolarEvent
 	}
 	
 	var timeZone: TimeZone {
-		location.timeZone
+		location?.timeZone ?? .autoupdatingCurrent
 	}
 	
 	var nextEventText: some View {
@@ -103,7 +118,7 @@ extension CountdownWidgetView {
 
 struct CountdownWigetView_Previews: PreviewProvider {
 	static var previews: some View {
-		CountdownWidgetView(solar: Solar(coordinate: .init())!, location: .defaultLocation)
+		CountdownWidgetView(entry: .init(date: Date(), location: .defaultLocation))
 		#if os(watchOS)
 			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
 		#else
