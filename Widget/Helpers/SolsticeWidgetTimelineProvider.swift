@@ -88,7 +88,8 @@ extension SolsticeWidgetTimelineProvider {
 			var entryDate = currentDate
 			while entryDate < entryLimit ?? currentDate.endOfDay {
 				guard let solar = Solar(for: entryDate, coordinate: widgetLocation.coordinate) else {
-					return completion(Timeline(entries: entries, policy: .atEnd))
+					entryDate = entryDate.addingTimeInterval(60 * 30)
+					continue
 				}
 				
 				let distanceToSunrise = abs(entryDate.distance(to: solar.safeSunrise))
