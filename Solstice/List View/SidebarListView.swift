@@ -50,6 +50,13 @@ struct SidebarListView: View {
 				if CurrentLocation.isAuthorized {
 					DaylightSummaryRow(location: currentLocation)
 						.tag(NavigationSelection.currentLocation)
+						.contextMenu {
+							
+						} preview: {
+							DetailView(location: currentLocation)
+								.environmentObject(timeMachine)
+								.environmentObject(navigationState)
+						}
 				}
 				
 				ForEach(sortedItems) { item in
@@ -61,6 +68,10 @@ struct SidebarListView: View {
 							} label: {
 								Label("Delete Location", systemImage: "trash")
 							}
+						} preview: {
+							DetailView(location: item)
+								.environmentObject(timeMachine)
+								.environmentObject(navigationState)
 						}
 				}
 				.onDelete(perform: deleteItems)
