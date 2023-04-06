@@ -21,6 +21,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	@AppStorage(Preferences.NotificationSettings.notificationTime) static var userPreferenceNotificationTime
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) static var userPreferenceNotificationOffset
 	@AppStorage(Preferences.sadPreference) static var sadPreference
+	@AppStorage(Preferences.customNotificationCoordinates) static var customNotificationCoordinates
 	
 	static var backgroundTaskIdentifier = "me.daneden.Solstice.notificationScheduler"
 	
@@ -40,11 +41,18 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		// Always clear notifications when scheduling new ones
 		await clearScheduledNotifications()
 		
-		guard CurrentLocation.isAuthorized, notificationsEnabled else {
+		guard (CurrentLocation.isAuthorized || customNotificationCoordinates != nil), notificationsEnabled else {
 			return
 		}
 		
-		var location = locationManager.latestLocation
+		var location: CLLocation?
+		
+		if let customNotificationCoordinates,
+			 let coordinates = CLLocationCoordinate2D(rawValue: customNotificationCoordinates) {
+			location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
+		} else {
+			location = locationManager.latestLocation
+		}
 		
 		if location == nil {
 			location = await withCheckedContinuation({ continuation in

@@ -97,8 +97,8 @@ extension SidebarListView {
 					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
 				}
 			case .daylightDuration:
-				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate.coordinate),
-							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate.coordinate) else {
+				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate),
+							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate) else {
 					return true
 				}
 				

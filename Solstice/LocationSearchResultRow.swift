@@ -63,7 +63,10 @@ struct LocationSearchResultRow: View {
 			if let location = item.placemark.location,
 				 let savedLocation = items.first(where: { savedLocation in
 					 // Avoid duplicate items by filtering locations less than 5km from the specified location
-					 savedLocation.coordinate.distance(from: location) < 5000
+					 CLLocation(
+						latitude: savedLocation.coordinate.latitude,
+						longitude: savedLocation.coordinate.longitude
+					 ).distance(from: location) < 5000
 				 }) {
 				return savedLocation
 			}

@@ -77,6 +77,8 @@ struct Preferences {
 	static let cachedLatitude: Value<Double> = ("cachedLatitude", 0)
 	static let cachedLongitude: Value<Double> = ("cachedLongitude", 0)
 	
+	static let customNotificationCoordinates: Value<String?> = ("customNotificationCoordinates", nil)
+	
 	// MARK: Scheduling
 	struct NotificationSettings {
 		/// The type of notification schedule; either a specific time (specified in `notificationDate`) or relative to sunrise/sunset

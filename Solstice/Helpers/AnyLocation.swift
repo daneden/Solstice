@@ -29,12 +29,12 @@ extension AnyLocation {
 		return timeZone
 	}
 	
-	var coordinate: CLLocation {
-		CLLocation(latitude: latitude, longitude: longitude)
+	var coordinate: CLLocationCoordinate2D {
+		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 	}
 	
 	mutating func reverseGeocodeLocation() async {
-		guard let placemarks = try? await CLGeocoder().reverseGeocodeLocation(coordinate),
+		guard let placemarks = try? await CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)),
 					let placemark = placemarks.first else {
 			return
 		}

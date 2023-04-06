@@ -69,7 +69,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 	
 	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
+		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	@ToolbarContentBuilder

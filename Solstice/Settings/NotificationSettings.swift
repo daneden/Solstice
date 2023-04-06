@@ -14,6 +14,8 @@ fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool
 struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsEnabled) var notificationsEnabled
 	
+	@AppStorage(Preferences.customNotificationCoordinates) var customNotificationCoordinates
+	
 	@AppStorage(Preferences.NotificationSettings.scheduleType) var scheduleType
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) var notificationOffset
 	@AppStorage(Preferences.NotificationSettings.notificationTime) var notificationTime
@@ -25,6 +27,11 @@ struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
 	
 	@AppStorage(Preferences.sadPreference) var sadPreference
+	
+	@FetchRequest(
+		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
+		animation: .default)
+	private var items: FetchedResults<SavedLocation>
 	
 	fileprivate var notificationFragments: [NotificationFragment] {
 		[
@@ -57,19 +64,34 @@ struct NotificationSettings: View {
 					}
 				}
 			
-			if notificationsEnabled && !CurrentLocation.isAuthorized {			
-				Label {
-					VStack(alignment: .leading) {
-						Text("Location Services Required")
-							.font(.headline)
-						Text("Solstice’s notification send daily updates about the daylight in your current location. You will need to enable location services for Solstice in order to receive notifications.")
-					}
-				} icon: {
-					Image(systemName: "exclamationmark.triangle")
-				}
-			}
-			
 			Group {
+				Section {
+					Picker("Location", selection: $customNotificationCoordinates.animation()) {
+						Text("Current Location")
+							.tag(String?.none)
+						ForEach(items) { location in
+							if let title = location.title {
+								Text(title)
+									.tag(String?.some(location.coordinate.rawValue))
+									.id(location.id)
+							}
+						}
+					}
+				} footer: {
+					if notificationsEnabled && !CurrentLocation.isAuthorized && customNotificationCoordinates == nil {
+						#if os(iOS)
+						if let url = URL(string: UIApplication.openSettingsURLString) {
+							VStack(alignment: .leading) {
+								Text("You will need to enable location services for Solstice or choose a different location in order to receive notifications.")
+								Link("Open app Settings", destination: url)
+							}.font(.footnote)
+						}
+						#else
+						Text("You will need to enable location services for Solstice or choose a different location in order to receive notifications.")
+						#endif
+					}
+				}
+				
 				Section {
 					Picker(selection: $scheduleType) {
 						ForEach(Preferences.NotificationSettings.ScheduleType.allCases, id: \.self) { scheduleType in
