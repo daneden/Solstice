@@ -14,7 +14,7 @@ fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool
 struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsEnabled) var notificationsEnabled
 	
-	@AppStorage(Preferences.customNotificationCoordinates) var customNotificationCoordinates
+	@AppStorage(Preferences.customNotificationLocationUUID) var customNotificationLocationUUID
 	
 	@AppStorage(Preferences.NotificationSettings.scheduleType) var scheduleType
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) var notificationOffset
@@ -66,19 +66,18 @@ struct NotificationSettings: View {
 			
 			Group {
 				Section {
-					Picker("Location", selection: $customNotificationCoordinates.animation()) {
+					Picker("Location", selection: $customNotificationLocationUUID.animation()) {
 						Text("Current Location")
 							.tag(String?.none)
 						ForEach(items) { location in
 							if let title = location.title {
 								Text(title)
-									.tag(String?.some(location.coordinate.rawValue))
-									.id(location.id)
+									.tag(location.uuid?.uuidString)
 							}
 						}
 					}
 				} footer: {
-					if notificationsEnabled && !CurrentLocation.isAuthorized && customNotificationCoordinates == nil {
+					if notificationsEnabled && !CurrentLocation.isAuthorized && customNotificationLocationUUID == nil {
 						#if os(iOS)
 						if let url = URL(string: UIApplication.openSettingsURLString) {
 							VStack(alignment: .leading) {
