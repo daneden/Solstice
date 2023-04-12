@@ -13,5 +13,8 @@ struct SolsticeWidgets: WidgetBundle {
 	var body: some Widget {
 		OverviewWidget()
 		CountdownWidget()
+		#if !os(macOS)
+		SolarChartWidget()
+		#endif
 	}
 }

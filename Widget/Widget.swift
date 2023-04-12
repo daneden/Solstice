@@ -35,5 +35,5 @@ struct SolsticeWidgetLocation: AnyLocation {
 }
 
 enum SolsticeWidgetKind: String {
-	case CountdownWidget, OverviewWidget
+	case CountdownWidget, OverviewWidget, SolarChartWidget
 }

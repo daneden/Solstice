@@ -13,7 +13,6 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
 	var location: SolsticeWidgetLocation?
 	var relevance: TimelineEntryRelevance?
-	var prefersGraphicalAppearance = false
 }
 
 protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
@@ -43,16 +42,9 @@ extension SolsticeWidgetTimelineProvider {
 			
 			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
 			
-			#if os(macOS)
-			let prefersGraphicalAppearance = false
-			#else
-			let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular && Self.widgetKind == .OverviewWidget
-			#endif
-			
 			let entry = SolsticeWidgetTimelineEntry(
 				date: Date(),
-				location: location,
-				prefersGraphicalAppearance: prefersGraphicalAppearance
+				location: location
 			)
 			return completion(entry)
 		}
@@ -99,18 +91,11 @@ extension SolsticeWidgetTimelineProvider {
 				? .init(score: 10, duration: nearestEventDistance)
 				: nil
 				
-				#if os(macOS)
-				let prefersGraphicalAppearance = false
-				#else
-				let prefersGraphicalAppearance = (configuration.rectangularWidgetDisplaysChart as? Bool == true) && context.family == .accessoryRectangular && Self.widgetKind == .OverviewWidget
-				#endif
-				
 				entries.append(
 					SolsticeWidgetTimelineEntry(
 						date: entryDate,
 						location: widgetLocation,
-						relevance: relevance,
-						prefersGraphicalAppearance: prefersGraphicalAppearance
+						relevance: relevance
 					)
 				)
 				

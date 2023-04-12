@@ -8,7 +8,6 @@
 import SwiftUI
 import WidgetKit
 import Solar
-import CoreLocation
 
 struct OverviewWidgetView: View {
 	@Environment(\.widgetRenderingMode) private var renderingMode
@@ -53,8 +52,7 @@ struct OverviewWidgetView: View {
 					isAfterTodaySunset: isAfterTodaySunset,
 					location: location,
 					relevantSolar: relevantSolar,
-					comparisonSolar: isAfterTodaySunset ? solar : nil,
-					prefersGraphicalAppearance: entry.prefersGraphicalAppearance
+					comparisonSolar: isAfterTodaySunset ? solar : nil
 				)
 			#if os(watchOS)
 			case .accessoryCorner:

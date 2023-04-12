@@ -15,11 +15,8 @@ struct OverviewWidgetTimelineProvider: SolsticeWidgetTimelineProvider {
 	internal let geocoder = CLGeocoder()
 	
 	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
-		let chartAppearanceConfiguration = ConfigurationIntent()
-		chartAppearanceConfiguration.rectangularWidgetDisplaysChart = true as NSNumber
 		return [
 			IntentRecommendation(intent: ConfigurationIntent(), description: "Overview"),
-			IntentRecommendation(intent: chartAppearanceConfiguration, description: "Graphical Overview"),
 		]
 	}
 }

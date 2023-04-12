@@ -12,6 +12,7 @@ import Solar
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.widgetRenderingMode) var widgetRenderingMode
 	
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
@@ -213,7 +214,7 @@ struct DaylightChart: View {
 			}
 			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
-			.if(!hideXAxis) { view in
+			.if(!hideXAxis && !IS_WIDGET_TARGET) { view in
 				view.padding(.bottom)
 			}
 			.id(solar.date)
