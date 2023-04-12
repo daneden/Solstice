@@ -106,7 +106,9 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		self.didUpdateLocationsCallback = handler
 		locationManager.requestLocation()
 		locationManager.startUpdatingLocation()
+		#if !os(watchOS)
 		locationManager.startMonitoringSignificantLocationChanges()
+		#endif
 		return
 	}
 	
