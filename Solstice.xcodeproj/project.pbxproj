@@ -238,6 +238,8 @@
 		71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
+		71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
+		71C7348329E6BF6400929449 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D129CD862A00E30148 /* EarthNode.swift */; };
 		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
@@ -1036,11 +1038,13 @@
 				7187147929DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */,
 				71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */,
 				7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
+				71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */,
 				7195122529AFBE88009D282F /* Solar++.swift in Sources */,
 				7195122729AFBE8E009D282F /* AppStorage++.swift in Sources */,
 				7195121D29AFBE06009D282F /* WidgetBundle.swift in Sources */,
 				7132AC1729E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
 				7195122329AFBE7F009D282F /* SolsticeCalculator.swift in Sources */,
+				71C7348329E6BF6400929449 /* Persistence.swift in Sources */,
 				719F558729DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
 				7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */,
 				7195122429AFBE83009D282F /* TimeMachine.swift in Sources */,
