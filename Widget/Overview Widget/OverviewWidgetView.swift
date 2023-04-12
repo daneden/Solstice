@@ -59,9 +59,10 @@ struct OverviewWidgetView: View {
 				Image(systemName: "sun.max")
 					.font(.title.bold())
 					.symbolVariant(.fill)
-					.widgetAccentable()
+					.imageScale(.large)
 					.widgetLabel {
 						Text(solar.daylightDuration.localizedString)
+							.widgetAccentable()
 					}
 			#endif // end watchOS
 			#endif // end !macOS
