@@ -106,6 +106,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		self.didUpdateLocationsCallback = handler
 		locationManager.requestLocation()
 		locationManager.startUpdatingLocation()
+		locationManager.startMonitoringSignificantLocationChanges()
 		return
 	}
 	

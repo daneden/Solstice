@@ -20,7 +20,7 @@ struct SolarChartWidget: Widget {
 			SolarChartWidgetView(entry: timelineEntry)
 		}
 		.configurationDisplayName("Solar Chart")
-		.description("Follow the sun's journey above and below the horizon")
+		.description("Follow the sun's journey throughout the day")
 		.supportedFamilies(Self.supportedFamilies)
 	}
 }
