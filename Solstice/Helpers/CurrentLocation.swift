@@ -67,6 +67,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
+			await NotificationManager.scheduleNotifications(locationManager: self)
 		}
 		
 		#if canImport(WidgetKit)
