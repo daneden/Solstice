@@ -28,6 +28,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 		Section {
 			daylightChartView
 				.frame(height: chartHeight)
+				#if !os(watchOS)
 				.contextMenu {
 					if let chartRenderedAsImage {
 						ShareLink(
@@ -36,7 +37,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 						)
 					}
 
-					#if !os(watchOS)
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 							Text(appearance.rawValue)
@@ -44,8 +44,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 					} label: {
 						Label("Appearance", systemImage: "paintpalette")
 					}
-					#endif
 				}
+				#endif
 				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 				#if os(watchOS)
 				.listRowBackground(Color.clear)

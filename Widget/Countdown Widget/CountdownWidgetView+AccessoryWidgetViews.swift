@@ -21,22 +21,29 @@ extension CountdownWidgetView {
 	}
 	
 	struct AccessoryCircularView: View {
+		@Environment(\.widgetRenderingMode) var widgetRenderingMode
 		var previousEvent: Solar.Event
 		var nextEvent: Solar.Event
 		
 		var body: some View {
-			ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
-				nextEventText
-			} currentValueLabel: {
+			ZStack {
 				VStack {
 					Image(systemName: nextEvent.imageName)
-					Text(nextEvent.date.formatted(.dateTime.hour(.defaultDigits(amPM: .omitted)).minute()))
+					Text(nextEvent.date.formatted(.dateTime.hour(.conversationalDefaultDigits(amPM: .omitted)).minute()))
 						.allowsTightening(true)
 				}
-				.font(.caption)
+				.font(.caption.weight(.semibold))
+				.foregroundStyle(.white)
+				
+				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
+					nextEventText
+				} currentValueLabel: {
+					
+				}
+				.progressViewStyle(.circular)
+				.tint(widgetRenderingMode == .fullColor ? Color("AccentColor") : .accentColor)
+				.widgetAccentable(widgetRenderingMode != .fullColor)
 			}
-			.progressViewStyle(.circular)
-			.tint(.accentColor)
 			.widgetLabel { nextEventText }
 		}
 		

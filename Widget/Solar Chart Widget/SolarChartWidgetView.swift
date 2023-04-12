@@ -29,11 +29,10 @@ struct SolarChartWidgetView: View {
 				timeZone: location.timeZone,
 				eventTypes: [],
 				includesSummaryTitle: false,
-				markSize: 3
+				markSize: 4
 			)
 			.edgesIgnoringSafeArea(.all)
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
-			.font(.caption)
 		} else {
 			WidgetMissingLocationView()
 		}
