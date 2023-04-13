@@ -13,12 +13,13 @@ import SwiftUI
 import WidgetKit
 #endif
 
-class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
+class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifiable {
 	@AppStorage(Preferences.cachedLatitude) private var cachedLatitude
 	@AppStorage(Preferences.cachedLongitude) private var cachedLongitude
 	
 	@Published var title: String?
 	@Published var subtitle: String?
+	let id = "currentLocation"
 	
 	@Published private(set) var latitude: Double = 0 {
 		didSet {

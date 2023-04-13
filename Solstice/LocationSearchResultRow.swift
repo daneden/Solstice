@@ -12,7 +12,7 @@ struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
 	
-	@EnvironmentObject var navigationState: NavigationStateManager
+	@SceneStorage("selectedLocation") private var selectedLocation: NavigationSelection?
 	@ObservedObject var searchService: LocationSearchService
 	
 	var items: Array<SavedLocation> = []
@@ -27,9 +27,9 @@ struct LocationSearchResultRow: View {
 				guard let location = try? await getLocation(from: result) else { return }
 				
 				if let location = location as? TemporaryLocation {
-					navigationState.temporaryLocation = location
+					searchService.location = location
 				} else if let locationId = (location as? SavedLocation)?.uuid {
-					navigationState.navigationSelection = .savedLocation(id: locationId)
+					selectedLocation = .savedLocation(id: locationId)
 				}
 			}
 		} label: {

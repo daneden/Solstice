@@ -14,13 +14,15 @@ struct ContentView: View {
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
-	@SceneStorage("navigationState") private var navigationStateData: Data?
+	@SceneStorage("selectedLocation") private var selectedLocation: NavigationSelection?
 	
 	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	@StateObject var timeMachine = TimeMachine()
-	@StateObject private var navigationState = NavigationStateManager()
+	#if !os(watchOS)
+	@StateObject var locationSearchService = LocationSearchService()
+	#endif
 	
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
@@ -36,7 +38,7 @@ struct ContentView: View {
 						toolbarItems
 					}
 			} detail: {
-				switch navigationState.navigationSelection {
+				switch selectedLocation {
 				case .currentLocation:
 					DetailView(location: currentLocation)
 				case .savedLocation(let id):
@@ -50,24 +52,27 @@ struct ContentView: View {
 				}
 			}
 			.navigationSplitViewStyle(.balanced)
-			.sheet(item: $navigationState.temporaryLocation) { value in
+			#if !os(watchOS)
+			.sheet(item: $locationSearchService.location) { value in
 					NavigationStack {
 						DetailView(location: value)
 					}
-#if os(macOS)
+					#if os(macOS)
 					.frame(minWidth: 600, minHeight: 400)
-#endif
+					#endif
 			}
-			.environmentObject(navigationState)
+			.environmentObject(locationSearchService)
+			#endif
 			.environmentObject(timeMachine)
-			.task {
-				for await _ in navigationState.objectWillChangeSequence {
-					navigationStateData = navigationState.jsonData
+			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
+				if let selection = userActivity.targetContentIdentifier {
+					selectedLocation = .savedLocation(id: UUID(uuidString: selection))
 				}
 			}
-			.onAppear {
-				if let navigationStateData {
-					navigationState.jsonData = navigationStateData
+			.onContinueUserActivity(DetailView<CurrentLocation>.userActivity) { userActivity in
+				if let selection = userActivity.targetContentIdentifier,
+					 selection == currentLocation.id {
+					selectedLocation = .currentLocation
 				}
 			}
 			.onChange(of: scenePhase) { _ in

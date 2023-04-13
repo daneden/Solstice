@@ -13,6 +13,7 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>ConfigurationIntent</string>
+		<string>me.daneden.Solstice.viewLocation</string>
 	</array>
 	<key>NSWidgetWantsLocation</key>
 	<true/>

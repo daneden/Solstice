@@ -54,6 +54,7 @@ class LocationSearchService: NSObject, ObservableObject {
 	@Published var queryFragment = ""
 	@Published private(set) var status: LocationStatus = .idle
 	@Published private(set) var searchResults: [MKLocalSearchCompletion] = []
+	@Published var location: TemporaryLocation?
 	
 	private var queryCancellable: AnyCancellable?
 	private let searchCompleter: MKLocalSearchCompleter!
