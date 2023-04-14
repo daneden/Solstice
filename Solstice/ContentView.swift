@@ -20,9 +20,7 @@ struct ContentView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	@StateObject var timeMachine = TimeMachine()
-	#if !os(watchOS)
 	@StateObject var locationSearchService = LocationSearchService()
-	#endif
 	
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
@@ -52,7 +50,6 @@ struct ContentView: View {
 				}
 			}
 			.navigationSplitViewStyle(.balanced)
-			#if !os(watchOS)
 			.sheet(item: $locationSearchService.location) { value in
 					NavigationStack {
 						DetailView(location: value)
@@ -62,7 +59,6 @@ struct ContentView: View {
 					#endif
 			}
 			.environmentObject(locationSearchService)
-			#endif
 			.environmentObject(timeMachine)
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {

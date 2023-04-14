@@ -86,10 +86,8 @@ struct SidebarListView: View {
 							return NSItemProvider(object: userActivity)
 						}
 					#endif
-						.id(item.id)
 				}
 				.onDelete(perform: deleteItems)
-				.id(timeMachine.date)
 			} header: {
 				Label("Locations", systemImage: "map")
 			}

@@ -217,7 +217,6 @@ struct DaylightChart: View {
 			.if(!hideXAxis && !IS_WIDGET_TARGET) { view in
 				view.padding(.bottom)
 			}
-			.id(solar.date)
 		}
 		.if(appearance == .graphical) { view in
 			view
