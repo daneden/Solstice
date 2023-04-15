@@ -10,6 +10,7 @@ import UserNotifications
 import CoreLocation
 import Solar
 import SwiftUI
+import CoreData
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
@@ -21,6 +22,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	@AppStorage(Preferences.NotificationSettings.notificationTime) static var userPreferenceNotificationTime
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) static var userPreferenceNotificationOffset
 	@AppStorage(Preferences.sadPreference) static var sadPreference
+	@AppStorage(Preferences.customNotificationLocationUUID) static var customNotificationLocationUUID
 	
 	static var backgroundTaskIdentifier = "me.daneden.Solstice.notificationScheduler"
 	
@@ -40,11 +42,29 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		// Always clear notifications when scheduling new ones
 		await clearScheduledNotifications()
 		
-		guard CurrentLocation.isAuthorized, notificationsEnabled else {
+		guard (CurrentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
 			return
 		}
 		
-		var location = locationManager.latestLocation
+		var location: CLLocation?
+		var timeZone = TimeZone.autoupdatingCurrent
+		
+		if let customNotificationLocationUUID {
+			let request = NSFetchRequest<SavedLocation>(entityName: "SavedLocation")
+			request.fetchLimit = 1
+			request.predicate = NSPredicate(format: "uuid LIKE %@", customNotificationLocationUUID)
+			let context = PersistenceController.shared.container.viewContext
+			let objects = try? context.fetch(request)
+			
+			if let latitude = objects?.first?.latitude,
+				 let longitude = objects?.first?.longitude,
+				 let objectTimeZone = objects?.first?.timeZone {
+				location = CLLocation(latitude: latitude, longitude: longitude)
+				timeZone = objectTimeZone
+			}
+		} else {
+			location = locationManager.latestLocation
+		}
 		
 		if location == nil {
 			location = await withCheckedContinuation({ continuation in
@@ -78,7 +98,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
 			}
 			
-			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location) else {
+			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
 				return
 			}
 			
@@ -111,7 +131,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	///   - context: The context in which this content will be used. This is to ensure that SAD preferences
 	///   don't alter notification previews.
 	/// - Returns: A `NotificationContent` object appropriate for the context
-	static func buildNotificationContent(for date: Date, location: CLLocation, in context: Context = .notification) -> NotificationContent? {
+	static func buildNotificationContent(for date: Date, location: CLLocation, timeZone: TimeZone = .autoupdatingCurrent, in context: Context = .notification) -> NotificationContent? {
 		var content = (title: "", body: "")
 		guard let solar = Solar(for: date, coordinate: location.coordinate) else { return nil }
 		
@@ -152,8 +172,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 		
 		if includeSunTimes {
-			content.body += "The sun rises at \(solar.safeSunrise.formatted(.dateTime.hour().minute())) "
-			content.body += "and sets at \(solar.safeSunset.formatted(.dateTime.hour().minute())). "
+			content.body += "The sun rises at \(solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())) "
+			content.body += "and sets at \(solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())). "
 		}
 		
 		if includeDaylightDuration {

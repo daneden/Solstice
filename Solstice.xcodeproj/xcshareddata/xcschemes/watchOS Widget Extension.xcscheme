@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1420"
+   LastUpgradeVersion = "1430"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -15,9 +15,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7106C86729A276B30007A7EC"
-               BuildableName = "iOS Widget Extension.appex"
-               BlueprintName = "iOS Widget Extension"
+               BlueprintIdentifier = "7195122D29B0B3D6009D282F"
+               BuildableName = "watchOS Widget Extension.appex"
+               BlueprintName = "watchOS Widget Extension"
+               ReferencedContainer = "container:Solstice.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "719F924229ACD1CC00C06921"
+               BuildableName = "Solstice watchOS Watch App.app"
+               BlueprintName = "Solstice watchOS Watch App"
                ReferencedContainer = "container:Solstice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -41,9 +55,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-      </Testables>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -61,17 +74,26 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7198468028E5895E00E866CE"
-            BuildableName = "Solstice.app"
-            BlueprintName = "Solstice"
+            BlueprintIdentifier = "7195122D29B0B3D6009D282F"
+            BuildableName = "watchOS Widget Extension.appex"
+            BlueprintName = "watchOS Widget Extension"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "719F924229ACD1CC00C06921"
+            BuildableName = "Solstice watchOS Watch App.app"
+            BlueprintName = "Solstice watchOS Watch App"
+            ReferencedContainer = "container:Solstice.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
-            value = ""
-            isEnabled = "NO">
+            value = "OverviewWidget"
+            isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCWidgetDefaultView"
@@ -90,16 +112,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES"
-      askForAppToLaunch = "Yes"
-      launchAutomaticallySubstyle = "2">
+      debugDocumentVersioning = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7198468028E5895E00E866CE"
-            BuildableName = "Solstice.app"
-            BlueprintName = "Solstice"
+            BlueprintIdentifier = "7195122D29B0B3D6009D282F"
+            BuildableName = "watchOS Widget Extension.appex"
+            BlueprintName = "watchOS Widget Extension"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

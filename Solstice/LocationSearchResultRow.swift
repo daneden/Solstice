@@ -12,7 +12,7 @@ struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
 	
-	@EnvironmentObject var navigationState: NavigationStateManager
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	@ObservedObject var searchService: LocationSearchService
 	
 	var items: Array<SavedLocation> = []
@@ -27,26 +27,28 @@ struct LocationSearchResultRow: View {
 				guard let location = try? await getLocation(from: result) else { return }
 				
 				if let location = location as? TemporaryLocation {
-					navigationState.temporaryLocation = location
+					searchService.location = location
 				} else if let locationId = (location as? SavedLocation)?.uuid {
-					navigationState.navigationSelection = .savedLocation(id: locationId)
+					selectedLocation = locationId.uuidString
 				}
 			}
 		} label: {
-			VStack(alignment: .leading) {
-				Text(result.title)
-				if !result.subtitle.isEmpty {
-					Text(result.subtitle)
-						.foregroundStyle(.secondary)
-						.font(.footnote)
+			HStack {
+				VStack(alignment: .leading) {
+					Text(result.title)
+					if !result.subtitle.isEmpty {
+						Text(result.subtitle)
+							.foregroundStyle(.secondary)
+							.font(.footnote)
+					}
 				}
-			}
-			
-			Spacer()
-			
-			if isAddingItem {
-				ProgressView()
-					.controlSize(.small)
+				
+				Spacer()
+				
+				if isAddingItem {
+					ProgressView()
+						.controlSize(.small)
+				}
 			}
 		}
 		.contentShape(Rectangle())
@@ -63,7 +65,10 @@ struct LocationSearchResultRow: View {
 			if let location = item.placemark.location,
 				 let savedLocation = items.first(where: { savedLocation in
 					 // Avoid duplicate items by filtering locations less than 5km from the specified location
-					 savedLocation.coordinate.distance(from: location) < 5000
+					 CLLocation(
+						latitude: savedLocation.coordinate.latitude,
+						longitude: savedLocation.coordinate.longitude
+					 ).distance(from: location) < 5000
 				 }) {
 				return savedLocation
 			}

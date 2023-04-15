@@ -10,6 +10,10 @@ import Charts
 import Solar
 
 struct DaylightChart: View {
+	@Environment(\.isLuminanceReduced) var isLuminanceReduced
+	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.widgetRenderingMode) var widgetRenderingMode
+	
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
 	
@@ -24,6 +28,22 @@ struct DaylightChart: View {
 	var markSize: CGFloat = 6
 	
 	@State private var solarEvents: [Solar.Event] = []
+	
+	var markForegroundColor: Color {
+		if appearance == .graphical {
+			return .white
+		} else {
+			return colorScheme == .dark ? .white : .black
+		}
+	}
+	
+	var markBackgroundColor: Color {
+		if appearance == .graphical {
+			return .black
+		} else {
+			return colorScheme == .dark ? .black : .white
+		}
+	}
 	
 	var range: ClosedRange<Date> {
 		solar.startOfDay...solar.endOfDay
@@ -64,11 +84,11 @@ struct DaylightChart: View {
 						ZStack {
 							ZStack {
 								Circle()
-									.fill(.background)
+									.fill(markBackgroundColor)
 									.overlay {
 										Circle()
 											.strokeBorder(style: StrokeStyle(lineWidth: max(1, markSize / 4)))
-											.fill(.primary)
+											.fill(markForegroundColor)
 									}
 									.frame(width: markSize * 2.5, height: markSize * 2.5)
 									.position(
@@ -81,7 +101,7 @@ struct DaylightChart: View {
 							.background {
 								Rectangle()
 									.fill(.clear)
-									.background(.background.opacity(0.8))
+									.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
 									.mask {
 										LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
 									}
@@ -94,7 +114,7 @@ struct DaylightChart: View {
 							
 							ZStack {
 								Circle()
-									.fill(.primary)
+									.fill(markForegroundColor)
 									.frame(width: markSize * 2.5, height: markSize * 2.5)
 									.position(
 										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
@@ -111,7 +131,7 @@ struct DaylightChart: View {
 					
 					if let currentX {
 						Rectangle()
-							.fill(.primary)
+							.fill(markForegroundColor)
 							.frame(width: 2, height: geo.size.height)
 							.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
 							.overlay {
@@ -122,7 +142,7 @@ struct DaylightChart: View {
 									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
 							}
 						Circle()
-							.fill(.primary)
+							.fill(markForegroundColor)
 							.overlay {
 								Circle()
 									.strokeBorder(style: StrokeStyle(lineWidth: 1))
@@ -194,10 +214,9 @@ struct DaylightChart: View {
 			}
 			.frame(maxHeight: 500)
 			.foregroundStyle(.primary)
-			.if(!hideXAxis) { view in
+			.if(!hideXAxis && !IS_WIDGET_TARGET) { view in
 				view.padding(.bottom)
 			}
-			.id(solar.date)
 		}
 		.if(appearance == .graphical) { view in
 			view
@@ -206,7 +225,7 @@ struct DaylightChart: View {
 					LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
 						.padding(-12)
 				)
-				.colorScheme(.dark)
+				.environment(\.colorScheme, .dark)
 		}
 		.task(id: solar.date, priority: .background) {
 			solarEvents = []
@@ -331,7 +350,7 @@ struct DaylightChart_Previews: PreviewProvider {
 	static var previews: some View {
 		DaylightChart(
 			solar: Solar(
-				coordinate: TemporaryLocation.placeholderLondon.coordinate.coordinate
+				coordinate: TemporaryLocation.placeholderLondon.coordinate
 			)!,
 			timeZone: .autoupdatingCurrent
 		)

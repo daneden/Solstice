@@ -55,9 +55,9 @@
 	<key>INIntentDefinitionSystemVersion</key>
 	<string>22D68</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>14C18</string>
+	<string>14E222b</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>14.2</string>
+	<string>14.3</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -72,7 +72,7 @@
 			<key>INIntentIneligibleForSuggestions</key>
 			<true/>
 			<key>INIntentLastParameterTag</key>
-			<integer>4</integer>
+			<integer>6</integer>
 			<key>INIntentName</key>
 			<string>Configuration</string>
 			<key>INIntentParameters</key>

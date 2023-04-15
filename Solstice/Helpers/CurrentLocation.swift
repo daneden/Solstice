@@ -9,12 +9,17 @@ import Foundation
 import CoreLocation
 import SwiftUI
 
-class CurrentLocation: NSObject, ObservableObject, ObservableLocation {
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
+
+class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifiable {
 	@AppStorage(Preferences.cachedLatitude) private var cachedLatitude
 	@AppStorage(Preferences.cachedLongitude) private var cachedLongitude
 	
 	@Published var title: String?
 	@Published var subtitle: String?
+	let id = "currentLocation"
 	
 	@Published private(set) var latitude: Double = 0 {
 		didSet {
@@ -63,7 +68,12 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		
 		Task {
 			await defaultDidUpdateLocationsCallback(locations)
+			await NotificationManager.scheduleNotifications(locationManager: self)
 		}
+		
+		#if canImport(WidgetKit)
+		WidgetCenter.shared.reloadAllTimelines()
+		#endif
 	}
 	
 	@MainActor
@@ -80,9 +90,15 @@ extension CurrentLocation: CLLocationManagerDelegate {
 				timeZoneIdentifier = firstResult.timeZone?.identifier
 			}
 		}
+		
+		locationManager.stopUpdatingLocation()
 	}
 	
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+		#if canImport(WidgetKit)
+		WidgetCenter.shared.reloadAllTimelines()
+		#endif
+		
 		if CurrentLocation.isAuthorized {
 			self.locationManager.requestLocation()
 		}
@@ -90,7 +106,12 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	
 	func requestLocation(handler: @escaping (CLLocation?) -> Void) {
 		self.didUpdateLocationsCallback = handler
-		return locationManager.requestLocation()
+		locationManager.requestLocation()
+		locationManager.startUpdatingLocation()
+		#if !os(watchOS)
+		locationManager.startMonitoringSignificantLocationChanges()
+		#endif
+		return
 	}
 	
 	static var authorizationStatus: CLAuthorizationStatus {
@@ -102,6 +123,14 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		case .authorizedAlways, .authorizedWhenInUse: return true
 		default: return false
 		}
+	}
+	
+	var isAuthorizedForWidgetUpdates: Bool {
+		#if !os(watchOS)
+		locationManager.isAuthorizedForWidgetUpdates
+		#else
+		CurrentLocation.isAuthorized
+		#endif
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

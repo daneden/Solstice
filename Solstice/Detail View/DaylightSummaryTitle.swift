@@ -91,6 +91,6 @@ struct DaylightSummaryTitle: View {
 
 struct DaylightSummaryTitle_Previews: PreviewProvider {
     static var previews: some View {
-			DaylightSummaryTitle(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate.coordinate)!)
+			DaylightSummaryTitle(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!)
     }
 }

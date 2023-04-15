@@ -9,24 +9,25 @@ import SwiftUI
 import Solar
 
 struct SidebarListView: View {
-	@EnvironmentObject var navigationState: NavigationStateManager
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
+	@EnvironmentObject var locationSearchService: LocationSearchService
+	
 	@Environment(\.managedObjectContext) private var viewContext
 	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
 		animation: .default)
 	private var items: FetchedResults<SavedLocation>
-	
-	@StateObject var locationSearchService = LocationSearchService()
+		
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	var body: some View {
-		List(selection: $navigationState.navigationSelection) {
+		List(selection: $selectedLocation) {
 			if timeMachine.isOn {
 				TimeMachineDeactivatorView()
 			}
@@ -49,22 +50,46 @@ struct SidebarListView: View {
 				
 				if CurrentLocation.isAuthorized {
 					DaylightSummaryRow(location: currentLocation)
-						.tag(NavigationSelection.currentLocation)
+						.tag(currentLocation.id)
+					#if os(iOS)
+						.onDrag {
+							let userActivity = NSUserActivity(activityType: DetailView<CurrentLocation>.userActivity)
+							
+							userActivity.title = "See daylight for current location"
+							userActivity.targetContentIdentifier = currentLocation.id
+							
+							return NSItemProvider(object: userActivity)
+						}
+					#endif
 				}
 				
 				ForEach(sortedItems) { item in
-					DaylightSummaryRow(location: item)
-						.tag(NavigationSelection.savedLocation(id: item.uuid))
-						.contextMenu {
-							Button(role: .destructive) {
-								deleteItem(item)
-							} label: {
-								Label("Delete Location", systemImage: "trash")
+					if let tag = item.uuid?.uuidString {
+						DaylightSummaryRow(location: item)
+							.contextMenu {
+								Button(role: .destructive) {
+									deleteItem(item)
+								} label: {
+									Label("Delete Location", systemImage: "trash")
+								}
+							} preview: {
+								DetailView(location: item)
+									.environmentObject(timeMachine)
 							}
-						}
+							#if os(iOS)
+							.onDrag {
+								let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
+								
+								userActivity.title = "See daylight for \(item.title!)"
+								userActivity.targetContentIdentifier = item.uuid?.uuidString
+								
+								return NSItemProvider(object: userActivity)
+							}
+							#endif
+							.tag(tag)
+					}
 				}
 				.onDelete(perform: deleteItems)
-				.id(timeMachine.date)
 			} header: {
 				Label("Locations", systemImage: "map")
 			}
@@ -97,8 +122,8 @@ extension SidebarListView {
 					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
 				}
 			case .daylightDuration:
-				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate.coordinate),
-							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate.coordinate) else {
+				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate),
+							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate) else {
 					return true
 				}
 				
@@ -145,6 +170,5 @@ struct SidebarListView_Previews: PreviewProvider {
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.environmentObject(TimeMachine.preview)
 			.environmentObject(CurrentLocation())
-			.environmentObject(NavigationStateManager())
 	}
 }

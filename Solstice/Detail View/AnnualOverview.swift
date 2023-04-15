@@ -24,8 +24,8 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	@State private var isInformationSheetPresented = false
 	
 	var differenceFromPreviousSolstice: TimeInterval? {
-		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate),
-					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate.coordinate) else {
+		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate),
+					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate) else {
 			return nil
 		}
 		
@@ -198,13 +198,13 @@ extension AnnualOverview {
 	var decemberSolsticeSolar: Solar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		return Solar(for: decemberSolstice, coordinate: location.coordinate.coordinate)
+		return Solar(for: decemberSolstice, coordinate: location.coordinate)
 	}
 	
 	var juneSolsticeSolar: Solar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
-		return Solar(for: juneSolstice, coordinate: location.coordinate.coordinate)
+		return Solar(for: juneSolstice, coordinate: location.coordinate)
 	}
 	
 	var longestDay: Solar? {

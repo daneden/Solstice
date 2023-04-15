@@ -9,17 +9,23 @@ import SwiftUI
 import Solar
 import CoreLocation
 
-
 struct DetailView<Location: ObservableLocation>: View {
+	static var userActivity: String {
+		"me.daneden.Solstice.viewLocation"
+	}
+	
 	@Environment(\.managedObjectContext) var viewContext
 	@Environment(\.dismiss) var dismiss
 	
 	@ObservedObject var location: Location
 	@EnvironmentObject var timeMachine: TimeMachine
-	@EnvironmentObject var navigationState: NavigationStateManager
+	#if !os(watchOS)
+	@EnvironmentObject var locationSearchService: LocationSearchService
+	#endif
 	@State private var showRemainingDaylight = false
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	var body: some View {
 		ScrollViewReader { scrollProxy in
@@ -65,11 +71,26 @@ struct DetailView<Location: ObservableLocation>: View {
 					}
 				}
 			}
+			.userActivity(Self.userActivity) { userActivity in
+				var navigationSelection: String? = nil
+				
+				if let location = location as? SavedLocation {
+					navigationSelection = location.uuid?.uuidString
+				} else if let location = location as? CurrentLocation {
+					navigationSelection = location.id
+				}
+				
+				userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+				
+				userActivity.targetContentIdentifier = navigationSelection
+				userActivity.isEligibleForSearch = true
+				userActivity.isEligibleForHandoff = false
+			}
 		}
 	}
 	
 	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate.coordinate)
+		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	@ToolbarContentBuilder
@@ -109,7 +130,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					dismiss()
 					withAnimation {
 						if let id = try? location.saveLocation(to: viewContext) {
-							navigationState.navigationSelection = .savedLocation(id: id)
+							selectedLocation = id.uuidString
 						}
 					}
 				} label: {
@@ -118,15 +139,17 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 		
-		if navigationState.temporaryLocation != nil {
+		#if !os(watchOS)
+		if locationSearchService.location != nil {
 			ToolbarItem(placement: .cancellationAction) {
 				Button {
-					navigationState.temporaryLocation = nil
+					locationSearchService.location = nil
 				} label: {
 					Text("Close")
 				}
 			}
 		}
+		#endif
 	}
 }
 
@@ -136,13 +159,11 @@ struct DetailView_Previews: PreviewProvider {
 			DetailView(location: TemporaryLocation.placeholderLondon)
 		}
 		.environmentObject(TimeMachine.preview)
-		.environmentObject(NavigationStateManager())
 		.previewDisplayName("Detail View: Temporary Location")
 		
 		NavigationStack {
 			DetailView(location: CurrentLocation())
 		}
-		.environmentObject(NavigationStateManager())
 		.previewDisplayName("Detail View: Current Location")
 	}
 }
