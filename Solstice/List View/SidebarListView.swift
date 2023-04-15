@@ -64,28 +64,30 @@ struct SidebarListView: View {
 				}
 				
 				ForEach(sortedItems) { item in
-					DaylightSummaryRow(location: item)
-						.tag(item.uuid?.uuidString)
-						.contextMenu {
-							Button(role: .destructive) {
-								deleteItem(item)
-							} label: {
-								Label("Delete Location", systemImage: "trash")
+					if let tag = item.uuid?.uuidString {
+						DaylightSummaryRow(location: item)
+							.contextMenu {
+								Button(role: .destructive) {
+									deleteItem(item)
+								} label: {
+									Label("Delete Location", systemImage: "trash")
+								}
+							} preview: {
+								DetailView(location: item)
+									.environmentObject(timeMachine)
 							}
-						} preview: {
-							DetailView(location: item)
-								.environmentObject(timeMachine)
-						}
-					#if os(iOS)
-						.onDrag {
-							let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
-							
-							userActivity.title = "See daylight for \(item.title!)"
-							userActivity.targetContentIdentifier = item.uuid?.uuidString
-							
-							return NSItemProvider(object: userActivity)
-						}
-					#endif
+							#if os(iOS)
+							.onDrag {
+								let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
+								
+								userActivity.title = "See daylight for \(item.title!)"
+								userActivity.targetContentIdentifier = item.uuid?.uuidString
+								
+								return NSItemProvider(object: userActivity)
+							}
+							#endif
+							.tag(tag)
+					}
 				}
 				.onDelete(perform: deleteItems)
 			} header: {
