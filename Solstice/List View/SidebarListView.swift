@@ -20,7 +20,7 @@ struct SidebarListView: View {
 		animation: .default)
 	private var items: FetchedResults<SavedLocation>
 		
-	@SceneStorage("selectedLocation") private var selectedLocation: NavigationSelection?
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
@@ -50,7 +50,7 @@ struct SidebarListView: View {
 				
 				if CurrentLocation.isAuthorized {
 					DaylightSummaryRow(location: currentLocation)
-						.tag(NavigationSelection.currentLocation)
+						.tag(currentLocation.id)
 					#if os(iOS)
 						.onDrag {
 							let userActivity = NSUserActivity(activityType: DetailView<CurrentLocation>.userActivity)
@@ -65,7 +65,7 @@ struct SidebarListView: View {
 				
 				ForEach(sortedItems) { item in
 					DaylightSummaryRow(location: item)
-						.tag(NavigationSelection.savedLocation(id: item.uuid))
+						.tag(item.uuid?.uuidString)
 						.contextMenu {
 							Button(role: .destructive) {
 								deleteItem(item)

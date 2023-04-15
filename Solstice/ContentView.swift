@@ -14,7 +14,7 @@ struct ContentView: View {
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
-	@SceneStorage("selectedLocation") private var selectedLocation: NavigationSelection?
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
@@ -37,10 +37,10 @@ struct ContentView: View {
 					}
 			} detail: {
 				switch selectedLocation {
-				case .currentLocation:
+				case currentLocation.id:
 					DetailView(location: currentLocation)
-				case .savedLocation(let id):
-					if let item = items.first(where: { $0.uuid == id }) {
+				case .some(let id):
+					if let item = items.first(where: { $0.uuid?.uuidString == id }) {
 						DetailView(location: item)
 					} else {
 						placeholderView
@@ -62,13 +62,12 @@ struct ContentView: View {
 			.environmentObject(timeMachine)
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {
-					selectedLocation = .savedLocation(id: UUID(uuidString: selection))
+					selectedLocation = selection
 				}
 			}
 			.onContinueUserActivity(DetailView<CurrentLocation>.userActivity) { userActivity in
-				if let selection = userActivity.targetContentIdentifier,
-					 selection == currentLocation.id {
-					selectedLocation = .currentLocation
+				if userActivity.targetContentIdentifier == currentLocation.id {
+					selectedLocation = currentLocation.id
 				}
 			}
 			.onChange(of: scenePhase) { _ in

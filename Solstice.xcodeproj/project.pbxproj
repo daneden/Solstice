@@ -230,8 +230,6 @@
 		71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
-		71AEB7B529AE1B1A00A7952D /* NavigationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */; };
-		71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */; };
 		71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */; };
 		71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
@@ -393,7 +391,6 @@
 		71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
 		71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
-		71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSelection.swift; sourceTree = "<group>"; };
 		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
@@ -643,7 +640,6 @@
 				719846AF28EEE48900E866CE /* CurrentLocation.swift */,
 				71A2BDE529B747940071ACE9 /* Globals.swift */,
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
-				71AEB7B429AE1B1A00A7952D /* NavigationSelection.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
@@ -1143,7 +1139,6 @@
 				718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */,
 				71F641C1299FCCFF00FE5AB5 /* TimeMachine.swift in Sources */,
 				719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */,
-				71AEB7B529AE1B1A00A7952D /* NavigationSelection.swift in Sources */,
 				71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
@@ -1177,7 +1172,6 @@
 				719F927529ACD21300C06921 /* Persistence.swift in Sources */,
 				719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */,
 				71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */,
-				71AEB7B629AE1B1A00A7952D /* NavigationSelection.swift in Sources */,
 				713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,

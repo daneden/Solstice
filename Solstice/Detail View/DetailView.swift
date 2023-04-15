@@ -25,7 +25,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@State private var showRemainingDaylight = false
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
-	@SceneStorage("selectedLocation") private var selectedLocation: NavigationSelection?
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	var body: some View {
 		ScrollViewReader { scrollProxy in
@@ -130,7 +130,7 @@ struct DetailView<Location: ObservableLocation>: View {
 					dismiss()
 					withAnimation {
 						if let id = try? location.saveLocation(to: viewContext) {
-							selectedLocation = .savedLocation(id: id)
+							selectedLocation = id.uuidString
 						}
 					}
 				} label: {

@@ -12,7 +12,7 @@ struct LocationSearchResultRow: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
 	
-	@SceneStorage("selectedLocation") private var selectedLocation: NavigationSelection?
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	@ObservedObject var searchService: LocationSearchService
 	
 	var items: Array<SavedLocation> = []
@@ -29,24 +29,26 @@ struct LocationSearchResultRow: View {
 				if let location = location as? TemporaryLocation {
 					searchService.location = location
 				} else if let locationId = (location as? SavedLocation)?.uuid {
-					selectedLocation = .savedLocation(id: locationId)
+					selectedLocation = locationId.uuidString
 				}
 			}
 		} label: {
-			VStack(alignment: .leading) {
-				Text(result.title)
-				if !result.subtitle.isEmpty {
-					Text(result.subtitle)
-						.foregroundStyle(.secondary)
-						.font(.footnote)
+			HStack {
+				VStack(alignment: .leading) {
+					Text(result.title)
+					if !result.subtitle.isEmpty {
+						Text(result.subtitle)
+							.foregroundStyle(.secondary)
+							.font(.footnote)
+					}
 				}
-			}
-			
-			Spacer()
-			
-			if isAddingItem {
-				ProgressView()
-					.controlSize(.small)
+				
+				Spacer()
+				
+				if isAddingItem {
+					ProgressView()
+						.controlSize(.small)
+				}
 			}
 		}
 		.contentShape(Rectangle())
