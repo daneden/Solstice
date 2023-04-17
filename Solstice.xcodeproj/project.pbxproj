@@ -1546,7 +1546,7 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1586,7 +1586,7 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
