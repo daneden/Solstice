@@ -47,7 +47,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 		
 		var location: CLLocation?
-		var timeZone = TimeZone.autoupdatingCurrent
+		var timeZone = localTimeZone
 		
 		if let customNotificationLocationUUID {
 			let request = NSFetchRequest<SavedLocation>(entityName: "SavedLocation")

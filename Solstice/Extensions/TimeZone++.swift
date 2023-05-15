@@ -9,7 +9,7 @@ import Foundation
 
 extension TimeZone {
 	func differenceFromLocalTime(for date: Date) -> TimeInterval {
-		let currentOffset = TimeZone.autoupdatingCurrent.secondsFromGMT(for: date) * -1
+		let currentOffset = localTimeZone.secondsFromGMT(for: date) * -1
 		return TimeInterval(self.secondsFromGMT(for: date) + currentOffset)
 	}
 	

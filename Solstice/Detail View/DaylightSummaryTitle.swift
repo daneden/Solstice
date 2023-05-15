@@ -12,7 +12,7 @@ struct DaylightSummaryTitle: View {
 	var solar: Solar
 	var event: Solar.Event?
 	var currentX: Date?
-	var timeZone = TimeZone.autoupdatingCurrent
+	var timeZone = localTimeZone
 	
 	var summaryFont: Font {
 		#if os(watchOS)

@@ -109,7 +109,7 @@ struct NotificationSettings: View {
 							ForEach(Preferences.NotificationSettings.relativeOffsetDetents, id: \.self) { timeInterval in
 								switch timeInterval {
 								case let x where x < 0:
-									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) before")
+									Text("\(Duration.seconds(abs(timeInterval)).formatted(.units(maximumUnitCount: 2))) before")
 								case let x where x > 0:
 									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
 								default:

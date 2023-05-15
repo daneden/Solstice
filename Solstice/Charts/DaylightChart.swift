@@ -233,7 +233,7 @@ struct DaylightChart: View {
 				try await Task.sleep(nanoseconds: 250_000_000)
 				if solarEvents.isEmpty { resetSolarEvents() }
 			} catch {
-				
+				print(error)
 			}
 		}
 		.onAppear {

@@ -85,7 +85,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Label("Sunset", systemImage: "sunset")
 			}
 		} header: {
-			if location.timeZoneIdentifier != TimeZone.autoupdatingCurrent.identifier,
+			if location.timeZoneIdentifier != localTimeZone.identifier,
 				 !(location is CurrentLocation) {
 				HStack {
 					Text("Local Time")

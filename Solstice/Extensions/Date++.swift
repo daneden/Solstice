@@ -22,7 +22,7 @@ extension Date {
 	
 	func withTimeZoneAdjustment(for timeZone: TimeZone?) -> Date {
 		guard let timeZone else { return self }
-		let tzOffset = timeZone.secondsFromGMT(for: self) - TimeZone.autoupdatingCurrent.secondsFromGMT(for: self)
+		let tzOffset = timeZone.secondsFromGMT(for: self) - localTimeZone.secondsFromGMT(for: self)
 		return self.addingTimeInterval(TimeInterval(tzOffset))
 	}
 }
