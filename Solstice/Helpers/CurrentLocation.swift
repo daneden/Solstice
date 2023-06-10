@@ -57,7 +57,11 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	}
 	
 	func requestAccess() {
+		#if os(macOS)
+		self.locationManager.requestAlwaysAuthorization()
+		#else
 		self.locationManager.requestWhenInUseAuthorization()
+		#endif
 	}
 }
 
