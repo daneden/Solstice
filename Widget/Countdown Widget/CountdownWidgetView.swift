@@ -115,14 +115,3 @@ extension CountdownWidgetView {
 		nextSolarEvent?.phase == .sunrise ? "moon.stars" : "sun.max"
 	}
 }
-
-struct CountdownWigetView_Previews: PreviewProvider {
-	static var previews: some View {
-		CountdownWidgetView(entry: .init(date: Date(), location: .defaultLocation))
-		#if os(watchOS)
-			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
-		#else
-			.previewContext(WidgetPreviewContext(family: .systemSmall))
-		#endif
-	}
-}

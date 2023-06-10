@@ -28,7 +28,6 @@
 		7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
-		71177D6E29C0F586006348EB /* WatchDatePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 71177D6D29C0F586006348EB /* WatchDatePicker */; };
 		711A97B729CDBCA200333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97B829CDBCA300333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97B929CDBCA500333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -457,7 +456,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71177D6E29C0F586006348EB /* WatchDatePicker in Frameworks */,
 				719F928329ACD24700C06921 /* Solar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -836,7 +834,6 @@
 			name = "Solstice watchOS Watch App";
 			packageProductDependencies = (
 				719F928229ACD24700C06921 /* Solar */,
-				71177D6D29C0F586006348EB /* WatchDatePicker */,
 			);
 			productName = "Solstice watchOS Watch App";
 			productReference = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */;
@@ -880,7 +877,6 @@
 			mainGroup = 7198467828E5895E00E866CE;
 			packageReferences = (
 				7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */,
-				71177D6C29C0F586006348EB /* XCRemoteSwiftPackageReference "watch-date-picker" */,
 			);
 			productRefGroup = 7198468228E5895E00E866CE /* Products */;
 			projectDirPath = "";
@@ -1240,7 +1236,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1271,7 +1267,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1309,7 +1305,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1341,7 +1337,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1744,14 +1740,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		71177D6C29C0F586006348EB /* XCRemoteSwiftPackageReference "watch-date-picker" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/freyaalminde/watch-date-picker";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.1;
-			};
-		};
 		7195122F29B0B3D6009D282F /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
@@ -1775,11 +1763,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
-		};
-		71177D6D29C0F586006348EB /* WatchDatePicker */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 71177D6C29C0F586006348EB /* XCRemoteSwiftPackageReference "watch-date-picker" */;
-			productName = WatchDatePicker;
 		};
 		7195121729AFBDD9009D282F /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;

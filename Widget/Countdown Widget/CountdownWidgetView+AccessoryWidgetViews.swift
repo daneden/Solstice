@@ -62,13 +62,17 @@ extension CountdownWidgetView {
 						.font(.headline)
 						.widgetAccentable()
 						.imageScale(.small)
+						.transition(.move(edge: .bottom))
 					Text(nextEvent.date, style: .relative)
+						.contentTransition(.numericText())
 					Text(nextEvent.date, style: .time)
 						.foregroundColor(.secondary)
+						.contentTransition(.numericText())
 				}
 				
 				Spacer(minLength: 0)
 			}
+			.animation(.default, value: nextEvent)
 		}
 	}
 	
