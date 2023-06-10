@@ -183,10 +183,4 @@ fileprivate var showComplicationDefaultValue: Bool {
 	#endif
 }
 
-fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance {
-	#if os(watchOS)
-	.simple
-	#else
-	.graphical
-	#endif
-}
+fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance = .graphical

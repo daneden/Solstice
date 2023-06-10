@@ -36,7 +36,7 @@ struct SolsticeApp: App {
 					}
 				}
 		}
-		.onChange(of: phase) { newValue in
+		.onChange(of: phase) { (_, newValue) in
 			switch newValue {
 			#if !os(watchOS)
 			case .background:

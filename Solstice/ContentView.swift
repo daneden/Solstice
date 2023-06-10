@@ -70,11 +70,14 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
-			.onChange(of: scenePhase) { _ in
+			.onChange(of: scenePhase) { (_, _) in
 				timeMachine.referenceDate = Date()
 			}
 			.onReceive(timer) { _ in
 				timeMachine.referenceDate = Date()
+			}
+			.sheet(isPresented: $settingsViewOpen) {
+				SettingsView()
 			}
 	}
 	
@@ -125,12 +128,9 @@ struct ContentView: View {
 #if os(iOS)
 		ToolbarItem {
 			Button {
-				settingsViewOpen.toggle()
+				settingsViewOpen = true
 			} label: {
 				Label("Settings", systemImage: "gearshape")
-			}
-			.sheet(isPresented: $settingsViewOpen) {
-				SettingsView()
 			}
 		}
 #endif

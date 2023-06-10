@@ -221,10 +221,6 @@ struct DaylightChart: View {
 		.if(appearance == .graphical) { view in
 			view
 				.blendMode(.plusLighter)
-				.background(
-					LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
-						.padding(-12)
-				)
 				.environment(\.colorScheme, .dark)
 		}
 		.task(id: solar.date, priority: .background) {

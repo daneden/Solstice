@@ -17,6 +17,7 @@ struct SolsticeShortcutsProvider: AppShortcutsProvider {
 					"Get sunset time from \(.applicationName)",
 					"Get sunset time in \(.applicationName)",
 				],
+				shortTitle: "Get sunset time",
 				systemImageName: "sunset"
 			),
 			AppShortcut(
@@ -25,6 +26,7 @@ struct SolsticeShortcutsProvider: AppShortcutsProvider {
 					"Get sunrise time from \(.applicationName)",
 					"Get sunrise time in \(.applicationName)",
 				],
+				shortTitle: "Get sunrise time",
 				systemImageName: "sunrise"
 			),
 			AppShortcut(
@@ -32,6 +34,7 @@ struct SolsticeShortcutsProvider: AppShortcutsProvider {
 				phrases: [
 					"View daylight for a location in \(.applicationName)",
 				],
+				shortTitle: "View daylight",
 				systemImageName: "sun.max"
 			),
 			AppShortcut(
@@ -39,6 +42,7 @@ struct SolsticeShortcutsProvider: AppShortcutsProvider {
 				phrases: [
 					"View remaining daylight for a location in \(.applicationName)",
 				],
+				shortTitle: "View remaining daylight",
 				systemImageName: "timer"
 			),
 		]

@@ -57,14 +57,14 @@ struct DetailView<Location: ObservableLocation>: View {
 			.toolbar {
 				toolbarItems
 			}
-			.onChange(of: timeMachine.isOn) { newValue in
+			.onChange(of: timeMachine.isOn) { (_, newValue) in
 				if newValue == true {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
 					}
 				}
 			}
-			.onChange(of: timeMachine.targetDate) { newValue in
+			.onChange(of: timeMachine.targetDate) { (_, newValue) in
 				if timeMachine.isOn {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
@@ -86,6 +86,15 @@ struct DetailView<Location: ObservableLocation>: View {
 				userActivity.isEligibleForSearch = true
 				userActivity.isEligibleForHandoff = false
 			}
+			#if os(watchOS)
+			.containerBackground(
+				LinearGradient(colors: SkyGradient.getCurrentPalette(for: timeMachine.date.withTimeZoneAdjustment(for: location.timeZone)),
+											 startPoint: .top,
+											 endPoint: .bottom)
+				.opacity(0.6),
+				for: .navigation
+			)
+			#endif
 		}
 	}
 	
@@ -95,8 +104,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
-		ToolbarItem(id: "timeMachineToggle") {
-			#if os(watchOS)
+		#if os(watchOS)
+		ToolbarItem(id: "timeMachineToggle", placement: .topBarTrailing) {
 			Button {
 				timeMachine.controlsVisible.toggle()
 			} label: {
@@ -111,18 +120,19 @@ struct DetailView<Location: ObservableLocation>: View {
 						Button {
 							timeMachine.controlsVisible.toggle()
 						} label: {
-							Text("Close")
+							Label("Close", systemImage: "xmark")
 						}
 					}
 				}
 			}
-			#else
+		}
+		#else
+		ToolbarItem(id: "timeMachineToggle") {
 			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
 				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 			}
-			#endif
-			
 		}
+		#endif
 		
 		if let location = location as? TemporaryLocation {
 			ToolbarItem {
@@ -153,17 +163,9 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 }
 
-struct DetailView_Previews: PreviewProvider {
-	static var previews: some View {
-		NavigationStack {
-			DetailView(location: TemporaryLocation.placeholderLondon)
-		}
-		.environmentObject(TimeMachine.preview)
-		.previewDisplayName("Detail View: Temporary Location")
-		
-		NavigationStack {
-			DetailView(location: CurrentLocation())
-		}
-		.previewDisplayName("Detail View: Current Location")
+#Preview {
+	NavigationStack {
+		DetailView(location: TemporaryLocation.placeholderLondon)
 	}
+	.environmentObject(TimeMachine.preview)
 }

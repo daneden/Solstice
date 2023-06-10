@@ -81,9 +81,6 @@ struct DaylightSummaryTitle: View {
 			#if !os(macOS)
 			.scenePadding()
 			#endif
-			#if os(watchOS)
-			.padding(.vertical)
-			#endif
 			.fontDesign(.rounded)
 			.fontWeight(.semibold)
     }
