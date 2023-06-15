@@ -90,8 +90,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			.containerBackground(
 				LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar),
 											 startPoint: .top,
-											 endPoint: .bottom)
-				.opacity(0.6),
+											 endPoint: .bottom).opacity(0.5),
 				for: .navigation
 			)
 			#endif
@@ -110,6 +109,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				timeMachine.controlsVisible.toggle()
 			} label: {
 				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+					.symbolEffect(.pulse, isActive: timeMachine.isOn)
 			}
 			.sheet(isPresented: $timeMachine.controlsVisible) {
 				Form {

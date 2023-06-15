@@ -72,9 +72,18 @@ struct ContentView: View {
 			}
 			.onChange(of: scenePhase) { (_, _) in
 				timeMachine.referenceDate = Date()
+				if CurrentLocation.isAuthorized,
+					 selectedLocation == currentLocation.id,
+					 scenePhase != .background {
+					currentLocation.requestLocation()
+				}
 			}
 			.onReceive(timer) { _ in
 				timeMachine.referenceDate = Date()
+				if CurrentLocation.isAuthorized,
+					 selectedLocation == currentLocation.id {
+					currentLocation.requestLocation()
+				}
 			}
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()

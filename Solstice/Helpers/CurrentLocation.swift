@@ -21,6 +21,8 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	@Published var subtitle: String?
 	let id = "currentLocation"
 	
+	@Published private(set) var placemark: CLPlacemark?
+	
 	@Published private(set) var latitude: Double = 0 {
 		didSet {
 			cachedLatitude = latitude
@@ -63,12 +65,16 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 
 extension CurrentLocation: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		didUpdateLocationsCallback?(locations.last)
-		didUpdateLocationsCallback = nil
+		print("Received location update")
 		
-		Task {
-			await defaultDidUpdateLocationsCallback(locations)
-			await NotificationManager.scheduleNotifications(locationManager: self)
+		if didUpdateLocationsCallback != nil {
+			didUpdateLocationsCallback?(locations.last)
+			didUpdateLocationsCallback = nil
+		} else {
+			Task {
+				await defaultDidUpdateLocationsCallback(locations)
+				await NotificationManager.scheduleNotifications(locationManager: self)
+			}
 		}
 		
 		#if canImport(WidgetKit)
@@ -85,6 +91,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 			
 			let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
 			if let firstResult = reverseGeocoded?.first {
+				placemark = firstResult
 				title = firstResult.locality
 				subtitle = firstResult.country
 				timeZoneIdentifier = firstResult.timeZone?.identifier
@@ -106,12 +113,16 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	
 	func requestLocation(handler: @escaping (CLLocation?) -> Void) {
 		self.didUpdateLocationsCallback = handler
+		requestLocation()
+		return
+	}
+	
+	func requestLocation() {
 		locationManager.requestLocation()
 		locationManager.startUpdatingLocation()
 		#if !os(watchOS)
 		locationManager.startMonitoringSignificantLocationChanges()
 		#endif
-		return
 	}
 	
 	static var authorizationStatus: CLAuthorizationStatus {

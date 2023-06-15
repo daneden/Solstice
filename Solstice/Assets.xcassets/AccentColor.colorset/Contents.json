@@ -11,6 +11,13 @@
         }
       },
       "idiom" : "universal"
+    },
+    {
+      "color" : {
+        "platform" : "watchos",
+        "reference" : "systemYellowColor"
+      },
+      "idiom" : "watch"
     }
   ],
   "info" : {

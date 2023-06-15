@@ -24,13 +24,27 @@ struct SolarChartWidgetView: View {
 	var body: some View {
 		if let solar,
 			 let location {
-			DaylightChart(
-				solar: solar,
-				timeZone: location.timeZone,
-				eventTypes: [],
-				includesSummaryTitle: false,
-				markSize: 4
-			)
+			VStack {
+				HStack {
+					Label("\(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)", systemImage: "sunrise")
+					
+					Spacer()
+					
+					Label("\(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)", systemImage: "sunset")
+				}
+				.symbolVariant(.fill)
+				.imageScale(.small)
+				.font(.caption)
+				.widgetAccentable()
+				
+				DaylightChart(
+					solar: solar,
+					timeZone: location.timeZone,
+					eventTypes: [],
+					includesSummaryTitle: false,
+					markSize: 3
+				)
+			}
 			.edgesIgnoringSafeArea(.all)
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 		} else {

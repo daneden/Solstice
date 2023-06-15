@@ -34,12 +34,7 @@ extension SolsticeWidgetTimelineProvider {
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
 		let isRealLocation = configuration.location == nil
 		
-		let handler: CLGeocodeCompletionHandler = { placemarks, error in
-			guard let placemark = placemarks?.first,
-						error == nil else {
-				return completion(SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
-			}
-			
+		func processPlacemark(_ placemark: CLPlacemark) {
 			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
 			
 			let entry = SolsticeWidgetTimelineEntry(
@@ -49,8 +44,22 @@ extension SolsticeWidgetTimelineProvider {
 			return completion(entry)
 		}
 		
+		let handler: CLGeocodeCompletionHandler = { placemarks, error in
+			guard let placemark = placemarks?.first,
+						error == nil else {
+				return completion(SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
+			}
+			
+			processPlacemark(placemark)
+		}
+		
 		if let configurationLocation = configuration.location?.location ?? currentLocation.latestLocation {
-			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+			if let placemark = currentLocation.placemark {
+				processPlacemark(placemark)
+			} else {
+				
+				geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
+			}
 		} else {
 			guard currentLocation.isAuthorizedForWidgetUpdates else {
 				return completion(SolsticeWidgetTimelineEntry(date: Date()))
@@ -67,13 +76,9 @@ extension SolsticeWidgetTimelineProvider {
 		var entries: [Entry] = []
 		let realLocation = configuration.location == nil
 		
-		let handler: CLGeocodeCompletionHandler = { placemarks, error in
+		func processPlacemark(_ placemark: CLPlacemark) {
 			let currentDate = Date()
 			let entryLimit = calendar.date(byAdding: .day, value: 1, to: currentDate)
-			guard let placemark = placemarks?.first,
-						error == nil else {
-				return completion(Timeline(entries: [], policy: .atEnd))
-			}
 			
 			let widgetLocation = getLocation(for: placemark, isRealLocation: realLocation)
 			
@@ -123,8 +128,21 @@ extension SolsticeWidgetTimelineProvider {
 			completion(Timeline(entries: entries, policy: .after(solar?.nextSolarEvent?.date ?? currentDate.endOfDay)))
 		}
 		
+		let handler: CLGeocodeCompletionHandler = { placemarks, error in
+			guard let placemark = placemarks?.first,
+						error == nil else {
+				return completion(Timeline(entries: [], policy: .atEnd))
+			}
+			
+			processPlacemark(placemark)
+		}
+		
 		if let location = configuration.location?.location ?? currentLocation.latestLocation {
-			geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+			if let placemark = currentLocation.placemark {
+				processPlacemark(placemark)
+			} else {
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+			}
 		} else {
 			guard currentLocation.isAuthorizedForWidgetUpdates else {
 				return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
