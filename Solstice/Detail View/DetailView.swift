@@ -88,7 +88,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			#if os(watchOS)
 			.containerBackground(
-				LinearGradient(colors: SkyGradient.getCurrentPalette(for: timeMachine.date.withTimeZoneAdjustment(for: location.timeZone)),
+				LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar),
 											 startPoint: .top,
 											 endPoint: .bottom)
 				.opacity(0.6),

@@ -23,15 +23,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	
 	@State private var isInformationSheetPresented = false
 	
-	var differenceFromPreviousSolstice: TimeInterval? {
-		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate),
-					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate) else {
-			return nil
-		}
-		
-		return previousSolsticeSolar.daylightDuration - solar.daylightDuration
-	}
-	
 	var location: Location
 	
 	var nextSolsticeMonth: Int {
@@ -55,22 +46,17 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Section {
-			VStack(alignment: .leading) {
-				AdaptiveLabeledContent {
-					Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-				} label: {
-					Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
-				}
-				
-				if let differenceFromPreviousSolstice {
-					Label {
-						Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
-				}
+			AnnualDaylightChart(location: location)
+				.frame(height: chartHeight)
+		} header: {
+			Label("Daylight by Month", systemImage: "chart.bar.xaxis")
+		}
+		
+		Section {
+			AdaptiveLabeledContent {
+				Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+			} label: {
+				Text(nextSolstice, style: .date)
 			}
 			.swipeActions(edge: .leading) {
 				Button {
@@ -82,11 +68,15 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					Label("Jump to \(nextSolstice, style: .date)", systemImage: "clock.arrow.2.circlepath")
 				}
 			}
-			
+		} header: {
+			Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
+		}
+		
+		Section {
 			AdaptiveLabeledContent {
 				Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
 			} label: {
-				Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+				Text(nextEquinox, style: .date)
 			}
 			.swipeActions(edge: .leading) {
 				Button {
@@ -99,29 +89,20 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				}
 				.backgroundStyle(.tint)
 			}
+		} header: {
+			Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+		}
+		
+		if let shortestDay,
+			 let longestDay {
+			let longestDayDuration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+			let shortestDayDuration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 			
-			AnnualDaylightChart(location: location)
-				.frame(height: chartHeight)
-			
-			if let shortestDay,
-				 let longestDay {
-				
-				VStack(alignment: .leading) {
-					let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-					
-					AdaptiveLabeledContent {
-						Text(longestDay.date, style: .date)
-					} label: {
-						Label("Longest Day", systemImage: "sun.max")
-					}
-					
-					Label {
-						Text("\(duration) of daylight")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
+			Section {
+				AdaptiveLabeledContent {
+					Text(solsticeAndEquinoxFormatter.localizedString(for: longestDay.date.startOfDay, relativeTo: date.startOfDay))
+				} label: {
+					Text(longestDay.date, style: .date)
 				}
 				.swipeActions(edge: .leading) {
 					Button {
@@ -134,22 +115,16 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					}
 				}
 				
-				VStack(alignment: .leading) {
-					let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-					
-					AdaptiveLabeledContent {
-						Text(shortestDay.date, style: .date)
-					} label: {
-						Label("Shortest Day", systemImage: "sun.min")
-					}
-					
-					Label {
-						Text("\(duration) of daylight")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
+				Text("\(longestDayDuration) of daylight")
+			} header: {
+				Label("Longest Day", systemImage: "sun.max")
+			}
+			
+			Section {
+				AdaptiveLabeledContent {
+					Text(solsticeAndEquinoxFormatter.localizedString(for: shortestDay.date.startOfDay, relativeTo: date.startOfDay))
+				} label: {
+					Text(shortestDay.date, style: .date)
 				}
 				.swipeActions(edge: .leading) {
 					Button {
@@ -161,36 +136,42 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
+				
+				Text("\(shortestDayDuration) of daylight")
+			} header: {
+				Label("Shortest Day", systemImage: "sun.min")
 			}
-		} footer: {
-			#if !os(watchOS)
-			Button {
-				#if os(macOS)
-				openWindow.callAsFunction(id: "about-equinox-and-solstice")
-				#else
-				isInformationSheetPresented = true
-				#endif
-			} label: {
-				Label("Learn more about the equinox and solstice", systemImage: "info.circle")
-					.font(.footnote)
-			}
-			.buttonStyle(.automatic)
-			.sheet(isPresented: $isInformationSheetPresented) {
-				NavigationStack {
-					EquinoxAndSolsticeInfoView()
-					#if os(macOS)
-						.frame(minWidth: 500, minHeight: 500)
-					#endif
-						.toolbar {
-							Button("Close") {
-								isInformationSheetPresented = false
-							}
-						}
+			
+			Section { } footer: {
+#if !os(watchOS)
+				Button {
+#if os(macOS)
+					openWindow.callAsFunction(id: "about-equinox-and-solstice")
+#else
+					isInformationSheetPresented = true
+#endif
+				} label: {
+					Label("Learn more about the equinox and solstice", systemImage: "info.circle")
+						.font(.footnote)
 				}
+				.buttonStyle(.automatic)
+				.sheet(isPresented: $isInformationSheetPresented) {
+					NavigationStack {
+						EquinoxAndSolsticeInfoView()
+#if os(macOS)
+							.frame(minWidth: 500, minHeight: 500)
+#endif
+							.toolbar {
+								Button("Close") {
+									isInformationSheetPresented = false
+								}
+							}
+					}
+				}
+#endif
 			}
-			#endif
+			.buttonStyle(.plain)
 		}
-		.buttonStyle(.plain)
 	}
 }
 

@@ -24,6 +24,30 @@ struct DailyOverview<Location: AnyLocation>: View {
 		return calendar.isDate(solar.date, inSameDayAs: Date())
 	}
 	
+	var differenceFromPreviousSolstice: TimeInterval? {
+		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate),
+					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate) else {
+			return nil
+		}
+		
+		return previousSolsticeSolar.daylightDuration - solar.daylightDuration
+	}
+	
+	var nextSolsticeMonth: Int {
+		calendar.dateComponents([.month], from: timeMachine.date.nextSolstice).month ?? 6
+	}
+	
+	var nextGreaterThanPrevious: Bool {
+		switch nextSolsticeMonth {
+		case 6:
+			return location.latitude > 0
+		case 12:
+			return location.latitude < 0
+		default:
+			return true
+		}
+	}
+	
 	var body: some View {
 		Section {
 			daylightChartView
@@ -93,6 +117,11 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Spacer()
 					Text("\(solar.date.withTimeZoneAdjustment(for: location.timeZone), style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
 				}
+			}
+		} footer: {
+			if let differenceFromPreviousSolstice {
+				Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on \(timeMachine.date, style: .date) compared to the previous solstice")
+					.foregroundStyle(.secondary)
 			}
 		}
 		.task(id: timeMachine.date, priority: .background) {
@@ -181,16 +210,18 @@ extension DailyOverview {
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize
 		)
+		#if !os(watchOS)
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
 					LinearGradient(
-						colors: SkyGradient.getCurrentPalette(for: solar.date.withTimeZoneAdjustment(for: location.timeZone)),
+						colors: SkyGradient.getCurrentPalette(for: solar),
 						startPoint: .top,
 						endPoint: .bottom
 					)
 				}
 		}
+		#endif
 	}
 }
 

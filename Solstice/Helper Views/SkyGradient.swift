@@ -50,7 +50,8 @@ struct SkyGradient {
 		return colors[timeAsIndex]
 	}
 	
-	static func getCurrentPalette(for daylight: Solar) -> [Color] {
+	static func getCurrentPalette(for daylight: Solar?) -> [Color] {
+		guard let daylight else { return [] }
 		let sunrise = daylight.safeSunrise.addingTimeInterval(-60 * 30)
 		let sunset = daylight.safeSunset.addingTimeInterval(60 * 30)
 		

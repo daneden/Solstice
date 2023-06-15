@@ -23,51 +23,47 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	var dayLength: Double = 60 * 60 * 24
 	
 	var body: some View {
-		VStack(alignment: .leading) {
-			Label("Daylight by Month", systemImage: "chart.bar.xaxis")
-			
-			Chart {
-				ForEach(monthlySolars, id: \.date) { solar in
-					let sunrise = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
-					let sunset = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
-					
-					if let astronomicalSunrise = solar.astronomicalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-						 let astronomicalSunset = solar.astronomicalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
-						BarMark(
-							x: .value("Astronomical Twilight", solar.date, unit: .month),
-							yStart: .value("Astronomical Sunrise", max(0, solar.startOfDay.distance(to: astronomicalSunrise))),
-							yEnd: .value("Astronomical Sunset", min(dayLength, solar.startOfDay.distance(to: astronomicalSunset)))
-						)
-						.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
-					}
-					
-					if let nauticalSunrise = solar.nauticalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-						 let nauticalSunset = solar.nauticalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
-						BarMark(
-							x: .value("Nautical Twilight", solar.date, unit: .month),
-							yStart: .value("Nautical Sunrise", max(0, solar.startOfDay.distance(to: nauticalSunrise))),
-							yEnd: .value("Nautical Sunset", min(dayLength, solar.startOfDay.distance(to: nauticalSunset)))
-						)
-						.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
-					}
-					
-					if let civilSunrise = solar.civilSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-						 let civilSunset = solar.civilSunset?.withTimeZoneAdjustment(for: location.timeZone) {
-						BarMark(
-							x: .value("Civil Twilight", solar.date, unit: .month),
-							yStart: .value("Civil Sunrise", max(0, solar.startOfDay.distance(to: civilSunrise))),
-							yEnd: .value("Civil Sunset", min(dayLength, solar.startOfDay.distance(to: civilSunset)))
-						)
-						.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
-					}
-					
+		Chart {
+			ForEach(monthlySolars, id: \.date) { solar in
+				let sunrise = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
+				let sunset = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
+				
+				if let astronomicalSunrise = solar.astronomicalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
+					 let astronomicalSunset = solar.astronomicalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 					BarMark(
-						x: .value("Daylight", solar.date, unit: .month),
-						yStart: .value("Sunrise", max(0, solar.startOfDay.distance(to: sunrise))),
-						yEnd: .value("Sunset", min(dayLength, solar.startOfDay.distance(to: sunset)))
+						x: .value("Astronomical Twilight", solar.date, unit: .month),
+						yStart: .value("Astronomical Sunrise", max(0, solar.startOfDay.distance(to: astronomicalSunrise))),
+						yEnd: .value("Astronomical Sunset", min(dayLength, solar.startOfDay.distance(to: astronomicalSunset)))
 					)
-					.foregroundStyle(by: .value("Phase", Solar.Phase.day))
+					.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
 				}
+				
+				if let nauticalSunrise = solar.nauticalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
+					 let nauticalSunset = solar.nauticalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
+					BarMark(
+						x: .value("Nautical Twilight", solar.date, unit: .month),
+						yStart: .value("Nautical Sunrise", max(0, solar.startOfDay.distance(to: nauticalSunrise))),
+						yEnd: .value("Nautical Sunset", min(dayLength, solar.startOfDay.distance(to: nauticalSunset)))
+					)
+					.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
+				}
+				
+				if let civilSunrise = solar.civilSunrise?.withTimeZoneAdjustment(for: location.timeZone),
+					 let civilSunset = solar.civilSunset?.withTimeZoneAdjustment(for: location.timeZone) {
+					BarMark(
+						x: .value("Civil Twilight", solar.date, unit: .month),
+						yStart: .value("Civil Sunrise", max(0, solar.startOfDay.distance(to: civilSunrise))),
+						yEnd: .value("Civil Sunset", min(dayLength, solar.startOfDay.distance(to: civilSunset)))
+					)
+					.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
+				}
+				
+				BarMark(
+					x: .value("Daylight", solar.date, unit: .month),
+					yStart: .value("Sunrise", max(0, solar.startOfDay.distance(to: sunrise))),
+					yEnd: .value("Sunset", min(dayLength, solar.startOfDay.distance(to: sunset)))
+				)
+				.foregroundStyle(by: .value("Phase", Solar.Phase.day))
 			}
 		}
 		.chartForegroundStyleScale(kvPairs)
