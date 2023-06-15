@@ -72,9 +72,16 @@ struct ContentView: View {
 			}
 			.onChange(of: scenePhase) { _ in
 				timeMachine.referenceDate = Date()
+				if CurrentLocation.isAuthorized,
+					 scenePhase != .background {
+					currentLocation.requestLocation()
+				}
 			}
 			.onReceive(timer) { _ in
 				timeMachine.referenceDate = Date()
+				if CurrentLocation.isAuthorized {
+					currentLocation.requestAccess()
+				}
 			}
 	}
 	
