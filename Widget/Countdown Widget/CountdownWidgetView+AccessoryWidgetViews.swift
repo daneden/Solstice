@@ -22,6 +22,7 @@ extension CountdownWidgetView {
 	
 	struct AccessoryCircularView: View {
 		@Environment(\.widgetRenderingMode) var widgetRenderingMode
+		
 		var previousEvent: Solar.Event
 		var nextEvent: Solar.Event
 		

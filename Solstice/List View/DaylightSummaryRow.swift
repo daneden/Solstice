@@ -58,6 +58,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 							.font(.footnote)
 							.foregroundStyle(.tertiary)
 					}
+					.contentTransition(.numericText())
 					
 					if showComplication {
 						DaylightChart(

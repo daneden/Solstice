@@ -28,7 +28,7 @@ struct CountdownWidget: Widget {
 				.containerBackground(
 					LinearGradient(colors: SkyGradient.getCurrentPalette(for: timelineEntry.date.withTimeZoneAdjustment(for: timelineEntry.location?.timeZone)),
 												 startPoint: .top,
-												 endPoint: .bottom).opacity(0.65),
+												 endPoint: .bottom),
 					for: .widget
 				)
 		}

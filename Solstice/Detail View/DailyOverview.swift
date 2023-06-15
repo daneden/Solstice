@@ -53,6 +53,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			
 			AdaptiveLabeledContent {
 				Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
+					.contentTransition(.numericText())
 			} label: {
 				Label("Total Daylight", systemImage: "hourglass")
 			}
@@ -180,6 +181,16 @@ extension DailyOverview {
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize
 		)
+		.if(chartAppearance == .graphical) { content in
+			content
+				.background {
+					LinearGradient(
+						colors: SkyGradient.getCurrentPalette(for: solar.date.withTimeZoneAdjustment(for: location.timeZone)),
+						startPoint: .top,
+						endPoint: .bottom
+					)
+				}
+		}
 	}
 }
 

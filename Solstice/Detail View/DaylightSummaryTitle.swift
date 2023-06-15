@@ -43,6 +43,7 @@ struct DaylightSummaryTitle: View {
 						.lineLimit(summaryLineLimit)
 						.allowsTightening(true)
 						.minimumScaleFactor(0.8)
+						.contentTransition(.numericText())
 					Spacer(minLength: 0)
 				}
 				.opacity(event == nil ? 1 : 0)

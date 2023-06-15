@@ -12,6 +12,7 @@ import WidgetKit
 struct CountdownWidgetView: View {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.sizeCategory) var sizeCategory
+	@Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground
 	
 	var entry: SolsticeWidgetTimelineEntry
 	
@@ -28,8 +29,7 @@ struct CountdownWidgetView: View {
 	}
 	
 	var body: some View {
-		if let solar,
-			 let location,
+		if let location,
 			 let nextSolarEvent,
 			 let previousSolarEvent {
 			switch family {
@@ -56,33 +56,30 @@ struct CountdownWidgetView: View {
 							.widgetHeading()
 							.minimumScaleFactor(0.8)
 							.lineLimit(3)
+							.contentTransition(.numericText())
 						
 						Spacer()
 					}
 					
 					Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
 						.font(.footnote.weight(.semibold))
+						.contentTransition(.numericText())
 				}
-				.padding()
-				.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+				.if(showsWidgetContainerBackground) { content in
+					content
+						.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+				}
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.background(
-					LinearGradient(
-						colors: [.black.opacity(0.15), .clear],
-						startPoint: .bottom,
-						endPoint: .center
-					).blendMode(.plusDarker)
-				)
-				.background(
-					LinearGradient(
-						colors: SkyGradient.getCurrentPalette(for: solar),
-						startPoint: .top,
-						endPoint: .bottom
-					)
-				)
 				.foregroundStyle(.white)
 				.symbolRenderingMode(.hierarchical)
 				.symbolVariant(.fill)
+				.preferredColorScheme(.dark)
+				.background {
+					LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
+						.opacity(0.2)
+						.blendMode(.plusDarker)
+						.padding(-20)
+				}
 			}
 		} else {
 			WidgetMissingLocationView()
