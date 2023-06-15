@@ -74,11 +74,11 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		if didUpdateLocationsCallback != nil {
 			didUpdateLocationsCallback?(locations.last)
 			didUpdateLocationsCallback = nil
-		} else {
-			Task {
-				await defaultDidUpdateLocationsCallback(locations)
-				await NotificationManager.scheduleNotifications(locationManager: self)
-			}
+		}
+		
+		Task {
+			await defaultDidUpdateLocationsCallback(locations)
+			await NotificationManager.scheduleNotifications(locationManager: self)
 		}
 		
 #if canImport(WidgetKit)
@@ -111,7 +111,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 #endif
 		
 		if CurrentLocation.isAuthorized {
-			self.locationManager.requestLocation()
+			requestLocation()
 		}
 	}
 	
