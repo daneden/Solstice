@@ -53,7 +53,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				AnnualOverview(location: location)
 			}
 			.formStyle(.grouped)
-			.navigationTitle(location.title ?? "Solstice")
+			.navigationTitle(location.title ?? (location is CurrentLocation ? "My Location" : "Solstice"))
 			.toolbar {
 				toolbarItems
 			}
