@@ -130,7 +130,15 @@ struct SupporterSettings: View {
 	func purchaseProduct(_ product: Product) async throws -> StoreKit.Transaction {
 		purchaseInProgress = true
 		
+		#if os(xrOS)
+		guard let scene = await UIApplication.shared.connectedScenes.first else {
+			throw PurchaseError.failed
+		}
+		let result = try await product.purchase(confirmIn: scene)
+		#else
+		
 		let result = try await product.purchase()
+		#endif
 		
 		purchaseInProgress = false
 		

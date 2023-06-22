@@ -120,7 +120,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	func requestLocation() {
 		locationManager.requestLocation()
 		locationManager.startUpdatingLocation()
-		#if !os(watchOS)
+		#if !os(watchOS) && !os(xrOS)
 		locationManager.startMonitoringSignificantLocationChanges()
 		#endif
 	}

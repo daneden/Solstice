@@ -13,6 +13,7 @@ struct ContentView: View {
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
+	@Environment(\.openWindow) private var openWindow
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
@@ -85,9 +86,11 @@ struct ContentView: View {
 					currentLocation.requestLocation()
 				}
 			}
+		#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
 			}
+		#endif
 	}
 	
 	private var placeholderView: some View {
@@ -134,7 +137,15 @@ struct ContentView: View {
 			}
 		}
 		
-#if os(iOS)
+#if os(xrOS)
+				ToolbarItem {
+			Button {
+				openWindow(id: "settings")
+			} label: {
+				Label("Settings", systemImage: "gearshape")
+			}
+		}
+#else
 		ToolbarItem {
 			Button {
 				settingsViewOpen = true

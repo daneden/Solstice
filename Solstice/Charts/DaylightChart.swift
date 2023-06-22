@@ -12,7 +12,6 @@ import Solar
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
-	@Environment(\.widgetRenderingMode) var widgetRenderingMode
 	
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
@@ -348,7 +347,7 @@ struct DaylightChart_Previews: PreviewProvider {
 			solar: Solar(
 				coordinate: TemporaryLocation.placeholderLondon.coordinate
 			)!,
-			timeZone: .autoupdatingCurrent
+			timeZone: TimeZone.autoupdatingCurrent
 		)
 	}
 }
