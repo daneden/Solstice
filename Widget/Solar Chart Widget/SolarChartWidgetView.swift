@@ -34,7 +34,7 @@ struct SolarChartWidgetView: View {
 				}
 				.symbolVariant(.fill)
 				.imageScale(.small)
-				.font(.caption)
+				.font(.footnote)
 				.widgetAccentable()
 				
 				DaylightChart(
@@ -45,7 +45,6 @@ struct SolarChartWidgetView: View {
 					markSize: 3
 				)
 			}
-			.edgesIgnoringSafeArea(.all)
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 		} else {
 			WidgetMissingLocationView()
