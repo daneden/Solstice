@@ -49,7 +49,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	
 	override init() {
 		super.init()
-
+		
 		latitude = cachedLatitude
 		longitude = cachedLongitude
 		
@@ -59,13 +59,22 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	}
 	
 	func requestAccess() {
+		#if os(macOS)
+		self.locationManager.requestAlwaysAuthorization()
+		#else
 		self.locationManager.requestWhenInUseAuthorization()
+		#endif
 	}
 }
 
 extension CurrentLocation: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		print("Received location update")
+		
+		if didUpdateLocationsCallback != nil {
+			didUpdateLocationsCallback?(locations.last)
+			didUpdateLocationsCallback = nil
+		}
 		
 		if didUpdateLocationsCallback != nil {
 			didUpdateLocationsCallback?(locations.last)
@@ -77,9 +86,9 @@ extension CurrentLocation: CLLocationManagerDelegate {
 			}
 		}
 		
-		#if canImport(WidgetKit)
+#if canImport(WidgetKit)
 		WidgetCenter.shared.reloadAllTimelines()
-		#endif
+#endif
 	}
 	
 	@MainActor
@@ -102,12 +111,12 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	}
 	
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-		#if canImport(WidgetKit)
+#if canImport(WidgetKit)
 		WidgetCenter.shared.reloadAllTimelines()
-		#endif
+#endif
 		
 		if CurrentLocation.isAuthorized {
-			self.locationManager.requestLocation()
+			requestLocation()
 		}
 	}
 	
@@ -137,11 +146,11 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	}
 	
 	var isAuthorizedForWidgetUpdates: Bool {
-		#if !os(watchOS)
+#if !os(watchOS)
 		locationManager.isAuthorizedForWidgetUpdates
-		#else
+#else
 		CurrentLocation.isAuthorized
-		#endif
+#endif
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

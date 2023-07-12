@@ -159,4 +159,3 @@ extension SolsticeWidgetTimelineProvider {
 		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
 	}
 }
-

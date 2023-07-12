@@ -92,7 +92,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 			
 			AdaptiveLabeledContent {
-				Text("\(solar.safeSunrise, style: .time)")
+				Text("\(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)")
 			} label: {
 				Label("Sunrise", systemImage: "sunrise")
 			}
@@ -105,7 +105,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 			
 			AdaptiveLabeledContent {
-				Text("\(solar.safeSunset, style: .time)")
+				Text("\(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)")
 			} label: {
 				Label("Sunset", systemImage: "sunset")
 			}

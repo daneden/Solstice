@@ -144,8 +144,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 		
 		let year = calendar.component(.year, from: date)
-		let juneSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		let decemberSolstice = SolsticeCalculator.juneSolstice(year: year)
+		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
+		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
 		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
 		
