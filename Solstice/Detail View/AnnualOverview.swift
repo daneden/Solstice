@@ -16,6 +16,7 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 }
 
 struct AnnualOverview<Location: AnyLocation>: View {
+	@State var detailedDaylightInformationVisible = false
 	#if os(macOS)
 	@Environment(\.openWindow) var openWindow
 	#endif
@@ -53,24 +54,18 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	var nextSolstice: Date { timeMachine.date.nextSolstice }
 	var nextEquinox: Date { timeMachine.date.nextEquinox }
 	
+	var detailedDaylightTransition: some Transition {
+		AsymmetricTransition(insertion: .move(edge: .top), removal: .move(edge: .bottom)).combined(with: .opacity)
+	}
+	
 	var body: some View {
 		Section {
-			VStack(alignment: .leading) {
-				AdaptiveLabeledContent {
-					Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-				} label: {
-					Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
-				}
-				
-				if let differenceFromPreviousSolstice {
-					Label {
-						Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight on this day compared to the previous solstice")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
-				}
+			AdaptiveLabeledContent {
+				Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+					.contentTransition(.numericText())
+			} label: {
+				Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
+					.contentTransition(.symbolEffect)
 			}
 			.swipeActions(edge: .leading) {
 				Button {
@@ -83,8 +78,19 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				}
 			}
 			
+			if let differenceFromPreviousSolstice {
+				Label {
+					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.targetDateLabel(formattingContext: .middleOfSentence)) compared to the previous solstice")
+						.id(timeMachine.targetDate)
+				} icon: {
+					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
+						.contentTransition(.symbolEffect)
+				}
+			}
+			
 			AdaptiveLabeledContent {
 				Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+					.contentTransition(.numericText())
 			} label: {
 				Label("Next Equinox", systemImage: "circle.and.line.horizontal")
 			}
@@ -106,61 +112,59 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			if let shortestDay,
 				 let longestDay {
 				
-				VStack(alignment: .leading) {
-					let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-					
-					AdaptiveLabeledContent {
-						Text(longestDay.date, style: .date)
+				Group {
+					StackedLabeledContent {
+						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+						
+						if detailedDaylightInformationVisible {
+							Text("\(duration) of daylight")
+								.transition(detailedDaylightTransition)
+						} else {
+							Text(longestDay.date, style: .date)
+								.transition(detailedDaylightTransition)
+						}
 					} label: {
 						Label("Longest Day", systemImage: "sun.max")
 					}
-					
-					Label {
-						Text("\(duration) of daylight")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
-				}
-				.swipeActions(edge: .leading) {
-					Button {
-						withAnimation {
-							timeMachine.isOn = true
-							timeMachine.targetDate = longestDay.date
+					.swipeActions(edge: .leading) {
+						Button {
+							withAnimation {
+								timeMachine.isOn = true
+								timeMachine.targetDate = longestDay.date
+							}
+						} label: {
+							Label("Jump to \(longestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 						}
-					} label: {
-						Label("Jump to \(longestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 					}
-				}
-				
-				VStack(alignment: .leading) {
-					let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 					
-					AdaptiveLabeledContent {
-						Text(shortestDay.date, style: .date)
+					StackedLabeledContent {
+						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+						
+						if detailedDaylightInformationVisible {
+							Text("\(duration) of daylight")
+								.transition(detailedDaylightTransition)
+						} else {
+							Text(shortestDay.date, style: .date)
+								.transition(detailedDaylightTransition)
+						}
 					} label: {
 						Label("Shortest Day", systemImage: "sun.min")
 					}
-					
-					Label {
-						Text("\(duration) of daylight")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
-				}
-				.swipeActions(edge: .leading) {
-					Button {
-						withAnimation {
-							timeMachine.isOn = true
-							timeMachine.targetDate = shortestDay.date
+					.swipeActions(edge: .leading) {
+						Button {
+							withAnimation {
+								timeMachine.isOn = true
+								timeMachine.targetDate = shortestDay.date
+							}
+						} label: {
+							Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 						}
-					} label: {
-						Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
+				.onTapGesture {
+					detailedDaylightInformationVisible.toggle()
+				}
+				.animation(.default, value: detailedDaylightInformationVisible)
 			}
 		} footer: {
 			#if !os(watchOS)
@@ -226,12 +230,10 @@ extension AnnualOverview {
 	}
 }
 
-struct AnnualOverview_Previews: PreviewProvider {
-	static var previews: some View {
-		Form {
-			TimeMachineView()
-			AnnualOverview(location: TemporaryLocation.placeholderLondon)
-		}
-		.environmentObject(TimeMachine.preview)
+#Preview {
+	Form {
+		TimeMachineView()
+		AnnualOverview(location: TemporaryLocation.placeholderLondon)
 	}
+	.environmentObject(TimeMachine.preview)
 }

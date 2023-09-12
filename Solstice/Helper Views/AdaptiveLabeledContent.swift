@@ -8,14 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct AdaptiveLabeledContent<Label: View, Content: View>: View {
-	var content: () -> Content
-	var label: () -> Label
+struct StackedLabeledContent<Label: View, Content: View>: View {
+	@ViewBuilder var content: Content
+	@ViewBuilder var label: Label
 	
-	init(@ViewBuilder content: @escaping () -> Content, @ViewBuilder label: @escaping () -> Label) {
-		self.content = content
-		self.label = label
-	}
 	
 	var stackSpacing: Double {
 		#if os(watchOS)
@@ -23,6 +19,34 @@ struct AdaptiveLabeledContent<Label: View, Content: View>: View {
 		#else
 		return 2
 		#endif
+	}
+	
+	var body: some View {
+		VStack(alignment: .leading, spacing: stackSpacing) {
+			label
+			
+			if Label.self is SwiftUI.Label<Text, Image>.Type {
+				SwiftUI.Label {
+					content
+						.foregroundStyle(.secondary)
+				} icon: {
+					Color.clear.frame(width: 0, height: 0)
+				}
+			} else {
+				content
+					.foregroundStyle(.secondary)
+			}
+		}
+	}
+}
+
+struct AdaptiveLabeledContent<Label: View, Content: View>: View {
+	var content: () -> Content
+	var label: () -> Label
+	
+	init(@ViewBuilder content: @escaping () -> Content, @ViewBuilder label: @escaping () -> Label) {
+		self.content = content
+		self.label = label
 	}
 	
 	var body: some View {
@@ -35,20 +59,10 @@ struct AdaptiveLabeledContent<Label: View, Content: View>: View {
 			}
 			#endif
 			
-			VStack(alignment: .leading, spacing: stackSpacing) {
+			StackedLabeledContent {
+				content()
+			} label: {
 				label()
-				
-				if Label.self is SwiftUI.Label<Text, Image>.Type {
-					SwiftUI.Label {
-						content()
-							.foregroundStyle(.secondary)
-					} icon: {
-						Color.clear.frame(width: 0, height: 0)
-					}
-				} else {
-					content()
-						.foregroundStyle(.secondary)
-				}
 			}
 		}
 	}
