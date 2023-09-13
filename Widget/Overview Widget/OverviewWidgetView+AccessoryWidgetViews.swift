@@ -55,7 +55,7 @@ extension OverviewWidgetView {
 						
 						if let comparisonSolar {
 							let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
-							Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(difference).formatted(.units(maximumUnitCount: 2)))")
+							Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
 								.foregroundStyle(.secondary)
 						} else {
 							Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
