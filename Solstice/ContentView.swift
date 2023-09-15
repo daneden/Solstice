@@ -137,15 +137,15 @@ struct ContentView: View {
 			}
 		}
 		
-#if os(xrOS)
-				ToolbarItem {
+#if os(visionOS)
+		ToolbarItem {
 			Button {
 				openWindow(id: "settings")
 			} label: {
 				Label("Settings", systemImage: "gearshape")
 			}
 		}
-#else
+#elseif !os(macOS)
 		ToolbarItem {
 			Button {
 				settingsViewOpen = true

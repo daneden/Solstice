@@ -49,7 +49,7 @@ struct SolsticeApp: App {
 			}
 		}
 		
-		#if os(xrOS)
+		#if os(visionOS)
 		WindowGroup(id: "settings") {
 			SettingsView()
 		}

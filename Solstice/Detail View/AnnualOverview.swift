@@ -58,7 +58,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			} label: {
 				Label("Next solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 					.modify { content in
-						if #available(iOS 17, *) {
+						if #available(iOS 17, macOS 14, *) {
 							content
 								.contentTransition(.symbolEffect)
 						} else {

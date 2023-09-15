@@ -126,7 +126,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
 						.modify { content in
-							if #available(iOS 17, *) {
+							if #available(iOS 17, macOS 14, *) {
 								content
 									.contentTransition(.symbolEffect)
 							} else {
@@ -222,6 +222,9 @@ extension DailyOverview {
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize
 		)
+		#if os(macOS)
+		.padding(12)
+		#endif
 		#if !os(watchOS)
 		.if(chartAppearance == .graphical) { content in
 			content
@@ -233,6 +236,9 @@ extension DailyOverview {
 					)
 				}
 		}
+		#endif
+		#if os(macOS)
+		.padding(-12)
 		#endif
 	}
 }
