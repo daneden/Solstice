@@ -16,10 +16,9 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 }
 
 struct AnnualOverview<Location: AnyLocation>: View {
-	@State var detailedDaylightInformationVisible = false
-#if os(macOS)
+	#if os(macOS)
 	@Environment(\.openWindow) var openWindow
-#endif
+	#endif
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var isInformationSheetPresented = false
@@ -48,10 +47,16 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	var body: some View {
 		Section {
 			AdaptiveLabeledContent {
-				Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-					.contentTransition(.numericText())
+				ContentToggle { showContent in
+					if showContent {
+						Text(nextSolstice.startOfDay, style: .date)
+					} else {
+						Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+							.contentTransition(.numericText())
+					}
+				}
 			} label: {
-				Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
+				Label("Next solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 					.modify { content in
 						if #available(iOS 17, *) {
 							content
@@ -73,10 +78,16 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			}
 			
 			AdaptiveLabeledContent {
-				Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
-					.contentTransition(.numericText())
+				ContentToggle { showContent in
+					if showContent {
+						Text(nextEquinox, style: .date)
+					} else {
+						Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+							.contentTransition(.numericText())
+					}
+				}
 			} label: {
-				Label("Next Equinox", systemImage: "circle.and.line.horizontal")
+				Label("Next equinox", systemImage: "circle.and.line.horizontal")
 			}
 			.swipeActions(edge: .leading) {
 				Button {
@@ -95,34 +106,18 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			
 			if let shortestDay,
 				 let longestDay {
-				
-				Group {
 					StackedLabeledContent {
 						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 						
-						if detailedDaylightInformationVisible {
-							Text("\(duration) of daylight")
-								.modify { content in
-									if #available(iOS 17, *) {
-										content
-											.transition(.verticalMove)
-									} else {
-										content
-									}
-								}
-						} else {
-							Text(longestDay.date, style: .date)
-								.modify { content in
-									if #available(iOS 17, *) {
-										content
-											.transition(.verticalMove)
-									} else {
-										content
-									}
-								}
+						ContentToggle { showContent in
+							if showContent {
+								Text("\(duration) of daylight")
+							} else {
+								Text(longestDay.date, style: .date)
+							}
 						}
 					} label: {
-						Label("Longest Day", systemImage: "sun.max")
+						Label("Longest day", systemImage: "sun.max")
 					}
 					.swipeActions(edge: .leading) {
 						Button {
@@ -138,29 +133,15 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					StackedLabeledContent {
 						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 						
-						if detailedDaylightInformationVisible {
-							Text("\(duration) of daylight")
-								.modify { content in
-									if #available(iOS 17, *) {
-										content
-											.transition(.verticalMove)
-									} else {
-										content
-									}
-								}
-						} else {
-							Text(shortestDay.date, style: .date)
-								.modify { content in
-									if #available(iOS 17, *) {
-										content
-											.transition(.verticalMove)
-									} else {
-										content
-									}
-								}
+						ContentToggle { showContent in
+							if showContent {
+								Text("\(duration) of daylight")
+							} else {
+								Text(shortestDay.date, style: .date)
+							}
 						}
 					} label: {
-						Label("Shortest Day", systemImage: "sun.min")
+						Label("Shortest day", systemImage: "sun.min")
 					}
 					.swipeActions(edge: .leading) {
 						Button {
@@ -172,11 +153,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 						}
 					}
-				}
-				.onTapGesture {
-					detailedDaylightInformationVisible.toggle()
-				}
-				.animation(.default, value: detailedDaylightInformationVisible)
 			}
 		} footer: {
 #if !os(watchOS)

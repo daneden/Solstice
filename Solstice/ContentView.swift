@@ -110,7 +110,7 @@ struct ContentView: View {
 						Text("Timezone")
 							.tag(Preferences.SortingFunction.timezone)
 						
-						Text("Daylight Duration")
+						Text("Daylight duration")
 							.tag(Preferences.SortingFunction.daylightDuration)
 					} label: {
 						Text("Sort by")
@@ -133,7 +133,7 @@ struct ContentView: View {
 					Text("Show chart in list")
 				}
 			} label: {
-				Label("View Options", systemImage: "eye.circle")
+				Label("View options", systemImage: "eye.circle")
 			}
 		}
 		

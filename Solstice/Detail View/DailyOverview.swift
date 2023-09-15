@@ -79,7 +79,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
 					.contentTransition(.numericText())
 			} label: {
-				Label("Total Daylight", systemImage: "hourglass")
+				Label("Total daylight", systemImage: "hourglass")
 			}
 			
 			if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
@@ -87,7 +87,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Text(timerInterval: solar.safeSunrise...solar.safeSunset)
 						.monospacedDigit()
 				} label: {
-					Label("Remaining Daylight", systemImage: "timer")
+					Label("Remaining daylight", systemImage: "timer")
 				}
 			}
 			
@@ -97,9 +97,9 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Label("Sunrise", systemImage: "sunrise")
 			}
 			
-			let culmination = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
+			let solarNoon = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
 			AdaptiveLabeledContent {
-				Text("\(culmination, style: .time)")
+				Text("\(solarNoon, style: .time)")
 			} label: {
 				Label("Solar noon", systemImage: "sun.max")
 			}

@@ -55,7 +55,7 @@ struct NotificationSettings: View {
 	@ViewBuilder
 	var content: some View {
 		Form {
-			Toggle("Enable Notifications", isOn: $notificationsEnabled)
+			Toggle("Enable notifications", isOn: $notificationsEnabled)
 				.onChange(of: notificationsEnabled) { _ in
 					Task {
 						if notificationsEnabled == true {
@@ -67,7 +67,7 @@ struct NotificationSettings: View {
 			Group {
 				Section {
 					Picker("Location", selection: $customNotificationLocationUUID.animation()) {
-						Text("Current Location")
+						Text("Current location")
 							.tag(String?.none)
 						ForEach(items) { location in
 							if let title = location.title {
@@ -134,7 +134,7 @@ struct NotificationSettings: View {
 						NotificationPreview()
 					}
 				} label: {
-					Text("Customise Notification Content")
+					Text("Customise notification content")
 				}
 				
 				Section {
@@ -143,7 +143,7 @@ struct NotificationSettings: View {
 							Text(sadPreference.rawValue)
 						}
 					} label: {
-						Text("SAD Preference")
+						Text("SAD preference")
 					}
 				} footer: {
 					Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")

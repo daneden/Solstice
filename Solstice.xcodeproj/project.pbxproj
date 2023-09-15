@@ -31,6 +31,8 @@
 		710D9B6D2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B6E2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B6F2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
+		710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
+		710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		711A97B729CDBCA200333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -334,6 +336,7 @@
 		7106C87729A276B40007A7EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetView.swift; sourceTree = "<group>"; };
 		710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyTransition+VerticalMove.swift"; sourceTree = "<group>"; };
+		710D9B702AB4752D0093A9A6 /* ContentToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentToggle.swift; sourceTree = "<group>"; };
 		7117008829A52ABE001BE478 /* CountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetView.swift; sourceTree = "<group>"; };
 		7117008A29A52B04001BE478 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
@@ -572,6 +575,7 @@
 				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */,
 				71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */,
+				710D9B702AB4752D0093A9A6 /* ContentToggle.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -1111,6 +1115,7 @@
 				719846A828E991FA00E866CE /* LocationSearchService.swift in Sources */,
 				71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */,
 				7198468E28E5895F00E866CE /* Persistence.swift in Sources */,
+				710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
 				7195128129B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */,
 				71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */,
 				71EAB72529C3479F00FA043F /* TimeMachineDeactivatorView.swift in Sources */,
@@ -1173,6 +1178,7 @@
 				719F928829ACD29100C06921 /* ContentView.swift in Sources */,
 				713F7FFA29BE843700BEA156 /* AnnualOverview.swift in Sources */,
 				7132AC1A29E6962D00523215 /* ConditionalGlobals.swift in Sources */,
+				710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
 				719F927B29ACD21A00C06921 /* TimeInterval++.swift in Sources */,
 				719F926D29ACD21300C06921 /* DaylightSummaryRow.swift in Sources */,
 				71A2BDE729B747940071ACE9 /* Globals.swift in Sources */,

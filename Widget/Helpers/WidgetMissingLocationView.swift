@@ -11,27 +11,26 @@ struct WidgetMissingLocationView: View {
 	@Environment(\.widgetFamily) var family
 	
 	var body: some View {
-		switch family {
-		#if !os(macOS)
-		case .accessoryCorner:
-			Image("location.slash")
-				.widgetLabel {
-					Text("Location Required")
+		Group {
+			switch family {
+#if !os(macOS)
+			case .accessoryCorner:
+				Image("location.slash")
+			case .accessoryCircular:
+				Image("location.slash")
+			case .accessoryInline:
+				Label("Location required", systemImage: "location.slash")
+#endif
+			default:
+				VStack {
+					Text("Location required")
+						.font(.headline)
+					Text("Enable location services for Solstice, or choose a location by configuring the widget")
 				}
-		case .accessoryCircular:
-			Image("location.slash")
-				.widgetLabel {
-					Text("Location Required")
-				}
-		case .accessoryInline:
-			Label("Location Required", systemImage: "location.slash")
-		#endif
-		default:
-			VStack {
-				Text("Location Required")
-					.font(.headline)
-				Text("Enable location services for Solstice, or choose a location by configuring the widget")
 			}
+		}
+		.widgetLabel {
+			Text("Location required")
 		}
 	}
 }
