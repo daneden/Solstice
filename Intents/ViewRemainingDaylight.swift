@@ -21,7 +21,7 @@ struct ViewRemainingDaylight: AppIntent {
 		Summary("Get today's remaining daylight in \(\.$location)")
 	}
 	
-	func perform() async throws -> some ReturnsValue & ProvidesDialog {
+	func perform() async throws -> some IntentResult & ReturnsValue<TimeInterval> & ProvidesDialog {
 		guard let coordinate = location.location?.coordinate else {
 			throw $location.needsValueError("What location do you want to see the daylight for?")
 		}
