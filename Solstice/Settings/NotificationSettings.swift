@@ -56,9 +56,9 @@ struct NotificationSettings: View {
 	var content: some View {
 		Form {
 			Toggle("Enable Notifications", isOn: $notificationsEnabled)
-				.onChange(of: notificationsEnabled) { (_, newValue) in
+				.onChange(of: notificationsEnabled) { _ in
 					Task {
-						if newValue == true {
+						if notificationsEnabled == true {
 							notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
 						}
 					}

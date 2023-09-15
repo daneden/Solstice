@@ -28,6 +28,7 @@ struct OverviewWidget: Widget {
 		.configurationDisplayName("Daylight Today")
 		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
 		.supportedFamilies(OverviewWidget.supportedFamilies)
+		.contentMarginsDisabled()
 	}
 }
 

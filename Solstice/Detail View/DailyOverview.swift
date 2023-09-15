@@ -125,7 +125,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 						.id(timeMachine.targetDate)
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
-						.contentTransition(.symbolEffect)
+						.modify { content in
+							if #available(iOS 17, *) {
+								content
+									.contentTransition(.symbolEffect)
+							} else {
+								content
+							}
+						}
 				}
 			}
 		}

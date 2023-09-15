@@ -45,6 +45,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	var nextSolstice: Date { timeMachine.date.nextSolstice }
 	var nextEquinox: Date { timeMachine.date.nextEquinox }
 	
+	@available(iOS 17.0, *)
 	var detailedDaylightTransition: some Transition {
 		AsymmetricTransition(insertion: .move(edge: .top), removal: .move(edge: .bottom)).combined(with: .opacity)
 	}
@@ -56,7 +57,14 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.contentTransition(.numericText())
 			} label: {
 				Label("Next Solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
-					.contentTransition(.symbolEffect)
+					.modify { content in
+						if #available(iOS 17, *) {
+							content
+								.contentTransition(.symbolEffect)
+						} else {
+							content
+						}
+					}
 			}
 			.swipeActions(edge: .leading) {
 				Button {
@@ -99,10 +107,24 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						
 						if detailedDaylightInformationVisible {
 							Text("\(duration) of daylight")
-								.transition(detailedDaylightTransition)
+								.modify { content in
+									if #available(iOS 17, *) {
+										content
+											.transition(detailedDaylightTransition)
+									} else {
+										content
+									}
+								}
 						} else {
 							Text(longestDay.date, style: .date)
-								.transition(detailedDaylightTransition)
+								.modify { content in
+									if #available(iOS 17, *) {
+										content
+											.transition(detailedDaylightTransition)
+									} else {
+										content
+									}
+								}
 						}
 					} label: {
 						Label("Longest Day", systemImage: "sun.max")
@@ -123,10 +145,24 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						
 						if detailedDaylightInformationVisible {
 							Text("\(duration) of daylight")
-								.transition(detailedDaylightTransition)
+								.modify { content in
+									if #available(iOS 17, *) {
+										content
+											.transition(detailedDaylightTransition)
+									} else {
+										content
+									}
+								}
 						} else {
 							Text(shortestDay.date, style: .date)
-								.transition(detailedDaylightTransition)
+								.modify { content in
+									if #available(iOS 17, *) {
+										content
+											.transition(detailedDaylightTransition)
+									} else {
+										content
+									}
+								}
 						}
 					} label: {
 						Label("Shortest Day", systemImage: "sun.min")
