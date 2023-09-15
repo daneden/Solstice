@@ -74,11 +74,6 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		if didUpdateLocationsCallback != nil {
 			didUpdateLocationsCallback?(locations.last)
 			didUpdateLocationsCallback = nil
-		}
-		
-		if didUpdateLocationsCallback != nil {
-			didUpdateLocationsCallback?(locations.last)
-			didUpdateLocationsCallback = nil
 		} else {
 			Task {
 				await defaultDidUpdateLocationsCallback(locations)
@@ -129,6 +124,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	func requestLocation() {
 		locationManager.requestLocation()
 		locationManager.startUpdatingLocation()
+
 		#if !os(watchOS) && !os(visionOS)
 		locationManager.startMonitoringSignificantLocationChanges()
 		#endif
