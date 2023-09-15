@@ -45,11 +45,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	var nextSolstice: Date { timeMachine.date.nextSolstice }
 	var nextEquinox: Date { timeMachine.date.nextEquinox }
 	
-	@available(iOS 17.0, *)
-	var detailedDaylightTransition: some Transition {
-		AsymmetricTransition(insertion: .move(edge: .top), removal: .move(edge: .bottom)).combined(with: .opacity)
-	}
-	
 	var body: some View {
 		Section {
 			AdaptiveLabeledContent {
@@ -110,7 +105,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 								.modify { content in
 									if #available(iOS 17, *) {
 										content
-											.transition(detailedDaylightTransition)
+											.transition(.verticalMove)
 									} else {
 										content
 									}
@@ -120,7 +115,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 								.modify { content in
 									if #available(iOS 17, *) {
 										content
-											.transition(detailedDaylightTransition)
+											.transition(.verticalMove)
 									} else {
 										content
 									}
@@ -148,7 +143,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 								.modify { content in
 									if #available(iOS 17, *) {
 										content
-											.transition(detailedDaylightTransition)
+											.transition(.verticalMove)
 									} else {
 										content
 									}
@@ -158,7 +153,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 								.modify { content in
 									if #available(iOS 17, *) {
 										content
-											.transition(detailedDaylightTransition)
+											.transition(.verticalMove)
 									} else {
 										content
 									}

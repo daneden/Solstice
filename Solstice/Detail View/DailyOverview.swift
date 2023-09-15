@@ -101,7 +101,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			AdaptiveLabeledContent {
 				Text("\(culmination, style: .time)")
 			} label: {
-				Label("Culmination", systemImage: "sun.max")
+				Label("Solar noon", systemImage: "sun.max")
 			}
 			
 			AdaptiveLabeledContent {
@@ -113,7 +113,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			if location.timeZoneIdentifier != localTimeZone.identifier,
 				 !(location is CurrentLocation) {
 				HStack {
-					Text("Local Time")
+					Text("Local time")
 					Spacer()
 					Text("\(solar.date.withTimeZoneAdjustment(for: location.timeZone), style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
 				}

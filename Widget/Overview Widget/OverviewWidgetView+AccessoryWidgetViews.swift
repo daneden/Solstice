@@ -17,7 +17,6 @@ extension OverviewWidgetView {
 		
 		var body: some View {
 			ZStack {
-				AccessoryWidgetBackground()
 				DaylightChart(
 					solar: solar,
 					timeZone: location.timeZone,
@@ -27,7 +26,7 @@ extension OverviewWidgetView {
 					hideXAxis: true,
 					markSize: 2.5
 				)
-				.padding(.vertical, 8)
+				.padding(.vertical, 4)
 			}
 			.widgetLabel {
 				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
@@ -49,18 +48,22 @@ extension OverviewWidgetView {
 						.widgetAccentable()
 						.imageScale(.small)
 						.allowsTightening(true)
+						.contentTransition(.interpolate)
 					
 					if let relevantSolar {
 						Text(relevantSolar.daylightDuration.localizedString)
+							.contentTransition(.numericText())
 						
-						if let comparisonSolar {
-							let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
-							Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
-								.foregroundStyle(.secondary)
-						} else {
-							Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
-								.foregroundStyle(.secondary)
+						Group {
+							if let comparisonSolar {
+								let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
+								Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
+							} else {
+								Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
+							}
 						}
+						.foregroundStyle(.secondary)
+						.transition(.verticalMove)
 					}
 				}
 				
