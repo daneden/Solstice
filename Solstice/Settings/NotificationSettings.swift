@@ -28,6 +28,8 @@ struct NotificationSettings: View {
 	
 	@AppStorage(Preferences.sadPreference) var sadPreference
 	
+	@EnvironmentObject var currentLocation: CurrentLocation
+	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
 		animation: .default)
@@ -77,7 +79,7 @@ struct NotificationSettings: View {
 						}
 					}
 				} footer: {
-					if notificationsEnabled && !CurrentLocation.isAuthorized && customNotificationLocationUUID == nil {
+					if notificationsEnabled && !currentLocation.isAuthorized && customNotificationLocationUUID == nil {
 						#if os(iOS)
 						if let url = URL(string: UIApplication.openSettingsURLString) {
 							VStack(alignment: .leading) {

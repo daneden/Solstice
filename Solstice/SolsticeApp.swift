@@ -45,7 +45,7 @@ struct SolsticeApp: App {
 				}
 			#endif
 			default:
-				currentLocation.requestLocation() { _ in }
+				currentLocation.requestLocation()
 			}
 		}
 		

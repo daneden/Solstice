@@ -25,6 +25,48 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 		location is CurrentLocation
 	}
 	
+	var subtitle: String? {
+		if location is CurrentLocation && location.title == nil {
+			return "—"
+		} else {
+			return location.subtitle
+		}
+	}
+	
+	@ViewBuilder
+	var trailingContent: some View {
+		if let solar {
+			VStack(alignment: .trailing) {
+				Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
+					.foregroundStyle(.secondary)
+				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
+					.font(.footnote)
+					.foregroundStyle(.tertiary)
+			}
+			.contentTransition(.numericText())
+			
+			if showComplication {
+				DaylightChart(
+					solar: solar,
+					timeZone: location.timeZone,
+					eventTypes: [.sunrise, .sunset],
+					includesSummaryTitle: false,
+					hideXAxis: true,
+					markSize: 2
+				)
+				.frame(width: 36, height: 36)
+				#if !os(watchOS)
+				.background(.ultraThinMaterial)
+				#endif
+				.ellipticalEdgeMask()
+				.transition(
+					.move(edge: .trailing)
+					.combined(with: .opacity)
+				)
+			}
+		}
+	}
+	
 	var body: some View {
 			HStack {
 				VStack(alignment: .leading, spacing: 2) {
@@ -36,13 +78,17 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 								.symbolVariant(.fill)
 						}
 						
-						Text(location.title ?? "My Location")
+						Text(location.title ?? "Current location")
+							.id(location.title)
+							.transition(.verticalMove)
 							.lineLimit(2)
 					}
 					
-					if let subtitle = location.subtitle,
+					if let subtitle,
 						 !subtitle.isEmpty {
 						Text(subtitle)
+							.id(subtitle)
+							.transition(.verticalMove)
 							.foregroundStyle(.secondary)
 							.font(.footnote)
 					}
@@ -50,33 +96,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 				
 				Spacer()
 				
-				if let solar {
-					VStack(alignment: .trailing) {
-						Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
-							.foregroundStyle(.secondary)
-						Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
-							.font(.footnote)
-							.foregroundStyle(.tertiary)
-					}
-					.contentTransition(.numericText())
-					
-					if showComplication {
-						DaylightChart(
-							solar: solar,
-							timeZone: location.timeZone,
-							eventTypes: [.sunrise, .sunset],
-							includesSummaryTitle: false,
-							hideXAxis: true,
-							markSize: 2
-						)
-						.frame(width: 36, height: 36)
-#if !os(watchOS)
-						.background(.ultraThinMaterial)
-#endif
-						.ellipticalEdgeMask()
-						.transition(.scale(scale: 0, anchor: .trailing))
-					}
-				}
+				trailingContent
 			}
 		.padding(.vertical, 4)
 	}

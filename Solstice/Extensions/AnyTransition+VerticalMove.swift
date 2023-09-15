@@ -15,4 +15,12 @@ extension AnyTransition {
 		)
 		.combined(with: .opacity)
 	}
+	
+	static var horizontalMove: AnyTransition {
+		.asymmetric(
+			insertion: .move(edge: .leading),
+			removal: .move(edge: .trailing)
+		)
+		.combined(with: .opacity)
+	}
 }

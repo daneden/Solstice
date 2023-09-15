@@ -32,12 +32,12 @@ struct SidebarListView: View {
 				TimeMachineDeactivatorView()
 			}
 			
-			if CurrentLocation.authorizationStatus == .notDetermined {
+			if currentLocation.authorizationStatus == .notDetermined {
 				LocationPermissionScreenerView()
 			}
 			
 			Section {
-				if !CurrentLocation.isAuthorized && items.isEmpty {
+				if !currentLocation.isAuthorized && items.isEmpty {
 					VStack {
 						Text("No locations")
 							.font(.headline)
@@ -48,7 +48,7 @@ struct SidebarListView: View {
 					.foregroundStyle(.secondary)
 				}
 				
-				if CurrentLocation.isAuthorized {
+				if currentLocation.isAuthorized {
 					DaylightSummaryRow(location: currentLocation)
 						.tag(currentLocation.id)
 					#if os(iOS)

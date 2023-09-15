@@ -42,7 +42,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		// Always clear notifications when scheduling new ones
 		await clearScheduledNotifications()
 		
-		guard (CurrentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
+		let currentLocation = CurrentLocation()
+		
+		guard (currentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
 			return
 		}
 		
@@ -63,16 +65,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				timeZone = objectTimeZone
 			}
 		} else {
-			location = locationManager.latestLocation
-		}
-		
-		if location == nil {
-			location = await withCheckedContinuation({ continuation in
-				locationManager.requestLocation { location in
-					print("Made it to the callback")
-					continuation.resume(returning: location)
-				}
-			})
+			location = locationManager.location
 		}
 		
 		guard let location else {
@@ -95,7 +88,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
 				let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
 				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
-				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+				notificationDate = calendar.date(
+					bySettingHour: scheduleComponents.hour ?? 0,
+					minute: scheduleComponents.minute ?? 0,
+					second: 0, of: date
+				) ?? date
 			}
 			
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {

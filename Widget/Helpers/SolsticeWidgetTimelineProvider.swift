@@ -26,8 +26,8 @@ extension SolsticeWidgetTimelineProvider {
 		return SolsticeWidgetLocation(title: placemark?.locality,
 																	subtitle: placemark?.country,
 																	timeZoneIdentifier: placemark?.timeZone?.identifier,
-																	latitude: placemark?.location?.coordinate.latitude ?? currentLocation.latestLocation?.coordinate.latitude ?? SolsticeWidgetLocation.defaultLocation.latitude,
-																	longitude: placemark?.location?.coordinate.longitude ?? currentLocation.latestLocation?.coordinate.longitude ?? SolsticeWidgetLocation.defaultLocation.longitude,
+																	latitude: placemark?.location?.coordinate.latitude ?? currentLocation.coordinate.latitude,
+																	longitude: placemark?.location?.coordinate.longitude ?? currentLocation.coordinate.longitude,
 																	isRealLocation: isRealLocation)
 	}
 	
@@ -53,7 +53,7 @@ extension SolsticeWidgetTimelineProvider {
 			processPlacemark(placemark)
 		}
 		
-		if let configurationLocation = configuration.location?.location ?? currentLocation.latestLocation {
+		if let configurationLocation = configuration.location?.location ?? currentLocation.location {
 			if let placemark = currentLocation.placemark {
 				processPlacemark(placemark)
 			} else {
@@ -61,14 +61,7 @@ extension SolsticeWidgetTimelineProvider {
 				geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 			}
 		} else {
-			guard currentLocation.isAuthorizedForWidgetUpdates else {
-				return completion(SolsticeWidgetTimelineEntry(date: Date()))
-			}
-			
-			currentLocation.requestLocation { location in
-				guard let location else { return }
-				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
-			}
+			return completion(SolsticeWidgetTimelineEntry(date: Date()))
 		}
 	}
 	
@@ -137,21 +130,14 @@ extension SolsticeWidgetTimelineProvider {
 			processPlacemark(placemark)
 		}
 		
-		if let location = configuration.location?.location ?? currentLocation.latestLocation {
+		if let location = configuration.location?.location ?? currentLocation.location {
 			if let placemark = currentLocation.placemark {
 				processPlacemark(placemark)
 			} else {
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			}
 		} else {
-			guard currentLocation.isAuthorizedForWidgetUpdates else {
-				return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
-			}
-			
-			currentLocation.requestLocation { location in
-				guard let location else { return completion(Timeline(entries: [], policy: .atEnd)) }
-				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
-			}
+			return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
 		}
 	}
 	

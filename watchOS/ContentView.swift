@@ -16,7 +16,7 @@ struct ContentView: View {
 	
 	var body: some View {
 		NavigationStack {
-				switch CurrentLocation.authorizationStatus {
+				switch currentLocation.authorizationStatus {
 				case .notDetermined:
 					LocationPermissionScreenerView()
 				case .authorizedAlways, .authorizedWhenInUse:
@@ -31,14 +31,14 @@ struct ContentView: View {
 			.navigationTitle("Solstice")
 			.onChange(of: scenePhase) { (_, _) in
 				timeMachine.referenceDate = Date()
-				if CurrentLocation.isAuthorized,
+				if currentLocation.isAuthorized,
 					 scenePhase != .background {
 					currentLocation.requestLocation()
 				}
 			}
 			.onReceive(timer) { _ in
 				timeMachine.referenceDate = Date()
-				if CurrentLocation.isAuthorized {
+				if currentLocation.isAuthorized {
 					currentLocation.requestLocation()
 				}
 			}
