@@ -25,12 +25,22 @@ struct CountdownWidget: Widget {
 			provider: CountdownWidgetTimelineProvider()
 		) { timelineEntry in
 			CountdownWidgetView(entry: timelineEntry)
-				.containerBackground(
-					LinearGradient(colors: SkyGradient.getCurrentPalette(for: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)),
-												 startPoint: .top,
-												 endPoint: .bottom),
-					for: .widget
-				)
+				.modify {
+					if #available(macOSApplicationExtension 14, iOSApplicationExtension 14, watchOSApplicationExtension 14, *) {
+						$0.containerBackground(
+							LinearGradient(colors: SkyGradient.getCurrentPalette(for: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)),
+														 startPoint: .top,
+														 endPoint: .bottom),
+							for: .widget
+						)
+					} else {
+						$0.background {
+							LinearGradient(colors: SkyGradient.getCurrentPalette(for: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)),
+														 startPoint: .top,
+														 endPoint: .bottom)
+						}
+					}
+				}
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

@@ -150,7 +150,13 @@ struct OverviewWidgetView: View {
 				WidgetMissingLocationView()
 			}
 		}
-		.containerBackground(.background, for: .widget)
+		.modify {
+			if #available(macOSApplicationExtension 14, iOSApplicationExtension 14, watchOSApplicationExtension 14, *) {
+				$0.containerBackground(.background, for: .widget)
+			} else {
+				$0.background()
+			}
+		}
 	}
 }
 
