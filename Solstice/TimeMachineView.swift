@@ -34,7 +34,7 @@ struct TimeMachineView: View {
 	
 	@ViewBuilder
 	var controls: some View {
-		DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: .date) {
+		DatePicker(selection: $timeMachine.targetDate, in: dateRange, displayedComponents: .date) {
 			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 		}
 		#if os(watchOS)
@@ -42,7 +42,7 @@ struct TimeMachineView: View {
 		#endif
 		
 		#if os(iOS) || os(macOS)
-		Slider(value: timeMachine.offset.animation(),
+		Slider(value: timeMachine.offset,
 					 in: -182...182,
 					 step: 1,
 					 minimumValueLabel: Text("Past").font(.caption),
@@ -57,8 +57,8 @@ struct TimeMachineView: View {
 	}
 	
 	var dateRange: ClosedRange<Date> {
-		let begin = calendar.date(byAdding: .month, value: -6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
-		let end = calendar.date(byAdding: .month, value: 6, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
+		let begin = calendar.date(byAdding: .month, value: -12, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
+		let end = calendar.date(byAdding: .month, value: 12, to: timeMachine.referenceDate) ?? timeMachine.referenceDate
 		return begin...end
 	}
 }
