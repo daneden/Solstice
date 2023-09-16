@@ -33,14 +33,14 @@ class TimeMachine: ObservableObject {
 																									 of: targetDate) ?? targetDate
 	}
 	
-	func targetDateLabel(formattingContext: DateFormatter.Context = .standalone) -> String {
+	func dateLabel(context: DateFormatter.Context = .standalone) -> String {
 		let formatter = DateFormatter()
-		formatter.formattingContext = formattingContext
+		formatter.formattingContext = context
 		formatter.doesRelativeDateFormatting = true
 		formatter.timeStyle = .none
 		formatter.dateStyle = .medium
 		
-		return formatter.string(from: targetDate)
+		return formatter.string(from: date)
 	}
 }
 

@@ -121,8 +121,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 		} footer: {
 			if let differenceFromPreviousSolstice {
 				Label {
-					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.targetDateLabel(formattingContext: .middleOfSentence)) compared to the previous solstice")
-						.id(timeMachine.targetDate)
+					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
+						.id(timeMachine.date)
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
 						.modify { content in
