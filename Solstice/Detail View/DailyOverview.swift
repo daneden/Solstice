@@ -126,7 +126,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
 						.modify { content in
-							if #available(iOS 17, macOS 14, *) {
+							if #available(iOS 17, macOS 14, watchOS 10, *) {
 								content
 									.contentTransition(.symbolEffect)
 							} else {

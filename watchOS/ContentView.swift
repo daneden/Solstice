@@ -29,7 +29,7 @@ struct ContentView: View {
 		}
 			.environmentObject(timeMachine)
 			.navigationTitle("Solstice")
-			.onChange(of: scenePhase) { (_, _) in
+			.onChange(of: scenePhase) { _ in
 				timeMachine.referenceDate = Date()
 				if currentLocation.isAuthorized,
 					 scenePhase != .background {

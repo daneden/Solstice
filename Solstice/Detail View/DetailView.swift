@@ -87,12 +87,18 @@ struct DetailView<Location: ObservableLocation>: View {
 				userActivity.isEligibleForHandoff = false
 			}
 			#if os(watchOS)
-			.containerBackground(
-				LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar),
-											 startPoint: .top,
-											 endPoint: .bottom).opacity(0.5),
-				for: .navigation
-			)
+			.modify {
+				if #available(watchOS 10, *) {
+					$0.containerBackground(
+						LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar),
+													 startPoint: .top,
+													 endPoint: .bottom).opacity(0.5),
+						for: .navigation
+					)
+				} else {
+					$0
+				}
+			}
 			#endif
 		}
 	}
@@ -104,23 +110,25 @@ struct DetailView<Location: ObservableLocation>: View {
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
 		#if os(watchOS)
-		ToolbarItem(id: "timeMachineToggle", placement: .topBarTrailing) {
-			Button {
-				timeMachine.controlsVisible.toggle()
-			} label: {
-				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-					.symbolEffect(.pulse, isActive: timeMachine.isOn)
-			}
-			.sheet(isPresented: $timeMachine.controlsVisible) {
-				Form {
-					TimeMachineView()
+		if #available(watchOS 10, *) {
+			ToolbarItem(id: "timeMachineToggle", placement: .topBarTrailing) {
+				Button {
+					timeMachine.controlsVisible.toggle()
+				} label: {
+					Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+						.symbolEffect(.pulse, isActive: timeMachine.isOn)
 				}
-				.toolbar {
-					ToolbarItem(placement: .cancellationAction) {
-						Button {
-							timeMachine.controlsVisible.toggle()
-						} label: {
-							Label("Close", systemImage: "xmark")
+				.sheet(isPresented: $timeMachine.controlsVisible) {
+					Form {
+						TimeMachineView()
+					}
+					.toolbar {
+						ToolbarItem(placement: .cancellationAction) {
+							Button {
+								timeMachine.controlsVisible.toggle()
+							} label: {
+								Label("Close", systemImage: "xmark")
+							}
 						}
 					}
 				}
