@@ -86,6 +86,7 @@ struct ContentView: View {
 					currentLocation.requestLocation()
 				}
 			}
+			.animation(.default, value: timeMachine.date)
 		#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
