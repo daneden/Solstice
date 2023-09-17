@@ -58,28 +58,29 @@ extension Solar {
 		formatter.formattingContext = .middleOfSentence
 		
 		let comparator = date.isToday ? yesterday : Solar(coordinate: self.coordinate)!
+		let difference = daylightDuration - comparator.daylightDuration
+		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 		var string = (daylightDuration - comparator.daylightDuration).localizedString
 		
-		if daylightDuration - comparator.daylightDuration >= 0 {
-			string += " more"
-		} else {
-			string += " less"
-		}
+		let moreOrLess = difference >= 0 ? NSLocalizedString("more", comment: "More daylight middle of sentence") : NSLocalizedString("less", comment: "Less daylight middle of sentence")
 		
 		// Check if the base date formatted as a string contains numbers.
 		// If it does, this means it's presented as an absolute date, and should
 		// be rendered as “on {date}”; if not, it’s presented as a relative date,
 		// and should be presented as “{yesterday/today/tomorrow}”
-		let baseDateString = formatter.string(from: date)
-		let decimalCharacters = CharacterSet.decimalDigits
-		let decimalRange = baseDateString.rangeOfCharacter(from: decimalCharacters)
+		var baseDateString = formatter.string(from: date)
+		if baseDateString.contains(/\d/) {
+			baseDateString = NSLocalizedString("on \(baseDateString)", comment: "Sentence fragment for nominal date")
+		}
 		
 		let comparatorDate = comparator.date
 		let comparatorDateString = formatter.string(from: comparatorDate)
 		
-		string += " daylight \(decimalRange == nil ? "" : "on ")\(baseDateString) compared to \(comparatorDateString)."
-		
-		return string
+		return NSLocalizedString(
+			"\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))",
+			comment: "Complete string for daylight summary components ('{difference} {moreOrLess} daylight {today/tomorrow/on date} compared to {origin date}')"
+		)
+
 	}
 	
 	var nextSolarEvent: Event? {
