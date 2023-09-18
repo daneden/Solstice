@@ -92,20 +92,20 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 			
 			AdaptiveLabeledContent {
-				Text("\(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)")
+				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 			} label: {
 				Label("Sunrise", systemImage: "sunrise")
 			}
 			
 			let solarNoon = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
 			AdaptiveLabeledContent {
-				Text("\(solarNoon, style: .time)")
+				Text(solarNoon, style: .time)
 			} label: {
 				Label("Solar noon", systemImage: "sun.max")
 			}
 			
 			AdaptiveLabeledContent {
-				Text("\(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)")
+				Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 			} label: {
 				Label("Sunset", systemImage: "sunset")
 			}

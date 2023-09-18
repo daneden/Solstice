@@ -233,6 +233,11 @@
 		71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
 		71A7E9EC29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
 		71A7E9ED29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
+		71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
+		71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
+		71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
+		71A9A5532AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
+		71A9A5542AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
@@ -398,6 +403,7 @@
 		71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
 		71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
 		71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
+		71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
 		71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
@@ -583,6 +589,7 @@
 		7198467828E5895E00E866CE = {
 			isa = PBXGroup;
 			children = (
+				71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */,
 				718B136D29A918AD0001D4DC /* README.md */,
 				7195126629B6324C009D282F /* Data Model */,
 				71F641EE29A13C5300FE5AB5 /* Frameworks */,
@@ -884,6 +891,7 @@
 			knownRegions = (
 				en,
 				Base,
+				it,
 			);
 			mainGroup = 7198467828E5895E00E866CE;
 			packageReferences = (
@@ -909,6 +917,7 @@
 			files = (
 				71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 				711A97B929CDBCA500333927 /* Assets.xcassets in Resources */,
@@ -921,6 +930,7 @@
 			files = (
 				7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */,
 				71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */,
+				71A9A5542AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				71A7E9ED29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				71A7E9E829C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				711A97BB29CDBCA600333927 /* Assets.xcassets in Resources */,
@@ -933,6 +943,7 @@
 			files = (
 				71A7E9E229C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				71A7E9EC29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A9A5532AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				71A7E9E729C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */,
 				711A97BA29CDBCA500333927 /* Assets.xcassets in Resources */,
@@ -951,6 +962,7 @@
 				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
+				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -959,6 +971,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */,
+				71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				711A97B829CDBCA300333927 /* Assets.xcassets in Resources */,
 				71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,

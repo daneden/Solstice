@@ -5,7 +5,7 @@
 //  Created by Daniel Eden on 02/10/2022.
 //
 
-import Foundation
+import SwiftUI
 import Solar
 
 extension Solar {
@@ -51,7 +51,7 @@ extension Solar {
 		return Solar(for: yesterdayDate, coordinate: coordinate)!
 	}
 	
-	var differenceString: String {
+	var differenceString: LocalizedStringKey {
 		let formatter = DateFormatter()
 		formatter.doesRelativeDateFormatting = true
 		formatter.dateStyle = .medium
@@ -76,11 +76,7 @@ extension Solar {
 		let comparatorDate = comparator.date
 		let comparatorDateString = formatter.string(from: comparatorDate)
 		
-		return NSLocalizedString(
-			"\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))",
-			comment: "Complete string for daylight summary components ('{difference} {moreOrLess} daylight {today/tomorrow/on date} compared to {origin date}')"
-		)
-
+		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))")
 	}
 	
 	var nextSolarEvent: Event? {

@@ -104,11 +104,17 @@ struct OverviewWidgetView: View {
 							
 							if let duration = relevantSolar?.daylightDuration.localizedString {
 								if sizeCategory < .xLarge {
-									Text("Daylight \(isAfterTodaySunset ? "tomorrow" : "today")")
-										.font(.caption)
+									Group {
+										if isAfterTodaySunset {
+											Text("Daylight tomorrow")
+										} else {
+											Text("Daylight today")
+										}
+									}
+									.font(.caption)
 								}
 								
-								Text("\(duration)")
+								Text(duration)
 									.lineLimit(4)
 									.widgetHeading()
 									.fixedSize(horizontal: false, vertical: true)
