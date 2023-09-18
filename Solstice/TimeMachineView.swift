@@ -49,7 +49,7 @@ struct TimeMachineView: View {
 					 step: 1,
 					 minimumValueLabel: Text("Past").font(.caption),
 					 maximumValueLabel: Text("Future").font(.caption)) {
-			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? "future" : "past")")
+			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
 		}
 						#if os(iOS)
 					 .tint(Color(UIColor.systemFill))

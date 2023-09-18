@@ -136,9 +136,19 @@ struct OverviewWidgetView: View {
 										}
 										
 										HStack {
-											Label("\(begins, style: .time)", systemImage: "sunrise.fill")
+											Label {
+												Text(begins, style: .time)
+											} icon: {
+												Image(systemName: "sunrise.fill")
+											}
+											
 											Spacer()
-											Label("\(ends, style: .time)", systemImage: "sunset.fill")
+											
+											Label {
+												Text(ends, style: .time)
+											} icon: {
+												Image(systemName: "sunset.fill")
+											}
 										}
 									}
 								}

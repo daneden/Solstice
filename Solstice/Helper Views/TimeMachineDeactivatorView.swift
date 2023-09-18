@@ -27,7 +27,7 @@ struct TimeMachineDeactivatorView: View {
 	var label: some View {
 		HStack {
 			VStack(alignment: .leading) {
-				Text("Time Travel \(timeMachine.isOn ? "active" : "inactive")")
+				Text("Time Travel \(timeMachine.isOn ? Text("active") : Text("inactive"))")
 					.font(.headline)
 				Text(timeMachine.date, style: .date)
 					.foregroundStyle(.secondary)

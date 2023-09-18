@@ -43,7 +43,7 @@ extension OverviewWidgetView {
 		var body: some View {
 			HStack {
 				VStack(alignment: .leading) {
-					Text("\(Image(systemName: "sun.max")) Daylight \(isAfterTodaySunset ? "Tomorrow" : "Today")")
+					Text("\(Image(systemName: "sun.max")) Daylight \(isAfterTodaySunset ? Text("Tomorrow") : Text("Today"))")
 						.font(.headline)
 						.widgetAccentable()
 						.imageScale(.small)
