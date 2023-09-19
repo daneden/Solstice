@@ -93,6 +93,7 @@ struct SidebarListView: View {
 			} header: {
 				Label("Locations", systemImage: "map")
 			}
+			.headerProminence(.standard)
 		}
 		.navigationTitle(Text(verbatim: "Solstice"))
 		.navigationSplitViewColumnWidth(ideal: 300)
