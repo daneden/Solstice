@@ -24,7 +24,7 @@ struct SolarChartWidgetView: View {
 	var body: some View {
 		if let solar,
 			 let location {
-			VStack {
+			ZStack(alignment: .topLeading) {
 				HStack {
 					Label {
 						Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)

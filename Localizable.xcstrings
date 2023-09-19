@@ -140,6 +140,9 @@
         }
       }
     },
+    "%@ Location required" : {
+
+    },
     "%@ of daylight" : {
       "localizations" : {
         "it" : {
