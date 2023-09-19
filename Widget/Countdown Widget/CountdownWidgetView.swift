@@ -64,7 +64,7 @@ struct CountdownWidgetView: View {
 					Label{
 						Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
 					} icon: {
-						Image(systemName: "nextSolarEvent.imageName")
+						Image(systemName: nextSolarEvent.imageName)
 					}
 						.font(.footnote.weight(.semibold))
 						.contentTransition(.numericText())
