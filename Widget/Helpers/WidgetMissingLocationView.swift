@@ -10,7 +10,7 @@ import SwiftUI
 struct WidgetMissingLocationView: View {
 	@Environment(\.widgetFamily) var family
 	
-	var locationMissingIcon = Image("location.slash")
+	var locationMissingIcon = Image(systemName: "location.slash")
 	
 	var body: some View {
 		switch family {
