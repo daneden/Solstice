@@ -27,6 +27,14 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
+	var navBarTitleText: Text {
+		guard let title = location.title else {
+			return location is CurrentLocation ? Text("My Location") : Text(verbatim: "Solstice")
+		}
+		
+		return Text(title)
+	}
+	
 	var body: some View {
 		ScrollViewReader { scrollProxy in
 			Form {
@@ -53,7 +61,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				AnnualOverview(location: location)
 			}
 			.formStyle(.grouped)
-			.navigationTitle(location.title ?? (location is CurrentLocation ? "My Location" : "Solstice"))
+			.navigationTitle(navBarTitleText)
 			.toolbar {
 				toolbarItems
 			}

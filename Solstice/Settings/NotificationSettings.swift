@@ -115,7 +115,7 @@ struct NotificationSettings: View {
 								case let x where x > 0:
 									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
 								default:
-									Text("at \(scheduleType.description)")
+									Text("at \(Text(scheduleType.description))")
 								}
 							}
 						} label: {
@@ -126,7 +126,7 @@ struct NotificationSettings: View {
 				
 				DisclosureGroup {
 					ForEach(notificationFragments, id: \.label) { fragment in
-						Toggle(fragment.label, isOn: fragment.value)
+						Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
 					}
 					
 					VStack(alignment: .leading) {

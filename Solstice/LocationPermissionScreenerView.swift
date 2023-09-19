@@ -31,7 +31,7 @@ struct LocationPermissionScreenerView: View {
 		} footer: {
 			Text("Set up location services to see sunrise and sunset times for your current location in the app, widgets, and notifications")
 		}
-		.navigationTitle("Solstice")
+		.navigationTitle(Text(verbatim: "Solstice"))
 	}
 }
 

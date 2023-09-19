@@ -347,6 +347,15 @@ extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {
 		case simple = "Simple",
 				 graphical = "Graphical"
+		
+		var description: LocalizedStringKey {
+			switch self {
+			case .simple:
+				return "Simple"
+			case .graphical:
+				return "Graphical"
+			}
+		}
 	}
 }
 

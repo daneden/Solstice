@@ -94,7 +94,7 @@ struct SidebarListView: View {
 				Label("Locations", systemImage: "map")
 			}
 		}
-		.navigationTitle("Solstice")
+		.navigationTitle(Text(verbatim: "Solstice"))
 		.navigationSplitViewColumnWidth(ideal: 300)
 		.searchable(text: $locationSearchService.queryFragment,
 								prompt: "Search locations")

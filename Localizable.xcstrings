@@ -12,7 +12,14 @@
       }
     },
     "**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Grazie mille per il tuo supporto.** Sentiti libero di lasciare un altro suggerimento in futuro se ti senti generoso."
+          }
+        }
+      }
     },
     "%@" : {
 
@@ -169,6 +176,16 @@
         }
       }
     },
+    "%@ Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Solstice"
+          }
+        }
+      }
+    },
     "%@ Time Travel" : {
       "localizations" : {
         "it" : {
@@ -235,6 +252,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "a specific time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "un momento specifico"
           }
         }
       }
@@ -454,7 +481,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Customise notification content"
+            "value" : "Personalizza il contenuto delle notifiche"
           }
         }
       }
@@ -485,6 +512,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Durata della luce del giorno"
+          }
+        }
+      }
+    },
+    "Daylight gain/loss" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guadagno/perdita di luce diurna"
           }
         }
       }
@@ -525,6 +562,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Domani sarà la luce del giorno"
+          }
+        }
+      }
+    },
+    "December" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dicembre"
           }
         }
       }
@@ -699,6 +746,16 @@
         }
       }
     },
+    "Graphical" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grafico"
+          }
+        }
+      }
+    },
     "Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)" : {
       "localizations" : {
         "it" : {
@@ -725,6 +782,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vai al %@"
+          }
+        }
+      }
+    },
+    "June" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giugno"
           }
         }
       }
@@ -850,6 +917,16 @@
         }
       }
     },
+    "March" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marzo"
+          }
+        }
+      }
+    },
     "more" : {
       "comment" : "More daylight middle of sentence",
       "localizations" : {
@@ -867,6 +944,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mattina"
+          }
+        }
+      }
+    },
+    "my location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mia posizione"
+          }
+        }
+      }
+    },
+    "My Location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La mia posizione"
+          }
+        }
+      }
+    },
+    "My Location %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La mia posizione %@"
           }
         }
       }
@@ -917,6 +1024,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prossimo solstizio"
+          }
+        }
+      }
+    },
+    "No change" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun cambiamento"
           }
         }
       }
@@ -1052,6 +1169,16 @@
         }
       }
     },
+    "Remove daylight gain/loss" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovere il guadagno/perdita della luce diurna"
+          }
+        }
+      }
+    },
     "Reset" : {
       "localizations" : {
         "it" : {
@@ -1132,6 +1259,16 @@
         }
       }
     },
+    "September" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settembre"
+          }
+        }
+      }
+    },
     "Set Up Location Access" : {
       "localizations" : {
         "it" : {
@@ -1202,6 +1339,16 @@
         }
       }
     },
+    "Simple" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semplice"
+          }
+        }
+      }
+    },
     "Solar Chart" : {
       "localizations" : {
         "it" : {
@@ -1223,7 +1370,14 @@
       }
     },
     "Solstice" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio"
+          }
+        }
+      }
     },
     "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
       "localizations" : {
@@ -1295,6 +1449,16 @@
         }
       }
     },
+    "Sunrise/sunset times" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orari di alba/tramonto"
+          }
+        }
+      }
+    },
     "Sunset" : {
       "localizations" : {
         "it" : {
@@ -1321,6 +1485,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tramonto: %@"
+          }
+        }
+      }
+    },
+    "Suppress notifications altogether" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina del tutto le notifiche"
           }
         }
       }
@@ -1381,6 +1555,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Viaggio nel tempo"
+          }
+        }
+      }
+    },
+    "Time until next solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo fino al prossimo solstizio"
           }
         }
       }

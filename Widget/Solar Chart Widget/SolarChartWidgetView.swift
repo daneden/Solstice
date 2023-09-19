@@ -26,11 +26,19 @@ struct SolarChartWidgetView: View {
 			 let location {
 			VStack {
 				HStack {
-					Label("\(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)", systemImage: "sunrise")
+					Label {
+						Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+					} icon: {
+						Image(systemName: "sunrise")
+					}
 					
 					Spacer()
 					
-					Label("\(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)", systemImage: "sunset")
+					Label {
+						Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+					} icon: {
+						Image(systemName: "sunset")
+					}
 				}
 				.symbolVariant(.fill)
 				.imageScale(.small)

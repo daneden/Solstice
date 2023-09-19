@@ -11,25 +11,24 @@ import WidgetKit
 struct WidgetLocationView: View {
 	var location: SolsticeWidgetLocation
 	
-	var locationName: String? {
-		(location.isRealLocation ? location.title ?? "My Location" : location.title)
+	var locationName: Text {
+		guard let title = location.title else {
+			switch location.isRealLocation {
+			case true:
+				return Text("My Location \(Image(systemName: "location"))")
+			case false:
+				return Text("\(Image("Solstice.SFSymbol")) Solstice")
+			}
+		}
+		
+		return Text(title)
 	}
 	
 	var body: some View {
-		Group {
-			if let locationName {
-				if location.isRealLocation {
-					Text("\(locationName) \(Image(systemName: "location"))")
-				} else {
-					Text(locationName)
-				}
-			} else {
-				Label("Solstice", image: "Solstice.SFSymbol")
-			}
-		}
-		.font(.footnote.weight(.semibold))
-		.symbolVariant(.fill)
-		.imageScale(.small)
+		locationName
+			.font(.footnote.weight(.semibold))
+			.symbolVariant(.fill)
+			.imageScale(.small)
 	}
 }
 

@@ -55,15 +55,23 @@ struct DailyOverview<Location: AnyLocation>: View {
 				#if !os(watchOS)
 				.contextMenu {
 					if let chartRenderedAsImage {
+						var locationTitle: Text {
+							guard let title = location.title else {
+								return Text("my location")
+							}
+							
+							return Text(title)
+						}
+						
 						ShareLink(
 							item: chartRenderedAsImage,
-							preview: SharePreview("Daylight in \(location.title ?? "my location")", image: chartRenderedAsImage)
+							preview: SharePreview("Daylight in \(locationTitle)", image: chartRenderedAsImage)
 						)
 					}
 
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-							Text(appearance.rawValue)
+							Text(appearance.description)
 						}
 					} label: {
 						Label("Appearance", systemImage: "paintpalette")
@@ -167,8 +175,14 @@ extension DailyOverview {
 			
 			HStack {
 				VStack(alignment: .leading) {
-					Text(location.title ?? "My Location")
-						.font(.headline)
+					Group {
+						if let title = location.title {
+							Text(title)
+						} else {
+							Text("My Location")
+						}
+					}
+					.font(.headline)
 					
 					let duration = solar.daylightDuration.localizedString
 					Text("\(duration) of daylight")
