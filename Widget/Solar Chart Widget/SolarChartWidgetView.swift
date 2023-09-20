@@ -45,9 +45,10 @@ struct SolarChartWidgetView: View {
 					}
 					.symbolVariant(.fill)
 					.imageScale(.small)
-					.font(.footnote)
+					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
+					.padding()
 					
 					DaylightChart(
 						solar: solar,
@@ -56,41 +57,23 @@ struct SolarChartWidgetView: View {
 						includesSummaryTitle: false,
 						markSize: 3
 					)
-					.padding(.top, 4)
+					.padding(.horizontal, -1)
 				}
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
 			} else {
 				WidgetMissingLocationView()
+					.padding()
 			}
 		}
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.containerBackground(.background, for: .widget)
 	}
 }
 
 #if !os(macOS)
-#Preview(as: WidgetFamily.accessoryRectangular) {
-	SolarChartWidget()
-} timeline: {
-	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
-}
-#endif
-
-#if !os(watchOS)
-#Preview(as: WidgetFamily.systemSmall) {
-	SolarChartWidget()
-} timeline: {
-	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation)
-	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
-}
+#Preview(
+	"Solar Chart (Accessory Rectangular)",
+	as: WidgetFamily.accessoryRectangular,
+	widget: { SolarChartWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
 #endif

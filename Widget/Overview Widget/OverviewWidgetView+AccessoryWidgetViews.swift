@@ -41,34 +41,32 @@ extension OverviewWidgetView {
 		var comparisonSolar: Solar?
 		
 		var body: some View {
-			HStack {
-				VStack(alignment: .leading) {
-					Text("\(Image(systemName: "sun.max")) Daylight \(isAfterTodaySunset ? Text("Tomorrow") : Text("Today"))")
-						.font(.headline)
-						.widgetAccentable()
-						.imageScale(.small)
-						.allowsTightening(true)
-						.contentTransition(.interpolate)
-					
-					if let relevantSolar {
-						Text(relevantSolar.daylightDuration.localizedString)
-							.contentTransition(.numericText())
-						
-						Group {
-							if let comparisonSolar {
-								let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
-								Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
-							} else {
-								Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
-							}
-						}
-						.foregroundStyle(.secondary)
-						.transition(.verticalMove)
-					}
-				}
+			VStack(alignment: .leading) {
+				Text("\(Image(systemName: "sun.max")) Daylight \(isAfterTodaySunset ? Text("Tomorrow") : Text("Today"))")
+					.font(.headline)
+					.widgetAccentable()
+					.imageScale(.small)
+					.allowsTightening(true)
+					.contentTransition(.interpolate)
 				
-				Spacer(minLength: 0)
+				if let relevantSolar {
+					Text(relevantSolar.daylightDuration.localizedString)
+						.contentTransition(.numericText())
+					
+					Group {
+						if let comparisonSolar {
+							let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
+							Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
+						} else {
+							Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
+						}
+					}
+					.foregroundStyle(.secondary)
+					.transition(.verticalMove)
+				}
 			}
+			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+			.padding()
 		}
 	}
 }

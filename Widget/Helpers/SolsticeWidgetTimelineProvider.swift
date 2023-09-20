@@ -145,3 +145,17 @@ extension SolsticeWidgetTimelineProvider {
 		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
 	}
 }
+
+extension SolsticeWidgetTimelineEntry {
+	static func previewTimeline() async -> [SolsticeWidgetTimelineEntry] {
+		[
+		SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
+		]
+	}
+}

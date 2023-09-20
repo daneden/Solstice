@@ -111,7 +111,7 @@ struct OverviewWidgetView: View {
 											Text("Daylight today")
 										}
 									}
-									.font(.caption)
+									.font(.footnote)
 								}
 								
 								Text(duration)
@@ -159,30 +159,34 @@ struct OverviewWidgetView: View {
 						.symbolRenderingMode(.hierarchical)
 #endif
 					}
-					.scenePadding()
-					.frame(maxWidth: .infinity, maxHeight: .infinity)
+					.padding()
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 				}
 			} else {
 				WidgetMissingLocationView()
+					.padding()
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			}
 		}
-		.modify {
-			if #available(macOSApplicationExtension 14, iOSApplicationExtension 14, watchOSApplicationExtension 14, *) {
-				$0.containerBackground(.background, for: .widget)
-			} else {
-				$0.background()
-			}
-		}
+		.backwardCompatibleContainerBackground(.background)
 	}
 }
 
-struct OverviewWidgetView_Previews: PreviewProvider {
-	static var previews: some View {
-		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
-		#if os(watchOS)
-			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
-		#else
-			.previewContext(WidgetPreviewContext(family: .systemMedium))
-		#endif
-	}
-}
+#if !os(macOS)
+#Preview(
+	"Overview (Accessory Rectangular)",
+	as: WidgetFamily.accessoryRectangular,
+	widget: { OverviewWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif
+
+#if !os(watchOS)
+#Preview(
+	"Overview (System Small)",
+	as: WidgetFamily.systemSmall,
+	widget: { OverviewWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif
+

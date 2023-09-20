@@ -78,12 +78,6 @@ struct CountdownWidgetView: View {
 				.symbolRenderingMode(.hierarchical)
 				.symbolVariant(.fill)
 				.preferredColorScheme(.dark)
-				.background {
-					LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
-						.opacity(0.2)
-						.blendMode(.plusDarker)
-						.padding(-20)
-				}
 			}
 		} else {
 			WidgetMissingLocationView()
@@ -116,3 +110,21 @@ extension CountdownWidgetView {
 		nextSolarEvent?.phase == .sunrise ? "moon.stars" : "sun.max"
 	}
 }
+
+#if !os(macOS)
+#Preview(
+	"Countdown (Accessory Rectangular)",
+	as: WidgetFamily.accessoryRectangular,
+	widget: { CountdownWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif
+
+#if !os(watchOS)
+#Preview(
+	"Countdown (System Small)",
+	as: WidgetFamily.systemSmall,
+	widget: { CountdownWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif

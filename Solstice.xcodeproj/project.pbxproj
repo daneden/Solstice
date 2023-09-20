@@ -73,6 +73,9 @@
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		7150EB5729DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
+		7166CD382ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
+		7166CD392ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
+		7166CD3A2ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
 		717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */; };
 		717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BBB29A908E30015ECCB /* SettingsView.swift */; };
@@ -359,6 +362,7 @@
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
+		7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwardCompatibleContainerBackground.swift; sourceTree = "<group>"; };
 		717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStorage++.swift"; sourceTree = "<group>"; };
 		717F8BBB29A908E30015ECCB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -717,6 +721,7 @@
 				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
 				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */,
+				7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1025,6 +1030,7 @@
 				7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
+				7166CD382ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
@@ -1058,6 +1064,7 @@
 				7195122C29AFBEAD009D282F /* Solstice.xcdatamodeld in Sources */,
 				7187147929DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */,
 				71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */,
+				7166CD3A2ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */,
 				7195122529AFBE88009D282F /* Solar++.swift in Sources */,
@@ -1118,6 +1125,7 @@
 				7188714629DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				7198C40229DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */,
+				7166CD392ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7132AC1329E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				713F800229BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7195124429B0B3D6009D282F /* Widget.swift in Sources */,

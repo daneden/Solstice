@@ -69,7 +69,7 @@ struct DaylightChart: View {
 				}
 			}
 			.chartYAxis(.hidden)
-			.chartYScale(domain: -1.25...1.25)
+			.chartYScale(domain: -1.5...1.5)
 			.chartXAxis(hideXAxis ? .hidden : .automatic)
 			.chartXScale(domain: range)
 			.chartOverlay { proxy in
