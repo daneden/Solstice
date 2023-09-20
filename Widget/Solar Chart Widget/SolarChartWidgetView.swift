@@ -48,7 +48,7 @@ struct SolarChartWidgetView: View {
 					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
-					.padding()
+					.padding(4)
 					
 					DaylightChart(
 						solar: solar,
