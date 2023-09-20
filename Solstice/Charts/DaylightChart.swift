@@ -69,7 +69,7 @@ struct DaylightChart: View {
 				}
 			}
 			.chartYAxis(.hidden)
-			.chartYScale(domain: -1.5...1.5)
+			.chartYScale(domain: -1.25...1.25)
 			.chartXAxis(hideXAxis ? .hidden : .automatic)
 			.chartXScale(domain: range)
 			.chartOverlay { proxy in
@@ -123,7 +123,7 @@ struct DaylightChart: View {
 										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
 										y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
 									)
-									.shadow(color: .secondary.opacity(0.5), radius: 4)
+									.shadow(color: .secondary.opacity(0.5), radius: 3)
 							}
 							.mask(alignment: .top) {
 								Rectangle()

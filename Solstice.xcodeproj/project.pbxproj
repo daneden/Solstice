@@ -252,6 +252,9 @@
 		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
 		71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift */; };
 		71EAB72529C3479F00FA043F /* TimeMachineDeactivatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */; };
+		71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
+		71F2C3A22ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
+		71F2C3A32ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
 		71F641BD299968BF00FE5AB5 /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
@@ -417,6 +420,7 @@
 		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquinoxAndSolsticeInfoView.swift; sourceTree = "<group>"; };
 		71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineDeactivatorView.swift; sourceTree = "<group>"; };
+		71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLabelStyle.swift; sourceTree = "<group>"; };
 		71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryRow.swift; sourceTree = "<group>"; };
 		71F641B829995ED000FE5AB5 /* DaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightChart.swift; sourceTree = "<group>"; };
 		71F641BA2999631D00FE5AB5 /* Date++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++.swift"; sourceTree = "<group>"; };
@@ -707,9 +711,10 @@
 		719F557B29DB0DB200D7AE8E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */,
 				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
-				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
+				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */,
 			);
 			path = Helpers;
@@ -1009,6 +1014,7 @@
 				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
 				7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
+				71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */,
 				719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88529A2775C0007A7EC /* Solar++.swift in Sources */,
 				71A2BDE829B747940071ACE9 /* Globals.swift in Sources */,
@@ -1066,6 +1072,7 @@
 				7195129029BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7195122629AFBE8B009D282F /* Date++.swift in Sources */,
 				7187147329DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */,
+				71F2C3A32ABB282D00E69426 /* CompactLabelStyle.swift in Sources */,
 				7121DE0429C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				7195121A29AFBDFC009D282F /* Widget.swift in Sources */,
 				7195121E29AFBE09009D282F /* WidgetLocationHeadingView.swift in Sources */,
@@ -1100,6 +1107,7 @@
 				7195128629B7334F009D282F /* SkyGradient.swift in Sources */,
 				7150EB5729DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				7195124029B0B3D6009D282F /* WidgetLocationHeadingView.swift in Sources */,
+				71F2C3A22ABB282D00E69426 /* CompactLabelStyle.swift in Sources */,
 				719F558229DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7195124129B0B3D6009D282F /* Solar++.swift in Sources */,
 				71A2BDE929B747940071ACE9 /* Globals.swift in Sources */,

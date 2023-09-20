@@ -22,47 +22,75 @@ struct SolarChartWidgetView: View {
 	}
 	
 	var body: some View {
-		if let solar,
-			 let location {
-			ZStack(alignment: .topLeading) {
-				HStack {
-					Label {
-						Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
-					} icon: {
-						Image(systemName: "sunrise")
+		Group {
+			if let solar,
+				 let location {
+				ZStack(alignment: .topLeading) {
+					HStack {
+						Label {
+							Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+						} icon: {
+							Image(systemName: "sunrise")
+						}
+						.labelStyle(CompactLabelStyle())
+						
+						Spacer()
+						
+						Label {
+							Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+						} icon: {
+							Image(systemName: "sunset")
+						}
+						.labelStyle(CompactLabelStyle(reverseOrder: true))
 					}
+					.symbolVariant(.fill)
+					.imageScale(.small)
+					.font(.footnote)
+					.widgetAccentable()
+					.contentTransition(.numericText())
 					
-					Spacer()
-					
-					Label {
-						Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
-					} icon: {
-						Image(systemName: "sunset")
-					}
+					DaylightChart(
+						solar: solar,
+						timeZone: location.timeZone,
+						eventTypes: [],
+						includesSummaryTitle: false,
+						markSize: 3
+					)
+					.padding(.top, 4)
 				}
-				.symbolVariant(.fill)
-				.imageScale(.small)
-				.font(.footnote)
-				.widgetAccentable()
-				
-				DaylightChart(
-					solar: solar,
-					timeZone: location.timeZone,
-					eventTypes: [],
-					includesSummaryTitle: false,
-					markSize: 3
-				)
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
+			} else {
+				WidgetMissingLocationView()
 			}
-			.frame(maxWidth: .infinity, maxHeight: .infinity)
-		} else {
-			WidgetMissingLocationView()
 		}
+		.containerBackground(.background, for: .widget)
 	}
 }
 
-struct SolarChartWidgetView_Previews: PreviewProvider {
-	static var previews: some View {
-		SolarChartWidgetView(entry: SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
-			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
-	}
+#if !os(macOS)
+#Preview(as: WidgetFamily.accessoryRectangular) {
+	SolarChartWidget()
+} timeline: {
+	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
 }
+#endif
+
+#if !os(watchOS)
+#Preview(as: WidgetFamily.systemSmall) {
+	SolarChartWidget()
+} timeline: {
+	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation)
+	SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
+}
+#endif
