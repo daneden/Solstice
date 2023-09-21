@@ -9,6 +9,15 @@ import WidgetKit
 import CoreLocation
 import Solar
 
+fileprivate class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
+	static let shared = LocationManagerDelegate()
+	var didUpdateLocationsCallback: (_ locations: [CLLocation]) -> Void = { _ in }
+	
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		didUpdateLocationsCallback(locations)
+	}
+}
+
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
 	var location: SolsticeWidgetLocation?
@@ -16,18 +25,33 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 }
 
 protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
-	var currentLocation: CurrentLocation { get }
 	var geocoder: CLGeocoder { get }
 	static var widgetKind: SolsticeWidgetKind { get }
 }
 
 extension SolsticeWidgetTimelineProvider {
+	fileprivate var locationManagerDelegate: LocationManagerDelegate {
+		LocationManagerDelegate.shared
+	}
+	
+	var locationManager: CLLocationManager {
+		let manager = CLLocationManager()
+		manager.desiredAccuracy = kCLLocationAccuracyReduced
+		manager.delegate = locationManagerDelegate
+		return manager
+	}
+	
 	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
-		return SolsticeWidgetLocation(title: placemark?.locality,
-																	subtitle: placemark?.country,
-																	timeZoneIdentifier: placemark?.timeZone?.identifier,
-																	latitude: placemark?.location?.coordinate.latitude ?? currentLocation.coordinate.latitude,
-																	longitude: placemark?.location?.coordinate.longitude ?? currentLocation.coordinate.longitude,
+		guard let placemark,
+					let location = placemark.location else {
+			return .defaultLocation
+		}
+		
+		return SolsticeWidgetLocation(title: placemark.locality,
+																	subtitle: placemark.country,
+																	timeZoneIdentifier: placemark.timeZone?.identifier,
+																	latitude: location.coordinate.latitude,
+																	longitude: location.coordinate.longitude,
 																	isRealLocation: isRealLocation)
 	}
 	
@@ -53,15 +77,18 @@ extension SolsticeWidgetTimelineProvider {
 			processPlacemark(placemark)
 		}
 		
-		if let configurationLocation = configuration.location?.location ?? currentLocation.location {
-			if let placemark = currentLocation.placemark {
-				processPlacemark(placemark)
-			} else {
-				
-				geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
-			}
+		if let configurationLocation = configuration.location?.location ?? locationManager.location {
+			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
-			return completion(SolsticeWidgetTimelineEntry(date: Date()))
+			locationManagerDelegate.didUpdateLocationsCallback = { locations in
+				guard let location = locations.last else {
+					return completion(SolsticeWidgetTimelineEntry(date: Date()))
+				}
+				
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+			}
+			
+			locationManager.requestLocation()
 		}
 	}
 	
@@ -97,8 +124,6 @@ extension SolsticeWidgetTimelineProvider {
 					)
 				)
 				
-				print("Generating timeline entry for \(entryDate) in size \(context.displaySize)")
-				
 				entryDate = entryDate.addingTimeInterval(60 * 30)
 			}
 			
@@ -130,14 +155,18 @@ extension SolsticeWidgetTimelineProvider {
 			processPlacemark(placemark)
 		}
 		
-		if let location = configuration.location?.location ?? currentLocation.location {
-			if let placemark = currentLocation.placemark {
-				processPlacemark(placemark)
-			} else {
+		if let location = configuration.location?.location ?? locationManager.location {
+			geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+		} else {
+			locationManagerDelegate.didUpdateLocationsCallback = { locations in
+				guard let location = locations.last else {
+					return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
+				}
+				
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			}
-		} else {
-			return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
+			
+			locationManager.requestLocation()
 		}
 	}
 	
