@@ -115,28 +115,33 @@ struct DetailView<Location: ObservableLocation>: View {
 		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
+	var toolbarItemPlacement: ToolbarItemPlacement {
+		if #available(watchOS 10, *) {
+			return .topBarTrailing
+		} else {
+			return .automatic
+		}
+	}
+	
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
 		#if os(watchOS)
-		if #available(watchOS 10, *) {
-			ToolbarItem(id: "timeMachineToggle", placement: .topBarTrailing) {
-				Button {
-					timeMachine.controlsVisible.toggle()
-				} label: {
-					Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-						.symbolEffect(.pulse, isActive: timeMachine.isOn)
+		ToolbarItem(id: "timeMachineToggle", placement: toolbarItemPlacement) {
+			Button {
+				timeMachine.controlsVisible.toggle()
+			} label: {
+				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+			}
+			.sheet(isPresented: $timeMachine.controlsVisible) {
+				Form {
+					TimeMachineView()
 				}
-				.sheet(isPresented: $timeMachine.controlsVisible) {
-					Form {
-						TimeMachineView()
-					}
-					.toolbar {
-						ToolbarItem(placement: .cancellationAction) {
-							Button {
-								timeMachine.controlsVisible.toggle()
-							} label: {
-								Label("Close", systemImage: "xmark")
-							}
+				.toolbar {
+					ToolbarItem(placement: .cancellationAction) {
+						Button {
+							timeMachine.controlsVisible.toggle()
+						} label: {
+							Label("Close", systemImage: "xmark")
 						}
 					}
 				}

@@ -22,7 +22,14 @@
       }
     },
     "%@" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
     },
     "%@ (%@)" : {
       "localizations" : {
@@ -141,7 +148,14 @@
       }
     },
     "%@ Location required" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Posizione richiesta"
+          }
+        }
+      }
     },
     "%@ of daylight" : {
       "localizations" : {
@@ -227,6 +241,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@%2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "comment" : "Number of days in the past or future for Time Travel on Apple Watch",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
           }
         }
       }

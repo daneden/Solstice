@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
 	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@StateObject var timeMachine = TimeMachine()
+	@EnvironmentObject var timeMachine: TimeMachine
 	
 	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 	
@@ -27,27 +27,26 @@ struct ContentView: View {
 					fatalError()
 				}
 		}
-			.environmentObject(timeMachine)
-			.navigationTitle(Text(verbatim: "Solstice"))
-			.onChange(of: scenePhase) { _ in
-				timeMachine.referenceDate = Date()
-				if currentLocation.isAuthorized,
-					 scenePhase != .background {
-					currentLocation.requestLocation()
-				}
+		.navigationTitle(Text(verbatim: "Solstice"))
+		.onChange(of: scenePhase) { _ in
+			timeMachine.referenceDate = Date()
+			if currentLocation.isAuthorized,
+				 scenePhase != .background {
+				currentLocation.requestLocation()
 			}
-			.onReceive(timer) { _ in
-				timeMachine.referenceDate = Date()
-				if currentLocation.isAuthorized {
-					currentLocation.requestLocation()
-				}
+		}
+		.onReceive(timer) { _ in
+			timeMachine.referenceDate = Date()
+			if currentLocation.isAuthorized {
+				currentLocation.requestLocation()
 			}
+		}
 	}
 	
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+#Preview {
+	ContentView()
+		.environmentObject(TimeMachine.preview)
+		.environmentObject(CurrentLocation())
 }

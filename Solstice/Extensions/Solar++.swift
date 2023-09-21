@@ -60,7 +60,6 @@ extension Solar {
 		let comparator = date.isToday ? yesterday : Solar(coordinate: self.coordinate)!
 		let difference = daylightDuration - comparator.daylightDuration
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
-		var string = (daylightDuration - comparator.daylightDuration).localizedString
 		
 		let moreOrLess = difference >= 0 ? NSLocalizedString("more", comment: "More daylight middle of sentence") : NSLocalizedString("less", comment: "Less daylight middle of sentence")
 		
@@ -74,7 +73,6 @@ extension Solar {
 		}
 		
 		let comparatorDate = comparator.date
-		let comparatorDateString = formatter.string(from: comparatorDate)
 		
 		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))")
 	}
