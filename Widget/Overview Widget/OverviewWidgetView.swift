@@ -55,7 +55,6 @@ struct OverviewWidgetView: View {
 						relevantSolar: relevantSolar,
 						comparisonSolar: isAfterTodaySunset ? solar : nil
 					)
-					.minimumScaleFactor(0.9)
 #if os(watchOS)
 				case .accessoryCorner:
 					Image(systemName: "sun.max")
