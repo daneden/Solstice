@@ -116,11 +116,15 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 	
 	var toolbarItemPlacement: ToolbarItemPlacement {
+		#if os(macOS)
+		return .automatic
+		#else
 		if #available(watchOS 10, *) {
 			return .topBarTrailing
 		} else {
 			return .automatic
 		}
+		#endif
 	}
 	
 	@ToolbarContentBuilder
