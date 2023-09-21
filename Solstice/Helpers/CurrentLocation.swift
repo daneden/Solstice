@@ -120,13 +120,28 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		print("Received location update")
 		
-		location = locations.last
+		let newLocation = locations.last
 		
-		Task { await NotificationManager.scheduleNotifications(locationManager: self) }
+		if location == nil {
+			updateLocation(newLocation)
+		} else if let newLocation, let location,
+			 newLocation.distance(from: location) > CLLocationDistance(10_000) {
+			updateLocation(newLocation)
+		} else {
+			print("Location is within 10km of last update")
+		}
+	}
+	
+	private func updateLocation(_ newLocation: CLLocation?) {
+		self.location = newLocation
 		
-		#if canImport(WidgetKit)
-		WidgetCenter.shared.reloadAllTimelines()
-		#endif
+		if newLocation != nil {
+			Task { await NotificationManager.scheduleNotifications(locationManager: self) }
+			
+			#if canImport(WidgetKit)
+			WidgetCenter.shared.reloadAllTimelines()
+			#endif
+		}
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

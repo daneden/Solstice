@@ -55,7 +55,8 @@ struct SolarChartWidgetView: View {
 						timeZone: location.timeZone,
 						eventTypes: [],
 						includesSummaryTitle: false,
-						markSize: 3
+						markSize: 3,
+						yScale: -1.0...3.0
 					)
 					.padding(.horizontal, -1)
 				}

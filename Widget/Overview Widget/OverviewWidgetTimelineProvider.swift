@@ -11,7 +11,6 @@ import CoreLocation
 
 struct OverviewWidgetTimelineProvider: SolsticeWidgetTimelineProvider {
 	static let widgetKind: SolsticeWidgetKind = .OverviewWidget
-	internal let currentLocation = CurrentLocation()
 	internal let geocoder = CLGeocoder()
 	
 	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {

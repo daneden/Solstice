@@ -11,7 +11,6 @@ import CoreLocation
 
 struct SolarChartWidgetTimelineProvider: SolsticeWidgetTimelineProvider {
 	static let widgetKind: SolsticeWidgetKind = .SolarChartWidget
-	internal let currentLocation = CurrentLocation()
 	internal let geocoder = CLGeocoder()
 	
 	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {

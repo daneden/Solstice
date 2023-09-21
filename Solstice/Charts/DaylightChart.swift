@@ -25,6 +25,7 @@ struct DaylightChart: View {
 	var hideXAxis = false
 	var scrubbable = false
 	var markSize: CGFloat = 6
+	var yScale = -1.5...1.5
 	
 	@State private var solarEvents: [Solar.Event] = []
 	
@@ -69,7 +70,7 @@ struct DaylightChart: View {
 				}
 			}
 			.chartYAxis(.hidden)
-			.chartYScale(domain: -1.0...1.5)
+			.chartYScale(domain: yScale)
 			.chartXAxis(hideXAxis ? .hidden : .automatic)
 			.chartXScale(domain: range)
 			.chartOverlay { proxy in
