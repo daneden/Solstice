@@ -16,18 +16,17 @@ extension OverviewWidgetView {
 		var location: SolsticeWidgetLocation
 		
 		var body: some View {
-			ZStack {
-				DaylightChart(
-					solar: solar,
-					timeZone: location.timeZone,
-					eventTypes: [.sunset, .sunrise],
-					appearance: renderingMode == .fullColor ? .graphical : .simple,
-					includesSummaryTitle: false,
-					hideXAxis: true,
-					markSize: 2.5
-				)
-				.padding(.vertical, 4)
-			}
+			DaylightChart(
+				solar: solar,
+				timeZone: location.timeZone,
+				eventTypes: [.sunset, .sunrise],
+				appearance: renderingMode == .fullColor ? .graphical : .simple,
+				includesSummaryTitle: false,
+				hideXAxis: true,
+				markSize: 2.5
+			)
+			.background()
+			.mask(Circle())
 			.widgetLabel {
 				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
 			}
@@ -76,3 +75,12 @@ extension OverviewWidgetView {
 		}
 	}
 }
+
+#if !os(macOS)
+#Preview(
+	"Overview (Accessory Rectangular)",
+	as: WidgetFamily.accessoryRectangular,
+	widget: { OverviewWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif

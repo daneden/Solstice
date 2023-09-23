@@ -79,21 +79,21 @@ struct OverviewWidgetView: View {
 								hideXAxis: true,
 								markSize: family == .systemSmall ? 3 : 5
 							)
-							.padding(.horizontal, -20)
-							.frame(maxHeight: 200)
-							
-							if family == .systemMedium || family == .systemSmall {
-								VStack {
-									Spacer()
-									Rectangle()
-										.fill(.clear)
-										.background(.background)
-										.frame(width: geom.size.width, height: min(geom.size.height / 1.25, 100))
-										.padding(.leading, geom.size.width * -0.5)
-										.blur(radius: 20)
+							.frame(maxHeight: 250)
+							.mask {
+								if family == .systemMedium || family == .systemSmall {
+									RadialGradient(
+										colors: [.black.opacity(0.1), .black],
+										center: .bottomLeading,
+										startRadius: geom.size.height / 1.2,
+										endRadius: geom.size.height
+									)
+								} else {
+									Color.black
 								}
 							}
 						}
+						.padding(-20)
 						
 						VStack(alignment: .leading, spacing: 4) {
 							if sizeCategory < .xLarge {
@@ -118,6 +118,7 @@ struct OverviewWidgetView: View {
 									.lineLimit(4)
 									.widgetHeading()
 									.fixedSize(horizontal: false, vertical: true)
+									.contentTransition(.numericText())
 							}
 							
 							Group {
@@ -171,15 +172,6 @@ struct OverviewWidgetView: View {
 		.backwardCompatibleContainerBackground(.background)
 	}
 }
-
-#if !os(macOS)
-#Preview(
-	"Overview (Accessory Rectangular)",
-	as: WidgetFamily.accessoryRectangular,
-	widget: { OverviewWidget() },
-	timeline: SolsticeWidgetTimelineEntry.previewTimeline
-)
-#endif
 
 #if !os(watchOS)
 #Preview(
