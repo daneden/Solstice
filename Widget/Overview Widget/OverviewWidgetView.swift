@@ -71,26 +71,26 @@ struct OverviewWidgetView: View {
 					ZStack(alignment: .bottomLeading) {
 #if !os(watchOS)
 						GeometryReader { geom in
-							if family != .systemSmall {
-								DaylightChart(solar: solar,
-															timeZone: location.timeZone,
-															eventTypes: [.sunrise, .sunset],
-															includesSummaryTitle: false,
-															hideXAxis: true,
-															markSize: 5)
-								.padding(.horizontal, -20)
-								.frame(maxHeight: 200)
-								
-								if family == .systemMedium {
-									VStack {
-										Spacer()
-										Rectangle()
-											.fill(.clear)
-											.background(.background)
-											.frame(width: geom.size.width, height: min(geom.size.height / 1.25, 100))
-											.padding(.leading, geom.size.width * -0.5)
-											.blur(radius: 20)
-									}
+							DaylightChart(
+								solar: solar,
+								timeZone: location.timeZone,
+								eventTypes: [.sunrise, .sunset],
+								includesSummaryTitle: false,
+								hideXAxis: true,
+								markSize: family == .systemSmall ? 3 : 5
+							)
+							.padding(.horizontal, -20)
+							.frame(maxHeight: 200)
+							
+							if family == .systemMedium || family == .systemSmall {
+								VStack {
+									Spacer()
+									Rectangle()
+										.fill(.clear)
+										.background(.background)
+										.frame(width: geom.size.width, height: min(geom.size.height / 1.25, 100))
+										.padding(.leading, geom.size.width * -0.5)
+										.blur(radius: 20)
 								}
 							}
 						}
@@ -123,32 +123,27 @@ struct OverviewWidgetView: View {
 							Group {
 								if let begins = relevantSolar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone),
 									 let ends = relevantSolar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
-									if family == .systemSmall {
-										Text(begins...ends)
+									if let differenceString = relevantSolar?.compactDifferenceString {
+										Text(differenceString)
+											.lineLimit(4)
+											.font(.footnote)
 											.foregroundStyle(.secondary)
-									} else {
-										if let differenceString = relevantSolar?.differenceString {
-											Text(differenceString)
-												.lineLimit(4)
-												.font(.footnote)
-												.foregroundStyle(.secondary)
-												.fixedSize(horizontal: false, vertical: true)
+											.fixedSize(horizontal: false, vertical: true)
+									}
+									
+									HStack {
+										Label {
+											Text(begins, style: .time)
+										} icon: {
+											Image(systemName: "sunrise.fill")
 										}
 										
-										HStack {
-											Label {
-												Text(begins, style: .time)
-											} icon: {
-												Image(systemName: "sunrise.fill")
-											}
-											
-											Spacer()
-											
-											Label {
-												Text(ends, style: .time)
-											} icon: {
-												Image(systemName: "sunset.fill")
-											}
+										Spacer()
+										
+										Label {
+											Text(ends, style: .time)
+										} icon: {
+											Image(systemName: "sunset.fill")
 										}
 									}
 								}
