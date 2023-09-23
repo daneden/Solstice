@@ -131,19 +131,24 @@ struct OverviewWidgetView: View {
 											.fixedSize(horizontal: false, vertical: true)
 									}
 									
-									HStack {
-										Label {
-											Text(begins, style: .time)
-										} icon: {
-											Image(systemName: "sunrise.fill")
-										}
-										
-										Spacer()
-										
-										Label {
-											Text(ends, style: .time)
-										} icon: {
-											Image(systemName: "sunset.fill")
+									if family == .systemSmall {
+										Text(begins...ends)
+											.foregroundStyle(.tertiary)
+									} else {
+										HStack {
+											Label {
+												Text(begins, style: .time)
+											} icon: {
+												Image(systemName: "sunrise.fill")
+											}
+											
+											Spacer()
+											
+											Label {
+												Text(ends, style: .time)
+											} icon: {
+												Image(systemName: "sunset.fill")
+											}
 										}
 									}
 								}
