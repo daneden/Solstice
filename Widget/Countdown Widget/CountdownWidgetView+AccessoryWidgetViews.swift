@@ -26,6 +26,18 @@ extension CountdownWidgetView {
 		var previousEvent: Solar.Event
 		var nextEvent: Solar.Event
 		
+		var entryDate: Date = .now
+		
+		@ViewBuilder
+		var currebtValueLabel: some View {
+			let duration = entryDate.distance(to: nextEvent.date)
+			if duration > 60 * 90 {
+				Text(Duration.seconds(duration).formatted(.units(maximumUnitCount: 1)))
+			} else {
+				Text(timerInterval: previousEvent.date...nextEvent.date, showsHours: false)
+			}
+		}
+		
 		var body: some View {
 			ZStack {
 				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
@@ -33,7 +45,8 @@ extension CountdownWidgetView {
 				} currentValueLabel: {
 					VStack {
 						Image(systemName: nextEvent.imageName)
-						Text(nextEvent.date, style: .time)
+						currebtValueLabel
+							.monospacedDigit()
 					}
 					.font(.caption)
 				}
