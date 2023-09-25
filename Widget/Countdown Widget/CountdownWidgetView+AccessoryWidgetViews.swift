@@ -33,14 +33,12 @@ extension CountdownWidgetView {
 				} currentValueLabel: {
 					VStack {
 						Image(systemName: nextEvent.imageName)
-						Text(nextEvent.date, style: .timer)
+						Text(nextEvent.date, style: .time)
 					}
 					.font(.caption)
-					
 				}
 				.progressViewStyle(.circular)
-				.tint(widgetRenderingMode == .fullColor ? Color("AccentColor") : .accentColor)
-				.widgetAccentable(widgetRenderingMode != .fullColor)
+				.tint(.accentColor)
 			}
 			.widgetLabel { nextEventText }
 		}
@@ -80,7 +78,7 @@ extension CountdownWidgetView {
 		
 		var body: some View {
 			Label {
-				Text(nextEvent.date, style: .timer)
+				Text("\(Text(nextEvent.date, style: .time)), \(Text(nextEvent.date, style: .relative))")
 			} icon: {
 				Image(systemName: nextEvent.imageName)
 			}
