@@ -78,16 +78,34 @@ extension CountdownWidgetView {
 	}
 	
 	struct AccessoryCornerView: View {
+		var previousEvent: Solar.Event
 		var nextEvent: Solar.Event
 		
 		var body: some View {
-			Image(systemName: nextEvent.imageName)
-				.font(.title.bold())
-				.symbolVariant(.fill)
-				.imageScale(.large)
-				.widgetLabel {
-					Text("\(nextEvent.date, style: .time), \(nextEvent.date, style: .relative)")
+			Label {
+				Text(nextEvent.date, style: .timer)
+			} icon: {
+				Image(systemName: nextEvent.imageName)
+			}
+			.widgetCurvesContent()
+			.widgetLabel {
+				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
+					Image(systemName: previousEvent.imageName)
+				} currentValueLabel: {
+					Label {
+						Text("\(Text(nextEvent.date, style: .timer)) until \(Text(nextEvent.description))")
+					} icon: {
+						Image(systemName: nextEvent.imageName)
+					}
 				}
+			}
 		}
 	}
 }
+
+#Preview(
+	"Countdown (Accessory Rectangular)",
+	as: WidgetFamily.accessoryRectangular,
+	widget: { CountdownWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
