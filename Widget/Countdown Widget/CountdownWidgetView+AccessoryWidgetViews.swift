@@ -34,7 +34,11 @@ extension CountdownWidgetView {
 			if duration > 60 * 90 {
 				Text(Duration.seconds(duration).formatted(.units(maximumUnitCount: 1)))
 			} else {
-				Text(timerInterval: previousEvent.date...nextEvent.date, showsHours: false)
+				Text(
+					timerInterval: previousEvent.date...nextEvent.date,
+					pauseTime: nextEvent.date,
+					showsHours: false
+				)
 			}
 		}
 		
@@ -51,7 +55,8 @@ extension CountdownWidgetView {
 					.font(.caption)
 				}
 				.progressViewStyle(.circular)
-				.tint(.accentColor)
+				.tint(.accent)
+				.widgetAccentable()
 			}
 			.widgetLabel { nextEventText }
 		}
