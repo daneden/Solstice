@@ -56,7 +56,7 @@ extension Solar {
 		let difference = daylightDuration - comparator.daylightDuration
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 		
-		let moreOrLess = difference >= 0 ? NSLocalizedString("+", comment: "More daylight middle of sentence") : NSLocalizedString("-", comment: "Less daylight middle of sentence")
+		let moreOrLess = difference >= 0 ? "+" : "-"
 		
 		return LocalizedStringKey("\(moreOrLess)\(differenceString)")
 	}

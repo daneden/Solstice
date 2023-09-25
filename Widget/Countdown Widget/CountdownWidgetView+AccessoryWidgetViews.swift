@@ -23,10 +23,10 @@ extension CountdownWidgetView {
 	struct AccessoryCircularView: View {
 		@Environment(\.widgetRenderingMode) var widgetRenderingMode
 		
+		var entryDate: Date
+		
 		var previousEvent: Solar.Event
 		var nextEvent: Solar.Event
-		
-		var entryDate: Date = .now
 		
 		@ViewBuilder
 		var currebtValueLabel: some View {

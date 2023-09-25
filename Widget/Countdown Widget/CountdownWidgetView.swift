@@ -35,7 +35,11 @@ struct CountdownWidgetView: View {
 			switch family {
 			#if !os(macOS)
 			case .accessoryCircular:
-				AccessoryCircularView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
+				AccessoryCircularView(
+					entryDate: entry.date,
+					previousEvent: previousSolarEvent,
+					nextEvent: nextSolarEvent
+				)
 			case .accessoryInline:
 				AccessoryInlineView(nextEvent: nextSolarEvent)
 			case .accessoryRectangular:
