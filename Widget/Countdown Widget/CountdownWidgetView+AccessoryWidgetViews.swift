@@ -28,17 +28,14 @@ extension CountdownWidgetView {
 		
 		var body: some View {
 			ZStack {
-				VStack {
-					Image(systemName: nextEvent.imageName)
-					Text(nextEvent.date.formatted(.dateTime.hour(.conversationalDefaultDigits(amPM: .omitted)).minute()))
-						.allowsTightening(true)
-				}
-				.font(.caption.weight(.semibold))
-				.foregroundStyle(.white)
-				
 				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
 					nextEventText
 				} currentValueLabel: {
+					VStack {
+						Image(systemName: nextEvent.imageName)
+						Text(nextEvent.date, style: .timer)
+					}
+					.font(.caption)
 					
 				}
 				.progressViewStyle(.circular)
