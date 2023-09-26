@@ -34,7 +34,7 @@ extension CountdownWidgetView {
 			if duration > 60 * 90 {
 				Text(Duration.seconds(duration).formatted(.units(width: .narrow, maximumUnitCount: 1)))
 			} else {
-				Text(nextEcent.date, style: .timer)
+				Text(nextEvent.date, style: .timer)
 					.monospacedDigit()
 			}
 		}
