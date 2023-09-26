@@ -29,7 +29,7 @@ extension CountdownWidgetView {
 		var nextEvent: Solar.Event
 		
 		@ViewBuilder
-		var currebtValueLabel: some View {
+		var currentValueLabel: some View {
 			let duration = entryDate.distance(to: nextEvent.date)
 			if duration > 60 * 90 {
 				Text(Duration.seconds(duration).formatted(.units(maximumUnitCount: 1)))
@@ -39,6 +39,7 @@ extension CountdownWidgetView {
 					pauseTime: nextEvent.date,
 					showsHours: false
 				)
+				.monospacedDigit()
 			}
 		}
 		
@@ -49,8 +50,7 @@ extension CountdownWidgetView {
 				} currentValueLabel: {
 					VStack {
 						Image(systemName: nextEvent.imageName)
-						currebtValueLabel
-							.monospacedDigit()
+						currentValueLabel
 					}
 					.font(.caption)
 				}
