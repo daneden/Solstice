@@ -25,7 +25,7 @@ extension OverviewWidgetView {
 				hideXAxis: true,
 				markSize: 2.5
 			)
-			.widgetAcdcentable()
+			.widgetAccentable()
 			.background { AccessoryWidgetBackground() }
 			.mask(Circle())
 			.widgetLabel {
