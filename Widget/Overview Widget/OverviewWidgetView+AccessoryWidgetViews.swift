@@ -25,8 +25,8 @@ extension OverviewWidgetView {
 				hideXAxis: true,
 				markSize: 2.5
 			)
-			.widgetAccentable()
-			.background()
+			.widgetAcdcentable()
+			.background { AccessoryWidgetBackground() }
 			.mask(Circle())
 			.widgetLabel {
 				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
