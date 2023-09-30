@@ -70,6 +70,7 @@ struct OverviewWidgetView: View {
 				default:
 					ZStack(alignment: .bottomLeading) {
 #if !os(watchOS)
+						if family != .systemSmall {
 						GeometryReader { geom in
 							DaylightChart(
 								solar: solar,
@@ -94,6 +95,7 @@ struct OverviewWidgetView: View {
 							}
 						}
 						.padding(-20)
+						}
 						
 						VStack(alignment: .leading, spacing: 4) {
 							if sizeCategory < .xLarge {
