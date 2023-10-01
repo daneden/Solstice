@@ -9,13 +9,41 @@ import WidgetKit
 import CoreLocation
 import Solar
 
-fileprivate class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
-	static let shared = LocationManagerDelegate()
-	var didUpdateLocationsCallback: (_ locations: [CLLocation]) -> Void = { _ in }
+fileprivate class LocationManager: NSObject, CLLocationManagerDelegate {
+	static let shared = LocationManager()
+	
+	private let locationManager: CLLocationManager
+	
+	override init() {
+		self.locationManager = .init()
+		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
+		super.init()
+		locationManager.delegate = self
+	}
+	
+	private var updateLocationsCallbacks: [(_ locations: [CLLocation]) -> Void] = []
+	
+	func addLocationUpdateCallback(callback: @escaping (_ locations: [CLLocation]) -> Void) {
+		if let location {
+			callback([location])
+		} else {
+			updateLocationsCallbacks.append(callback)
+		}
+	}
 	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		didUpdateLocationsCallback(locations)
+		for callback in updateLocationsCallbacks {
+			callback(locations)
+		}
+		
+		updateLocationsCallbacks = []
 	}
+	
+	func requestLocation() {
+		locationManager.requestLocation()
+	}
+	
+	var location: CLLocation? { locationManager.location }
 }
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
@@ -30,15 +58,8 @@ protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == S
 }
 
 extension SolsticeWidgetTimelineProvider {
-	fileprivate var locationManagerDelegate: LocationManagerDelegate {
-		LocationManagerDelegate.shared
-	}
-	
-	var locationManager: CLLocationManager {
-		let manager = CLLocationManager()
-		manager.desiredAccuracy = kCLLocationAccuracyReduced
-		manager.delegate = locationManagerDelegate
-		return manager
+	fileprivate var locationManager: LocationManager {
+		.shared
 	}
 	
 	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
@@ -80,7 +101,7 @@ extension SolsticeWidgetTimelineProvider {
 		if let configurationLocation = configuration.location?.location ?? locationManager.location {
 			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
 		} else {
-			locationManagerDelegate.didUpdateLocationsCallback = { locations in
+			locationManager.addLocationUpdateCallback { locations in
 				guard let location = locations.last else {
 					return completion(SolsticeWidgetTimelineEntry(date: Date()))
 				}
@@ -158,7 +179,7 @@ extension SolsticeWidgetTimelineProvider {
 		if let location = configuration.location?.location ?? locationManager.location {
 			geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 		} else {
-			locationManagerDelegate.didUpdateLocationsCallback = { locations in
+			locationManager.addLocationUpdateCallback { locations in
 				guard let location = locations.last else {
 					return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
 				}
