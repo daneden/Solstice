@@ -223,6 +223,12 @@
             "state" : "new",
             "value" : "%1$@ until %2$@"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ fino %2$@"
+          }
         }
       }
     },
@@ -309,6 +315,9 @@
           }
         }
       }
+    },
+    "About Equinox and Solstices" : {
+
     },
     "About Solstice" : {
       "localizations" : {
@@ -876,7 +885,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "meno"
+            "value" : "in meno"
           }
         }
       }
@@ -956,7 +965,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il giorno più lungo"
+            "value" : "La giornata più lunga"
           }
         }
       }
@@ -1268,7 +1277,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cerca posizioni"
+            "value" : "Cerca posizione"
           }
         }
       }
@@ -1348,7 +1357,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configura i servizi di localizzazione per vedere gli orari di alba e tramonto per la tua posizione corrente nell'app, nei widget e nelle notifiche"
+            "value" : "Configura i servizi di localizzazione per vedere gli orari di alba e tramonto nella tua posizione corrente nell'app, nei widget e nelle notifiche"
           }
         }
       }
@@ -1368,7 +1377,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il giorno più corto"
+            "value" : "La giornata più corta"
           }
         }
       }
