@@ -75,25 +75,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		
 		for i in 0...63 {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
-			var notificationDate: Date
 			
 			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
 				continue
 			}
 			
-			if scheduleType == .specificTime {
-				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
-				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
-			} else {
-				let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
-				let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
-				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
-				notificationDate = calendar.date(
-					bySettingHour: scheduleComponents.hour ?? 0,
-					minute: scheduleComponents.minute ?? 0,
-					second: 0, of: date
-				) ?? date
-			}
+			let notificationDate = getNextNotificationDate(after: date, with: solar)
 			
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
 				return
@@ -116,6 +103,23 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			} catch {
 				print(error)
 			}
+		}
+	}
+	
+	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
+		if scheduleType == .specificTime {
+			let scheduleComponents = calendar.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
+			return calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+		} else {
+			guard let solar else { return date }
+			let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
+			let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
+			let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
+			return calendar.date(
+				bySettingHour: scheduleComponents.hour ?? 0,
+				minute: scheduleComponents.minute ?? 0,
+				second: 0, of: date
+			) ?? date
 		}
 	}
 	

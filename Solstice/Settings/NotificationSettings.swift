@@ -162,7 +162,7 @@ struct NotificationPreview: View {
 	var bodyContent: String = ""
 	
 	init() {
-		guard let content = NotificationManager.buildNotificationContent(for: Date(), location: .init(), in: .preview) else {
+		guard let content = NotificationManager.buildNotificationContent(for: NotificationManager.getNextNotificationDate(after: Date()), location: .init(), in: .preview) else {
 			return
 		}
 		

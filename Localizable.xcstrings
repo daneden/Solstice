@@ -637,7 +637,15 @@
       }
     },
     "December Solstice Today" : {
-      "comment" : "Notification title for December solstice"
+      "comment" : "Notification title for December solstice",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio di dicembre oggi"
+          }
+        }
+      }
     },
     "Delete Location" : {
       "localizations" : {
@@ -810,13 +818,37 @@
       }
     },
     "Good Afternoon" : {
-      "comment" : "Notification title for afternoon notification"
+      "comment" : "Notification title for afternoon notification",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buon pomeriggio"
+          }
+        }
+      }
     },
     "Good Evening" : {
-      "comment" : "Notification title for evening notification"
+      "comment" : "Notification title for evening notification",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buona sera"
+          }
+        }
+      }
     },
     "Good Morning" : {
-      "comment" : "Notification title for morning notification"
+      "comment" : "Notification title for morning notification",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buongiorno"
+          }
+        }
+      }
     },
     "Graphical" : {
       "localizations" : {
@@ -869,7 +901,15 @@
       }
     },
     "June Solstice Today" : {
-      "comment" : "Notification title for June solstice"
+      "comment" : "Notification title for June solstice",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio di giugno oggi"
+          }
+        }
+      }
     },
     "Learn more about the equinox and solstice" : {
       "localizations" : {
@@ -1003,7 +1043,15 @@
       }
     },
     "March Equinox Today" : {
-      "comment" : "Notification title for March equinox"
+      "comment" : "Notification title for March equinox",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio di marzo oggi"
+          }
+        }
+      }
     },
     "more" : {
       "comment" : "More daylight middle of sentence",
@@ -1431,7 +1479,15 @@
       }
     },
     "September Equinox Today" : {
-      "comment" : "Notification title for September equinox"
+      "comment" : "Notification title for September equinox",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio di settembre oggi"
+          }
+        }
+      }
     },
     "Set Up Location Access" : {
       "localizations" : {
@@ -1754,7 +1810,15 @@
       }
     },
     "Today’s Daylight" : {
-      "comment" : "Notification title fallback"
+      "comment" : "Notification title fallback",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La luce del giorno di oggi"
+          }
+        }
+      }
     },
     "Tomorrow" : {
       "localizations" : {
