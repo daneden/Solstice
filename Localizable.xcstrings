@@ -14,15 +14,6 @@
         }
       }
     },
-    "(differenceString) less daylight than yesterday" : {
-      "comment" : "Notification fragment for less daylight compared to yesterday"
-    },
-    "(differenceString) more daylight than yesterday" : {
-      "comment" : "Notification fragment for more daylight compared to yesterday"
-    },
-    "(duration) of daylight today." : {
-      "comment" : "Notification fragment for length of daylight"
-    },
     "**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous." : {
       "localizations" : {
         "it" : {
@@ -326,7 +317,14 @@
       }
     },
     "About Equinox and Solstices" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A proposito di equinozio e solstizi"
+          }
+        }
+      }
     },
     "About Solstice" : {
       "localizations" : {
@@ -1120,6 +1118,78 @@
         }
       }
     },
+    "notif-daylight-duration" : {
+      "comment" : "Notification fragment for length of daylight",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ of daylight today."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ di luce oggi"
+          }
+        }
+      }
+    },
+    "notif-less-daylight" : {
+      "comment" : "Notification fragment for less daylight compared to yesterday",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ less daylight than yesterday"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ in meno di luce del giorno rispetto a ieri"
+          }
+        }
+      }
+    },
+    "notif-more-daylight" : {
+      "comment" : "Notification fragment for more daylight compared to yesterday",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ more daylight than yesterday"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ di luce diurna in più rispetto a ieri"
+          }
+        }
+      }
+    },
+    "notif-sunrise-sunset" : {
+      "comment" : "Notification fragment for sunrise and sunset times",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The sun rises at %1$@ and sets at %2$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il sole sorge alle %1$@ e tramonta alle %2$@."
+          }
+        }
+      }
+    },
     "Notification Preview" : {
       "localizations" : {
         "it" : {
@@ -1162,7 +1232,15 @@
       }
     },
     "Open Solstice to see how today’s daylight has changed." : {
-      "comment" : "Fallthrough notification content for when notification settings specify no content."
+      "comment" : "Fallthrough notification content for when notification settings specify no content.",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri Solstice per vedere come è cambiata la luce del giorno di oggi."
+          }
+        }
+      }
     },
     "Open Source Acknowledgements" : {
       "localizations" : {
@@ -1593,9 +1671,6 @@
           }
         }
       }
-    },
-    "The sun rises at (sunriseTime) and sets at (sunsetTime)." : {
-      "comment" : "Notification fragment for sunrise and sunset times"
     },
     "Time" : {
       "localizations" : {

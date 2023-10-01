@@ -172,25 +172,32 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			if includeSunTimes {
 				let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
 				let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
-				NSLocalizedString(
-					"The sun rises at \(sunriseTime) and sets at \(sunsetTime).",
+				let sunriseSunset = NSLocalizedString(
+					"notif-sunrise-sunset",
+					value: "The sun rises at %1$@ and sets at %2$@.",
 					comment: "Notification fragment for sunrise and sunset times"
 				)
+				
+				String.localizedStringWithFormat(sunriseSunset, sunriseTime, sunsetTime)
 			}
 			
 			if includeDaylightDuration {
-				NSLocalizedString(
-					"\(duration) of daylight today.",
+				let daylightDuration = NSLocalizedString(
+					"notif-daylight-duration",
+					value: "%@ of daylight today.",
 					comment: "Notification fragment for length of daylight"
 				)
+				String.localizedStringWithFormat(daylightDuration, duration)
 			}
 			
 			if includeDaylightChange {
 				if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
 					if difference >= 0 {
-						NSLocalizedString("\(differenceString) more daylight than yesterday", comment: "Notification fragment for more daylight compared to yesterday")
+						let moreDaylightFormat = NSLocalizedString("notif-more-daylight", value: "%@ more daylight than yesterday", comment: "Notification fragment for more daylight compared to yesterday")
+						String.localizedStringWithFormat(moreDaylightFormat, differenceString)
 					} else {
-						NSLocalizedString("\(differenceString) less daylight than yesterday", comment: "Notification fragment for less daylight compared to yesterday")
+						let lessDaylightFormat = NSLocalizedString("notif-less-daylight", value: "%@ less daylight than yesterday", comment: "Notification fragment for less daylight compared to yesterday")
+						String.localizedStringWithFormat(lessDaylightFormat, differenceString)
 					}
 				}
 			}
