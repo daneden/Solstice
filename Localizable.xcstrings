@@ -636,6 +636,9 @@
         }
       }
     },
+    "December Solstice Today" : {
+      "comment" : "Notification title for December solstice"
+    },
     "Delete Location" : {
       "localizations" : {
         "it" : {
@@ -806,6 +809,15 @@
         }
       }
     },
+    "Good Afternoon" : {
+      "comment" : "Notification title for afternoon notification"
+    },
+    "Good Evening" : {
+      "comment" : "Notification title for evening notification"
+    },
+    "Good Morning" : {
+      "comment" : "Notification title for morning notification"
+    },
     "Graphical" : {
       "localizations" : {
         "it" : {
@@ -855,6 +867,9 @@
           }
         }
       }
+    },
+    "June Solstice Today" : {
+      "comment" : "Notification title for June solstice"
     },
     "Learn more about the equinox and solstice" : {
       "localizations" : {
@@ -986,6 +1001,9 @@
           }
         }
       }
+    },
+    "March Equinox Today" : {
+      "comment" : "Notification title for March equinox"
     },
     "more" : {
       "comment" : "More daylight middle of sentence",
@@ -1412,6 +1430,9 @@
         }
       }
     },
+    "September Equinox Today" : {
+      "comment" : "Notification title for September equinox"
+    },
     "Set Up Location Access" : {
       "localizations" : {
         "it" : {
@@ -1731,6 +1752,9 @@
           }
         }
       }
+    },
+    "Today’s Daylight" : {
+      "comment" : "Notification title fallback"
     },
     "Tomorrow" : {
       "localizations" : {

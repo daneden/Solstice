@@ -147,24 +147,24 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
 		
 		if calendar.isDate(date, inSameDayAs: marchEquinox) {
-			content.title = "March Equinox Today"
+			content.title = NSLocalizedString("March Equinox Today", comment: "Notification title for March equinox")
 		} else if calendar.isDate(date, inSameDayAs: septemberEquinox) {
-			content.title = "September Equinox Today"
+			content.title = NSLocalizedString("September Equinox Today", comment: "Notification title for September equinox")
 		} else if calendar.isDate(date, inSameDayAs: juneSolstice) {
-			content.title = "June Solstice Today"
+			content.title = NSLocalizedString("June Solstice Today", comment: "Notification title for June solstice")
 		} else if calendar.isDate(date, inSameDayAs: decemberSolstice) {
-			content.title = "December Solstice Today"
+			content.title = NSLocalizedString("December Solstice Today", comment: "Notification title for December solstice")
 		} else {
 			let components = calendar.dateComponents([.hour], from: date)
 			let hour = components.hour ?? 0
 			if hour >= 18 || hour < 3 {
-				content.title = "Good Evening"
+				content.title = NSLocalizedString("Good Evening", comment: "Notification title for evening notification")
 			} else if hour >= 3 && hour < 12 {
-				content.title = "Good Morning"
+				content.title = NSLocalizedString("Good Morning", comment: "Notification title for morning notification")
 			} else if hour >= 12 && hour < 18 {
-				content.title = "Good Afternoon"
+				content.title = NSLocalizedString("Good Afternoon", comment: "Notification title for afternoon notification")
 			} else {
-				content.title = "Today’s Daylight"
+				content.title = NSLocalizedString("Today’s Daylight", comment: "Notification title fallback")
 			}
 		}
 		
