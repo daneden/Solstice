@@ -14,6 +14,15 @@
         }
       }
     },
+    "(differenceString) less daylight than yesterday" : {
+      "comment" : "Notification fragment for less daylight compared to yesterday"
+    },
+    "(differenceString) more daylight than yesterday" : {
+      "comment" : "Notification fragment for more daylight compared to yesterday"
+    },
+    "(duration) of daylight today." : {
+      "comment" : "Notification fragment for length of daylight"
+    },
     "**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous." : {
       "localizations" : {
         "it" : {
@@ -1152,6 +1161,9 @@
         }
       }
     },
+    "Open Solstice to see how today’s daylight has changed." : {
+      "comment" : "Fallthrough notification content for when notification settings specify no content."
+    },
     "Open Source Acknowledgements" : {
       "localizations" : {
         "it" : {
@@ -1581,6 +1593,9 @@
           }
         }
       }
+    },
+    "The sun rises at (sunriseTime) and sets at (sunsetTime)." : {
+      "comment" : "Notification fragment for sunrise and sunset times"
     },
     "Time" : {
       "localizations" : {

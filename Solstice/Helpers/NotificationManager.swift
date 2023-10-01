@@ -168,31 +168,42 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			}
 		}
 		
-		if includeSunTimes {
-			content.body += "The sun rises at \(solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())) "
-			content.body += "and sets at \(solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())). "
-		}
-		
-		if includeDaylightDuration {
-			content.body += "\(duration) of daylight today. "
-		}
-		
-		if includeDaylightChange {
-			if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
-				content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
+		@StringBuilder var notificationBody: String {
+			if includeSunTimes {
+				let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+				let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+				NSLocalizedString(
+					"The sun rises at \(sunriseTime) and sets at \(sunsetTime).",
+					comment: "Notification fragment for sunrise and sunset times"
+				)
+			}
+			
+			if includeDaylightDuration {
+				NSLocalizedString(
+					"\(duration) of daylight today.",
+					comment: "Notification fragment for length of daylight"
+				)
+			}
+			
+			if includeDaylightChange {
+				if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
+					if difference >= 0 {
+						NSLocalizedString("\(differenceString) more daylight than yesterday", comment: "Notification fragment for more daylight compared to yesterday")
+					} else {
+						NSLocalizedString("\(differenceString) less daylight than yesterday", comment: "Notification fragment for less daylight compared to yesterday")
+					}
+				}
+			}
+			
+			if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
+				NSLocalizedString(
+					"Open Solstice to see how today’s daylight has changed.",
+					comment: "Fallthrough notification content for when notification settings specify no content."
+				)
 			}
 		}
 		
-		if includeSolsticeCountdown {
-			content.body += "The next solstice is \(solar.date.nextSolstice.formatted(.relative(presentation: .named))). "
-		}
-		
-		/**
-		 Fallthrough for when notification settings specify no content
-		 */
-		if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
-			content.body += "Open Solstice to see how today’s daylight has changed."
-		}
+		content.body = notificationBody
 		
 		return content
 	}
