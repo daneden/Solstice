@@ -1197,7 +1197,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ di luce oggi"
+            "value" : "%@ di luce oggi."
           }
         }
       }
@@ -1209,13 +1209,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%@ less daylight than yesterday"
+            "value" : "%@ less daylight than yesterday."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ in meno di luce del giorno rispetto a ieri"
+            "state" : "needs_review",
+            "value" : "%@ in meno di luce del giorno rispetto a ieri."
           }
         }
       }
@@ -1227,13 +1227,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%@ more daylight than yesterday"
+            "value" : "%@ more daylight than yesterday."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ di luce diurna in più rispetto a ieri"
+            "state" : "needs_review",
+            "value" : "%@ di luce diurna in più rispetto a ieri."
           }
         }
       }

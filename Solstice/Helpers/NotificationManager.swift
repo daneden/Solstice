@@ -197,10 +197,10 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			if includeDaylightChange {
 				if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
 					if difference >= 0 {
-						let moreDaylightFormat = NSLocalizedString("notif-more-daylight", value: "%@ more daylight than yesterday", comment: "Notification fragment for more daylight compared to yesterday")
+						let moreDaylightFormat = NSLocalizedString("notif-more-daylight", value: "%@ more daylight than yesterday.", comment: "Notification fragment for more daylight compared to yesterday")
 						String.localizedStringWithFormat(moreDaylightFormat, differenceString)
 					} else {
-						let lessDaylightFormat = NSLocalizedString("notif-less-daylight", value: "%@ less daylight than yesterday", comment: "Notification fragment for less daylight compared to yesterday")
+						let lessDaylightFormat = NSLocalizedString("notif-less-daylight", value: "%@ less daylight than yesterday.", comment: "Notification fragment for less daylight compared to yesterday")
 						String.localizedStringWithFormat(lessDaylightFormat, differenceString)
 					}
 				}
