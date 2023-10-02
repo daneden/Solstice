@@ -98,18 +98,25 @@ extension SolsticeWidgetTimelineProvider {
 			processPlacemark(placemark)
 		}
 		
-		if let configurationLocation = configuration.location?.location ?? locationManager.location {
-			geocoder.reverseGeocodeLocation(configurationLocation, completionHandler: handler)
-		} else {
-			locationManager.addLocationUpdateCallback { locations in
-				guard let location = locations.last else {
-					return completion(SolsticeWidgetTimelineEntry(date: Date()))
-				}
-				
+		switch configuration.locationType {
+		case .customLocation:
+			if let location = configuration.location?.location {
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			}
-			
-			locationManager.requestLocation()
+		default:
+			if let location = locationManager.location {
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+			} else {
+				locationManager.addLocationUpdateCallback { locations in
+					guard let location = locations.last else {
+						return completion(SolsticeWidgetTimelineEntry(date: Date()))
+					}
+					
+					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+				}
+				
+				locationManager.requestLocation()
+			}
 		}
 	}
 	
@@ -176,18 +183,25 @@ extension SolsticeWidgetTimelineProvider {
 			processPlacemark(placemark)
 		}
 		
-		if let location = configuration.location?.location ?? locationManager.location {
-			geocoder.reverseGeocodeLocation(location, completionHandler: handler)
-		} else {
-			locationManager.addLocationUpdateCallback { locations in
-				guard let location = locations.last else {
-					return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
-				}
-				
+		switch configuration.locationType {
+		case .customLocation:
+			if let location = configuration.location?.location {
 				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 			}
-			
-			locationManager.requestLocation()
+		default:
+			if let location = locationManager.location {
+				geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+			} else {
+				locationManager.addLocationUpdateCallback { locations in
+					guard let location = locations.last else {
+						return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
+					}
+					
+					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
+				}
+				
+				locationManager.requestLocation()
+			}
 		}
 	}
 	
