@@ -51,6 +51,7 @@
       }
     },
     "%@ %@" : {
+      "comment" : "Widget heading for real location",
       "localizations" : {
         "en" : {
           "stringUnit" : {
