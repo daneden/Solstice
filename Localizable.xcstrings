@@ -1215,7 +1215,7 @@
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "%@ in meno di luce del giorno rispetto a ieri."
           }
         }
@@ -1233,7 +1233,7 @@
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "%@ di luce diurna in più rispetto a ieri."
           }
         }
@@ -1775,7 +1775,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viaggio nel tempo"
+            "value" : "Viaggio nel tempo %@"
           }
         }
       }
