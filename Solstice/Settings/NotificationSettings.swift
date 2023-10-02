@@ -142,7 +142,7 @@ struct NotificationSettings: View {
 				Section {
 					Picker(selection: $sadPreference) {
 						ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
-							Text(sadPreference.rawValue)
+							Text(sadPreference.description)
 						}
 					} label: {
 						Text("SAD preference")
