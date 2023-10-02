@@ -21,7 +21,12 @@ struct WidgetLocationView: View {
 			}
 		}
 		
-		return Text(title)
+		switch location.isRealLocation {
+		case true:
+			return Text("\(Text(title)) \(Image(systemName: "location"))", comment: "Widget heading for real location")
+		case false:
+			return Text("\(Image("Solstice.SFSymbol")) \(Text(title))", comment: "Widget heading for custom location")
+		}
 	}
 	
 	var body: some View {
