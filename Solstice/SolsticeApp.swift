@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import UserNotifications
 import StoreKit
 
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var currentLocation = CurrentLocation()
+	@StateObject private var timeMachine = TimeMachine()
 	
 	private let persistenceController = PersistenceController.shared
 
@@ -20,24 +20,22 @@ struct SolsticeApp: App {
 		WindowGroup {
 			ContentView()
 				.environmentObject(currentLocation)
+				.environmentObject(timeMachine)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 				.task {
 					for await result in Transaction.updates {
 						switch result {
 						case .verified(let transaction):
 							print("Transaction verified in listener")
-							
 							await transaction.finish()
-							
-							// Update the user's purchases...
 						case .unverified:
 							print("Transaction unverified")
 						}
 					}
 				}
 		}
-		.onChange(of: phase) { newValue in
-			switch newValue {
+		.onChange(of: phase) { _ in
+			switch phase {
 			#if !os(watchOS)
 			case .background:
 				Task {
@@ -45,9 +43,15 @@ struct SolsticeApp: App {
 				}
 			#endif
 			default:
-				currentLocation.requestLocation() { _ in }
+				currentLocation.requestLocation()
 			}
 		}
+		
+		#if os(visionOS)
+		WindowGroup(id: "settings") {
+			SettingsView()
+		}
+		#endif
 		
 		#if os(macOS)
 		Settings {

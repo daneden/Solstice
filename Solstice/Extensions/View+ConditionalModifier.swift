@@ -21,3 +21,13 @@ extension View {
 		}
 	}
 }
+
+extension View {
+	/// Applies a given transformation inline. Useful for e.g. `#available` attribute-based content changes
+	/// - Parameters:
+	///   - transform: The transform to apply to the source `View`
+	/// - Returns: The modified `View`
+	func modify<Content: View>(@ViewBuilder transform: (Self) -> Content) -> some View {
+		transform(self)
+	}
+}

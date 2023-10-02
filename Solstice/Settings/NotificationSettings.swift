@@ -28,6 +28,8 @@ struct NotificationSettings: View {
 	
 	@AppStorage(Preferences.sadPreference) var sadPreference
 	
+	@EnvironmentObject var currentLocation: CurrentLocation
+	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
 		animation: .default)
@@ -55,10 +57,10 @@ struct NotificationSettings: View {
 	@ViewBuilder
 	var content: some View {
 		Form {
-			Toggle("Enable Notifications", isOn: $notificationsEnabled)
-				.onChange(of: notificationsEnabled) { newValue in
+			Toggle("Enable notifications", isOn: $notificationsEnabled)
+				.onChange(of: notificationsEnabled) { _ in
 					Task {
-						if newValue == true {
+						if notificationsEnabled == true {
 							notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
 						}
 					}
@@ -67,7 +69,7 @@ struct NotificationSettings: View {
 			Group {
 				Section {
 					Picker("Location", selection: $customNotificationLocationUUID.animation()) {
-						Text("Current Location")
+						Text("Current location")
 							.tag(String?.none)
 						ForEach(items) { location in
 							if let title = location.title {
@@ -77,7 +79,7 @@ struct NotificationSettings: View {
 						}
 					}
 				} footer: {
-					if notificationsEnabled && !CurrentLocation.isAuthorized && customNotificationLocationUUID == nil {
+					if notificationsEnabled && !currentLocation.isAuthorized && customNotificationLocationUUID == nil {
 						#if os(iOS)
 						if let url = URL(string: UIApplication.openSettingsURLString) {
 							VStack(alignment: .leading) {
@@ -113,7 +115,7 @@ struct NotificationSettings: View {
 								case let x where x > 0:
 									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
 								default:
-									Text("at \(scheduleType.description)")
+									Text("at \(Text(scheduleType.description))")
 								}
 							}
 						} label: {
@@ -124,7 +126,7 @@ struct NotificationSettings: View {
 				
 				DisclosureGroup {
 					ForEach(notificationFragments, id: \.label) { fragment in
-						Toggle(fragment.label, isOn: fragment.value)
+						Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
 					}
 					
 					VStack(alignment: .leading) {
@@ -134,16 +136,16 @@ struct NotificationSettings: View {
 						NotificationPreview()
 					}
 				} label: {
-					Text("Customise Notification Content")
+					Text("Customise notification content")
 				}
 				
 				Section {
 					Picker(selection: $sadPreference) {
 						ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
-							Text(sadPreference.rawValue)
+							Text(sadPreference.description)
 						}
 					} label: {
-						Text("SAD Preference")
+						Text("SAD preference")
 					}
 				} footer: {
 					Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
@@ -160,7 +162,7 @@ struct NotificationPreview: View {
 	var bodyContent: String = ""
 	
 	init() {
-		guard let content = NotificationManager.buildNotificationContent(for: Date(), location: .init(), in: .preview) else {
+		guard let content = NotificationManager.buildNotificationContent(for: NotificationManager.getNextNotificationDate(after: Date()), location: .init(), in: .preview) else {
 			return
 		}
 		

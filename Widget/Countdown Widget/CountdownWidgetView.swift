@@ -12,6 +12,7 @@ import WidgetKit
 struct CountdownWidgetView: View {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.sizeCategory) var sizeCategory
+	@Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground
 	
 	var entry: SolsticeWidgetTimelineEntry
 	
@@ -28,21 +29,24 @@ struct CountdownWidgetView: View {
 	}
 	
 	var body: some View {
-		if let solar,
-			 let location,
+		if let location,
 			 let nextSolarEvent,
 			 let previousSolarEvent {
 			switch family {
 			#if !os(macOS)
 			case .accessoryCircular:
-				AccessoryCircularView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
+				AccessoryCircularView(
+					entryDate: entry.date,
+					previousEvent: previousSolarEvent,
+					nextEvent: nextSolarEvent
+				)
 			case .accessoryInline:
 				AccessoryInlineView(nextEvent: nextSolarEvent)
 			case .accessoryRectangular:
 				AccessoryRectangularView(nextEvent: nextSolarEvent)
 			#if os(watchOS)
 			case .accessoryCorner:
-				AccessoryCornerView(nextEvent: nextSolarEvent)
+				AccessoryCornerView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
 			#endif // end watchOS
 			#endif // end !macOS
 			default:
@@ -56,33 +60,28 @@ struct CountdownWidgetView: View {
 							.widgetHeading()
 							.minimumScaleFactor(0.8)
 							.lineLimit(3)
+							.contentTransition(.numericText())
 						
 						Spacer()
 					}
 					
-					Label("\(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)", systemImage: nextSolarEvent.imageName)
+					Label{
+						Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
+					} icon: {
+						Image(systemName: nextSolarEvent.imageName)
+					}
 						.font(.footnote.weight(.semibold))
+						.contentTransition(.numericText())
 				}
-				.padding()
-				.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+				.if(showsWidgetContainerBackground) { content in
+					content
+						.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+				}
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.background(
-					LinearGradient(
-						colors: [.black.opacity(0.15), .clear],
-						startPoint: .bottom,
-						endPoint: .center
-					).blendMode(.plusDarker)
-				)
-				.background(
-					LinearGradient(
-						colors: SkyGradient.getCurrentPalette(for: solar),
-						startPoint: .top,
-						endPoint: .bottom
-					)
-				)
 				.foregroundStyle(.white)
 				.symbolRenderingMode(.hierarchical)
 				.symbolVariant(.fill)
+				.preferredColorScheme(.dark)
 			}
 		} else {
 			WidgetMissingLocationView()
@@ -116,13 +115,11 @@ extension CountdownWidgetView {
 	}
 }
 
-struct CountdownWigetView_Previews: PreviewProvider {
-	static var previews: some View {
-		CountdownWidgetView(entry: .init(date: Date(), location: .defaultLocation))
-		#if os(watchOS)
-			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
-		#else
-			.previewContext(WidgetPreviewContext(family: .systemSmall))
-		#endif
-	}
-}
+#if !os(watchOS)
+#Preview(
+	"Countdown (System Small)",
+	as: WidgetFamily.systemSmall,
+	widget: { CountdownWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif

@@ -24,6 +24,30 @@ struct DailyOverview<Location: AnyLocation>: View {
 		return calendar.isDate(solar.date, inSameDayAs: Date())
 	}
 	
+	var differenceFromPreviousSolstice: TimeInterval? {
+		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate),
+					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate) else {
+			return nil
+		}
+		
+		return previousSolsticeSolar.daylightDuration - solar.daylightDuration
+	}
+	
+	var nextSolsticeMonth: Int {
+		calendar.dateComponents([.month], from: timeMachine.date.nextSolstice).month ?? 6
+	}
+	
+	var nextGreaterThanPrevious: Bool {
+		switch nextSolsticeMonth {
+		case 6:
+			return location.latitude > 0
+		case 12:
+			return location.latitude < 0
+		default:
+			return true
+		}
+	}
+	
 	var body: some View {
 		Section {
 			daylightChartView
@@ -31,15 +55,23 @@ struct DailyOverview<Location: AnyLocation>: View {
 				#if !os(watchOS)
 				.contextMenu {
 					if let chartRenderedAsImage {
+						var locationTitle: Text {
+							guard let title = location.title else {
+								return Text("my location")
+							}
+							
+							return Text(title)
+						}
+						
 						ShareLink(
 							item: chartRenderedAsImage,
-							preview: SharePreview("Daylight in \(location.title ?? "my location")", image: chartRenderedAsImage)
+							preview: SharePreview("Daylight in \(locationTitle)", image: chartRenderedAsImage)
 						)
 					}
 
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-							Text(appearance.rawValue)
+							Text(appearance.description)
 						}
 					} label: {
 						Label("Appearance", systemImage: "paintpalette")
@@ -53,8 +85,9 @@ struct DailyOverview<Location: AnyLocation>: View {
 			
 			AdaptiveLabeledContent {
 				Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
+					.contentTransition(.numericText())
 			} label: {
-				Label("Total Daylight", systemImage: "hourglass")
+				Label("Total daylight", systemImage: "hourglass")
 			}
 			
 			if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
@@ -62,25 +95,25 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Text(timerInterval: solar.safeSunrise...solar.safeSunset)
 						.monospacedDigit()
 				} label: {
-					Label("Remaining Daylight", systemImage: "timer")
+					Label("Remaining daylight", systemImage: "timer")
 				}
 			}
 			
 			AdaptiveLabeledContent {
-				Text("\(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)")
+				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 			} label: {
 				Label("Sunrise", systemImage: "sunrise")
 			}
 			
-			let culmination = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
+			let solarNoon = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
 			AdaptiveLabeledContent {
-				Text("\(culmination, style: .time)")
+				Text(solarNoon, style: .time)
 			} label: {
-				Label("Culmination", systemImage: "sun.max")
+				Label("Solar noon", systemImage: "sun.max")
 			}
 			
 			AdaptiveLabeledContent {
-				Text("\(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)")
+				Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 			} label: {
 				Label("Sunset", systemImage: "sunset")
 			}
@@ -88,9 +121,26 @@ struct DailyOverview<Location: AnyLocation>: View {
 			if location.timeZoneIdentifier != localTimeZone.identifier,
 				 !(location is CurrentLocation) {
 				HStack {
-					Text("Local Time")
+					Text("Local time")
 					Spacer()
 					Text("\(solar.date.withTimeZoneAdjustment(for: location.timeZone), style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
+				}
+			}
+		} footer: {
+			if let differenceFromPreviousSolstice {
+				Label {
+					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
+						.id(timeMachine.date)
+				} icon: {
+					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
+						.modify { content in
+							if #available(iOS 17, macOS 14, watchOS 10, *) {
+								content
+									.contentTransition(.symbolEffect)
+							} else {
+								content
+							}
+						}
 				}
 			}
 		}
@@ -125,8 +175,14 @@ extension DailyOverview {
 			
 			HStack {
 				VStack(alignment: .leading) {
-					Text(location.title ?? "My Location")
-						.font(.headline)
+					Group {
+						if let title = location.title {
+							Text(title)
+						} else {
+							Text("My Location")
+						}
+					}
+					.font(.headline)
 					
 					let duration = solar.daylightDuration.localizedString
 					Text("\(duration) of daylight")
@@ -180,6 +236,24 @@ extension DailyOverview {
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize
 		)
+		#if os(macOS)
+		.padding(12)
+		#endif
+		#if !os(watchOS)
+		.if(chartAppearance == .graphical) { content in
+			content
+				.background {
+					LinearGradient(
+						colors: SkyGradient.getCurrentPalette(for: solar),
+						startPoint: .top,
+						endPoint: .bottom
+					)
+				}
+		}
+		#endif
+		#if os(macOS)
+		.padding(-12)
+		#endif
 	}
 }
 

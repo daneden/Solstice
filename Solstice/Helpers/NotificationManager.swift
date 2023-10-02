@@ -42,7 +42,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		// Always clear notifications when scheduling new ones
 		await clearScheduledNotifications()
 		
-		guard (CurrentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
+		let currentLocation = CurrentLocation()
+		
+		guard (currentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
 			return
 		}
 		
@@ -63,16 +65,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				timeZone = objectTimeZone
 			}
 		} else {
-			location = locationManager.latestLocation
-		}
-		
-		if location == nil {
-			location = await withCheckedContinuation({ continuation in
-				locationManager.requestLocation { location in
-					print("Made it to the callback")
-					continuation.resume(returning: location)
-				}
-			})
+			location = locationManager.location
 		}
 		
 		guard let location else {
@@ -82,21 +75,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		
 		for i in 0...63 {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
-			var notificationDate: Date
 			
 			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
 				continue
 			}
 			
-			if scheduleType == .specificTime {
-				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
-				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
-			} else {
-				let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
-				let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
-				let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
-				notificationDate = calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
-			}
+			let notificationDate = getNextNotificationDate(after: date, with: solar)
 			
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
 				return
@@ -119,6 +103,23 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			} catch {
 				print(error)
 			}
+		}
+	}
+	
+	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
+		if scheduleType == .specificTime {
+			let scheduleComponents = calendar.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
+			return calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+		} else {
+			guard let solar else { return date }
+			let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
+			let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
+			let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
+			return calendar.date(
+				bySettingHour: scheduleComponents.hour ?? 0,
+				minute: scheduleComponents.minute ?? 0,
+				second: 0, of: date
+			) ?? date
 		}
 	}
 	
@@ -150,52 +151,70 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
 		
 		if calendar.isDate(date, inSameDayAs: marchEquinox) {
-			content.title = "March Equinox Today"
+			content.title = NSLocalizedString("March Equinox Today", comment: "Notification title for March equinox")
 		} else if calendar.isDate(date, inSameDayAs: septemberEquinox) {
-			content.title = "September Equinox Today"
+			content.title = NSLocalizedString("September Equinox Today", comment: "Notification title for September equinox")
 		} else if calendar.isDate(date, inSameDayAs: juneSolstice) {
-			content.title = "June Solstice Today"
+			content.title = NSLocalizedString("June Solstice Today", comment: "Notification title for June solstice")
 		} else if calendar.isDate(date, inSameDayAs: decemberSolstice) {
-			content.title = "December Solstice Today"
+			content.title = NSLocalizedString("December Solstice Today", comment: "Notification title for December solstice")
 		} else {
 			let components = calendar.dateComponents([.hour], from: date)
 			let hour = components.hour ?? 0
 			if hour >= 18 || hour < 3 {
-				content.title = "Good Evening"
+				content.title = NSLocalizedString("Good Evening", comment: "Notification title for evening notification")
 			} else if hour >= 3 && hour < 12 {
-				content.title = "Good Morning"
+				content.title = NSLocalizedString("Good Morning", comment: "Notification title for morning notification")
 			} else if hour >= 12 && hour < 18 {
-				content.title = "Good Afternoon"
+				content.title = NSLocalizedString("Good Afternoon", comment: "Notification title for afternoon notification")
 			} else {
-				content.title = "Today’s Daylight"
+				content.title = NSLocalizedString("Today’s Daylight", comment: "Notification title fallback")
 			}
 		}
 		
-		if includeSunTimes {
-			content.body += "The sun rises at \(solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())) "
-			content.body += "and sets at \(solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())). "
-		}
-		
-		if includeDaylightDuration {
-			content.body += "\(duration) of daylight today. "
-		}
-		
-		if includeDaylightChange {
-			if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
-				content.body += "\(differenceString) \(difference >= 0 ? "more" : "less") daylight than yesterday. "
+		@StringBuilder var notificationBody: String {
+			if includeSunTimes {
+				let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+				let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+				let sunriseSunset = NSLocalizedString(
+					"notif-sunrise-sunset",
+					value: "The sun rises at %1$@ and sets at %2$@.",
+					comment: "Notification fragment for sunrise and sunset times"
+				)
+				
+				String.localizedStringWithFormat(sunriseSunset, sunriseTime, sunsetTime)
+			}
+			
+			if includeDaylightDuration {
+				let daylightDuration = NSLocalizedString(
+					"notif-daylight-duration",
+					value: "%@ of daylight today.",
+					comment: "Notification fragment for length of daylight"
+				)
+				String.localizedStringWithFormat(daylightDuration, duration)
+			}
+			
+			if includeDaylightChange {
+				if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
+					if difference >= 0 {
+						let moreDaylightFormat = NSLocalizedString("notif-more-daylight", value: "%@ more daylight than yesterday.", comment: "Notification fragment for more daylight compared to yesterday")
+						String.localizedStringWithFormat(moreDaylightFormat, differenceString)
+					} else {
+						let lessDaylightFormat = NSLocalizedString("notif-less-daylight", value: "%@ less daylight than yesterday.", comment: "Notification fragment for less daylight compared to yesterday")
+						String.localizedStringWithFormat(lessDaylightFormat, differenceString)
+					}
+				}
+			}
+			
+			if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
+				NSLocalizedString(
+					"Open Solstice to see how today’s daylight has changed.",
+					comment: "Fallthrough notification content for when notification settings specify no content."
+				)
 			}
 		}
 		
-		if includeSolsticeCountdown {
-			content.body += "The next solstice is \(solar.date.nextSolstice.formatted(.relative(presentation: .named))). "
-		}
-		
-		/**
-		 Fallthrough for when notification settings specify no content
-		 */
-		if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
-			content.body += "Open Solstice to see how today’s daylight has changed."
-		}
+		content.body = notificationBody
 		
 		return content
 	}

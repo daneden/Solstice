@@ -24,7 +24,14 @@ struct CountdownWidget: Widget {
 			intent: ConfigurationIntent.self,
 			provider: CountdownWidgetTimelineProvider()
 		) { timelineEntry in
-			return CountdownWidgetView(entry: timelineEntry)
+			CountdownWidgetView(entry: timelineEntry)
+				.backwardCompatibleContainerBackground(
+					LinearGradient(
+						colors: SkyGradient.getCurrentPalette(for: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)),
+						startPoint: .top,
+						endPoint: .bottom
+					)
+				)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

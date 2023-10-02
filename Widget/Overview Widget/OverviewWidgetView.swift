@@ -39,88 +39,94 @@ struct OverviewWidgetView: View {
 	}
 	
 	var body: some View {
-		if let solar,
-			 let location {
-			switch family {
-			#if !os(macOS)
-			case .accessoryCircular:
-				AccessoryCircularView(solar: solar, location: location)
-			case .accessoryInline:
-				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
-			case .accessoryRectangular:
-				AccessoryRectangularView(
-					isAfterTodaySunset: isAfterTodaySunset,
-					location: location,
-					relevantSolar: relevantSolar,
-					comparisonSolar: isAfterTodaySunset ? solar : nil
-				)
-			#if os(watchOS)
-			case .accessoryCorner:
-				Image(systemName: "sun.max")
-					.font(.title.bold())
-					.symbolVariant(.fill)
-					.imageScale(.large)
-					.widgetLabel {
-						Text(solar.daylightDuration.localizedString)
-							.widgetAccentable()
-					}
-			#endif // end watchOS
-			#endif // end !macOS
-			default:
-				ZStack(alignment: .bottomLeading) {
-				#if !os(watchOS)
-					GeometryReader { geom in
+		Group {
+			if let solar,
+				 let location {
+				switch family {
+#if !os(macOS)
+				case .accessoryCircular:
+					AccessoryCircularView(solar: solar, location: location)
+				case .accessoryInline:
+					Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
+				case .accessoryRectangular:
+					AccessoryRectangularView(
+						isAfterTodaySunset: isAfterTodaySunset,
+						location: location,
+						relevantSolar: relevantSolar,
+						comparisonSolar: isAfterTodaySunset ? solar : nil
+					)
+#if os(watchOS)
+				case .accessoryCorner:
+					Image(systemName: "sun.max")
+						.font(.title.bold())
+						.symbolVariant(.fill)
+						.imageScale(.large)
+						.widgetLabel {
+							Text(solar.daylightDuration.localizedString)
+								.widgetAccentable()
+						}
+#endif // end watchOS
+#endif // end !macOS
+				default:
+					ZStack(alignment: .bottomLeading) {
+#if !os(watchOS)
 						if family != .systemSmall {
-							DaylightChart(solar: solar,
-														timeZone: location.timeZone,
-														eventTypes: [.sunrise, .sunset],
-														includesSummaryTitle: false,
-														hideXAxis: true,
-														markSize: 5)
-							.padding(.horizontal, -20)
-							.frame(maxHeight: 200)
-							
-							if family == .systemMedium {
-								VStack {
-									Spacer()
-									Rectangle()
-										.fill(.clear)
-										.background(.background)
-										.frame(width: geom.size.width, height: min(geom.size.height / 1.25, 100))
-										.padding(.leading, geom.size.width * -0.5)
-										.blur(radius: 20)
+						GeometryReader { geom in
+							DaylightChart(
+								solar: solar,
+								timeZone: location.timeZone,
+								eventTypes: [.sunrise, .sunset],
+								includesSummaryTitle: false,
+								hideXAxis: true,
+								markSize: family == .systemSmall ? 3 : 5
+							)
+							.frame(maxHeight: 250)
+							.mask {
+								if family == .systemMedium || family == .systemSmall {
+									RadialGradient(
+										colors: [.black.opacity(0.1), .black],
+										center: .bottomLeading,
+										startRadius: geom.size.height / 1.2,
+										endRadius: geom.size.height
+									)
+								} else {
+									Color.black
 								}
 							}
 						}
-					}
-					
-					VStack(alignment: .leading, spacing: 4) {
-						if sizeCategory < .xLarge {
-							WidgetLocationView(location: location)
+						.padding(-20)
 						}
 						
-						Spacer()
-						
-						if let duration = relevantSolar?.daylightDuration.localizedString {
+						VStack(alignment: .leading, spacing: 4) {
 							if sizeCategory < .xLarge {
-								Text("Daylight \(isAfterTodaySunset ? "Tomorrow" : "Today")")
-									.font(.caption)
+								WidgetLocationView(location: location)
 							}
 							
-							Text("\(duration)")
-								.lineLimit(4)
-								.widgetHeading()
-								.fixedSize(horizontal: false, vertical: true)
-						}
-						
-						Group {
-							if let begins = relevantSolar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone),
-								 let ends = relevantSolar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
-								if family == .systemSmall {
-									Text(begins...ends)
-										.foregroundStyle(.secondary)
-								} else {
-									if let differenceString = relevantSolar?.differenceString {
+							Spacer()
+							
+							if let duration = relevantSolar?.daylightDuration.localizedString {
+								if sizeCategory < .xLarge {
+									Group {
+										if isAfterTodaySunset {
+											Text("Daylight tomorrow")
+										} else {
+											Text("Daylight today")
+										}
+									}
+									.font(.footnote)
+								}
+								
+								Text(duration)
+									.lineLimit(4)
+									.widgetHeading()
+									.fixedSize(horizontal: false, vertical: true)
+									.contentTransition(.numericText())
+							}
+							
+							Group {
+								if let begins = relevantSolar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone),
+									 let ends = relevantSolar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
+									if let differenceString = relevantSolar?.compactDifferenceString {
 										Text(differenceString)
 											.lineLimit(4)
 											.font(.footnote)
@@ -128,34 +134,53 @@ struct OverviewWidgetView: View {
 											.fixedSize(horizontal: false, vertical: true)
 									}
 									
-									HStack {
-										Label("\(begins, style: .time)", systemImage: "sunrise.fill")
-										Spacer()
-										Label("\(ends, style: .time)", systemImage: "sunset.fill")
+									if family == .systemSmall {
+										Text(begins...ends)
+											.foregroundStyle(.tertiary)
+									} else {
+										HStack {
+											Label {
+												Text(begins, style: .time)
+											} icon: {
+												Image(systemName: "sunrise.fill")
+											}
+											
+											Spacer()
+											
+											Label {
+												Text(ends, style: .time)
+											} icon: {
+												Image(systemName: "sunset.fill")
+											}
+										}
 									}
 								}
 							}
-						}.font(.footnote.weight(.semibold))
-					}.symbolRenderingMode(.hierarchical)
-				#endif
+							.font(.footnote.weight(.semibold))
+							.contentTransition(.numericText())
+						}
+						.symbolRenderingMode(.hierarchical)
+#endif
+					}
+					.padding()
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 				}
-				.padding()
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.background(.background)
+			} else {
+				WidgetMissingLocationView()
+					.padding()
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			}
-		} else {
-			WidgetMissingLocationView()
 		}
+		.backwardCompatibleContainerBackground(.background)
 	}
 }
 
-struct OverviewWidgetView_Previews: PreviewProvider {
-	static var previews: some View {
-		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation))
-		#if os(watchOS)
-			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
-		#else
-			.previewContext(WidgetPreviewContext(family: .systemMedium))
-		#endif
-	}
-}
+#if !os(watchOS)
+#Preview(
+	"Overview (System Small)",
+	as: WidgetFamily.systemSmall,
+	widget: { OverviewWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif
+

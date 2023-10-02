@@ -5,17 +5,17 @@
 //  Created by Daniel Eden on 06/10/2022.
 //
 
-import Foundation
 import CoreLocation
 import SwiftUI
+import Combine
 
 #if canImport(WidgetKit)
 import WidgetKit
 #endif
 
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifiable {
-	@AppStorage(Preferences.cachedLatitude) private var cachedLatitude
-	@AppStorage(Preferences.cachedLongitude) private var cachedLongitude
+	@AppStorage(Preferences.cachedLatitude) var latitude
+	@AppStorage(Preferences.cachedLongitude) var longitude
 	
 	@Published var title: String?
 	@Published var subtitle: String?
@@ -23,39 +23,32 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	
 	@Published private(set) var placemark: CLPlacemark?
 	
-	@Published private(set) var latitude: Double = 0 {
-		didSet {
-			cachedLatitude = latitude
-		}
-	}
-	
-	@Published private(set) var longitude: Double = 0 {
-		didSet {
-			cachedLongitude = longitude
-		}
-	}
-	
 	@Published var timeZoneIdentifier: String?
-	@Published private(set) var latestLocation: CLLocation?
-	private var didUpdateLocationsCallback: ((CLLocation?) -> Void)?
+	
+	private(set) var location: CLLocation? {
+		didSet {
+			Task { await processLocation(location) }
+		}
+	}
 	
 	var coordinate: CLLocationCoordinate2D {
 		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 	}
 	
-	static let shared = CurrentLocation()
 	private let locationManager = CLLocationManager()
 	private let geocoder = CLGeocoder()
+	
+	private var sink: AnyCancellable? = nil
 	
 	override init() {
 		super.init()
 		
-		latitude = cachedLatitude
-		longitude = cachedLongitude
-		
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
-		latestLocation = locationManager.location ?? CLLocation(latitude: latitude, longitude: longitude)
+		
+		sink = locationManager.publisher(for: \.location).sink { location in
+			Task { await self.processLocation(location) }
+		}
 	}
 	
 	func requestAccess() {
@@ -67,73 +60,39 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	}
 }
 
-extension CurrentLocation: CLLocationManagerDelegate {
-	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		print("Received location update")
+// MARK: Location update request methods and handlers
+extension CurrentLocation {
+	@MainActor func processLocation(_ location: CLLocation?) async -> Void {
+		guard let location else { return }
 		
-		if didUpdateLocationsCallback != nil {
-			didUpdateLocationsCallback?(locations.last)
-			didUpdateLocationsCallback = nil
-		}
+		latitude = location.coordinate.latitude
+		longitude = location.coordinate.longitude
 		
-		Task {
-			await defaultDidUpdateLocationsCallback(locations)
-			await NotificationManager.scheduleNotifications(locationManager: self)
-		}
-		
-#if canImport(WidgetKit)
-		WidgetCenter.shared.reloadAllTimelines()
-#endif
-	}
-	
-	@MainActor
-	func defaultDidUpdateLocationsCallback(_ locations: [CLLocation]) async -> Void {
-		if let location = locations.last {
-			latestLocation = location
-			latitude = location.coordinate.latitude
-			longitude = location.coordinate.longitude
-			
-			let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
-			if let firstResult = reverseGeocoded?.first {
+		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
+		if let firstResult = reverseGeocoded?.first {
+			withAnimation {
 				placemark = firstResult
 				title = firstResult.locality
 				subtitle = firstResult.country
 				timeZoneIdentifier = firstResult.timeZone?.identifier
 			}
 		}
-		
-		locationManager.stopUpdatingLocation()
-	}
-	
-	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-#if canImport(WidgetKit)
-		WidgetCenter.shared.reloadAllTimelines()
-#endif
-		
-		if CurrentLocation.isAuthorized {
-			requestLocation()
-		}
-	}
-	
-	func requestLocation(handler: @escaping (CLLocation?) -> Void) {
-		self.didUpdateLocationsCallback = handler
-		requestLocation()
-		return
 	}
 	
 	func requestLocation() {
 		locationManager.requestLocation()
 		locationManager.startUpdatingLocation()
-#if !os(watchOS)
+
+		#if !os(watchOS) && !os(visionOS)
 		locationManager.startMonitoringSignificantLocationChanges()
-#endif
+		#endif
 	}
 	
-	static var authorizationStatus: CLAuthorizationStatus {
-		CLLocationManager().authorizationStatus
+	var authorizationStatus: CLAuthorizationStatus {
+		locationManager.authorizationStatus
 	}
 	
-	static var isAuthorized: Bool {
+	var isAuthorized: Bool {
 		switch authorizationStatus {
 		case .authorizedAlways, .authorizedWhenInUse: return true
 		default: return false
@@ -141,11 +100,48 @@ extension CurrentLocation: CLLocationManagerDelegate {
 	}
 	
 	var isAuthorizedForWidgetUpdates: Bool {
-#if !os(watchOS)
+		#if !os(watchOS)
 		locationManager.isAuthorizedForWidgetUpdates
-#else
-		CurrentLocation.isAuthorized
-#endif
+		#else
+		isAuthorized
+		#endif
+	}
+}
+
+extension CurrentLocation: CLLocationManagerDelegate {
+	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+		#if canImport(WidgetKit)
+		WidgetCenter.shared.reloadAllTimelines()
+		#endif
+		
+		if isAuthorized { requestLocation() }
+	}
+	
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		print("Received location update")
+		
+		let newLocation = locations.last
+		
+		if location == nil {
+			updateLocation(newLocation)
+		} else if let newLocation, let location,
+			 newLocation.distance(from: location) > CLLocationDistance(10_000) {
+			updateLocation(newLocation)
+		} else {
+			print("Location is within 10km of last update")
+		}
+	}
+	
+	private func updateLocation(_ newLocation: CLLocation?) {
+		self.location = newLocation
+		
+		if newLocation != nil {
+			Task { await NotificationManager.scheduleNotifications(locationManager: self) }
+			
+			#if canImport(WidgetKit)
+			WidgetCenter.shared.reloadAllTimelines()
+			#endif
+		}
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

@@ -17,7 +17,7 @@ struct WidgetHeadingModifier: ViewModifier {
 		case .systemSmall:
 			return sizeCategory < .xLarge ? .headline : .footnote
 		default:
-			return .title2
+			return .title3
 		}
 	}
 	

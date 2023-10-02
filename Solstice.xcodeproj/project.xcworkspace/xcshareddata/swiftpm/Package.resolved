@@ -8,15 +8,6 @@
         "revision" : "c2b96f2d5fb7f835b91cefac5e83101f54643901",
         "version" : "3.0.1"
       }
-    },
-    {
-      "identity" : "watch-date-picker",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/freyaalminde/watch-date-picker",
-      "state" : {
-        "revision" : "f7e1cd798796a6ade2e34cf9189e3a128c06f88b",
-        "version" : "0.1.1"
-      }
     }
   ],
   "version" : 2

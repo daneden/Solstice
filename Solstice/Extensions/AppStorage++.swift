@@ -133,6 +133,17 @@ extension Preferences {
 		case none = "No change"
 		case removeDifference = "Remove daylight gain/loss"
 		case suppressNotifications = "Suppress notifications altogether"
+		
+		var description: LocalizedStringKey {
+			switch self {
+			case .none:
+				return "No change"
+			case .removeDifference:
+				return "Remove daylight gain/loss"
+			case .suppressNotifications:
+				return "Suppress notifications altogether"
+			}
+		}
 	}
 }
 
@@ -140,7 +151,7 @@ extension Preferences.NotificationSettings {
 	enum ScheduleType: String, RawRepresentable, CaseIterable {
 		case specificTime, sunset, sunrise
 		
-		var description: String {
+		var description: LocalizedStringKey {
 			switch self {
 			case .specificTime:
 				return "a specific time"
@@ -183,10 +194,4 @@ fileprivate var showComplicationDefaultValue: Bool {
 	#endif
 }
 
-fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance {
-	#if os(watchOS)
-	.simple
-	#else
-	.graphical
-	#endif
-}
+fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance = .graphical

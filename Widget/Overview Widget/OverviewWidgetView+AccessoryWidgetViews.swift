@@ -16,19 +16,18 @@ extension OverviewWidgetView {
 		var location: SolsticeWidgetLocation
 		
 		var body: some View {
-			ZStack {
-				AccessoryWidgetBackground()
-				DaylightChart(
-					solar: solar,
-					timeZone: location.timeZone,
-					eventTypes: [.sunset, .sunrise],
-					appearance: renderingMode == .fullColor ? .graphical : .simple,
-					includesSummaryTitle: false,
-					hideXAxis: true,
-					markSize: 2.5
-				)
-				.padding(.vertical, 8)
-			}
+			DaylightChart(
+				solar: solar,
+				timeZone: location.timeZone,
+				eventTypes: [.sunset, .sunrise],
+				appearance: renderingMode == .fullColor ? .graphical : .simple,
+				includesSummaryTitle: false,
+				hideXAxis: true,
+				markSize: 2.5
+			)
+			.widgetAccentable()
+			.background { AccessoryWidgetBackground() }
+			.mask(Circle())
 			.widgetLabel {
 				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
 			}
@@ -36,6 +35,8 @@ extension OverviewWidgetView {
 	}
 	
 	struct AccessoryRectangularView: View {
+		@Environment(\.widgetContentMargins) var contentMargins
+		
 		var isAfterTodaySunset: Bool
 		var location: SolsticeWidgetLocation?
 		var relevantSolar: Solar?
@@ -44,28 +45,43 @@ extension OverviewWidgetView {
 		var body: some View {
 			HStack {
 				VStack(alignment: .leading) {
-					Text("\(Image(systemName: "sun.max")) Daylight \(isAfterTodaySunset ? "Tomorrow" : "Today")")
+					Text("\(Image(systemName: "sun.max")) Daylight \(isAfterTodaySunset ? Text("Tomorrow") : Text("Today"))")
 						.font(.headline)
 						.widgetAccentable()
 						.imageScale(.small)
 						.allowsTightening(true)
+						.contentTransition(.interpolate)
 					
 					if let relevantSolar {
 						Text(relevantSolar.daylightDuration.localizedString)
+							.contentTransition(.numericText())
 						
-						if let comparisonSolar {
-							let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
-							Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(difference).formatted(.units(maximumUnitCount: 2)))")
-								.foregroundStyle(.secondary)
-						} else {
-							Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
-								.foregroundStyle(.secondary)
+						Group {
+							if let comparisonSolar {
+								let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
+								Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
+							} else {
+								Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
+							}
 						}
+						.foregroundStyle(.secondary)
+						.transition(.verticalMove)
 					}
 				}
 				
 				Spacer(minLength: 0)
 			}
+			.minimumScaleFactor(0.9)
+			.padding(contentMargins)
 		}
 	}
 }
+
+#if !os(macOS)
+#Preview(
+	"Overview (Accessory Rectangular)",
+	as: WidgetFamily.accessoryRectangular,
+	widget: { OverviewWidget() },
+	timeline: SolsticeWidgetTimelineEntry.previewTimeline
+)
+#endif

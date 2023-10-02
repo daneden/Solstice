@@ -12,7 +12,6 @@ import Solar
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
-	@Environment(\.widgetRenderingMode) var widgetRenderingMode
 	
 	@State private var selectedEvent: Solar.Event?
 	@State private var currentX: Date?
@@ -26,6 +25,7 @@ struct DaylightChart: View {
 	var hideXAxis = false
 	var scrubbable = false
 	var markSize: CGFloat = 6
+	var yScale = -1.5...1.5
 	
 	@State private var solarEvents: [Solar.Event] = []
 	
@@ -70,18 +70,21 @@ struct DaylightChart: View {
 				}
 			}
 			.chartYAxis(.hidden)
-			.chartYScale(domain: -1.5...1.5)
+			.chartYScale(domain: yScale)
 			.chartXAxis(hideXAxis ? .hidden : .automatic)
 			.chartXScale(domain: range)
 			.chartOverlay { proxy in
 				GeometryReader { geo in
+					// MARK: Basic elements
 					Group {
+						// MARK: Horizon Line
 						Rectangle()
 							.fill(.tertiary)
 							.frame(width: geo.size.width, height: 1)
 							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
 						
 						ZStack {
+							// MARK: Sun below horizon
 							ZStack {
 								Circle()
 									.fill(markBackgroundColor)
@@ -112,6 +115,7 @@ struct DaylightChart: View {
 									.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0))
 							}
 							
+							// MARK: Sun above horizon
 							ZStack {
 								Circle()
 									.fill(markForegroundColor)
@@ -120,7 +124,7 @@ struct DaylightChart: View {
 										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
 										y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
 									)
-									.shadow(color: .secondary.opacity(0.5), radius: 4)
+									.shadow(color: .secondary.opacity(0.5), radius: 3)
 							}
 							.mask(alignment: .top) {
 								Rectangle()
@@ -129,7 +133,9 @@ struct DaylightChart: View {
 						}
 					}
 					
+					// MARK: Scrub indicator
 					if let currentX {
+						// MARK: Scrub bar
 						Rectangle()
 							.fill(markForegroundColor)
 							.frame(width: 2, height: geo.size.height)
@@ -141,6 +147,8 @@ struct DaylightChart: View {
 									.frame(width: 2, height: geo.size.height)
 									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
 							}
+						
+						// MARK: Scrub pointer
 						Circle()
 							.fill(markForegroundColor)
 							.overlay {
@@ -157,7 +165,7 @@ struct DaylightChart: View {
 							)
 					}
 					
-					
+					// MARK: Scrub hit area
 					Color.clear
 						.contentShape(Rectangle())
 						.if(scrubbable) { view in
@@ -186,6 +194,7 @@ struct DaylightChart: View {
 				}
 			}
 			.chartBackground { proxy in
+				// MARK: Solar path
 				Path { path in
 					if let firstPoint = hours.first,
 						 let x = proxy.position(forX: firstPoint),
@@ -221,10 +230,6 @@ struct DaylightChart: View {
 		.if(appearance == .graphical) { view in
 			view
 				.blendMode(.plusLighter)
-				.background(
-					LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar), startPoint: .top, endPoint: .bottom)
-						.padding(-12)
-				)
 				.environment(\.colorScheme, .dark)
 		}
 		.task(id: solar.date, priority: .background) {
@@ -343,16 +348,42 @@ extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {
 		case simple = "Simple",
 				 graphical = "Graphical"
+		
+		var description: LocalizedStringKey {
+			switch self {
+			case .simple:
+				return "Simple"
+			case .graphical:
+				return "Graphical"
+			}
+		}
 	}
 }
 
-struct DaylightChart_Previews: PreviewProvider {
-	static var previews: some View {
-		DaylightChart(
-			solar: Solar(
-				coordinate: TemporaryLocation.placeholderLondon.coordinate
-			)!,
-			timeZone: .autoupdatingCurrent
-		)
+#Preview {
+	Form {
+		Group {
+			DaylightChart(
+				solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!,
+				timeZone: TimeZone.autoupdatingCurrent,
+				scrubbable: true
+			)
+			
+			DaylightChart(
+				solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!,
+				timeZone: TimeZone.autoupdatingCurrent,
+				appearance: .graphical,
+				scrubbable: true
+			)
+			.background {
+				LinearGradient(
+					colors: SkyGradient.getCurrentPalette(for: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!),
+					startPoint: .top,
+					endPoint: .bottom
+				)
+			}
+			.listRowBackground(Color.clear)
+		}
+		.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
 	}
 }

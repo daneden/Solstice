@@ -26,7 +26,7 @@ struct LocationPermissionScreenerView: View {
 				Label("Location Permission", systemImage: "location")
 			}
 		}
-		.navigationTitle("Solstice")
+		.navigationTitle(Text(verbatim: "Solstice"))
 	}
 }
 

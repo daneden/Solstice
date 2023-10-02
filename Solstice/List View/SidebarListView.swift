@@ -32,12 +32,12 @@ struct SidebarListView: View {
 				TimeMachineDeactivatorView()
 			}
 			
-			if CurrentLocation.authorizationStatus == .notDetermined {
+			if currentLocation.authorizationStatus == .notDetermined {
 				LocationPermissionScreenerView()
 			}
 			
 			Section {
-				if !CurrentLocation.isAuthorized && items.isEmpty {
+				if !currentLocation.isAuthorized && items.isEmpty {
 					VStack {
 						Text("No locations")
 							.font(.headline)
@@ -48,7 +48,7 @@ struct SidebarListView: View {
 					.foregroundStyle(.secondary)
 				}
 				
-				if CurrentLocation.isAuthorized {
+				if currentLocation.isAuthorized {
 					DaylightSummaryRow(location: currentLocation)
 						.tag(currentLocation.id)
 					#if os(iOS)
@@ -93,11 +93,12 @@ struct SidebarListView: View {
 			} header: {
 				Label("Locations", systemImage: "map")
 			}
+			.headerProminence(.standard)
 		}
-		.navigationTitle("Solstice")
+		.navigationTitle(Text(verbatim: "Solstice"))
 		.navigationSplitViewColumnWidth(ideal: 300)
 		.searchable(text: $locationSearchService.queryFragment,
-								prompt: "Search cities or airports")
+								prompt: "Search locations")
 		.searchSuggestions {
 			ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
 				LocationSearchResultRow(

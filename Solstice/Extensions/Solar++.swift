@@ -5,7 +5,7 @@
 //  Created by Daniel Eden on 02/10/2022.
 //
 
-import Foundation
+import SwiftUI
 import Solar
 
 extension Solar {
@@ -51,35 +51,40 @@ extension Solar {
 		return Solar(for: yesterdayDate, coordinate: coordinate)!
 	}
 	
-	var differenceString: String {
+	var compactDifferenceString: LocalizedStringKey {
+		let comparator = date.isToday ? yesterday : Solar(coordinate: self.coordinate)!
+		let difference = daylightDuration - comparator.daylightDuration
+		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
+		
+		let moreOrLess = difference >= 0 ? "+" : "-"
+		
+		return LocalizedStringKey("\(moreOrLess)\(differenceString)")
+	}
+	
+	var differenceString: LocalizedStringKey {
 		let formatter = DateFormatter()
 		formatter.doesRelativeDateFormatting = true
 		formatter.dateStyle = .medium
 		formatter.formattingContext = .middleOfSentence
 		
 		let comparator = date.isToday ? yesterday : Solar(coordinate: self.coordinate)!
-		var string = (daylightDuration - comparator.daylightDuration).localizedString
+		let difference = daylightDuration - comparator.daylightDuration
+		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 		
-		if daylightDuration - comparator.daylightDuration >= 0 {
-			string += " more"
-		} else {
-			string += " less"
-		}
+		let moreOrLess = difference >= 0 ? NSLocalizedString("more", comment: "More daylight middle of sentence") : NSLocalizedString("less", comment: "Less daylight middle of sentence")
 		
 		// Check if the base date formatted as a string contains numbers.
 		// If it does, this means it's presented as an absolute date, and should
 		// be rendered as “on {date}”; if not, it’s presented as a relative date,
 		// and should be presented as “{yesterday/today/tomorrow}”
-		let baseDateString = formatter.string(from: date)
-		let decimalCharacters = CharacterSet.decimalDigits
-		let decimalRange = baseDateString.rangeOfCharacter(from: decimalCharacters)
+		var baseDateString = formatter.string(from: date)
+		if baseDateString.contains(/\d/) {
+			baseDateString = NSLocalizedString("on \(baseDateString)", comment: "Sentence fragment for nominal date")
+		}
 		
 		let comparatorDate = comparator.date
-		let comparatorDateString = formatter.string(from: comparatorDate)
 		
-		string += " daylight \(decimalRange == nil ? "" : "on ")\(baseDateString) compared to \(comparatorDateString)."
-		
-		return string
+		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))")
 	}
 	
 	var nextSolarEvent: Event? {

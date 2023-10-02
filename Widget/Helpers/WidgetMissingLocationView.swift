@@ -10,27 +10,30 @@ import SwiftUI
 struct WidgetMissingLocationView: View {
 	@Environment(\.widgetFamily) var family
 	
+	var locationMissingIcon = Image(systemName: "location.slash")
+	
 	var body: some View {
 		switch family {
-		#if !os(macOS)
+#if !os(macOS)
 		case .accessoryCorner:
-			Image("location.slash")
+			locationMissingIcon
 				.widgetLabel {
-					Text("Location Required")
+					Text("Location required")
 				}
 		case .accessoryCircular:
-			Image("location.slash")
+			locationMissingIcon
 				.widgetLabel {
-					Text("Location Required")
+					Text("Location required")
 				}
 		case .accessoryInline:
-			Label("Location Required", systemImage: "location.slash")
-		#endif
+			Label("Location required", systemImage: "location.slash")
+#endif
 		default:
-			VStack {
-				Text("Location Required")
+			VStack(alignment: .leading) {
+				Text("\(locationMissingIcon) Location required")
 					.font(.headline)
 				Text("Enable location services for Solstice, or choose a location by configuring the widget")
+					.foregroundStyle(.secondary)
 			}
 		}
 	}

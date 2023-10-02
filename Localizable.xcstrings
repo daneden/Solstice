@@ -1,0 +1,1966 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "-" : {
+      "comment" : "Less daylight middle of sentence"
+    },
+    "—" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
+          }
+        }
+      }
+    },
+    "**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Grazie mille per il tuo supporto.** Sentiti libero di lasciare un altro suggerimento in futuro se ti senti generoso."
+          }
+        }
+      }
+    },
+    "%@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "comment" : "Widget heading for real location",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ %@ daylight %@ compared to %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@ daylight %3$@ compared to %4$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@ di luce diurna %3$@ rispetto a %4$@ "
+          }
+        }
+      }
+    },
+    "%@ %@ daylight %@ compared to the previous solstice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@ daylight %3$@ compared to the previous solstice"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ di luce diurna %2$@ %3$@ rispetto al solstizio precedente"
+          }
+        }
+      }
+    },
+    "%@ after" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ dopo"
+          }
+        }
+      }
+    },
+    "%@ before" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ prima"
+          }
+        }
+      }
+    },
+    "%@ Daylight %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ Daylight %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ Luce diurna %2$@"
+          }
+        }
+      }
+    },
+    "%@ in %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ in %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ tra %2$@"
+          }
+        }
+      }
+    },
+    "%@ Location required" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Posizione richiesta"
+          }
+        }
+      }
+    },
+    "%@ of daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ di luce diurna"
+          }
+        }
+      }
+    },
+    "%@ of daylight left today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi mancano %@ di luce"
+          }
+        }
+      }
+    },
+    "%@ of daylight on %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of daylight on %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ di luce diurna il %2$@"
+          }
+        }
+      }
+    },
+    "%@ Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Solstice"
+          }
+        }
+      }
+    },
+    "%@ Time Travel" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Viaggio nel tempo"
+          }
+        }
+      }
+    },
+    "%@ until %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ until %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ fino %2$@"
+          }
+        }
+      }
+    },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@%2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "comment" : "Number of days in the past or future for Time Travel on Apple Watch",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
+    },
+    "%lld days in the %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld days in the %2$@"
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld giorno nel %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld giorni nel %2$@"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "+" : {
+      "comment" : "More daylight middle of sentence"
+    },
+    "a specific time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "un momento specifico"
+          }
+        }
+      }
+    },
+    "About Equinox and Solstices" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A proposito di equinozio e solstizi"
+          }
+        }
+      }
+    },
+    "About Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circa Solstice"
+          }
+        }
+      }
+    },
+    "About Solstice and its maker" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informazioni sull'app e sul suo creatore"
+          }
+        }
+      }
+    },
+    "active" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "attivo"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apparenza"
+          }
+        }
+      }
+    },
+    "Ascending" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ascendente"
+          }
+        }
+      }
+    },
+    "Astronomical Sunrise" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alba astronomica"
+          }
+        }
+      }
+    },
+    "Astronomical Sunset" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramonto astronomico"
+          }
+        }
+      }
+    },
+    "Astronomical Twilight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crepuscolo astronomico"
+          }
+        }
+      }
+    },
+    "at %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "alle %@"
+          }
+        }
+      }
+    },
+    "At month:" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al mese:"
+          }
+        }
+      }
+    },
+    "Calculate the sunrise time on a given date in a given location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calcola l'ora dell'alba in una determinata data in una determinata località"
+          }
+        }
+      }
+    },
+    "Calculate the sunset time on a given date in a given location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calcola l'ora del tramonto in una determinata data in una determinata località"
+          }
+        }
+      }
+    },
+    "Calculating..." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calcolo..."
+          }
+        }
+      }
+    },
+    "ceeK/Solar" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ceeK/Solar"
+          }
+        }
+      }
+    },
+    "Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica il comportamento delle notifiche quando la luce del giorno inizia a diminuire. Questo può aiutare con il disturbo affettivo stagionale (SAD)."
+          }
+        }
+      }
+    },
+    "Civil Sunrise" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alba civile"
+          }
+        }
+      }
+    },
+    "Civil Sunset" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramonto civile"
+          }
+        }
+      }
+    },
+    "Civil Twilight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crepuscolo civile"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiudere"
+          }
+        }
+      }
+    },
+    "Countdown" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conto alla rovescia"
+          }
+        }
+      }
+    },
+    "Current location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione attuale"
+          }
+        }
+      }
+    },
+    "Customise notification content" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizza il contenuto delle notifiche"
+          }
+        }
+      }
+    },
+    "Date" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        }
+      }
+    },
+    "Daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luce diurna"
+          }
+        }
+      }
+    },
+    "Daylight duration" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durata della luce del giorno"
+          }
+        }
+      }
+    },
+    "Daylight gain/loss" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guadagno/perdita di luce diurna"
+          }
+        }
+      }
+    },
+    "Daylight in %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luce del giorno a %@"
+          }
+        }
+      }
+    },
+    "Daylight today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luce del giorno oggi"
+          }
+        }
+      }
+    },
+    "Daylight Today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luce del giorno oggi"
+          }
+        }
+      }
+    },
+    "Daylight tomorrow" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domani sarà la luce del giorno"
+          }
+        }
+      }
+    },
+    "December" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dicembre"
+          }
+        }
+      }
+    },
+    "December Solstice Today" : {
+      "comment" : "Notification title for December solstice",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio di dicembre oggi"
+          }
+        }
+      }
+    },
+    "Delete Location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina posizione"
+          }
+        }
+      }
+    },
+    "Descending" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discendente"
+          }
+        }
+      }
+    },
+    "Enable location services for Solstice, or choose a location by configuring the widget" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita i servizi di localizzazione per Solstice o scegli una posizione configurando il widget"
+          }
+        }
+      }
+    },
+    "Enable notifications" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attivare le notifiche"
+          }
+        }
+      }
+    },
+    "Enable Time Travel" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita il viaggio nel tempo"
+          }
+        }
+      }
+    },
+    "Equinox" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conto alla rovescia alba/tramonto"
+          }
+        }
+      }
+    },
+    "Equinox and Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio e Solstizio"
+          }
+        }
+      }
+    },
+    "Evening" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sera"
+          }
+        }
+      }
+    },
+    "Event" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evento"
+          }
+        }
+      }
+    },
+    "Event Time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita il viaggio nel tempo"
+          }
+        }
+      }
+    },
+    "Follow the sun's journey throughout the day" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segui il viaggio del sole durante il giorno"
+          }
+        }
+      }
+    },
+    "future" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "futuro"
+          }
+        }
+      }
+    },
+    "Future" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Futuro"
+          }
+        }
+      }
+    },
+    "Get sunrise time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni l'ora dell'alba"
+          }
+        }
+      }
+    },
+    "Get Sunrise Time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni l'ora dell'alba"
+          }
+        }
+      }
+    },
+    "Get sunset time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni l'ora del tramonto"
+          }
+        }
+      }
+    },
+    "Get Sunset Time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni l'ora del tramonto"
+          }
+        }
+      }
+    },
+    "Good Afternoon" : {
+      "comment" : "Notification title for afternoon notification",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buon pomeriggio"
+          }
+        }
+      }
+    },
+    "Good Evening" : {
+      "comment" : "Notification title for evening notification",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buona sera"
+          }
+        }
+      }
+    },
+    "Good Morning" : {
+      "comment" : "Notification title for morning notification",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buongiorno"
+          }
+        }
+      }
+    },
+    "Graphical" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grafico"
+          }
+        }
+      }
+    },
+    "Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fonte delle immagini: [Catalogo Visible Earth della NASA](https://visibleearth.nasa.gov/collection/1484/blue-marble)"
+          }
+        }
+      }
+    },
+    "inactive" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inattivo"
+          }
+        }
+      }
+    },
+    "Jump to %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vai al %@"
+          }
+        }
+      }
+    },
+    "June" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giugno"
+          }
+        }
+      }
+    },
+    "June Solstice Today" : {
+      "comment" : "Notification title for June solstice",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio di giugno oggi"
+          }
+        }
+      }
+    },
+    "Learn more about the equinox and solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulteriori informazioni sull'equinozio e sul solstizio"
+          }
+        }
+      }
+    },
+    "Leave a review" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lascia una recensione"
+          }
+        }
+      }
+    },
+    "Leave a tip" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lasciare una mancia"
+          }
+        }
+      }
+    },
+    "less" : {
+      "comment" : "Less daylight middle of sentence",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in meno"
+          }
+        }
+      }
+    },
+    "Loading..." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caricamento..."
+          }
+        }
+      }
+    },
+    "Local time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ora locale"
+          }
+        }
+      }
+    },
+    "Location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicazione"
+          }
+        }
+      }
+    },
+    "Location Permission" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizzazione alla posizione"
+          }
+        }
+      }
+    },
+    "Location required" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione richiesta"
+          }
+        }
+      }
+    },
+    "Location Services" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servizi di localizzazione"
+          }
+        }
+      }
+    },
+    "Locations" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luoghi"
+          }
+        }
+      }
+    },
+    "Longest day" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La giornata più lunga"
+          }
+        }
+      }
+    },
+    "March" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marzo"
+          }
+        }
+      }
+    },
+    "March Equinox Today" : {
+      "comment" : "Notification title for March equinox",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio di marzo oggi"
+          }
+        }
+      }
+    },
+    "more" : {
+      "comment" : "More daylight middle of sentence",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "di più"
+          }
+        }
+      }
+    },
+    "Morning" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mattina"
+          }
+        }
+      }
+    },
+    "my location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mia posizione"
+          }
+        }
+      }
+    },
+    "My Location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La mia posizione"
+          }
+        }
+      }
+    },
+    "My Location %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La mia posizione %@"
+          }
+        }
+      }
+    },
+    "Nautical Sunrise" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alba nautica"
+          }
+        }
+      }
+    },
+    "Nautical Sunset" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramonto nautico"
+          }
+        }
+      }
+    },
+    "Nautical Twilight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crepuscolo nautico"
+          }
+        }
+      }
+    },
+    "Next equinox" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prossimo equinozio"
+          }
+        }
+      }
+    },
+    "Next solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prossimo solstizio"
+          }
+        }
+      }
+    },
+    "No change" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun cambiamento"
+          }
+        }
+      }
+    },
+    "No daylight left today. The sun set %@ ago." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non è rimasta più la luce del giorno oggi. Il sole è tramontato %@ fa."
+          }
+        }
+      }
+    },
+    "No locations" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna località"
+          }
+        }
+      }
+    },
+    "notif-daylight-duration" : {
+      "comment" : "Notification fragment for length of daylight",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ of daylight today."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ di luce oggi."
+          }
+        }
+      }
+    },
+    "notif-less-daylight" : {
+      "comment" : "Notification fragment for less daylight compared to yesterday",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ less daylight than yesterday."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ in meno di luce del giorno rispetto a ieri."
+          }
+        }
+      }
+    },
+    "notif-more-daylight" : {
+      "comment" : "Notification fragment for more daylight compared to yesterday",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ more daylight than yesterday."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ di luce diurna in più rispetto a ieri."
+          }
+        }
+      }
+    },
+    "notif-sunrise-sunset" : {
+      "comment" : "Notification fragment for sunrise and sunset times",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The sun rises at %1$@ and sets at %2$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il sole sorge alle %1$@ e tramonta alle %2$@."
+          }
+        }
+      }
+    },
+    "Notification Preview" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteprima della notifica"
+          }
+        }
+      }
+    },
+    "Notifications" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifiche"
+          }
+        }
+      }
+    },
+    "on (baseDateString)" : {
+      "comment" : "Sentence fragment for nominal date",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "il %1$@"
+          }
+        }
+      }
+    },
+    "Open app Settings" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri le impostazioni dell'app"
+          }
+        }
+      }
+    },
+    "Open Solstice to see how today’s daylight has changed." : {
+      "comment" : "Fallthrough notification content for when notification settings specify no content.",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri Solstice per vedere come è cambiata la luce del giorno di oggi."
+          }
+        }
+      }
+    },
+    "Open Source Acknowledgements" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ringraziamenti Open Source"
+          }
+        }
+      }
+    },
+    "Order" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordinazione"
+          }
+        }
+      }
+    },
+    "Overview" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osservazione"
+          }
+        }
+      }
+    },
+    "past" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "passato"
+          }
+        }
+      }
+    },
+    "Past" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passato"
+          }
+        }
+      }
+    },
+    "Phase" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fase"
+          }
+        }
+      }
+    },
+    "Remaining daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luce del giorno rimanente"
+          }
+        }
+      }
+    },
+    "Remove daylight gain/loss" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovere il guadagno/perdita della luce diurna"
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripristina"
+          }
+        }
+      }
+    },
+    "SAD preference" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferenza SAD"
+          }
+        }
+      }
+    },
+    "Save Location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salva l'indirizzo"
+          }
+        }
+      }
+    },
+    "Search for a location or enable location services" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca una posizione o attiva i servizi di localizzazione"
+          }
+        }
+      }
+    },
+    "Search locations" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca posizione"
+          }
+        }
+      }
+    },
+    "See the time remaining until the next sunrise/sunset" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza il tempo rimanente fino alla prossima alba/tramonto"
+          }
+        }
+      }
+    },
+    "See today’s daylight length, how it compares to yesterday, and sunrise/sunset times." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la durata della luce del giorno di oggi, il confronto con quella di ieri e gli orari di alba/tramonto."
+          }
+        }
+      }
+    },
+    "Send at" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia alle"
+          }
+        }
+      }
+    },
+    "September" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settembre"
+          }
+        }
+      }
+    },
+    "September Equinox Today" : {
+      "comment" : "Notification title for September equinox",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio di settembre oggi"
+          }
+        }
+      }
+    },
+    "Set Up Location Access" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configura l'accesso alla posizione"
+          }
+        }
+      }
+    },
+    "Set up location access to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configura l'accesso alla posizione per vedere gli orari di alba e tramonto per la tua posizione corrente nell'app, nei widget e nelle notifiche"
+          }
+        }
+      }
+    },
+    "Set Up Location Services" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configura i servizi di localizzazione"
+          }
+        }
+      }
+    },
+    "Set up location services to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configura i servizi di localizzazione per vedere gli orari di alba e tramonto nella tua posizione corrente nell'app, nei widget e nelle notifiche"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni"
+          }
+        }
+      }
+    },
+    "Shortest day" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La giornata più corta"
+          }
+        }
+      }
+    },
+    "Show chart in list" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra il grafico nell'elenco"
+          }
+        }
+      }
+    },
+    "Simple" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semplice"
+          }
+        }
+      }
+    },
+    "Solar Chart" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carta solare"
+          }
+        }
+      }
+    },
+    "Solar noon" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mezzogiorno solare"
+          }
+        }
+      }
+    },
+    "Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio"
+          }
+        }
+      }
+    },
+    "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstice su Apple Watch richiede l'accesso alla posizione per mostrare gli orari locali di alba e tramonto. Per posizioni personalizzate e salvate, usa Solstice su iPhone, iPad o Mac."
+          }
+        }
+      }
+    },
+    "Sort by" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordina per"
+          }
+        }
+      }
+    },
+    "Sort locations" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordina le località"
+          }
+        }
+      }
+    },
+    "Sunrise" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alba"
+          }
+        }
+      }
+    },
+    "Sunrise in %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alba tra %@"
+          }
+        }
+      }
+    },
+    "Sunrise: %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alba: %@"
+          }
+        }
+      }
+    },
+    "Sunrise/Sunset Countdown" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conto alla rovescia alba/tramonto"
+          }
+        }
+      }
+    },
+    "Sunrise/sunset times" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orari di alba/tramonto"
+          }
+        }
+      }
+    },
+    "Sunset" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramonto"
+          }
+        }
+      }
+    },
+    "Sunset in %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramonto tra %@"
+          }
+        }
+      }
+    },
+    "Sunset: %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramonto: %@"
+          }
+        }
+      }
+    },
+    "Suppress notifications altogether" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina del tutto le notifiche"
+          }
+        }
+      }
+    },
+    "The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’equinozio e il solstizio definiscono le transizioni tra le stagioni del calendario astronomico e sono una parte fondamentale dell’orbita della Terra attorno al Sole."
+          }
+        }
+      }
+    },
+    "The equinox occurs twice a year, in March and September, and mark the points when the Sun crosses the equator’s path. During the equinox, day and night are around the same length all across the globe." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’equinozio si verifica due volte l’anno, a marzo e settembre, e segna i punti in cui il Sole incrocia il percorso dell’equatore. Durante l’equinozio, il giorno e la notte hanno più o meno la stessa durata in tutto il mondo."
+          }
+        }
+      }
+    },
+    "The solstice occurs twice a year, in June and December (otherwise known as the summer and winter solstices), and mark the sun’s northernmost and southernmost excursions. During the June solstice, the Earth’s northern hemisphere is pointed towards the sun, resulting in increased sunlight and warmer temperatures; the same is true for the southern hemisphere during the December solstice." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il solstizio si verifica due volte l’anno, a giugno e a dicembre (altrimenti noto come solstizio d’estate e d’inverno) e segna le escursioni più a nord e a sud del sole. Durante il solstizio di giugno, l’emisfero settentrionale della Terra è puntato verso il sole, con conseguente aumento della luce solare e temperature più calde; lo stesso vale per l'emisfero australe durante il solstizio di dicembre."
+          }
+        }
+      }
+    },
+    "Time" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo"
+          }
+        }
+      }
+    },
+    "Time Travel" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viaggio nel tempo"
+          }
+        }
+      }
+    },
+    "Time Travel %@" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viaggio nel tempo %@"
+          }
+        }
+      }
+    },
+    "Time until next solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo fino al prossimo solstizio"
+          }
+        }
+      }
+    },
+    "Timezone" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuso orario"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi"
+          }
+        }
+      }
+    },
+    "Today’s Daylight" : {
+      "comment" : "Notification title fallback",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La luce del giorno di oggi"
+          }
+        }
+      }
+    },
+    "Tomorrow" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domani"
+          }
+        }
+      }
+    },
+    "Total daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luce del giorno totale"
+          }
+        }
+      }
+    },
+    "View daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la luce del giorno"
+          }
+        }
+      }
+    },
+    "View Daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la luce del giorno"
+          }
+        }
+      }
+    },
+    "View event:" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza evento:"
+          }
+        }
+      }
+    },
+    "View how much daylight is remaining today, based on the time until sunset." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la quantità di luce diurna rimasta oggi, in base al tempo fino al tramonto."
+          }
+        }
+      }
+    },
+    "View how much daylight there is on a given day, based on the duration from that day’s sunrise to sunset." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza quanta luce diurna c'è in un determinato giorno, in base alla durata dall'alba al tramonto di quel giorno."
+          }
+        }
+      }
+    },
+    "View options" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opzioni per la visualizzazione"
+          }
+        }
+      }
+    },
+    "View remaining daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi mancano 3 minuti di luce"
+          }
+        }
+      }
+    },
+    "View Remaining Daylight" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la luce del giorno rimanente"
+          }
+        }
+      }
+    },
+    "What location do you want to see the daylight for?" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In quale luogo vuoi vedere la luce del giorno?"
+          }
+        }
+      }
+    },
+    "What location do you want to see the sunrise for?" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In quale luogo vuoi vedere l'alba?"
+          }
+        }
+      }
+    },
+    "What location do you want to see the sunset for?" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In quale luogo vuoi vedere il tramonto?"
+          }
+        }
+      }
+    },
+    "You will need to enable location services for Solstice or choose a different location in order to receive notifications." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dovrai abilitare i servizi di localizzazione per Solstice o scegliere una posizione diversa per ricevere le notifiche."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -24,14 +24,17 @@ struct GetSunsetTime: AppIntent {
 		Summary("Get the sunset time on \(\.$date) in \(\.$location)")
 	}
 	
-	func perform() async throws -> some ReturnsValue & ProvidesDialog {
+	func perform() async throws -> some IntentResult & ReturnsValue<Date?> & ProvidesDialog {
 		guard let coordinate = location.location?.coordinate else {
 			throw $location.needsValueError("What location do you want to see the sunset for?")
 		}
 		
 		let solar = Solar(for: date, coordinate: coordinate)
 		
-		return .result(value: solar?.sunset, dialog: "\((solar?.sunset ?? date).formatted(date: .omitted, time: .shortened))")
+		return .result(
+			value: solar?.sunset,
+			dialog: "\((solar?.sunset ?? date).formatted(date: .omitted, time: .shortened))"
+		)
 	}
 }
 

@@ -27,6 +27,14 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
+	var navBarTitleText: Text {
+		guard let title = location.title else {
+			return location is CurrentLocation ? Text("My Location") : Text(verbatim: "Solstice")
+		}
+		
+		return Text(title)
+	}
+	
 	var body: some View {
 		ScrollViewReader { scrollProxy in
 			Form {
@@ -53,18 +61,18 @@ struct DetailView<Location: ObservableLocation>: View {
 				AnnualOverview(location: location)
 			}
 			.formStyle(.grouped)
-			.navigationTitle(location.title ?? (location is CurrentLocation ? "My Location" : "Solstice"))
+			.navigationTitle(navBarTitleText)
 			.toolbar {
 				toolbarItems
 			}
-			.onChange(of: timeMachine.isOn) { newValue in
-				if newValue == true {
+			.onChange(of: timeMachine.isOn) { _ in
+				if timeMachine.isOn == true {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
 					}
 				}
 			}
-			.onChange(of: timeMachine.targetDate) { newValue in
+			.onChange(of: timeMachine.targetDate) { _ in
 				if timeMachine.isOn {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
@@ -86,6 +94,20 @@ struct DetailView<Location: ObservableLocation>: View {
 				userActivity.isEligibleForSearch = true
 				userActivity.isEligibleForHandoff = false
 			}
+			#if os(watchOS)
+			.modify {
+				if #available(watchOS 10, *) {
+					$0.containerBackground(
+						LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar),
+													 startPoint: .top,
+													 endPoint: .bottom).opacity(0.5),
+						for: .navigation
+					)
+				} else {
+					$0
+				}
+			}
+			#endif
 		}
 	}
 	
@@ -93,10 +115,22 @@ struct DetailView<Location: ObservableLocation>: View {
 		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
+	var toolbarItemPlacement: ToolbarItemPlacement {
+		#if os(macOS)
+		return .automatic
+		#else
+		if #available(watchOS 10, *) {
+			return .topBarTrailing
+		} else {
+			return .automatic
+		}
+		#endif
+	}
+	
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
-		ToolbarItem(id: "timeMachineToggle") {
-			#if os(watchOS)
+		#if os(watchOS)
+		ToolbarItem(id: "timeMachineToggle", placement: toolbarItemPlacement) {
 			Button {
 				timeMachine.controlsVisible.toggle()
 			} label: {
@@ -111,18 +145,19 @@ struct DetailView<Location: ObservableLocation>: View {
 						Button {
 							timeMachine.controlsVisible.toggle()
 						} label: {
-							Text("Close")
+							Label("Close", systemImage: "xmark")
 						}
 					}
 				}
 			}
-			#else
+		}
+		#else
+		ToolbarItem(id: "timeMachineToggle") {
 			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
 				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 			}
-			#endif
-			
 		}
+		#endif
 		
 		if let location = location as? TemporaryLocation {
 			ToolbarItem {
@@ -153,17 +188,9 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 }
 
-struct DetailView_Previews: PreviewProvider {
-	static var previews: some View {
-		NavigationStack {
-			DetailView(location: TemporaryLocation.placeholderLondon)
-		}
-		.environmentObject(TimeMachine.preview)
-		.previewDisplayName("Detail View: Temporary Location")
-		
-		NavigationStack {
-			DetailView(location: CurrentLocation())
-		}
-		.previewDisplayName("Detail View: Current Location")
+#Preview {
+	NavigationStack {
+		DetailView(location: TemporaryLocation.placeholderLondon)
 	}
+	.environmentObject(TimeMachine.preview)
 }

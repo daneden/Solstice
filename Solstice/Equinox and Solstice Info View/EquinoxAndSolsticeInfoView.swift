@@ -21,16 +21,43 @@ fileprivate struct Selection: Codable, Hashable {
 	var equinoxMonth: EquinoxMonth = .march
 	var solsticeMonth: SolsticeMonth = .june
 	
-	enum Event: String, CaseIterable, Codable {
-		case equinox = "Equinox", solstice = "Solstice"
+	enum Event: CaseIterable, Codable {
+		case equinox, solstice
+		
+		var description: LocalizedStringKey {
+			switch self {
+			case .equinox:
+				return "Equinox"
+			case .solstice:
+				return "Solstice"
+			}
+		}
 	}
 	
-	enum EquinoxMonth: String, CaseIterable, Codable {
-		case march = "March", september = "September"
+	enum EquinoxMonth: CaseIterable, Codable {
+		case march, september
+		
+		var description: LocalizedStringKey {
+			switch self {
+			case .march:
+				return "March"
+			case .september:
+				return "September"
+			}
+		}
 	}
 	
-	enum SolsticeMonth: String, CaseIterable, Codable {
-		case june = "June", december = "December"
+	enum SolsticeMonth: CaseIterable, Codable {
+		case june, december
+		
+		var description: LocalizedStringKey {
+			switch self {
+			case .june:
+				return "June"
+			case .december:
+				return "December"
+			}
+		}
 	}
 	
 	var sunAngle: CGFloat {
@@ -82,7 +109,7 @@ struct EquinoxAndSolsticeInfoView: View {
 					
 					Picker(selection: $selection.event.animation()) {
 						ForEach(Selection.Event.allCases, id: \.self) { eventType in
-							Text(eventType.rawValue)
+							Text(eventType.description)
 						}
 					} label: {
 						Text("View event:")
@@ -94,18 +121,20 @@ struct EquinoxAndSolsticeInfoView: View {
 						case .equinox:
 							Picker(selection: $selection.equinoxMonth) {
 								ForEach(Selection.EquinoxMonth.allCases, id: \.self) { eventType in
-									Text(eventType.rawValue)
+									Text(eventType.description)
 								}
 							} label: {
 								Text("At month:")
+									.id("monthSelector")
 							}
 						case .solstice:
 							Picker(selection: $selection.solsticeMonth) {
 								ForEach(Selection.SolsticeMonth.allCases, id: \.self) { eventType in
-									Text(eventType.rawValue)
+									Text(eventType.description)
 								}
 							} label: {
 								Text("At month:")
+									.id("monthSelector")
 							}
 						}
 					}
@@ -131,10 +160,10 @@ struct EquinoxAndSolsticeInfoView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.onChange(of: selection) { newValue in
+			.onChange(of: selection) { _ in
 				let action = SCNAction.rotateTo(
 					x: 0,
-					y: newValue.sunAngle,
+					y: selection.sunAngle,
 					z: 0,
 					duration: 1,
 					usesShortestUnitArc: true

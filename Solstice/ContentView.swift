@@ -13,6 +13,7 @@ struct ContentView: View {
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
+	@Environment(\.openWindow) private var openWindow
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
@@ -72,17 +73,25 @@ struct ContentView: View {
 			}
 			.onChange(of: scenePhase) { _ in
 				timeMachine.referenceDate = Date()
-				if CurrentLocation.isAuthorized,
+				if currentLocation.isAuthorized,
+					 selectedLocation == currentLocation.id,
 					 scenePhase != .background {
 					currentLocation.requestLocation()
 				}
 			}
 			.onReceive(timer) { _ in
 				timeMachine.referenceDate = Date()
-				if CurrentLocation.isAuthorized {
-					currentLocation.requestAccess()
+				if currentLocation.isAuthorized,
+					 selectedLocation == currentLocation.id {
+					currentLocation.requestLocation()
 				}
 			}
+			.animation(.default, value: timeMachine.date)
+		#if os(iOS)
+			.sheet(isPresented: $settingsViewOpen) {
+				SettingsView()
+			}
+		#endif
 	}
 	
 	private var placeholderView: some View {
@@ -102,7 +111,7 @@ struct ContentView: View {
 						Text("Timezone")
 							.tag(Preferences.SortingFunction.timezone)
 						
-						Text("Daylight Duration")
+						Text("Daylight duration")
 							.tag(Preferences.SortingFunction.daylightDuration)
 					} label: {
 						Text("Sort by")
@@ -125,19 +134,24 @@ struct ContentView: View {
 					Text("Show chart in list")
 				}
 			} label: {
-				Label("View Options", systemImage: "eye.circle")
+				Label("View options", systemImage: "eye.circle")
 			}
 		}
 		
-#if os(iOS)
+#if os(visionOS)
 		ToolbarItem {
 			Button {
-				settingsViewOpen.toggle()
+				openWindow(id: "settings")
 			} label: {
 				Label("Settings", systemImage: "gearshape")
 			}
-			.sheet(isPresented: $settingsViewOpen) {
-				SettingsView()
+		}
+#elseif !os(macOS)
+		ToolbarItem {
+			Button {
+				settingsViewOpen = true
+			} label: {
+				Label("Settings", systemImage: "gearshape")
 			}
 		}
 #endif
