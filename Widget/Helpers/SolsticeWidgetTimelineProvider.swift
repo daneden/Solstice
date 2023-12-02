@@ -32,15 +32,19 @@ fileprivate class LocationManager: NSObject, CLLocationManagerDelegate {
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		for callback in updateLocationsCallbacks {
-			callback(locations)
+		DispatchQueue.main.async {
+			for callback in self.updateLocationsCallbacks {
+				callback(locations)
+			}
+			
+			self.updateLocationsCallbacks = []
 		}
-		
-		updateLocationsCallbacks = []
 	}
 	
 	func requestLocation() {
-		locationManager.requestLocation()
+		DispatchQueue.main.async {
+			self.locationManager.requestLocation()
+		}
 	}
 	
 	var location: CLLocation? { locationManager.location }
