@@ -96,7 +96,13 @@ extension CountdownWidgetView {
 			} icon: {
 				Image(systemName: nextEvent.imageName)
 			}
-			.widgetCurvesContent()
+			.modify {
+				if #available(iOSApplicationExtension 17.0, watchOSApplicationExtension 10.0, *) {
+					$0.widgetCurvesContent()
+				} else {
+					$0
+				}
+			}
 			.widgetLabel {
 				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
 					Image(systemName: previousEvent.imageName)

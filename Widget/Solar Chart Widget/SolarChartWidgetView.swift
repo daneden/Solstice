@@ -10,8 +10,6 @@ import WidgetKit
 import Solar
 
 struct SolarChartWidgetView: View {
-	@Environment(\.widgetContentMargins) var contentMargins
-	
 	var entry: SolsticeWidgetTimelineEntry
 	
 	var solar: Solar? {
@@ -50,7 +48,7 @@ struct SolarChartWidgetView: View {
 					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
-					.padding(contentMargins)
+					.padding()
 					
 					DaylightChart(
 						solar: solar,
@@ -64,11 +62,17 @@ struct SolarChartWidgetView: View {
 				}
 			} else {
 				WidgetMissingLocationView()
-					.padding(contentMargins)
+					.padding()
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.containerBackground(.background, for: .widget)
+		.modify {
+			if #available(iOSApplicationExtension 17.0, watchOSApplicationExtension 10.0, *) {
+				$0.containerBackground(.background, for: .widget)
+			} else {
+				$0.background()
+			}
+		}
 	}
 }
 

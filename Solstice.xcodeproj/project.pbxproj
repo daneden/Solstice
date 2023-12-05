@@ -191,6 +191,11 @@
 		7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
 		7198C40F29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
 		7198C41029DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
+		719A39972B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */; };
+		719A39982B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */; };
+		719A39992B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */; };
+		719A399A2B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */; };
+		719A399B2B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */; };
 		719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
 		719F557E29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
 		719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */; };
@@ -407,6 +412,7 @@
 		7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetTimelineProvider.swift; sourceTree = "<group>"; };
 		7198C40929DB06A8009A457E /* CountdownWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidget.swift; sourceTree = "<group>"; };
 		7198C40D29DB06C1009A457E /* OverviewWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidget.swift; sourceTree = "<group>"; };
+		719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+BackwardsCompatibleWidgetContentMargins.swift"; sourceTree = "<group>"; };
 		719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CountdownWidgetView+AccessoryWidgetViews.swift"; sourceTree = "<group>"; };
 		719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverviewWidgetView+AccessoryWidgetViews.swift"; sourceTree = "<group>"; };
 		719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetTimelineProvider.swift; sourceTree = "<group>"; };
@@ -694,6 +700,7 @@
 				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
 				7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */,
 				710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */,
+				719A39962B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1040,6 +1047,7 @@
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
 				7166CD382ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
+				719A39992B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
 				719F558529DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
@@ -1076,6 +1084,7 @@
 				7166CD3A2ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */,
+				719A399B2B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */,
 				7195122529AFBE88009D282F /* Solar++.swift in Sources */,
 				7195122729AFBE8E009D282F /* AppStorage++.swift in Sources */,
 				7195121D29AFBE06009D282F /* WidgetBundle.swift in Sources */,
@@ -1137,6 +1146,7 @@
 				7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */,
 				7166CD392ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7132AC1329E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
+				719A399A2B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */,
 				713F800229BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				7195124429B0B3D6009D282F /* Widget.swift in Sources */,
 				719F558629DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
@@ -1197,6 +1207,7 @@
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
 				7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */,
 				71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift in Sources */,
+				719A39972B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
 				71F2C3A42ABB366E00E69426 /* Widget.intentdefinition in Sources */,
 				7198469128E5895F00E866CE /* Solstice.xcdatamodeld in Sources */,
@@ -1231,6 +1242,7 @@
 				713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
+				719A39982B1F6F3100831C9F /* Environment+BackwardsCompatibleWidgetContentMargins.swift in Sources */,
 				7195125929B48ECD009D282F /* TimeZone++.swift in Sources */,
 				719F927929ACD21A00C06921 /* Date++.swift in Sources */,
 				719F927729ACD21A00C06921 /* View+CapsuleAppearance.swift in Sources */,
@@ -1308,13 +1320,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1339,13 +1349,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1377,8 +1385,6 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1409,8 +1415,6 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1435,13 +1439,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1468,13 +1470,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1539,6 +1539,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1546,6 +1547,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WATCHOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Debug;
 		};
@@ -1596,6 +1598,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1603,6 +1606,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Release;
 		};
@@ -1629,13 +1633,10 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = "";
 				ON_DEMAND_RESOURCES_PREFETCH_ORDER = earth;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1672,13 +1673,10 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = "";
 				ON_DEMAND_RESOURCES_PREFETCH_ORDER = earth;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1715,7 +1713,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1723,7 +1720,6 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Debug;
 		};
@@ -1750,7 +1746,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1758,7 +1753,6 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Release;
 		};

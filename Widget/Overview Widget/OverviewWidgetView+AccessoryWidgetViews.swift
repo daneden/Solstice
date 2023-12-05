@@ -35,8 +35,6 @@ extension OverviewWidgetView {
 	}
 	
 	struct AccessoryRectangularView: View {
-		@Environment(\.widgetContentMargins) var contentMargins
-		
 		var isAfterTodaySunset: Bool
 		var location: SolsticeWidgetLocation?
 		var relevantSolar: Solar?
@@ -72,7 +70,7 @@ extension OverviewWidgetView {
 				Spacer(minLength: 0)
 			}
 			.minimumScaleFactor(0.9)
-			.padding(contentMargins)
+			.padding()
 		}
 	}
 }
