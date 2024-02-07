@@ -232,6 +232,9 @@
         }
       }
     },
+    "%@ until sunrise" : {
+
+    },
     "%@, %@" : {
       "localizations" : {
         "en" : {
@@ -417,6 +420,7 @@
       }
     },
     "At month:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -515,6 +519,12 @@
           }
         }
       }
+    },
+    "Content #1" : {
+
+    },
+    "Content #2" : {
+
     },
     "Countdown" : {
       "localizations" : {
@@ -635,6 +645,9 @@
           }
         }
       }
+    },
+    "December Solstice" : {
+
     },
     "December Solstice Today" : {
       "comment" : "Notification title for December solstice",
@@ -900,6 +913,9 @@
         }
       }
     },
+    "June Solstice" : {
+
+    },
     "June Solstice Today" : {
       "comment" : "Notification title for June solstice",
       "localizations" : {
@@ -1042,6 +1058,9 @@
         }
       }
     },
+    "March Equinox" : {
+
+    },
     "March Equinox Today" : {
       "comment" : "Notification title for March equinox",
       "localizations" : {
@@ -1052,6 +1071,9 @@
           }
         }
       }
+    },
+    "Month of year" : {
+
     },
     "more" : {
       "comment" : "More daylight middle of sentence",
@@ -1478,6 +1500,9 @@
         }
       }
     },
+    "September Equinox" : {
+
+    },
     "September Equinox Today" : {
       "comment" : "Notification title for September equinox",
       "localizations" : {
@@ -1699,6 +1724,9 @@
         }
       }
     },
+    "Sunset Summary" : {
+
+    },
     "Sunset: %@" : {
       "localizations" : {
         "it" : {
@@ -1718,6 +1746,9 @@
           }
         }
       }
+    },
+    "Test Label" : {
+
     },
     "The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun." : {
       "localizations" : {
@@ -1861,6 +1892,7 @@
       }
     },
     "View event:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
