@@ -16,66 +16,60 @@ typealias NativeViewRepresentable = NSViewRepresentable
 typealias NativeColor = NSColor
 #endif
 
-fileprivate struct Selection: Codable, Hashable {
-	var event: Event = .solstice
-	var equinoxMonth: EquinoxMonth = .march
-	var solsticeMonth: SolsticeMonth = .june
+fileprivate enum Event: CaseIterable, Codable, Hashable {
+	case marchEquinox, juneSolstice, septemberEquinox, decemberSolstice
 	
-	enum Event: CaseIterable, Codable {
-		case equinox, solstice
-		
-		var description: LocalizedStringKey {
-			switch self {
-			case .equinox:
-				return "Equinox"
-			case .solstice:
-				return "Solstice"
-			}
+	var description: LocalizedStringKey {
+		switch self {
+		case .marchEquinox:
+			return "March Equinox"
+		case .juneSolstice:
+			return "June Solstice"
+		case .septemberEquinox:
+			return "September Equinox"
+		case .decemberSolstice:
+			return "December Solstice"
 		}
 	}
 	
-	enum EquinoxMonth: CaseIterable, Codable {
-		case march, september
-		
-		var description: LocalizedStringKey {
-			switch self {
-			case .march:
-				return "March"
-			case .september:
-				return "September"
-			}
+	var shortMonthDescription: LocalizedStringKey {
+		switch self {
+		case .marchEquinox:
+			return "March"
+		case .juneSolstice:
+			return "June"
+		case .septemberEquinox:
+			return "September"
+		case .decemberSolstice:
+			return "December"
 		}
 	}
 	
-	enum SolsticeMonth: CaseIterable, Codable {
-		case june, december
-		
-		var description: LocalizedStringKey {
-			switch self {
-			case .june:
-				return "June"
-			case .december:
-				return "December"
-			}
+	var shortEventDescription: LocalizedStringKey {
+		switch self {
+		case .marchEquinox, .septemberEquinox:
+			return "Equinox"
+		case .juneSolstice, .decemberSolstice:
+			return "Solstice"
 		}
 	}
 	
 	var sunAngle: CGFloat {
-		switch event {
-		case .equinox:
-			return equinoxMonth == .march
-				? -.pi / 2
-				: .pi / 2
-		case .solstice:
-			return solsticeMonth == .june
-			? 0
-			: .pi
+		switch self {
+		case .marchEquinox:
+			return -.pi / 2
+		case .septemberEquinox:
+			return .pi / 2
+		case .juneSolstice:
+			return 0
+		case .decemberSolstice:
+			return .pi
 		}
 	}
 }
 
 struct EquinoxAndSolsticeInfoView: View {
-	@State private var selection: Selection = Selection()
+	@State private var selection: Event = .juneSolstice
 	#if os(iOS)
 	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
 	#endif
@@ -85,7 +79,21 @@ struct EquinoxAndSolsticeInfoView: View {
 		GeometryReader { geometry in
 			Form {
 				Section {
-					Group {
+					ZStack(alignment: .topTrailing) {
+						HStack {
+							VStack(alignment: .trailing, spacing: 0) {
+								Text(selection.shortMonthDescription)
+									.fontWeight(.semibold)
+								Text(selection.shortEventDescription)
+							}
+							.font(.subheadline)
+							
+							SolarSystemMinimap(angle: selection.sunAngle, size: 40)
+								.foregroundStyle(Color.gray)
+						}
+						.padding()
+						.foregroundStyle(.secondary)
+						
 						if scene != nil {
 							CustomSceneView(scene: $scene)
 								.frame(height: min(geometry.size.width, 400))
@@ -107,39 +115,15 @@ struct EquinoxAndSolsticeInfoView: View {
 					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 					.listRowSeparator(.hidden)
 					
-					Picker(selection: $selection.event.animation()) {
-						ForEach(Selection.Event.allCases, id: \.self) { eventType in
-							Text(eventType.description)
+					Picker(selection: $selection.animation()) {
+						ForEach(Event.allCases, id: \.self) { eventType in
+							Text(eventType.shortMonthDescription)
 						}
 					} label: {
-						Text("View event:")
+						Text("Month of year")
 					}
-					
-					
-					Group {
-						switch selection.event {
-						case .equinox:
-							Picker(selection: $selection.equinoxMonth) {
-								ForEach(Selection.EquinoxMonth.allCases, id: \.self) { eventType in
-									Text(eventType.description)
-								}
-							} label: {
-								Text("At month:")
-									.id("monthSelector")
-							}
-						case .solstice:
-							Picker(selection: $selection.solsticeMonth) {
-								ForEach(Selection.SolsticeMonth.allCases, id: \.self) { eventType in
-									Text(eventType.description)
-								}
-							} label: {
-								Text("At month:")
-									.id("monthSelector")
-							}
-						}
-					}
+					.pickerStyle(.segmented)
 
-					
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					
 					VStack(alignment: .leading) {
@@ -160,7 +144,7 @@ struct EquinoxAndSolsticeInfoView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.onChange(of: selection) { _ in
+			.onChange(of: selection) {
 				let action = SCNAction.rotateTo(
 					x: 0,
 					y: selection.sunAngle,
