@@ -44,6 +44,7 @@
 		7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0329C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0429C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
+		7131A3632B741B3F00F36828 /* SolarSystemMinimap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7131A3622B741B3F00F36828 /* SolarSystemMinimap.swift */; };
 		7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		7132AC0D29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		7132AC0F29E6922500523215 /* SolarChartWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */; };
@@ -66,6 +67,8 @@
 		713F800229BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		713F800329BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7147FE1A2B68512800F943FB /* SunsetSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7147FE192B68512800F943FB /* SunsetSummary.swift */; };
+		7147FE1B2B68512800F943FB /* SunsetSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7147FE192B68512800F943FB /* SunsetSummary.swift */; };
 		714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714A944529C7318D00C67A4A /* SidebarListView.swift */; };
 		7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
@@ -271,6 +274,8 @@
 		71F641C3299FD39E00FE5AB5 /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */; };
 		71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */; };
+		71FC34802B6FDA3500D7E4A6 /* EarthModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FC347F2B6FDA3500D7E4A6 /* EarthModelView.swift */; };
+		71FC34822B6FEA6500D7E4A6 /* EarthScene.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 71FC34812B6FEA6500D7E4A6 /* EarthScene.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -356,6 +361,7 @@
 		7117008A29A52B04001BE478 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
+		7131A3622B741B3F00F36828 /* SolarSystemMinimap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemMinimap.swift; sourceTree = "<group>"; };
 		7132AC0B29E6917F00523215 /* SolarChartWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidget.swift; sourceTree = "<group>"; };
 		7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetView.swift; sourceTree = "<group>"; };
 		7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetTimelineProvider.swift; sourceTree = "<group>"; };
@@ -365,6 +371,7 @@
 		713F7FF829BE843700BEA156 /* AnnualOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualOverview.swift; sourceTree = "<group>"; };
 		713F7FFB29BE867E00BEA156 /* DailyOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOverview.swift; sourceTree = "<group>"; };
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
+		7147FE192B68512800F943FB /* SunsetSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunsetSummary.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
 		7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwardCompatibleContainerBackground.swift; sourceTree = "<group>"; };
@@ -441,6 +448,8 @@
 		71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CapsuleAppearance.swift"; sourceTree = "<group>"; };
 		71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualDaylightChart.swift; sourceTree = "<group>"; };
 		71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineView.swift; sourceTree = "<group>"; };
+		71FC347F2B6FDA3500D7E4A6 /* EarthModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthModelView.swift; sourceTree = "<group>"; };
+		71FC34812B6FEA6500D7E4A6 /* EarthScene.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = EarthScene.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -527,6 +536,7 @@
 				713F7FFB29BE867E00BEA156 /* DailyOverview.swift */,
 				713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */,
 				7198469D28E58CCD00E866CE /* DetailView.swift */,
+				7147FE192B68512800F943FB /* SunsetSummary.swift */,
 			);
 			path = "Detail View";
 			sourceTree = "<group>";
@@ -748,10 +758,13 @@
 		71E8DC2829CB5FC700F3E1B4 /* Equinox and Solstice Info View */ = {
 			isa = PBXGroup;
 			children = (
+				71FC34812B6FEA6500D7E4A6 /* EarthScene.usdz */,
 				711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */,
 				71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift */,
 				71DAB3D129CD862A00E30148 /* EarthNode.swift */,
 				71DAB3D329CD865800E30148 /* EarthScene.swift */,
+				71FC347F2B6FDA3500D7E4A6 /* EarthModelView.swift */,
+				7131A3622B741B3F00F36828 /* SolarSystemMinimap.swift */,
 			);
 			path = "Equinox and Solstice Info View";
 			sourceTree = "<group>";
@@ -886,7 +899,7 @@
 					earth,
 				);
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					7106C86729A276B30007A7EC = {
 						CreatedOnToolsVersion = 14.2;
@@ -979,6 +992,7 @@
 				711A97B729CDBCA200333927 /* Assets.xcassets in Resources */,
 				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
+				71FC34822B6FEA6500D7E4A6 /* EarthScene.usdz in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
 				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 			);
@@ -1153,6 +1167,7 @@
 			files = (
 				719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */,
 				719846A828E991FA00E866CE /* LocationSearchService.swift in Sources */,
+				7147FE1A2B68512800F943FB /* SunsetSummary.swift in Sources */,
 				71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */,
 				7198468E28E5895F00E866CE /* Persistence.swift in Sources */,
 				710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
@@ -1176,6 +1191,7 @@
 				717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */,
 				71F641BF299B7C7000FE5AB5 /* Solar+SolarEvent.swift in Sources */,
 				713F7FFC29BE867E00BEA156 /* DailyOverview.swift in Sources */,
+				71FC34802B6FDA3500D7E4A6 /* EarthModelView.swift in Sources */,
 				71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */,
 				71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */,
 				71F641C3299FD39E00FE5AB5 /* View+CapsuleAppearance.swift in Sources */,
@@ -1193,6 +1209,7 @@
 				719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */,
 				71908ACD2AC95A5500C7B610 /* StringBuilder.swift in Sources */,
 				71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */,
+				7131A3632B741B3F00F36828 /* SolarSystemMinimap.swift in Sources */,
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
 				7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */,
@@ -1247,6 +1264,7 @@
 				719F927A29ACD21A00C06921 /* AppStorage++.swift in Sources */,
 				719F927629ACD21A00C06921 /* Solar+SolarEvent.swift in Sources */,
 				719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */,
+				7147FE1B2B68512800F943FB /* SunsetSummary.swift in Sources */,
 				713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1479,6 +1497,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1526,8 +1545,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1535,7 +1554,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1544,6 +1563,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1585,8 +1605,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1594,7 +1614,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
