@@ -330,7 +330,8 @@ extension DaylightChart {
 	}
 	
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
-		let start = geo[proxy.plotAreaFrame].origin.x
+		guard let plotFrame = proxy.plotFrame else { return }
+		let start = geo[plotFrame].origin.x
 		let xCurrent = point.x - start
 		let date: Date? = proxy.value(atX: xCurrent)
 		

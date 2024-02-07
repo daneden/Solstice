@@ -65,14 +65,14 @@ struct DetailView<Location: ObservableLocation>: View {
 			.toolbar {
 				toolbarItems
 			}
-			.onChange(of: timeMachine.isOn) { _ in
+			.onChange(of: timeMachine.isOn) { _, _ in
 				if timeMachine.isOn == true {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
 					}
 				}
 			}
-			.onChange(of: timeMachine.targetDate) { _ in
+			.onChange(of: timeMachine.targetDate) { _, _ in
 				if timeMachine.isOn {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")

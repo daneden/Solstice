@@ -28,7 +28,7 @@ struct ContentView: View {
 				}
 		}
 		.navigationTitle(Text(verbatim: "Solstice"))
-		.onChange(of: scenePhase) { _ in
+		.onChange(of: scenePhase) {
 			timeMachine.referenceDate = Date()
 			if currentLocation.isAuthorized,
 				 scenePhase != .background {

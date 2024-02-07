@@ -71,7 +71,7 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
-			.onChange(of: scenePhase) { _ in
+			.onChange(of: scenePhase) {
 				timeMachine.referenceDate = Date()
 				if currentLocation.isAuthorized,
 					 selectedLocation == currentLocation.id,
