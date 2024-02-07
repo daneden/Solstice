@@ -80,7 +80,6 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 						
 						Text(location.title ?? "Current location")
 							.id(location.title)
-							.transition(.verticalMove)
 							.lineLimit(2)
 					}
 					
@@ -88,7 +87,6 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 						 !subtitle.isEmpty {
 						Text(subtitle)
 							.id(subtitle)
-							.transition(.verticalMove)
 							.foregroundStyle(.secondary)
 							.font(.footnote)
 					}

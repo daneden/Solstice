@@ -32,8 +32,6 @@ struct DaylightSummaryTitle: View {
 		#endif
 	}
 	
-		private let formatter = Date.ComponentsFormatStyle.timeDuration
-	
     var body: some View {
 			VStack(alignment: .leading) {
 				HStack {
@@ -64,11 +62,11 @@ struct DaylightSummaryTitle: View {
 									
 									Group {
 										if currentX < solar.safeSunrise.withTimeZoneAdjustment(for: timeZone) {
-											Text("Sunrise in \((currentX..<solar.safeSunrise.withTimeZoneAdjustment(for: timeZone)).formatted(formatter))")
+											Text("Sunrise in \(formatDuration(currentX..<solar.safeSunrise.withTimeZoneAdjustment(for: timeZone)))")
 										} else if currentX < solar.safeSunset.withTimeZoneAdjustment(for: timeZone) {
-											Text("Sunset in \((currentX..<solar.safeSunset.withTimeZoneAdjustment(for: timeZone)).formatted(formatter))")
+											Text("Sunset in \(formatDuration(currentX..<solar.safeSunset.withTimeZoneAdjustment(for: timeZone)))")
 										} else if currentX > solar.safeSunset.withTimeZoneAdjustment(for: timeZone) {
-											Text("Sunrise in \((currentX..<(solar.tomorrow?.safeSunrise.withTimeZoneAdjustment(for: timeZone) ?? solar.endOfDay.withTimeZoneAdjustment(for: timeZone))).formatted(formatter))")
+											Text("Sunrise in \(formatDuration(currentX..<(solar.tomorrow?.safeSunrise.withTimeZoneAdjustment(for: timeZone) ?? solar.endOfDay.withTimeZoneAdjustment(for: timeZone))))")
 										}
 									}
 									.foregroundStyle(.tertiary)
@@ -84,6 +82,12 @@ struct DaylightSummaryTitle: View {
 			.fontDesign(.rounded)
 			.fontWeight(.semibold)
     }
+	
+	func formatDuration(_ duration: Range<Date>) -> String {
+		let timeInterval = duration.lowerBound.distance(to: duration.upperBound)
+		return Duration.seconds(timeInterval)
+			.formatted(.units(width: .narrow, maximumUnitCount: 2))
+	}
 }
 
 struct DaylightSummaryTitle_Previews: PreviewProvider {
