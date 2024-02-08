@@ -11,12 +11,16 @@ import RealityKit
 #if os(visionOS)
 struct EarthModelView: View {
 	var body: some View {
-		Model3D(named: "Earth") { model in
-			model
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-		} placeholder: {
-			ProgressView()
+		RealityView { content in
+			if let earth = try? await Entity(named: "Earth") {
+				content.add(earth)
+				
+				for animation in earth.availableAnimations {
+					earth.playAnimation(animation)
+				}
+				
+				
+			}
 		}
 	}
 }
