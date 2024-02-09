@@ -66,7 +66,7 @@ struct EquinoxAndSolsticeInfoView: View {
 		GeometryReader { geometry in
 			Form {
 				Section {
-					ZStack(alignment: .topTrailing) {
+                    ZStack(alignment: .top) {
 						HStack {
 							VStack(alignment: .trailing, spacing: 0) {
 								Text(selection.shortMonthDescription)
@@ -80,11 +80,13 @@ struct EquinoxAndSolsticeInfoView: View {
 						}
 						.padding()
 						.foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
 						
 						
 						EarthModelView(rotationAmount: Double(selection.sunAngle))
-							.frame(height: min(geometry.size.width, 400))
+                            .frame(height: min(geometry.size.width, 400))
 					}
+                    .frame(maxWidth: .infinity)
 					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 					.listRowSeparator(.hidden)
 					
@@ -122,10 +124,6 @@ struct EquinoxAndSolsticeInfoView: View {
 	}
 }
 
-struct InformationSheetView_Previews: PreviewProvider {
-	static var previews: some View {
-		NavigationStack {
-			EquinoxAndSolsticeInfoView()
-		}
-	}
+#Preview {
+    EquinoxAndSolsticeInfoView()
 }
