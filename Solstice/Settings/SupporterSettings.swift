@@ -46,13 +46,13 @@ struct SupporterSettings: View {
 	@State var purchaseInProgress = false
 	
 	var body: some View {
-#if !os(macOS)
+		#if !os(macOS)
 		NavigationStack {
 			content
 		}
-#else
+		#else
 		content
-#endif
+		#endif
 	}
 	
 	@ViewBuilder

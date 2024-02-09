@@ -66,7 +66,7 @@ struct EquinoxAndSolsticeInfoView: View {
 		GeometryReader { geometry in
 			Form {
 				Section {
-                    ZStack(alignment: .top) {
+					ZStack(alignment: .top) {
 						HStack {
 							VStack(alignment: .trailing, spacing: 0) {
 								Text(selection.shortMonthDescription)
@@ -80,14 +80,13 @@ struct EquinoxAndSolsticeInfoView: View {
 						}
 						.padding()
 						.foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-						
+						.frame(maxWidth: .infinity, alignment: .trailing)
 						
 						EarthModelView(rotationAmount: Double(selection.sunAngle))
-                            .frame(height: min(geometry.size.width, 400))
+							.frame(height: min(geometry.size.width, 400))
 					}
-                    .frame(maxWidth: .infinity)
-					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+					.frame(maxWidth: .infinity)
+					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
 					.listRowSeparator(.hidden)
 					
 					Picker(selection: $selection.animation()) {
@@ -99,7 +98,11 @@ struct EquinoxAndSolsticeInfoView: View {
 					}
 					.pickerStyle(.segmented)
 					.listRowSeparator(.hidden)
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> f6cb125 (visionOS design optimisations)
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					
 					VStack(alignment: .leading) {
@@ -125,5 +128,7 @@ struct EquinoxAndSolsticeInfoView: View {
 }
 
 #Preview {
-    EquinoxAndSolsticeInfoView()
+	NavigationStack {
+		EquinoxAndSolsticeInfoView()
+	}
 }

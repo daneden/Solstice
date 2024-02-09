@@ -49,12 +49,13 @@ struct SolsticeApp: App {
 				currentLocation.requestLocation()
 			}
 		}
+		.defaultSize(width: 1000, height: 800)
 		
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
 			SettingsView()
 		}
-		.defaultSize(width: 450, height: 500)
+		.defaultSize(width: 500, height: 650)
 		#endif
 		
 		#if os(macOS)
