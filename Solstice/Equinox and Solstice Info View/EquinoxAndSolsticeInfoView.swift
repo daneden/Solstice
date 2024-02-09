@@ -6,15 +6,6 @@
 //
 
 import SwiftUI
-import SceneKit
-
-#if canImport(UIKit)
-typealias NativeViewRepresentable = UIViewRepresentable
-typealias NativeColor = UIColor
-#elseif canImport(AppKit)
-typealias NativeViewRepresentable = NSViewRepresentable
-typealias NativeColor = NSColor
-#endif
 
 fileprivate enum Event: CaseIterable, Codable, Hashable {
 	case marchEquinox, juneSolstice, septemberEquinox, decemberSolstice
@@ -70,10 +61,6 @@ fileprivate enum Event: CaseIterable, Codable, Hashable {
 
 struct EquinoxAndSolsticeInfoView: View {
 	@State private var selection: Event = .juneSolstice
-	#if os(iOS)
-	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
-	#endif
-	@State var scene: EarthScene?
 	
 	var body: some View {
 		GeometryReader { geometry in
@@ -94,23 +81,9 @@ struct EquinoxAndSolsticeInfoView: View {
 						.padding()
 						.foregroundStyle(.secondary)
 						
-						if scene != nil {
-							CustomSceneView(scene: $scene)
-								.frame(height: min(geometry.size.width, 400))
-								.transition(.opacity)
-						} else {
-#if os(iOS)
-							HStack {
-								Spacer()
-								ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
-									Text("Loading...")
-								}
-								.progressViewStyle(.circular)
-								Spacer()
-							}
+						
+						EarthModelView(rotationAmount: Double(selection.sunAngle))
 							.frame(height: min(geometry.size.width, 400))
-#endif
-						}
 					}
 					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 					.listRowSeparator(.hidden)
@@ -144,39 +117,6 @@ struct EquinoxAndSolsticeInfoView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.onChange(of: selection) {
-				let action = SCNAction.rotateTo(
-					x: 0,
-					y: selection.sunAngle,
-					z: 0,
-					duration: 1,
-					usesShortestUnitArc: true
-				)
-				
-				action.timingMode = .easeOut
-				
-				if let node = scene?.lightAnchorNode {
-					node.runAction(action)
-				}
-			}
-			.task {
-				#if os(iOS)
-				if await !resourceRequest.conditionallyBeginAccessingResources() {
-					do {
-						try await resourceRequest.beginAccessingResources()
-					} catch {
-						print(error)
-					}
-				}
-				#endif
-				
-				scene = EarthScene()
-			}
-			#if os(iOS)
-			.onDisappear {
-				resourceRequest.endAccessingResources()
-			}
-			#endif
 		}
 	}
 }
@@ -187,45 +127,4 @@ struct InformationSheetView_Previews: PreviewProvider {
 			EquinoxAndSolsticeInfoView()
 		}
 	}
-}
-
-struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
-	@Binding var scene: Scene?
-	
-	func makeView(context: Context) -> SCNView {
-		let view = SCNView()
-		view.autoenablesDefaultLighting = false
-		view.backgroundColor = .clear
-		
-		let node = scene?.rootNode
-		
-		node?.rotation = .init(0, 0, 90, 0)
-		view.scene = scene
-		
-		view.pointOfView?.camera?.fieldOfView = 35
-		
-		return view
-	}
-	
-	func updateView(_ uiView: SCNView, context: Context) {
-		
-	}
-	
-	#if canImport(UIKit)
-	func makeUIView(context: Context) -> SCNView {
-		makeView(context: context)
-	}
-	
-	func updateUIView(_ uiView: SCNView, context: Context) {
-		updateView(uiView, context: context)
-	}
-	#elseif canImport(AppKit)
-	func makeNSView(context: Context) -> SCNView {
-		makeView(context: context)
-	}
-	
-	func updateNSView(_ nsView: SCNView, context: Context) {
-		updateView(nsView, context: context)
-	}
-	#endif
 }

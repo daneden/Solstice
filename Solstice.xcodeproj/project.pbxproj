@@ -102,7 +102,6 @@
 		71908ACF2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908AD02AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908AD12AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
-		7192DBF32B74C70E00A5D265 /* Earth.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 7192DBF22B74C70D00A5D265 /* Earth.usdz */; };
 		7193E92629C0BA0B00103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
@@ -256,6 +255,7 @@
 		71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C7348329E6BF6400929449 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		71D2777F2B76755D00BCF7F5 /* Earth.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 71D2777E2B76755D00BCF7F5 /* Earth.usdz */; };
 		71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D129CD862A00E30148 /* EarthNode.swift */; };
 		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
 		71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift */; };
@@ -384,7 +384,6 @@
 		718B136B29A918680001D4DC /* SupporterSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupporterSettings.swift; sourceTree = "<group>"; };
 		718B136D29A918AD0001D4DC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71908ACC2AC95A5500C7B610 /* StringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringBuilder.swift; sourceTree = "<group>"; };
-		7192DBF22B74C70D00A5D265 /* Earth.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Earth.usdz; sourceTree = "<group>"; };
 		719511F529AF5CB4009D282F /* GetSunriseTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunriseTime.swift; sourceTree = "<group>"; };
 		719511F729AF5CE1009D282F /* GetSunsetTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunsetTime.swift; sourceTree = "<group>"; };
 		719511F929AF5CF7009D282F /* ViewDaylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDaylight.swift; sourceTree = "<group>"; };
@@ -431,6 +430,7 @@
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
+		71D2777E2B76755D00BCF7F5 /* Earth.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Earth.usdz; sourceTree = "<group>"; };
 		71DAB3D129CD862A00E30148 /* EarthNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthNode.swift; sourceTree = "<group>"; };
 		71DAB3D329CD865800E30148 /* EarthScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthScene.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -758,7 +758,7 @@
 		71E8DC2829CB5FC700F3E1B4 /* Equinox and Solstice Info View */ = {
 			isa = PBXGroup;
 			children = (
-				7192DBF22B74C70D00A5D265 /* Earth.usdz */,
+				71D2777E2B76755D00BCF7F5 /* Earth.usdz */,
 				711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */,
 				71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoView.swift */,
 				71DAB3D129CD862A00E30148 /* EarthNode.swift */,
@@ -987,11 +987,11 @@
 			files = (
 				71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
+				71D2777F2B76755D00BCF7F5 /* Earth.usdz in Resources */,
 				71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
 				711A97B729CDBCA200333927 /* Assets.xcassets in Resources */,
 				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
-				7192DBF32B74C70E00A5D265 /* Earth.usdz in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
 				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
