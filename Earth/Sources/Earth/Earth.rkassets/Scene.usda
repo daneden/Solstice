@@ -1,0 +1,558 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 1.0 (409.60.6)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+reorder rootPrims = ["Root", "EarthMaterial"]
+
+def Xform "Root" (
+    customData = {
+        float3 rotationEulerHint = (0, 0, 0)
+    }
+)
+{
+    reorder nameChildren = ["EarthMaterial", "Group"]
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Xform "Group" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0.40142575)
+        }
+    )
+    {
+        reorder nameChildren = ["Sphere", "Poles", "Equator", "MotionState"]
+        quatf xformOp:orient = (0.9799247, 0, 0, 0.19936794)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Sphere "Sphere" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (0, 0, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["Transform", "EarthMaterial", "ImageBasedLight", "ImageBasedLightReceiver"]
+            rel material:binding = </Root/EarthMaterial> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double radius = 0.1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "ImageBasedLight"
+            {
+                bool enableRotation = 0
+                asset ibl = @sun-sprite.png@
+                uniform token info:id = "RealityKit.ImageBasedLight"
+                float intensityExponent = 3
+                bool isGlobalIBL = 0
+            }
+
+            def RealityKitComponent "ImageBasedLightReceiver"
+            {
+                rel iblEntity = </Root/Group/Sphere>
+                uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+            }
+        }
+
+        def RealityKitComponent "MotionState"
+        {
+            uniform token info:id = "RealityKit.MotionState"
+            float3 m_userSetAngularVelocity = (0, 2, 0)
+            uint m_userSetAngularVelocityVersion = 1
+        }
+
+        def Cylinder "Equator" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.0005
+            rel material:binding = </Root/Group/Equator/DefaultMaterial>
+            double radius = 0.1005
+            quatf xformOp:orient = (1, 0, 0, 1.8656037e-9)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "DefaultMaterial"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+                prepend token outputs:surface.connect = </Root/Group/Equator/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                def Shader "DefaultSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 0.88315415, 0.009860494) (
+                        colorSpace = "srgb_displayp3"
+                    )
+                    color3f inputs:emissiveColor = (1, 0.8425495, 0) (
+                        colorSpace = "srgb_displayp3"
+                    )
+                    float inputs:roughness = 0.75
+                    token outputs:surface
+                }
+            }
+        }
+
+        def Cylinder "Poles" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.22
+            rel material:binding = </Root/Group/Poles/DefaultMaterial>
+            double radius = 0.001
+            quatf xformOp:orient = (1, 0, 0, 1.8656037e-9)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "DefaultMaterial"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+                prepend token outputs:surface.connect = </Root/Group/Poles/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                def Shader "DefaultSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 0.14913142, 0) (
+                        colorSpace = "srgb_texture"
+                    )
+                    color3f inputs:emissiveColor = (1, 0.14913142, 0) (
+                        colorSpace = "srgb_texture"
+                    )
+                    float inputs:opacityThreshold
+                    float inputs:roughness = 0.75
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Material "EarthMaterial" (
+        references = None
+    )
+    {
+        reorder nameChildren = ["UsdPreviewSurface", "Diffuse", "Normal", "Emissive", "Specular", "Range", "diffuseColor", "roughness", "metallic", "normal", "emissiveColor", "textureCoordTimeOffset", "Daylight_Material", "Emissive_Alpha", "Day_Night_Mix", "Rotate3D", "dayNightAlphaMix"]
+        float inputs:Angle = 0 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (225.88553, 780.3095)
+                    float2 sizeInSubgraph = (104, 53)
+                    int stackingOrderInSubgraph = 387
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/EarthMaterial/Daylight_Material.outputs:out>
+        token outputs:realitykit:vertex
+        token outputs:surface.connect = </Root/EarthMaterial/UsdPreviewSurface.outputs:surface>
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1478.25, 360.25)
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 371
+
+        def Shader "UsdPreviewSurface" (
+            active = false
+        )
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.18, 0.18, 0.18)
+            color3f inputs:diffuseColor.connect = </Root/EarthMaterial/diffuseColor.outputs:rgb>
+            color3f inputs:emissiveColor = (0, 0, 0)
+            color3f inputs:emissiveColor.connect = </Root/EarthMaterial/emissiveColor.outputs:rgb>
+            float inputs:metallic = 0
+            float inputs:metallic.connect = </Root/EarthMaterial/metallic.outputs:r>
+            normal3f inputs:normal = (0, 0, 1)
+            normal3f inputs:normal.connect = </Root/EarthMaterial/normal.outputs:rgb>
+            float inputs:roughness = 0.5
+            token outputs:surface
+        }
+
+        def Shader "Diffuse"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @Diffuse.png@
+            string inputs:filtertype
+            float2 inputs:texcoord.connect = </Root/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+            string inputs:uaddressmode = "periodic"
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (393, 558)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 343
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file", "inputs:texcoord"]
+        }
+
+        def Shader "Normal"
+        {
+            uniform token info:id = "ND_image_vector3"
+            float3 inputs:default
+            asset inputs:file = @Normal.png@
+            string inputs:filtertype
+            float2 inputs:texcoord.connect = </Root/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (1001, 1080.5)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 378
+        }
+
+        def Shader "Emissive"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @Emission.png@
+            string inputs:filtertype
+            float2 inputs:texcoord.connect = </Root/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (393, 299)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 282
+        }
+
+        def Shader "Specular"
+        {
+            uniform token info:id = "ND_image_float"
+            float inputs:default
+            asset inputs:file = @Specular.png@
+            string inputs:filtertype
+            float2 inputs:texcoord.connect = </Root/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (1001, 99.5)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 380
+        }
+
+        def Shader "diffuseColor"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @Diffuse.png@
+            float2 inputs:st.connect = </Root/EarthMaterial/diffuseColor/TexCoordReader.outputs:result>
+            color3f outputs:rgb
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "roughness"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @Specular.png@
+            float2 inputs:st.connect = </Root/EarthMaterial/roughness/TexCoordReader.outputs:result>
+            float outputs:r
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "metallic"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @Specular.png@
+            float2 inputs:st.connect = </Root/EarthMaterial/metallic/TexCoordReader.outputs:result>
+            float outputs:r
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "normal"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @Normal.png@
+            float2 inputs:st.connect = </Root/EarthMaterial/normal/TexCoordReader.outputs:result>
+            normal3f outputs:rgb
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "emissiveColor"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @Emission.png@
+            float2 inputs:st.connect = </Root/EarthMaterial/emissiveColor/TexCoordReader.outputs:result>
+            color3f outputs:rgb
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def NodeGraph "textureCoordTimeOffset"
+        {
+            prepend float2 outputs:Add_out.connect = </Root/EarthMaterial/textureCoordTimeOffset/Add.outputs:out>
+            float2 ui:nodegraph:node:pos = (101.75, 458.5)
+            float2 ui:nodegraph:node:size = (203.5, 81)
+            int ui:nodegraph:node:stackingOrder = 382
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (761.75, 78.75)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (191.5, 81)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 418
+
+            def Shader "Texcoord"
+            {
+                uniform token info:id = "ND_texcoord_vector2"
+                float2 outputs:out
+                float2 ui:nodegraph:node:pos = (394.25, 184)
+                float2 ui:nodegraph:node:size = (180.5, 53)
+                int ui:nodegraph:node:stackingOrder = 418
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+            }
+
+            def Shader "Divide"
+            {
+                uniform token info:id = "ND_divide_float"
+                float inputs:in1.connect = </Root/EarthMaterial/textureCoordTimeOffset/Time.outputs:out>
+                float inputs:in2 = 100
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (213.25, 26.5)
+                float2 ui:nodegraph:node:size = (61.5, 36)
+                int ui:nodegraph:node:stackingOrder = 418
+            }
+
+            def Shader "Combine2"
+            {
+                uniform token info:id = "ND_combine2_vector2"
+                float inputs:in1.connect = </Root/EarthMaterial/textureCoordTimeOffset/Divide.outputs:out>
+                float inputs:in2
+                float2 outputs:out
+                float2 ui:nodegraph:node:pos = (394.25, 26.5)
+                float2 ui:nodegraph:node:size = (144.5, 53)
+                int ui:nodegraph:node:stackingOrder = 418
+            }
+
+            def Shader "Time"
+            {
+                uniform token info:id = "ND_time_float"
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (61.25, 26.5)
+                float2 ui:nodegraph:node:size = (122.5, 53)
+                int ui:nodegraph:node:stackingOrder = 418
+            }
+
+            def Shader "Add"
+            {
+                uniform token info:id = "ND_add_vector2"
+                float2 inputs:in1.connect = </Root/EarthMaterial/textureCoordTimeOffset/Combine2.outputs:out>
+                float2 inputs:in2.connect = </Root/EarthMaterial/textureCoordTimeOffset/Texcoord.outputs:out>
+                float2 outputs:out
+                float2 ui:nodegraph:node:pos = (575.25, 78.75)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 418
+            }
+        }
+
+        def Shader "Daylight_Material"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion = 1
+            float inputs:ambientOcclusion.connect = </Root/EarthMaterial/Specular.outputs:out>
+            color3f inputs:baseColor.connect = </Root/EarthMaterial/Screen.outputs:out>
+            float inputs:clearcoat = 0
+            float inputs:clearcoatRoughness = 1
+            color3f inputs:emissiveColor.connect = </Root/EarthMaterial/Emissive_Mix.outputs:out>
+            bool inputs:hasPremultipliedAlpha = 0
+            float inputs:metallic = 0.5
+            float3 inputs:normal.connect = </Root/EarthMaterial/Normal.outputs:out>
+            float inputs:opacity.connect = None
+            float inputs:opacityThreshold
+            float inputs:roughness = 1
+            float inputs:specular.connect = </Root/EarthMaterial/Specular.outputs:out>
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (1244, 360.25)
+            float2 ui:nodegraph:node:size = (167, 307)
+            int ui:nodegraph:node:stackingOrder = 369
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:clearcoatRoughness", "outputs:out", "inputs:baseColor"]
+        }
+
+        def NodeGraph "dayNightAlphaMix"
+        {
+            float inputs:Sunlight_Angle = 0 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-135.37486, 214.88756)
+                        float2 sizeInSubgraph = (163, 53)
+                        int stackingOrderInSubgraph = 984
+                    }
+                }
+            )
+            float inputs:Sunlight_Angle.connect = </Root/EarthMaterial.inputs:Angle>
+            float outputs:Multiply_out.connect = </Root/EarthMaterial/dayNightAlphaMix/Multiply.outputs:out>
+            float2 ui:nodegraph:node:pos = (393, 772)
+            float2 ui:nodegraph:node:size = (165.5, 109)
+            int ui:nodegraph:node:stackingOrder = 385
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:Multiply_out"]
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (731.65656, 78.155136)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (158, 81)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 887
+
+            def Shader "Position"
+            {
+                uniform token info:id = "ND_position_vector3"
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (-59.304924, 71.002914)
+                float2 ui:nodegraph:node:size = (133.5, 40)
+                int ui:nodegraph:node:stackingOrder = 923
+            }
+
+            def Shader "Rotate3D"
+            {
+                uniform token info:id = "ND_rotate3d_vector3"
+                float inputs:amount = 23
+                float3 inputs:axis = (0, 0, 1)
+                float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Position.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (122.195076, 71.002914)
+                float2 ui:nodegraph:node:size = (109.5, 145)
+                int ui:nodegraph:node:stackingOrder = 923
+            }
+
+            def Shader "Separate3"
+            {
+                uniform token info:id = "ND_separate3_vector3"
+                float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Rotate3D_1.outputs:out>
+                float outputs:outx
+                float outputs:outy
+                float outputs:outz
+                float2 ui:nodegraph:node:pos = (420.75, 72.5)
+                float2 ui:nodegraph:node:size = (115.5, 145)
+                int ui:nodegraph:node:stackingOrder = 884
+            }
+
+            def Shader "Multiply"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/EarthMaterial/dayNightAlphaMix/Separate3.outputs:outz>
+                float inputs:in2 = 15
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (574.6776, 107.8638)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 983
+            }
+
+            def Shader "Rotate3D_1"
+            {
+                uniform token info:id = "ND_rotate3d_vector3"
+                float inputs:amount.connect = </Root/EarthMaterial/dayNightAlphaMix/Add.outputs:out>
+                float3 inputs:axis
+                float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Rotate3D.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (279.4988, 70.44199)
+                float2 ui:nodegraph:node:size = (121.5, 145)
+                int ui:nodegraph:node:stackingOrder = 927
+            }
+
+            def Shader "Add"
+            {
+                uniform token info:id = "ND_add_float"
+                float inputs:in1.connect = </Root/EarthMaterial/dayNightAlphaMix.inputs:Sunlight_Angle>
+                float inputs:in2 = 90
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (105.75, 210.23828)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 980
+            }
+        }
+
+        def Shader "Emissive_Mix"
+        {
+            uniform token info:id = "ND_mix_color3"
+            color3f inputs:bg.connect = </Root/EarthMaterial/Emissive.outputs:out>
+            color3f inputs:fg.connect = </Root/EarthMaterial/Diffuse.outputs:out>
+            float inputs:mix.connect = </Root/EarthMaterial/dayNightAlphaMix.outputs:Multiply_out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (712, 269)
+            float2 ui:nodegraph:node:size = (130.5, 145)
+            int ui:nodegraph:node:stackingOrder = 372
+        }
+
+        def Shader "Diffuse_Mix"
+        {
+            uniform token info:id = "ND_mix_color3"
+            color3f inputs:bg.connect = </Root/EarthMaterial/Emissive.outputs:out>
+            color3f inputs:fg.connect = </Root/EarthMaterial/Diffuse.outputs:out>
+            float inputs:mix.connect = </Root/EarthMaterial/dayNightAlphaMix.outputs:Multiply_out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (712, 474)
+            float2 ui:nodegraph:node:size = (121, 145)
+            int ui:nodegraph:node:stackingOrder = 332
+        }
+
+        def Shader "Screen"
+        {
+            uniform token info:id = "ND_screen_color3"
+            color3f inputs:bg.connect = </Root/EarthMaterial/Diffuse_Mix.outputs:out>
+            color3f inputs:fg.connect = </Root/EarthMaterial/Clouds.outputs:out>
+            float inputs:mix.connect = </Root/EarthMaterial/Clamp.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (1001, 606.5)
+            float2 ui:nodegraph:node:size = (109, 145)
+            int ui:nodegraph:node:stackingOrder = 363
+        }
+
+        def Shader "Clamp"
+        {
+            uniform token info:id = "ND_clamp_float"
+            float inputs:high
+            float inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix.outputs:Multiply_out>
+            float inputs:low = 0.05
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (712, 679)
+            float2 ui:nodegraph:node:size = (91, 145)
+            int ui:nodegraph:node:stackingOrder = 375
+        }
+
+        def Shader "Clouds"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @cloud_combined_2048.jpg@
+            string inputs:filtertype
+            float2 inputs:texcoord.connect = </Root/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (712, 911)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 377
+        }
+    }
+}
+

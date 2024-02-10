@@ -8,6 +8,8 @@
 import SwiftUI
 import RealityKit
 import ARKit
+import SceneKit
+import Earth
 
 #if canImport(UIKit)
 typealias NativeViewRepresentable = UIViewRepresentable
@@ -22,21 +24,22 @@ struct EarthModelView: View {
 	@State var rotationAmount: Double = .pi / 2
 	var body: some View {
 		RealityView { content in
-			if let earth = try? await Entity(named: "Earth") {
+			if let earth = try? await Entity(named: "Scene", in: earthBundle) {
 				content.add(earth)
-				
-				for animation in earth.availableAnimations {
-					earth.playAnimation(animation)
-				}
 			}
 		} update: { content in
-			guard let earth = content.entities.first else {
+			guard let rootEntity = content.entities.first,
+						let earth = rootEntity.findEntity(named: "Sphere"),
+						let modelComponent = earth.components[ModelComponent.self],
+						var shaderMaterial = modelComponent.materials.first as? ShaderGraphMaterial else {
 				return
 			}
 			
-			var transform = earth.transform
-			transform.rotation = .init(angle: Float(Angle(radians: rotationAmount).radians), axis: .init(x: 0, y: 1, z: 0))
-			earth.transform = transform
+			do {
+				try shaderMaterial.setParameter(name: "Angle", value: .float(Float(Angle(radians: rotationAmount).degrees)))
+			} catch {
+				print(error)
+			}
 		}
 	}
 }
