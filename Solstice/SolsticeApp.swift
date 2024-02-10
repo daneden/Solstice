@@ -34,6 +34,7 @@ struct SolsticeApp: App {
 					}
 				}
 		}
+		.defaultSize(width: 900, height: 600)
 		.onChange(of: phase) {
 			switch phase {
 			#if !os(watchOS)
@@ -51,6 +52,7 @@ struct SolsticeApp: App {
 		WindowGroup(id: "settings") {
 			SettingsView()
 		}
+		.defaultSize(width: 450, height: 500)
 		#endif
 		
 		#if os(macOS)

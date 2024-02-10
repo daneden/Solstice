@@ -30,7 +30,7 @@ struct EarthModelView: View {
 			}
 		} update: { content in
 			guard let rootEntity = content.entities.first,
-						var earth = rootEntity.findEntity(named: "Sphere"),
+						let earth = rootEntity.findEntity(named: "Sphere"),
 						var modelComponent = earth.components[ModelComponent.self],
 						var shaderMaterial = modelComponent.materials.first as? ShaderGraphMaterial else {
 				return
