@@ -7,9 +7,10 @@
 
 import SwiftUI
 import RealityKit
-import ARKit
 import SceneKit
+#if canImport(Earth)
 import Earth
+#endif
 
 #if canImport(UIKit)
 typealias NativeViewRepresentable = UIViewRepresentable
