@@ -34,7 +34,9 @@ struct SolsticeApp: App {
 					}
 				}
 		}
+		#if os(visionOS) || os(macOS)
 		.defaultSize(width: 900, height: 600)
+		#endif
 		.onChange(of: phase) {
 			switch phase {
 			#if !os(watchOS)
