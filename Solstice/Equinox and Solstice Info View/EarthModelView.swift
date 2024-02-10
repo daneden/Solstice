@@ -21,7 +21,7 @@ typealias NativeColor = NSColor
 
 #if os(visionOS)
 struct EarthModelView: View {
-	@State var rotationAmount: Double = .pi / 2
+	var rotationAmount: Double = .pi / 2
 	var body: some View {
 		RealityView { content in
 			if let earth = try? await Entity(named: "Scene", in: earthBundle) {
@@ -29,14 +29,16 @@ struct EarthModelView: View {
 			}
 		} update: { content in
 			guard let rootEntity = content.entities.first,
-						let earth = rootEntity.findEntity(named: "Sphere"),
-						let modelComponent = earth.components[ModelComponent.self],
+						var earth = rootEntity.findEntity(named: "Sphere"),
+						var modelComponent = earth.components[ModelComponent.self],
 						var shaderMaterial = modelComponent.materials.first as? ShaderGraphMaterial else {
 				return
 			}
 			
 			do {
 				try shaderMaterial.setParameter(name: "Angle", value: .float(Float(Angle(radians: rotationAmount).degrees)))
+				modelComponent.materials = [shaderMaterial]
+				earth.components.set(modelComponent)
 			} catch {
 				print(error)
 			}
