@@ -7,10 +7,10 @@
 
 import Foundation
 import CoreLocation
-import CoreData
+import SwiftData
 
 protocol AnyLocation: Hashable {
-	var title: String? { get set }
+	var title: String { get set }
 	var subtitle: String? { get set }
 	var timeZoneIdentifier: String? { get set }
 	var latitude: Double { get }
@@ -48,13 +48,13 @@ extension AnyLocation {
 extension SavedLocation: ObservableLocation { }
 
 class TemporaryLocation: ObservableLocation {
-	@Published var title: String?
+	@Published var title: String
 	@Published var subtitle: String?
 	@Published var timeZoneIdentifier: String?
 	@Published var latitude: Double = 0.0
 	@Published var longitude: Double = 0.0
 	
-	init(title: String?, subtitle: String?, timeZoneIdentifier: String?, latitude: Double, longitude: Double) {
+	init(title: String, subtitle: String?, timeZoneIdentifier: String?, latitude: Double, longitude: Double) {
 		self.title = title
 		self.subtitle = subtitle
 		self.timeZoneIdentifier = timeZoneIdentifier
@@ -62,8 +62,8 @@ class TemporaryLocation: ObservableLocation {
 		self.longitude = longitude
 	}
 	
-	func saveLocation(to context: NSManagedObjectContext) throws -> UUID? {
-		let savedLocation = SavedLocation(context: context)
+	func saveLocation(to context: ModelContext) throws -> UUID? {
+		let savedLocation = SavedLocation()
 		savedLocation.title = title
 		savedLocation.subtitle = subtitle
 		savedLocation.timeZoneIdentifier = timeZoneIdentifier

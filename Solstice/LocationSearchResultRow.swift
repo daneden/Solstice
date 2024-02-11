@@ -9,7 +9,6 @@ import SwiftUI
 import MapKit
 
 struct LocationSearchResultRow: View {
-	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.dismissSearch) private var dismiss
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?

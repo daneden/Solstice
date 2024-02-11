@@ -7,18 +7,20 @@
 
 import SwiftUI
 import Solar
+import SwiftData
 
 struct SidebarListView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	
-	@Environment(\.managedObjectContext) private var viewContext
+	@Environment(\.modelContext) private var modelContext
 	
-	@FetchRequest(
-		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
-		animation: .default)
-	private var items: FetchedResults<SavedLocation>
+	@Query var items: [SavedLocation]
+//	@FetchRequest(
+//		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
+//		animation: .default)
+//	private var items: FetchedResults<SavedLocation>
 		
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
@@ -64,30 +66,28 @@ struct SidebarListView: View {
 				}
 				
 				ForEach(sortedItems) { item in
-					if let tag = item.uuid?.uuidString {
-						DaylightSummaryRow(location: item)
-							.contextMenu {
-								Button(role: .destructive) {
-									deleteItem(item)
-								} label: {
-									Label("Delete Location", systemImage: "trash")
-								}
-							} preview: {
-								DetailView(location: item)
-									.environmentObject(timeMachine)
+					DaylightSummaryRow(location: item)
+						.contextMenu {
+							Button(role: .destructive) {
+								deleteItem(item)
+							} label: {
+								Label("Delete Location", systemImage: "trash")
 							}
-							#if os(iOS)
-							.onDrag {
-								let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
-								
-								userActivity.title = "See daylight for \(item.title!)"
-								userActivity.targetContentIdentifier = item.uuid?.uuidString
-								
-								return NSItemProvider(object: userActivity)
-							}
-							#endif
-							.tag(tag)
-					}
+						} preview: {
+							DetailView(location: item)
+								.environmentObject(timeMachine)
+						}
+						#if os(iOS)
+						.onDrag {
+							let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
+							
+							userActivity.title = "See daylight for \(item.title)"
+							userActivity.targetContentIdentifier = item.uuid.uuidString
+							
+							return NSItemProvider(object: userActivity)
+						}
+						#endif
+						.tag(item.uuid.uuidString)
 				}
 				.onDelete(perform: deleteItems)
 			} header: {
@@ -140,10 +140,10 @@ extension SidebarListView {
 	
 	private func deleteItems(offsets: IndexSet) {
 		withAnimation {
-			offsets.map { sortedItems[$0] }.forEach(viewContext.delete)
+			offsets.map { sortedItems[$0] }.forEach(modelContext.delete)
 			
 			do {
-				try viewContext.save()
+				try modelContext.save()
 			} catch {
 				print(error)
 			}
@@ -152,10 +152,10 @@ extension SidebarListView {
 	
 	private func deleteItem(_ item: SavedLocation) {
 		withAnimation {
-			viewContext.delete(item)
+			modelContext.delete(item)
 			
 			do {
-				try viewContext.save()
+				try modelContext.save()
 			} catch {
 				print(error)
 			}
@@ -168,7 +168,7 @@ struct SidebarListView_Previews: PreviewProvider {
 		NavigationStack {
 			SidebarListView()
 		}
-			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+		.modelContainer(for: SavedLocation.self, inMemory: true)
 			.environmentObject(TimeMachine.preview)
 			.environmentObject(CurrentLocation())
 	}

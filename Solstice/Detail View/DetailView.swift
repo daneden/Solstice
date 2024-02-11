@@ -14,7 +14,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		"me.daneden.Solstice.viewLocation"
 	}
 	
-	@Environment(\.managedObjectContext) var viewContext
+	@Environment(\.modelContext) var modelContext
 	@Environment(\.dismiss) var dismiss
 	
 	@ObservedObject var location: Location
@@ -28,11 +28,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	var navBarTitleText: Text {
-		guard let title = location.title else {
-			return location is CurrentLocation ? Text("My Location") : Text(verbatim: "Solstice")
-		}
-		
-		return Text(title)
+		return Text(location.title)
 	}
 	
 	var body: some View {
@@ -83,12 +79,12 @@ struct DetailView<Location: ObservableLocation>: View {
 				var navigationSelection: String? = nil
 				
 				if let location = location as? SavedLocation {
-					navigationSelection = location.uuid?.uuidString
+					navigationSelection = location.uuid.uuidString
 				} else if let location = location as? CurrentLocation {
 					navigationSelection = location.id
 				}
 				
-				userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+				userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title)"
 				
 				userActivity.targetContentIdentifier = navigationSelection
 				userActivity.isEligibleForSearch = true
@@ -164,7 +160,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				Button {
 					dismiss()
 					withAnimation {
-						if let id = try? location.saveLocation(to: viewContext) {
+						if let id = try? location.saveLocation(to: modelContext) {
 							selectedLocation = id.uuidString
 						}
 					}

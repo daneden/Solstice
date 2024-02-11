@@ -7,6 +7,8 @@
 
 import SwiftUI
 import StoreKit
+import SwiftData
+import CoreData
 
 @main
 struct SolsticeApp: App {
@@ -14,14 +16,37 @@ struct SolsticeApp: App {
 	@StateObject private var currentLocation = CurrentLocation()
 	@StateObject private var timeMachine = TimeMachine()
 	
-	private let persistenceController = PersistenceController.shared
+	var container: ModelContainer = {
+		let schema = Schema([SavedLocation.self])
+		let existingStoreURL = NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite"
+		let savedStoreURL = Bundle.main.url(forResource: "DefaultData", withExtension: "sqlite")
+		var dataExists = false
+		
+		if FileManager.default.fileExists(atPath: existingStoreURL) {
+			dataExists = true
+		} else {
+			do {
+				try FileManager.default.copyItem(at: savedStoreURL!, to: URL(fileURLWithPath: existingStoreURL))
+			} catch {
+				fatalError("Could not copy default store to app support library: \(error)")
+			}
+		}
+		
+		let modelConfiguration = ModelConfiguration(schema: schema, url: URL(fileURLWithPath: existingStoreURL))
+		
+		do {
+			return try ModelContainer(for: schema, configurations: modelConfiguration)
+		} catch {
+			fatalError("Could not create ModelContainer: \(error)")
+		}
+	}()
 
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
 				.environmentObject(currentLocation)
 				.environmentObject(timeMachine)
-				.environment(\.managedObjectContext, persistenceController.container.viewContext)
+				.modelContainer(container)
 				.task {
 					for await result in Transaction.updates {
 						switch result {

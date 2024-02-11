@@ -25,14 +25,6 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 		location is CurrentLocation
 	}
 	
-	var subtitle: String? {
-		if location is CurrentLocation && location.title == nil {
-			return "—"
-		} else {
-			return location.subtitle
-		}
-	}
-	
 	@ViewBuilder
 	var trailingContent: some View {
 		if let solar {
@@ -78,12 +70,12 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 								.symbolVariant(.fill)
 						}
 						
-						Text(location.title ?? "Current location")
+						Text(location.title)
 							.id(location.title)
 							.lineLimit(2)
 					}
 					
-					if let subtitle,
+					if let subtitle = location.subtitle,
 						 !subtitle.isEmpty {
 						Text(subtitle)
 							.id(subtitle)

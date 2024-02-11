@@ -11,7 +11,7 @@ import Intents
 import Solar
 
 struct SolsticeWidgetLocation: AnyLocation {
-	var title: String?
+	var title: String = "Solstice"
 	var subtitle: String?
 	var timeZoneIdentifier: String?
 	var latitude: Double

@@ -198,6 +198,7 @@
       }
     },
     "%@ Solstice" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1098,6 +1099,7 @@
       }
     },
     "my location" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1118,6 +1120,7 @@
       }
     },
     "My Location %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

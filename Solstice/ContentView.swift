@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CoreData
+import SwiftData
 import Solar
 
 struct ContentView: View {
@@ -26,7 +26,7 @@ struct ContentView: View {
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 	
-	@FetchRequest(sortDescriptors: []) private var items: FetchedResults<SavedLocation>
+	@Query var items: [SavedLocation]
 	
 	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 			
@@ -41,7 +41,7 @@ struct ContentView: View {
 				case currentLocation.id:
 					DetailView(location: currentLocation)
 				case .some(let id):
-					if let item = items.first(where: { $0.uuid?.uuidString == id }) {
+					if let item = items.first(where: { $0.uuid.uuidString == id }) {
 						DetailView(location: item)
 					} else {
 						placeholderView
@@ -161,7 +161,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		ContentView()
-			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+			.modelContainer(for: SavedLocation.self, inMemory: true)
 			.environmentObject(TimeMachine.preview)
 			.environmentObject(CurrentLocation())
 	}

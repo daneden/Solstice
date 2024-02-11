@@ -55,17 +55,9 @@ struct DailyOverview<Location: AnyLocation>: View {
 				#if !os(watchOS)
 				.contextMenu {
 					if let chartRenderedAsImage {
-						var locationTitle: Text {
-							guard let title = location.title else {
-								return Text("my location")
-							}
-							
-							return Text(title)
-						}
-						
 						ShareLink(
 							item: chartRenderedAsImage,
-							preview: SharePreview("Daylight in \(locationTitle)", image: chartRenderedAsImage)
+							preview: SharePreview("Daylight in \(Text(location.title))", image: chartRenderedAsImage)
 						)
 					}
 
@@ -175,14 +167,8 @@ extension DailyOverview {
 			
 			HStack {
 				VStack(alignment: .leading) {
-					Group {
-						if let title = location.title {
-							Text(title)
-						} else {
-							Text("My Location")
-						}
-					}
-					.font(.headline)
+					Text(location.title)
+						.font(.headline)
 					
 					let duration = solar.daylightDuration.localizedString
 					Text("\(duration) of daylight")

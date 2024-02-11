@@ -8,6 +8,7 @@
 import SwiftUI
 import Solar
 import CoreLocation
+import SwiftData
 
 fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool>)
 
@@ -30,10 +31,7 @@ struct NotificationSettings: View {
 	
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
-	@FetchRequest(
-		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
-		animation: .default)
-	private var items: FetchedResults<SavedLocation>
+	@Query var items: [SavedLocation]
 	
 	fileprivate var notificationFragments: [NotificationFragment] {
 		[
@@ -72,10 +70,8 @@ struct NotificationSettings: View {
 						Text("Current location")
 							.tag(String?.none)
 						ForEach(items) { location in
-							if let title = location.title {
-								Text(title)
-									.tag(location.uuid?.uuidString)
-							}
+							Text(location.title)
+								.tag(location.uuid.uuidString)
 						}
 					}
 				} footer: {

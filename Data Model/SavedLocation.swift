@@ -10,13 +10,13 @@ import Foundation
 import SwiftData
 
 
-@Model public class SavedLocation {
+@Model class SavedLocation {
     var latitude: Double = 51.509865
     var longitude: Double = -0.118092
     var subtitle: String?
     var timeZoneIdentifier: String? = "GMT"
     var title: String = ""
-    var uuid: UUID?
+    var uuid: UUID = UUID()
     public init() {
 
     }

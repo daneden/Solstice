@@ -17,7 +17,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	@AppStorage(Preferences.cachedLatitude) var latitude
 	@AppStorage(Preferences.cachedLongitude) var longitude
 	
-	@Published var title: String?
+	@Published var title: String = "My Location"
 	@Published var subtitle: String?
 	let id = "currentLocation"
 	
@@ -69,10 +69,11 @@ extension CurrentLocation {
 		longitude = location.coordinate.longitude
 		
 		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
-		if let firstResult = reverseGeocoded?.first {
+		if let firstResult = reverseGeocoded?.first,
+			 let resultTitle = firstResult.locality {
 			withAnimation {
 				placemark = firstResult
-				title = firstResult.locality
+				title = resultTitle
 				subtitle = firstResult.country
 				timeZoneIdentifier = firstResult.timeZone?.identifier
 			}

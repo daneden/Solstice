@@ -12,20 +12,12 @@ struct WidgetLocationView: View {
 	var location: SolsticeWidgetLocation
 	
 	var locationName: Text {
-		guard let title = location.title else {
-			switch location.isRealLocation {
-			case true:
-				return Text("My Location \(Image(systemName: "location"))")
-			case false:
-				return Text("\(Image("Solstice.SFSymbol")) Solstice")
-			}
-		}
-		
+			
 		switch location.isRealLocation {
 		case true:
-			return Text("\(Text(title)) \(Image(systemName: "location"))", comment: "Widget heading for real location")
+			return Text("\(Text(location.title)) \(Image(systemName: "location"))", comment: "Widget heading for real location")
 		case false:
-			return Text("\(Image("Solstice.SFSymbol")) \(Text(title))", comment: "Widget heading for custom location")
+			return Text("\(Image("Solstice.SFSymbol")) \(Text(location.title))", comment: "Widget heading for custom location")
 		}
 	}
 	

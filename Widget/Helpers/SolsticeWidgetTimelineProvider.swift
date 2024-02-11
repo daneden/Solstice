@@ -72,7 +72,7 @@ extension SolsticeWidgetTimelineProvider {
 			return .defaultLocation
 		}
 		
-		return SolsticeWidgetLocation(title: placemark.locality,
+		return SolsticeWidgetLocation(title: placemark.locality ?? (isRealLocation ? "My Location" : "Location"),
 																	subtitle: placemark.country,
 																	timeZoneIdentifier: placemark.timeZone?.identifier,
 																	latitude: location.coordinate.latitude,

@@ -10,7 +10,7 @@ import UserNotifications
 import CoreLocation
 import Solar
 import SwiftUI
-import CoreData
+import SwiftData
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
@@ -51,12 +51,18 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		var location: CLLocation?
 		var timeZone = localTimeZone
 		
-		if let customNotificationLocationUUID {
-			let request = NSFetchRequest<SavedLocation>(entityName: "SavedLocation")
-			request.fetchLimit = 1
-			request.predicate = NSPredicate(format: "uuid LIKE %@", customNotificationLocationUUID)
-			let context = PersistenceController.shared.container.viewContext
-			let objects = try? context.fetch(request)
+		let configuration = ModelConfiguration(isStoredInMemoryOnly: false, allowsSave: false)
+		
+		if let customNotificationLocationUUID,
+			 let container = try? ModelContainer(for: SavedLocation.self, configurations: configuration) {
+			var fetchDescriptor = FetchDescriptor<SavedLocation>(
+				predicate: #Predicate { $0.uuid.uuidString == customNotificationLocationUUID }
+			)
+			
+			fetchDescriptor.fetchLimit = 1
+			
+			let actor = BackgroundSerialPersistenceActor(container: container)
+			let objects = try? await actor.fetch(fetchDescriptor)
 			
 			if let latitude = objects?.first?.latitude,
 				 let longitude = objects?.first?.longitude,
