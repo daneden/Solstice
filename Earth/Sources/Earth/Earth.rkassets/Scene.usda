@@ -261,7 +261,7 @@ def Xform "Root" (
         def Shader "Daylight_Material"
         {
             uniform token info:id = "ND_realitykit_pbr_surfaceshader"
-            float inputs:ambientOcclusion = 1
+            float inputs:ambientOcclusion = 0
             float inputs:ambientOcclusion.connect = None
             color3f inputs:baseColor.connect = </Root/EarthMaterial/Screen.outputs:out>
             float inputs:clearcoat = 0
@@ -278,7 +278,7 @@ def Xform "Root" (
             token outputs:out
             float2 ui:nodegraph:node:pos = (1216.5, 441.5)
             float2 ui:nodegraph:node:size = (167, 307)
-            int ui:nodegraph:node:stackingOrder = 416
+            int ui:nodegraph:node:stackingOrder = 419
             string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:clearcoatRoughness", "outputs:out", "inputs:baseColor", "inputs:baseColor"]
         }
 
@@ -298,10 +298,10 @@ def Xform "Root" (
             float outputs:Multiply_out.connect = </Root/EarthMaterial/dayNightAlphaMix/Multiply.outputs:out>
             float2 ui:nodegraph:node:pos = (393, 804.5)
             float2 ui:nodegraph:node:size = (165.5, 109)
-            int ui:nodegraph:node:stackingOrder = 404
+            int ui:nodegraph:node:stackingOrder = 420
             string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:Multiply_out"]
             float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1259.244, 102.5)
-            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (158.48811, 81)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (158, 81)
             int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 887
 
             def Shader "Position"
@@ -329,11 +329,11 @@ def Xform "Root" (
             {
                 uniform token info:id = "ND_multiply_float"
                 float inputs:in1.connect = </Root/EarthMaterial/dayNightAlphaMix/Separate3.outputs:outz>
-                float inputs:in2 = 15
+                float inputs:in2 = 5
                 float outputs:out
                 float2 ui:nodegraph:node:pos = (1090, 102.5)
                 float2 ui:nodegraph:node:size = (60, 36)
-                int ui:nodegraph:node:stackingOrder = 987
+                int ui:nodegraph:node:stackingOrder = 1013
             }
 
             def Shader "Add"

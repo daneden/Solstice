@@ -96,6 +96,7 @@ struct EquinoxAndSolsticeInfoView: View {
 						Text("Month of year")
 					}
 					.pickerStyle(.segmented)
+					.listRowSeparator(.hidden)
 
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					

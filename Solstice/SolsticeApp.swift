@@ -35,7 +35,7 @@ struct SolsticeApp: App {
 				}
 		}
 		#if os(visionOS) || os(macOS)
-		.defaultSize(width: 900, height: 600)
+		.defaultSize(width: 1200, height: 900)
 		#endif
 		.onChange(of: phase) {
 			switch phase {
