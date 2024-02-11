@@ -25,12 +25,15 @@ struct EarthModelView: View {
 	var rotationAmount: Double = .pi / 2
 	var body: some View {
 		RealityView { content in
-			if let earth = try? await Entity(named: "Scene", in: earthBundle) {
+			EarthModelSystem.registerSystem()
+			Earth.Is_EarthComponent.registerComponent()
+			
+			if let earth = try? await Entity(named: "Scene", in: Earth.earthBundle) {
 				content.add(earth)
 			}
 		} update: { content in
 			guard let rootEntity = content.entities.first,
-						let earth = rootEntity.findEntity(named: "Sphere"),
+						let earth = rootEntity.findEntity(named: "Earth"),
 						var modelComponent = earth.components[ModelComponent.self],
 						var shaderMaterial = modelComponent.materials.first as? ShaderGraphMaterial else {
 				return
@@ -150,6 +153,17 @@ struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
 #endif
 }
 
+struct WrappedPreview: View {
+	@State var r = Double.pi
+	var body: some View {
+		VStack {
+			EarthModelView(rotationAmount: r)
+			Slider(value: $r, in: 0...(Double.pi * 2))
+				.padding()
+		}
+	}
+}
+
 #Preview {
-	EarthModelView()
+	WrappedPreview()
 }
