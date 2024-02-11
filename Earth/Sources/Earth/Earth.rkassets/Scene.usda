@@ -202,7 +202,7 @@ def Xform "Root" (
             float2 ui:nodegraph:node:size = (203.5, 81)
             int ui:nodegraph:node:stackingOrder = 382
             float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (761.9969, 78.75)
-            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (191.99377, 81)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (192.02243, 81)
             int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 418
 
             def Shader "Texcoord"
@@ -300,8 +300,8 @@ def Xform "Root" (
             float2 ui:nodegraph:node:size = (165.5, 109)
             int ui:nodegraph:node:stackingOrder = 404
             string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:Multiply_out"]
-            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1106, 102.5)
-            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (158, 81)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1259.244, 102.5)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (158.48811, 81)
             int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 887
 
             def Shader "Position"
@@ -316,11 +316,11 @@ def Xform "Root" (
             def Shader "Separate3"
             {
                 uniform token info:id = "ND_separate3_vector3"
-                float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Rotate_by_passed_angle.outputs:out>
+                float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Flip.outputs:out>
                 float outputs:outx
                 float outputs:outy
                 float outputs:outz
-                float2 ui:nodegraph:node:pos = (789.25, 102.5)
+                float2 ui:nodegraph:node:pos = (942.25, 102.5)
                 float2 ui:nodegraph:node:size = (115.5, 145)
                 int ui:nodegraph:node:stackingOrder = 884
             }
@@ -331,7 +331,7 @@ def Xform "Root" (
                 float inputs:in1.connect = </Root/EarthMaterial/dayNightAlphaMix/Separate3.outputs:outz>
                 float inputs:in2 = 15
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (937, 102.5)
+                float2 ui:nodegraph:node:pos = (1090, 102.5)
                 float2 ui:nodegraph:node:size = (60, 36)
                 int ui:nodegraph:node:stackingOrder = 987
             }
@@ -340,11 +340,11 @@ def Xform "Root" (
             {
                 uniform token info:id = "ND_add_float"
                 float inputs:in1.connect = </Root/EarthMaterial/dayNightAlphaMix.inputs:Sunlight_Angle>
-                float inputs:in2 = 90
+                float inputs:in2 = -90
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (313.5, 223.25)
+                float2 ui:nodegraph:node:pos = (311.25, 223.25)
                 float2 ui:nodegraph:node:size = (61.5, 36.5)
-                int ui:nodegraph:node:stackingOrder = 1004
+                int ui:nodegraph:node:stackingOrder = 1005
             }
 
             def Shader "Rotate_by_passed_angle"
@@ -354,9 +354,9 @@ def Xform "Root" (
                 float3 inputs:axis
                 float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Axial_tilt_correction.outputs:out>
                 float3 outputs:out
-                float2 ui:nodegraph:node:pos = (567.75, 102.5)
+                float2 ui:nodegraph:node:pos = (563.25, 102.5)
                 float2 ui:nodegraph:node:size = (207.5, 145)
-                int ui:nodegraph:node:stackingOrder = 998
+                int ui:nodegraph:node:stackingOrder = 1006
             }
 
             def Shader "Axial_tilt_correction"
@@ -366,9 +366,22 @@ def Xform "Root" (
                 float3 inputs:axis = (0, 0, 1)
                 float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Position.outputs:out>
                 float3 outputs:out
-                float2 ui:nodegraph:node:pos = (313.5, 72.5)
+                float2 ui:nodegraph:node:pos = (311.25, 72.5)
                 float2 ui:nodegraph:node:size = (176.5, 145)
                 int ui:nodegraph:node:stackingOrder = 997
+            }
+
+            def Shader "Flip"
+            {
+                uniform token info:id = "ND_rotate3d_vector3"
+                float inputs:amount = 180
+                float inputs:amount.connect = None
+                float3 inputs:axis = (1, 0, 0)
+                float3 inputs:in.connect = </Root/EarthMaterial/dayNightAlphaMix/Rotate_by_passed_angle.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (775.75, 102.5)
+                float2 ui:nodegraph:node:size = (97.5, 145)
+                int ui:nodegraph:node:stackingOrder = 1012
             }
         }
 
@@ -816,11 +829,6 @@ def Xform "Root" (
             {
                 rel iblEntity = </Root/Earth_And_Ornaments/Earth>
                 uniform token info:id = "RealityKit.ImageBasedLightReceiver"
-            }
-
-            def RealityKitCustomComponent "Earth_Is_EarthComponent"
-            {
-                uniform token info:id = "Earth.Is_EarthComponent"
             }
         }
     }

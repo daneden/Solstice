@@ -3,8 +3,7 @@
     "objectMetadataList" : [
       [
         "EC3A0F75-C0D1-4193-A3C3-07639888FCF8",
-        "Root",
-        "Material"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -12,7 +11,8 @@
       },
       [
         "EC3A0F75-C0D1-4193-A3C3-07639888FCF8",
-        "Root"
+        "Root",
+        "Material"
       ],
       {
         "isExpanded" : true,
@@ -25,157 +25,7 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
-        "Earth",
-        "geom",
-        "realistic",
-        "materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth",
-        "geom",
-        "realistic",
-        "geo"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
         "Group",
-        "Equator",
-        "EquatorMaterial",
-        "Distance"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "EarthMaterial",
-        "textureCoordTimeOffset"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Equator",
-        "DefaultMaterial",
-        "Distance"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Equator",
-        "EquatorMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth",
-        "geom",
-        "realistic"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Sphere",
-        "Material"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Earth"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "EarthMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
-        "Equator"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
-        "Equator",
-        "EquatorMaterial",
-        "Distance"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
-        "Poles"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
         "Poles",
         "DefaultMaterial"
       ],
@@ -187,17 +37,6 @@
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Earth_And_Ornaments",
-        "Equator",
-        "EquatorMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
         "Earth"
       ],
       {
@@ -206,29 +45,8 @@
       },
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Sphere",
         "EarthMaterial",
         "dayNightAlphaMix"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth",
-        "geom"
       ],
       {
         "isExpanded" : true,
@@ -250,6 +68,220 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
+        "EarthMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments",
+        "Equator",
+        "EquatorMaterial",
+        "Distance"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Equator",
+        "DefaultMaterial",
+        "Distance"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Earth"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth",
+        "geom"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Sphere",
+        "Material",
+        "dayNightAlphaMix"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Equator",
+        "EquatorMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments",
+        "Equator"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments",
+        "Poles",
+        "DefaultMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Equator",
+        "EquatorMaterial",
+        "Distance"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments",
+        "Poles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth",
+        "geom",
+        "realistic",
+        "materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth",
+        "geom",
+        "realistic"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments",
+        "Equator",
+        "EquatorMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "EarthMaterial",
+        "textureCoordTimeOffset"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Equator"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth",
+        "geom",
+        "realistic",
+        "geo"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "EarthMaterial",
+        "dayNightAlphaMix"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Sphere",
         "EarthMaterial",
         "dayNightAlphaMix"
       ],
@@ -270,40 +302,8 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
-        "Group",
-        "Poles",
-        "DefaultMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Equator"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "EarthMaterial",
-        "dayNightAlphaMix"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
         "Sphere",
-        "Material",
-        "dayNightAlphaMix"
+        "Material"
       ],
       {
         "isExpanded" : true,

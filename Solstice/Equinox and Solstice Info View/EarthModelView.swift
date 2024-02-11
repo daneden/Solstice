@@ -25,9 +25,6 @@ struct EarthModelView: View {
 	var rotationAmount: Double = .pi / 2
 	var body: some View {
 		RealityView { content in
-			EarthModelSystem.registerSystem()
-			Earth.Is_EarthComponent.registerComponent()
-			
 			if let earth = try? await Entity(named: "Scene", in: Earth.earthBundle) {
 				content.add(earth)
 			}

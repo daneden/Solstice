@@ -45,7 +45,7 @@ struct NotificationSettings: View {
 	}
 	
 	var body: some View {
-		#if os(iOS)
+		#if !os(macOS)
 		NavigationStack {
 			content
 		}
