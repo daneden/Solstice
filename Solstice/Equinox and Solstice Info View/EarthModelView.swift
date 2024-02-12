@@ -22,7 +22,7 @@ typealias NativeColor = NSColor
 
 #if os(visionOS)
 struct EarthModelView: View {
-	var rotationAmount: Double = .pi / 2
+	var rotationAmount: Double = 0
 	var body: some View {
 		RealityView { content in
 			if let earth = try? await Entity(named: "Scene", in: Earth.earthBundle) {
@@ -49,9 +49,9 @@ struct EarthModelView: View {
 #else
 struct EarthModelView: View {
 	@State var rotationAmount: Double = .pi / 2
-	#if os(iOS)
+#if os(iOS)
 	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
-	#endif
+#endif
 	@State var scene: EarthScene?
 	var body: some View {
 		VStack {
@@ -59,7 +59,7 @@ struct EarthModelView: View {
 				CustomSceneView(scene: $scene)
 					.frame(maxHeight: .infinity)
 			} else {
-				#if os(iOS)
+#if os(iOS)
 				HStack {
 					Spacer()
 					ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
@@ -69,7 +69,7 @@ struct EarthModelView: View {
 					Spacer()
 				}
 				.frame(maxHeight: .infinity)
-				#endif
+#endif
 			}
 		}
 		.onChange(of: rotationAmount) {
@@ -88,7 +88,7 @@ struct EarthModelView: View {
 			}
 		}
 		.task {
-			#if os(iOS)
+#if os(iOS)
 			if await !resourceRequest.conditionallyBeginAccessingResources() {
 				do {
 					try await resourceRequest.beginAccessingResources()
@@ -96,15 +96,15 @@ struct EarthModelView: View {
 					print(error)
 				}
 			}
-			#endif
+#endif
 			
 			scene = EarthScene()
 		}
-		#if os(iOS)
+#if os(iOS)
 		.onDisappear {
 			resourceRequest.endAccessingResources()
 		}
-		#endif
+#endif
 	}
 }
 #endif

@@ -21,6 +21,7 @@
 		7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		7106C88829A2775C0007A7EC /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
 		7106C88B29A277740007A7EC /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7106C88A29A277740007A7EC /* Solar */; };
+		7106C88929A277680007A7EC /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
 		710D9B6B2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B6C2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
@@ -64,7 +65,6 @@
 		713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		713F800229BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		713F800329BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
-		71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7147FE1A2B68512800F943FB /* SunsetSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7147FE192B68512800F943FB /* SunsetSummary.swift */; };
 		7147FE1B2B68512800F943FB /* SunsetSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7147FE192B68512800F943FB /* SunsetSummary.swift */; };
 		714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714A944529C7318D00C67A4A /* SidebarListView.swift */; };
@@ -95,6 +95,11 @@
 		7188714729DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718B136B29A918680001D4DC /* SupporterSettings.swift */; };
 		718B136E29A9196C0001D4DC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 718B136D29A918AD0001D4DC /* README.md */; };
+		718FEEBA2B7A1F3A00878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEB92B7A1F3A00878082 /* Solar */; };
+		718FEEBC2B7A1F3F00878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEBB2B7A1F3F00878082 /* Solar */; };
+		718FEEBE2B7A1F4300878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEBD2B7A1F4300878082 /* Solar */; };
+		718FEEC02B7A1F4900878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEBF2B7A1F4900878082 /* Solar */; };
+		718FEEC22B7A1F5200878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEC12B7A1F5200878082 /* Solar */; };
 		71908ACD2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908ACE2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908ACF2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
@@ -114,7 +119,6 @@
 		7195120829AFBDC5009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7195120929AFBDC5009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
 		7195121329AFBDC5009D282F /* macOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195120729AFBDC5009D282F /* macOS Widget Extension.appex */; platformFilters = (macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7195121829AFBDD9009D282F /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7195121729AFBDD9009D282F /* Solar */; };
 		7195121A29AFBDFC009D282F /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
 		7195121B29AFBDFF009D282F /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
 		7195121C29AFBE02009D282F /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
@@ -148,6 +152,7 @@
 		7195124429B0B3D6009D282F /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
 		7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		7195124829B0B3D6009D282F /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7195122E29B0B3D6009D282F /* Solar */; };
+		7195124629B0B3D6009D282F /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		7195124929B0B3D6009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
 		7195124A29B0B3D6009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
@@ -170,7 +175,6 @@
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468B28E5895F00E866CE /* Preview Assets.xcassets */; };
 		7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 7198469828E5898500E866CE /* StoreKitConfiguration.storekit */; };
-		7198469C28E58CAA00E866CE /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7198469B28E58CAA00E866CE /* Solar */; };
 		7198469E28E58CCD00E866CE /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198469D28E58CCD00E866CE /* DetailView.swift */; };
 		719846A828E991FA00E866CE /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A728E991FA00E866CE /* LocationSearchService.swift */; };
 		719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A928E992A200E866CE /* LocationSearchResultRow.swift */; };
@@ -211,6 +215,7 @@
 		719F928029ACD22100C06921 /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		719F928129ACD22100C06921 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		719F928329ACD24700C06921 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 719F928229ACD24700C06921 /* Solar */; };
+		719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		719F928829ACD29100C06921 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52AD29ABD19B00D62BB7 /* ContentView.swift */; };
 		71A2BDE629B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE729B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
@@ -301,13 +306,6 @@
 			remoteGlobalIDString = 7195122D29B0B3D6009D282F;
 			remoteInfo = "watchOS Widget Extension copy";
 		};
-		71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7198467928E5895E00E866CE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 719F924229ACD1CC00C06921;
-			remoteInfo = "Solstice watchOS Watch App";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -329,7 +327,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				71475FE729ACF87E0031D576 /* Solstice watchOS Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,7 +457,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7106C88B29A277740007A7EC /* Solar in Frameworks */,
+				718FEEBC2B7A1F3F00878082 /* Solar in Frameworks */,
 				7106C86C29A276B40007A7EC /* SwiftUI.framework in Frameworks */,
 				7106C86A29A276B40007A7EC /* WidgetKit.framework in Frameworks */,
 			);
@@ -470,7 +467,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7195121829AFBDD9009D282F /* Solar in Frameworks */,
+				718FEEBE2B7A1F4300878082 /* Solar in Frameworks */,
 				7195120929AFBDC5009D282F /* SwiftUI.framework in Frameworks */,
 				7195120829AFBDC5009D282F /* WidgetKit.framework in Frameworks */,
 			);
@@ -480,7 +477,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7195124829B0B3D6009D282F /* Solar in Frameworks */,
+				718FEEBA2B7A1F3A00878082 /* Solar in Frameworks */,
 				7195124929B0B3D6009D282F /* SwiftUI.framework in Frameworks */,
 				7195124A29B0B3D6009D282F /* WidgetKit.framework in Frameworks */,
 			);
@@ -490,7 +487,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7198469C28E58CAA00E866CE /* Solar in Frameworks */,
+				718FEEC02B7A1F4900878082 /* Solar in Frameworks */,
 				71F777A52B77BDD400B43335 /* Earth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,7 +496,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				719F928329ACD24700C06921 /* Solar in Frameworks */,
+				718FEEC22B7A1F5200878082 /* Solar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,7 +798,7 @@
 			);
 			name = "iOS Widget Extension";
 			packageProductDependencies = (
-				7106C88A29A277740007A7EC /* Solar */,
+				718FEEBB2B7A1F3F00878082 /* Solar */,
 			);
 			productName = WidgetExtension;
 			productReference = 7106C86829A276B30007A7EC /* iOS Widget Extension.appex */;
@@ -821,7 +818,7 @@
 			);
 			name = "macOS Widget Extension";
 			packageProductDependencies = (
-				7195121729AFBDD9009D282F /* Solar */,
+				718FEEBD2B7A1F4300878082 /* Solar */,
 			);
 			productName = "macOS Widget ExtensionExtension";
 			productReference = 7195120729AFBDC5009D282F /* macOS Widget Extension.appex */;
@@ -841,7 +838,7 @@
 			);
 			name = "watchOS Widget Extension";
 			packageProductDependencies = (
-				7195122E29B0B3D6009D282F /* Solar */,
+				718FEEB92B7A1F3A00878082 /* Solar */,
 			);
 			productName = WidgetExtension;
 			productReference = 7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */;
@@ -860,14 +857,13 @@
 			buildRules = (
 			);
 			dependencies = (
-				71AEB7AF29AD0F2100A7952D /* PBXTargetDependency */,
 				7106C87B29A276B40007A7EC /* PBXTargetDependency */,
 				7195121229AFBDC5009D282F /* PBXTargetDependency */,
 			);
 			name = Solstice;
 			packageProductDependencies = (
-				7198469B28E58CAA00E866CE /* Solar */,
 				71F777A42B77BDD400B43335 /* Earth */,
+				718FEEBF2B7A1F4900878082 /* Solar */,
 			);
 			productName = Solstice;
 			productReference = 7198468128E5895E00E866CE /* Solstice.app */;
@@ -889,7 +885,7 @@
 			);
 			name = "Solstice watchOS Watch App";
 			packageProductDependencies = (
-				719F928229ACD24700C06921 /* Solar */,
+				718FEEC12B7A1F5200878082 /* Solar */,
 			);
 			productName = "Solstice watchOS Watch App";
 			productReference = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */;
@@ -933,8 +929,8 @@
 			);
 			mainGroup = 7198467828E5895E00E866CE;
 			packageReferences = (
-				7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */,
 				71F777A32B77BDD400B43335 /* XCLocalSwiftPackageReference "Earth" */,
+				718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */,
 			);
 			productRefGroup = 7198468228E5895E00E866CE /* Products */;
 			projectDirPath = "";
@@ -1299,12 +1295,6 @@
 			target = 7195122D29B0B3D6009D282F /* watchOS Widget Extension */;
 			targetProxy = 7195125429B0B401009D282F /* PBXContainerItemProxy */;
 		};
-		71AEB7AF29AD0F2100A7952D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */;
-			targetProxy = 71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1342,7 +1332,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1371,7 +1364,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1503,8 +1499,8 @@
 		7198469328E5895F00E866CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1539,7 +1535,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1559,7 +1555,8 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = xros;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
@@ -1570,8 +1567,8 @@
 		7198469428E5895F00E866CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1606,7 +1603,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1619,7 +1616,8 @@
 				MARKETING_VERSION = 2.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = xros;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -1631,9 +1629,7 @@
 		7198469628E5895F00E866CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1664,16 +1660,14 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Debug;
 		};
 		7198469728E5895F00E866CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1704,7 +1698,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Release;
 		};
@@ -1845,48 +1839,40 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7195122F29B0B3D6009D282F /* XCRemoteSwiftPackageReference "Solar" */ = {
+		718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
-		7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ceeK/Solar";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
+				minimumVersion = 3.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7106C88A29A277740007A7EC /* Solar */ = {
+		718FEEB92B7A1F3A00878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
+			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
-		7195121729AFBDD9009D282F /* Solar */ = {
+		718FEEBB2B7A1F3F00878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
+			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
-		7195122E29B0B3D6009D282F /* Solar */ = {
+		718FEEBD2B7A1F4300878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7195122F29B0B3D6009D282F /* XCRemoteSwiftPackageReference "Solar" */;
+			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
-		7198469B28E58CAA00E866CE /* Solar */ = {
+		718FEEBF2B7A1F4900878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
+			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
-		719F928229ACD24700C06921 /* Solar */ = {
+		718FEEC12B7A1F5200878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */;
+			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
 		71F777A42B77BDD400B43335 /* Earth */ = {
