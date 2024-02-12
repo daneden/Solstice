@@ -51,7 +51,7 @@ extension CountdownWidgetView {
 					.font(.caption)
 				}
 				.progressViewStyle(.circular)
-				.tint(.accent)
+				.tint(Color.accentColor)
 				.widgetAccentable()
 			}
 			.widgetLabel { nextEventText }

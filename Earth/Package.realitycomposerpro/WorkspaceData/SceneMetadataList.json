@@ -25,9 +25,39 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
+        "Earth",
+        "geom",
+        "realistic"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
         "Group",
-        "Poles",
-        "DefaultMaterial"
+        "Poles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Sphere",
+        "Material",
+        "dayNightAlphaMix"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -37,7 +67,7 @@
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Earth_And_Ornaments",
-        "Earth"
+        "Poles"
       ],
       {
         "isExpanded" : true,
@@ -45,30 +75,20 @@
       },
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth_And_Ornaments"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Sphere",
         "EarthMaterial",
         "dayNightAlphaMix"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth",
-        "geom",
-        "realistic",
-        "geo",
-        "lod0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "EarthMaterial"
       ],
       {
         "isExpanded" : true,
@@ -80,18 +100,6 @@
         "Earth_And_Ornaments",
         "Equator",
         "EquatorMaterial",
-        "Distance"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Equator",
-        "DefaultMaterial",
         "Distance"
       ],
       {
@@ -120,51 +128,9 @@
       },
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
-        "Group",
-        "Sphere",
-        "Material",
+        "EarthMaterial",
         "dayNightAlphaMix"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Group",
-        "Equator",
-        "EquatorMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
-        "Equator"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth_And_Ornaments",
-        "Poles",
-        "DefaultMaterial"
       ],
       {
         "isExpanded" : true,
@@ -186,7 +152,18 @@
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Earth_And_Ornaments",
-        "Poles"
+        "Earth"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Group",
+        "Equator",
+        "EquatorMaterial"
       ],
       {
         "isExpanded" : true,
@@ -207,18 +184,9 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
-        "Earth_And_Ornaments"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Earth",
-        "geom",
-        "realistic"
+        "Earth_And_Ornaments",
+        "Equator",
+        "EquatorMaterial"
       ],
       {
         "isExpanded" : true,
@@ -228,8 +196,7 @@
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Earth_And_Ornaments",
-        "Equator",
-        "EquatorMaterial"
+        "Equator"
       ],
       {
         "isExpanded" : true,
@@ -247,9 +214,28 @@
       },
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "EarthMaterial",
+        "dayNightAlphaMix"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Group",
         "Equator"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Sphere",
+        "Material"
       ],
       {
         "isExpanded" : true,
@@ -270,8 +256,9 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
-        "EarthMaterial",
-        "dayNightAlphaMix"
+        "Earth_And_Ornaments",
+        "Poles",
+        "DefaultMaterial"
       ],
       {
         "isExpanded" : true,
@@ -281,9 +268,21 @@
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Group",
-        "Sphere",
-        "EarthMaterial",
-        "dayNightAlphaMix"
+        "Poles",
+        "DefaultMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
+        "Earth",
+        "geom",
+        "realistic",
+        "geo",
+        "lod0"
       ],
       {
         "isExpanded" : true,
@@ -293,17 +292,9 @@
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
         "Group",
-        "Poles"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
-        "Root",
-        "Sphere",
-        "Material"
+        "Equator",
+        "DefaultMaterial",
+        "Distance"
       ],
       {
         "isExpanded" : true,
