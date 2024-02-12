@@ -31,7 +31,7 @@ struct NotificationSettings: View {
 	
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
-	@Query var items: [SavedLocation]
+	@Query(sort: [SortDescriptor(\SavedLocation.title)]) var items: [SavedLocation]
 	
 	fileprivate var notificationFragments: [NotificationFragment] {
 		[

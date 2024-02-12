@@ -158,11 +158,19 @@ struct DetailView<Location: ObservableLocation>: View {
 		if let location = location as? TemporaryLocation {
 			ToolbarItem {
 				Button {
-					dismiss()
-					withAnimation {
-						if let id = try? location.saveLocation(to: modelContext) {
+					do {
+						guard let id = try location.saveLocation(to: modelContext) else {
+							print("Unable to save location: no ID recorded")
+							return
+						}
+						
+						dismiss()
+						
+						withAnimation {
 							selectedLocation = id.uuidString
 						}
+					} catch {
+						print(error)
 					}
 				} label: {
 					Label("Save Location", systemImage: "plus.circle")

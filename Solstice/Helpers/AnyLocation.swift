@@ -69,7 +69,7 @@ class TemporaryLocation: ObservableLocation {
 		savedLocation.timeZoneIdentifier = timeZoneIdentifier
 		savedLocation.longitude = longitude
 		savedLocation.latitude = latitude
-
+		context.insert(savedLocation)
 		try context.save()
 		return savedLocation.uuid
 	}
