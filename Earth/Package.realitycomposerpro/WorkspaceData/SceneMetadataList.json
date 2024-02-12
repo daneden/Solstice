@@ -109,6 +109,17 @@
       [
         "ED5D6B31-B089-42D4-A613-0626899E0FA2",
         "Root",
+        "Earth_And_Ornaments",
+        "Earth",
+        "EarthMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "ED5D6B31-B089-42D4-A613-0626899E0FA2",
+        "Root",
         "Group",
         "Earth"
       ],

@@ -484,81 +484,6 @@ def Xform "Root" (
                     int ui:nodegraph:node:stackingOrder = 407
                 }
 
-                def Shader "diffuseColor"
-                {
-                    uniform token info:id = "UsdUVTexture"
-                    asset inputs:file = @Diffuse.png@
-                    float2 inputs:st.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/diffuseColor/TexCoordReader.outputs:result>
-                    color3f outputs:rgb
-
-                    def Shader "TexCoordReader"
-                    {
-                        uniform token info:id = "UsdPrimvarReader_float2"
-                        token inputs:varname.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
-                        float2 outputs:result
-                    }
-                }
-
-                def Shader "roughness"
-                {
-                    uniform token info:id = "UsdUVTexture"
-                    asset inputs:file = @Specular.png@
-                    float2 inputs:st.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/roughness/TexCoordReader.outputs:result>
-                    float outputs:r
-
-                    def Shader "TexCoordReader"
-                    {
-                        uniform token info:id = "UsdPrimvarReader_float2"
-                        token inputs:varname.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
-                        float2 outputs:result
-                    }
-                }
-
-                def Shader "metallic"
-                {
-                    uniform token info:id = "UsdUVTexture"
-                    asset inputs:file = @Specular.png@
-                    float2 inputs:st.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/metallic/TexCoordReader.outputs:result>
-                    float outputs:r
-
-                    def Shader "TexCoordReader"
-                    {
-                        uniform token info:id = "UsdPrimvarReader_float2"
-                        token inputs:varname.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
-                        float2 outputs:result
-                    }
-                }
-
-                def Shader "normal"
-                {
-                    uniform token info:id = "UsdUVTexture"
-                    asset inputs:file = @Normal.png@
-                    float2 inputs:st.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/normal/TexCoordReader.outputs:result>
-                    normal3f outputs:rgb
-
-                    def Shader "TexCoordReader"
-                    {
-                        uniform token info:id = "UsdPrimvarReader_float2"
-                        token inputs:varname.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
-                        float2 outputs:result
-                    }
-                }
-
-                def Shader "emissiveColor"
-                {
-                    uniform token info:id = "UsdUVTexture"
-                    asset inputs:file = @Emission.png@
-                    float2 inputs:st.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/emissiveColor/TexCoordReader.outputs:result>
-                    color3f outputs:rgb
-
-                    def Shader "TexCoordReader"
-                    {
-                        uniform token info:id = "UsdPrimvarReader_float2"
-                        token inputs:varname.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
-                        float2 outputs:result
-                    }
-                }
-
                 def NodeGraph "textureCoordTimeOffset"
                 {
                     prepend float2 outputs:Add_out.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Add.outputs:out>
@@ -796,21 +721,6 @@ def Xform "Root" (
                     float2 ui:nodegraph:node:pos = (712, 769)
                     float2 ui:nodegraph:node:size = (91, 145)
                     int ui:nodegraph:node:stackingOrder = 412
-                }
-
-                def Shader "Clouds"
-                {
-                    uniform token info:id = "ND_image_color3"
-                    color3f inputs:default
-                    asset inputs:file = @Clouds.jpg@
-                    string inputs:filtertype
-                    float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
-                    string inputs:uaddressmode
-                    string inputs:vaddressmode
-                    color3f outputs:out
-                    float2 ui:nodegraph:node:pos = (712, 1001)
-                    float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 410
                 }
 
                 def Shader "NormalMapDecode"
