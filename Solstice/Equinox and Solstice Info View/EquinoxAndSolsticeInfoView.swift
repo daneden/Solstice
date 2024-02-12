@@ -98,11 +98,7 @@ struct EquinoxAndSolsticeInfoView: View {
 					}
 					.pickerStyle(.segmented)
 					.listRowSeparator(.hidden)
-<<<<<<< HEAD
 
-=======
-					
->>>>>>> f6cb125 (visionOS design optimisations)
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					
 					VStack(alignment: .leading) {
