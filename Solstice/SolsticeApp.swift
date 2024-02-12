@@ -53,6 +53,7 @@ struct SolsticeApp: App {
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
 			SettingsView()
+				.environmentObject(currentLocation)
 		}
 		.defaultSize(width: 500, height: 650)
 		#endif
@@ -60,6 +61,7 @@ struct SolsticeApp: App {
 		#if os(macOS)
 		Settings {
 			SettingsView()
+				.environmentObject(currentLocation)
 				.frame(maxWidth: 500)
 		}
 		
