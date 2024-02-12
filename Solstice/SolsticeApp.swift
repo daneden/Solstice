@@ -49,7 +49,6 @@ struct SolsticeApp: App {
 				currentLocation.requestLocation()
 			}
 		}
-		.defaultSize(width: 1000, height: 800)
 		
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
