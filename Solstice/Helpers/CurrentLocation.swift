@@ -13,17 +13,18 @@ import Combine
 import WidgetKit
 #endif
 
-class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifiable {
-	@AppStorage(Preferences.cachedLatitude) var latitude
-	@AppStorage(Preferences.cachedLongitude) var longitude
-	
-	@Published var title: String = "My Location"
-	@Published var subtitle: String?
+@Observable
+class CurrentLocation: NSObject, ObservableLocation, Identifiable {
+	var title: String = "My Location"
+	var subtitle: String?
 	let id = "currentLocation"
 	
-	@Published private(set) var placemark: CLPlacemark?
+	var latitude: Double { coordinate.latitude }
+	var longitude: Double { coordinate.longitude }
 	
-	@Published var timeZoneIdentifier: String?
+	private(set) var placemark: CLPlacemark?
+	
+	var timeZoneIdentifier: String?
 	
 	private(set) var location: CLLocation? {
 		didSet {
@@ -32,30 +33,22 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	}
 	
 	var coordinate: CLLocationCoordinate2D {
-		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+		location?.coordinate ?? .init()
 	}
 	
 	private let locationManager = CLLocationManager()
 	private let geocoder = CLGeocoder()
 	
-	private var sink: AnyCancellable? = nil
-	
 	override init() {
 		super.init()
-		
-		locationManager.delegate = self
-		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
-		
-		sink = locationManager.publisher(for: \.location).sink { location in
-			Task { await self.processLocation(location) }
-		}
+		self.locationManager.delegate = self
 	}
 	
 	func requestAccess() {
 		#if os(macOS)
-		self.locationManager.requestAlwaysAuthorization()
+		locationManager.requestAlwaysAuthorization()
 		#else
-		self.locationManager.requestWhenInUseAuthorization()
+		locationManager.requestWhenInUseAuthorization()
 		#endif
 	}
 }
@@ -64,9 +57,6 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 extension CurrentLocation {
 	@MainActor func processLocation(_ location: CLLocation?) async -> Void {
 		guard let location else { return }
-		
-		latitude = location.coordinate.latitude
-		longitude = location.coordinate.longitude
 		
 		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
 		if let firstResult = reverseGeocoded?.first,
@@ -80,13 +70,11 @@ extension CurrentLocation {
 		}
 	}
 	
-	func requestLocation() {
-		locationManager.requestLocation()
-		locationManager.startUpdatingLocation()
-
-		#if !os(watchOS) && !os(visionOS)
-		locationManager.startMonitoringSignificantLocationChanges()
-		#endif
+	func requestLocation() async throws {
+		print("requesting location")
+		for try await locationUpdate in CLLocationUpdate.liveUpdates() {
+			self.location = locationUpdate.location
+		}
 	}
 	
 	var authorizationStatus: CLAuthorizationStatus {
@@ -110,42 +98,5 @@ extension CurrentLocation {
 }
 
 extension CurrentLocation: CLLocationManagerDelegate {
-	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-		#if canImport(WidgetKit)
-		WidgetCenter.shared.reloadAllTimelines()
-		#endif
-		
-		if isAuthorized { requestLocation() }
-	}
 	
-	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		print("Received location update")
-		
-		let newLocation = locations.last
-		
-		if location == nil {
-			updateLocation(newLocation)
-		} else if let newLocation, let location,
-			 newLocation.distance(from: location) > CLLocationDistance(10_000) {
-			updateLocation(newLocation)
-		} else {
-			print("Location is within 10km of last update")
-		}
-	}
-	
-	private func updateLocation(_ newLocation: CLLocation?) {
-		self.location = newLocation
-		
-		if newLocation != nil {
-			Task { await NotificationManager.scheduleNotifications(locationManager: self) }
-			
-			#if canImport(WidgetKit)
-			WidgetCenter.shared.reloadAllTimelines()
-			#endif
-		}
-	}
-	
-	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-		print(error)
-	}
 }

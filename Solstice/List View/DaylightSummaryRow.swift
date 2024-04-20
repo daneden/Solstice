@@ -11,7 +11,7 @@ import CoreLocation
 
 struct DaylightSummaryRow<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
-	@ObservedObject var location: Location
+	var location: Location
 	
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	

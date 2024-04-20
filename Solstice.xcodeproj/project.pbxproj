@@ -20,8 +20,6 @@
 		7106C88629A2775C0007A7EC /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
 		7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		7106C88829A2775C0007A7EC /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
-		7106C88B29A277740007A7EC /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7106C88A29A277740007A7EC /* Solar */; };
-		7106C88929A277680007A7EC /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
 		710D9B6B2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B6C2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
@@ -151,8 +149,6 @@
 		7195124329B0B3D6009D282F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7195124429B0B3D6009D282F /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
 		7195124529B0B3D6009D282F /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
-		7195124829B0B3D6009D282F /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7195122E29B0B3D6009D282F /* Solar */; };
-		7195124629B0B3D6009D282F /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		7195124929B0B3D6009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
 		7195124A29B0B3D6009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
@@ -214,8 +210,6 @@
 		719F927F29ACD22100C06921 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		719F928029ACD22100C06921 /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		719F928129ACD22100C06921 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
-		719F928329ACD24700C06921 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 719F928229ACD24700C06921 /* Solar */; };
-		719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		719F928829ACD29100C06921 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB52AD29ABD19B00D62BB7 /* ContentView.swift */; };
 		71A2BDE629B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE729B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
@@ -227,16 +221,6 @@
 		71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
 		71A7E9E229C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
 		71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
-		71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E729C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E829C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
-		71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
-		71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
-		71A7E9EC29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
-		71A7E9ED29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
 		71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
@@ -419,8 +403,6 @@
 		719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solstice watchOS Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A2BDE529B747940071ACE9 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
-		71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
-		71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
 		71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
@@ -594,8 +576,6 @@
 			children = (
 				71F777A82B797E7400B43335 /* SavedLocation.swift */,
 				71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */,
-				71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */,
-				71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */,
 				7198468D28E5895F00E866CE /* Persistence.swift */,
 				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
 			);
@@ -951,9 +931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */,
-				71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 				711A97B929CDBCA500333927 /* Assets.xcassets in Resources */,
 			);
@@ -966,8 +944,6 @@
 				7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */,
 				71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				71A9A5542AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				71A7E9ED29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
-				71A7E9E829C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				711A97BB29CDBCA600333927 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -977,9 +953,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A7E9E229C480D800CE4769 /* DefaultData.sqlite in Resources */,
-				71A7E9EC29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				71A9A5532AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				71A7E9E729C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7195124D29B0B3D6009D282F /* Assets.xcassets in Resources */,
 				711A97BA29CDBCA500333927 /* Assets.xcassets in Resources */,
 			);
@@ -992,10 +966,8 @@
 				71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				7192DBF72B77B87B00A5D265 /* Earth in Resources */,
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
-				71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
 				711A97B729CDBCA200333927 /* Assets.xcassets in Resources */,
-				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
 				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
@@ -1008,9 +980,7 @@
 			files = (
 				71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				711A97B829CDBCA300333927 /* Assets.xcassets in Resources */,
-				71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1641,6 +1611,9 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1679,6 +1652,9 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

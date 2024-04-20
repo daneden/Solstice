@@ -17,7 +17,7 @@ protocol AnyLocation: Hashable {
 	var longitude: Double { get }
 }
 
-protocol ObservableLocation: AnyLocation, ObservableObject { }
+protocol ObservableLocation: AnyLocation { }
 
 extension AnyLocation {
 	var timeZone: TimeZone {

@@ -17,8 +17,8 @@ import SwiftData
     var timeZoneIdentifier: String? = "GMT"
     var title: String = ""
     var uuid: UUID = UUID()
+	
     public init() {
 
     }
-    
 }

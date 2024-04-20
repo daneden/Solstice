@@ -13,18 +13,15 @@ import CoreData
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
-	@StateObject private var currentLocation = CurrentLocation()
+	@State private var currentLocation = CurrentLocation()
 	@StateObject private var timeMachine = TimeMachine()
 	
 	var container: ModelContainer = {
 		let schema = Schema([SavedLocation.self])
 		let existingStoreURL = NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite"
 		let savedStoreURL = Bundle.main.url(forResource: "DefaultData", withExtension: "sqlite")
-		var dataExists = false
 		
-		if FileManager.default.fileExists(atPath: existingStoreURL) {
-			dataExists = true
-		} else {
+		if !FileManager.default.fileExists(atPath: existingStoreURL) {
 			do {
 				try FileManager.default.copyItem(at: savedStoreURL!, to: URL(fileURLWithPath: existingStoreURL))
 			} catch {
@@ -44,7 +41,7 @@ struct SolsticeApp: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 				.environmentObject(timeMachine)
 				.modelContainer(container)
 				.task {
@@ -58,22 +55,29 @@ struct SolsticeApp: App {
 						}
 					}
 				}
+				.task(id: phase) {
+					switch phase {
+					#if !os(watchOS)
+					case .background:
+						Task {
+							await NotificationManager.scheduleNotifications(locationManager: currentLocation)
+						}
+					#endif
+					default:
+						break
+					}
+				}
+				.task(id: currentLocation.authorizationStatus) {
+					do {
+						try await currentLocation.requestLocation()
+					} catch {
+						print(error)
+					}
+				}
 		}
 		#if os(visionOS) || os(macOS)
 		.defaultSize(width: 1200, height: 900)
 		#endif
-		.onChange(of: phase) {
-			switch phase {
-			#if !os(watchOS)
-			case .background:
-				Task {
-					await NotificationManager.scheduleNotifications(locationManager: currentLocation)
-				}
-			#endif
-			default:
-				currentLocation.requestLocation()
-			}
-		}
 		
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
@@ -86,7 +90,7 @@ struct SolsticeApp: App {
 		#if os(macOS)
 		Settings {
 			SettingsView()
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 				.frame(maxWidth: 500)
 		}
 		

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationPermissionScreenerView: View {
 	@Environment(\.openURL) var openURL
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	
 	var body: some View {
 		Section {

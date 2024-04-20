@@ -30,16 +30,9 @@ struct ContentView: View {
 		.navigationTitle(Text(verbatim: "Solstice"))
 		.onChange(of: scenePhase) {
 			timeMachine.referenceDate = Date()
-			if currentLocation.isAuthorized,
-				 scenePhase != .background {
-				currentLocation.requestLocation()
-			}
 		}
 		.onReceive(timer) { _ in
 			timeMachine.referenceDate = Date()
-			if currentLocation.isAuthorized {
-				currentLocation.requestLocation()
-			}
 		}
 	}
 	

@@ -18,7 +18,7 @@ struct ContentView: View {
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	@Environment(\.scenePhase) var scenePhase
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	
 	@StateObject var timeMachine = TimeMachine()
 	@StateObject var locationSearchService = LocationSearchService()
@@ -71,20 +71,11 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
-			.onChange(of: scenePhase) {
+			.task(id: scenePhase) {
 				timeMachine.referenceDate = Date()
-				if currentLocation.isAuthorized,
-					 selectedLocation == currentLocation.id,
-					 scenePhase != .background {
-					currentLocation.requestLocation()
-				}
 			}
 			.onReceive(timer) { _ in
 				timeMachine.referenceDate = Date()
-				if currentLocation.isAuthorized,
-					 selectedLocation == currentLocation.id {
-					currentLocation.requestLocation()
-				}
 			}
 			.animation(.default, value: timeMachine.date)
 		#if os(iOS)
@@ -163,6 +154,6 @@ struct ContentView_Previews: PreviewProvider {
 		ContentView()
 			.modelContainer(for: SavedLocation.self, inMemory: true)
 			.environmentObject(TimeMachine.preview)
-			.environmentObject(CurrentLocation())
+			.environment(CurrentLocation())
 	}
 }

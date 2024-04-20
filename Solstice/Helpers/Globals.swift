@@ -25,4 +25,4 @@ var chartMarkSize: Double = {
 
 let calendar =  Calendar.autoupdatingCurrent
 
-let localTimeZone = TimeZone.ReferenceType.local
+let localTimeZone = TimeZone.autoupdatingCurrent

@@ -29,7 +29,7 @@ struct NotificationSettings: View {
 	
 	@AppStorage(Preferences.sadPreference) var sadPreference
 	
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	
 	@Query(sort: [SortDescriptor(\SavedLocation.title)]) var items: [SavedLocation]
 	

@@ -10,17 +10,13 @@ import Solar
 import SwiftData
 
 struct SidebarListView: View {
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	
 	@Environment(\.modelContext) private var modelContext
 	
 	@Query var items: [SavedLocation]
-//	@FetchRequest(
-//		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
-//		animation: .default)
-//	private var items: FetchedResults<SavedLocation>
 		
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
@@ -108,6 +104,21 @@ struct SidebarListView: View {
 				)
 			}
 		}
+		.task {
+			/// Incomplete Core Data migration can sometimes lead to duplicate UUIDs, impacting navigation
+			/// This task will assign new UUID values to entries if necessary
+			if Set(items.map { $0.uuid.uuidString }).count <= 1 {
+				items.forEach { item in
+					item.uuid = UUID()
+				}
+			}
+			
+			do {
+				try modelContext.save()
+			} catch {
+				print(error)
+			}
+		}
 	}
 }
 
@@ -170,6 +181,6 @@ struct SidebarListView_Previews: PreviewProvider {
 		}
 		.modelContainer(for: SavedLocation.self, inMemory: true)
 			.environmentObject(TimeMachine.preview)
-			.environmentObject(CurrentLocation())
+			.environment(CurrentLocation())
 	}
 }
