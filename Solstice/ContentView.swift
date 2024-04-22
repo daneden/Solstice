@@ -20,7 +20,7 @@ struct ContentView: View {
 	@Environment(\.scenePhase) var scenePhase
 	@Environment(CurrentLocation.self) var currentLocation
 	
-	@StateObject var timeMachine = TimeMachine()
+	var timeMachine = TimeMachine()
 	@StateObject var locationSearchService = LocationSearchService()
 	
 	@State private var settingsViewOpen = false

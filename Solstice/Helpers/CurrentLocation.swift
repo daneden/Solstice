@@ -18,20 +18,31 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate, Identifiable {
 	var subtitle: String?
 	let id = "currentLocation"
 	
-	private(set) var placemark: CLPlacemark?
-	
 	var timeZoneIdentifier: String?
 	
-	private(set) var location: CLLocation?
+	private(set) var location: CLLocation? {
+		didSet {
+			Task(priority: .high) {
+				await processLocation(location)
+			}
+		}
+	}
 	
 	private let locationManager = CLLocationManager()
 	private let geocoder = CLGeocoder()
 	
 	override init() {
 		super.init()
-		self.locationManager.delegate = self
-		self.locationManager.desiredAccuracy = kCLLocationAccuracyReduced
-		self.locationManager.startUpdatingLocation()
+		locationManager.delegate = self
+		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
+	}
+	
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		guard let location = locations.first else { return }
+		
+		self.location = location
+		
+		locationManager.stopUpdatingLocation()
 	}
 	
 	func requestAccess() {
@@ -54,34 +65,39 @@ extension CurrentLocation: AnyLocation {
 
 // MARK: Location update request methods and handlers
 extension CurrentLocation {
-	@MainActor func processLocation(_ location: CLLocation?) async -> Void {
+	func processLocation(_ location: CLLocation?) async {
 		guard let location else { return }
 		
-		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
-		if let firstResult = reverseGeocoded?.first,
-			 let resultTitle = firstResult.locality {
-			withAnimation {
-				placemark = firstResult
-				title = resultTitle
-				subtitle = firstResult.country
-				timeZoneIdentifier = firstResult.timeZone?.identifier
+		do {
+			let reverseGeocoded = try await geocoder.reverseGeocodeLocation(location)
+			if let firstResult = reverseGeocoded.first,
+				 let resultTitle = firstResult.locality {
+				withAnimation {
+					title = resultTitle
+					subtitle = firstResult.country
+					timeZoneIdentifier = firstResult.timeZone?.identifier
+				}
 			}
+		} catch {
+			print(error)
 		}
 	}
 	
 	func requestLocation() async throws {
-		print("requesting location")
-		
-		requestAccess()
-		
-		for try await update in CLLocationUpdate.liveUpdates() {
-			self.location = update.location
-			// await processLocation(update.location)
-			
-			if update.isStationary {
-				break
-			}
+		guard isAuthorized else {
+			return
 		}
+		
+		locationManager.startUpdatingLocation()
+		
+//		for try await update in CLLocationUpdate.liveUpdates() {
+//			await processLocation(update.location)
+//			location = update.location
+//			
+//			if update.isStationary {
+//				break
+//			}
+//		}
 	}
 	
 	var authorizationStatus: CLAuthorizationStatus {

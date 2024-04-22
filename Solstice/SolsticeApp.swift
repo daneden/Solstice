@@ -13,7 +13,7 @@ import CoreData
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
-	@State private var currentLocation = CurrentLocation()
+	private var currentLocation = CurrentLocation()
 	@StateObject private var timeMachine = TimeMachine()
 	
 	var container: ModelContainer = {
@@ -64,7 +64,7 @@ struct SolsticeApp: App {
 						}
 					#endif
 					default:
-						break
+						try? await currentLocation.requestLocation()
 					}
 				}
 				.task(id: currentLocation.authorizationStatus) {
