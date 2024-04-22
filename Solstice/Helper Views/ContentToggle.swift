@@ -26,10 +26,10 @@ struct ContentToggle<Content: View>: View {
 #Preview {
 	ContentToggle(showToggledContent: true) { showContent in
 		if showContent {
-			Text("Content #1")
+			Text(verbatim: "Content #1")
 				.font(.headline)
 		} else {
-			Text("Content #2")
+			Text(verbatim: "Content #2")
 				.font(.largeTitle)
 		}
 	}

@@ -197,17 +197,6 @@
         }
       }
     },
-    "%@ Solstice" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Solstice"
-          }
-        }
-      }
-    },
     "%@ Time Travel" : {
       "localizations" : {
         "it" : {
@@ -417,17 +406,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "alle %@"
-          }
-        }
-      }
-    },
-    "At month:" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Al mese:"
           }
         }
       }
@@ -1098,34 +1076,12 @@
         }
       }
     },
-    "my location" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "mia posizione"
-          }
-        }
-      }
-    },
     "My Location" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La mia posizione"
-          }
-        }
-      }
-    },
-    "My Location %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La mia posizione %@"
           }
         }
       }
@@ -1891,17 +1847,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza la luce del giorno"
-          }
-        }
-      }
-    },
-    "View event:" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visualizza evento:"
           }
         }
       }

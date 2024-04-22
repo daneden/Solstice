@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
-import RealityKit
 import SceneKit
-#if canImport(Earth)
+
+#if os(visionOS)
+import RealityKit
 import Earth
 #endif
 

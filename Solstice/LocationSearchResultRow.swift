@@ -54,7 +54,7 @@ struct LocationSearchResultRow: View {
 		.foregroundStyle(.primary)
 	}
 	
-	func getLocation(from completion: MKLocalSearchCompletion) async throws -> (any ObservableLocation)? {
+	func getLocation(from completion: MKLocalSearchCompletion) async throws -> (any AnyLocation)? {
 		isAddingItem = true
 		let searchRequest = MKLocalSearch.Request(completion: completion)
 		let searchResult = try await MKLocalSearch(request: searchRequest).start()

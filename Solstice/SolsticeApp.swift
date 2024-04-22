@@ -69,7 +69,9 @@ struct SolsticeApp: App {
 				}
 				.task(id: currentLocation.authorizationStatus) {
 					do {
-						try await currentLocation.requestLocation()
+						if currentLocation.isAuthorized {
+							try await currentLocation.requestLocation()
+						}
 					} catch {
 						print(error)
 					}

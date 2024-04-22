@@ -9,7 +9,7 @@ import SwiftUI
 import Solar
 import CoreLocation
 
-struct DetailView<Location: ObservableLocation>: View {
+struct DetailView<Location: AnyLocation>: View {
 	static var userActivity: String {
 		"me.daneden.Solstice.viewLocation"
 	}

@@ -8,7 +8,7 @@
 import SwiftUI
 import Solar
 
-struct SunsetSummary<Location: ObservableLocation>: View {
+struct SunsetSummary<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	var solar: Solar

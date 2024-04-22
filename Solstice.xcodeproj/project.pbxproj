@@ -25,7 +25,6 @@
 		710D9B6C2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B6D2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B6E2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
-		710D9B6F2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
 		710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
@@ -34,13 +33,11 @@
 		711A97B829CDBCA300333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97B929CDBCA500333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97BA29CDBCA500333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
-		711A97BB29CDBCA600333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */; };
 		7121DE0029C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0329C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
-		7121DE0429C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7131A3632B741B3F00F36828 /* SolarSystemMinimap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7131A3622B741B3F00F36828 /* SolarSystemMinimap.swift */; };
 		7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		7132AC0D29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
@@ -50,7 +47,6 @@
 		7132AC1329E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */; };
 		7132AC1529E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */; };
 		7132AC1629E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */; };
-		7132AC1729E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */; };
 		7132AC1929E6962D00523215 /* ConditionalGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1829E6962D00523215 /* ConditionalGlobals.swift */; };
 		7132AC1A29E6962D00523215 /* ConditionalGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1829E6962D00523215 /* ConditionalGlobals.swift */; };
 		713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */; };
@@ -62,77 +58,94 @@
 		713F800029BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		713F800229BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
-		713F800329BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		7147FE1A2B68512800F943FB /* SunsetSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7147FE192B68512800F943FB /* SunsetSummary.swift */; };
 		7147FE1B2B68512800F943FB /* SunsetSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7147FE192B68512800F943FB /* SunsetSummary.swift */; };
 		714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714A944529C7318D00C67A4A /* SidebarListView.swift */; };
+		714E6E512BD6EEFD009BEDAF /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
+		714E6E522BD6EEFD009BEDAF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
+		714E6E5E2BD6EEFF009BEDAF /* macOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 714E6E502BD6EEFD009BEDAF /* macOS Widget Extension.appex */; platformFilters = (macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		714E6E622BD6EF15009BEDAF /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
+		714E6E632BD6EF1A009BEDAF /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
+		714E6E642BD6EF1D009BEDAF /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
+		714E6E652BD6EF1F009BEDAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
+		714E6E662BD6EF27009BEDAF /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
+		714E6E672BD6EF2D009BEDAF /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
+		714E6E692BD6EF2D009BEDAF /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
+		714E6E6A2BD6EF32009BEDAF /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
+		714E6E6B2BD6EF32009BEDAF /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
+		714E6E6C2BD6EF32009BEDAF /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
+		714E6E6D2BD6EF32009BEDAF /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
+		714E6E6E2BD6EF32009BEDAF /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
+		714E6E6F2BD6EF32009BEDAF /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
+		714E6E712BD6EFC8009BEDAF /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 714E6E702BD6EFC8009BEDAF /* Solar */; };
+		714E6E722BD6EFF9009BEDAF /* StoredLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* StoredLocation.swift */; };
+		714E6E732BD6F000009BEDAF /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
+		714E6E742BD6F00E009BEDAF /* ConditionalGlobals+WidgetTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */; };
+		714E6E752BD6F011009BEDAF /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
+		714E6E762BD6F014009BEDAF /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
+		714E6E772BD6F018009BEDAF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
+		714E6E782BD6F01B009BEDAF /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
+		714E6E792BD6F01E009BEDAF /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
+		714E6E7A2BD6F020009BEDAF /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
+		714E6E7B2BD6F024009BEDAF /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */; };
+		714E6E7C2BD6F02C009BEDAF /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
+		714E6E7D2BD6F039009BEDAF /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B6A2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift */; };
+		714E6E7E2BD6F03B009BEDAF /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */; };
+		714E6E7F2BD6F03E009BEDAF /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
+		714E6E802BD6F043009BEDAF /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
+		714E6E812BD6F046009BEDAF /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
+		714E6E822BD6F049009BEDAF /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
+		714E6E832BD6F04E009BEDAF /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
+		714E6E842BD6F051009BEDAF /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
+		714E6E852BD6F054009BEDAF /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
+		714E6E862BD6F056009BEDAF /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
+		714E6E872BD6F05A009BEDAF /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
+		714E6E882BD6F068009BEDAF /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
+		714E6E892BD6F070009BEDAF /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
+		714E6E8A2BD6F075009BEDAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
+		714E6E8B2BD6F09E009BEDAF /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
+		714E6E8D2BD6F09E009BEDAF /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
+		714E6E8E2BD6F09E009BEDAF /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
 		7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		7150EB5729DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
-		7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		7166CD382ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
 		7166CD392ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
-		7166CD3A2ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
 		717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */; };
 		717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BBB29A908E30015ECCB /* SettingsView.swift */; };
 		7187147129DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
 		7187147229DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
-		7187147329DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
 		7187147529DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */; };
 		7187147629DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */; };
 		7187147729DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */; };
 		7187147829DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */; };
-		7187147929DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift */; };
 		7188714329DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		7188714429DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		7188714629DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
-		7188714729DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718B136B29A918680001D4DC /* SupporterSettings.swift */; };
 		718B136E29A9196C0001D4DC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 718B136D29A918AD0001D4DC /* README.md */; };
 		718FEEBA2B7A1F3A00878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEB92B7A1F3A00878082 /* Solar */; };
 		718FEEBC2B7A1F3F00878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEBB2B7A1F3F00878082 /* Solar */; };
-		718FEEBE2B7A1F4300878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEBD2B7A1F4300878082 /* Solar */; };
 		718FEEC02B7A1F4900878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEBF2B7A1F4900878082 /* Solar */; };
 		718FEEC22B7A1F5200878082 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 718FEEC12B7A1F5200878082 /* Solar */; };
 		71908ACD2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908ACE2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908ACF2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908AD02AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
-		71908AD12AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
-		7192DBF72B77B87B00A5D265 /* Earth in Resources */ = {isa = PBXBuildFile; fileRef = 7192DBF62B77B87B00A5D265 /* Earth */; };
+		7192DBF72B77B87B00A5D265 /* Earth in Resources */ = {isa = PBXBuildFile; fileRef = 7192DBF62B77B87B00A5D265 /* Earth */; platformFilters = (xros, ); };
 		7193E92629C0BA0B00103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92E29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
-		7193E92F29C0BAB400103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		719511F629AF5CB4009D282F /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F529AF5CB4009D282F /* GetSunriseTime.swift */; };
 		719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F729AF5CE1009D282F /* GetSunsetTime.swift */; };
 		719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F929AF5CF7009D282F /* ViewDaylight.swift */; };
 		719511FC29AF5D0E009D282F /* ViewRemainingDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511FB29AF5D0E009D282F /* ViewRemainingDaylight.swift */; };
 		7195120129AFBBEC009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
-		7195120829AFBDC5009D282F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
-		7195120929AFBDC5009D282F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
-		7195121329AFBDC5009D282F /* macOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7195120729AFBDC5009D282F /* macOS Widget Extension.appex */; platformFilters = (macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7195121A29AFBDFC009D282F /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
-		7195121B29AFBDFF009D282F /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
-		7195121C29AFBE02009D282F /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
-		7195121D29AFBE06009D282F /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
-		7195121E29AFBE09009D282F /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
-		7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
-		7195122029AFBE6E009D282F /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
-		7195122129AFBE71009D282F /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
-		7195122329AFBE7F009D282F /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
-		7195122429AFBE83009D282F /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
-		7195122529AFBE88009D282F /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
-		7195122629AFBE8B009D282F /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
-		7195122729AFBE8E009D282F /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
-		7195122829AFBE91009D282F /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
-		7195122929AFBE94009D282F /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
-		7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		7195123229B0B3D6009D282F /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		7195123329B0B3D6009D282F /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7195123729B0B3D6009D282F /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
@@ -158,14 +171,12 @@
 		7195128129B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */; };
 		7195128229B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */; };
 		7195128429B73341009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
-		7195128529B73344009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195128629B7334F009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
 		7195128C29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
 		7195128D29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
 		7195128E29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
 		7195128F29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
-		7195129029BC7D13009D282F /* View+ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */; };
 		7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197DD7F29CA312200FEBE55 /* SolsticeShortcutsProvider.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
@@ -178,23 +189,18 @@
 		719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
 		7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
 		7198C40229DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
-		7198C40329DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
 		7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
 		7198C40729DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
-		7198C40829DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
 		7198C40A29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
 		7198C40B29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
-		7198C40C29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
 		7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
 		7198C40F29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
-		7198C41029DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
 		719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
 		719F557E29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
 		719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */; };
 		719F558229DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */; };
 		719F558529DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
 		719F558629DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
-		719F558729DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
 		719F926D29ACD21300C06921 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */; };
 		719F927029ACD21300C06921 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198469D28E58CCD00E866CE /* DetailView.swift */; };
@@ -215,17 +221,14 @@
 		71A2BDE729B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE829B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE929B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
-		71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
 		71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
 		71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
 		71A7E9E229C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
-		71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
 		71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5532AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
-		71A9A5542AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
@@ -233,7 +236,6 @@
 		71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7BD29AE475300A7952D /* LocationPermissionScreenerView.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
-		71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D129CD862A00E30148 /* EarthNode.swift */; };
 		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
@@ -241,11 +243,9 @@
 		71EAB72529C3479F00FA043F /* TimeMachineDeactivatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */; };
 		71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
 		71F2C3A22ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
-		71F2C3A32ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
 		71F2C3A42ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
 		71F2C3A52ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
 		71F2C3A62ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
-		71F2C3A72ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
 		71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* DaylightSummaryRow.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
 		71F641BD299968BF00FE5AB5 /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
@@ -254,17 +254,15 @@
 		71F641C3299FD39E00FE5AB5 /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */; };
 		71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */; };
-		71F777A52B77BDD400B43335 /* Earth in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71F777A42B77BDD400B43335 /* Earth */; };
-		71F777A92B797E7400B43335 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* SavedLocation.swift */; };
-		71F777AA2B797E8E00B43335 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* SavedLocation.swift */; };
-		71F777AB2B797E8F00B43335 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* SavedLocation.swift */; };
-		71F777AC2B797E8F00B43335 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* SavedLocation.swift */; };
-		71F777AD2B797E9000B43335 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* SavedLocation.swift */; };
+		71F777A52B77BDD400B43335 /* Earth in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71F777A42B77BDD400B43335 /* Earth */; settings = {ATTRIBUTES = (Required, ); }; };
+		71F777A92B797E7400B43335 /* StoredLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* StoredLocation.swift */; };
+		71F777AA2B797E8E00B43335 /* StoredLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* StoredLocation.swift */; };
+		71F777AB2B797E8F00B43335 /* StoredLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* StoredLocation.swift */; };
+		71F777AC2B797E8F00B43335 /* StoredLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777A82B797E7400B43335 /* StoredLocation.swift */; };
 		71F777AF2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */; };
 		71F777B02B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */; };
 		71F777B12B79875700B43335 /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */; };
 		71F777B22B79875700B43335 /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */; };
-		71F777B32B79875800B43335 /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */; };
 		71FC34802B6FDA3500D7E4A6 /* EarthModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FC347F2B6FDA3500D7E4A6 /* EarthModelView.swift */; };
 /* End PBXBuildFile section */
 
@@ -276,11 +274,11 @@
 			remoteGlobalIDString = 7106C86729A276B30007A7EC;
 			remoteInfo = WidgetExtension;
 		};
-		7195121129AFBDC5009D282F /* PBXContainerItemProxy */ = {
+		714E6E5C2BD6EEFF009BEDAF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7198467928E5895E00E866CE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 7195120629AFBDC5009D282F;
+			remoteGlobalIDString = 714E6E4F2BD6EEFD009BEDAF;
 			remoteInfo = "macOS Widget ExtensionExtension";
 		};
 		7195125429B0B401009D282F /* PBXContainerItemProxy */ = {
@@ -299,7 +297,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				7195121329AFBDC5009D282F /* macOS Widget Extension.appex in Embed Foundation Extensions */,
+				714E6E5E2BD6EEFF009BEDAF /* macOS Widget Extension.appex in Embed Foundation Extensions */,
 				7106C87C29A276B40007A7EC /* iOS Widget Extension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -355,6 +353,7 @@
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
 		7147FE192B68512800F943FB /* SunsetSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunsetSummary.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
+		714E6E502BD6EEFD009BEDAF /* macOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
 		7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwardCompatibleContainerBackground.swift; sourceTree = "<group>"; };
 		717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
@@ -373,7 +372,6 @@
 		719511FB29AF5D0E009D282F /* ViewRemainingDaylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRemainingDaylight.swift; sourceTree = "<group>"; };
 		7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EllipticalEdgeMask.swift"; sourceTree = "<group>"; };
 		7195120229AFBD61009D282F /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
-		7195120729AFBDC5009D282F /* macOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "macOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7195125729B48ECD009D282F /* TimeZone++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone++.swift"; sourceTree = "<group>"; };
 		7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLabeledContent.swift; sourceTree = "<group>"; };
@@ -384,8 +382,6 @@
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7198468828E5895F00E866CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7198468B28E5895F00E866CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7198468D28E5895F00E866CE /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		7198469028E5895F00E866CE /* Solstice.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Solstice.xcdatamodel; sourceTree = "<group>"; };
 		7198469228E5895F00E866CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7198469828E5898500E866CE /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		7198469D28E58CCD00E866CE /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -429,7 +425,7 @@
 		71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CapsuleAppearance.swift"; sourceTree = "<group>"; };
 		71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualDaylightChart.swift; sourceTree = "<group>"; };
 		71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineView.swift; sourceTree = "<group>"; };
-		71F777A82B797E7400B43335 /* SavedLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocation.swift; sourceTree = "<group>"; };
+		71F777A82B797E7400B43335 /* StoredLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredLocation.swift; sourceTree = "<group>"; };
 		71F777AE2B7986CB00B43335 /* BackgroundSerialPersistenceActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSerialPersistenceActor.swift; sourceTree = "<group>"; };
 		71FC347F2B6FDA3500D7E4A6 /* EarthModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthModelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -445,13 +441,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7195120429AFBDC5009D282F /* Frameworks */ = {
+		714E6E4D2BD6EEFD009BEDAF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				718FEEBE2B7A1F4300878082 /* Solar in Frameworks */,
-				7195120929AFBDC5009D282F /* SwiftUI.framework in Frameworks */,
-				7195120829AFBDC5009D282F /* WidgetKit.framework in Frameworks */,
+				714E6E712BD6EFC8009BEDAF /* Solar in Frameworks */,
+				714E6E522BD6EEFD009BEDAF /* SwiftUI.framework in Frameworks */,
+				714E6E512BD6EEFD009BEDAF /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,10 +570,8 @@
 		7195126629B6324C009D282F /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				71F777A82B797E7400B43335 /* SavedLocation.swift */,
+				71F777A82B797E7400B43335 /* StoredLocation.swift */,
 				71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */,
-				7198468D28E5895F00E866CE /* Persistence.swift */,
-				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -615,8 +609,8 @@
 				7198468128E5895E00E866CE /* Solstice.app */,
 				7106C86829A276B30007A7EC /* iOS Widget Extension.appex */,
 				719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */,
-				7195120729AFBDC5009D282F /* macOS Widget Extension.appex */,
 				7195125129B0B3D6009D282F /* watchOS Widget Extension.appex */,
+				714E6E502BD6EEFD009BEDAF /* macOS Widget Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -784,13 +778,13 @@
 			productReference = 7106C86829A276B30007A7EC /* iOS Widget Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		7195120629AFBDC5009D282F /* macOS Widget Extension */ = {
+		714E6E4F2BD6EEFD009BEDAF /* macOS Widget Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7195121429AFBDC5009D282F /* Build configuration list for PBXNativeTarget "macOS Widget Extension" */;
+			buildConfigurationList = 714E6E5F2BD6EEFF009BEDAF /* Build configuration list for PBXNativeTarget "macOS Widget Extension" */;
 			buildPhases = (
-				7195120329AFBDC5009D282F /* Sources */,
-				7195120429AFBDC5009D282F /* Frameworks */,
-				7195120529AFBDC5009D282F /* Resources */,
+				714E6E4C2BD6EEFD009BEDAF /* Sources */,
+				714E6E4D2BD6EEFD009BEDAF /* Frameworks */,
+				714E6E4E2BD6EEFD009BEDAF /* Resources */,
 			);
 			buildRules = (
 			);
@@ -798,10 +792,10 @@
 			);
 			name = "macOS Widget Extension";
 			packageProductDependencies = (
-				718FEEBD2B7A1F4300878082 /* Solar */,
+				714E6E702BD6EFC8009BEDAF /* Solar */,
 			);
 			productName = "macOS Widget ExtensionExtension";
-			productReference = 7195120729AFBDC5009D282F /* macOS Widget Extension.appex */;
+			productReference = 714E6E502BD6EEFD009BEDAF /* macOS Widget Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		7195122D29B0B3D6009D282F /* watchOS Widget Extension */ = {
@@ -838,7 +832,7 @@
 			);
 			dependencies = (
 				7106C87B29A276B40007A7EC /* PBXTargetDependency */,
-				7195121229AFBDC5009D282F /* PBXTargetDependency */,
+				714E6E5D2BD6EEFF009BEDAF /* PBXTargetDependency */,
 			);
 			name = Solstice;
 			packageProductDependencies = (
@@ -881,14 +875,14 @@
 				KnownAssetTags = (
 					earth,
 				);
-				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1520;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					7106C86729A276B30007A7EC = {
 						CreatedOnToolsVersion = 14.2;
 					};
-					7195120629AFBDC5009D282F = {
-						CreatedOnToolsVersion = 14.2;
+					714E6E4F2BD6EEFD009BEDAF = {
+						CreatedOnToolsVersion = 15.3;
 					};
 					7198468028E5895E00E866CE = {
 						CreatedOnToolsVersion = 14.1;
@@ -920,7 +914,7 @@
 				719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */,
 				7106C86729A276B30007A7EC /* iOS Widget Extension */,
 				7195122D29B0B3D6009D282F /* watchOS Widget Extension */,
-				7195120629AFBDC5009D282F /* macOS Widget Extension */,
+				714E6E4F2BD6EEFD009BEDAF /* macOS Widget Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -937,14 +931,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7195120529AFBDC5009D282F /* Resources */ = {
+		714E6E4E2BD6EEFD009BEDAF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7195121F29AFBE0E009D282F /* Assets.xcassets in Resources */,
-				71A7E9E329C480D800CE4769 /* DefaultData.sqlite in Resources */,
-				71A9A5542AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				711A97BB29CDBCA600333927 /* Assets.xcassets in Resources */,
+				714E6E8A2BD6F075009BEDAF /* Assets.xcassets in Resources */,
+				714E6E652BD6EF1F009BEDAF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,7 +1013,7 @@
 				71A2BDE829B747940071ACE9 /* Globals.swift in Sources */,
 				7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */,
 				7106C88629A2775C0007A7EC /* Date++.swift in Sources */,
-				71F777AB2B797E8F00B43335 /* SavedLocation.swift in Sources */,
+				71F777AB2B797E8F00B43335 /* StoredLocation.swift in Sources */,
 				71F777B12B79875700B43335 /* BackgroundSerialPersistenceActor.swift in Sources */,
 				7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
 				7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
@@ -1038,49 +1030,49 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7195120329AFBDC5009D282F /* Sources */ = {
+		714E6E4C2BD6EEFD009BEDAF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7195122829AFBE91009D282F /* Solar+SolarEvent.swift in Sources */,
-				7195122929AFBE94009D282F /* TimeInterval++.swift in Sources */,
-				7195121C29AFBE02009D282F /* CountdownWidgetView.swift in Sources */,
-				7195128529B73344009D282F /* SkyGradient.swift in Sources */,
-				7198C40329DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
-				71908AD12AC95A5500C7B610 /* StringBuilder.swift in Sources */,
-				71F2C3A72ABB366E00E69426 /* Widget.intentdefinition in Sources */,
-				7195121B29AFBDFF009D282F /* OverviewWidgetView.swift in Sources */,
-				7193E92F29C0BAB400103D6B /* DaylightChart.swift in Sources */,
-				7188714729DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
-				7198C40829DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
-				7198C41029DB06C1009A457E /* OverviewWidget.swift in Sources */,
-				7195122129AFBE71009D282F /* CurrentLocation.swift in Sources */,
-				710D9B6F2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */,
-				713F800329BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
-				7198C40C29DB06A8009A457E /* CountdownWidget.swift in Sources */,
-				7187147929DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */,
-				71A2BDEA29B747940071ACE9 /* Globals.swift in Sources */,
-				7166CD3A2ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
-				71F777B32B79875800B43335 /* BackgroundSerialPersistenceActor.swift in Sources */,
-				7150EB5829DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
-				71C7348229E6BF2E00929449 /* NotificationManager.swift in Sources */,
-				7195122529AFBE88009D282F /* Solar++.swift in Sources */,
-				7195122729AFBE8E009D282F /* AppStorage++.swift in Sources */,
-				7195121D29AFBE06009D282F /* WidgetBundle.swift in Sources */,
-				7132AC1729E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
-				71F777AD2B797E9000B43335 /* SavedLocation.swift in Sources */,
-				7195122329AFBE7F009D282F /* SolsticeCalculator.swift in Sources */,
-				719F558729DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
-				7195122A29AFBE99009D282F /* View+CapsuleAppearance.swift in Sources */,
-				7195122429AFBE83009D282F /* TimeMachine.swift in Sources */,
-				7195122029AFBE6E009D282F /* AnyLocation.swift in Sources */,
-				7195129029BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
-				7195122629AFBE8B009D282F /* Date++.swift in Sources */,
-				7187147329DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */,
-				71F2C3A32ABB282D00E69426 /* CompactLabelStyle.swift in Sources */,
-				7121DE0429C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
-				7195121A29AFBDFC009D282F /* Widget.swift in Sources */,
-				7195121E29AFBE09009D282F /* WidgetLocationHeadingView.swift in Sources */,
+				714E6E852BD6F054009BEDAF /* Solar++.swift in Sources */,
+				714E6E842BD6F051009BEDAF /* Solar+SolarEvent.swift in Sources */,
+				714E6E6A2BD6EF32009BEDAF /* WidgetHeadingModifier.swift in Sources */,
+				714E6E7C2BD6F02C009BEDAF /* SkyGradient.swift in Sources */,
+				714E6E832BD6F04E009BEDAF /* TimeInterval++.swift in Sources */,
+				714E6E812BD6F046009BEDAF /* View+ConditionalModifier.swift in Sources */,
+				714E6E892BD6F070009BEDAF /* DaylightChart.swift in Sources */,
+				714E6E6B2BD6EF32009BEDAF /* CompactLabelStyle.swift in Sources */,
+				714E6E8B2BD6F09E009BEDAF /* OverviewWidgetTimelineProvider.swift in Sources */,
+				714E6E8D2BD6F09E009BEDAF /* OverviewWidget.swift in Sources */,
+				714E6E8E2BD6F09E009BEDAF /* OverviewWidgetView.swift in Sources */,
+				714E6E742BD6F00E009BEDAF /* ConditionalGlobals+WidgetTargets.swift in Sources */,
+				714E6E6C2BD6EF32009BEDAF /* WidgetLocationHeadingView.swift in Sources */,
+				714E6E822BD6F049009BEDAF /* View+CapsuleAppearance.swift in Sources */,
+				714E6E732BD6F000009BEDAF /* AnyLocation.swift in Sources */,
+				714E6E722BD6EFF9009BEDAF /* StoredLocation.swift in Sources */,
+				714E6E7B2BD6F024009BEDAF /* BackgroundSerialPersistenceActor.swift in Sources */,
+				714E6E862BD6F056009BEDAF /* Date++.swift in Sources */,
+				714E6E6D2BD6EF32009BEDAF /* WidgetMissingLocationView.swift in Sources */,
+				714E6E6E2BD6EF32009BEDAF /* SolsticeWidgetTimelineProvider.swift in Sources */,
+				714E6E762BD6F014009BEDAF /* Globals.swift in Sources */,
+				714E6E6F2BD6EF32009BEDAF /* BackwardCompatibleContainerBackground.swift in Sources */,
+				714E6E662BD6EF27009BEDAF /* CountdownWidget.swift in Sources */,
+				714E6E882BD6F068009BEDAF /* DaylightSummaryTitle.swift in Sources */,
+				714E6E802BD6F043009BEDAF /* View+Debugging.swift in Sources */,
+				714E6E782BD6F01B009BEDAF /* SolsticeCalculator.swift in Sources */,
+				714E6E622BD6EF15009BEDAF /* Widget.intentdefinition in Sources */,
+				714E6E632BD6EF1A009BEDAF /* Widget.swift in Sources */,
+				714E6E672BD6EF2D009BEDAF /* CountdownWidgetTimelineProvider.swift in Sources */,
+				714E6E7A2BD6F020009BEDAF /* StringBuilder.swift in Sources */,
+				714E6E872BD6F05A009BEDAF /* AppStorage++.swift in Sources */,
+				714E6E772BD6F018009BEDAF /* NotificationManager.swift in Sources */,
+				714E6E692BD6EF2D009BEDAF /* CountdownWidgetView.swift in Sources */,
+				714E6E7D2BD6F039009BEDAF /* AnyTransition+VerticalMove.swift in Sources */,
+				714E6E642BD6EF1D009BEDAF /* WidgetBundle.swift in Sources */,
+				714E6E7F2BD6F03E009BEDAF /* View+RectangularEdgeMask.swift in Sources */,
+				714E6E7E2BD6F03B009BEDAF /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */,
+				714E6E752BD6F011009BEDAF /* CurrentLocation.swift in Sources */,
+				714E6E792BD6F01E009BEDAF /* TimeMachine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1118,7 +1110,7 @@
 				71A2BDE929B747940071ACE9 /* Globals.swift in Sources */,
 				7132AC0D29E6917F00523215 /* SolarChartWidget.swift in Sources */,
 				7195124229B0B3D6009D282F /* Date++.swift in Sources */,
-				71F777AC2B797E8F00B43335 /* SavedLocation.swift in Sources */,
+				71F777AC2B797E8F00B43335 /* StoredLocation.swift in Sources */,
 				71F777B22B79875700B43335 /* BackgroundSerialPersistenceActor.swift in Sources */,
 				7198C40729DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
 				7188714629DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
@@ -1193,7 +1185,7 @@
 				7195128C29BC7D13009D282F /* View+ConditionalModifier.swift in Sources */,
 				7187147529DDE6B700EADF03 /* CLLocationCoordinate2D+RawRepresentable.swift in Sources */,
 				7121DE0029C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
-				71F777A92B797E7400B43335 /* SavedLocation.swift in Sources */,
+				71F777A92B797E7400B43335 /* StoredLocation.swift in Sources */,
 				719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1217,7 +1209,7 @@
 				71A2BDE729B747940071ACE9 /* Globals.swift in Sources */,
 				710D9B6C2AB4621A0093A9A6 /* AnyTransition+VerticalMove.swift in Sources */,
 				719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */,
-				71F777AA2B797E8E00B43335 /* SavedLocation.swift in Sources */,
+				71F777AA2B797E8E00B43335 /* StoredLocation.swift in Sources */,
 				71AEB7BE29AE475300A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
@@ -1252,13 +1244,13 @@
 			target = 7106C86729A276B30007A7EC /* iOS Widget Extension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
 		};
-		7195121229AFBDC5009D282F /* PBXTargetDependency */ = {
+		714E6E5D2BD6EEFF009BEDAF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilters = (
 				macos,
 			);
-			target = 7195120629AFBDC5009D282F /* macOS Widget Extension */;
-			targetProxy = 7195121129AFBDC5009D282F /* PBXContainerItemProxy */;
+			target = 714E6E4F2BD6EEFD009BEDAF /* macOS Widget Extension */;
+			targetProxy = 714E6E5C2BD6EEFF009BEDAF /* PBXContainerItemProxy */;
 		};
 		7195125529B0B401009D282F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1344,7 +1336,7 @@
 			};
 			name = Release;
 		};
-		7195121529AFBDC5009D282F /* Debug */ = {
+		714E6E602BD6EEFF009BEDAF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1352,29 +1344,31 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "macOS Widget Extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		7195121629AFBDC5009D282F /* Release */ = {
+		714E6E612BD6EEFF009BEDAF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1382,19 +1376,20 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "macOS Widget Extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.daneden.Solstice.macOS-Widget-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1471,6 +1466,7 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1539,6 +1535,7 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1599,6 +1596,7 @@
 		7198469628E5895F00E866CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
@@ -1611,9 +1609,6 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				INFOPLIST_KEY_NSLocationUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1640,6 +1635,7 @@
 		7198469728E5895F00E866CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
@@ -1652,9 +1648,6 @@
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
-				INFOPLIST_KEY_NSLocationUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1760,11 +1753,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7195121429AFBDC5009D282F /* Build configuration list for PBXNativeTarget "macOS Widget Extension" */ = {
+		714E6E5F2BD6EEFF009BEDAF /* Build configuration list for PBXNativeTarget "macOS Widget Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7195121529AFBDC5009D282F /* Debug */,
-				7195121629AFBDC5009D282F /* Release */,
+				714E6E602BD6EEFF009BEDAF /* Debug */,
+				714E6E612BD6EEFF009BEDAF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1826,17 +1819,17 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		714E6E702BD6EFC8009BEDAF /* Solar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
+			productName = Solar;
+		};
 		718FEEB92B7A1F3A00878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
 		};
 		718FEEBB2B7A1F3F00878082 /* Solar */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
-			productName = Solar;
-		};
-		718FEEBD2B7A1F4300878082 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 718FEEB82B7A1F3100878082 /* XCRemoteSwiftPackageReference "Solar" */;
 			productName = Solar;
@@ -1856,19 +1849,6 @@
 			productName = Earth;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				7198469028E5895F00E866CE /* Solstice.xcdatamodel */,
-			);
-			currentVersion = 7198469028E5895F00E866CE /* Solstice.xcdatamodel */;
-			path = Solstice.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 7198467928E5895E00E866CE /* Project object */;
 }

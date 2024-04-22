@@ -7,34 +7,22 @@
 
 import CoreLocation
 import SwiftUI
-import Combine
 
 #if canImport(WidgetKit)
 import WidgetKit
 #endif
 
 @Observable
-class CurrentLocation: NSObject, ObservableLocation, Identifiable {
+class CurrentLocation: NSObject, CLLocationManagerDelegate, Identifiable {
 	var title: String = "My Location"
 	var subtitle: String?
 	let id = "currentLocation"
-	
-	var latitude: Double { coordinate.latitude }
-	var longitude: Double { coordinate.longitude }
 	
 	private(set) var placemark: CLPlacemark?
 	
 	var timeZoneIdentifier: String?
 	
-	private(set) var location: CLLocation? {
-		didSet {
-			Task { await processLocation(location) }
-		}
-	}
-	
-	var coordinate: CLLocationCoordinate2D {
-		location?.coordinate ?? .init()
-	}
+	private(set) var location: CLLocation?
 	
 	private let locationManager = CLLocationManager()
 	private let geocoder = CLGeocoder()
@@ -42,6 +30,8 @@ class CurrentLocation: NSObject, ObservableLocation, Identifiable {
 	override init() {
 		super.init()
 		self.locationManager.delegate = self
+		self.locationManager.desiredAccuracy = kCLLocationAccuracyReduced
+		self.locationManager.startUpdatingLocation()
 	}
 	
 	func requestAccess() {
@@ -51,6 +41,15 @@ class CurrentLocation: NSObject, ObservableLocation, Identifiable {
 		locationManager.requestWhenInUseAuthorization()
 		#endif
 	}
+}
+
+extension CurrentLocation: AnyLocation {
+	var coordinate: CLLocationCoordinate2D {
+		location?.coordinate ?? .init()
+	}
+	
+	var latitude: Double { coordinate.latitude }
+	var longitude: Double { coordinate.longitude }
 }
 
 // MARK: Location update request methods and handlers
@@ -72,8 +71,16 @@ extension CurrentLocation {
 	
 	func requestLocation() async throws {
 		print("requesting location")
-		for try await locationUpdate in CLLocationUpdate.liveUpdates() {
-			self.location = locationUpdate.location
+		
+		requestAccess()
+		
+		for try await update in CLLocationUpdate.liveUpdates() {
+			self.location = update.location
+			// await processLocation(update.location)
+			
+			if update.isStationary {
+				break
+			}
 		}
 	}
 	
@@ -95,8 +102,4 @@ extension CurrentLocation {
 		isAuthorized
 		#endif
 	}
-}
-
-extension CurrentLocation: CLLocationManagerDelegate {
-	
 }

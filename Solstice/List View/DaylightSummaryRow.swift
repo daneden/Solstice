@@ -9,7 +9,7 @@ import SwiftUI
 import Solar
 import CoreLocation
 
-struct DaylightSummaryRow<Location: ObservableLocation>: View {
+struct DaylightSummaryRow<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	var location: Location
 	
