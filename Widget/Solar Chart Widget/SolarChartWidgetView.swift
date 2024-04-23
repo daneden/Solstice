@@ -48,7 +48,6 @@ struct SolarChartWidgetView: View {
 					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
-					.padding()
 					
 					DaylightChart(
 						solar: solar,
@@ -58,7 +57,6 @@ struct SolarChartWidgetView: View {
 						markSize: 3,
 						yScale: -1.0...2.0
 					)
-					.padding(.horizontal, -1)
 				}
 			} else {
 				WidgetMissingLocationView()
