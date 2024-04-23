@@ -71,18 +71,19 @@ struct DaylightSummaryRow<Location: AnyLocation>: View {
 						}
 						
 						Text(location.title)
-							.id(location.title)
 							.lineLimit(2)
+							.contentTransition(.interpolate)
 					}
 					
 					if let subtitle = location.subtitle,
 						 !subtitle.isEmpty {
 						Text(subtitle)
-							.id(subtitle)
 							.foregroundStyle(.secondary)
 							.font(.footnote)
 					}
 				}
+				.id(location.hashValue)
+				.transition(.opacity)
 				
 				Spacer()
 				
