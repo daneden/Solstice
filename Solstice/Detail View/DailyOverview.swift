@@ -10,9 +10,19 @@ import Solar
 
 struct DailyOverview<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.verticalSizeClass) var verticalSizeClass
 
 	var solar: Solar
 	var location: Location
+	
+	private var aspectRatio: Double {
+		switch verticalSizeClass {
+		case .compact:
+			return 2.5
+		default:
+			return chartAspectRatio
+		}
+	}
 	
 	@State var chartRenderedAsImage: Image?
 	
@@ -51,7 +61,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var body: some View {
 		Section {
 			daylightChartView
-				.frame(height: chartHeight)
+				.aspectRatio(aspectRatio, contentMode: .fit)
 				#if !os(watchOS)
 				.contextMenu {
 					if let chartRenderedAsImage {

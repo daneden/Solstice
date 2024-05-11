@@ -15,6 +15,14 @@ var chartHeight: CGFloat = {
 #endif
 }()
 
+var chartAspectRatio: Double = {
+	#if macOS
+	1.75
+	#else
+	1.25
+	#endif
+}()
+
 var chartMarkSize: Double = {
 #if os(watchOS)
 	4

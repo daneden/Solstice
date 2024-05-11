@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LocationPermissionScreenerView: View {
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	
 	var body: some View {
 		Form {

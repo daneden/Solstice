@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
 	@Environment(\.scenePhase) var scenePhase
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
@@ -41,5 +41,5 @@ struct ContentView: View {
 #Preview {
 	ContentView()
 		.environmentObject(TimeMachine.preview)
-		.environmentObject(CurrentLocation())
+		.environment(CurrentLocation())
 }
