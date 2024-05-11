@@ -7,16 +7,8 @@
 
 import Foundation
 
-var chartHeight: CGFloat = {
-#if !os(watchOS)
-	300
-#else
-	200
-#endif
-}()
-
 var chartAspectRatio: Double = {
-	#if macOS
+	#if os(macOS)
 	1.75
 	#else
 	1.25

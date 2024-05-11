@@ -102,7 +102,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			}
 			
 			AnnualDaylightChart(location: location)
-				.frame(height: chartHeight)
+				.aspectRatio(chartAspectRatio, contentMode: .fill)
 			
 			if let shortestDay,
 				 let longestDay {

@@ -16,12 +16,16 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var location: Location
 	
 	private var aspectRatio: Double {
+		#if os(watchOS)
+		return chartAspectRatio
+		#else
 		switch verticalSizeClass {
 		case .compact:
 			return 2.5
 		default:
 			return chartAspectRatio
 		}
+		#endif
 	}
 	
 	@State var chartRenderedAsImage: Image?
