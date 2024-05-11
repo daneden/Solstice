@@ -72,7 +72,7 @@ extension CountdownWidgetView {
 						.font(.headline)
 						.widgetAccentable()
 						.imageScale(.small)
-						.transition(.move(edge: .bottom))
+						.transition(.blurReplace)
 					Text(nextEvent.date, style: .relative)
 						.contentTransition(.numericText())
 					Text(nextEvent.date, style: .time)

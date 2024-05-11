@@ -51,10 +51,7 @@ struct DaylightSummaryRow<Location: AnyLocation>: View {
 				.background(.ultraThinMaterial)
 				#endif
 				.ellipticalEdgeMask()
-				.transition(
-					.move(edge: .trailing)
-					.combined(with: .opacity)
-				)
+				.transition(.blurReplace)
 			}
 		}
 	}
@@ -83,7 +80,7 @@ struct DaylightSummaryRow<Location: AnyLocation>: View {
 					}
 				}
 				.id(location.hashValue)
-				.transition(.opacity)
+				.transition(.blurReplace)
 				
 				Spacer()
 				
