@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Solar
+// import Solar
 import Charts
 
 extension Solar {

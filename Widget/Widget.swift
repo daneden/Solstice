@@ -8,7 +8,7 @@
 import WidgetKit
 import SwiftUI
 import Intents
-import Solar
+// import Solar
 
 struct SolsticeWidgetLocation: AnyLocation {
 	var title: String = "Solstice"

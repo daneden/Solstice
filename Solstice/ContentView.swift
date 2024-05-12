@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
-import Solar
+// import Solar
 
 struct ContentView: View {
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension

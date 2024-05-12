@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 import CoreLocation
-import Solar
+// import Solar
 import SwiftUI
 import SwiftData
 

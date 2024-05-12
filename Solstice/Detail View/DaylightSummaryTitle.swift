@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+// import Solar
 
 struct DaylightSummaryTitle: View {
 	var solar: Solar

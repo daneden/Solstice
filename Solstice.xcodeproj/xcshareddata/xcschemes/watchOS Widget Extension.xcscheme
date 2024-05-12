@@ -57,8 +57,18 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "71A5E22F2BF092520088F848"
+            BuildableName = "watchOS Widget Extension.appex"
+            BlueprintName = "watchOS Widget Extension"
+            ReferencedContainer = "container:Solstice.xcodeproj">
+         </BuildableReference>
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "719F924229ACD1CC00C06921"
@@ -66,7 +76,7 @@
             BlueprintName = "Solstice watchOS Watch App"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"

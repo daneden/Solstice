@@ -7,7 +7,7 @@
 
 import WidgetKit
 import SwiftUI
-import Solar
+// import Solar
 
 struct CountdownWidget: Widget {
 #if os(iOS)

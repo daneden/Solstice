@@ -7,7 +7,7 @@
 
 import WidgetKit
 import CoreLocation
-import Solar
+// import Solar
 
 fileprivate class LocationManager: NSObject, CLLocationManagerDelegate {
 	static let shared = LocationManager()

@@ -7,7 +7,7 @@
 
 import Foundation
 import AppIntents
-import Solar
+// import Solar
 import CoreLocation
 
 struct ViewRemainingDaylight: AppIntent {

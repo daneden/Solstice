@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+// import Solar
 
 extension Solar {
 	var fallbackSunrise: Date? {

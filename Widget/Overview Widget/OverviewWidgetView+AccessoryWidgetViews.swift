@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WidgetKit
-import Solar
+// import Solar
 
 extension OverviewWidgetView {
 	struct AccessoryCircularView: View {
