@@ -5,7 +5,8 @@
    version = "2.0">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -15,7 +16,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7195122D29B0B3D6009D282F"
+               BlueprintIdentifier = "71A5E22F2BF092520088F848"
                BuildableName = "watchOS Widget Extension.appex"
                BlueprintName = "watchOS Widget Extension"
                ReferencedContainer = "container:Solstice.xcodeproj">
@@ -32,20 +33,6 @@
                BlueprintIdentifier = "719F924229ACD1CC00C06921"
                BuildableName = "Solstice watchOS Watch App.app"
                BlueprintName = "Solstice watchOS Watch App"
-               ReferencedContainer = "container:Solstice.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7198468028E5895E00E866CE"
-               BuildableName = "Solstice.app"
-               BlueprintName = "Solstice"
                ReferencedContainer = "container:Solstice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -74,36 +61,27 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7195122D29B0B3D6009D282F"
-            BuildableName = "watchOS Widget Extension.appex"
-            BlueprintName = "watchOS Widget Extension"
-            ReferencedContainer = "container:Solstice.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
             BlueprintIdentifier = "719F924229ACD1CC00C06921"
             BuildableName = "Solstice watchOS Watch App.app"
             BlueprintName = "Solstice watchOS Watch App"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
-            value = "OverviewWidget"
+            value = ""
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCWidgetDefaultView"
             value = "timeline"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCWidgetFamily"
-            value = "medium"
-            isEnabled = "NO">
+            value = "systemMedium"
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
@@ -117,7 +95,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7195122D29B0B3D6009D282F"
+            BlueprintIdentifier = "71A5E22F2BF092520088F848"
             BuildableName = "watchOS Widget Extension.appex"
             BlueprintName = "watchOS Widget Extension"
             ReferencedContainer = "container:Solstice.xcodeproj">
