@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-// import Solar
+import Solar
 
 fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
 

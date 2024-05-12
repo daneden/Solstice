@@ -8,7 +8,7 @@
 import Foundation
 import AppIntents
 import CoreLocation
-// import Solar
+import Solar
 
 struct GetSunsetTime: AppIntent {
 	static var title: LocalizedStringResource = "Get Sunset Time"

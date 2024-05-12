@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-// import Solar
+import Solar
 import CoreLocation
 import Charts
 

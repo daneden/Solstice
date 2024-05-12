@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WidgetKit
-// import Solar
+import Solar
 
 struct OverviewWidgetView: View {
 	@Environment(\.widgetRenderingMode) private var renderingMode

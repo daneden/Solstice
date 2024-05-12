@@ -4,7 +4,8 @@
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -14,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "719F924229ACD1CC00C06921"
-               BuildableName = "Solstice watchOS Watch App.app"
-               BlueprintName = "Solstice watchOS Watch App"
+               BlueprintIdentifier = "711B2BE62BF160DF008FD6D0"
+               BuildableName = "Solstice.app"
+               BlueprintName = "Solstice Watch App"
                ReferencedContainer = "container:Solstice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,7 +29,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7198468028E5895E00E866CE"
+               BlueprintIdentifier = "711B2AFC2BF16037008FD6D0"
                BuildableName = "Solstice.app"
                BlueprintName = "Solstice"
                ReferencedContainer = "container:Solstice.xcodeproj">
@@ -57,9 +58,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "719F924229ACD1CC00C06921"
-            BuildableName = "Solstice watchOS Watch App.app"
-            BlueprintName = "Solstice watchOS Watch App"
+            BlueprintIdentifier = "711B2BE62BF160DF008FD6D0"
+            BuildableName = "Solstice.app"
+            BlueprintName = "Solstice Watch App"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +75,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "719F924229ACD1CC00C06921"
-            BuildableName = "Solstice watchOS Watch App.app"
-            BlueprintName = "Solstice watchOS Watch App"
+            BlueprintIdentifier = "711B2BE62BF160DF008FD6D0"
+            BuildableName = "Solstice.app"
+            BlueprintName = "Solstice Watch App"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-// import Solar
+import Solar
 
 struct SunsetSummary<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine

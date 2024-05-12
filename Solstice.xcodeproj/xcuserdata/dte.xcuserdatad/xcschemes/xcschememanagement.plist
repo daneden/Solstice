@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Solstice watchOS Watch App.xcscheme_^#shared#^_</key>
+		<key>Solstice Watch App.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -14,60 +14,25 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>iOS Widget Extension copy.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
-		<key>iOS Widget Extension.xcscheme_^#shared#^_</key>
+		<key>Widget Extension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>macOS Widget Extension.xcscheme_^#shared#^_</key>
+		<key>Widget ExtensionExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>watchOS Widget Extension.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>7106C86729A276B30007A7EC</key>
+		<key>711B2AFC2BF16037008FD6D0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>714E6E4F2BD6EEFD009BEDAF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7195122D29B0B3D6009D282F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7198468028E5895E00E866CE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>719F924229ACD1CC00C06921</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>71A5E22F2BF092520088F848</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>71F641CB29A13BE000FE5AB5</key>
+		<key>711B2BE62BF160DF008FD6D0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

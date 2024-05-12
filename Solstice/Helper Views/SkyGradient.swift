@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-// import Solar
+import Solar
 
 struct SkyGradient {
 	static let dawn = [
