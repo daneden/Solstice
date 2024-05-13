@@ -1,25 +1,16 @@
 #usda 1.0
 (
-    customLayerData = {
-        string creator = "Reality Composer Pro Version 1.0 (409.60.6)"
-    }
     defaultPrim = "Root"
     metersPerUnit = 1
     upAxis = "Y"
 )
 
-reorder rootPrims = ["Root", "EarthMaterial"]
-
-def Xform "Root" (
-    customData = {
-        float3 rotationEulerHint = (0, 0, 0)
-    }
-)
+def Xform "Root"
 {
-    reorder nameChildren = ["EarthMaterial", "Earth_And_Ornaments"]
-    quatf xformOp:orient = (1, 0, 0, 0)
-    float3 xformOp:translate = (0, 0, 0)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    reorder nameChildren = ["GridMaterial", "Sphere"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
 
     def Xform "Earth_And_Ornaments" (
         active = true
@@ -29,7 +20,9 @@ def Xform "Root" (
     )
     {
         reorder nameChildren = ["Earth", "Poles", "Equator", "MotionState"]
-        quatf xformOp:orient = (0.9799247, 0, 0, 0.19936794)
+        quatf xformOp:orient = (0.9799247, 0, 0, 0.19936806)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def Cylinder "Equator" (
@@ -279,7 +272,7 @@ def Xform "Root" (
                 def Shader "Multiply"
                 {
                     uniform token info:id = "ND_multiply_color3FA"
-                    prepend color3f inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Constant_1.outputs:out>
+                    color3f inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Constant_1.outputs:out>
                     float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Ifgreater.outputs:out>
                     color3f outputs:out
                     float2 ui:nodegraph:node:pos = (626, 60.5)
@@ -426,7 +419,7 @@ def Xform "Root" (
                 {
                     uniform token info:id = "ND_image_color3"
                     color3f inputs:default
-                    asset inputs:file = @2_no_clouds_8k.jpg@
+                    asset inputs:file = @Materials/2_no_clouds_8k.jpg@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode = "periodic"
@@ -434,7 +427,7 @@ def Xform "Root" (
                     color3f outputs:out
                     float2 ui:nodegraph:node:pos = (393, 590.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 409
+                    int ui:nodegraph:node:stackingOrder = 423
                     string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file", "inputs:texcoord"]
                 }
 
@@ -442,7 +435,7 @@ def Xform "Root" (
                 {
                     uniform token info:id = "ND_image_vector3"
                     float3 inputs:default
-                    asset inputs:file = @earth_texture_02_nrm.jpg@
+                    asset inputs:file = @Materials/earth_texture_02_nrm.jpg@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode
@@ -450,7 +443,7 @@ def Xform "Root" (
                     float3 outputs:out
                     float2 ui:nodegraph:node:pos = (393, 1098.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 418
+                    int ui:nodegraph:node:stackingOrder = 424
                     string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:uaddressmode"]
                 }
 
@@ -458,7 +451,7 @@ def Xform "Root" (
                 {
                     uniform token info:id = "ND_image_color3"
                     color3f inputs:default
-                    asset inputs:file = @5_night_8k.jpg@
+                    asset inputs:file = @Materials/5_night_8k.jpg@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode
@@ -466,14 +459,14 @@ def Xform "Root" (
                     color3f outputs:out
                     float2 ui:nodegraph:node:pos = (393, 331.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 408
+                    int ui:nodegraph:node:stackingOrder = 421
                 }
 
                 def Shader "Specular"
                 {
                     uniform token info:id = "ND_image_float"
                     float inputs:default
-                    asset inputs:file = @water_8k.png@
+                    asset inputs:file = @Materials/water_8k.png@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode
@@ -481,12 +474,12 @@ def Xform "Root" (
                     float outputs:out
                     float2 ui:nodegraph:node:pos = (987.25, 99.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 407
+                    int ui:nodegraph:node:stackingOrder = 422
                 }
 
                 def NodeGraph "textureCoordTimeOffset"
                 {
-                    prepend float2 outputs:Add_out.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Add.outputs:out>
+                    float2 outputs:Add_out.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Add.outputs:out>
                     float2 ui:nodegraph:node:pos = (101.75, 491)
                     float2 ui:nodegraph:node:size = (203.5, 81)
                     int ui:nodegraph:node:stackingOrder = 382

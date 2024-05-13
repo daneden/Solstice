@@ -1,0 +1,37 @@
+{
+  "advancedEditorSelectedIdentifier" : "ShaderGraphEditorPluginID",
+  "openSceneRelativePaths" : [
+    "Scene.usda"
+  ],
+  "recentIdentifiers" : {
+    "26DBAE76-5DD8-47B6-A085-1B4ADA111097" : [
+
+    ]
+  },
+  "sceneCameraHistory" : {
+    "26DBAE76-5DD8-47B6-A085-1B4ADA111097" : [
+      {
+        "date" : 737321595.63743,
+        "title" : "Untitled",
+        "transform" : [
+          0.99999994,
+          0,
+          -0,
+          0,
+          -0,
+          0.8660254,
+          -0.49999994,
+          0,
+          0,
+          0.49999994,
+          0.8660254,
+          0,
+          0,
+          0.23807925,
+          0.41256538,
+          1
+        ]
+      }
+    ]
+  }
+}

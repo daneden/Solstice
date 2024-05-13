@@ -10,7 +10,7 @@ import SceneKit
 
 #if os(visionOS)
 import RealityKit
-import Earth
+import RealityKitContent
 #endif
 
 #if canImport(UIKit)
@@ -26,7 +26,7 @@ struct EarthModelView: View {
 	var rotationAmount: Double = 0
 	var body: some View {
 		RealityView { content in
-			if let earth = try? await Entity(named: "Scene", in: Earth.earthBundle) {
+			if let earth = try? await Entity(named: "Scene", in: realityKitContentBundle) {
 				content.add(earth)
 			}
 		} update: { content in
