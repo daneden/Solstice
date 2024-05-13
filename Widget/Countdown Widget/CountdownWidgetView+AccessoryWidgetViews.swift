@@ -9,6 +9,8 @@ import SwiftUI
 import Solar
 import WidgetKit
 
+#if !os(macOS)
+
 extension CountdownWidgetView {
 	struct AccessoryInlineView: View {
 		var nextEvent: Solar.Event
@@ -124,3 +126,5 @@ extension CountdownWidgetView {
 	widget: { CountdownWidget() },
 	timeline: SolsticeWidgetTimelineEntry.previewTimeline
 )
+
+#endif

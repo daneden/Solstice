@@ -5,6 +5,7 @@
       "comment" : "Less daylight middle of sentence"
     },
     "—" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -52,6 +53,7 @@
     },
     "%@ %@" : {
       "comment" : "Widget heading for real location",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -120,6 +122,7 @@
       }
     },
     "%@ Daylight %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -136,6 +139,7 @@
       }
     },
     "%@ in %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -152,6 +156,7 @@
       }
     },
     "%@ Location required" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -208,6 +213,7 @@
       }
     },
     "%@ until %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -227,6 +233,7 @@
 
     },
     "%@, %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -507,6 +514,7 @@
 
     },
     "Countdown" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -587,6 +595,7 @@
       }
     },
     "Daylight today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -597,6 +606,7 @@
       }
     },
     "Daylight Today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -607,6 +617,7 @@
       }
     },
     "Daylight tomorrow" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -661,6 +672,7 @@
       }
     },
     "Enable location services for Solstice, or choose a location by configuring the widget" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -741,6 +753,7 @@
       }
     },
     "Follow the sun's journey throughout the day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -979,6 +992,7 @@
       }
     },
     "Location Permission" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -989,6 +1003,7 @@
       }
     },
     "Location required" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1311,6 +1326,7 @@
       }
     },
     "Overview" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1421,6 +1437,7 @@
       }
     },
     "See the time remaining until the next sunrise/sunset" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1431,6 +1448,7 @@
       }
     },
     "See today’s daylight length, how it compares to yesterday, and sunrise/sunset times." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1475,6 +1493,7 @@
       }
     },
     "Set Up Location Access" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1485,6 +1504,7 @@
       }
     },
     "Set up location access to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1555,6 +1575,7 @@
       }
     },
     "Solar Chart" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1585,6 +1606,7 @@
       }
     },
     "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1645,6 +1667,7 @@
       }
     },
     "Sunrise/Sunset Countdown" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1706,9 +1729,6 @@
           }
         }
       }
-    },
-    "Test Label" : {
-
     },
     "The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun." : {
       "localizations" : {
@@ -1791,6 +1811,7 @@
       }
     },
     "Today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1812,6 +1833,7 @@
       }
     },
     "Tomorrow" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

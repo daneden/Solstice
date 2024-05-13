@@ -9,6 +9,7 @@ import SwiftUI
 import WidgetKit
 import Solar
 
+#if !os(macOS)
 extension OverviewWidgetView {
 	struct AccessoryCircularView: View {
 		@Environment(\.widgetRenderingMode) var renderingMode
@@ -75,7 +76,6 @@ extension OverviewWidgetView {
 	}
 }
 
-#if !os(macOS)
 #Preview(
 	"Overview (Accessory Rectangular)",
 	as: WidgetFamily.accessoryRectangular,

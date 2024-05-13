@@ -8,6 +8,7 @@
 import WidgetKit
 import SwiftUI
 
+#if !os(macOS)
 struct SolarChartWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.accessoryRectangular]
 	
@@ -24,3 +25,4 @@ struct SolarChartWidget: Widget {
 		.supportedFamilies(Self.supportedFamilies)
 	}
 }
+#endif

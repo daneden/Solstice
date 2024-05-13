@@ -43,8 +43,6 @@ extension AnyLocation {
 	}
 }
 
-extension SavedLocation: AnyLocation { }
-
 @Observable
 class TemporaryLocation: AnyLocation {
 	var title: String
@@ -62,12 +60,13 @@ class TemporaryLocation: AnyLocation {
 	}
 	
 	func saveLocation(to context: ModelContext) throws -> UUID? {
-		let savedLocation = SavedLocation()
-		savedLocation.title = title
-		savedLocation.subtitle = subtitle
-		savedLocation.timeZoneIdentifier = timeZoneIdentifier
-		savedLocation.longitude = longitude
-		savedLocation.latitude = latitude
+		let savedLocation = SavedLocation(
+			title: title,
+			subtitle: subtitle,
+			latitude: latitude,
+			longitude: longitude,
+			timeZoneIdentifier: timeZoneIdentifier
+		)
 		context.insert(savedLocation)
 		try context.save()
 		return savedLocation.uuid
