@@ -20,6 +20,7 @@ struct ContentToggle<Content: View>: View {
 			.onTapGesture {
 				showToggledContent.toggle()
 			}
+			.hoverEffect(.highlight)
 	}
 }
 
