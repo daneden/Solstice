@@ -159,6 +159,8 @@
 		711B2C712BF164BD008FD6D0 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B3B2BF16097008FD6D0 /* Widget.intentdefinition */; };
 		711B2C732BF164D8008FD6D0 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B3E2BF16097008FD6D0 /* Widget.swift */; };
 		711B2C742BF164DC008FD6D0 /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B3F2BF16097008FD6D0 /* WidgetBundle.swift */; };
+		714213A22BF21996006E9FEE /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 711B2B1D2BF16097008FD6D0 /* DefaultData.sqlite */; };
+		714213A32BF21999006E9FEE /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 711B2B1D2BF16097008FD6D0 /* DefaultData.sqlite */; };
 		71516C542BF2039B00AF9DED /* Solstice.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 711B2BE72BF160DF008FD6D0 /* Solstice.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		71BB512F2BF1674A00CB7C21 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B1F2BF16097008FD6D0 /* SavedLocation.swift */; };
 		71BB51302BF1674B00CB7C21 /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B1F2BF16097008FD6D0 /* SavedLocation.swift */; };
@@ -744,6 +746,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B2C422BF162A9008FD6D0 /* Assets.xcassets in Resources */,
+				714213A22BF21996006E9FEE /* DefaultData.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,6 +755,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B2C702BF164AF008FD6D0 /* Assets.xcassets in Resources */,
+				714213A32BF21999006E9FEE /* DefaultData.sqlite in Resources */,
 				711B2C432BF162A9008FD6D0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1104,10 +1108,8 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1146,10 +1148,8 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1236,7 +1236,6 @@
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Widget Extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1247,7 +1246,6 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1274,7 +1272,6 @@
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Widget Extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1285,7 +1282,6 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
