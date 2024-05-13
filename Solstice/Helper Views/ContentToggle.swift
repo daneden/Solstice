@@ -14,13 +14,20 @@ struct ContentToggle<Content: View>: View {
 	var body: some View {
 		HStack {
 			content(showToggledContent)
-				.transition(.blurReplace)
+				.transition(.blurReplace(.upUp))
 		}
 			.animation(.default, value: showToggledContent)
 			.onTapGesture {
 				showToggledContent.toggle()
 			}
-			.hoverEffect(.highlight)
+		#if os(visionOS)
+			.padding(.horizontal, 8)
+			.padding(.vertical, 4)
+			.contentShape(.hoverEffect, .rect(cornerRadius: 12, style: .continuous))
+			.hoverEffect()
+			.padding(.horizontal, -8)
+			.padding(.vertical, -4)
+		#endif
 	}
 }
 
