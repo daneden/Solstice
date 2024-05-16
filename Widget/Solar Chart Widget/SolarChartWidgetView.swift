@@ -60,7 +60,6 @@ struct SolarChartWidgetView: View {
 				}
 			} else {
 				WidgetMissingLocationView()
-					.padding()
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -13,6 +13,7 @@ struct OverviewWidgetView: View {
 	@Environment(\.widgetRenderingMode) private var renderingMode
 	@Environment(\.widgetFamily) private var family
 	@Environment(\.dynamicTypeSize) private var sizeCategory
+	@Environment(\.widgetContentMargins) private var widgetContentMargins
 	
 	var entry: SolsticeWidgetTimelineEntry
 	
@@ -94,7 +95,10 @@ struct OverviewWidgetView: View {
 								}
 							}
 						}
-						.padding(-20)
+						.padding(.top, widgetContentMargins.top * -1)
+						.padding(.bottom, widgetContentMargins.bottom * -1)
+						.padding(.leading, widgetContentMargins.leading * -1)
+						.padding(.trailing, widgetContentMargins.trailing * -1)
 						}
 						
 						VStack(alignment: .leading, spacing: 4) {
@@ -162,12 +166,10 @@ struct OverviewWidgetView: View {
 						.symbolRenderingMode(.hierarchical)
 #endif
 					}
-					.padding()
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 				}
 			} else {
 				WidgetMissingLocationView()
-					.padding()
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			}
 		}
