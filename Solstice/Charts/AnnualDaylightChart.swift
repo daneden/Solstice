@@ -25,11 +25,11 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	var body: some View {
 		Chart {
 			ForEach(monthlySolars, id: \.date) { solar in
-				let sunrise = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
-				let sunset = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
+				let sunrise = solar.safeSunrise
+				let sunset = solar.safeSunset
 				
-				if let astronomicalSunrise = solar.astronomicalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-					 let astronomicalSunset = solar.astronomicalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
+				if let astronomicalSunrise = solar.astronomicalSunrise,
+					 let astronomicalSunset = solar.astronomicalSunset {
 					BarMark(
 						x: .value("Astronomical Twilight", solar.date, unit: .month),
 						yStart: .value("Astronomical Sunrise", max(0, solar.startOfDay.distance(to: astronomicalSunrise))),
@@ -38,8 +38,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 					.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
 				}
 				
-				if let nauticalSunrise = solar.nauticalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-					 let nauticalSunset = solar.nauticalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
+				if let nauticalSunrise = solar.nauticalSunrise,
+					 let nauticalSunset = solar.nauticalSunset {
 					BarMark(
 						x: .value("Nautical Twilight", solar.date, unit: .month),
 						yStart: .value("Nautical Sunrise", max(0, solar.startOfDay.distance(to: nauticalSunrise))),
@@ -48,8 +48,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 					.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
 				}
 				
-				if let civilSunrise = solar.civilSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-					 let civilSunset = solar.civilSunset?.withTimeZoneAdjustment(for: location.timeZone) {
+				if let civilSunrise = solar.civilSunrise,
+					 let civilSunset = solar.civilSunset {
 					BarMark(
 						x: .value("Civil Twilight", solar.date, unit: .month),
 						yStart: .value("Civil Sunrise", max(0, solar.startOfDay.distance(to: civilSunrise))),
@@ -88,6 +88,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				}
 			}
 		}
+		.environment(\.timeZone, location.timeZone)
 	}
 }
 

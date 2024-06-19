@@ -70,7 +70,7 @@ extension Solar {
 			Event(label: "Nautical Sunrise", date: nauticalSunrise, phase: .nautical),
 			Event(label: "Civil Sunrise", date: civilSunrise, phase: .civil),
 			Event(label: "Sunrise", date: safeSunrise, phase: .sunrise),
-			Event(label: "Culmination", date: culmination, phase: .day),
+			Event(label: "Solar noon", date: culmination, phase: .day),
 			Event(label: "Sunset", date: safeSunset, phase: .sunset),
 			Event(label: "Civil Sunset", date: civilSunset, phase: .civil),
 			Event(label: "Nautical Sunset", date: nauticalSunset, phase: .nautical),

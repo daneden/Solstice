@@ -46,60 +46,64 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Section {
-			AdaptiveLabeledContent {
-				ContentToggle { showContent in
-					if showContent {
-						Text(nextSolstice.startOfDay, style: .date)
-					} else {
-						Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-							.contentTransition(.numericText())
-					}
-				}
-			} label: {
-				Label("Next solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
-					.modify { content in
-						if #available(iOS 17, macOS 14, watchOS 10, *) {
-							content
-								.contentTransition(.symbolEffect)
+			Group {
+				AdaptiveLabeledContent {
+					ContentToggle { showContent in
+						if showContent {
+							Text(nextSolstice.startOfDay, style: .date)
 						} else {
-							content
+							Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+								.contentTransition(.numericText())
 						}
 					}
-			}
-			.swipeActions(edge: .leading) {
-				Button {
-					withAnimation {
-						timeMachine.isOn = true
-						timeMachine.targetDate = nextSolstice
+				} label: {
+					Label("Next solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
+						.modify { content in
+							if #available(iOS 17, macOS 14, watchOS 10, *) {
+								content
+									.contentTransition(.symbolEffect)
+							} else {
+								content
+							}
+						}
+				}
+				.swipeActions(edge: .leading) {
+					Button {
+						withAnimation {
+							timeMachine.isOn = true
+							timeMachine.targetDate = nextSolstice
+						}
+					} label: {
+						Label("Jump to \(nextSolstice, style: .date)", systemImage: "clock.arrow.2.circlepath")
+					}
+				}
+				
+				AdaptiveLabeledContent {
+					ContentToggle { showContent in
+						if showContent {
+							Text(nextEquinox, style: .date)
+						} else {
+							Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+								.contentTransition(.numericText())
+						}
 					}
 				} label: {
-					Label("Jump to \(nextSolstice, style: .date)", systemImage: "clock.arrow.2.circlepath")
+					Label("Next equinox", systemImage: "circle.and.line.horizontal")
 				}
-			}
-			
-			AdaptiveLabeledContent {
-				ContentToggle { showContent in
-					if showContent {
-						Text(nextEquinox, style: .date)
-					} else {
-						Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
-							.contentTransition(.numericText())
+				.swipeActions(edge: .leading) {
+					Button {
+						withAnimation {
+							timeMachine.isOn = true
+							timeMachine.targetDate = nextEquinox
+						}
+					} label: {
+						Label("Jump to \(nextEquinox, style: .date)", systemImage: "clock.arrow.2.circlepath")
 					}
+					.backgroundStyle(.tint)
 				}
-			} label: {
-				Label("Next equinox", systemImage: "circle.and.line.horizontal")
 			}
-			.swipeActions(edge: .leading) {
-				Button {
-					withAnimation {
-						timeMachine.isOn = true
-						timeMachine.targetDate = nextEquinox
-					}
-				} label: {
-					Label("Jump to \(nextEquinox, style: .date)", systemImage: "clock.arrow.2.circlepath")
-				}
-				.backgroundStyle(.tint)
-			}
+			.animation(.default, value: timeMachine.date)
+			.contentTransition(.numericText())
 			
 			AnnualDaylightChart(location: location)
 				.frame(height: chartHeight)

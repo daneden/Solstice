@@ -46,7 +46,12 @@ struct DaylightChart: View {
 	}
 	
 	var range: ClosedRange<Date> {
-		solar.startOfDay...solar.endOfDay
+		var calendar = Calendar.current
+		calendar.timeZone = timeZone
+		
+		let startOfDay = calendar.startOfDay(for: solar.date)
+		let endOfDay = max(solar.safeSunset, calendar.date(byAdding: DateComponents(day: 1), to: startOfDay) ?? solar.date)
+		return startOfDay...endOfDay
 	}
 	
 	var body: some View {
@@ -58,7 +63,7 @@ struct DaylightChart: View {
 			Chart {
 				ForEach(solarEvents.filter { range.contains($0.date) }) { solarEvent in
 					PointMark(
-						x: .value("Event Time", solarEvent.date ),
+						x: .value("Event Time", solarEvent.date),
 						y: .value("Event", yValue(for: solarEvent.date ))
 					)
 					.foregroundStyle(pointMarkColor(for: solarEvent.phase))
@@ -72,6 +77,15 @@ struct DaylightChart: View {
 			.chartYAxis(.hidden)
 			.chartYScale(domain: yScale)
 			.chartXAxis(hideXAxis ? .hidden : .automatic)
+			.chartXAxis {
+				if !hideXAxis {
+					AxisMarks(format: Date.FormatStyle(
+						date: .omitted,
+						time: .shortened,
+						timeZone: timeZone
+					))
+				}
+			}
 			.chartXScale(domain: range)
 			.chartOverlay { proxy in
 				GeometryReader { geo in
@@ -81,7 +95,7 @@ struct DaylightChart: View {
 						Rectangle()
 							.fill(.tertiary)
 							.frame(width: geo.size.width, height: 1)
-							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
+							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0)
 						
 						ZStack {
 							// MARK: Sun below horizon
@@ -95,8 +109,8 @@ struct DaylightChart: View {
 									}
 									.frame(width: markSize * 2.5, height: markSize * 2.5)
 									.position(
-										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
-										y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
+										x: proxy.position(forX: solar.date) ?? 0,
+										y: proxy.position(forY: yValue(for: solar.date)) ?? 0
 									)
 									.shadow(color: .secondary.opacity(0.5), radius: 2)
 									.blendMode(.normal)
@@ -112,7 +126,7 @@ struct DaylightChart: View {
 							}
 							.mask(alignment: .bottom) {
 								Rectangle()
-									.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0))
+									.frame(height: geo.size.height - (proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0))
 							}
 							
 							// MARK: Sun above horizon
@@ -121,14 +135,14 @@ struct DaylightChart: View {
 									.fill(markForegroundColor)
 									.frame(width: markSize * 2.5, height: markSize * 2.5)
 									.position(
-										x: proxy.position(forX: timeZoneAdjustedDate) ?? 0,
-										y: proxy.position(forY: yValue(for: timeZoneAdjustedDate)) ?? 0
+										x: proxy.position(forX: solar.date) ?? 0,
+										y: proxy.position(forY: yValue(for: solar.date)) ?? 0
 									)
 									.shadow(color: .secondary.opacity(0.5), radius: 3)
 							}
 							.mask(alignment: .top) {
 								Rectangle()
-									.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise.withTimeZoneAdjustment(for: timeZone))) ?? 0)
+									.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0)
 							}
 						}
 					}
@@ -170,7 +184,7 @@ struct DaylightChart: View {
 						.contentShape(Rectangle())
 						.if(scrubbable) { view in
 							view
-								#if os(iOS)
+#if os(iOS)
 								.gesture(DragGesture()
 									.onChanged { value in
 										scrub(to: value.location, in: geo, proxy: proxy)
@@ -179,7 +193,7 @@ struct DaylightChart: View {
 										selectedEvent = nil
 										currentX = nil
 									})
-								#elseif os(macOS)
+#elseif os(macOS)
 								.onContinuousHover { value in
 									switch value {
 									case .active(let point):
@@ -189,7 +203,7 @@ struct DaylightChart: View {
 										currentX = nil
 									}
 								}
-								#endif
+#endif
 						}
 				}
 			}
@@ -244,20 +258,16 @@ struct DaylightChart: View {
 		.onAppear {
 			resetSolarEvents()
 		}
+		.environment(\.timeZone, timeZone)
 	}
 	
 	func resetSolarEvents() {
-		let events = solar.events.map { event in
-			Solar.Event(label: event.label,
-									date: event.date.withTimeZoneAdjustment(for: timeZone),
-									phase: event.phase)
-		}
-		.filter { event in
+		let events = solar.events.filter { event in
 			eventTypes.contains { phase in
-				event?.phase == phase
+				event.phase == phase
 			}
 		}
-		.compactMap { $0 }
+			.compactMap { $0 }
 		
 		withAnimation {
 			solarEvents = events
@@ -274,29 +284,17 @@ extension DaylightChart {
 		return ""
 	}
 	
-	var timeZoneAdjustedDate: Date {
-		let date = solar.date
-		let components = calendar.dateComponents([.hour, .minute, .second], from: solar.date.withTimeZoneAdjustment(for: timeZone))
-		
-		return calendar.date(
-			bySettingHour: components.hour ?? 0,
-			minute: components.minute ?? 0,
-			second: components.second ?? 0,
-			of: date
-		) ?? solar.date.withTimeZoneAdjustment(for: timeZone)
-	}
-	
 	var hours: Array<Date> {
-		stride(from: solar.startOfDay, through: solar.endOfDay, by: 60 * 30).compactMap { $0 }
+		stride(from: range.lowerBound, through: range.upperBound, by: 60 * 30).compactMap { $0 }
 	}
 	
-	var startOfDay: Date { solar.startOfDay.withTimeZoneAdjustment(for: timeZone) }
-	var endOfDay: Date { solar.endOfDay.withTimeZoneAdjustment(for: timeZone) }
+	var startOfDay: Date { range.lowerBound }
+	var endOfDay: Date { range.upperBound }
 	var dayLength: TimeInterval { startOfDay.distance(to: endOfDay) }
 	
 	var noonish: Date { startOfDay.addingTimeInterval(dayLength / 2) }
 	
-	var culminationDelta: TimeInterval { solar.peak.withTimeZoneAdjustment(for: timeZone).distance(to: noonish) }
+	var culminationDelta: TimeInterval { solar.peak.distance(to: noonish) }
 	
 	var daylightProportion: Double { solar.daylightDuration / dayLength }
 	
@@ -330,16 +328,25 @@ extension DaylightChart {
 	}
 	
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
-		let start = geo[proxy.plotAreaFrame].origin.x
+		var start: Double = 0
+		
+		if #available(iOS 17, macOS 13, watchOS 10, *) {
+			if let plotFrame = proxy.plotFrame {
+				start = geo[plotFrame].origin.x
+			}
+		} else {
+			start = geo[proxy.plotAreaFrame].origin.x
+		}
+		
 		let xCurrent = point.x - start
-		let date: Date? = proxy.value(atX: xCurrent)
 		
-		currentX = date
+		currentX = proxy.value(atX: xCurrent)
 		
-		if let date,
-			 let nearestEvent = solarEvents.first(where: { abs($0.date.distance(to: date)) < 60 * 30 }){
+		if let currentX,
+			 let nearestEvent = solarEvents.sorted(by: { lhs, rhs in
+				 abs(lhs.date.distance(to: currentX)) <= abs(rhs.date.distance(to: currentX))
+			 }).first {
 			selectedEvent = nearestEvent
-			currentX = date
 		}
 	}
 }

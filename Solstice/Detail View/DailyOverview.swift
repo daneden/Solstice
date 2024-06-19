@@ -82,55 +82,60 @@ struct DailyOverview<Location: AnyLocation>: View {
 				#if os(watchOS)
 				.listRowBackground(Color.clear)
 				#endif
+				.environment(\.timeZone, location.timeZone)
 			
-			AdaptiveLabeledContent {
-				Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
-					.contentTransition(.numericText())
-			} label: {
-				Label("Total daylight", systemImage: "hourglass")
-			}
-			
-			if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
+			Group {
 				AdaptiveLabeledContent {
-					Text(timerInterval: solar.safeSunrise...solar.safeSunset)
-						.monospacedDigit()
+					Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
+						.contentTransition(.numericText())
 				} label: {
-					Label("Remaining daylight", systemImage: "timer")
+					Label("Total daylight", systemImage: "hourglass")
+				}
+				
+				if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
+					AdaptiveLabeledContent {
+						Text(timerInterval: solar.safeSunrise...solar.safeSunset)
+							.monospacedDigit()
+					} label: {
+						Label("Remaining daylight", systemImage: "timer")
+					}
+				}
+				
+				AdaptiveLabeledContent {
+					Text(solar.safeSunrise, style: .time)
+				} label: {
+					Label("Sunrise", systemImage: "sunrise")
+				}
+				
+				AdaptiveLabeledContent {
+					Text(solar.peak, style: .time)
+				} label: {
+					Label("Solar noon", systemImage: "sun.max")
+				}
+				
+				AdaptiveLabeledContent {
+					Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+				} label: {
+					Label("Sunset", systemImage: "sunset")
 				}
 			}
-			
-			AdaptiveLabeledContent {
-				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
-			} label: {
-				Label("Sunrise", systemImage: "sunrise")
-			}
-			
-			let solarNoon = solar.peak.withTimeZoneAdjustment(for: location.timeZone)
-			AdaptiveLabeledContent {
-				Text(solarNoon, style: .time)
-			} label: {
-				Label("Solar noon", systemImage: "sun.max")
-			}
-			
-			AdaptiveLabeledContent {
-				Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
-			} label: {
-				Label("Sunset", systemImage: "sunset")
-			}
+			.environment(\.timeZone, location.timeZone)
+			.animation(.default, value: timeMachine.date)
+			.contentTransition(.numericText())
 		} header: {
 			if location.timeZoneIdentifier != localTimeZone.identifier,
 				 !(location is CurrentLocation) {
 				HStack {
 					Text("Local time")
 					Spacer()
-					Text("\(solar.date.withTimeZoneAdjustment(for: location.timeZone), style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
+					Text("\(solar.date, style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
 				}
+				.environment(\.timeZone, location.timeZone)
 			}
 		} footer: {
 			if let differenceFromPreviousSolstice {
 				Label {
 					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
-						.id(timeMachine.date)
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
 						.modify { content in

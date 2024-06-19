@@ -63,12 +63,12 @@ struct DaylightSummaryTitle: View {
 										.foregroundStyle(.secondary)
 									
 									Group {
-										if currentX < solar.safeSunrise.withTimeZoneAdjustment(for: timeZone) {
-											Text("Sunrise in \((currentX..<solar.safeSunrise.withTimeZoneAdjustment(for: timeZone)).formatted(formatter))")
-										} else if currentX < solar.safeSunset.withTimeZoneAdjustment(for: timeZone) {
-											Text("Sunset in \((currentX..<solar.safeSunset.withTimeZoneAdjustment(for: timeZone)).formatted(formatter))")
-										} else if currentX > solar.safeSunset.withTimeZoneAdjustment(for: timeZone) {
-											Text("Sunrise in \((currentX..<(solar.tomorrow?.safeSunrise.withTimeZoneAdjustment(for: timeZone) ?? solar.endOfDay.withTimeZoneAdjustment(for: timeZone))).formatted(formatter))")
+										if currentX < solar.safeSunrise {
+											Text("Sunrise in \((currentX..<solar.safeSunrise).formatted(formatter))")
+										} else if currentX < solar.safeSunset {
+											Text("Sunset in \((currentX..<solar.safeSunset).formatted(formatter))")
+										} else if currentX > solar.safeSunset {
+											Text("Sunrise in \((currentX..<(solar.tomorrow?.safeSunrise ?? solar.endOfDay)).formatted(formatter))")
 										}
 									}
 									.foregroundStyle(.tertiary)
@@ -83,6 +83,7 @@ struct DaylightSummaryTitle: View {
 			#endif
 			.fontDesign(.rounded)
 			.fontWeight(.semibold)
+			.environment(\.timeZone, timeZone)
     }
 }
 
