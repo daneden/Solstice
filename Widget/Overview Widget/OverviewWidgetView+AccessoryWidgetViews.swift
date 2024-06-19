@@ -65,7 +65,7 @@ extension OverviewWidgetView {
 							}
 						}
 						.foregroundStyle(.secondary)
-						.transition(.verticalMove)
+						.transition(.blurReplace)
 					}
 				}
 				

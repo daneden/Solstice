@@ -33,18 +33,21 @@ struct SolsticeApp: App {
 						}
 					}
 				}
-		}
-		.onChange(of: phase) { _ in
-			switch phase {
-			#if !os(watchOS)
-			case .background:
-				Task {
-					await NotificationManager.scheduleNotifications(locationManager: currentLocation)
+				.task(id: phase) {
+					switch phase {
+					#if !os(watchOS)
+					case .background:
+						Task {
+							await NotificationManager.scheduleNotifications(locationManager: currentLocation)
+						}
+					#endif
+					case .active:
+						currentLocation.requestLocation()
+					default:
+						return
+					}
 				}
-			#endif
-			default:
-				currentLocation.requestLocation()
-			}
+				.migrateAppFeatures()
 		}
 		
 		#if os(visionOS)

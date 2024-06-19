@@ -85,7 +85,11 @@ struct Preferences {
 		static let scheduleType: Value<ScheduleType> = ("notificationScheduleType", .specificTime)
 		
 		/// The date/time for notification scheduling. Only the time will be used.
-		static let notificationTime: Value<Date> = ("notifTime", defaultNotificationDate)
+		static let _notificationTime: Value<Date> = ("notifTime", defaultNotificationDate)
+		
+		/// The date components for notification scheduling.
+		static let notificationDateComponents: Value<DateComponents> = ("notifDateComponents", NotificationSettings.defaultDateComponents)
+		static let defaultDateComponents = DateComponents(timeZone: .autoupdatingCurrent, hour: 8, minute: 0)
 		
 		/// Which solar event notifications are sent relative to
 		static let relation: Value<Solar.Phase> = ("notificationRelation", .sunrise)

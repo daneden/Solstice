@@ -160,7 +160,7 @@ struct EquinoxAndSolsticeInfoView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.onChange(of: selection) { _ in
+			.task(id: selection) {
 				let action = SCNAction.rotateTo(
 					x: 0,
 					y: selection.sunAngle,

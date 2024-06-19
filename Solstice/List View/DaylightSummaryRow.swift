@@ -79,18 +79,28 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 						}
 						
 						Text(location.title ?? "Current location")
-							.id(location.title)
-							.transition(.verticalMove)
+							.modify { content in
+								if #available(iOS 17, macOS 13, watchOS 10, *) {
+									content.transition(.blurReplace)
+								} else {
+									content
+								}
+							}
 							.lineLimit(2)
 					}
 					
 					if let subtitle,
 						 !subtitle.isEmpty {
 						Text(subtitle)
-							.id(subtitle)
-							.transition(.verticalMove)
 							.foregroundStyle(.secondary)
 							.font(.footnote)
+							.modify { content in
+								if #available(iOS 17, macOS 13, watchOS 10, *) {
+									content.transition(.blurReplace)
+								} else {
+									content
+								}
+							}
 					}
 				}
 				

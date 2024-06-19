@@ -65,14 +65,14 @@ struct DetailView<Location: ObservableLocation>: View {
 			.toolbar {
 				toolbarItems
 			}
-			.onChange(of: timeMachine.isOn) { _ in
-				if timeMachine.isOn == true {
+			.task(id: timeMachine.isOn) {
+				if timeMachine.isOn {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
 					}
 				}
 			}
-			.onChange(of: timeMachine.targetDate) { _ in
+			.task(id: timeMachine.targetDate) {
 				if timeMachine.isOn {
 					withAnimation {
 						scrollProxy.scrollTo("timeMachineView")
@@ -153,7 +153,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		#else
 		ToolbarItem(id: "timeMachineToggle") {
-			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
+			Toggle(isOn: $timeMachine.isOn.animation()) {
 				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 			}
 		}

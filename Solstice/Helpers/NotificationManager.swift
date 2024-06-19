@@ -19,7 +19,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	@AppStorage(Preferences.notificationsIncludeDaylightDuration) static var includeDaylightDuration
 	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) static var includeSolsticeCountdown
 	@AppStorage(Preferences.NotificationSettings.scheduleType) static var scheduleType
-	@AppStorage(Preferences.NotificationSettings.notificationTime) static var userPreferenceNotificationTime
+	@AppStorage(Preferences.NotificationSettings.notificationDateComponents) static var notificationDateComponents
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) static var userPreferenceNotificationOffset
 	@AppStorage(Preferences.sadPreference) static var sadPreference
 	@AppStorage(Preferences.customNotificationLocationUUID) static var customNotificationLocationUUID
@@ -91,7 +91,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			content.title = notificationContent.title
 			content.body = notificationContent.body
 			
-			let components = calendar.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
+			var components = calendar.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
+			components.timeZone = .autoupdatingCurrent
 			
 			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
 			
@@ -108,8 +109,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	
 	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
 		if scheduleType == .specificTime {
-			let scheduleComponents = calendar.dateComponents([.hour, .minute], from: userPreferenceNotificationTime)
-			return calendar.date(bySettingHour: scheduleComponents.hour ?? 0, minute: scheduleComponents.minute ?? 0, second: 0, of: date) ?? date
+			let hour = notificationDateComponents.hour ?? 0
+			let minute = notificationDateComponents.minute ?? 0
+			return calendar.date(bySettingHour: hour, minute: minute, second: 0, of: date) ?? date
 		} else {
 			guard let solar else { return date }
 			let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise

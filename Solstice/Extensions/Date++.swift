@@ -37,3 +37,23 @@ extension Date: RawRepresentable {
 		self = Date(timeIntervalSinceReferenceDate: Double(rawValue) ?? 0.0)
 	}
 }
+
+extension DateComponents: RawRepresentable {
+	public var rawValue: String {
+		guard let data = try? JSONEncoder().encode(self),
+					let string = String(data: data, encoding: .utf8) else {
+			return "{}"
+		}
+		
+		return string
+	}
+	
+	public init?(rawValue: String) {
+		guard let data = rawValue.data(using: .utf8),
+					let decoded = try? JSONDecoder().decode(DateComponents.self, from: data) else {
+			return nil
+		}
+		
+		self = decoded
+	}
+}

@@ -71,11 +71,11 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
-			.onChange(of: scenePhase) { _ in
+			.task(id: scenePhase) {
 				timeMachine.referenceDate = Date()
 				if currentLocation.isAuthorized,
 					 selectedLocation == currentLocation.id,
-					 scenePhase != .background {
+					 scenePhase == .active {
 					currentLocation.requestLocation()
 				}
 			}

@@ -18,7 +18,7 @@ struct NotificationSettings: View {
 	
 	@AppStorage(Preferences.NotificationSettings.scheduleType) var scheduleType
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) var notificationOffset
-	@AppStorage(Preferences.NotificationSettings.notificationTime) var notificationTime
+	@AppStorage(Preferences.NotificationSettings.notificationDateComponents) var notificationDateComponents
 	
 	// Notification fragment settings
 	@AppStorage(Preferences.notificationsIncludeSunTimes) var notifsIncludeSunTimes
@@ -44,6 +44,16 @@ struct NotificationSettings: View {
 		]
 	}
 	
+	private var notificationTime: Binding<Date> {
+		Binding {
+			let hour = notificationDateComponents.hour ?? 0
+			let minute = notificationDateComponents.minute ?? 0
+			return Calendar.autoupdatingCurrent.date(bySettingHour: hour, minute: minute, second: 0, of: .now) ?? .now
+		} set: {
+			notificationDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .timeZone], from: $0)
+		}
+	}
+	
 	var body: some View {
 		#if os(iOS)
 		NavigationStack {
@@ -58,11 +68,9 @@ struct NotificationSettings: View {
 	var content: some View {
 		Form {
 			Toggle("Enable notifications", isOn: $notificationsEnabled)
-				.onChange(of: notificationsEnabled) { _ in
-					Task {
-						if notificationsEnabled == true {
-							notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
-						}
+				.task(id: notificationsEnabled) {
+					if notificationsEnabled == true {
+						notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
 					}
 				}
 			
@@ -103,7 +111,7 @@ struct NotificationSettings: View {
 					}
 					
 					if scheduleType == .specificTime {
-						DatePicker(selection: $notificationTime, displayedComponents: [.hourAndMinute]) {
+						DatePicker(selection: notificationTime, displayedComponents: [.hourAndMinute]) {
 							Text("Time")
 						}
 					} else {
