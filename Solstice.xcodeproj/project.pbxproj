@@ -99,8 +99,8 @@
 		7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92E29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7193E92F29C0BAB400103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
-		7194650B2C229F73008408C0 /* AppChangeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194650A2C229F73008408C0 /* AppChangeMigrator.swift */; };
-		7194650C2C229F73008408C0 /* AppChangeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194650A2C229F73008408C0 /* AppChangeMigrator.swift */; };
+		7194650E2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */; };
+		7194650F2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */; };
 		719511F629AF5CB4009D282F /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F529AF5CB4009D282F /* GetSunriseTime.swift */; };
 		719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F729AF5CE1009D282F /* GetSunsetTime.swift */; };
 		719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F929AF5CF7009D282F /* ViewDaylight.swift */; };
@@ -373,7 +373,7 @@
 		718B136B29A918680001D4DC /* SupporterSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupporterSettings.swift; sourceTree = "<group>"; };
 		718B136D29A918AD0001D4DC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71908ACC2AC95A5500C7B610 /* StringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringBuilder.swift; sourceTree = "<group>"; };
-		7194650A2C229F73008408C0 /* AppChangeMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppChangeMigrator.swift; path = ../../../AppChangeMigrator.swift; sourceTree = "<group>"; };
+		7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppChangeMigrator.swift; sourceTree = "<group>"; };
 		719511F529AF5CB4009D282F /* GetSunriseTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunriseTime.swift; sourceTree = "<group>"; };
 		719511F729AF5CE1009D282F /* GetSunsetTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunsetTime.swift; sourceTree = "<group>"; };
 		719511F929AF5CF7009D282F /* ViewDaylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDaylight.swift; sourceTree = "<group>"; };
@@ -662,6 +662,7 @@
 			isa = PBXGroup;
 			children = (
 				71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */,
+				7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */,
 				7132AC1829E6962D00523215 /* ConditionalGlobals.swift */,
 				7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */,
 				719846AF28EEE48900E866CE /* CurrentLocation.swift */,
@@ -669,9 +670,8 @@
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
-				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
 				71908ACC2AC95A5500C7B610 /* StringBuilder.swift */,
-				7194650A2C229F73008408C0 /* AppChangeMigrator.swift */,
+				71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1156,8 +1156,8 @@
 				7198468728E5895E00E866CE /* ContentView.swift in Sources */,
 				713F7FF929BE843700BEA156 /* AnnualOverview.swift in Sources */,
 				71F641B729994DD900FE5AB5 /* DaylightSummaryRow.swift in Sources */,
+				7194650E2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */,
 				713F7FFF29BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
-				7194650B2C229F73008408C0 /* AppChangeMigrator.swift in Sources */,
 				71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */,
 				719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */,
 				71A2BDE629B747940071ACE9 /* Globals.swift in Sources */,
@@ -1233,6 +1233,7 @@
 				7195128229B713EC009D282F /* AdaptiveLabeledContent.swift in Sources */,
 				7188714429DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,
+				7194650F2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */,
 				7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				719F927D29ACD22100C06921 /* CurrentLocation.swift in Sources */,
 				719F928029ACD22100C06921 /* TimeMachine.swift in Sources */,
@@ -1240,7 +1241,6 @@
 				719F927A29ACD21A00C06921 /* AppStorage++.swift in Sources */,
 				719F927629ACD21A00C06921 /* Solar+SolarEvent.swift in Sources */,
 				719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */,
-				7194650C2C229F73008408C0 /* AppChangeMigrator.swift in Sources */,
 				713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
