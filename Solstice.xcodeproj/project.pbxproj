@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		711415BB2BF6A914000F8AF9 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 711415BA2BF6A914000F8AF9 /* RealityKitContent */; };
 		711B2B862BF16099008FD6D0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 711B2B102BF16096008FD6D0 /* README.md */; };
 		711B2B872BF16099008FD6D0 /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B112BF16096008FD6D0 /* GetSunriseTime.swift */; };
 		711B2B882BF16099008FD6D0 /* GetSunsetTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B122BF16096008FD6D0 /* GetSunsetTime.swift */; };
@@ -159,9 +160,8 @@
 		711B2C742BF164DC008FD6D0 /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B3F2BF16097008FD6D0 /* WidgetBundle.swift */; };
 		714213A22BF21996006E9FEE /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 711B2B1D2BF16097008FD6D0 /* DefaultData.sqlite */; };
 		714213A32BF21999006E9FEE /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 711B2B1D2BF16097008FD6D0 /* DefaultData.sqlite */; };
-		71516C542BF2039B00AF9DED /* Solstice.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 711B2BE72BF160DF008FD6D0 /* Solstice.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		71516C542BF2039B00AF9DED /* Solstice.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 711B2BE72BF160DF008FD6D0 /* Solstice.app */; platformFilters = (ios, macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		71516C5A2BF2A26000AF9DED /* RealityKitContent in Resources */ = {isa = PBXBuildFile; fileRef = 71516C582BF2A26000AF9DED /* RealityKitContent */; };
-		71516C5C2BF2A36300AF9DED /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71516C5B2BF2A36300AF9DED /* RealityKitContent */; };
 		71516C652BF2A58200AF9DED /* AnyTransition+VerticalMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B542BF16099008FD6D0 /* AnyTransition+VerticalMove.swift */; };
 		71516C662BF2A58200AF9DED /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B642BF16099008FD6D0 /* SkyGradient.swift */; };
 		71516C672BF2A58200AF9DED /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 711B2B3B2BF16097008FD6D0 /* Widget.intentdefinition */; };
@@ -392,7 +392,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71516C5C2BF2A36300AF9DED /* RealityKitContent in Frameworks */,
+				711415BB2BF6A914000F8AF9 /* RealityKitContent in Frameworks */,
 				71D430A42BF200ED007FD2C7 /* Solar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,7 +724,7 @@
 			name = Solstice;
 			packageProductDependencies = (
 				71D430A32BF200ED007FD2C7 /* Solar */,
-				71516C5B2BF2A36300AF9DED /* RealityKitContent */,
+				711415BA2BF6A914000F8AF9 /* RealityKitContent */,
 			);
 			productName = Solstice;
 			productReference = 711B2AFD2BF16037008FD6D0 /* Solstice.app */;
@@ -1117,7 +1117,10 @@
 		};
 		71516C562BF2039B00AF9DED /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilter = ios;
+			platformFilters = (
+				ios,
+				macos,
+			);
 			target = 711B2BE62BF160DF008FD6D0 /* Solstice Watch App */;
 			targetProxy = 71516C552BF2039B00AF9DED /* PBXContainerItemProxy */;
 		};
@@ -1634,7 +1637,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		71516C5B2BF2A36300AF9DED /* RealityKitContent */ = {
+		711415BA2BF6A914000F8AF9 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
 		};

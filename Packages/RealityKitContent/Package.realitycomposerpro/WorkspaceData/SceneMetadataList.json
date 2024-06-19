@@ -3,14 +3,6 @@
     "objectMetadataList" : [
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root",
         "Sphere"
       ],
@@ -22,6 +14,14 @@
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root",
         "GridMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -44,7 +44,8 @@
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
-        "Earth_And_Ornaments"
+        "Earth_And_Ornaments",
+        "Earth"
       ],
       {
         "isExpanded" : true,
@@ -62,7 +63,8 @@
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
         "Earth_And_Ornaments",
-        "Earth"
+        "Earth",
+        "EarthMaterial"
       ],
       {
         "isExpanded" : true,
@@ -71,9 +73,7 @@
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
-        "Earth_And_Ornaments",
-        "Earth",
-        "EarthMaterial"
+        "Earth_And_Ornaments"
       ],
       {
         "isExpanded" : true,
