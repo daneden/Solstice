@@ -70,12 +70,10 @@ extension CurrentLocation {
 		
 		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
 		if let firstResult = reverseGeocoded?.first {
-			withAnimation {
-				placemark = firstResult
-				title = firstResult.locality
-				subtitle = firstResult.country
-				timeZoneIdentifier = firstResult.timeZone?.identifier
-			}
+			placemark = firstResult
+			title = firstResult.locality
+			subtitle = firstResult.country
+			timeZoneIdentifier = firstResult.timeZone?.identifier
 		}
 	}
 	

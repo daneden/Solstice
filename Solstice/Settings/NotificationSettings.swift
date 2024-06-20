@@ -190,6 +190,7 @@ struct NotificationPreview: View {
 				Text(bodyContent).font(.footnote.leading(.tight))
 					.fixedSize(horizontal: false, vertical: true)
 					.lineLimit(4)
+					.contentTransition(.interpolate)
 			}
 			
 			Spacer(minLength: 0)
@@ -198,6 +199,7 @@ struct NotificationPreview: View {
 		.padding(.horizontal, 12)
 		.background(.regularMaterial)
 		.cornerRadius(12)
+		.animation(.default, value: bodyContent)
 	}
 }
 

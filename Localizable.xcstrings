@@ -1387,9 +1387,15 @@
     },
     "Remove daylight gain/loss" : {
       "localizations" : {
-        "it" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Remove daylight loss"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Rimuovere il guadagno/perdita della luce diurna"
           }
         }

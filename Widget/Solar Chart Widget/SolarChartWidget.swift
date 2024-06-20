@@ -22,6 +22,5 @@ struct SolarChartWidget: Widget {
 		.configurationDisplayName("Solar Chart")
 		.description("Follow the sun's journey throughout the day")
 		.supportedFamilies(Self.supportedFamilies)
-		.contentMarginsDisabled()
 	}
 }

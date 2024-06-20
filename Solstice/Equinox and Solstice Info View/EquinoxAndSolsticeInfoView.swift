@@ -74,6 +74,10 @@ fileprivate struct Selection: Codable, Hashable {
 	}
 }
 
+#if os(iOS)
+extension NSBundleResourceRequest: @unchecked Sendable {}
+#endif
+
 struct EquinoxAndSolsticeInfoView: View {
 	@State private var selection: Selection = Selection()
 	#if os(iOS)

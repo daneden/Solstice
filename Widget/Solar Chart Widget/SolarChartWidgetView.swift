@@ -10,8 +10,6 @@ import WidgetKit
 import Solar
 
 struct SolarChartWidgetView: View {
-	@Environment(\.widgetContentMargins) var contentMargins
-	
 	var entry: SolsticeWidgetTimelineEntry
 	
 	var solar: Solar? {
@@ -50,7 +48,6 @@ struct SolarChartWidgetView: View {
 					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
-					.padding(contentMargins)
 					
 					DaylightChart(
 						solar: solar,
@@ -58,13 +55,12 @@ struct SolarChartWidgetView: View {
 						eventTypes: [],
 						includesSummaryTitle: false,
 						markSize: 3,
-						yScale: -1.0...2.0
+						yScale: -1.0...1.5
 					)
 					.padding(.horizontal, -1)
 				}
 			} else {
 				WidgetMissingLocationView()
-					.padding(contentMargins)
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)

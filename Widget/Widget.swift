@@ -5,10 +5,8 @@
 //  Created by Daniel Eden on 19/02/2023.
 //
 
-import WidgetKit
-import SwiftUI
-import Intents
-import Solar
+import Foundation
+import CoreLocation
 
 struct SolsticeWidgetLocation: AnyLocation {
 	var title: String?
@@ -29,7 +27,7 @@ struct SolsticeWidgetLocation: AnyLocation {
 	
 	static let defaultLocation = SolsticeWidgetLocation(title: "London",
 																											subtitle: "United Kingdom",
-																											timeZoneIdentifier: "GMT",
+																											timeZoneIdentifier: "Europe/London",
 																											latitude: 51.5072,
 																											longitude: -0.1276)
 }

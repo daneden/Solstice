@@ -15,7 +15,7 @@ struct ContentToggle<Content: View>: View {
 		HStack {
 			content(showToggledContent)
 				.modify { content in
-					if #available(iOS 17, macOS 13, watchOS 10, *) {
+					if #available(iOS 17, macOS 14, watchOS 10, *) {
 						content.transition(.blurReplace)
 					} else {
 						content
@@ -32,7 +32,7 @@ struct ContentToggle<Content: View>: View {
 #Preview {
 	ContentToggle(showToggledContent: true) { showContent in
 		if showContent {
-			Text("Content #1")
+			Text(verbatim: "Content #1")
 				.font(.headline)
 		} else {
 			Text("Content #2")

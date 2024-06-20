@@ -115,7 +115,7 @@ extension CountdownWidgetView {
 	}
 }
 
-#if !os(watchOS)
+#if os(iOS)
 #Preview(
 	"Countdown (System Small)",
 	as: WidgetFamily.systemSmall,

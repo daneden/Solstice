@@ -162,12 +162,10 @@ struct OverviewWidgetView: View {
 						.symbolRenderingMode(.hierarchical)
 #endif
 					}
-					.padding()
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 				}
 			} else {
 				WidgetMissingLocationView()
-					.padding()
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			}
 		}
@@ -175,7 +173,7 @@ struct OverviewWidgetView: View {
 	}
 }
 
-#if !os(watchOS)
+#if os(iOS)
 #Preview(
 	"Overview (System Small)",
 	as: WidgetFamily.systemSmall,

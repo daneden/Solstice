@@ -330,7 +330,7 @@ extension DaylightChart {
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
 		var start: Double = 0
 		
-		if #available(iOS 17, macOS 13, watchOS 10, *) {
+		if #available(iOS 17, macOS 14, watchOS 10, visionOS 1.0, *) {
 			if let plotFrame = proxy.plotFrame {
 				start = geo[plotFrame].origin.x
 			}
