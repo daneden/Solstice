@@ -40,7 +40,19 @@ fileprivate class LocationManager: NSObject, CLLocationManagerDelegate {
 	}
 	
 	func requestLocation() {
-		locationManager.requestLocation()
+		if #available(iOSApplicationExtension 17, watchOSApplicationExtension 10, macOSApplicationExtension 14, *) {
+			Task {
+				for try await update in CLLocationUpdate.liveUpdates() {
+					guard let location = update.location else { return }
+					for callback in updateLocationsCallbacks {
+						callback([location])
+					}
+					break
+				}
+			}
+		} else {
+			locationManager.requestLocation()
+		}
 	}
 	
 	var location: CLLocation? { locationManager.location }

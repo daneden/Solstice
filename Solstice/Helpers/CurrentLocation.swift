@@ -52,11 +52,11 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 	}
 	
 	func requestAccess() {
-		#if os(macOS)
+#if os(macOS)
 		self.locationManager.requestAlwaysAuthorization()
-		#else
+#else
 		self.locationManager.requestWhenInUseAuthorization()
-		#endif
+#endif
 	}
 }
 
@@ -78,12 +78,16 @@ extension CurrentLocation {
 	}
 	
 	func requestLocation() {
-		
 		if #available(iOS 17, watchOS 10, macOS 14, *) {
 			Task {
 				do {
 					for try await update in CLLocationUpdate.liveUpdates() {
-						self.location = update.location
+						guard let location = update.location else { return }
+						guard let storedLocation = self.location else { return self.location = location }
+						
+						if storedLocation.distance(from: location) > 200 {
+							self.location = location
+						}
 					}
 				} catch {
 					print(error.localizedDescription)
@@ -93,9 +97,9 @@ extension CurrentLocation {
 			locationManager.requestLocation()
 			locationManager.startUpdatingLocation()
 			
-			#if !os(watchOS) && !os(visionOS)
+#if !os(watchOS) && !os(visionOS)
 			locationManager.startMonitoringSignificantLocationChanges()
-			#endif
+#endif
 		}
 	}
 	
@@ -111,19 +115,19 @@ extension CurrentLocation {
 	}
 	
 	var isAuthorizedForWidgetUpdates: Bool {
-		#if !os(watchOS)
+#if !os(watchOS)
 		locationManager.isAuthorizedForWidgetUpdates
-		#else
+#else
 		isAuthorized
-		#endif
+#endif
 	}
 }
 
 extension CurrentLocation: CLLocationManagerDelegate {
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-		#if canImport(WidgetKit)
+#if canImport(WidgetKit)
 		WidgetCenter.shared.reloadAllTimelines()
-		#endif
+#endif
 		
 		if isAuthorized { requestLocation() }
 	}
@@ -136,7 +140,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		if location == nil {
 			updateLocation(newLocation)
 		} else if let newLocation, let location,
-			 newLocation.distance(from: location) > CLLocationDistance(10_000) {
+							newLocation.distance(from: location) > CLLocationDistance(10_000) {
 			updateLocation(newLocation)
 		} else {
 			print("Location is within 10km of last update")
@@ -149,9 +153,9 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		if newLocation != nil {
 			Task { await NotificationManager.scheduleNotifications(locationManager: self) }
 			
-			#if canImport(WidgetKit)
+#if canImport(WidgetKit)
 			WidgetCenter.shared.reloadAllTimelines()
-			#endif
+#endif
 		}
 	}
 	
