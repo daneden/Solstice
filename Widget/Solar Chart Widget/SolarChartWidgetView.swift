@@ -57,7 +57,6 @@ struct SolarChartWidgetView: View {
 						markSize: 3,
 						yScale: -1.0...1.5
 					)
-					.padding(.horizontal, -1)
 				}
 			} else {
 				WidgetMissingLocationView()

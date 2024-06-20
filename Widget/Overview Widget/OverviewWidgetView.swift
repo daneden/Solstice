@@ -169,6 +169,7 @@ struct OverviewWidgetView: View {
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			}
 		}
+		.backwardCompatibleContentMargins()
 		.backwardCompatibleContainerBackground(.background)
 	}
 }
