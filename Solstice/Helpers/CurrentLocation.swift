@@ -78,12 +78,25 @@ extension CurrentLocation {
 	}
 	
 	func requestLocation() {
-		locationManager.requestLocation()
-		locationManager.startUpdatingLocation()
-
-		#if !os(watchOS) && !os(visionOS)
-		locationManager.startMonitoringSignificantLocationChanges()
-		#endif
+		
+		if #available(iOS 17, watchOS 10, macOS 14, *) {
+			Task {
+				do {
+					for try await update in CLLocationUpdate.liveUpdates() {
+						self.location = update.location
+					}
+				} catch {
+					print(error.localizedDescription)
+				}
+			}
+		} else {
+			locationManager.requestLocation()
+			locationManager.startUpdatingLocation()
+			
+			#if !os(watchOS) && !os(visionOS)
+			locationManager.startMonitoringSignificantLocationChanges()
+			#endif
+		}
 	}
 	
 	var authorizationStatus: CLAuthorizationStatus {
