@@ -543,6 +543,9 @@
         }
       }
     },
+    "Current Location" : {
+
+    },
     "Customise notification content" : {
       "localizations" : {
         "it" : {
@@ -1092,6 +1095,7 @@
       }
     },
     "My Location" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1102,6 +1106,7 @@
       }
     },
     "My Location %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

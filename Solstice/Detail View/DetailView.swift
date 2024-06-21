@@ -29,7 +29,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	var navBarTitleText: Text {
 		guard let title = location.title else {
-			return location is CurrentLocation ? Text("My Location") : Text(verbatim: "Solstice")
+			return location is CurrentLocation ? Text("Current Location") : Text(verbatim: "Solstice")
 		}
 		
 		return Text(title)

@@ -15,7 +15,7 @@ struct WidgetLocationView: View {
 		guard let title = location.title else {
 			switch location.isRealLocation {
 			case true:
-				return Text("My Location \(Image(systemName: "location"))")
+				return Text("Current Location \(Image(systemName: "location"))")
 			case false:
 				return Text("\(Image("Solstice.SFSymbol")) Solstice")
 			}

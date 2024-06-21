@@ -184,7 +184,7 @@ extension DailyOverview {
 						if let title = location.title {
 							Text(title)
 						} else {
-							Text("My Location")
+							Text("Current Location")
 						}
 					}
 					.font(.headline)
