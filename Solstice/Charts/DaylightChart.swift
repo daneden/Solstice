@@ -18,7 +18,7 @@ struct DaylightChart: View {
 	
 	var solar: Solar
 	var timeZone: TimeZone
-	var eventTypes: [Solar.Phase] = Solar.Phase.allCases
+	var showEventTypes = true
 	
 	var appearance = Appearance.simple
 	var includesSummaryTitle = true
@@ -26,8 +26,6 @@ struct DaylightChart: View {
 	var scrubbable = false
 	var markSize: CGFloat = 6
 	var yScale = -1.5...1.5
-	
-	@State private var solarEvents: [Solar.Event] = []
 	
 	var markForegroundColor: Color {
 		if appearance == .graphical {
@@ -61,7 +59,7 @@ struct DaylightChart: View {
 			}
 			
 			Chart {
-				ForEach(solarEvents.filter { range.contains($0.date) }) { solarEvent in
+				ForEach(solar.events.filter { range.contains($0.date) }) { solarEvent in
 					PointMark(
 						x: .value("Event Time", solarEvent.date),
 						y: .value("Event", yValue(for: solarEvent.date ))
@@ -246,32 +244,7 @@ struct DaylightChart: View {
 				.blendMode(.plusLighter)
 				.environment(\.colorScheme, .dark)
 		}
-		.task(id: solar.date, priority: .background) {
-			solarEvents = []
-			do {
-				try await Task.sleep(nanoseconds: 250_000_000)
-				if solarEvents.isEmpty { resetSolarEvents() }
-			} catch {
-				print(error)
-			}
-		}
-		.onAppear {
-			resetSolarEvents()
-		}
 		.environment(\.timeZone, timeZone)
-	}
-	
-	func resetSolarEvents() {
-		let events = solar.events.filter { event in
-			eventTypes.contains { phase in
-				event.phase == phase
-			}
-		}
-			.compactMap { $0 }
-		
-		withAnimation {
-			solarEvents = events
-		}
 	}
 }
 
@@ -312,7 +285,7 @@ extension DaylightChart {
 	}
 	
 	func resetSelectedEvent() {
-		selectedEvent = solarEvents.filter {
+		selectedEvent = solar.events.filter {
 			$0.phase == .sunset || $0.phase == .sunrise
 		}.sorted(by: { a, b in
 			a.date.compare(.now) == .orderedDescending
@@ -343,7 +316,7 @@ extension DaylightChart {
 		currentX = proxy.value(atX: xCurrent)
 		
 		if let currentX,
-			 let nearestEvent = solarEvents.sorted(by: { lhs, rhs in
+			 let nearestEvent = solar.events.sorted(by: { lhs, rhs in
 				 abs(lhs.date.distance(to: currentX)) <= abs(rhs.date.distance(to: currentX))
 			 }).first {
 			selectedEvent = nearestEvent

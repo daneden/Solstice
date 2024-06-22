@@ -75,7 +75,7 @@ struct OverviewWidgetView: View {
 							DaylightChart(
 								solar: solar,
 								timeZone: location.timeZone,
-								eventTypes: [.sunrise, .sunset],
+								showEventTypes: false,
 								includesSummaryTitle: false,
 								hideXAxis: true,
 								markSize: family == .systemSmall ? 3 : 5

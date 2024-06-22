@@ -49,7 +49,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 				DaylightChart(
 					solar: solar,
 					timeZone: location.timeZone,
-					eventTypes: [.sunrise, .sunset],
+					showEventTypes: false,
 					includesSummaryTitle: false,
 					hideXAxis: true,
 					markSize: 2

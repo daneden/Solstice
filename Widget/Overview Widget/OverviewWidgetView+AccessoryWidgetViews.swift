@@ -19,7 +19,7 @@ extension OverviewWidgetView {
 			DaylightChart(
 				solar: solar,
 				timeZone: location.timeZone,
-				eventTypes: [.sunset, .sunrise],
+				showEventTypes: false,
 				appearance: renderingMode == .fullColor ? .graphical : .simple,
 				includesSummaryTitle: false,
 				hideXAxis: true,

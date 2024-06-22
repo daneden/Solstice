@@ -52,7 +52,7 @@ struct SolarChartWidgetView: View {
 					DaylightChart(
 						solar: solar,
 						timeZone: location.timeZone,
-						eventTypes: [],
+						showEventTypes: false,
 						includesSummaryTitle: false,
 						markSize: 3,
 						yScale: -1.0...1.5
