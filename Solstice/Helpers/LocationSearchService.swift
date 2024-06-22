@@ -11,8 +11,8 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-struct Location: Identifiable, Hashable {
-	static func == (lhs: Location, rhs: Location) -> Bool {
+struct LocationSearchResult: Identifiable, Hashable {
+	static func == (lhs: LocationSearchResult, rhs: LocationSearchResult) -> Bool {
 		lhs.hashValue == rhs.hashValue
 	}
 	
@@ -63,6 +63,7 @@ class LocationSearchService: NSObject, ObservableObject {
 		self.searchCompleter = searchCompleter
 		super.init()
 		self.searchCompleter.delegate = self
+		self.searchCompleter.region = MKCoordinateRegion(.world)
 		self.searchCompleter.resultTypes = [.address, .pointOfInterest]
 		self.searchCompleter.pointOfInterestFilter = .init(including: [.airport, .nationalPark])
 		
@@ -83,7 +84,12 @@ class LocationSearchService: NSObject, ObservableObject {
 
 extension LocationSearchService: MKLocalSearchCompleterDelegate {
 	func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-		self.searchResults = completer.results
+		self.searchResults = completer.results.filter { result in
+			guard result.title.contains(",") || !result.subtitle.isEmpty else { return false }
+			guard !result.subtitle.contains("Nearby") else { return false }
+			return true
+		}
+		
 		self.status = completer.results.isEmpty ? .noResults : .result
 	}
 	

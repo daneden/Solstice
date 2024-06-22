@@ -27,8 +27,6 @@ struct ContentView: View {
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 	
 	@FetchRequest(sortDescriptors: []) private var items: FetchedResults<SavedLocation>
-	
-	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 			
 	var body: some View {
 			NavigationSplitView(columnVisibility: $sidebarVisibility) {
@@ -72,18 +70,17 @@ struct ContentView: View {
 				}
 			}
 			.task(id: scenePhase) {
-				timeMachine.referenceDate = Date()
 				if currentLocation.isAuthorized,
 					 selectedLocation == currentLocation.id,
 					 scenePhase == .active {
 					currentLocation.requestLocation()
 				}
 			}
-			.onReceive(timer) { _ in
-				timeMachine.referenceDate = Date()
-				if currentLocation.isAuthorized,
-					 selectedLocation == currentLocation.id {
-					currentLocation.requestLocation()
+			.overlay {
+				TimelineView(.everyMinute) { timelineContext in
+					Color.clear.task(id: timelineContext.date) {
+						timeMachine.referenceDate = timelineContext.date
+					}
 				}
 			}
 		#if os(iOS)
