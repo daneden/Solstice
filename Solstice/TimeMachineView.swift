@@ -35,7 +35,7 @@ struct TimeMachineView: View {
 	@ViewBuilder
 	var controls: some View {
 		#if !os(watchOS)
-		DatePicker(selection: $timeMachine.targetDate) {
+		DatePicker(selection: $timeMachine.targetDate, displayedComponents: [.date]) {
 			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
 		}
 		#endif
