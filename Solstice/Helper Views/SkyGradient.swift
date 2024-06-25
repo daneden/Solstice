@@ -90,6 +90,12 @@ struct SkyGradient: View, ShapeStyle {
 	}
 }
 
+extension Solar {
+	var view: SkyGradient {
+		SkyGradient(solar: self)
+	}
+}
+
 fileprivate struct PreviewContainer: View {
 	@State var date = Date.now
 	
