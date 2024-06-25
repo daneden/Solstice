@@ -27,6 +27,10 @@ struct DaylightChart: View {
 	var markSize: CGFloat = 6
 	var yScale = -1.5...1.5
 	
+	var plotDate: Date {
+		currentX ?? solar.date
+	}
+	
 	var markForegroundColor: Color {
 		if appearance == .graphical {
 			return .white
@@ -55,7 +59,7 @@ struct DaylightChart: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
-				DaylightSummaryTitle(solar: solar, event: selectedEvent, currentX: currentX, timeZone: timeZone)
+				DaylightSummaryTitle(solar: solar, event: selectedEvent, date: currentX, timeZone: timeZone)
 			}
 			
 			Chart {
@@ -96,6 +100,22 @@ struct DaylightChart: View {
 							.offset(y: proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0)
 						
 						ZStack {
+							// MARK: Scrub indicator
+							if let currentX {
+								// MARK: Scrub bar
+								Rectangle()
+									.fill(markForegroundColor)
+									.frame(width: 2, height: geo.size.height)
+									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
+									.overlay {
+										Rectangle()
+											.stroke(style: StrokeStyle(lineWidth: 1))
+											.fill(.background)
+											.frame(width: 2, height: geo.size.height)
+											.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
+									}
+							}
+							
 							// MARK: Sun below horizon
 							ZStack {
 								Circle()
@@ -107,8 +127,8 @@ struct DaylightChart: View {
 									}
 									.frame(width: markSize * 2.5, height: markSize * 2.5)
 									.position(
-										x: proxy.position(forX: solar.date) ?? 0,
-										y: proxy.position(forY: yValue(for: solar.date)) ?? 0
+										x: proxy.position(forX: plotDate) ?? 0,
+										y: proxy.position(forY: yValue(for: plotDate)) ?? 0
 									)
 									.shadow(color: .secondary.opacity(0.5), radius: 2)
 									.blendMode(.normal)
@@ -133,8 +153,8 @@ struct DaylightChart: View {
 									.fill(markForegroundColor)
 									.frame(width: markSize * 2.5, height: markSize * 2.5)
 									.position(
-										x: proxy.position(forX: solar.date) ?? 0,
-										y: proxy.position(forY: yValue(for: solar.date)) ?? 0
+										x: proxy.position(forX: plotDate) ?? 0,
+										y: proxy.position(forY: yValue(for: plotDate)) ?? 0
 									)
 									.shadow(color: .secondary.opacity(0.5), radius: 3)
 							}
@@ -143,38 +163,6 @@ struct DaylightChart: View {
 									.frame(height: proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0)
 							}
 						}
-					}
-					
-					// MARK: Scrub indicator
-					if let currentX {
-						// MARK: Scrub bar
-						Rectangle()
-							.fill(markForegroundColor)
-							.frame(width: 2, height: geo.size.height)
-							.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
-							.overlay {
-								Rectangle()
-									.stroke(style: StrokeStyle(lineWidth: 1))
-									.fill(.background)
-									.frame(width: 2, height: geo.size.height)
-									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
-							}
-						
-						// MARK: Scrub pointer
-						Circle()
-							.fill(markForegroundColor)
-							.overlay {
-								Circle()
-									.strokeBorder(style: StrokeStyle(lineWidth: 1))
-									.fill(.background)
-									.opacity(0.75)
-									.blendMode(.normal)
-							}
-							.frame(width: markSize * 2, height: markSize * 2)
-							.position(
-								x: proxy.position(forX: currentX) ?? 0,
-								y: proxy.position(forY: yValue(for: currentX)) ?? 0
-							)
 					}
 					
 					// MARK: Scrub hit area

@@ -11,7 +11,7 @@ import Solar
 struct DaylightSummaryTitle: View {
 	var solar: Solar
 	var event: Solar.Event?
-	var currentX: Date?
+	var date: Date?
 	var timeZone = localTimeZone
 	
 	var summaryFont: Font {
@@ -53,28 +53,30 @@ struct DaylightSummaryTitle: View {
 								Text(event.label)
 								Text(event.date, style: .time)
 									.foregroundStyle(.secondary)
+									.contentTransition(.numericText())
 							}
 							
 							Spacer()
 							
-							if let currentX {
+							if let date {
 								VStack(alignment: .trailing) {
-									Text(currentX, style: .time)
+									Text(date, style: .time)
 										.foregroundStyle(.secondary)
 									
 									Group {
-										if currentX < solar.safeSunrise {
-											Text("Sunrise in \((currentX..<solar.safeSunrise).formatted(formatter))")
-										} else if currentX < solar.safeSunset {
-											Text("Sunset in \((currentX..<solar.safeSunset).formatted(formatter))")
-										} else if currentX > solar.safeSunset {
-											Text("Sunrise in \((currentX..<(solar.tomorrow?.safeSunrise ?? solar.endOfDay)).formatted(formatter))")
+										if date < solar.safeSunrise {
+											Text("Sunrise in \((date..<solar.safeSunrise).formatted(formatter))")
+										} else if date < solar.safeSunset {
+											Text("Sunset in \((date..<solar.safeSunset).formatted(formatter))")
+										} else if date > solar.safeSunset {
+											Text("Sunrise in \((date..<(solar.tomorrow?.safeSunrise ?? solar.endOfDay)).formatted(formatter))")
 										}
 									}
 									.foregroundStyle(.tertiary)
 								}
 							}
 						}
+						.monospacedDigit()
 					}
 				}
 			}
@@ -84,6 +86,7 @@ struct DaylightSummaryTitle: View {
 			.fontDesign(.rounded)
 			.fontWeight(.semibold)
 			.environment(\.timeZone, timeZone)
+			.animation(.smooth, value: event)
     }
 }
 
