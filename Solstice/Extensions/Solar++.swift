@@ -18,7 +18,17 @@ extension Solar {
 	}
 	
 	var safeSunrise: Date {
-		sunrise ?? startOfDay
+		if let sunrise {
+			return sunrise
+		}
+		
+		if daylightDuration <= 0 {
+			return startOfDay.addingTimeInterval(.twentyFourHours / 2)
+		} else if daylightDuration >= .twentyFourHours {
+			return endOfDay
+		}
+		
+		return fallbackSunrise ?? startOfDay
 	}
 	
 	var safeSunset: Date {
@@ -26,16 +36,13 @@ extension Solar {
 			return sunset
 		}
 		
-		guard let fallbackSunset,
-					let fallbackSunrise else {
+		if daylightDuration <= 0 {
+			return startOfDay.addingTimeInterval(.twentyFourHours / 2)
+		} else if daylightDuration >= .twentyFourHours {
 			return endOfDay
 		}
 		
-		if fallbackSunrise.distance(to: fallbackSunset) > (60 * 60 * 7) {
-			return endOfDay
-		} else {
-			return startOfDay.addingTimeInterval(0.1)
-		}
+		return fallbackSunset ?? endOfDay
 	}
 	
 	var daylightDuration: TimeInterval {
@@ -43,20 +50,23 @@ extension Solar {
 			return sunrise.distance(to: sunset)
 		}
 		
-		if coordinate.latitude > 66.5 || coordinate.latitude < -66.5 {
-			return isDaytime ? 0 : 60 * 60 * 24
-		} else {
+		guard coordinate.insidePolarCircle else {
 			return safeSunrise.distance(to: safeSunset)
+		}
+		
+		let month = Calendar.current.component(.month, from: date)
+		
+		switch month {
+		case 1...3, 10...12:
+			return coordinate.insideArcticCircle ? 0 : TimeInterval.twentyFourHours
+		default:
+			return coordinate.insideArcticCircle ? TimeInterval.twentyFourHours : 0
 		}
 	}
 	
-	var peak: Date {
-		(fallbackSunrise ?? safeSunrise).addingTimeInterval(abs(daylightDuration) / 2)
-	}
-	
 	var solarNoon: Date? {
-		guard let fallbackSunrise, fallbackSunset != nil else { return nil }
-		return fallbackSunrise.addingTimeInterval(abs(daylightDuration) / 2)
+		guard let fallbackSunrise, let fallbackSunset else { return nil }
+		return fallbackSunrise.addingTimeInterval(fallbackSunrise.distance(to: fallbackSunset) / 2)
 	}
 	
 	var yesterday: Solar {

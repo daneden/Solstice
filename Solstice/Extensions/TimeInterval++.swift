@@ -15,4 +15,6 @@ extension TimeInterval {
 	var abbreviatedHourString: String {
 		Duration.seconds(self).formatted(.units(allowed: [.hours]))
 	}
+	
+	static let twentyFourHours: TimeInterval = 60 * 60 * 24
 }

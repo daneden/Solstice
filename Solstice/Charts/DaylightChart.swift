@@ -263,13 +263,15 @@ extension DaylightChart {
 	
 	var startOfDay: Date { range.lowerBound }
 	var endOfDay: Date { range.upperBound }
-	var dayLength: TimeInterval { startOfDay.distance(to: endOfDay) }
+	var dayLength: TimeInterval { .twentyFourHours }
 	
-	var noonish: Date { startOfDay.addingTimeInterval(dayLength / 2) }
+	var noonish: Date { startOfDay.addingTimeInterval(TimeInterval.twentyFourHours / 2) }
 	
-	var culminationDelta: TimeInterval { solar.peak.distance(to: noonish) }
+	var culminationDelta: TimeInterval { solar.solarNoon?.distance(to: noonish) ?? 0 }
 	
-	var daylightProportion: Double { solar.daylightDuration / dayLength }
+	var daylightProportion: Double {
+		solar.daylightDuration / dayLength
+	}
 	
 	func pointMarkColor(for eventPhase: Solar.Phase) -> HierarchicalShapeStyle {
 		switch eventPhase {

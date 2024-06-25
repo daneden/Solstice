@@ -56,7 +56,8 @@ extension Solar {
 	var endOfDay: Date {
 		var components = DateComponents()
 		components.day = 1
-		return max(sunset ?? civilSunset ?? nauticalSunset ?? astronomicalSunset ?? date, calendar.date(byAdding: components, to: startOfDay) ?? date)
+		guard let endOfDay = calendar.date(byAdding: components, to: startOfDay) else { return date }
+		return endOfDay
 	}
 	
 	private var culmination: Date {

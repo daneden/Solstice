@@ -57,6 +57,12 @@ struct SkyGradient: View, ShapeStyle {
 		
 		let noon = Array(repeating: Self.noon, count: daylightHours)
 		
+		if solar.daylightDuration <= 0 {
+			return [Self.night, Self.dawn, Self.evening, Self.night]
+		} else if solar.daylightDuration >= .twentyFourHours {
+			return [Self.dawn, Self.morning] + noon + [Self.afternoon, Self.evening]
+		}
+		
 		return amColors + noon + pmColors
 	}
 	

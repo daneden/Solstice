@@ -102,7 +102,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				}
 				
 				AdaptiveLabeledContent {
-					if let sunrise = solar.fallbackSunrise {
+					if let sunrise = solar.sunrise {
 						Text(sunrise, style: .time)
 					} else {
 						Text("—")
@@ -122,7 +122,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				}
 				
 				AdaptiveLabeledContent {
-					if let sunset = solar.fallbackSunset {
+					if let sunset = solar.sunset {
 						Text(sunset, style: .time)
 					} else {
 						Text("—")

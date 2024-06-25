@@ -29,3 +29,17 @@ extension CLLocationCoordinate2D {
 		return CLLocationCoordinate2D(latitude: 0, longitude: offset * 15)
 	}
 }
+
+extension CLLocationCoordinate2D {
+	var insideArcticCircle: Bool {
+		latitude > 66.34
+	}
+	
+	var insideAntarcticCircle: Bool {
+		latitude < -66.34
+	}
+	
+	var insidePolarCircle: Bool {
+		insideArcticCircle || insideAntarcticCircle
+	}
+}
