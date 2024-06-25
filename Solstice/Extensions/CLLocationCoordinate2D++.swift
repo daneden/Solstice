@@ -22,3 +22,10 @@ extension CLLocationCoordinate2D: RawRepresentable {
 		"\(latitude),\(longitude)"
 	}
 }
+
+extension CLLocationCoordinate2D {
+	static var proxiedToTimeZone: CLLocationCoordinate2D {
+		let offset = Double(TimeZone.current.secondsFromGMT()) / (60 * 60)
+		return CLLocationCoordinate2D(latitude: 0, longitude: offset * 15)
+	}
+}

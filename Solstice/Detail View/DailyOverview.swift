@@ -86,7 +86,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			
 			Group {
 				AdaptiveLabeledContent {
-					Text(Duration.seconds(solar.safeSunrise.distance(to: solar.safeSunset)).formatted(.units(maximumUnitCount: 2)))
+					Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
 						.contentTransition(.numericText())
 				} label: {
 					Label("Total daylight", systemImage: "hourglass")
@@ -102,19 +102,31 @@ struct DailyOverview<Location: AnyLocation>: View {
 				}
 				
 				AdaptiveLabeledContent {
-					Text(solar.safeSunrise, style: .time)
+					if let sunrise = solar.fallbackSunrise {
+						Text(sunrise, style: .time)
+					} else {
+						Text("—")
+					}
 				} label: {
 					Label("Sunrise", systemImage: "sunrise")
 				}
 				
 				AdaptiveLabeledContent {
-					Text(solar.peak, style: .time)
+					if let solarNoon = solar.solarNoon {
+						Text(solarNoon, style: .time)
+					} else {
+						Text("—")
+					}
 				} label: {
 					Label("Solar noon", systemImage: "sun.max")
 				}
 				
 				AdaptiveLabeledContent {
-					Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+					if let sunset = solar.fallbackSunset {
+						Text(sunset, style: .time)
+					} else {
+						Text("—")
+					}
 				} label: {
 					Label("Sunset", systemImage: "sunset")
 				}
@@ -248,11 +260,7 @@ extension DailyOverview {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					LinearGradient(
-						colors: SkyGradient.getCurrentPalette(for: solar),
-						startPoint: .top,
-						endPoint: .bottom
-					)
+					SkyGradient(solar: solar)
 				}
 		}
 		#endif

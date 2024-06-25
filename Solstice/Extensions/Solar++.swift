@@ -39,11 +39,24 @@ extension Solar {
 	}
 	
 	var daylightDuration: TimeInterval {
-		(fallbackSunrise ?? safeSunrise).distance(to: (fallbackSunset ?? safeSunset))
+		if let sunrise, let sunset {
+			return sunrise.distance(to: sunset)
+		}
+		
+		if coordinate.latitude > 66.5 || coordinate.latitude < -66.5 {
+			return isDaytime ? 0 : 60 * 60 * 24
+		} else {
+			return safeSunrise.distance(to: safeSunset)
+		}
 	}
 	
 	var peak: Date {
 		(fallbackSunrise ?? safeSunrise).addingTimeInterval(abs(daylightDuration) / 2)
+	}
+	
+	var solarNoon: Date? {
+		guard let fallbackSunrise, fallbackSunset != nil else { return nil }
+		return fallbackSunrise.addingTimeInterval(abs(daylightDuration) / 2)
 	}
 	
 	var yesterday: Solar {

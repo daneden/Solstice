@@ -10,10 +10,8 @@ import SceneKit
 
 #if canImport(UIKit)
 typealias NativeViewRepresentable = UIViewRepresentable
-typealias NativeColor = UIColor
 #elseif canImport(AppKit)
 typealias NativeViewRepresentable = NSViewRepresentable
-typealias NativeColor = NSColor
 #endif
 
 fileprivate struct Selection: Codable, Hashable {

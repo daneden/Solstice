@@ -8,8 +8,13 @@
 import Foundation
 import SwiftUI
 import Solar
+import CoreLocation
 
-struct SkyGradient {
+extension Solar: @unchecked Sendable {}
+
+struct SkyGradient: View, ShapeStyle {
+	var solar: Solar = Solar(coordinate: .proxiedToTimeZone)!
+	
 	static let dawn = [
 		Color(red: 0.388, green: 0.435, blue: 0.643),
 		Color(red: 0.91, green: 0.796, blue: 0.753)
@@ -42,37 +47,89 @@ struct SkyGradient {
 	]
 	
 	static var colors: [[Color]] {
-		[dawn, morning, noon, afternoon, evening, night]
+		[night, dawn, morning, noon, afternoon, evening, night]
 	}
 	
-	static func getCurrentPalette(for time: Date = .now) -> [Color] {
-		let timeAsIndex = Int(Double(calendar.component(.hour, from: time) + 8) / 6) % colors.count
-		return colors[timeAsIndex]
+	var colors: [[Color]] {
+		let daylightHours = Int((solar.daylightDuration / (60 * 60)) / 2)
+		let amColors = [Self.night, Self.dawn, Self.morning]
+		let pmColors = [Self.afternoon, Self.evening, Self.night]
+		
+		let noon = Array(repeating: Self.noon, count: daylightHours)
+		
+		return amColors + noon + pmColors
 	}
 	
-	static func getCurrentPalette(for daylight: Solar?) -> [Color] {
-		guard let daylight else { return [] }
-		let sunrise = daylight.safeSunrise.addingTimeInterval(-60 * 30)
-		let sunset = daylight.safeSunset.addingTimeInterval(60 * 30)
+	var stops: [Color] {
+		let sunrise = solar.safeSunrise
+		let sunset = solar.safeSunset
+		let twilightDuration: TimeInterval = 60 * 100
+		let duration = sunrise.addingTimeInterval(-twilightDuration).distance(to: sunset.addingTimeInterval(twilightDuration))
+		let progress = sunrise.distance(to: solar.date) / duration
+		let progressThroughStops = progress * Double(colors.count)
+		let index = min(max(0, Int(floor(progressThroughStops))), colors.count - 1)
+		let nextIndex = max(0, min(colors.count - 1, Int(ceil(progressThroughStops))))
+		let stopsA = colors[index]
+		let stopsB = colors[nextIndex]
+		let progressThroughCurrentStops = progressThroughStops - Double(index)
 		
-		let colorsExcludingNight = Array(colors.dropLast(1))
+		return [
+			stopsA[0].mix(with: stopsB[0], by: progressThroughCurrentStops),
+			stopsA[1].mix(with: stopsB[1], by: progressThroughCurrentStops),
+		]
+	}
+	
+	var body: LinearGradient {
+		LinearGradient(colors: stops, startPoint: .top, endPoint: .bottom)
+	}
+}
+
+fileprivate struct PreviewContainer: View {
+	@State var date = Date.now
+	
+	var solars: [Solar] {
+		var result = [Solar?]()
 		
-		if daylight.date < sunrise || daylight.date > sunset {
-			return night
-		} else {
-			let index = floor((sunrise.distance(to: daylight.date) / daylight.daylightDuration) * Double(colorsExcludingNight.count - 1))
-			
-			return colorsExcludingNight[Int(min(Double(colorsExcludingNight.count - 1), index))]
+		for i in stride(from: 0, to: 180, by: 15) {
+			let location = CLLocationCoordinate2D(latitude: Double(i) - 90, longitude: 0)
+			result.append(Solar(for: date, coordinate: location))
+		}
+		
+		return result.compactMap { $0 }
+	}
+	
+	var body: some View {
+		TimelineView(.animation) { t in
+			VStack(spacing: 0) {
+				ForEach(solars, id: \.coordinate.latitude) { solar in
+					ZStack {
+						SkyGradient(solar: solar)
+						
+						HStack {
+							Text(solar.date, style: .time)
+								.font(.largeTitle)
+							
+							Spacer()
+							VStack {
+								Text(solar.safeSunrise...solar.safeSunset)
+								Text(solar.daylightDuration.localizedString)
+							}
+						}
+						.padding()
+					}
+				}
+			}
+			.monospacedDigit()
+			.environment(\.colorScheme, .dark)
+			.task(id: t.date) {
+				date = date.addingTimeInterval(60)
+			}
 		}
 	}
 }
 
-struct SkyGradient_Previews: PreviewProvider {
-	static var previews: some View {
-		HStack(spacing: 0) {
-			ForEach(SkyGradient.colors, id: \.self) { gradientStops in
-				LinearGradient(colors: gradientStops, startPoint: .top, endPoint: .bottom)
-			}
-		}
+#Preview {
+	ScrollView {
+		PreviewContainer()
 	}
 }

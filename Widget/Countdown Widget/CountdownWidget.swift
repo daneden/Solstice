@@ -27,11 +27,7 @@ struct CountdownWidget: Widget {
 			CountdownWidgetView(entry: timelineEntry)
 				.backwardCompatibleContentMargins()
 				.backwardCompatibleContainerBackground(
-					LinearGradient(
-						colors: SkyGradient.getCurrentPalette(for: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)),
-						startPoint: .top,
-						endPoint: .bottom
-					)
+					SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
 				)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")

@@ -355,13 +355,6 @@ extension DaylightChart {
 				appearance: .graphical,
 				scrubbable: true
 			)
-			.background {
-				LinearGradient(
-					colors: SkyGradient.getCurrentPalette(for: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!),
-					startPoint: .top,
-					endPoint: .bottom
-				)
-			}
 			.listRowBackground(Color.clear)
 		}
 		.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))

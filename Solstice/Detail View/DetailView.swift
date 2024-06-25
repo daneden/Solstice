@@ -97,12 +97,14 @@ struct DetailView<Location: ObservableLocation>: View {
 			#if os(watchOS)
 			.modify {
 				if #available(watchOS 10, *) {
-					$0.containerBackground(
-						LinearGradient(colors: SkyGradient.getCurrentPalette(for: solar),
-													 startPoint: .top,
-													 endPoint: .bottom).opacity(0.5),
-						for: .navigation
-					)
+					if let solar {
+						$0.containerBackground(
+							SkyGradient(solar: solar),
+							for: .navigation
+						)
+					} else {
+						$0
+					}
 				} else {
 					$0
 				}
