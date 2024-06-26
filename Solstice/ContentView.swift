@@ -14,10 +14,11 @@ struct ContentView: View {
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	@Environment(\.openWindow) private var openWindow
+	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
-	@Environment(\.scenePhase) var scenePhase
+	@Environment(\.scenePhase) private var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
 	@StateObject var timeMachine = TimeMachine()
@@ -51,7 +52,7 @@ struct ContentView: View {
 					}
 				}
 				.modify { content in
-					if selectedLocation == .none {
+					if selectedLocation == .none || horizontalSizeClass == .compact {
 						content
 					} else {
 						if #available(iOS 17, macOS 14, visionOS 1, *) {

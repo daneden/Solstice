@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 03/04/2023.
 //
 
+#if !os(macOS)
 import SwiftUI
 import WidgetKit
 import Solar
@@ -80,3 +81,4 @@ extension OverviewWidgetView {
 		}
 	}
 }
+#endif

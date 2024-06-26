@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 12/04/2023.
 //
 
+#if !os(macOS)
 import WidgetKit
 import SwiftUI
 
@@ -24,3 +25,4 @@ struct SolarChartWidget: Widget {
 		.supportedFamilies(Self.supportedFamilies)
 	}
 }
+#endif

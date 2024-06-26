@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 03/04/2023.
 //
 
+#if !os(macOS)
 import SwiftUI
 import Solar
 import WidgetKit
@@ -118,3 +119,4 @@ extension CountdownWidgetView {
 		}
 	}
 }
+#endif
