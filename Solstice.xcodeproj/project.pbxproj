@@ -12,7 +12,7 @@
 		7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
 		7106C87329A276B40007A7EC /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
 		7106C87629A276B40007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
-		7106C87C29A276B40007A7EC /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* Widget Extension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7106C87C29A276B40007A7EC /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* Widget Extension.appex */; platformFilters = (ios, macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
 		7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
@@ -80,6 +80,7 @@
 		719465152C294B42008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
 		719465162C294B42008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
 		719465172C294B42008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
+		7194651A2C2C19BD008408C0 /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		719511F629AF5CB4009D282F /* GetSunriseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F529AF5CB4009D282F /* GetSunriseTime.swift */; };
 		719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F729AF5CE1009D282F /* GetSunsetTime.swift */; };
 		719511FA29AF5CF7009D282F /* ViewDaylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719511F929AF5CF7009D282F /* ViewDaylight.swift */; };
@@ -181,6 +182,13 @@
 			remoteGlobalIDString = 7106C86729A276B30007A7EC;
 			remoteInfo = WidgetExtension;
 		};
+		7194651B2C2C19BD008408C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7198467928E5895E00E866CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7106C86729A276B30007A7EC;
+			remoteInfo = "Widget Extension";
+		};
 		71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7198467928E5895E00E866CE /* Project object */;
@@ -219,6 +227,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				7194651A2C2C19BD008408C0 /* Widget Extension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -688,6 +697,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7194651C2C2C19BD008408C0 /* PBXTargetDependency */,
 			);
 			name = "Solstice watchOS Watch App";
 			packageProductDependencies = (
@@ -953,9 +963,17 @@
 /* Begin PBXTargetDependency section */
 		7106C87B29A276B40007A7EC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilter = ios;
+			platformFilters = (
+				ios,
+				macos,
+			);
 			target = 7106C86729A276B30007A7EC /* Widget Extension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
+		};
+		7194651C2C2C19BD008408C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7106C86729A276B30007A7EC /* Widget Extension */;
+			targetProxy = 7194651B2C2C19BD008408C0 /* PBXContainerItemProxy */;
 		};
 		71AEB7AF29AD0F2100A7952D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
