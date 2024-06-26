@@ -115,11 +115,14 @@ extension CountdownWidgetView {
 	}
 }
 
-#if os(iOS)
-#Preview(
-	"Countdown (System Small)",
-	as: WidgetFamily.systemSmall,
-	widget: { CountdownWidget() },
-	timeline: SolsticeWidgetTimelineEntry.previewTimeline
-)
-#endif
+struct CountdownWidgetPreview: PreviewProvider {
+	static var previews: some View {
+		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+			.previewContext(WidgetPreviewContext(family: .systemSmall))
+		
+		#if !os(macOS)
+		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+		#endif
+	}
+}

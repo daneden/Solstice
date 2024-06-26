@@ -176,12 +176,15 @@ struct OverviewWidgetView: View {
 	}
 }
 
-#if os(iOS)
-#Preview(
-	"Overview (System Small)",
-	as: WidgetFamily.systemSmall,
-	widget: { OverviewWidget() },
-	timeline: SolsticeWidgetTimelineEntry.previewTimeline
-)
-#endif
+struct OverviewWidgetViewPreview: PreviewProvider {
+	static var previews: some View {
+		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+			.previewContext(WidgetPreviewContext(family: .systemSmall))
+		
+		#if !os(macOS)
+		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+		#endif
+	}
+}
 

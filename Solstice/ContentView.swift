@@ -34,18 +34,35 @@ struct ContentView: View {
 					.toolbar {
 						toolbarItems
 					}
+					.navigationSplitViewColumnWidth(256)
 			} detail: {
-				switch selectedLocation {
-				case currentLocation.id:
-					DetailView(location: currentLocation)
-				case .some(let id):
-					if let item = items.first(where: { $0.uuid?.uuidString == id }) {
-						DetailView(location: item)
-					} else {
+				Group {
+					switch selectedLocation {
+					case currentLocation.id:
+						DetailView(location: currentLocation)
+					case .some(let id):
+						if let item = items.first(where: { $0.uuid?.uuidString == id }) {
+							DetailView(location: item)
+						} else {
+							placeholderView
+						}
+					case .none:
 						placeholderView
 					}
-				case .none:
-					placeholderView
+				}
+				.modify { content in
+					if selectedLocation == .none {
+						content
+					} else {
+						if #available(iOS 17, macOS 14, visionOS 1, *) {
+							GeometryReader { g in
+								content
+									.contentMargins(.horizontal, max(0, (g.size.width - 540) / 2), for: .scrollContent)
+							}
+						} else {
+							content
+						}
+					}
 				}
 			}
 			.navigationSplitViewStyle(.balanced)

@@ -64,16 +64,18 @@ struct DaylightChart: View {
 			
 			Chart {
 				ForEach(solar.events.filter { range.contains($0.date) }) { solarEvent in
-					PointMark(
-						x: .value("Event Time", solarEvent.date),
-						y: .value("Event", yValue(for: solarEvent.date ))
-					)
-					.foregroundStyle(pointMarkColor(for: solarEvent.phase))
-					.opacity(solarEvent.phase == .night
-									 || solarEvent.phase == .day
-									 || solarEvent.phase == .sunrise
-									 || solarEvent.phase == .sunset ? 0 : 1)
-					.symbolSize(markSize * .pi * 2)
+					if showEventTypes || !Solar.Phase.plottablePhases.contains(solarEvent.phase) {
+						PointMark(
+							x: .value("Event Time", solarEvent.date),
+							y: .value("Event", yValue(for: solarEvent.date ))
+						)
+						.foregroundStyle(pointMarkColor(for: solarEvent.phase))
+						.opacity(solarEvent.phase == .night
+										 || solarEvent.phase == .day
+										 || solarEvent.phase == .sunrise
+										 || solarEvent.phase == .sunset ? 0 : 1)
+						.symbolSize(markSize * .pi * 2)
+					}
 				}
 			}
 			.chartYAxis(.hidden)

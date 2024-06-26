@@ -49,6 +49,9 @@ struct SolsticeApp: App {
 				}
 				.migrateAppFeatures()
 		}
+		#if !os(watchOS) && !os(iOS)
+		.defaultSize(width: 800, height: 600)
+		#endif
 		
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
@@ -60,6 +63,8 @@ struct SolsticeApp: App {
 		Settings {
 			SettingsView()
 				.frame(maxWidth: 500)
+				.environment(\.managedObjectContext, persistenceController.container.viewContext)
+				.environmentObject(currentLocation)
 		}
 		
 		Window("About Equinox and Solstices", id: "about-equinox-and-solstice") {

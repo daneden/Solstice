@@ -35,8 +35,6 @@ extension OverviewWidgetView {
 	}
 	
 	struct AccessoryRectangularView: View {
-		@Environment(\.widgetContentMargins) var contentMargins
-		
 		var isAfterTodaySunset: Bool
 		var location: SolsticeWidgetLocation?
 		var relevantSolar: Solar?
@@ -65,23 +63,20 @@ extension OverviewWidgetView {
 							}
 						}
 						.foregroundStyle(.secondary)
-						.transition(.blurReplace)
+						.modify { content in
+							if #available(iOS 17, watchOS 10, macOS 14, *) {
+								content
+									.transition(.blurReplace)
+							} else {
+								content
+							}
+						}
 					}
 				}
 				
 				Spacer(minLength: 0)
 			}
 			.minimumScaleFactor(0.9)
-			.padding(contentMargins)
 		}
 	}
 }
-
-#if !os(macOS)
-#Preview(
-	"Overview (Accessory Rectangular)",
-	as: WidgetFamily.accessoryRectangular,
-	widget: { OverviewWidget() },
-	timeline: SolsticeWidgetTimelineEntry.previewTimeline
-)
-#endif

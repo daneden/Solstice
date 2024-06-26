@@ -63,15 +63,17 @@ struct SolarChartWidgetView: View {
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.containerBackground(.background, for: .widget)
+		.backwardCompatibleContainerBackground {
+			Color.clear.background(.background)
+		}
 	}
 }
 
 #if !os(macOS)
-#Preview(
-	"Solar Chart (Accessory Rectangular)",
-	as: WidgetFamily.accessoryRectangular,
-	widget: { SolarChartWidget() },
-	timeline: SolsticeWidgetTimelineEntry.previewTimeline
-)
+struct SolarChartWidgetPreview: PreviewProvider {
+	static var previews: some View {
+		SolarChartWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+	}
+}
 #endif

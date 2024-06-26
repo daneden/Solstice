@@ -96,7 +96,14 @@ extension CountdownWidgetView {
 			} icon: {
 				Image(systemName: nextEvent.imageName)
 			}
-			.widgetCurvesContent()
+			.modify { content in
+				if #available(iOS 17, watchOS 10, *) {
+					content
+						.widgetCurvesContent()
+				} else {
+					content
+				}
+			}
 			.widgetLabel {
 				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
 					Image(systemName: previousEvent.imageName)
@@ -111,10 +118,3 @@ extension CountdownWidgetView {
 		}
 	}
 }
-
-#Preview(
-	"Countdown (Accessory Rectangular)",
-	as: WidgetFamily.accessoryRectangular,
-	widget: { CountdownWidget() },
-	timeline: SolsticeWidgetTimelineEntry.previewTimeline
-)
