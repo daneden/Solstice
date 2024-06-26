@@ -29,74 +29,91 @@ struct ContentView: View {
 	}
 	
 	var body: some View {
-		if #available(watchOS 10, *) {
-			NavigationSplitView {
-				List(selection: $selectedLocation) {
-					if currentLocation.authorizationStatus == .notDetermined {
-						LocationPermissionScreenerView()
-					}
-					
-					Section {
-						if !currentLocation.isAuthorized && items.isEmpty {
-							VStack {
-								Text("No locations")
-									.font(.headline)
-								Text("Search for a location or enable location services")
+		Group {
+			if #available(watchOS 10, *) {
+				NavigationSplitView {
+					List(selection: $selectedLocation) {
+						if currentLocation.authorizationStatus == .notDetermined {
+							LocationPermissionScreenerView()
+						}
+						
+						Section {
+							if !currentLocation.isAuthorized && items.isEmpty {
+								VStack {
+									Text("No locations")
+										.font(.headline)
+									Text("Search for a location or enable location services")
+								}
+								.frame(maxWidth: .infinity)
+								.multilineTextAlignment(.center)
+								.foregroundStyle(.secondary)
 							}
-							.frame(maxWidth: .infinity)
-							.multilineTextAlignment(.center)
-							.foregroundStyle(.secondary)
-						}
-						
-						if currentLocation.isAuthorized {
-							DaylightSummaryRow(location: currentLocation)
-								.tag(currentLocation.id)
-								.listRowBackground(
-									Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
-										.view
-										.clipShape(.buttonBorder)
-								)
-						}
-						
-						ForEach(sortedItems) { item in
-							if let tag = item.uuid?.uuidString {
-								DaylightSummaryRow(location: item)
-									.tag(tag)
+							
+							if currentLocation.isAuthorized {
+								LocationListRow(location: currentLocation)
+									.tag(currentLocation.id)
 									.listRowBackground(
-										Solar(for: timeMachine.date, coordinate: item.coordinate)?
+										Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
 											.view
 											.clipShape(.buttonBorder)
 									)
 							}
-						}
-					}
-				}
-			} detail: {
-				switch selectedLocation {
-				case currentLocation.id:
-					DetailView(location: currentLocation)
-						.containerBackground(for: .navigation) {
-							if let solar = Solar(for: timeMachine.date, coordinate: currentLocation.coordinate) {
-								solar.view
+							
+							ForEach(sortedItems) { item in
+								if let tag = item.uuid?.uuidString {
+									LocationListRow(location: item)
+										.tag(tag)
+										.listRowBackground(
+											Solar(for: timeMachine.date, coordinate: item.coordinate)?
+												.view
+												.clipShape(.buttonBorder)
+										)
+								}
 							}
 						}
-				case .some(let id):
-					if let item = items.first(where: { $0.uuid?.uuidString == id }) {
-						DetailView(location: item)
+					}
+					.navigationTitle(Text(verbatim: "Solstice"))
+				} detail: {
+					switch selectedLocation {
+					case currentLocation.id:
+						DetailView(location: currentLocation)
 							.containerBackground(for: .navigation) {
-								if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+								if let solar = Solar(for: timeMachine.date, coordinate: currentLocation.coordinate) {
 									solar.view
 								}
 							}
-					} else {
+					case .some(let id):
+						if let item = items.first(where: { $0.uuid?.uuidString == id }) {
+							DetailView(location: item)
+								.containerBackground(for: .navigation) {
+									if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+										solar.view
+									}
+								}
+						} else {
+							placeholderView
+						}
+					case .none:
 						placeholderView
 					}
-				case .none:
-					placeholderView
 				}
+			} else {
+				fallbackBody
 			}
-		} else {
-			fallbackBody
+		}
+		.overlay {
+			TimelineView(.everyMinute) { t in
+				Color.clear
+					.task(id: t.date) {
+						timeMachine.referenceDate = t.date
+					}
+			}
+		}
+		.task(id: scenePhase) {
+			if currentLocation.isAuthorized,
+				 scenePhase != .background {
+				currentLocation.requestLocation()
+			}
 		}
 	}
 	
@@ -114,19 +131,6 @@ struct ContentView: View {
 			}
 		}
 		.navigationTitle(Text(verbatim: "Solstice"))
-		.onChange(of: scenePhase) { _ in
-			timeMachine.referenceDate = Date()
-			if currentLocation.isAuthorized,
-				 scenePhase != .background {
-				currentLocation.requestLocation()
-			}
-		}
-		.onReceive(timer) { _ in
-			timeMachine.referenceDate = Date()
-			if currentLocation.isAuthorized {
-				currentLocation.requestLocation()
-			}
-		}
 	}
 		
 		var placeholderView: some View {

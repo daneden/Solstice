@@ -1,5 +1,5 @@
 //
-//  DaylightSummaryRow.swift
+//  LocationListRow.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 12/02/2023.
@@ -9,7 +9,7 @@ import SwiftUI
 import Solar
 import CoreLocation
 
-struct DaylightSummaryRow<Location: ObservableLocation>: View {
+struct LocationListRow<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	@ObservedObject var location: Location
 	
@@ -72,10 +72,13 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 		VStack(alignment: .leading) {
 			HStack {
 				locationTitleLabel
-				Spacer()
-				Text(timeMachine.date, style: .time)
-					.environment(\.timeZone, location.timeZone)
-					.foregroundStyle(.secondary)
+				
+				if !(location is CurrentLocation) {
+					Spacer()
+					Text(timeMachine.date, style: .time)
+						.environment(\.timeZone, location.timeZone)
+						.foregroundStyle(.secondary)
+				}
 			}
 			
 			if let solar {
@@ -91,6 +94,7 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 		}
 		.animation(.default, value: location.title)
 		.animation(.default, value: location.subtitle)
+		.shadow(radius: 4, x: 0, y: 2)
 		#else
 			HStack {
 				VStack(alignment: .leading, spacing: 2) {
@@ -158,10 +162,10 @@ struct DaylightSummaryRow<Location: ObservableLocation>: View {
 	}
 }
 
-struct DaylightSummaryRow_Previews: PreviewProvider {
+struct LocationListRow_Previews: PreviewProvider {
 	static var previews: some View {
 		List {
-			DaylightSummaryRow(location: TemporaryLocation.placeholderLondon)
+			LocationListRow(location: TemporaryLocation.placeholderLondon)
 		}
 		.environmentObject(TimeMachine.preview)
 	}

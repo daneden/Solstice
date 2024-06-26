@@ -49,7 +49,7 @@ struct SidebarListView: View {
 				}
 				
 				if currentLocation.isAuthorized {
-					DaylightSummaryRow(location: currentLocation)
+					LocationListRow(location: currentLocation)
 						.tag(currentLocation.id)
 					#if os(iOS)
 						.onDrag {
@@ -65,7 +65,7 @@ struct SidebarListView: View {
 				
 				ForEach(sortedItems) { item in
 					if let tag = item.uuid?.uuidString {
-						DaylightSummaryRow(location: item)
+						LocationListRow(location: item)
 							.contextMenu {
 								Button(role: .destructive) {
 									deleteItem(item)
