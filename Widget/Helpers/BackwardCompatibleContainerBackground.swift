@@ -7,21 +7,25 @@
 
 import SwiftUI
 
-struct BackwardCompatibleContainerBackground<Style: ShapeStyle>: ViewModifier {
-	var style: Style
+struct BackwardCompatibleContainerBackground<Background: View>: ViewModifier {
+	@ViewBuilder
+	var style: () -> Background
+	
 	func body(content: Content) -> some View {
 		if #available(iOS 17, macOS 14, watchOS 10, *) {
 			content
-				.containerBackground(style, for: .widget)
+				.containerBackground(for: .widget) {
+					style()
+				}
 		} else {
 			content
-				.background(style)
+				.background { style() }
 		}
 	}
 }
 
 extension View {
-	func backwardCompatibleContainerBackground(_ style: some ShapeStyle) -> some View {
+	func backwardCompatibleContainerBackground(style: @escaping () -> some View) -> some View {
 		self.modifier(BackwardCompatibleContainerBackground(style: style))
 	}
 }

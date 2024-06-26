@@ -170,7 +170,9 @@ struct OverviewWidgetView: View {
 			}
 		}
 		.backwardCompatibleContentMargins()
-		.backwardCompatibleContainerBackground(.background)
+		.backwardCompatibleContainerBackground {
+			Color.clear.background(.background)
+		}
 	}
 }
 
