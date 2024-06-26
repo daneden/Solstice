@@ -117,8 +117,10 @@ extension CountdownWidgetView {
 
 struct CountdownWidgetPreview: PreviewProvider {
 	static var previews: some View {
+		#if !os(watchOS)
 		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
 			.previewContext(WidgetPreviewContext(family: .systemSmall))
+		#endif
 		
 		#if !os(macOS)
 		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))

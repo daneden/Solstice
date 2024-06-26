@@ -25,6 +25,10 @@ struct CompactLabelStyle: LabelStyle {
 }
 
 #Preview {
-	Label("Test Label", systemImage: "sparkles")
+	Label {
+		Text(verbatim: "Test Label")
+	} icon: {
+		Image(systemName: "sparkles")
+	}
 		.labelStyle(CompactLabelStyle())
 }

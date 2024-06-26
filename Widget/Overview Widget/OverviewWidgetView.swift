@@ -178,8 +178,10 @@ struct OverviewWidgetView: View {
 
 struct OverviewWidgetViewPreview: PreviewProvider {
 	static var previews: some View {
+		#if !os(watchOS)
 		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
 			.previewContext(WidgetPreviewContext(family: .systemSmall))
+		#endif
 		
 		#if !os(macOS)
 		OverviewWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))

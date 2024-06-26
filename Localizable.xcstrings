@@ -2,7 +2,15 @@
   "sourceLanguage" : "en",
   "strings" : {
     "-" : {
-      "comment" : "Less daylight middle of sentence"
+      "comment" : "Less daylight middle of sentence",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "-"
+          }
+        }
+      }
     },
     "—" : {
       "localizations" : {
@@ -305,7 +313,15 @@
       }
     },
     "+" : {
-      "comment" : "More daylight middle of sentence"
+      "comment" : "More daylight middle of sentence",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+"
+          }
+        }
+      }
     },
     "a specific time" : {
       "localizations" : {
@@ -518,10 +534,24 @@
       }
     },
     "Content #1" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "Content #2" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "Countdown" : {
       "localizations" : {
@@ -544,10 +574,24 @@
       }
     },
     "Current Location" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione attuale"
+          }
+        }
+      }
     },
     "Current Location %@" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione attuale %@"
+          }
+        }
+      }
     },
     "Customise notification content" : {
       "localizations" : {
@@ -1097,28 +1141,6 @@
         }
       }
     },
-    "My Location" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La mia posizione"
-          }
-        }
-      }
-    },
-    "My Location %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La mia posizione %@"
-          }
-        }
-      }
-    },
     "Nautical Sunrise" : {
       "localizations" : {
         "it" : {
@@ -1403,8 +1425,8 @@
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Rimuovere il guadagno/perdita della luce diurna"
+            "state" : "translated",
+            "value" : "Rimuovere la perdita di luce diurna"
           }
         }
       }
@@ -1741,7 +1763,14 @@
       }
     },
     "Test Label" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun." : {
       "localizations" : {
