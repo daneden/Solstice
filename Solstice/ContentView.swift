@@ -54,20 +54,6 @@ struct ContentView: View {
 						placeholderView
 					}
 				}
-				.modify { content in
-					if selectedLocation == .none || horizontalSizeClass == .compact {
-						content
-					} else {
-						if #available(iOS 17, macOS 14, visionOS 1, *) {
-							GeometryReader { g in
-								content
-									.contentMargins(.horizontal, max(0, (g.size.width - 540) / 2), for: .scrollContent)
-							}
-						} else {
-							content
-						}
-					}
-				}
 			}
 			.navigationSplitViewStyle(.balanced)
 			.sheet(item: $locationSearchService.location) { value in
