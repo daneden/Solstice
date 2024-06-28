@@ -13,7 +13,7 @@ struct ContentView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
 	
-	@State var selectedLocation: String?
+	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	private let timer = Timer.publish(every: 60, on: RunLoop.main, in: .common).autoconnect()
 	
@@ -70,6 +70,8 @@ struct ContentView: View {
 										)
 								}
 							}
+						} footer: {
+							Text("Locations are synced via iCloud. Delete or add new locations by using Solstice on Mac, iPhone, iPad, or Apple Vision Pro")
 						}
 					}
 					.navigationTitle(Text(verbatim: "Solstice"))
