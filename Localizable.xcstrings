@@ -434,6 +434,7 @@
       }
     },
     "At month:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -692,6 +693,9 @@
           }
         }
       }
+    },
+    "December Solstice" : {
+
     },
     "December Solstice Today" : {
       "comment" : "Notification title for December solstice",
@@ -957,6 +961,9 @@
         }
       }
     },
+    "June Solstice" : {
+
+    },
     "June Solstice Today" : {
       "comment" : "Notification title for June solstice",
       "localizations" : {
@@ -1101,6 +1108,9 @@
           }
         }
       }
+    },
+    "March Equinox" : {
+
     },
     "March Equinox Today" : {
       "comment" : "Notification title for March equinox",
@@ -1523,6 +1533,9 @@
           }
         }
       }
+    },
+    "September Equinox" : {
+
     },
     "September Equinox Today" : {
       "comment" : "Notification title for September equinox",

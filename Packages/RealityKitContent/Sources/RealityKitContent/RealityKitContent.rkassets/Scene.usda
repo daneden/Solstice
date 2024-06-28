@@ -1,0 +1,732 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["GridMaterial", "Sphere"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
+
+    def Xform "Earth_And_Ornaments" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0.40142575)
+        }
+    )
+    {
+        reorder nameChildren = ["Earth", "Poles", "Equator", "MotionState"]
+        quatf xformOp:orient = (0.9799247, 0, 0, 0.19936806)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Cylinder "Equator" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.0005
+            rel material:binding = </Root/Earth_And_Ornaments/Equator/EquatorMaterial>
+            double radius = 0.1005
+            quatf xformOp:orient = (1, 0, 0, 1.8656037e-9)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "EquatorMaterial"
+            {
+                reorder nameChildren = ["DefaultSurfaceShader", "Position", "UnlitSurface", "Constant", "Constant_1", "Mix", "Distance"]
+                token outputs:mtlx:surface.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/UnlitSurface.outputs:out>
+                token outputs:realitykit:vertex
+                token outputs:surface.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/DefaultSurfaceShader.outputs:surface>
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1061.25, 90.5)
+                float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+                int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 137
+
+                def Shader "DefaultSurfaceShader" (
+                    active = false
+                )
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 0.88315415, 0.009860494) (
+                        colorSpace = "srgb_displayp3"
+                    )
+                    color3f inputs:emissiveColor = (1, 0.8425495, 0) (
+                        colorSpace = "srgb_displayp3"
+                    )
+                    float inputs:roughness = 0.75
+                    token outputs:surface
+                }
+
+                def Shader "Position"
+                {
+                    uniform token info:id = "ND_position_vector3"
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (77.25, 65.5)
+                    float2 ui:nodegraph:node:size = (133.5, 40)
+                    int ui:nodegraph:node:stackingOrder = 99
+                }
+
+                def Shader "UnlitSurface" (
+                    active = true
+                )
+                {
+                    uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+                    bool inputs:applyPostProcessToneMap = 0
+                    color3f inputs:color.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Multiply.outputs:out>
+                    bool inputs:hasPremultipliedAlpha = 1
+                    float inputs:opacity.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Ifgreater.outputs:out>
+                    float inputs:opacityThreshold
+                    token outputs:out
+                    float2 ui:nodegraph:node:pos = (813.25, 90.5)
+                    float2 ui:nodegraph:node:size = (194.5, 181)
+                    int ui:nodegraph:node:stackingOrder = 146
+                }
+
+                def Shader "Constant"
+                {
+                    uniform token info:id = "ND_constant_vector3"
+                    float3 inputs:value = (0, 0, 0)
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (77.25, 172)
+                    float2 ui:nodegraph:node:size = (154.5, 53)
+                    int ui:nodegraph:node:stackingOrder = 106
+                }
+
+                def Shader "Constant_1"
+                {
+                    uniform token info:id = "ND_constant_color3"
+                    color3f inputs:value = (0.99942404, 0.9855537, 0) (
+                        colorSpace = "srgb_texture"
+                    )
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (458.5, 42.5)
+                    float2 ui:nodegraph:node:size = (155, 53)
+                    int ui:nodegraph:node:stackingOrder = 117
+                }
+
+                def NodeGraph "Distance"
+                {
+                    reorder nameChildren = ["Sqrt", "Separate_a", "Separate_b", "Subtract", "Subtract_1", "Subtract_2", "Multiply_2", "Add", "Add_1", "Power_1", "nodegraph"]
+                    float3 inputs:a = (0, 0, 0) (
+                        customData = {
+                            dictionary realitykit = {
+                                float2 positionInSubgraph = (69.5, 86.5)
+                                float2 sizeInSubgraph = (139, 53)
+                            }
+                        }
+                    )
+                    float3 inputs:a.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Position.outputs:out>
+                    float3 inputs:b = (0, 0, 0) (
+                        customData = {
+                            dictionary realitykit = {
+                                float2 positionInSubgraph = (69.5, 291.5)
+                                float2 sizeInSubgraph = (139, 53)
+                            }
+                        }
+                    )
+                    float3 inputs:b.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Constant.outputs:out>
+                    float outputs:Distance (
+                        customData = {
+                            dictionary realitykit = {
+                                int stackingOrderInSubgraph = 118
+                            }
+                        }
+                    )
+                    float outputs:Distance.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Sqrt.outputs:out>
+                    float2 ui:nodegraph:node:pos = (267.75, 210.5)
+                    float2 ui:nodegraph:node:size = (106.5, 127)
+                    int ui:nodegraph:node:stackingOrder = 118
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1292.75, 102.125)
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (141.5, 81)
+                    int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 119
+
+                    def Shader "Sqrt"
+                    {
+                        uniform token info:id = "ND_sqrt_float"
+                        float inputs:in.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Add_1.outputs:out>
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (1090.25, 102.125)
+                        float2 ui:nodegraph:node:size = (143.5, 53)
+                        int ui:nodegraph:node:stackingOrder = 152
+                    }
+
+                    def Shader "Separate_a"
+                    {
+                        uniform token info:id = "ND_separate3_vector3"
+                        float3 inputs:in.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance.inputs:a>
+                        float outputs:outx
+                        float outputs:outy
+                        float outputs:outz
+                        float2 ui:nodegraph:node:pos = (260.25, 86.5)
+                        float2 ui:nodegraph:node:size = (121.5, 145)
+                        int ui:nodegraph:node:stackingOrder = 129
+                    }
+
+                    def Shader "Separate_b"
+                    {
+                        uniform token info:id = "ND_separate3_vector3"
+                        float3 inputs:in.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance.inputs:b>
+                        float outputs:outx
+                        float outputs:outy
+                        float outputs:outz
+                        float2 ui:nodegraph:node:pos = (260.25, 291.5)
+                        float2 ui:nodegraph:node:size = (122.5, 145)
+                        int ui:nodegraph:node:stackingOrder = 127
+                    }
+
+                    def Shader "Subtract"
+                    {
+                        uniform token info:id = "ND_subtract_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Separate_a.outputs:outx>
+                        float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Separate_b.outputs:outx>
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (412.25, 31)
+                        float2 ui:nodegraph:node:size = (61.5, 36)
+                        int ui:nodegraph:node:stackingOrder = 131
+                    }
+
+                    def Shader "Subtract_1"
+                    {
+                        uniform token info:id = "ND_subtract_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Separate_a.outputs:outy>
+                        float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Separate_b.outputs:outy>
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (412.25, 127)
+                        float2 ui:nodegraph:node:size = (61.5, 36)
+                        int ui:nodegraph:node:stackingOrder = 135
+                    }
+
+                    def Shader "Subtract_2"
+                    {
+                        uniform token info:id = "ND_subtract_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Separate_a.outputs:outz>
+                        float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Separate_b.outputs:outz>
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (412.25, 223)
+                        float2 ui:nodegraph:node:size = (61.5, 36)
+                        int ui:nodegraph:node:stackingOrder = 138
+                    }
+
+                    def Shader "Add"
+                    {
+                        uniform token info:id = "ND_add_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Power.outputs:out>
+                        float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Power_1.outputs:out>
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (767.75, 43)
+                        float2 ui:nodegraph:node:size = (61.5, 36.5)
+                        int ui:nodegraph:node:stackingOrder = 153
+                    }
+
+                    def Shader "Add_1"
+                    {
+                        uniform token info:id = "ND_add_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Add.outputs:out>
+                        float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Power_2.outputs:out>
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (927.75, 102.125)
+                        float2 ui:nodegraph:node:size = (61.5, 36.5)
+                        int ui:nodegraph:node:stackingOrder = 154
+                    }
+
+                    def Shader "Power_1"
+                    {
+                        uniform token info:id = "ND_power_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Subtract_1.outputs:out>
+                        float inputs:in2 = 2
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (570.75, 126.5)
+                        float2 ui:nodegraph:node:size = (135.5, 53)
+                        int ui:nodegraph:node:stackingOrder = 164
+                    }
+
+                    def Shader "Power"
+                    {
+                        uniform token info:id = "ND_power_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Subtract.outputs:out>
+                        float inputs:in2 = 2
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (570.75, 20)
+                        float2 ui:nodegraph:node:size = (123.5, 40)
+                        int ui:nodegraph:node:stackingOrder = 165
+                    }
+
+                    def Shader "Power_2"
+                    {
+                        uniform token info:id = "ND_power_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance/Subtract_2.outputs:out>
+                        float inputs:in2 = 2
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (767.75, 223)
+                        float2 ui:nodegraph:node:size = (138.5, 53)
+                        int ui:nodegraph:node:stackingOrder = 170
+                    }
+                }
+
+                def Shader "Multiply"
+                {
+                    uniform token info:id = "ND_multiply_color3FA"
+                    color3f inputs:in1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Constant_1.outputs:out>
+                    float inputs:in2.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Ifgreater.outputs:out>
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (626, 60.5)
+                    float2 ui:nodegraph:node:size = (60, 36)
+                    int ui:nodegraph:node:stackingOrder = 140
+                }
+
+                def Shader "Ifgreater"
+                {
+                    uniform token info:id = "ND_ifgreater_float"
+                    float inputs:in1 = 1
+                    float inputs:in2 = 0
+                    float inputs:value1.connect = </Root/Earth_And_Ornaments/Equator/EquatorMaterial/Distance.outputs:Distance>
+                    float inputs:value2 = 0.098
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (458.5, 210.5)
+                    float2 ui:nodegraph:node:size = (109, 163)
+                    int ui:nodegraph:node:stackingOrder = 144
+                }
+            }
+        }
+
+        def Cylinder "Poles" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.22
+            rel material:binding = </Root/Earth_And_Ornaments/Poles/DefaultMaterial>
+            double radius = 0.001
+            quatf xformOp:orient = (1, 0, 0, 1.8656037e-9)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "DefaultMaterial"
+            {
+                token outputs:mtlx:surface.connect = </Root/Earth_And_Ornaments/Poles/DefaultMaterial/UnlitSurface.outputs:out>
+                token outputs:realitykit:vertex
+                token outputs:surface.connect = </Root/Earth_And_Ornaments/Poles/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (345.25, 90.5)
+                float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                def Shader "DefaultSurfaceShader" (
+                    active = false
+                )
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 0.14913142, 0) (
+                        colorSpace = "srgb_texture"
+                    )
+                    color3f inputs:emissiveColor = (1, 0.14913142, 0) (
+                        colorSpace = "srgb_texture"
+                    )
+                    float inputs:opacityThreshold
+                    float inputs:roughness = 0.75
+                    token outputs:surface
+                }
+
+                def Shader "UnlitSurface"
+                {
+                    uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+                    bool inputs:applyPostProcessToneMap = 0
+                    color3f inputs:color = (1, 0.14913142, 0) (
+                        colorSpace = "srgb_texture"
+                    )
+                    bool inputs:hasPremultipliedAlpha = 1
+                    token outputs:out
+                    float2 ui:nodegraph:node:pos = (97.25, 90.5)
+                    float2 ui:nodegraph:node:size = (194.5, 181)
+                    int ui:nodegraph:node:stackingOrder = 3
+                }
+            }
+        }
+
+        def Sphere "Earth" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (0, 0, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["ImageBasedLight", "ImageBasedLightReceiver", "EarthMaterial"]
+            rel material:binding = </Root/Earth_And_Ornaments/Earth/EarthMaterial> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double radius = 0.1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "ImageBasedLight"
+            {
+                asset ibl = @starfield.jpg@
+                uniform token info:id = "RealityKit.ImageBasedLight"
+                bool isGlobalIBL = 0
+            }
+
+            def RealityKitComponent "ImageBasedLightReceiver"
+            {
+                rel iblEntity = </Root/Earth_And_Ornaments/Earth>
+                uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+            }
+
+            def Material "EarthMaterial" (
+                references = None
+            )
+            {
+                reorder nameChildren = ["UsdPreviewSurface", "Diffuse", "Normal", "Emissive", "Specular", "Range", "diffuseColor", "roughness", "metallic", "normal", "emissiveColor", "textureCoordTimeOffset", "Daylight_Material", "Emissive_Alpha", "Day_Night_Mix", "Rotate3D", "dayNightAlphaMix"]
+                float inputs:Angle = 0 (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (101.75, 804.5)
+                            float2 sizeInSubgraph = (104, 53)
+                        }
+                    }
+                )
+                token outputs:mtlx:surface.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Daylight_Material.outputs:out>
+                token outputs:realitykit:vertex
+                token outputs:surface.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/UsdPreviewSurface.outputs:surface>
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1450.75, 441.5)
+                float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+                int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 371
+
+                def Shader "UsdPreviewSurface" (
+                    active = false
+                )
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.18, 0.18, 0.18)
+                    color3f inputs:diffuseColor.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/diffuseColor.outputs:rgb>
+                    color3f inputs:emissiveColor = (0, 0, 0)
+                    color3f inputs:emissiveColor.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/emissiveColor.outputs:rgb>
+                    float inputs:metallic = 0
+                    float inputs:metallic.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/metallic.outputs:r>
+                    normal3f inputs:normal = (0, 0, 1)
+                    normal3f inputs:normal.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/normal.outputs:rgb>
+                    float inputs:roughness = 0.5
+                    token outputs:surface
+                }
+
+                def Shader "Diffuse"
+                {
+                    uniform token info:id = "ND_image_color3"
+                    color3f inputs:default
+                    asset inputs:file = @Materials/2_no_clouds_8k.jpg@
+                    string inputs:filtertype
+                    float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+                    string inputs:uaddressmode = "periodic"
+                    string inputs:vaddressmode
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (393, 590.5)
+                    float2 ui:nodegraph:node:size = (148.5, 199)
+                    int ui:nodegraph:node:stackingOrder = 423
+                    string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file", "inputs:texcoord"]
+                }
+
+                def Shader "Normal"
+                {
+                    uniform token info:id = "ND_image_vector3"
+                    float3 inputs:default
+                    asset inputs:file = @Materials/earth_texture_02_nrm.jpg@
+                    string inputs:filtertype
+                    float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+                    string inputs:uaddressmode
+                    string inputs:vaddressmode
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (393, 1098.5)
+                    float2 ui:nodegraph:node:size = (148.5, 199)
+                    int ui:nodegraph:node:stackingOrder = 424
+                    string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:uaddressmode"]
+                }
+
+                def Shader "Emissive"
+                {
+                    uniform token info:id = "ND_image_color3"
+                    color3f inputs:default
+                    asset inputs:file = @Materials/5_night_8k.jpg@
+                    string inputs:filtertype
+                    float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+                    string inputs:uaddressmode
+                    string inputs:vaddressmode
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (393, 331.5)
+                    float2 ui:nodegraph:node:size = (148.5, 199)
+                    int ui:nodegraph:node:stackingOrder = 421
+                }
+
+                def Shader "Specular"
+                {
+                    uniform token info:id = "ND_image_float"
+                    float inputs:default
+                    asset inputs:file = @Materials/water_8k.png@
+                    string inputs:filtertype
+                    float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
+                    string inputs:uaddressmode
+                    string inputs:vaddressmode
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (987.25, 99.5)
+                    float2 ui:nodegraph:node:size = (148.5, 199)
+                    int ui:nodegraph:node:stackingOrder = 422
+                }
+
+                def NodeGraph "textureCoordTimeOffset"
+                {
+                    float2 outputs:Add_out.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Add.outputs:out>
+                    float2 ui:nodegraph:node:pos = (101.75, 491)
+                    float2 ui:nodegraph:node:size = (203.5, 81)
+                    int ui:nodegraph:node:stackingOrder = 382
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (761.9969, 78.75)
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (191.5, 81)
+                    int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 418
+
+                    def Shader "Texcoord"
+                    {
+                        uniform token info:id = "ND_texcoord_vector2"
+                        float2 outputs:out
+                        float2 ui:nodegraph:node:pos = (394.25, 184)
+                        float2 ui:nodegraph:node:size = (180.5, 53)
+                        int ui:nodegraph:node:stackingOrder = 418
+                        string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+                    }
+
+                    def Shader "Divide"
+                    {
+                        uniform token info:id = "ND_divide_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Time.outputs:out>
+                        float inputs:in2 = 100
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (213.25, 26.5)
+                        float2 ui:nodegraph:node:size = (61.5, 36)
+                        int ui:nodegraph:node:stackingOrder = 418
+                    }
+
+                    def Shader "Combine2"
+                    {
+                        uniform token info:id = "ND_combine2_vector2"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Divide.outputs:out>
+                        float inputs:in2
+                        float2 outputs:out
+                        float2 ui:nodegraph:node:pos = (394.25, 26.5)
+                        float2 ui:nodegraph:node:size = (144.5, 53)
+                        int ui:nodegraph:node:stackingOrder = 418
+                    }
+
+                    def Shader "Time"
+                    {
+                        uniform token info:id = "ND_time_float"
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (61.25, 26.5)
+                        float2 ui:nodegraph:node:size = (122.5, 53)
+                        int ui:nodegraph:node:stackingOrder = 418
+                    }
+
+                    def Shader "Add"
+                    {
+                        uniform token info:id = "ND_add_vector2"
+                        float2 inputs:in1.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Combine2.outputs:out>
+                        float2 inputs:in2.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset/Texcoord.outputs:out>
+                        float2 outputs:out
+                        float2 ui:nodegraph:node:pos = (575.25, 78.75)
+                        float2 ui:nodegraph:node:size = (61.5, 36.5)
+                        int ui:nodegraph:node:stackingOrder = 418
+                    }
+                }
+
+                def Shader "Daylight_Material"
+                {
+                    uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+                    float inputs:ambientOcclusion = 0
+                    float inputs:ambientOcclusion.connect = None
+                    color3f inputs:baseColor.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Screen.outputs:out>
+                    float inputs:clearcoat = 0
+                    float inputs:clearcoatRoughness
+                    color3f inputs:emissiveColor.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Emissive_Mix.outputs:out>
+                    bool inputs:hasPremultipliedAlpha = 1
+                    float inputs:metallic = 1
+                    float3 inputs:normal.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/NormalMapDecode.outputs:out>
+                    float inputs:opacity = 1
+                    float inputs:opacity.connect = None
+                    float inputs:opacityThreshold = 1
+                    float inputs:roughness = 1
+                    float inputs:specular.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Specular.outputs:out>
+                    token outputs:out
+                    float2 ui:nodegraph:node:pos = (1216.5, 441.5)
+                    float2 ui:nodegraph:node:size = (167, 307)
+                    int ui:nodegraph:node:stackingOrder = 419
+                    string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:clearcoatRoughness", "outputs:out", "inputs:baseColor", "inputs:baseColor"]
+                }
+
+                def NodeGraph "dayNightAlphaMix"
+                {
+                    reorder nameChildren = ["Position", "Separate3", "Multiply", "Rotate_by_passed_angle", "Add", "Axial_tilt_correction", "Flip_over_X_axis"]
+                    float inputs:Sunlight_Angle = 0 (
+                        customData = {
+                            dictionary realitykit = {
+                                float2 positionInSubgraph = (81.5, 223.25)
+                                float2 sizeInSubgraph = (163, 53)
+                                int stackingOrderInSubgraph = 986
+                            }
+                        }
+                    )
+                    float inputs:Sunlight_Angle.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial.inputs:Angle>
+                    float outputs:Multiply_out.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Multiply.outputs:out>
+                    float2 ui:nodegraph:node:pos = (393, 804.5)
+                    float2 ui:nodegraph:node:size = (165.5, 109)
+                    int ui:nodegraph:node:stackingOrder = 420
+                    string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:Multiply_out"]
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1259.0345, 102.5)
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (158.06915, 81)
+                    int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 887
+
+                    def Shader "Position"
+                    {
+                        uniform token info:id = "ND_position_vector3"
+                        float3 outputs:out
+                        float2 ui:nodegraph:node:pos = (81.5, 72.5)
+                        float2 ui:nodegraph:node:size = (133.5, 40)
+                        int ui:nodegraph:node:stackingOrder = 923
+                    }
+
+                    def Shader "Separate3"
+                    {
+                        uniform token info:id = "ND_separate3_vector3"
+                        float3 inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Flip.outputs:out>
+                        float outputs:outx
+                        float outputs:outy
+                        float outputs:outz
+                        float2 ui:nodegraph:node:pos = (942.25, 102.5)
+                        float2 ui:nodegraph:node:size = (115.5, 145)
+                        int ui:nodegraph:node:stackingOrder = 1049
+                    }
+
+                    def Shader "Multiply"
+                    {
+                        uniform token info:id = "ND_multiply_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Separate3.outputs:outy>
+                        float inputs:in2 = 13
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (1090, 102.5)
+                        float2 ui:nodegraph:node:size = (60, 36)
+                        int ui:nodegraph:node:stackingOrder = 1050
+                    }
+
+                    def Shader "Add"
+                    {
+                        uniform token info:id = "ND_add_float"
+                        float inputs:in1.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix.inputs:Sunlight_Angle>
+                        float inputs:in2 = 180
+                        float outputs:out
+                        float2 ui:nodegraph:node:pos = (311.25, 223.25)
+                        float2 ui:nodegraph:node:size = (61.5, 36.5)
+                        int ui:nodegraph:node:stackingOrder = 1052
+                    }
+
+                    def Shader "Rotate_by_passed_angle"
+                    {
+                        uniform token info:id = "ND_rotate3d_vector3"
+                        float inputs:amount.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Add.outputs:out>
+                        float3 inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Axial_tilt_correction.outputs:out>
+                        float3 outputs:out
+                        float2 ui:nodegraph:node:pos = (563.25, 102.5)
+                        float2 ui:nodegraph:node:size = (207.5, 145)
+                        int ui:nodegraph:node:stackingOrder = 1055
+                    }
+
+                    def Shader "Axial_tilt_correction"
+                    {
+                        uniform token info:id = "ND_rotate3d_vector3"
+                        float inputs:amount = 23
+                        float3 inputs:axis = (0, 0, 1)
+                        float3 inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Position.outputs:out>
+                        float3 outputs:out
+                        float2 ui:nodegraph:node:pos = (311.25, 72.5)
+                        float2 ui:nodegraph:node:size = (176.5, 145)
+                        int ui:nodegraph:node:stackingOrder = 1033
+                    }
+
+                    def Shader "Flip"
+                    {
+                        uniform token info:id = "ND_rotate3d_vector3"
+                        float inputs:amount = 180
+                        float inputs:amount.connect = None
+                        float3 inputs:axis = (1, 1, 0)
+                        float3 inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix/Rotate_by_passed_angle.outputs:out>
+                        float3 outputs:out
+                        float2 ui:nodegraph:node:pos = (775.75, 102.5)
+                        float2 ui:nodegraph:node:size = (97.5, 145)
+                        int ui:nodegraph:node:stackingOrder = 1058
+                        string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:amount"]
+                    }
+                }
+
+                def Shader "Emissive_Mix"
+                {
+                    uniform token info:id = "ND_mix_color3"
+                    color3f inputs:bg.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Emissive.outputs:out>
+                    color3f inputs:fg.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Diffuse.outputs:out>
+                    float inputs:mix.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix.outputs:Multiply_out>
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (987.25, 331.5)
+                    float2 ui:nodegraph:node:size = (130.5, 145)
+                    int ui:nodegraph:node:stackingOrder = 372
+                }
+
+                def Shader "Diffuse_Mix"
+                {
+                    uniform token info:id = "ND_mix_color3"
+                    color3f inputs:bg.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Emissive.outputs:out>
+                    color3f inputs:fg.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Diffuse.outputs:out>
+                    float inputs:mix.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix.outputs:Multiply_out>
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (712, 484)
+                    float2 ui:nodegraph:node:size = (121, 145)
+                    int ui:nodegraph:node:stackingOrder = 403
+                    string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:fg"]
+                }
+
+                def Shader "Screen"
+                {
+                    uniform token info:id = "ND_screen_color3"
+                    color3f inputs:bg.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Diffuse_Mix.outputs:out>
+                    color3f inputs:fg.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Clouds.outputs:out>
+                    float inputs:mix.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Clamp.outputs:out>
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (987.25, 696.5)
+                    float2 ui:nodegraph:node:size = (109, 145)
+                    int ui:nodegraph:node:stackingOrder = 411
+                }
+
+                def Shader "Clamp"
+                {
+                    uniform token info:id = "ND_clamp_float"
+                    float inputs:high
+                    float inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/dayNightAlphaMix.outputs:Multiply_out>
+                    float inputs:low = 0.05
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (712, 769)
+                    float2 ui:nodegraph:node:size = (91, 145)
+                    int ui:nodegraph:node:stackingOrder = 412
+                }
+
+                def Shader "NormalMapDecode"
+                {
+                    uniform token info:id = "ND_normal_map_decode"
+                    float3 inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Normal.outputs:out>
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (987.25, 1170.5)
+                    float2 ui:nodegraph:node:size = (171.5, 109)
+                    int ui:nodegraph:node:stackingOrder = 417
+                }
+            }
+        }
+    }
+}
+

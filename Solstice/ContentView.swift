@@ -36,7 +36,9 @@ struct ContentView: View {
 					.toolbar {
 						toolbarItems
 					}
+				#if os(macOS)
 					.navigationSplitViewColumnWidth(256)
+				#endif
 			} detail: {
 				Group {
 					switch selectedLocation {

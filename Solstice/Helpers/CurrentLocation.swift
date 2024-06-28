@@ -78,7 +78,7 @@ extension CurrentLocation {
 	}
 	
 	func requestLocation() {
-		if #available(iOS 17, watchOS 10, macOS 14, *) {
+		if #available(iOS 17, watchOS 10, macOS 14, visionOS 2, *) {
 			Task {
 				do {
 					for try await update in CLLocationUpdate.liveUpdates() {

@@ -6,141 +6,95 @@
 //
 
 import SwiftUI
-import SceneKit
 
-#if canImport(UIKit)
-typealias NativeViewRepresentable = UIViewRepresentable
-#elseif canImport(AppKit)
-typealias NativeViewRepresentable = NSViewRepresentable
-#endif
-
-fileprivate struct Selection: Codable, Hashable {
-	var event: Event = .solstice
-	var equinoxMonth: EquinoxMonth = .march
-	var solsticeMonth: SolsticeMonth = .june
+fileprivate enum Event: CaseIterable, Codable, Hashable {
+	case marchEquinox, juneSolstice, septemberEquinox, decemberSolstice
 	
-	enum Event: CaseIterable, Codable {
-		case equinox, solstice
-		
-		var description: LocalizedStringKey {
-			switch self {
-			case .equinox:
-				return "Equinox"
-			case .solstice:
-				return "Solstice"
-			}
+	var description: LocalizedStringKey {
+		switch self {
+		case .marchEquinox:
+			return "March Equinox"
+		case .juneSolstice:
+			return "June Solstice"
+		case .septemberEquinox:
+			return "September Equinox"
+		case .decemberSolstice:
+			return "December Solstice"
 		}
 	}
 	
-	enum EquinoxMonth: CaseIterable, Codable {
-		case march, september
-		
-		var description: LocalizedStringKey {
-			switch self {
-			case .march:
-				return "March"
-			case .september:
-				return "September"
-			}
+	var shortMonthDescription: LocalizedStringKey {
+		switch self {
+		case .marchEquinox:
+			return "March"
+		case .juneSolstice:
+			return "June"
+		case .septemberEquinox:
+			return "September"
+		case .decemberSolstice:
+			return "December"
 		}
 	}
 	
-	enum SolsticeMonth: CaseIterable, Codable {
-		case june, december
-		
-		var description: LocalizedStringKey {
-			switch self {
-			case .june:
-				return "June"
-			case .december:
-				return "December"
-			}
+	var shortEventDescription: LocalizedStringKey {
+		switch self {
+		case .marchEquinox, .septemberEquinox:
+			return "Equinox"
+		case .juneSolstice, .decemberSolstice:
+			return "Solstice"
 		}
 	}
 	
 	var sunAngle: CGFloat {
-		switch event {
-		case .equinox:
-			return equinoxMonth == .march
-				? -.pi / 2
-				: .pi / 2
-		case .solstice:
-			return solsticeMonth == .june
-			? 0
-			: .pi
+		switch self {
+		case .marchEquinox:
+			return -.pi / 2
+		case .septemberEquinox:
+			return .pi / 2
+		case .juneSolstice:
+			return 0
+		case .decemberSolstice:
+			return .pi
 		}
 	}
 }
 
-#if os(iOS)
-extension NSBundleResourceRequest: @unchecked Sendable {}
-#endif
-
 struct EquinoxAndSolsticeInfoView: View {
-	@State private var selection: Selection = Selection()
-	#if os(iOS)
-	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
-	#endif
-	@State var scene: EarthScene?
+	@State private var selection: Event = .juneSolstice
 	
 	var body: some View {
 		GeometryReader { geometry in
 			Form {
 				Section {
-					Group {
-						if scene != nil {
-							CustomSceneView(scene: $scene)
-								.frame(height: min(geometry.size.width, 400))
-								.transition(.opacity)
-						} else {
-#if os(iOS)
-							HStack {
-								Spacer()
-								ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
-									Text("Loading...")
-								}
-								.progressViewStyle(.circular)
-								Spacer()
+					ZStack(alignment: .top) {
+						HStack {
+							VStack(alignment: .trailing, spacing: 0) {
+								Text(selection.shortMonthDescription)
+									.fontWeight(.semibold)
+								Text(selection.shortEventDescription)
 							}
-							.frame(height: min(geometry.size.width, 400))
-#endif
+							.font(.subheadline)
+							
+							SolarSystemMiniMap(angle: selection.sunAngle, size: 40)
+								.foregroundStyle(Color.gray)
 						}
+						.padding()
+						.foregroundStyle(.secondary)
+						.frame(maxWidth: .infinity, alignment: .trailing)
+						
+						EarthModelView(rotationAmount: Double(selection.sunAngle))
+							.frame(height: min(geometry.size.width, 400))
 					}
 					.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 					.listRowSeparator(.hidden)
 					
-					Picker(selection: $selection.event.animation()) {
-						ForEach(Selection.Event.allCases, id: \.self) { eventType in
+					Picker(selection: $selection.animation()) {
+						ForEach(Event.allCases, id: \.self) { eventType in
 							Text(eventType.description)
 						}
 					} label: {
 						Text("View event:")
 					}
-					
-					
-					Group {
-						switch selection.event {
-						case .equinox:
-							Picker(selection: $selection.equinoxMonth) {
-								ForEach(Selection.EquinoxMonth.allCases, id: \.self) { eventType in
-									Text(eventType.description)
-								}
-							} label: {
-								Text("At month:")
-									.id("monthSelector")
-							}
-						case .solstice:
-							Picker(selection: $selection.solsticeMonth) {
-								ForEach(Selection.SolsticeMonth.allCases, id: \.self) { eventType in
-									Text(eventType.description)
-								}
-							} label: {
-								Text("At month:")
-									.id("monthSelector")
-							}
-						}
-					}
-
 					
 					Text("The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun.")
 					
@@ -162,39 +116,6 @@ struct EquinoxAndSolsticeInfoView: View {
 			}
 			.formStyle(.grouped)
 			.navigationTitle("Equinox and Solstice")
-			.task(id: selection) {
-				let action = SCNAction.rotateTo(
-					x: 0,
-					y: selection.sunAngle,
-					z: 0,
-					duration: 1,
-					usesShortestUnitArc: true
-				)
-				
-				action.timingMode = .easeOut
-				
-				if let node = scene?.lightAnchorNode {
-					node.runAction(action)
-				}
-			}
-			.task {
-				#if os(iOS)
-				if await !resourceRequest.conditionallyBeginAccessingResources() {
-					do {
-						try await resourceRequest.beginAccessingResources()
-					} catch {
-						print(error)
-					}
-				}
-				#endif
-				
-				scene = EarthScene()
-			}
-			#if os(iOS)
-			.onDisappear {
-				resourceRequest.endAccessingResources()
-			}
-			#endif
 		}
 	}
 }
@@ -205,45 +126,4 @@ struct InformationSheetView_Previews: PreviewProvider {
 			EquinoxAndSolsticeInfoView()
 		}
 	}
-}
-
-struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
-	@Binding var scene: Scene?
-	
-	func makeView(context: Context) -> SCNView {
-		let view = SCNView()
-		view.autoenablesDefaultLighting = false
-		view.backgroundColor = .clear
-		
-		let node = scene?.rootNode
-		
-		node?.rotation = .init(0, 0, 90, 0)
-		view.scene = scene
-		
-		view.pointOfView?.camera?.fieldOfView = 35
-		
-		return view
-	}
-	
-	func updateView(_ uiView: SCNView, context: Context) {
-		
-	}
-	
-	#if canImport(UIKit)
-	func makeUIView(context: Context) -> SCNView {
-		makeView(context: context)
-	}
-	
-	func updateUIView(_ uiView: SCNView, context: Context) {
-		updateView(uiView, context: context)
-	}
-	#elseif canImport(AppKit)
-	func makeNSView(context: Context) -> SCNView {
-		makeView(context: context)
-	}
-	
-	func updateNSView(_ nsView: SCNView, context: Context) {
-		updateView(nsView, context: context)
-	}
-	#endif
 }
