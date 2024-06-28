@@ -6,6 +6,19 @@
 	<array>
 		<string>me.daneden.Solstice.notificationScheduler</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>me.daneden.Solstice.deepLink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>solstice</string>
+			</array>
+		</dict>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSLocationDefaultAccuracyReduced</key>

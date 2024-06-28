@@ -33,6 +33,7 @@ struct LocationSearchResult: Identifiable, Hashable {
 		findCoordinates()
 	}
 	
+	@available(iOS 16, macOS 13, visionOS 1, *)
 	mutating func findCoordinates() {
 		let geocoder = CLGeocoder()
 		geocoder.geocodeAddressString(name) { [self] (response, error) in
@@ -43,6 +44,7 @@ struct LocationSearchResult: Identifiable, Hashable {
 	}
 }
 
+#if !os(watchOS)
 class LocationSearchService: NSObject, ObservableObject {
 	static let shared = LocationSearchService()
 	
@@ -53,6 +55,7 @@ class LocationSearchService: NSObject, ObservableObject {
 		
 	@Published var queryFragment = ""
 	@Published private(set) var status: LocationStatus = .idle
+	
 	@Published private(set) var searchResults: [MKLocalSearchCompletion] = []
 	@Published var location: TemporaryLocation?
 	
@@ -97,3 +100,9 @@ extension LocationSearchService: MKLocalSearchCompleterDelegate {
 		self.status = .error(error.localizedDescription)
 	}
 }
+#else
+class LocationSearchService: NSObject, ObservableObject {
+	static var shared = LocationSearchService()
+	@Published var location: TemporaryLocation?
+}
+#endif

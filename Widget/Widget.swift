@@ -15,6 +15,7 @@ struct SolsticeWidgetLocation: AnyLocation {
 	var latitude: Double
 	var longitude: Double
 	var isRealLocation = false
+	var locationUUID: UUID?
 	
 	var timeZone: TimeZone {
 		guard let timeZoneIdentifier else { return .autoupdatingCurrent }
@@ -30,6 +31,13 @@ struct SolsticeWidgetLocation: AnyLocation {
 																											timeZoneIdentifier: "Europe/London",
 																											latitude: 51.5072,
 																											longitude: -0.1276)
+	
+	var url: URL? {
+		switch isRealLocation {
+		case true: return URL(string: "solstice://location/currentLocation")
+		case false: return URL(string: "solstice://location/coordinates?lat=\(latitude)&lon=\(longitude)&timeZoneIdentifier=\(timeZoneIdentifier ?? "")&name=\(title ?? "")&subtitle=\(subtitle ?? "")")
+		}
+	}
 }
 
 enum SolsticeWidgetKind: String {

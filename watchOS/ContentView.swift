@@ -99,6 +99,7 @@ struct ContentView: View {
 						placeholderView
 					}
 				}
+				.resolveDeepLink(sortedItems)
 			} else {
 				fallbackBody
 			}

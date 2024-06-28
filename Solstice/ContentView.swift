@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import Solar
+import CoreLocation
 
 struct ContentView: View {
 	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
@@ -87,6 +88,7 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
+			.resolveDeepLink(Array(items))
 			.task(id: scenePhase) {
 				if currentLocation.isAuthorized,
 					 selectedLocation == currentLocation.id,

@@ -19,6 +19,7 @@ struct SolarChartWidget: Widget {
 			provider: SolarChartWidgetTimelineProvider()
 		) { timelineEntry in
 			SolarChartWidgetView(entry: timelineEntry)
+				.widgetURL(timelineEntry.location?.url)
 		}
 		.configurationDisplayName("Solar Chart")
 		.description("Follow the sun's journey throughout the day")

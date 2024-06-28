@@ -24,6 +24,7 @@ struct OverviewWidget: Widget {
 			provider: OverviewWidgetTimelineProvider()
 		) { timelineEntry in
 			OverviewWidgetView(entry: timelineEntry)
+				.widgetURL(timelineEntry.location?.url)
 		}
 		.configurationDisplayName("Daylight Today")
 		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")

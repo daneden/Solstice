@@ -29,6 +29,7 @@ struct CountdownWidget: Widget {
 				.backwardCompatibleContainerBackground {
 					SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
 				}
+				.widgetURL(timelineEntry.location?.url)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")
