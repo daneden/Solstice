@@ -62,7 +62,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			#if os(watchOS)
 			.modify { content in
-				if #available(watchOS 17, *) {
+				if #available(watchOS 10, *) {
 					content
 						.listRowBackground(Color.clear.background(.regularMaterial, in: .buttonBorder))
 				} else {
