@@ -60,6 +60,9 @@ struct DetailView<Location: ObservableLocation>: View {
 				
 				AnnualOverview(location: location)
 			}
+			#if os(watchOS)
+			.listRowBackground(.regularMaterial)
+			#endif
 			.formStyle(.grouped)
 			.navigationTitle(navBarTitleText)
 			.toolbar {
