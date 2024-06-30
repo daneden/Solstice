@@ -16,7 +16,9 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 }
 
 struct AnnualOverview<Location: AnyLocation>: View {
+	#if !os(watchOS)
 	@Environment(\.openWindow) var openWindow
+	#endif
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var isInformationSheetPresented = false
