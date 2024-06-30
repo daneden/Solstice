@@ -59,6 +59,13 @@ struct SolsticeApp: App {
 		WindowGroup(id: "settings") {
 			SettingsView()
 		}
+		
+		WindowGroup(Text("About Equinox and Solstices")) { _ in
+			EquinoxAndSolsticeInfoWindow()
+		} defaultValue: {
+			AnnualSolarEvent.juneSolstice
+		}
+		.defaultSize(width: 900, height: 612)
 		#endif
 		
 		#if os(macOS)
@@ -70,7 +77,7 @@ struct SolsticeApp: App {
 		}
 		
 		Window("About Equinox and Solstices", id: "about-equinox-and-solstice") {
-			EquinoxAndSolsticeInfoView()
+			EquinoxAndSolsticeInfoSheet()
 		}
 		.defaultSize(width: 400, height: 650)
 		#endif

@@ -343,7 +343,7 @@ def Xform "Root"
                     token outputs:out
                     float2 ui:nodegraph:node:pos = (97.25, 90.5)
                     float2 ui:nodegraph:node:size = (194.5, 181)
-                    int ui:nodegraph:node:stackingOrder = 3
+                    int ui:nodegraph:node:stackingOrder = 4
                 }
             }
         }
@@ -419,7 +419,7 @@ def Xform "Root"
                 {
                     uniform token info:id = "ND_image_color3"
                     color3f inputs:default
-                    asset inputs:file = @Materials/2_no_clouds_8k.jpg@
+                    asset inputs:file = @Materials/Diffuse.png@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode = "periodic"
@@ -427,7 +427,7 @@ def Xform "Root"
                     color3f outputs:out
                     float2 ui:nodegraph:node:pos = (393, 590.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 423
+                    int ui:nodegraph:node:stackingOrder = 426
                     string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file", "inputs:texcoord"]
                 }
 
@@ -435,7 +435,7 @@ def Xform "Root"
                 {
                     uniform token info:id = "ND_image_vector3"
                     float3 inputs:default
-                    asset inputs:file = @Materials/earth_texture_02_nrm.jpg@
+                    asset inputs:file = @Materials/Normal.png@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode
@@ -443,7 +443,7 @@ def Xform "Root"
                     float3 outputs:out
                     float2 ui:nodegraph:node:pos = (393, 1098.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 424
+                    int ui:nodegraph:node:stackingOrder = 428
                     string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:uaddressmode"]
                 }
 
@@ -451,7 +451,7 @@ def Xform "Root"
                 {
                     uniform token info:id = "ND_image_color3"
                     color3f inputs:default
-                    asset inputs:file = @Materials/5_night_8k.jpg@
+                    asset inputs:file = @Materials/Emission.png@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode
@@ -459,14 +459,14 @@ def Xform "Root"
                     color3f outputs:out
                     float2 ui:nodegraph:node:pos = (393, 331.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 421
+                    int ui:nodegraph:node:stackingOrder = 425
                 }
 
                 def Shader "Specular"
                 {
                     uniform token info:id = "ND_image_float"
                     float inputs:default
-                    asset inputs:file = @Materials/water_8k.png@
+                    asset inputs:file = @Materials/Specular.png@
                     string inputs:filtertype
                     float2 inputs:texcoord.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/textureCoordTimeOffset.outputs:Add_out>
                     string inputs:uaddressmode
@@ -474,7 +474,7 @@ def Xform "Root"
                     float outputs:out
                     float2 ui:nodegraph:node:pos = (987.25, 99.5)
                     float2 ui:nodegraph:node:size = (148.5, 199)
-                    int ui:nodegraph:node:stackingOrder = 422
+                    int ui:nodegraph:node:stackingOrder = 427
                 }
 
                 def NodeGraph "textureCoordTimeOffset"
@@ -551,7 +551,7 @@ def Xform "Root"
                     color3f inputs:emissiveColor.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Emissive_Mix.outputs:out>
                     bool inputs:hasPremultipliedAlpha = 1
                     float inputs:metallic = 1
-                    float3 inputs:normal.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/NormalMapDecode.outputs:out>
+                    float3 inputs:normal.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Normal.outputs:out>
                     float inputs:opacity = 1
                     float inputs:opacity.connect = None
                     float inputs:opacityThreshold = 1
@@ -721,9 +721,9 @@ def Xform "Root"
                     uniform token info:id = "ND_normal_map_decode"
                     float3 inputs:in.connect = </Root/Earth_And_Ornaments/Earth/EarthMaterial/Normal.outputs:out>
                     float3 outputs:out
-                    float2 ui:nodegraph:node:pos = (987.25, 1170.5)
+                    float2 ui:nodegraph:node:pos = (933.0456, 1140.004)
                     float2 ui:nodegraph:node:size = (171.5, 109)
-                    int ui:nodegraph:node:stackingOrder = 417
+                    int ui:nodegraph:node:stackingOrder = 435
                 }
             }
         }

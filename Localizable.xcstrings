@@ -1123,6 +1123,9 @@
         }
       }
     },
+    "Month:" : {
+
+    },
     "more" : {
       "comment" : "More daylight middle of sentence",
       "localizations" : {
@@ -1929,7 +1932,11 @@
         }
       }
     },
+    "View Earth at:" : {
+
+    },
     "View event:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

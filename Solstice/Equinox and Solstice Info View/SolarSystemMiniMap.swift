@@ -8,30 +8,46 @@
 import SwiftUI
 
 struct SolarSystemMiniMap: View {
-	var angle: CGFloat = 0
+	var event: AnnualSolarEvent
+	
+	var angle: Double {
+		event.sunAngle
+	}
+	
 	var size: Double = 60
 	
 	var body: some View {
-		ZStack {
-			Circle()
-				.strokeBorder(.tertiary, lineWidth: 3)
-				.overlay(alignment: .trailing) {
-					Circle()
-						.fill(.primary)
-						.frame(width: size / 6, height: size / 6)
-						.offset(x: size / 20)
-				}
-				.rotationEffect(Angle(radians: angle) * -1)
+		HStack {
+			VStack(alignment: .trailing, spacing: 0) {
+				Text(event.shortMonthDescription)
+					.fontWeight(.semibold)
+				Text(event.shortEventDescription)
+			}
+			.font(.subheadline)
 			
-			Circle()
-				.fill(.primary)
-				.frame(width: size / 4, height: size / 4)
+			ZStack {
+				Circle()
+					.strokeBorder(.tertiary, lineWidth: 3)
+					.overlay(alignment: .trailing) {
+						Circle()
+							.fill(.primary)
+							.frame(width: size / 6, height: size / 6)
+							.offset(x: size / 20)
+					}
+					.rotationEffect(Angle(radians: angle) * -1)
+				
+				Circle()
+					.fill(.primary)
+					.frame(width: size / 4, height: size / 4)
+			}
+			.frame(width: size, height: size)
+			.foregroundStyle(.secondary)
 		}
-		.frame(width: size, height: size)
+		.padding()
 		.foregroundStyle(.secondary)
 	}
 }
 
 #Preview {
-    SolarSystemMiniMap()
+	SolarSystemMiniMap(event: .juneSolstice)
 }

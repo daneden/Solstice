@@ -1,5 +1,5 @@
 //
-//  EarthModelView.swift
+//  EarthSceneKitView.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 28/06/2024.
@@ -7,11 +7,6 @@
 
 import SwiftUI
 import SceneKit
-
-#if os(visionOS)
-import RealityKit
-import RealityKitContent
-#endif
 
 #if canImport(UIKit)
 typealias NativeViewRepresentable = UIViewRepresentable
@@ -23,33 +18,40 @@ typealias NativeViewRepresentable = NSViewRepresentable
 extension NSBundleResourceRequest: @unchecked Sendable {}
 #endif
 
-struct EarthModelView: View {
-	var rotationAmount: Double = .pi / 2
+struct EarthSceneKitView: View {
+	@State private var selection: AnnualSolarEvent = .juneSolstice
+	
+	var rotationAmount: Double {
+		selection.sunAngle
+	}
 	
 	#if os(iOS)
 	let resourceRequest = NSBundleResourceRequest(tags: ["earth"])
 	#endif
 	
-	#if !os(visionOS)
 	@State var scene: EarthScene?
 	
 	var body: some View {
-		VStack {
-			if scene != nil {
-				CustomSceneView(scene: $scene)
-					.frame(maxHeight: .infinity)
-			} else {
-				#if os(iOS)
-				HStack {
-					Spacer()
-					ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
-						Text("Loading...")
+		ZStack(alignment: .topLeading) {
+			SolarSystemMiniMap(event: selection)
+			
+			VStack {
+				if scene != nil {
+					CustomSceneView(scene: $scene)
+						.frame(maxHeight: .infinity)
+				} else {
+#if os(iOS)
+					HStack {
+						Spacer()
+						ProgressView(value: resourceRequest.progress.fractionCompleted, total: 1.0) {
+							Text("Loading...")
+						}
+						.progressViewStyle(.circular)
+						Spacer()
 					}
-					.progressViewStyle(.circular)
-					Spacer()
+					.frame(maxHeight: .infinity)
+#endif
 				}
-				.frame(maxHeight: .infinity)
-				#endif
 			}
 		}
 		.task(id: rotationAmount) {
@@ -84,31 +86,13 @@ struct EarthModelView: View {
 			resourceRequest.endAccessingResources()
 		}
 		#endif
-	}
-	#else
-	var body: some View {
-		RealityView { content in
-			if let earth = try? await Entity(named: "Scene", in: realityKitContentBundle) {
-				content.add(earth)
-			}
-		} update: { content in
-			guard let rootEntity = content.entities.first,
-						let earth = rootEntity.findEntity(named: "Earth"),
-						var modelComponent = earth.components[ModelComponent.self],
-						var shaderMaterial = modelComponent.materials.first as? ShaderGraphMaterial else {
-				return
-			}
-			
-			do {
-				try shaderMaterial.setParameter(name: "Angle", value: .float(Float(Angle(radians: rotationAmount).degrees)))
-				modelComponent.materials = [shaderMaterial]
-				earth.components.set(modelComponent)
-			} catch {
-				print(error)
+		
+		Picker("View Earth at:", selection: $selection) {
+			ForEach(AnnualSolarEvent.allCases, id: \.self) { event in
+				Text(event.description)
 			}
 		}
 	}
-	#endif
 }
 
 struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
@@ -153,5 +137,5 @@ struct CustomSceneView<Scene: SCNScene>: NativeViewRepresentable {
 }
 
 #Preview {
-    EarthModelView()
+    EarthSceneKitView()
 }

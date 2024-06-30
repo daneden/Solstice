@@ -16,9 +16,7 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 }
 
 struct AnnualOverview<Location: AnyLocation>: View {
-	#if os(macOS)
 	@Environment(\.openWindow) var openWindow
-	#endif
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var isInformationSheetPresented = false
@@ -161,11 +159,13 @@ struct AnnualOverview<Location: AnyLocation>: View {
 		} footer: {
 #if !os(watchOS)
 			Button {
-#if os(macOS)
+				#if os(macOS)
 				openWindow.callAsFunction(id: "about-equinox-and-solstice")
-#else
+				#elseif os(visionOS)
+				openWindow(value: AnnualSolarEvent.juneSolstice)
+				#else
 				isInformationSheetPresented = true
-#endif
+				#endif
 			} label: {
 				Label("Learn more about the equinox and solstice", systemImage: "info.circle")
 					.font(.footnote)
@@ -173,7 +173,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			.buttonStyle(.automatic)
 			.sheet(isPresented: $isInformationSheetPresented) {
 				NavigationStack {
-					EquinoxAndSolsticeInfoView()
+					EquinoxAndSolsticeInfoSheet()
 #if os(macOS)
 						.frame(minWidth: 500, minHeight: 500)
 #endif
