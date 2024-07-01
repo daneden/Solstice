@@ -67,7 +67,7 @@ struct DetailView<Location: ObservableLocation>: View {
 						.listRowBackground(Color.clear.background(.regularMaterial, in: .buttonBorder))
 				} else {
 					content
-						.listRowBackground(Color.clear.background(.background, in: .roundedRectangle(cornerRadius: 12)))
+						.listRowBackground(Color.clear.background(.background, in: ButtonBorderShape.roundedRectangle))
 				}
 			}
 			#endif
