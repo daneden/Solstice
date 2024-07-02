@@ -1,5 +1,4 @@
 {
-  "originHash" : "5b0780416e41af0f2891f4ac3b2b0b76eb25448830bd710f6a3899d37c64ff27",
   "pins" : [
     {
       "identity" : "solar",
@@ -11,5 +10,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

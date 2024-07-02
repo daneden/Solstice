@@ -1047,6 +1047,7 @@
       }
     },
     "Location Permission" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1552,6 +1553,7 @@
       }
     },
     "Set Up Location Access" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1562,6 +1564,7 @@
       }
     },
     "Set up location access to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

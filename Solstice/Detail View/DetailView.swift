@@ -59,18 +59,10 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 				
 				AnnualOverview(location: location)
+				#if os(watchOS)
+					.padding(.vertical, 8)
+				#endif
 			}
-			#if os(watchOS)
-			.modify { content in
-				if #available(watchOS 10, *) {
-					content
-						.listRowBackground(Color.clear.background(.regularMaterial, in: .buttonBorder))
-				} else {
-					content
-						.listRowBackground(Color.clear.background(.background, in: ButtonBorderShape.roundedRectangle))
-				}
-			}
-			#endif
 			.formStyle(.grouped)
 			.navigationTitle(navBarTitleText)
 			.toolbar {

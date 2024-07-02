@@ -189,6 +189,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 #endif
 		}
 		.buttonStyle(.plain)
+		.materialListRowBackground()
 	}
 }
 

@@ -134,6 +134,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			.environment(\.timeZone, location.timeZone)
 			.animation(.default, value: timeMachine.date)
 			.contentTransition(.numericText())
+			.materialListRowBackground()
 		} header: {
 			if location.timeZoneIdentifier != localTimeZone.identifier,
 				 !(location is CurrentLocation) {

@@ -89,7 +89,7 @@ extension SolsticeWidgetTimelineProvider {
 	}
 	
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
-		let isRealLocation = configuration.locationType == .currentLocation
+		let isRealLocation = (configuration.locationType == .currentLocation) || (configuration.locationType == .unknown)
 		
 		func processPlacemark(_ placemark: CLPlacemark) {
 			let location = getLocation(for: placemark, isRealLocation: isRealLocation)
@@ -134,7 +134,7 @@ extension SolsticeWidgetTimelineProvider {
 	
 	func getTimeline(for configuration: Intent, in context: TimelineProviderContext, completion: @escaping (Timeline<Entry>) -> Void) {
 		var entries: [Entry] = []
-		let isRealLocation = configuration.locationType == .currentLocation
+		let isRealLocation = (configuration.locationType == .currentLocation) || (configuration.locationType == .unknown)
 		
 		func processPlacemark(_ placemark: CLPlacemark) {
 			let currentDate = Date()
