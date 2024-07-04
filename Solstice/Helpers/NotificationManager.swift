@@ -38,11 +38,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 	}
 	
-	static func scheduleNotifications(locationManager: CurrentLocation) async {
+	static func scheduleNotifications(currentLocation: CurrentLocation) async {
 		// Always clear notifications when scheduling new ones
 		await clearScheduledNotifications()
-		
-		let currentLocation = CurrentLocation()
 		
 		guard (currentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
 			return
@@ -65,7 +63,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				timeZone = objectTimeZone
 			}
 		} else {
-			location = locationManager.location
+			location = currentLocation.location
 		}
 		
 		guard let location else {
@@ -100,7 +98,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 			
 			do {
 				try await UNUserNotificationCenter.current().add(request)
-				print("Scheduled notification with ID \(request.identifier)")
 			} catch {
 				print(error)
 			}

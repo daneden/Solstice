@@ -38,7 +38,7 @@ struct SolsticeApp: App {
 					#if !os(watchOS)
 					case .background:
 						Task {
-							await NotificationManager.scheduleNotifications(locationManager: currentLocation)
+							await NotificationManager.scheduleNotifications(currentLocation: currentLocation)
 						}
 					#endif
 					case .active:

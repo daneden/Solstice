@@ -14,12 +14,13 @@ import WidgetKit
 #endif
 
 class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifiable {
+	static let identifier = "currentLocation"
 	@AppStorage(Preferences.cachedLatitude) var latitude
 	@AppStorage(Preferences.cachedLongitude) var longitude
 	
 	@Published var title: String?
 	@Published var subtitle: String?
-	let id = "currentLocation"
+	let id = CurrentLocation.identifier
 	
 	@Published private(set) var placemark: CLPlacemark?
 	
@@ -47,7 +48,7 @@ class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifia
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
 		
 		sink = locationManager.publisher(for: \.location).sink { location in
-			Task { await self.processLocation(location) }
+			self.location = location
 		}
 	}
 	
@@ -77,21 +78,29 @@ extension CurrentLocation {
 		}
 	}
 	
+	@available(iOS 17, watchOS 10, macOS 14, visionOS 2, *)
+	func requestLocation() async {
+		do {
+			for try await update in CLLocationUpdate.liveUpdates() {
+				guard let location = update.location else { return }
+				
+				guard let storedLocation = self.location else {
+					return self.location = location
+				}
+				
+				if storedLocation.distance(from: location) > 10000 {
+					return self.location = location
+				}
+			}
+		} catch {
+			print(error.localizedDescription)
+		}
+	}
+	
 	func requestLocation() {
 		if #available(iOS 17, watchOS 10, macOS 14, visionOS 2, *) {
 			Task {
-				do {
-					for try await update in CLLocationUpdate.liveUpdates() {
-						guard let location = update.location else { return }
-						guard let storedLocation = self.location else { return self.location = location }
-						
-						if storedLocation.distance(from: location) > 200 {
-							self.location = location
-						}
-					}
-				} catch {
-					print(error.localizedDescription)
-				}
+				await requestLocation()
 			}
 		} else {
 			locationManager.requestLocation()
@@ -151,7 +160,7 @@ extension CurrentLocation: CLLocationManagerDelegate {
 		self.location = newLocation
 		
 		if newLocation != nil {
-			Task { await NotificationManager.scheduleNotifications(locationManager: self) }
+			Task { await NotificationManager.scheduleNotifications(currentLocation: self) }
 			
 #if canImport(WidgetKit)
 			WidgetCenter.shared.reloadAllTimelines()

@@ -21,7 +21,7 @@ struct DeepLinkResolver: ViewModifier {
 				}
 				
 				switch url.lastPathComponent {
-				case "currentLocation": withAnimation { selectedLocation = "currentLocation" }
+				case CurrentLocation.identifier: withAnimation { selectedLocation = CurrentLocation.identifier }
 				case "coordinates":
 					guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems,
 								let lat = queryItems.first(where: { $0.name == "lat" })?.value,
