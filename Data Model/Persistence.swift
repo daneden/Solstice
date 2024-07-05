@@ -30,26 +30,6 @@ struct PersistenceController {
 
     let container: NSPersistentCloudKitContainer
 	
-	private func preloadData() {
-		let sourceSqliteURLs = [
-			Bundle.main.url(forResource: "DefaultData", withExtension: "sqlite"),
-			Bundle.main.url(forResource: "DefaultData", withExtension: "sqlite-wal"),
-			Bundle.main.url(forResource: "DefaultData", withExtension: "sqlite-shm")
-		]
-		
-		let destSqliteURLs = [
-			URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite"),
-			URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite-wal"),
-			URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite-shm")]
-		
-		for index in 0...sourceSqliteURLs.count-1 {
-			do {
-				try FileManager.default.copyItem(at: sourceSqliteURLs[index]!, to: destSqliteURLs[index])
-			} catch {
-				print("Could not preload data")
-			}
-		}
-	}
 
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "Solstice")
@@ -58,10 +38,7 @@ struct PersistenceController {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
 				} else {
 					let fileUrl = NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite"
-					
-					if !FileManager.default.fileExists(atPath: fileUrl) {
-						preloadData()
-					}
+					container.persistentStoreDescriptions.first?.url = URL(filePath: fileUrl)
 				}
 			
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in

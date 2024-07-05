@@ -125,7 +125,7 @@ struct Preferences {
 	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", chartAppearanceDefaultValue)
 	
 	#if !os(watchOS)
-	static let listViewOrderBy: Value<SortingFunction> = ("listViewOrderBy", .timezone)
+	static let listViewSortDimension: Value<SortingFunction> = ("listViewOrderBy", .timezone)
 	#endif
 	
 	static let listViewSortOrder: Value<SortOrder> = ("listViewSortOrder", .forward)

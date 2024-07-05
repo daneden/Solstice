@@ -137,10 +137,7 @@
 		7194654F2C2C1E09008408C0 /* Solar in Frameworks */ = {isa = PBXBuildFile; productRef = 7194651E2C2C1E09008408C0 /* Solar */; };
 		719465502C2C1E09008408C0 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
 		719465512C2C1E09008408C0 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
-		719465532C2C1E09008408C0 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
-		719465542C2C1E09008408C0 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
 		719465552C2C1E09008408C0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
-		719465562C2C1E09008408C0 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
 		719465572C2C1E09008408C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
 		719465582C2C1E09008408C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		7194655E2C2C1E29008408C0 /* watchOS Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7194655C2C2C1E09008408C0 /* watchOS Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -202,18 +199,17 @@
 		71A029AD2C30501900E19819 /* EarthRealityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029AC2C30501900E19819 /* EarthRealityView.swift */; platformFilters = (xros, ); };
 		71A029AF2C3050CA00E19819 /* AnnualSolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029AE2C3050CA00E19819 /* AnnualSolarEvent.swift */; };
 		71A029B22C3052BC00E19819 /* EquinoxAndSolsticeDescriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029B12C3052BC00E19819 /* EquinoxAndSolsticeDescriptions.swift */; };
+		71A029B42C368E1900E19819 /* SavedLocation++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029B32C368E1900E19819 /* SavedLocation++.swift */; };
+		71A029B52C368E1900E19819 /* SavedLocation++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029B32C368E1900E19819 /* SavedLocation++.swift */; };
+		71A029B62C368E1900E19819 /* SavedLocation++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029B32C368E1900E19819 /* SavedLocation++.swift */; };
+		71A029B72C368E1900E19819 /* SavedLocation++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A029B32C368E1900E19819 /* SavedLocation++.swift */; };
+		71A029B92C36928400E19819 /* defaultData.json in Resources */ = {isa = PBXBuildFile; fileRef = 71A029B82C36928400E19819 /* defaultData.json */; };
+		71A029BA2C36928400E19819 /* defaultData.json in Resources */ = {isa = PBXBuildFile; fileRef = 71A029B82C36928400E19819 /* defaultData.json */; };
+		71A029BB2C36928400E19819 /* defaultData.json in Resources */ = {isa = PBXBuildFile; fileRef = 71A029B82C36928400E19819 /* defaultData.json */; };
+		71A029BC2C36928400E19819 /* defaultData.json in Resources */ = {isa = PBXBuildFile; fileRef = 71A029B82C36928400E19819 /* defaultData.json */; };
 		71A2BDE629B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE729B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		71A2BDE829B747940071ACE9 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
-		71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
-		71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
-		71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */; };
-		71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */; };
-		71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
-		71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
-		71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */; };
 		71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
 		71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */; };
@@ -381,10 +377,9 @@
 		71A029AC2C30501900E19819 /* EarthRealityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthRealityView.swift; sourceTree = "<group>"; };
 		71A029AE2C3050CA00E19819 /* AnnualSolarEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualSolarEvent.swift; sourceTree = "<group>"; };
 		71A029B12C3052BC00E19819 /* EquinoxAndSolsticeDescriptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquinoxAndSolsticeDescriptions.swift; sourceTree = "<group>"; };
+		71A029B32C368E1900E19819 /* SavedLocation++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedLocation++.swift"; sourceTree = "<group>"; };
+		71A029B82C36928400E19819 /* defaultData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = defaultData.json; sourceTree = "<group>"; };
 		71A2BDE529B747940071ACE9 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
-		71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultData.sqlite; sourceTree = "<group>"; };
-		71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-shm"; sourceTree = "<group>"; };
-		71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DefaultData.sqlite-wal"; sourceTree = "<group>"; };
 		71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionScreenerView.swift; sourceTree = "<group>"; };
@@ -542,11 +537,10 @@
 		7195126629B6324C009D282F /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				71A7E9DC29C480D800CE4769 /* DefaultData.sqlite */,
-				71A7E9DD29C480D800CE4769 /* DefaultData.sqlite-shm */,
-				71A7E9DE29C480D800CE4769 /* DefaultData.sqlite-wal */,
+				71A029B82C36928400E19819 /* defaultData.json */,
 				7198468D28E5895F00E866CE /* Persistence.swift */,
 				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
+				71A029B32C368E1900E19819 /* SavedLocation++.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -886,10 +880,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71A7E9E129C480D800CE4769 /* DefaultData.sqlite in Resources */,
-				71A7E9EB29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
+				71A029BB2C36928400E19819 /* defaultData.json in Resources */,
 				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				71A7E9E629C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 				711A97B929CDBCA500333927 /* Assets.xcassets in Resources */,
 			);
@@ -899,10 +891,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				719465532C2C1E09008408C0 /* DefaultData.sqlite in Resources */,
-				719465542C2C1E09008408C0 /* DefaultData.sqlite-wal in Resources */,
+				71A029BC2C36928400E19819 /* defaultData.json in Resources */,
 				719465552C2C1E09008408C0 /* Localizable.xcstrings in Resources */,
-				719465562C2C1E09008408C0 /* DefaultData.sqlite-shm in Resources */,
 				719465572C2C1E09008408C0 /* Assets.xcassets in Resources */,
 				719465582C2C1E09008408C0 /* Assets.xcassets in Resources */,
 			);
@@ -912,15 +902,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71A7E9DF29C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
 				71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */,
-				71A7E9E429C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
 				711A97B729CDBCA200333927 /* Assets.xcassets in Resources */,
-				71A7E9E929C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
+				71A029B92C36928400E19819 /* defaultData.json in Resources */,
 				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -929,11 +917,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71A7E9E029C480D800CE4769 /* DefaultData.sqlite in Resources */,
 				71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
-				71A7E9EA29C480D800CE4769 /* DefaultData.sqlite-wal in Resources */,
 				711A97B829CDBCA300333927 /* Assets.xcassets in Resources */,
-				71A7E9E529C480D800CE4769 /* DefaultData.sqlite-shm in Resources */,
+				71A029BA2C36928400E19819 /* defaultData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,6 +932,7 @@
 			files = (
 				71F2C3A52ABB366E00E69426 /* Widget.intentdefinition in Sources */,
 				71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */,
+				71A029B62C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
 				7187147729DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
@@ -998,6 +985,7 @@
 			files = (
 				719465212C2C1E09008408C0 /* Widget.intentdefinition in Sources */,
 				719465222C2C1E09008408C0 /* AnyLocation.swift in Sources */,
+				71A029B72C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				719465232C2C1E09008408C0 /* AppStorage++.swift in Sources */,
 				719465242C2C1E09008408C0 /* CLLocationCoordinate2D++.swift in Sources */,
 				719465252C2C1E09008408C0 /* SolsticeCalculator.swift in Sources */,
@@ -1089,6 +1077,7 @@
 				7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				7193E92629C0BA0B00103D6B /* DaylightChart.swift in Sources */,
 				719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */,
+				71A029B42C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */,
 				71F641C1299FCCFF00FE5AB5 /* TimeMachine.swift in Sources */,
 				719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */,
@@ -1137,6 +1126,7 @@
 				713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
+				71A029B52C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				716BE0512C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */,
 				7195125929B48ECD009D282F /* TimeZone++.swift in Sources */,
 				719F927929ACD21A00C06921 /* Date++.swift in Sources */,

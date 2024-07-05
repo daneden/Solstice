@@ -22,8 +22,8 @@ struct SidebarListView: View {
 		
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
-	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
+	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	var body: some View {
@@ -93,7 +93,6 @@ struct SidebarListView: View {
 			} header: {
 				Label("Locations", systemImage: "map")
 			}
-			.headerProminence(.standard)
 		}
 		.navigationTitle(Text(verbatim: "Solstice"))
 		.navigationSplitViewColumnWidth(ideal: 300)

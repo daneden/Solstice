@@ -21,7 +21,6 @@ struct SolsticeApp: App {
 			ContentView()
 				.environmentObject(currentLocation)
 				.environmentObject(timeMachine)
-				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 				.task {
 					for await result in Transaction.updates {
 						switch result {
@@ -48,6 +47,7 @@ struct SolsticeApp: App {
 					}
 				}
 				.migrateAppFeatures()
+				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 		}
 		#if os(macOS)
 		.defaultSize(width: 800, height: 600)

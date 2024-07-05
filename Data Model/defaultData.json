@@ -1,0 +1,50 @@
+[
+  {
+    "timeZoneIdentifier": "America/New_York",
+    "uuid": "7AAA4D87-4402-4D0E-A35E-2D84641A71BE",
+    "title": "New York, NY",
+    "latitude": 40.7128,
+    "longitude": -74.006,
+    "subtitle": "United States"
+  },
+  {
+    "timeZoneIdentifier": "America/Belem",
+    "uuid": "150CF691-6B75-4FE7-9C03-CCBCC93EDAB3",
+    "latitude": 0.037423,
+    "subtitle": "Brazil",
+    "longitude": -51.0724482,
+    "title": "Macapá"
+  },
+  {
+    "latitude": 64.124287,
+    "subtitle": "Reykjavík, Iceland",
+    "longitude": -21.8904589,
+    "timeZoneIdentifier": "Atlantic/Reykjavik",
+    "uuid": "1CBF4557-86CE-484C-9670-6BAC5D95D1A4",
+    "title": "Reykjavík"
+  },
+  {
+    "uuid": "AAD807D9-A571-4ACD-BB49-9828ABA61AFF",
+    "title": "London",
+    "latitude": 51.5033466,
+    "subtitle": "England",
+    "longitude": -0.0793965,
+    "timeZoneIdentifier": "Europe/London"
+  },
+  {
+    "subtitle": "Madagascar",
+    "longitude": 44.9999848,
+    "title": "Toliara",
+    "timeZoneIdentifier": "Indian/Antananarivo",
+    "uuid": "0D4B6A0C-C884-4BBB-AF35-97A62210CBB2",
+    "latitude": -22.6345606
+  },
+  {
+    "longitude": 172.6352929,
+    "latitude": -43.533128,
+    "timeZoneIdentifier": "Pacific/Auckland",
+    "title": "Christchurch",
+    "subtitle": "New Zealand",
+    "uuid": "3689532A-B4F8-4BCE-8F29-747C60CE37C2"
+  }
+]

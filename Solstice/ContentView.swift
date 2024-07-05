@@ -11,7 +11,7 @@ import Solar
 import CoreLocation
 
 struct ContentView: View {
-	@AppStorage(Preferences.listViewOrderBy) private var itemSortDimension
+	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	@Environment(\.openWindow) private var openWindow
