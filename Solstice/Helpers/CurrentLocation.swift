@@ -9,106 +9,68 @@ import CoreLocation
 import SwiftUI
 import Combine
 
-#if canImport(WidgetKit)
-import WidgetKit
-#endif
-
-class CurrentLocation: NSObject, ObservableObject, ObservableLocation, Identifiable {
-	static let identifier = "currentLocation"
-	@AppStorage(Preferences.cachedLatitude) var latitude
-	@AppStorage(Preferences.cachedLongitude) var longitude
-	
-	@Published var title: String?
-	@Published var subtitle: String?
-	let id = CurrentLocation.identifier
-	
+class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
 	@Published private(set) var placemark: CLPlacemark?
-	
-	@Published var timeZoneIdentifier: String?
 	
 	private(set) var location: CLLocation? {
 		didSet {
-			Task { await processLocation(location) }
+			Task {
+				await processLocation(location)
+				await NotificationManager.scheduleNotifications(currentLocation: self)
+			}
 		}
-	}
-	
-	var coordinate: CLLocationCoordinate2D {
-		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 	}
 	
 	private let locationManager = CLLocationManager()
 	private let geocoder = CLGeocoder()
 	
-	private var sink: AnyCancellable? = nil
-	
 	override init() {
 		super.init()
-		
+
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
-		
-		sink = locationManager.publisher(for: \.location).sink { location in
-			self.location = location
-		}
 	}
 	
 	func requestAccess() {
-#if os(macOS)
-		self.locationManager.requestAlwaysAuthorization()
-#else
 		self.locationManager.requestWhenInUseAuthorization()
-#endif
+	}
+	
+	func requestLocation() {
+		guard isAuthorized else { return }
+		
+		if #available(iOS 17, watchOS 10, macOS 14, visionOS 1, *) {
+			Task {
+				do {
+					try await requestLocation()
+				} catch {
+					print("Error requesting location: \(error.localizedDescription)")
+				}
+			}
+		} else {
+			legacyRequestLocation()
+		}
+	}
+	
+	@available(iOS 17, watchOS 10, macOS 14, visionOS 1, *)
+	func requestLocation() async throws {
+		let updates = CLLocationUpdate.liveUpdates()
+		for try await update in updates {
+			guard let location = update.location else { return }
+			
+			self.location = location
+			break
+		}
 	}
 }
 
 // MARK: Location update request methods and handlers
 extension CurrentLocation {
-	@MainActor func processLocation(_ location: CLLocation?) async -> Void {
+	@MainActor func processLocation(_ location: CLLocation?) async {
 		guard let location else { return }
-		
-		latitude = location.coordinate.latitude
-		longitude = location.coordinate.longitude
 		
 		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
 		if let firstResult = reverseGeocoded?.first {
 			placemark = firstResult
-			title = firstResult.locality
-			subtitle = firstResult.country
-			timeZoneIdentifier = firstResult.timeZone?.identifier
-		}
-	}
-	
-	@available(iOS 17, watchOS 10, macOS 14, visionOS 2, *)
-	func requestLocation() async {
-		do {
-			for try await update in CLLocationUpdate.liveUpdates() {
-				guard let location = update.location else { return }
-				
-				guard let storedLocation = self.location else {
-					return self.location = location
-				}
-				
-				if storedLocation.distance(from: location) > 10000 {
-					return self.location = location
-				}
-			}
-		} catch {
-			print(error.localizedDescription)
-		}
-	}
-	
-	func requestLocation() {
-		if #available(iOS 17, watchOS 10, macOS 14, visionOS 2, *) {
-			Task {
-				await requestLocation()
-			}
-		} else {
-			locationManager.requestLocation()
-			locationManager.startUpdatingLocation()
-			
-#if !os(watchOS) && !os(visionOS)
-			locationManager.startMonitoringSignificantLocationChanges()
-#endif
 		}
 	}
 	
@@ -123,52 +85,39 @@ extension CurrentLocation {
 		}
 	}
 	
-	var isAuthorizedForWidgetUpdates: Bool {
-#if !os(watchOS)
-		locationManager.isAuthorizedForWidgetUpdates
-#else
-		isAuthorized
-#endif
+	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+		if location == nil && isAuthorized {
+			requestLocation()
+		}
 	}
 }
 
-extension CurrentLocation: CLLocationManagerDelegate {
-	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-#if canImport(WidgetKit)
-		WidgetCenter.shared.reloadAllTimelines()
-#endif
-		
-		if isAuthorized { requestLocation() }
+extension CurrentLocation {
+	// MARK: Fallback location request code
+	func legacyRequestLocation() {
+		locationManager.startUpdatingLocation()
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		print("Received location update")
-		
-		let newLocation = locations.last
-		
-		if location == nil {
-			updateLocation(newLocation)
-		} else if let newLocation, let location,
-							newLocation.distance(from: location) > CLLocationDistance(10_000) {
-			updateLocation(newLocation)
-		} else {
-			print("Location is within 10km of last update")
-		}
+		guard let location = locations.last else { return }
+		self.location = location
+		manager.stopUpdatingLocation()
 	}
 	
-	private func updateLocation(_ newLocation: CLLocation?) {
-		self.location = newLocation
-		
-		if newLocation != nil {
-			Task { await NotificationManager.scheduleNotifications(currentLocation: self) }
-			
-#if canImport(WidgetKit)
-			WidgetCenter.shared.reloadAllTimelines()
-#endif
-		}
+	func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
+		print("Error with location manager delegate: \(error.localizedDescription)")
 	}
-	
-	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-		print(error)
-	}
+}
+
+extension CurrentLocation: ObservableLocation {
+	var title: String? { placemark?.locality }
+	var subtitle: String? { placemark?.country }
+	var timeZoneIdentifier: String? { placemark?.timeZone?.identifier }
+	var latitude: Double { location?.coordinate.latitude ?? 0 }
+	var longitude: Double { location?.coordinate.longitude ?? 0 }
+}
+
+extension CurrentLocation: Identifiable {
+	static let identifier = "currentLocation"
+	var id: String { CurrentLocation.identifier }
 }

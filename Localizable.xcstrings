@@ -1553,6 +1553,9 @@
         }
       }
     },
+    "Set up" : {
+
+    },
     "Set Up Location Access" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1574,9 +1577,6 @@
           }
         }
       }
-    },
-    "Set up location services" : {
-
     },
     "Set Up Location Services" : {
       "extractionState" : "stale",
@@ -2005,9 +2005,6 @@
         }
       }
     },
-    "Welcome to Solstice" : {
-
-    },
     "What location do you want to see the daylight for?" : {
       "localizations" : {
         "it" : {
@@ -2037,9 +2034,6 @@
           }
         }
       }
-    },
-    "You can use Solstice with or without your real location. Tap this button to allow or deny access to your location." : {
-
     },
     "You will need to enable location services for Solstice or choose a different location in order to receive notifications." : {
       "localizations" : {

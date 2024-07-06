@@ -33,7 +33,6 @@ struct LocationSearchResult: Identifiable, Hashable {
 		findCoordinates()
 	}
 	
-	@available(iOS 16, macOS 13, visionOS 1, *)
 	mutating func findCoordinates() {
 		let geocoder = CLGeocoder()
 		geocoder.geocodeAddressString(name) { [self] (response, error) in

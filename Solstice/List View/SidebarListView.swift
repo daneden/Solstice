@@ -32,11 +32,11 @@ struct SidebarListView: View {
 				TimeMachineDeactivatorView()
 			}
 			
-			if currentLocation.authorizationStatus == .notDetermined {
-				LocationPermissionScreenerView()
-			}
-			
 			Section {
+				if currentLocation.authorizationStatus == .notDetermined {
+					LocationPermissionScreenerView()
+				}
+				
 				if !currentLocation.isAuthorized && items.isEmpty {
 					VStack {
 						Text("No locations")

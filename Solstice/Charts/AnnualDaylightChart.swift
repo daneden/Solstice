@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Solar
-import CoreLocation
 import Charts
 
 struct AnnualDaylightChart<Location: AnyLocation>: View {
@@ -107,7 +106,7 @@ extension AnnualDaylightChart {
 		}
 		
 		return dates.map { date in
-			return Solar(for: date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+			return Solar(for: date, coordinate: location.coordinate)
 		}.compactMap { $0 }
 	}
 }

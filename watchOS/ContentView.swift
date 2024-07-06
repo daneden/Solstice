@@ -112,12 +112,6 @@ struct ContentView: View {
 					}
 			}
 		}
-		.task(id: scenePhase) {
-			if currentLocation.isAuthorized,
-				 scenePhase != .background {
-				currentLocation.requestLocation()
-			}
-		}
 	}
 	
 	var fallbackBody: some View {

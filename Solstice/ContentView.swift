@@ -8,7 +8,6 @@
 import SwiftUI
 import CoreData
 import Solar
-import CoreLocation
 
 struct ContentView: View {
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
@@ -77,13 +76,6 @@ struct ContentView: View {
 				}
 			}
 			.resolveDeepLink(Array(items))
-			.task(id: scenePhase) {
-				if currentLocation.isAuthorized,
-					 selectedLocation == currentLocation.id,
-					 scenePhase == .active {
-					currentLocation.requestLocation()
-				}
-			}
 			.overlay {
 				TimelineView(.everyMinute) { timelineContext in
 					Color.clear.task(id: timelineContext.date) {

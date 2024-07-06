@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Solar
-import CoreLocation
 
 struct LocationListRow<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine
@@ -18,7 +17,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	@State private var showRemainingDaylight = false
 	
 	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	var isCurrentLocation: Bool {

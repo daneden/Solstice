@@ -37,29 +37,12 @@ struct SolsticeApp: App {
 					switch phase {
 					#if !os(watchOS)
 					case .background:
-						Task {
-							await NotificationManager.scheduleNotifications(currentLocation: currentLocation)
-						}
+						await NotificationManager.scheduleNotifications(currentLocation: currentLocation)
 					#endif
 					case .active:
 						currentLocation.requestLocation()
 					default:
 						return
-					}
-				}
-				.task {
-					if #available(iOS 17, watchOS 10, macOS 13, *) {
-						// Configure and load your tips at app launch.
-						do {
-							try Tips.configure([
-								.displayFrequency(.immediate),
-								.datastoreLocation(.applicationDefault)
-							])
-						}
-						catch {
-							// Handle TipKit errors
-							print("Error initializing TipKit \(error.localizedDescription)")
-						}
 					}
 				}
 				.migrateAppFeatures()

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Solar
-import CoreLocation
 
 struct DetailView<Location: ObservableLocation>: View {
 	static var userActivity: String {

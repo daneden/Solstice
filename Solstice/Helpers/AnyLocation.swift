@@ -10,9 +10,9 @@ import CoreLocation
 import CoreData
 
 protocol AnyLocation: Hashable {
-	var title: String? { get set }
-	var subtitle: String? { get set }
-	var timeZoneIdentifier: String? { get set }
+	var title: String? { get }
+	var subtitle: String? { get }
+	var timeZoneIdentifier: String? { get }
 	var latitude: Double { get }
 	var longitude: Double { get }
 }
@@ -31,17 +31,6 @@ extension AnyLocation {
 	
 	var coordinate: CLLocationCoordinate2D {
 		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-	}
-	
-	mutating func reverseGeocodeLocation() async {
-		guard let placemarks = try? await CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)),
-					let placemark = placemarks.first else {
-			return
-		}
-		
-		title = placemark.name ?? title
-		subtitle = placemark.country ?? subtitle
-		timeZoneIdentifier = placemark.timeZone?.identifier ?? timeZoneIdentifier
 	}
 }
 
