@@ -1068,6 +1068,7 @@
       }
     },
     "Location Services" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1574,7 +1575,11 @@
         }
       }
     },
+    "Set up location services" : {
+
+    },
     "Set Up Location Services" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1585,6 +1590,7 @@
       }
     },
     "Set up location services to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1999,6 +2005,9 @@
         }
       }
     },
+    "Welcome to Solstice" : {
+
+    },
     "What location do you want to see the daylight for?" : {
       "localizations" : {
         "it" : {
@@ -2028,6 +2037,9 @@
           }
         }
       }
+    },
+    "You can use Solstice with or without your real location. Tap this button to allow or deny access to your location." : {
+
     },
     "You will need to enable location services for Solstice or choose a different location in order to receive notifications." : {
       "localizations" : {

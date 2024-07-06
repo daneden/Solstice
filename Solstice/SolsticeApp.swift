@@ -7,6 +7,7 @@
 
 import SwiftUI
 import StoreKit
+import TipKit
 
 @main
 struct SolsticeApp: App {
@@ -44,6 +45,21 @@ struct SolsticeApp: App {
 						currentLocation.requestLocation()
 					default:
 						return
+					}
+				}
+				.task {
+					if #available(iOS 17, watchOS 10, macOS 13, *) {
+						// Configure and load your tips at app launch.
+						do {
+							try Tips.configure([
+								.displayFrequency(.immediate),
+								.datastoreLocation(.applicationDefault)
+							])
+						}
+						catch {
+							// Handle TipKit errors
+							print("Error initializing TipKit \(error.localizedDescription)")
+						}
 					}
 				}
 				.migrateAppFeatures()
