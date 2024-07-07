@@ -37,22 +37,22 @@ class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
 	
 	func requestLocation() {
 		guard isAuthorized else { return }
-		
-		if #available(iOS 17, watchOS 10, macOS 14, visionOS 1, *) {
-			Task {
-				do {
-					try await requestLocation()
-				} catch {
-					print("Error requesting location: \(error.localizedDescription)")
-				}
-			}
-		} else {
-			legacyRequestLocation()
-		}
+		legacyRequestLocation()
+//		if #available(iOS 17, watchOS 10, macOS 14, visionOS 1, *) {
+//			Task {
+//				do {
+//					try await requestLocationFromLiveUpdates()
+//				} catch {
+//					print("Error requesting location: \(error.localizedDescription)")
+//				}
+//			}
+//		} else {
+//			legacyRequestLocation()
+//		}
 	}
 	
 	@available(iOS 17, watchOS 10, macOS 14, visionOS 1, *)
-	func requestLocation() async throws {
+	func requestLocationFromLiveUpdates() async throws {
 		let updates = CLLocationUpdate.liveUpdates()
 		for try await update in updates {
 			guard let location = update.location else { return }
