@@ -18,6 +18,36 @@
             endingLineNumber = "58"
             landmarkName = "body(content:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D80AA32B-93C1-4B79-8BCD-7882590E25ED - 5cb83d7ca7d4d185"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Foundation.URL) -&gt; () in Solstice_watchOS_Watch_App.DeepLinkResolver.body(content: SwiftUI._ViewModifier_Content&lt;Solstice_watchOS_Watch_App.DeepLinkResolver&gt;) -&gt; some"
+                  moduleName = "Solstice watchOS Watch App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dte/Developer/Solstice/Solstice/Helpers/DeepLinkResolver.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58">
+               </Location>
+               <Location
+                  uuid = "D80AA32B-93C1-4B79-8BCD-7882590E25ED - 5ad97386725c4c56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Foundation.URL) -&gt; () in Solstice.DeepLinkResolver.body(content: SwiftUI._ViewModifier_Content&lt;Solstice.DeepLinkResolver&gt;) -&gt; some"
+                  moduleName = "Solstice"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dte/Developer/Solstice/Solstice/Helpers/DeepLinkResolver.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -365,19 +365,6 @@ def Xform "Root"
             float3 xformOp:translate = (0, 0, 0)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-            def RealityKitComponent "ImageBasedLight"
-            {
-                asset ibl = @starfield.jpg@
-                uniform token info:id = "RealityKit.ImageBasedLight"
-                bool isGlobalIBL = 0
-            }
-
-            def RealityKitComponent "ImageBasedLightReceiver"
-            {
-                rel iblEntity = </Root/Earth_And_Ornaments/Earth>
-                uniform token info:id = "RealityKit.ImageBasedLightReceiver"
-            }
-
             def Material "EarthMaterial" (
                 references = None
             )
