@@ -59,7 +59,7 @@
       }
     },
     "%@ %@" : {
-      "comment" : "Widget heading for real location",
+      "comment" : "Widget heading for custom location\nWidget heading for real location",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -535,6 +535,7 @@
       }
     },
     "Content #1" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -545,6 +546,7 @@
       }
     },
     "Content #2" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -877,6 +879,18 @@
           }
         }
       }
+    },
+    "Get the daylight duration on ${date} in ${location}" : {
+
+    },
+    "Get the sunrise time on ${date} in ${location}" : {
+
+    },
+    "Get the sunset time on ${date} in ${location}" : {
+
+    },
+    "Get today's remaining daylight in ${location}" : {
+
     },
     "Good Afternoon" : {
       "comment" : "Notification title for afternoon notification",
@@ -1333,6 +1347,7 @@
     },
     "on (baseDateString)" : {
       "comment" : "Sentence fragment for nominal date",
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1791,6 +1806,7 @@
       }
     },
     "Test Label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

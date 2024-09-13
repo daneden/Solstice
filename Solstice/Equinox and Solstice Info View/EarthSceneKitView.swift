@@ -19,6 +19,7 @@ extension NSBundleResourceRequest: @unchecked Sendable {}
 #endif
 
 struct EarthSceneKitView: View {
+	var height: Double = 400
 	@State private var selection: AnnualSolarEvent = .juneSolstice
 	
 	var rotationAmount: Double {
@@ -38,7 +39,7 @@ struct EarthSceneKitView: View {
 			VStack {
 				if scene != nil {
 					CustomSceneView(scene: $scene)
-						.frame(maxHeight: .infinity)
+						.frame(idealHeight: height, maxHeight: .infinity)
 				} else {
 #if os(iOS)
 					HStack {

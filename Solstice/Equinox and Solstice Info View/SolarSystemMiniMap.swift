@@ -14,7 +14,7 @@ struct SolarSystemMiniMap: View {
 		event.sunAngle
 	}
 	
-	var size: Double = 60
+	var size: Double = 44
 	
 	var body: some View {
 		HStack {
@@ -23,7 +23,7 @@ struct SolarSystemMiniMap: View {
 					.fontWeight(.semibold)
 				Text(event.shortEventDescription)
 			}
-			.font(.subheadline)
+			.font(.caption)
 			
 			ZStack {
 				Circle()

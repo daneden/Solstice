@@ -12,8 +12,7 @@ struct EquinoxAndSolsticeInfoSheet: View {
 		GeometryReader { geometry in
 			Form {
 				Section {
-					EarthSceneKitView()
-						.frame(height: min(geometry.size.width, 400))
+					EarthSceneKitView(height: min(geometry.size.width, 400))
 
 					EquinoxAndSolsticeDescriptions()
 				} footer: {
