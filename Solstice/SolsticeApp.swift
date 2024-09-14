@@ -58,6 +58,7 @@ struct SolsticeApp: App {
 		WindowGroup(id: "settings") {
 			SettingsView()
 		}
+		.defaultSize(width: 600, height: 600)
 		
 		WindowGroup(Text("About Equinox and Solstices")) { _ in
 			EquinoxAndSolsticeInfoWindow()

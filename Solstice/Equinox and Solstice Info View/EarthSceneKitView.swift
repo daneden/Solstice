@@ -39,7 +39,6 @@ struct EarthSceneKitView: View {
 			VStack {
 				if scene != nil {
 					CustomSceneView(scene: $scene)
-						.frame(idealHeight: height, maxHeight: .infinity)
 				} else {
 #if os(iOS)
 					HStack {
@@ -54,6 +53,7 @@ struct EarthSceneKitView: View {
 #endif
 				}
 			}
+			.frame(idealHeight: height, maxHeight: .infinity)
 		}
 		.task(id: rotationAmount) {
 			let action = SCNAction.rotateTo(
