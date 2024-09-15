@@ -229,6 +229,7 @@ struct DaylightChart: View {
 				view.padding(.bottom)
 			}
 		}
+		.foregroundStyle(markForegroundColor)
 		.if(appearance == .graphical) { view in
 			view
 				.blendMode(.plusLighter)
