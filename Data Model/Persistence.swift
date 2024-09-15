@@ -47,6 +47,8 @@ class PersistenceController {
 		
 		container.persistentStoreDescriptions.first?.cloudKitContainerOptions = .init(containerIdentifier: "iCloud.me.daneden.Solstice")
 		
+		container.viewContext.automaticallyMergesChangesFromParent = true
+		
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 			if let error = error as NSError? {
 				// Replace this implementation with code to handle the error appropriately.
@@ -69,8 +71,6 @@ class PersistenceController {
 																					 selector: #selector(storeRemoteChange(_:)),
 																					 name: .NSPersistentStoreRemoteChange,
 																					 object: container.persistentStoreCoordinator)
-		
-		container.viewContext.automaticallyMergesChangesFromParent = true
 	}
 	
 	@objc func storeRemoteChange(_ notification: Notification) {
