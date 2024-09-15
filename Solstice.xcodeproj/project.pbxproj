@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -851,6 +851,7 @@
 				};
 			};
 			buildConfigurationList = 7198467C28E5895E00E866CE /* Build configuration list for PBXProject "Solstice" */;
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -862,7 +863,6 @@
 			packageReferences = (
 				7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 7198468228E5895E00E866CE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
