@@ -9,7 +9,7 @@ import SwiftUI
 
 extension Color {
 	func toHex() -> String? {
-		let uic = UIColor(self)
+		let uic = NativeColor(self)
 		guard let components = uic.cgColor.components, components.count >= 3 else {
 			return nil
 		}
