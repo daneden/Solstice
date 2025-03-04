@@ -10,6 +10,7 @@ import Solar
 import Charts
 
 struct AnnualDaylightChart<Location: AnyLocation>: View {
+	@EnvironmentObject var timeMachine: TimeMachine
 	var location: Location
 	
 	var kvPairs: KeyValuePairs<Solar.Phase, Color> = [
@@ -23,6 +24,9 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Chart {
+			BarMark(x: .value("Current month", timeMachine.date, unit: .month))
+				.foregroundStyle(.quaternary)
+			
 			ForEach(monthlySolars, id: \.date) { solar in
 				let sunrise = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
 				let sunset = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
