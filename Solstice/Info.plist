@@ -18,19 +18,13 @@
 				<string>solstice</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>CFBundleURLName</key>
-			<string>Instagram Stories</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>instagram-stories</string>
-			</array>
-		</dict>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram-stories</string>
+	</array>
 	<key>NSLocationDefaultAccuracyReduced</key>
 	<true/>
 	<key>NSUserActivityTypes</key>
