@@ -14,7 +14,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solar: Solar
 	var location: Location
 	
-	@State var chartRenderedAsImage: Image?
+	@State private var chartRenderedAsImage: Image?
+	@State private var gradientSolar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	
@@ -261,8 +262,11 @@ extension DailyOverview {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					SkyGradient(solar: solar)
+					SkyGradient(solar: gradientSolar ?? solar)
 				}
+		}
+		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
+			self.gradientSolar = Solar(for: date, coordinate: solar.coordinate)
 		}
 		#endif
 		#if os(macOS)

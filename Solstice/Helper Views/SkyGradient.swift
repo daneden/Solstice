@@ -10,7 +10,7 @@ import SwiftUI
 import Solar
 import CoreLocation
 
-extension Solar: @unchecked Sendable {}
+extension Solar: @unchecked @retroactive Sendable {}
 
 struct SkyGradient: View, ShapeStyle {
 	var solar: Solar = Solar(coordinate: .proxiedToTimeZone)!
@@ -69,9 +69,9 @@ struct SkyGradient: View, ShapeStyle {
 	var stops: [Color] {
 		let sunrise = solar.safeSunrise
 		let sunset = solar.safeSunset
-		let twilightDuration: TimeInterval = 60 * 100
+		let twilightDuration: TimeInterval = 60 * 180
 		let duration = sunrise.addingTimeInterval(-twilightDuration).distance(to: sunset.addingTimeInterval(twilightDuration))
-		let progress = sunrise.distance(to: solar.date) / duration
+		let progress = sunrise.addingTimeInterval(-twilightDuration / 1.5).distance(to: solar.date) / duration
 		let progressThroughStops = progress * Double(colors.count)
 		let index = min(max(0, Int(floor(progressThroughStops))), colors.count - 1)
 		let nextIndex = max(0, min(colors.count - 1, Int(ceil(progressThroughStops))))
@@ -91,7 +91,7 @@ struct SkyGradient: View, ShapeStyle {
 }
 
 extension Solar {
-	var view: SkyGradient {
+	var view: some View {
 		SkyGradient(solar: self)
 	}
 }

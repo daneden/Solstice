@@ -236,6 +236,7 @@ struct DaylightChart: View {
 				.environment(\.colorScheme, .dark)
 		}
 		.environment(\.timeZone, timeZone)
+		.preference(key: DaylightGradientTimePreferenceKey.self, value: currentX ?? solar.date)
 	}
 }
 
