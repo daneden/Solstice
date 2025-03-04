@@ -494,6 +494,9 @@
         }
       }
     },
+    "Chart appearance" : {
+
+    },
     "Civil Sunrise" : {
       "localizations" : {
         "it" : {
@@ -533,6 +536,9 @@
           }
         }
       }
+    },
+    "Color scheme" : {
+
     },
     "Content #1" : {
       "extractionState" : "stale",
@@ -608,6 +614,9 @@
           }
         }
       }
+    },
+    "Dark" : {
+
     },
     "Date" : {
       "localizations" : {
@@ -1033,6 +1042,9 @@
         }
       }
     },
+    "Light" : {
+
+    },
     "Loading..." : {
       "localizations" : {
         "it" : {
@@ -1167,6 +1179,7 @@
       }
     },
     "my location" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1628,6 +1641,12 @@
         }
       }
     },
+    "Share" : {
+
+    },
+    "Share image" : {
+
+    },
     "Shortest day" : {
       "localizations" : {
         "it" : {
@@ -1647,6 +1666,9 @@
           }
         }
       }
+    },
+    "Show location name" : {
+
     },
     "Simple" : {
       "localizations" : {
@@ -1739,6 +1761,7 @@
       }
     },
     "Sunrise: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1789,6 +1812,7 @@
       }
     },
     "Sunset: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

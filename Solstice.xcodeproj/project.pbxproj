@@ -43,6 +43,11 @@
 		712433992D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
 		7124339A2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
 		7124339B2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
+		7124339E2D77B07500709C20 /* ShareSolarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339C2D77B06900709C20 /* ShareSolarChartView.swift */; };
+		712433A02D77C02D00709C20 /* Color+toHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339F2D77C02A00709C20 /* Color+toHex.swift */; };
+		712433A12D77C02D00709C20 /* Color+toHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339F2D77C02A00709C20 /* Color+toHex.swift */; };
+		712433A22D77C02D00709C20 /* Color+toHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339F2D77C02A00709C20 /* Color+toHex.swift */; };
+		712433A32D77C02D00709C20 /* Color+toHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339F2D77C02A00709C20 /* Color+toHex.swift */; };
 		7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		7132AC0F29E6922500523215 /* SolarChartWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */; };
 		7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */; };
@@ -321,6 +326,8 @@
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
 		712433922D77A4CE00709C20 /* EdgeInsets++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets++.swift"; sourceTree = "<group>"; };
 		712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DaylightGradientTimePreferenceKey.swift"; sourceTree = "<group>"; };
+		7124339C2D77B06900709C20 /* ShareSolarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSolarChartView.swift; sourceTree = "<group>"; };
+		7124339F2D77C02A00709C20 /* Color+toHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+toHex.swift"; sourceTree = "<group>"; };
 		7132AC0B29E6917F00523215 /* SolarChartWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidget.swift; sourceTree = "<group>"; };
 		7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetView.swift; sourceTree = "<group>"; };
 		7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetTimelineProvider.swift; sourceTree = "<group>"; };
@@ -558,6 +565,7 @@
 		7195127F29B713D6009D282F /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
+				7124339C2D77B06900709C20 /* ShareSolarChartView.swift */,
 				7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */,
 				710D9B702AB4752D0093A9A6 /* ContentToggle.swift */,
 				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
@@ -661,6 +669,7 @@
 				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
 				7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */,
 				719465142C294B42008408C0 /* Color+Mix.swift */,
+				7124339F2D77C02A00709C20 /* Color+toHex.swift */,
 				71789AA42C32DCC7002B8A33 /* View+MaterialListRowBackground.swift */,
 				712433922D77A4CE00709C20 /* EdgeInsets++.swift */,
 				712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */,
@@ -944,6 +953,7 @@
 			files = (
 				71F2C3A52ABB366E00E69426 /* Widget.intentdefinition in Sources */,
 				71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */,
+				712433A32D77C02D00709C20 /* Color+toHex.swift in Sources */,
 				71A029B62C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
 				7187147729DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */,
@@ -999,6 +1009,7 @@
 			files = (
 				719465212C2C1E09008408C0 /* Widget.intentdefinition in Sources */,
 				719465222C2C1E09008408C0 /* AnyLocation.swift in Sources */,
+				712433A22D77C02D00709C20 /* Color+toHex.swift in Sources */,
 				71A029B72C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				719465232C2C1E09008408C0 /* AppStorage++.swift in Sources */,
 				719465242C2C1E09008408C0 /* CLLocationCoordinate2D++.swift in Sources */,
@@ -1089,10 +1100,12 @@
 				7188714329DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */,
 				714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */,
+				712433A02D77C02D00709C20 /* Color+toHex.swift in Sources */,
 				716BE0502C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */,
 				71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */,
 				7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */,
 				7193E92629C0BA0B00103D6B /* DaylightChart.swift in Sources */,
+				7124339E2D77B07500709C20 /* ShareSolarChartView.swift in Sources */,
 				719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */,
 				71A029B42C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */,
@@ -1156,6 +1169,7 @@
 				7188714429DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,
 				719465162C294B42008408C0 /* Color+Mix.swift in Sources */,
+				712433A12D77C02D00709C20 /* Color+toHex.swift in Sources */,
 				7194650F2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */,
 				7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				719F927D29ACD22100C06921 /* CurrentLocation.swift in Sources */,

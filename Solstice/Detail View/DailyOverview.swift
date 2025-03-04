@@ -14,7 +14,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solar: Solar
 	var location: Location
 	
-	@State private var chartRenderedAsImage: Image?
+	@State private var showShareSheet = false
 	@State private var gradientSolar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
@@ -55,19 +55,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.frame(height: chartHeight)
 				#if !os(watchOS)
 				.contextMenu {
-					if let chartRenderedAsImage {
-						var locationTitle: Text {
-							guard let title = location.title else {
-								return Text("my location")
-							}
-							
-							return Text(title)
-						}
-						
-						ShareLink(
-							item: chartRenderedAsImage,
-							preview: SharePreview("Daylight in \(locationTitle)", image: chartRenderedAsImage)
-						)
+					Button("Share", systemImage: "square.and.arrow.up") {
+						showShareSheet.toggle()
 					}
 
 					Picker(selection: $chartAppearance.animation()) {
@@ -84,6 +73,11 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.listRowBackground(Color.clear)
 				#endif
 				.environment(\.timeZone, location.timeZone)
+				#if !os(watchOS)
+				.sheet(isPresented: $showShareSheet) {
+					ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+				}
+				#endif
 			
 			Group {
 				AdaptiveLabeledContent {
@@ -163,90 +157,10 @@ struct DailyOverview<Location: AnyLocation>: View {
 				}
 			}
 		}
-		.task(id: timeMachine.date, priority: .background) {
-			chartRenderedAsImage = buildChartRenderedAsImage()
-		}
 	}
 }
 
 extension DailyOverview {
-	func buildChartRenderedAsImage() -> Image? {
-		let view = VStack {
-			HStack {
-				Label("Solstice", image: "Solstice.SFSymbol")
-					.font(.headline)
-				
-				Spacer()
-			}
-			.padding()
-			
-			daylightChartView
-				.clipShape(
-					RoundedRectangle(
-						cornerRadius: 16,
-						style: .continuous
-					)
-				)
-				.if(chartAppearance == .graphical) { view in
-					view.padding(.horizontal)
-				}
-			
-			
-			HStack {
-				VStack(alignment: .leading) {
-					Group {
-						if let title = location.title {
-							Text(title)
-						} else {
-							Text("Current Location")
-						}
-					}
-					.font(.headline)
-					
-					let duration = solar.daylightDuration.localizedString
-					Text("\(duration) of daylight")
-						.foregroundStyle(.secondary)
-				}
-				
-				Spacer()
-				
-				VStack(alignment: .trailing) {
-					Text("Sunrise: \(solar.safeSunrise, style: .time)")
-					
-					Text("Sunset: \(solar.safeSunset, style: .time)")
-				}
-				.foregroundStyle(.secondary)
-			}
-			.padding()
-		}
-			.background(.black)
-			.foregroundStyle(.white)
-			.clipShape(
-				RoundedRectangle(
-					cornerRadius: 20,
-					style: .continuous
-				)
-			)
-			.frame(width: 540, height: 720)
-		
-		let imageRenderer = ImageRenderer(content: view)
-		imageRenderer.scale = 3
-		imageRenderer.isOpaque = false
-#if os(macOS)
-		guard let image = imageRenderer.nsImage else {
-			return nil
-		}
-		
-		return Image(nsImage: image)
-#else
-		guard let image = imageRenderer.uiImage else {
-			return nil
-		}
-		
-		return Image(uiImage: image)
-#endif
-	}
-	
 	@ViewBuilder
 	var daylightChartView: some View {
 		DaylightChart(
