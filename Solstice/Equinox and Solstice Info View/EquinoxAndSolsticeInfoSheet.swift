@@ -13,7 +13,9 @@ struct EquinoxAndSolsticeInfoSheet: View {
 			Form {
 				Section {
 					EarthSceneKitView(height: min(geometry.size.width, 400))
-
+				}
+				
+				Section {
 					EquinoxAndSolsticeDescriptions()
 				} footer: {
 					Text("Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)")

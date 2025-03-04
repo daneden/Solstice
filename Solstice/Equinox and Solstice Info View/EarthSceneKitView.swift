@@ -15,7 +15,7 @@ typealias NativeViewRepresentable = NSViewRepresentable
 #endif
 
 #if os(iOS)
-extension NSBundleResourceRequest: @unchecked Sendable {}
+extension NSBundleResourceRequest: @unchecked @retroactive Sendable {}
 #endif
 
 struct EarthSceneKitView: View {
@@ -33,7 +33,7 @@ struct EarthSceneKitView: View {
 	@State var scene: EarthScene?
 	
 	var body: some View {
-		ZStack(alignment: .topLeading) {
+		ZStack(alignment: .topTrailing) {
 			SolarSystemMiniMap(event: selection)
 			
 			VStack {
@@ -55,12 +55,14 @@ struct EarthSceneKitView: View {
 			}
 			.frame(idealHeight: height, maxHeight: .infinity)
 		}
+		.listRowInsets(.zero)
+		.listRowSeparator(.hidden)
 		.task(id: rotationAmount) {
 			let action = SCNAction.rotateTo(
 				x: 0,
 				y: rotationAmount,
 				z: 0,
-				duration: 1,
+				duration: 0.6,
 				usesShortestUnitArc: true
 			)
 			
@@ -88,7 +90,7 @@ struct EarthSceneKitView: View {
 		}
 		#endif
 		
-		Picker("View Earth at:", selection: $selection) {
+		Picker("View Earth at:", selection: $selection.animation()) {
 			ForEach(AnnualSolarEvent.allCases, id: \.self) { event in
 				Text(event.description)
 			}

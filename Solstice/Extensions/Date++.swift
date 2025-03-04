@@ -28,7 +28,7 @@ extension Date {
 }
 
 /// Allows dates to be stored in AppStorage
-extension Date: RawRepresentable {
+extension Date: @retroactive RawRepresentable {
 	public var rawValue: String {
 		self.timeIntervalSinceReferenceDate.description
 	}
@@ -38,7 +38,7 @@ extension Date: RawRepresentable {
 	}
 }
 
-extension DateComponents: RawRepresentable {
+extension DateComponents: @retroactive RawRepresentable {
 	public var rawValue: String {
 		guard let data = try? JSONEncoder().encode(self),
 					let string = String(data: data, encoding: .utf8) else {
