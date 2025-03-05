@@ -32,7 +32,7 @@ struct SidebarListView: View {
 				TimeMachineDeactivatorView()
 			}
 			
-			Section {
+			Section("Locations") {
 				if currentLocation.authorizationStatus == .notDetermined {
 					LocationPermissionScreenerView()
 				}
@@ -96,8 +96,6 @@ struct SidebarListView: View {
 					}
 				}
 				.onDelete(perform: deleteItems)
-			} header: {
-				Label("Locations", systemImage: "map")
 			}
 		}
 		.navigationTitle(Text(verbatim: "Solstice"))

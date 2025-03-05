@@ -51,6 +51,7 @@ struct DaylightSummaryTitle: View {
 						HStack {
 							VStack(alignment: .leading) {
 								Text(event.label)
+									.contentTransition(.numericText(countsDown: true))
 								Text(event.date, style: .time)
 									.foregroundStyle(.secondary)
 									.contentTransition(.numericText())
