@@ -68,7 +68,7 @@ struct DaylightSummaryTitle: View {
 											Text("Sunrise in \((date..<solar.safeSunrise).formatted(formatter))")
 										} else if date < solar.safeSunset {
 											Text("Sunset in \((date..<solar.safeSunset).formatted(formatter))")
-										} else if date > solar.safeSunset {
+										} else if date > solar.safeSunset && date <= (solar.tomorrow?.safeSunrise ?? solar.endOfDay) {
 											Text("Sunrise in \((date..<(solar.tomorrow?.safeSunrise ?? solar.endOfDay)).formatted(formatter))")
 										}
 									}

@@ -55,7 +55,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.frame(height: chartHeight)
 				#if !os(watchOS)
 				.contextMenu {
-					Button("Share", systemImage: "square.and.arrow.up") {
+					Button("Share...", systemImage: "square.and.arrow.up") {
 						showShareSheet.toggle()
 					}
 

@@ -158,41 +158,44 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	func buildChartRenderedAsImage() -> Image? {
 		@ViewBuilder
 		var footer: some View {
-			if showLocationName {
-				HStack {
-					VStack(alignment: .leading) {
-						Group {
-							if let title = location.title {
-								Text(title)
-							} else {
-								Text("Current Location")
+			Group {
+				if showLocationName {
+					HStack {
+						VStack(alignment: .leading) {
+							Group {
+								if let title = location.title {
+									Text(title)
+								} else {
+									Text("Current Location")
+								}
 							}
+							.font(.headline)
+							
+							let duration = solar.daylightDuration.localizedString
+							Text("\(duration) of daylight")
+								.foregroundStyle(.secondary)
 						}
-						.font(.headline)
 						
+						Spacer()
+						
+						VStack(alignment: .trailing) {
+							Label("\(solar.safeSunrise, style: .time)", systemImage: "sunrise")
+							Label("\(solar.safeSunset, style: .time)", systemImage: "sunset")
+						}
+						.foregroundStyle(.secondary)
+					}
+				} else {
+					VStack(alignment: .leading) {
 						let duration = solar.daylightDuration.localizedString
 						Text("\(duration) of daylight")
+							.font(.headline)
+						
+						Label("\(solar.safeSunrise...solar.safeSunset)", systemImage: "sun.max")
 							.foregroundStyle(.secondary)
 					}
-					
-					Spacer()
-					
-					VStack(alignment: .trailing) {
-						Label("\(solar.safeSunrise, style: .time)", systemImage: "sunrise")
-						Label("\(solar.safeSunset, style: .time)", systemImage: "sunset")
-					}
-					.foregroundStyle(.secondary)
-				}
-			} else {
-				VStack(alignment: .leading) {
-					let duration = solar.daylightDuration.localizedString
-					Text("\(duration) of daylight")
-						.font(.headline)
-					
-					Label("\(solar.safeSunrise...solar.safeSunset)", systemImage: "sun.max")
-						.foregroundStyle(.secondary)
 				}
 			}
+			.environment(\.timeZone, location.timeZone)
 		}
 		let view = VStack(alignment: .leading, spacing: 0) {
 			HStack {

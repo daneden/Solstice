@@ -67,13 +67,19 @@ struct SidebarListView: View {
 					if let tag = item.uuid?.uuidString {
 						LocationListRow(location: item)
 							.contextMenu {
-								Button(role: .destructive) {
-									deleteItem(item)
-								} label: {
-									Label("Delete Location", systemImage: "trash")
+								Section(item.title!) {
+									Button(role: .destructive) {
+										deleteItem(item)
+									} label: {
+										Label("Delete Location", systemImage: "trash")
+									}
 								}
 							} preview: {
-								DetailView(location: item)
+								Form {
+									if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+										DailyOverview(solar: solar, location: item)
+									}
+								}
 									.environmentObject(timeMachine)
 							}
 							#if os(iOS)
