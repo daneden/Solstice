@@ -55,9 +55,11 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.frame(height: chartHeight)
 				#if !os(watchOS)
 				.contextMenu {
+					#if !os(macOS)
 					Button("Share...", systemImage: "square.and.arrow.up") {
 						showShareSheet.toggle()
 					}
+					#endif
 
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in

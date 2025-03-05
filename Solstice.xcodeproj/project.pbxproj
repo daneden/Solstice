@@ -52,6 +52,10 @@
 		712433A62D78867300709C20 /* StackedLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433A42D78867300709C20 /* StackedLabelStyle.swift */; };
 		712433A82D78870600709C20 /* StackedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433A72D78870600709C20 /* StackedButtonStyle.swift */; };
 		712433A92D78870600709C20 /* StackedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433A72D78870600709C20 /* StackedButtonStyle.swift */; };
+		712433AB2D79090500709C20 /* NSImage+pngData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433AA2D79090100709C20 /* NSImage+pngData.swift */; };
+		712433AC2D79090500709C20 /* NSImage+pngData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433AA2D79090100709C20 /* NSImage+pngData.swift */; };
+		712433AD2D79090500709C20 /* NSImage+pngData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433AA2D79090100709C20 /* NSImage+pngData.swift */; };
+		712433AE2D79090500709C20 /* NSImage+pngData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433AA2D79090100709C20 /* NSImage+pngData.swift */; };
 		7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		7132AC0F29E6922500523215 /* SolarChartWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */; };
 		7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */; };
@@ -334,6 +338,7 @@
 		7124339F2D77C02A00709C20 /* Color+toHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+toHex.swift"; sourceTree = "<group>"; };
 		712433A42D78867300709C20 /* StackedLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedLabelStyle.swift; sourceTree = "<group>"; };
 		712433A72D78870600709C20 /* StackedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedButtonStyle.swift; sourceTree = "<group>"; };
+		712433AA2D79090100709C20 /* NSImage+pngData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+pngData.swift"; sourceTree = "<group>"; };
 		7132AC0B29E6917F00523215 /* SolarChartWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidget.swift; sourceTree = "<group>"; };
 		7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetView.swift; sourceTree = "<group>"; };
 		7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetTimelineProvider.swift; sourceTree = "<group>"; };
@@ -576,9 +581,9 @@
 				71AEB7BA29AE3F0D00A7952D /* LocationPermissionScreenerView.swift */,
 				7124339C2D77B06900709C20 /* ShareSolarChartView.swift */,
 				7117008A29A52B04001BE478 /* SkyGradient.swift */,
+				712433A72D78870600709C20 /* StackedButtonStyle.swift */,
 				712433A42D78867300709C20 /* StackedLabelStyle.swift */,
 				71EAB72429C3479F00FA043F /* TimeMachineDeactivatorView.swift */,
-				712433A72D78870600709C20 /* StackedButtonStyle.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -665,22 +670,23 @@
 			isa = PBXGroup;
 			children = (
 				717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */,
+				7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */,
+				719465142C294B42008408C0 /* Color+Mix.swift */,
+				7124339F2D77C02A00709C20 /* Color+toHex.swift */,
 				71F641BA2999631D00FE5AB5 /* Date++.swift */,
+				712433922D77A4CE00709C20 /* EdgeInsets++.swift */,
+				712433AA2D79090100709C20 /* NSImage+pngData.swift */,
 				719846AC28E9AA0E00E866CE /* Solar++.swift */,
 				71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */,
 				71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */,
 				7195125729B48ECD009D282F /* TimeZone++.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
 				7195128B29BC7D13009D282F /* View+ConditionalModifier.swift */,
+				712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */,
 				7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */,
 				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
-				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
-				7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */,
-				719465142C294B42008408C0 /* Color+Mix.swift */,
-				7124339F2D77C02A00709C20 /* Color+toHex.swift */,
 				71789AA42C32DCC7002B8A33 /* View+MaterialListRowBackground.swift */,
-				712433922D77A4CE00709C20 /* EdgeInsets++.swift */,
-				712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */,
+				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -987,6 +993,7 @@
 				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
 				7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
+				712433AD2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */,
 				712433962D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
 				719F558129DB1ABC00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
@@ -1043,6 +1050,7 @@
 				719465382C2C1E09008408C0 /* SkyGradient.swift in Sources */,
 				719465392C2C1E09008408C0 /* WidgetHeadingModifier.swift in Sources */,
 				7194653A2C2C1E09008408C0 /* WidgetLocationHeadingView.swift in Sources */,
+				712433AE2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				7194653B2C2C1E09008408C0 /* CompactLabelStyle.swift in Sources */,
 				712433942D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
 				7194653C2C2C1E09008408C0 /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
@@ -1129,6 +1137,7 @@
 				71A029AD2C30501900E19819 /* EarthRealityView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
 				7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */,
+				712433AC2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift in Sources */,
 				71A029A92C2E838100E19819 /* EarthSceneKitView.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
@@ -1193,6 +1202,7 @@
 				719F927629ACD21A00C06921 /* Solar+SolarEvent.swift in Sources */,
 				719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */,
 				712433952D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
+				712433AB2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
