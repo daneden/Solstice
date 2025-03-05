@@ -13,13 +13,13 @@ enum AnnualSolarEvent: CaseIterable, Codable, Hashable {
 	var description: LocalizedStringKey {
 		switch self {
 		case .marchEquinox:
-			return "March Equinox"
+			return "March equinox"
 		case .juneSolstice:
-			return "June Solstice"
+			return "June solstice"
 		case .septemberEquinox:
-			return "September Equinox"
+			return "September equinox"
 		case .decemberSolstice:
-			return "December Solstice"
+			return "December solstice"
 		}
 	}
 	

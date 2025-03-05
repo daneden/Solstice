@@ -433,17 +433,6 @@
         }
       }
     },
-    "At month:" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Al mese:"
-          }
-        }
-      }
-    },
     "Calculate the sunrise time on a given date in a given location" : {
       "localizations" : {
         "it" : {
@@ -495,7 +484,14 @@
       }
     },
     "Chart appearance" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspetto del grafico"
+          }
+        }
+      }
     },
     "Civil Sunrise" : {
       "localizations" : {
@@ -533,28 +529,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chiudere"
-          }
-        }
-      }
-    },
-    "Content #1" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ""
-          }
-        }
-      }
-    },
-    "Content #2" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ""
           }
         }
       }
@@ -600,7 +574,14 @@
       }
     },
     "Current month" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mese corrente"
+          }
+        }
+      }
     },
     "Customise notification content" : {
       "localizations" : {
@@ -702,8 +683,15 @@
         }
       }
     },
-    "December Solstice" : {
-
+    "December solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio di dicembre"
+          }
+        }
+      }
     },
     "December Solstice Today" : {
       "comment" : "Notification title for December solstice",
@@ -887,16 +875,44 @@
       }
     },
     "Get the daylight duration on ${date} in ${location}" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni la durata della luce diurna su ${date} a ${location}"
+          }
+        }
+      }
     },
     "Get the sunrise time on ${date} in ${location}" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni l'ora dell'alba in ${date} a ${location}"
+          }
+        }
+      }
     },
     "Get the sunset time on ${date} in ${location}" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni l'orario del tramonto su ${date} a ${location}"
+          }
+        }
+      }
     },
     "Get today's remaining daylight in ${location}" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni la luce del giorno rimanente di oggi a ${location}"
+          }
+        }
+      }
     },
     "Good Afternoon" : {
       "comment" : "Notification title for afternoon notification",
@@ -981,8 +997,15 @@
         }
       }
     },
-    "June Solstice" : {
-
+    "June solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstizio di giugno"
+          }
+        }
+      }
     },
     "June Solstice Today" : {
       "comment" : "Notification title for June solstice",
@@ -1066,34 +1089,12 @@
         }
       }
     },
-    "Location Permission" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autorizzazione alla posizione"
-          }
-        }
-      }
-    },
     "Location required" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Posizione richiesta"
-          }
-        }
-      }
-    },
-    "Location Services" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Servizi di localizzazione"
           }
         }
       }
@@ -1109,7 +1110,14 @@
       }
     },
     "Locations are synced via iCloud. Delete or add new locations by using Solstice on Mac, iPhone, iPad, or Apple Vision Pro" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le posizioni vengono sincronizzate tramite iCloud. Elimina o aggiungi nuove posizioni usando Solstice su Mac, iPhone, iPad o Apple Vision Pro"
+          }
+        }
+      }
     },
     "Longest day" : {
       "localizations" : {
@@ -1131,8 +1139,15 @@
         }
       }
     },
-    "March Equinox" : {
-
+    "March equinox" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio di marzo"
+          }
+        }
+      }
     },
     "March Equinox Today" : {
       "comment" : "Notification title for March equinox",
@@ -1146,7 +1161,14 @@
       }
     },
     "Month:" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mese:"
+          }
+        }
+      }
     },
     "more" : {
       "comment" : "More daylight middle of sentence",
@@ -1165,17 +1187,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mattina"
-          }
-        }
-      }
-    },
-    "my location" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "mia posizione"
           }
         }
       }
@@ -1348,18 +1359,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notifiche"
-          }
-        }
-      }
-    },
-    "on (baseDateString)" : {
-      "comment" : "Sentence fragment for nominal date",
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "il %1$@"
           }
         }
       }
@@ -1561,8 +1560,15 @@
         }
       }
     },
-    "September Equinox" : {
-
+    "September equinox" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equinozio di settembre"
+          }
+        }
+      }
     },
     "September Equinox Today" : {
       "comment" : "Notification title for September equinox",
@@ -1576,48 +1582,11 @@
       }
     },
     "Set up" : {
-
-    },
-    "Set Up Location Access" : {
-      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configura l'accesso alla posizione"
-          }
-        }
-      }
-    },
-    "Set up location access to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configura l'accesso alla posizione per vedere gli orari di alba e tramonto per la tua posizione corrente nell'app, nei widget e nelle notifiche"
-          }
-        }
-      }
-    },
-    "Set Up Location Services" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configura i servizi di localizzazione"
-          }
-        }
-      }
-    },
-    "Set up location services to see sunrise and sunset times for your current location in the app, widgets, and notifications" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configura i servizi di localizzazione per vedere gli orari di alba e tramonto nella tua posizione corrente nell'app, nei widget e nelle notifiche"
+            "value" : "Configurare"
           }
         }
       }
@@ -1633,13 +1602,34 @@
       }
     },
     "Share image" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi immagine"
+          }
+        }
+      }
     },
     "Share to Instagram Story" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi su Instagram Story"
+          }
+        }
+      }
     },
     "Share..." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi..."
+          }
+        }
+      }
     },
     "Shortest day" : {
       "localizations" : {
@@ -1662,7 +1652,14 @@
       }
     },
     "Show location" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra posizione"
+          }
+        }
+      }
     },
     "Simple" : {
       "localizations" : {
@@ -1754,17 +1751,6 @@
         }
       }
     },
-    "Sunrise: %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alba: %@"
-          }
-        }
-      }
-    },
     "Sunrise/Sunset Countdown" : {
       "localizations" : {
         "it" : {
@@ -1805,34 +1791,12 @@
         }
       }
     },
-    "Sunset: %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tramonto: %@"
-          }
-        }
-      }
-    },
     "Suppress notifications altogether" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina del tutto le notifiche"
-          }
-        }
-      }
-    },
-    "Test Label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ""
           }
         }
       }
@@ -1979,15 +1943,11 @@
       }
     },
     "View Earth at:" : {
-
-    },
-    "View event:" : {
-      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visualizza evento:"
+            "value" : "Visualizza la Terra a:"
           }
         }
       }
