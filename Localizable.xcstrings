@@ -537,9 +537,6 @@
         }
       }
     },
-    "Color scheme" : {
-
-    },
     "Content #1" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -614,9 +611,6 @@
           }
         }
       }
-    },
-    "Dark" : {
-
     },
     "Date" : {
       "localizations" : {
@@ -1041,9 +1035,6 @@
           }
         }
       }
-    },
-    "Light" : {
-
     },
     "Loading..." : {
       "localizations" : {
@@ -1645,6 +1636,9 @@
 
     },
     "Share image" : {
+
+    },
+    "Share to Instagram Story" : {
 
     },
     "Shortest day" : {

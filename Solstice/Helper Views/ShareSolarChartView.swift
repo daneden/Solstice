@@ -20,7 +20,6 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	@State var imageData: Data?
 	
 	@State var showLocationName = true
-	@State var colorScheme: ColorScheme = .light
 	
 	var animated: Bool {
 		chartRenderedAsImage != nil
@@ -43,8 +42,10 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	}
 	
 	var deps: [AnyHashable] {
-		[showLocationName, solar.date, location, chartAppearance, colorScheme]
+		[showLocationName, solar.date, location, chartAppearance]
 	}
+	
+	private let igStoriesUrl: URL? = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice")
 	
 	var body: some View {
 		NavigationStack {
@@ -76,39 +77,41 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 				}
 				.pickerStyle(.segmented)
 				
-				Picker(selection: $colorScheme) {
-					Text("Light")
-						.tag(ColorScheme.light)
-					Text("Dark")
-						.tag(ColorScheme.dark)
-				} label: {
-					Text("Color scheme")
-				}
-				.pickerStyle(.segmented)
-				
 				Toggle(isOn: $showLocationName) {
 					Text("Show location name")
 				}
 			}
 			
 			#if os(iOS)
-			Button("Share to Instagram Stories") {
-				guard let url = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice") else {
-					return
+			if let igStoriesUrl,
+				 UIApplication.shared.canOpenURL(igStoriesUrl) {
+				Button {
+					guard let url = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice") else {
+						return
+					}
+					
+					let solarGradient = SkyGradient(solar: solar)
+					
+					let pasteboardItems = [[
+						"com.instagram.sharedSticker.stickerImage": imageData,
+						"com.instagram.sharedSticker.backgroundTopColor": solarGradient.stops.first?.toHex(),
+						"com.instagram.sharedSticker.backgroundBottomColor": solarGradient.stops.last?.toHex()
+					]]
+					
+					UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
+					
+					UIApplication.shared.open(url)
+				} label: {
+					Label {
+						Text("Share to Instagram Story")
+					} icon: {
+						Image(.instagram)
+					}
 				}
-				
-				let solarGradient = SkyGradient(solar: solar)
-				
-				let pasteboardItems = [[
-					"com.instagram.sharedSticker.stickerImage": imageData,
-					"com.instagram.sharedSticker.backgroundTopColor": solarGradient.stops.first?.toHex(),
-					"com.instagram.sharedSticker.backgroundBottomColor": solarGradient.stops.last?.toHex()
-				]]
-				
-				UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
-				
-				UIApplication.shared.open(url)
+				.buttonStyle(.bordered)
+				.listRowSeparator(.hidden)
 			}
+			
 			#endif
 		}
 		.listStyle(.plain)
