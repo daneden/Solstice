@@ -17,7 +17,7 @@ struct WidgetLocationView: View {
 			case true:
 				return Text("Current Location \(Image(systemName: "location"))")
 			case false:
-				return Text("\(Image("Solstice.SFSymbol")) Solstice")
+				return Text("\(Image(.solstice)) Solstice")
 			}
 		}
 		
@@ -25,7 +25,7 @@ struct WidgetLocationView: View {
 		case true:
 			return Text("\(Text(title)) \(Image(systemName: "location"))", comment: "Widget heading for real location")
 		case false:
-			return Text("\(Image("Solstice.SFSymbol")) \(Text(title))", comment: "Widget heading for custom location")
+			return Text("\(Image(.solstice)) \(Text(title))", comment: "Widget heading for custom location")
 		}
 	}
 	

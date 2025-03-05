@@ -199,7 +199,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		}
 		let view = VStack(alignment: .leading, spacing: 0) {
 			HStack {
-				Label("Solstice", image: "Solstice.SFSymbol")
+				Label("Solstice", image: "solstice")
 					.font(.headline)
 				
 				Spacer()

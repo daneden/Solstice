@@ -132,7 +132,7 @@ struct ContentView: View {
 		
 		var placeholderView: some View {
 			VStack {
-				Image("Solstice.SFSymbol")
+				Image(.solstice)
 					.foregroundStyle(.tertiary)
 			}
 		}
