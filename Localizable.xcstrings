@@ -941,6 +941,9 @@
         }
       }
     },
+    "IG Story" : {
+
+    },
     "Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)" : {
       "localizations" : {
         "it" : {
@@ -1639,6 +1642,9 @@
 
     },
     "Share to Instagram Story" : {
+
+    },
+    "Share..." : {
 
     },
     "Shortest day" : {

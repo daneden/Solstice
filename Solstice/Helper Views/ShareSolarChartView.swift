@@ -47,6 +47,20 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	
 	private let igStoriesUrl: URL? = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice")
 	
+	private var displayIgShareButton: Bool {
+		guard let igStoriesUrl else { return false }
+		
+		if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+			return true
+		}
+		
+		#if os(iOS)
+		return UIApplication.shared.canOpenURL(igStoriesUrl)
+		#else
+		return false
+		#endif
+	}
+	
 	var body: some View {
 		NavigationStack {
 		List {
@@ -55,10 +69,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					chartRenderedAsImage
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.rotation3DEffect(Angle(degrees: animated ? -10 : 10), axis: (x: 0, y: 1, z: 0), perspective: 0.2)
-						.rotation3DEffect(Angle(degrees: animated ? -10 : 10), axis: (x: 1, y: 0, z: 0), perspective: 0.2)
 						.shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 8)
-						.animation(.easeInOut(duration: 10).repeatForever(autoreverses: true), value: animated)
 				} else {
 					ProgressView()
 				}
@@ -67,7 +78,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 			.aspectRatio(1, contentMode: .fit)
 			
 			
-			Section {
+			Section("Options") {
 				Picker(selection: $chartAppearance) {
 					ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 						Text(appearance.description)
@@ -82,49 +93,58 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 				}
 			}
 			
-			#if os(iOS)
-			if let igStoriesUrl,
-				 UIApplication.shared.canOpenURL(igStoriesUrl) {
-				Button {
-					guard let url = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice") else {
-						return
+			Section("Share to...") {
+				HStack {
+					Group {
+#if os(iOS)
+						if let igStoriesUrl,
+							 displayIgShareButton {
+							Button {
+								guard let url = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice") else {
+									return
+								}
+								
+								let solarGradient = SkyGradient(solar: solar)
+								
+								let pasteboardItems = [[
+									"com.instagram.sharedSticker.stickerImage": imageData,
+									"com.instagram.sharedSticker.backgroundTopColor": solarGradient.stops.first?.toHex(),
+									"com.instagram.sharedSticker.backgroundBottomColor": solarGradient.stops.last?.toHex()
+								]]
+								
+								UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
+								
+								UIApplication.shared.open(url)
+							} label: {
+								Label {
+									Text("IG Story")
+								} icon: {
+									Image(.instagram)
+								}
+								.labelStyle(StackedLabelStyle())
+								.accessibilityLabel("Share to Instagram Story")
+							}
+						}
+						
+						if let chartRenderedAsImage {
+							ShareLink(
+								item: chartRenderedAsImage,
+								preview: SharePreview("Daylight in \(location.title ?? "Current Location")", image: chartRenderedAsImage)
+							) {
+								Label("Share...", systemImage: "square.and.arrow.up")
+									.labelStyle(StackedLabelStyle())
+							}
+						}
+#endif
 					}
-					
-					let solarGradient = SkyGradient(solar: solar)
-					
-					let pasteboardItems = [[
-						"com.instagram.sharedSticker.stickerImage": imageData,
-						"com.instagram.sharedSticker.backgroundTopColor": solarGradient.stops.first?.toHex(),
-						"com.instagram.sharedSticker.backgroundBottomColor": solarGradient.stops.last?.toHex()
-					]]
-					
-					UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
-					
-					UIApplication.shared.open(url)
-				} label: {
-					Label {
-						Text("Share to Instagram Story")
-					} icon: {
-						Image(.instagram)
-					}
+					.frame(maxWidth: .infinity)
 				}
-				.buttonStyle(.bordered)
 				.listRowSeparator(.hidden)
+				.buttonStyle(StackedButtonStyle())
 			}
-			
-			#endif
 		}
 		.listStyle(.plain)
 		.toolbar {
-			if let chartRenderedAsImage {
-				ToolbarItem(placement: .primaryAction) {
-					ShareLink(
-						item: chartRenderedAsImage,
-						preview: SharePreview("Daylight in \(location.title ?? "Current Location")", image: chartRenderedAsImage)
-					)
-				}
-			}
-			
 			ToolbarItem(placement: .cancellationAction) {
 				Button("Close", systemImage: "xmark") {
 					dismiss()
