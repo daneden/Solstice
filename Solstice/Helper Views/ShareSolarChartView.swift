@@ -54,121 +54,113 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 			return true
 		}
 		
-		#if os(iOS)
+#if os(iOS)
 		return UIApplication.shared.canOpenURL(igStoriesUrl)
-		#else
+#else
 		return false
-		#endif
+#endif
 	}
 	
 	var body: some View {
 		NavigationStack {
-		List {
-			VStack {
-				if let chartRenderedAsImage {
-					chartRenderedAsImage
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 8)
-				} else {
-					ProgressView()
-				}
-			}
-			.padding()
-			.aspectRatio(1, contentMode: .fit)
-			
-			
-			Section("Options") {
-				Picker(selection: $chartAppearance) {
-					ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-						Text(appearance.description)
-					}
-				} label: {
-					Text("Chart appearance")
-				}
-				.pickerStyle(.segmented)
-				
-				Toggle(isOn: $showLocationName) {
-					Text("Show location name")
-				}
-			}
-			
-			Section("Share to...") {
-				HStack {
-					Group {
-#if os(iOS)
-						if let igStoriesUrl,
-							 displayIgShareButton {
-							Button {
-								guard let url = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice") else {
-									return
-								}
-								
-								let solarGradient = SkyGradient(solar: solar)
-								
-								let pasteboardItems = [[
-									"com.instagram.sharedSticker.stickerImage": imageData,
-									"com.instagram.sharedSticker.backgroundTopColor": solarGradient.stops.first?.toHex(),
-									"com.instagram.sharedSticker.backgroundBottomColor": solarGradient.stops.last?.toHex()
-								]]
-								
-								UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
-								
-								UIApplication.shared.open(url)
-							} label: {
-								Label {
-									Text("IG Story")
-								} icon: {
-									Image(.instagram)
-								}
-								.labelStyle(StackedLabelStyle())
-								.accessibilityLabel("Share to Instagram Story")
-							}
+			List {
+				Group {
+					Picker(selection: $chartAppearance) {
+						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+							Text(appearance.description)
 						}
-						
+					} label: {
+						Text("Chart appearance")
+					}
+					.pickerStyle(.segmented)
+					
+					VStack {
 						if let chartRenderedAsImage {
-							ShareLink(
-								item: chartRenderedAsImage,
-								preview: SharePreview("Daylight in \(location.title ?? "Current Location")", image: chartRenderedAsImage)
-							) {
-								Label("Share...", systemImage: "square.and.arrow.up")
-									.labelStyle(StackedLabelStyle())
+							chartRenderedAsImage
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 8)
+						} else {
+							ProgressView()
+						}
+					}
+					.frame(minHeight: 400)
+					.padding(.bottom)
+					
+					Toggle(isOn: $showLocationName) {
+						Label("Show location", systemImage: showLocationName ? "location" : "location.slash")
+							.modify { view in
+								if #available(iOS 17, macOS 14, watchOS 10, *) {
+									view
+										.contentTransition(.symbolEffect(.replace))
+								} else {
+									view
+								}
+							}
+					}
+					
+					Section {
+						Group {
+#if os(iOS)
+							let solarGradient = SkyGradient(solar: solar)
+							if let igStoriesUrl,
+								 let imageData,
+								 let topColor = solarGradient.stops.first?.toHex(),
+								 let bottomColor = solarGradient.stops.last?.toHex(),
+								 displayIgShareButton {
+								Button {
+									let pasteboardItems = [[
+										"com.instagram.sharedSticker.stickerImage": imageData,
+										"com.instagram.sharedSticker.backgroundTopColor": topColor,
+										"com.instagram.sharedSticker.backgroundBottomColor": bottomColor
+									]]
+									
+									UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
+									UIApplication.shared.open(igStoriesUrl)
+								} label: {
+									Label {
+										Text("Share to Instagram Story")
+									} icon: {
+										Image(.instagram)
+									}
+								}
+							}
+#endif
+							if let chartRenderedAsImage {
+								ShareLink(
+									item: chartRenderedAsImage,
+									preview: SharePreview("Daylight in \(location.title ?? "Current Location")", image: chartRenderedAsImage)
+								)
 							}
 						}
-#endif
+						.foregroundStyle(.tint)
+						.listRowSeparator(.visible)
 					}
-					.frame(maxWidth: .infinity)
 				}
 				.listRowSeparator(.hidden)
-				.buttonStyle(StackedButtonStyle())
+				
 			}
-		}
-		.listStyle(.plain)
-		.toolbar {
-			ToolbarItem(placement: .cancellationAction) {
-				Button("Close", systemImage: "xmark") {
-					dismiss()
+			.listStyle(.plain)
+			.toolbar {
+				ToolbarItem(placement: .cancellationAction) {
+					Button("Close", systemImage: "xmark") {
+						dismiss()
+					}
 				}
 			}
+			.navigationTitle("Share image")
+			.task(id: deps) {
+				self.chartRenderedAsImage = buildChartRenderedAsImage()
+			}
 		}
-		.navigationTitle("Share image")
-		.task(id: deps) {
-			self.chartRenderedAsImage = buildChartRenderedAsImage()
-		}
-	}
 	}
 	
 	func buildChartRenderedAsImage() -> Image? {
-		let view = VStack(alignment: .leading, spacing: 0) {
-			Label("Solstice", image: "Solstice.SFSymbol")
-				.font(.headline)
-				.scenePadding()
-			
-			daylightChartView
-			
-			HStack {
-				VStack(alignment: .leading) {
-					if showLocationName {
+		@ViewBuilder
+		var footer: some View {
+			if showLocationName {
+				HStack {
+					VStack(alignment: .leading) {
 						Group {
 							if let title = location.title {
 								Text(title)
@@ -177,31 +169,56 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 							}
 						}
 						.font(.headline)
+						
+						let duration = solar.daylightDuration.localizedString
+						Text("\(duration) of daylight")
+							.foregroundStyle(.secondary)
 					}
 					
+					Spacer()
+					
+					VStack(alignment: .trailing) {
+						Label("\(solar.safeSunrise, style: .time)", systemImage: "sunrise")
+						Label("\(solar.safeSunset, style: .time)", systemImage: "sunset")
+					}
+					.foregroundStyle(.secondary)
+				}
+			} else {
+				VStack(alignment: .leading) {
 					let duration = solar.daylightDuration.localizedString
 					Text("\(duration) of daylight")
+						.font(.headline)
+					
+					Label("\(solar.safeSunrise...solar.safeSunset)", systemImage: "sun.max")
 						.foregroundStyle(.secondary)
 				}
+			}
+		}
+		let view = VStack(alignment: .leading, spacing: 0) {
+			HStack {
+				Label("Solstice", image: "Solstice.SFSymbol")
+					.font(.headline)
 				
 				Spacer()
 				
-				VStack(alignment: .trailing) {
-					Label("\(solar.safeSunrise, style: .time)", systemImage: "sunrise")
-					Label("\(solar.safeSunset, style: .time)", systemImage: "sunset")
-				}
-				.foregroundStyle(.secondary)
+				Text(Date(), style: .date)
+					.foregroundStyle(.secondary)
 			}
-			.scenePadding()
+				.scenePadding()
+			
+			daylightChartView
+			
+			footer
+				.scenePadding()
 		}
 			.background(in: .rect(cornerRadius: 20, style: .continuous))
-			.frame(width: 450, height: 450)
+			.frame(width: 420, height: 525)
 		
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
 		imageRenderer.isOpaque = false
 		
-		#if os(macOS)
+#if os(macOS)
 		guard let image = imageRenderer.nsImage,
 					let data = image.pngData(),
 					let nsImage = NSImage(data: data) else {
@@ -211,7 +228,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		imageData = data
 		
 		return Image(nsImage: nsImage)
-		#else
+#else
 		guard let image = imageRenderer.uiImage,
 					let data = image.pngData(),
 					let uiImage = UIImage(data: data) else {
@@ -221,11 +238,11 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		imageData = data
 		
 		return Image(uiImage: uiImage)
-		#endif
+#endif
 	}
 }
 
 #Preview {
-		ShareSolarChartView(solar: .init(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
+	ShareSolarChartView(solar: .init(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
 		.environmentObject(TimeMachine.preview)
 }
