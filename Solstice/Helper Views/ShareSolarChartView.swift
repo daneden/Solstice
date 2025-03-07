@@ -84,7 +84,8 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 							ProgressView()
 						}
 					}
-					.frame(minHeight: 400)
+					.frame(height: 360)
+					.frame(maxWidth: .infinity, alignment: .center)
 					.padding(.bottom)
 					
 					Toggle(isOn: $showLocationName) {
