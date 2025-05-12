@@ -79,7 +79,6 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 							chartRenderedAsImage
 								.resizable()
 								.aspectRatio(contentMode: .fit)
-								.frame(maxWidth: 360)
 								.shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 8)
 						} else {
 							ProgressView()
