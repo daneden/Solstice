@@ -216,6 +216,7 @@
       }
     },
     "%@ Time Travel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -364,6 +365,7 @@
       }
     },
     "active" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -372,6 +374,9 @@
           }
         }
       }
+    },
+    "Active — tap to reset" : {
+
     },
     "Appearance" : {
       "localizations" : {
@@ -968,6 +973,7 @@
       }
     },
     "inactive" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1852,6 +1858,7 @@
       }
     },
     "Time Travel %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

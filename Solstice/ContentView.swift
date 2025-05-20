@@ -64,6 +64,7 @@ struct ContentView: View {
 					#endif
 			}
 			.environmentObject(locationSearchService)
+			.timeMachineOverlay()
 			.environmentObject(timeMachine)
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {

@@ -13,17 +13,16 @@ struct TimeMachineView: View {
 	@State private var date = Date()
 	@State private var referenceDate = Date()
 	
-	
 #if os(watchOS) || os(macOS)
 	var body: some View {
 		Section {
-			Toggle(isOn: $timeMachine.isOn.animation(.interactiveSpring())) {
+			Toggle(isOn: timeMachine.isOn.animation(.interactiveSpring())) {
 				Text("Enable Time Travel")
 			}
 			
 			Group {
 				controls
-			}.disabled(!timeMachine.isOn)
+			}.disabled(!timeMachine.isOn.wrappedValue)
 		}
 	}
 #else
@@ -35,13 +34,34 @@ struct TimeMachineView: View {
 	@ViewBuilder
 	var controls: some View {
 		#if !os(watchOS)
-		DatePicker(selection: $timeMachine.targetDate, displayedComponents: [.date]) {
-			Text("\(Image(systemName: "clock.arrow.2.circlepath")) Time Travel")
+		HStack {
+			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
+				Button {
+					withAnimation {
+						timeMachine.isOn.wrappedValue = false
+					}
+				} label: {
+					Label {
+						VStack(alignment: .leading, spacing: 0) {
+							Text("Time Travel")
+							if timeMachine.isOn.wrappedValue {
+								Text("Active — tap to reset")
+									.font(.caption.weight(.medium))
+									.foregroundStyle(.secondary)
+							}
+						}
+					} icon: {
+						Image(systemName: "clock.arrow.2.circlepath")
+					}
+					.animation(.default, value: timeMachine.isOn.wrappedValue)
+				}
+				.tint(timeMachine.isOn.wrappedValue ? .accentColor : .primary)
+			}
 		}
 		#endif
 		
 		#if os(iOS) || os(macOS)
-		Slider(value: timeMachine.offset,
+		Slider(value: timeMachine.offset.animation(),
 					 in: -182...182,
 					 step: 1,
 					 minimumValueLabel: Text("Past").font(.caption),

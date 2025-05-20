@@ -70,7 +70,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
-							timeMachine.isOn = true
 							timeMachine.targetDate = nextSolstice
 						}
 					} label: {
@@ -93,7 +92,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
-							timeMachine.isOn = true
 							timeMachine.targetDate = nextEquinox
 						}
 					} label: {
@@ -126,7 +124,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.swipeActions(edge: .leading) {
 						Button {
 							withAnimation {
-								timeMachine.isOn = true
 								timeMachine.targetDate = longestDay.date
 							}
 						} label: {
@@ -150,7 +147,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.swipeActions(edge: .leading) {
 						Button {
 							withAnimation {
-								timeMachine.isOn = true
 								timeMachine.targetDate = shortestDay.date
 							}
 						} label: {

@@ -11,7 +11,6 @@ import SwiftUI
 
 @MainActor
 class TimeMachine: ObservableObject {
-	@Published var isOn = false
 	@Published var referenceDate = Date()
 	@Published var targetDate = Date()
 	@Published var controlsVisible = false
@@ -24,8 +23,20 @@ class TimeMachine: ObservableObject {
 		})
 	}
 	
+	var isOn: Binding<Bool> {
+		Binding<Bool> {
+			self.offsetAmount != 0
+		} set: { newValue in
+			self.offset.wrappedValue = newValue ? 0.1 : 0
+		}
+	}
+	
+	var offsetAmount: Double {
+		offset.wrappedValue
+	}
+	
 	var date: Date {
-		guard isOn else { return referenceDate }
+		guard isOn.wrappedValue else { return referenceDate }
 		let time = calendar.dateComponents([.hour, .minute, .second], from: referenceDate)
 		return calendar.date(bySettingHour: time.hour ?? 0,
 																									 minute: time.minute ?? 0,
