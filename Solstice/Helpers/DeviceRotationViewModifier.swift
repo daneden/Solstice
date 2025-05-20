@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-#if canImport(UIKit)
+#if os(iOS)
 import UIKit
 
 struct DeviceRotationViewModifier: ViewModifier {

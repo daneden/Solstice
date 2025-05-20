@@ -215,17 +215,6 @@
         }
       }
     },
-    "%@ Time Travel" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Viaggio nel tempo"
-          }
-        }
-      }
-    },
     "%@ until %@" : {
       "localizations" : {
         "en" : {
