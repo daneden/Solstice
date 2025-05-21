@@ -13,13 +13,20 @@ struct TimeMachineOverlayView: View {
 	var body: some View {
 		VStack {
 			TimeMachineView()
+			#if os(visionOS)
+				.frame(minWidth: 400)
+			#endif
 		}
 		.padding()
+		#if os(visionOS)
+		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
+		#else
 		.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
 		.clipped()
 		.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
 		.scenePadding(.horizontal)
 		.scenePadding(.top)
+		#endif
 		.overlay {
 			GeometryReader { g in
 				Color.clear

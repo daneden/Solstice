@@ -26,11 +26,11 @@ struct TimeMachineView: View {
 			}.disabled(!timeMachine.enabled)
 		}
 	}
-#else
+	#else
 	var body: some View {
 		controls
 	}
-#endif
+	#endif
 	
 	@ViewBuilder
 	var controls: some View {
@@ -65,6 +65,9 @@ struct TimeMachineView: View {
 			}
 			.tint(.primary)
 			.fontWeight(.medium)
+			#if os(visionOS)
+			.buttonStyle(.plain)
+			#endif
 			
 			Spacer()
 			
@@ -78,7 +81,7 @@ struct TimeMachineView: View {
 		}
 		#endif
 		
-		#if os(iOS) || os(macOS)
+		#if !os(watchOS)
 		Slider(value: timeMachine.offset.animation(),
 					 in: -182...182,
 					 step: 7,
@@ -97,7 +100,7 @@ struct TimeMachineView: View {
 			}
 			.transition(.blurReplace.combined(with: .move(edge: .bottom)))
 		}
-		#elseif os(watchOS)
+		#else
 		Stepper(
 			value: timeMachine.offset,
 			in: -365...365,
