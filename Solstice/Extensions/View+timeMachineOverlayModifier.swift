@@ -29,10 +29,12 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					TimeMachineDraggableOverlayView()
 				default:
 					TimeMachineOverlayView()
+					#if os(iOS)
 						.background {
 							VariableBlurView(maxBlurRadius: 10, direction: .blurredBottomClearTop)
 								.ignoresSafeArea(.container, edges: .bottom)
 						}
+					#endif
 				}
 			}
 			.onPreferenceChange(TimeMachineBarHeightKey.self) { value in
