@@ -26,6 +26,9 @@ struct TimeMachineOverlayView: View {
 		.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
 		.scenePadding(.horizontal)
 		.scenePadding(.top)
+		#if os(macOS)
+		.scenePadding(.bottom)
+		#endif
 		#endif
 		.overlay {
 			GeometryReader { g in
@@ -125,7 +128,9 @@ struct TimeMachineDraggableOverlayView: View {
 				Spacer()
 				CornerAnchorView(corner: .trailing, isActive: targetAlignment == .trailing)
 			}
+			#if !os(macOS)
 			.scenePadding(.horizontal)
+			#endif
 			.blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
 			.opacity(offset == .zero ? 0 : 1)
 		}

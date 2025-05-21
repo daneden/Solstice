@@ -23,6 +23,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.contentMargins(.bottom, timeMachineBarHeight, for: .scrollContent)
+			.contentMargins(.bottom, timeMachineBarHeight, for: .scrollIndicators)
 		#if os(visionOS)
 			.ornament(attachmentAnchor: .scene(.bottomTrailing), contentAlignment: .trailing) {
 				TimeMachineOverlayView()

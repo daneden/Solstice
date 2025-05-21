@@ -93,6 +93,7 @@ struct TimeMachineView: View {
 					 .tint(Color(UIColor.systemFill))
 						#endif
 					 .foregroundStyle(.secondary)
+					 .labelsHidden()
 		
 		if showDatePicker {
 			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
