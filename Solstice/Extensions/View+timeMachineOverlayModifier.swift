@@ -23,9 +23,6 @@ struct TimeMachineOverlayModifier: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.contentMargins(.bottom, timeMachineBarHeight, for: .scrollContent)
-			.onPreferenceChange(TimeMachineBarHeightKey.self) { value in
-				timeMachineBarHeight = value
-			}
 			.overlay(alignment: .bottom) {
 				switch horizontalSizeClass {
 				case .regular:
@@ -33,6 +30,9 @@ struct TimeMachineOverlayModifier: ViewModifier {
 				default:
 					TimeMachineOverlayView()
 				}
+			}
+			.onPreferenceChange(TimeMachineBarHeightKey.self) { value in
+				timeMachineBarHeight = value
 			}
 	}
 }

@@ -154,37 +154,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						}
 					}
 			}
-		} footer: {
-#if !os(watchOS)
-			Button {
-				#if os(macOS)
-				openWindow.callAsFunction(id: "about-equinox-and-solstice")
-				#elseif os(visionOS)
-				openWindow(value: AnnualSolarEvent.juneSolstice)
-				#else
-				isInformationSheetPresented = true
-				#endif
-			} label: {
-				Label("Learn more about the equinox and solstice", systemImage: "info.circle")
-					.font(.footnote)
-			}
-			.buttonStyle(.automatic)
-			.sheet(isPresented: $isInformationSheetPresented) {
-				NavigationStack {
-					EquinoxAndSolsticeInfoSheet()
-#if os(macOS)
-						.frame(minWidth: 500, minHeight: 500)
-#endif
-						.toolbar {
-							Button("Close") {
-								isInformationSheetPresented = false
-							}
-						}
-				}
-			}
-#endif
 		}
-		.buttonStyle(.plain)
 		.materialListRowBackground()
 	}
 }

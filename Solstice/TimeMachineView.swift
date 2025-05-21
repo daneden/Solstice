@@ -12,6 +12,7 @@ struct TimeMachineView: View {
 	
 	@State private var date = Date()
 	@State private var referenceDate = Date()
+	@State private var showDatePicker = false
 	
 #if os(watchOS) || os(macOS)
 	var body: some View {
@@ -22,7 +23,7 @@ struct TimeMachineView: View {
 			
 			Group {
 				controls
-			}.disabled(!timeMachine.isOn.wrappedValue)
+			}.disabled(!timeMachine.enabled)
 		}
 	}
 #else
@@ -35,28 +36,45 @@ struct TimeMachineView: View {
 	var controls: some View {
 		#if !os(watchOS)
 		HStack {
-			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
-				Button {
-					withAnimation {
-						timeMachine.isOn.wrappedValue = false
-					}
-				} label: {
-					Label {
-						VStack(alignment: .leading, spacing: 0) {
-							Text("Time Travel")
-							if timeMachine.isOn.wrappedValue {
-								Text("Active — tap to reset")
-									.font(.caption.weight(.medium))
-									.foregroundStyle(.secondary)
+			Button {
+				withAnimation(.snappy) { showDatePicker.toggle() }
+			} label: {
+				Label {
+					HStack {
+						Group {
+							if timeMachine.enabled {
+								Text(timeMachine.date, style: .date)
+									.monospacedDigit()
+							} else {
+								Text("Time Travel")
 							}
 						}
-					} icon: {
-						Image(systemName: "clock.arrow.2.circlepath")
+						
+						Image(systemName: "chevron.forward")
+							.rotationEffect(Angle(degrees: showDatePicker ? 90 : 0))
+							.foregroundStyle(.secondary)
+							.imageScale(.small)
 					}
-					.animation(.default, value: timeMachine.isOn.wrappedValue)
+					.contentTransition(.numericText())
+					.transition(.blurReplace)
+					.animation(.snappy, value: timeMachine.date)
+				} icon: {
+					Image(systemName: "clock.arrow.2.circlepath")
 				}
-				.tint(timeMachine.isOn.wrappedValue ? .accentColor : .primary)
+				.accessibilityLabel("Toggle advanced time travel controls")
 			}
+			.tint(.primary)
+			.fontWeight(.medium)
+			
+			Spacer()
+			
+			Button("Reset", systemImage: "arrow.circlepath") {
+				withAnimation {
+					timeMachine.offset.wrappedValue = 0
+				}
+			}
+			.fontWeight(.medium)
+			.disabled(!timeMachine.enabled)
 		}
 		#endif
 		
@@ -64,14 +82,21 @@ struct TimeMachineView: View {
 		Slider(value: timeMachine.offset.animation(),
 					 in: -182...182,
 					 step: 1,
-					 minimumValueLabel: Text("Past").font(.caption),
-					 maximumValueLabel: Text("Future").font(.caption)) {
+					 minimumValueLabel: Text("-6mo").font(.footnote).monospaced(),
+					 maximumValueLabel: Text("+6mo").font(.footnote).monospaced()) {
 			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
 		}
 						#if os(iOS)
 					 .tint(Color(UIColor.systemFill))
 						#endif
 					 .foregroundStyle(.secondary)
+		
+		if showDatePicker {
+			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
+				Text("Choose date")
+			}
+			.transition(.blurReplace.combined(with: .move(edge: .bottom)))
+		}
 		#elseif os(watchOS)
 		Stepper(
 			value: timeMachine.offset,

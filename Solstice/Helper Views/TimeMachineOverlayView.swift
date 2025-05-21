@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct TimeMachineOverlayView: View {
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass
+	
 	var body: some View {
 		VStack {
 			TimeMachineView()
 		}
 		.padding()
 		.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
+		.clipped()
 		.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
-		.scenePadding()
-		.padding(.top)
+		.scenePadding(.horizontal)
+		.scenePadding(.top)
 		.overlay {
 			GeometryReader { g in
 				Color.clear

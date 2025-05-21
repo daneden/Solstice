@@ -12,6 +12,9 @@
         }
       }
     },
+    "-6mo" : {
+
+    },
     "—" : {
       "localizations" : {
         "it" : {
@@ -313,6 +316,9 @@
         }
       }
     },
+    "+6mo" : {
+
+    },
     "a specific time" : {
       "localizations" : {
         "it" : {
@@ -363,9 +369,6 @@
           }
         }
       }
-    },
-    "Active — tap to reset" : {
-
     },
     "Appearance" : {
       "localizations" : {
@@ -486,6 +489,9 @@
           }
         }
       }
+    },
+    "Choose date" : {
+
     },
     "Civil Sunrise" : {
       "localizations" : {
@@ -819,6 +825,7 @@
       }
     },
     "Future" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1014,6 +1021,7 @@
       }
     },
     "Learn more about the equinox and solstice" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1420,6 +1428,7 @@
       }
     },
     "Past" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1897,6 +1906,9 @@
           }
         }
       }
+    },
+    "Toggle advanced time travel controls" : {
+
     },
     "Tomorrow" : {
       "localizations" : {

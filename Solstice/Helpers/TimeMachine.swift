@@ -31,12 +31,16 @@ class TimeMachine: ObservableObject {
 		}
 	}
 	
+	var enabled: Bool {
+		offsetAmount != 0
+	}
+	
 	var offsetAmount: Double {
 		offset.wrappedValue
 	}
 	
 	var date: Date {
-		guard isOn.wrappedValue else { return referenceDate }
+		guard enabled else { return referenceDate }
 		let time = calendar.dateComponents([.hour, .minute, .second], from: referenceDate)
 		return calendar.date(bySettingHour: time.hour ?? 0,
 																									 minute: time.minute ?? 0,
