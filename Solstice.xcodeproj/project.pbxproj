@@ -29,6 +29,8 @@
 		7116B1EA2DDD07F70018A294 /* View+timeMachineOverlayModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */; };
 		7116B1EE2DDD12BA0018A294 /* TimeMachineOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */; };
 		7116B1F22DDD13A00018A294 /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1EF2DDD13A00018A294 /* DeviceRotationViewModifier.swift */; };
+		7116B1F52DDDE2130018A294 /* VariableBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1F42DDDE2130018A294 /* VariableBlurView.swift */; };
+		7116B1F62DDDE2130018A294 /* VariableBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1F42DDDE2130018A294 /* VariableBlurView.swift */; };
 		7117008929A52ABE001BE478 /* CountdownWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008829A52ABE001BE478 /* CountdownWidgetView.swift */; };
 		7117008B29A52B04001BE478 /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		711A97B729CDBCA200333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -333,6 +335,7 @@
 		7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+timeMachineOverlayModifier.swift"; sourceTree = "<group>"; };
 		7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineOverlayView.swift; sourceTree = "<group>"; };
 		7116B1EF2DDD13A00018A294 /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
+		7116B1F42DDDE2130018A294 /* VariableBlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableBlurView.swift; sourceTree = "<group>"; };
 		7117008829A52ABE001BE478 /* CountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetView.swift; sourceTree = "<group>"; };
 		7117008A29A52B04001BE478 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
@@ -580,6 +583,7 @@
 		7195127F29B713D6009D282F /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
+				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
 				7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */,
 				7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */,
 				710D9B702AB4752D0093A9A6 /* ContentToggle.swift */,
@@ -1107,6 +1111,7 @@
 				719511F629AF5CB4009D282F /* GetSunriseTime.swift in Sources */,
 				71F641BD299968BF00FE5AB5 /* TimeInterval++.swift in Sources */,
 				7195125829B48ECD009D282F /* TimeZone++.swift in Sources */,
+				7116B1F52DDDE2130018A294 /* VariableBlurView.swift in Sources */,
 				7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */,
 				71A029AB2C304FFA00E19819 /* EquinoxAndSolsticeInfoWindow.swift in Sources */,
 				717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */,
@@ -1211,6 +1216,7 @@
 				719F926E29ACD21300C06921 /* AnnualDaylightChart.swift in Sources */,
 				712433952D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
 				712433AB2D79090500709C20 /* NSImage+pngData.swift in Sources */,
+				7116B1F62DDDE2130018A294 /* VariableBlurView.swift in Sources */,
 				713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
