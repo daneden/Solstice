@@ -42,7 +42,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					.font(.footnote)
 					.foregroundStyle(.tertiary)
 			}
-			.contentTransition(.numericText())
+			.contentTransition(.identity)
 			
 			if showComplication {
 				DaylightChart(
@@ -88,7 +88,6 @@ struct LocationListRow<Location: ObservableLocation>: View {
 						.font(.footnote.weight(.light))
 						.foregroundStyle(.secondary)
 				}
-				.contentTransition(.numericText())
 			}
 		}
 		.animation(.default, value: location.title)

@@ -38,6 +38,7 @@ struct DaylightSummaryTitle: View {
 			VStack(alignment: .leading) {
 				HStack {
 					Text(solar.differenceString)
+						.contentTransition(.numericText())
 						.font(summaryFont)
 						.fontWeight(.semibold)
 						.lineLimit(summaryLineLimit)

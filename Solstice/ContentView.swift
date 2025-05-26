@@ -62,8 +62,10 @@ struct ContentView: View {
 					#if os(macOS)
 					.frame(minWidth: 600, minHeight: 400)
 					#endif
+					.timeMachineOverlay()
 			}
 			.environmentObject(locationSearchService)
+			.timeMachineOverlay()
 			.environmentObject(timeMachine)
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {

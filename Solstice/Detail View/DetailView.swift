@@ -37,13 +37,6 @@ struct DetailView<Location: ObservableLocation>: View {
 	var body: some View {
 		ScrollViewReader { scrollProxy in
 			Form {
-				#if !os(watchOS)
-				if timeMachine.isOn {
-					TimeMachineView()
-						.id("timeMachineView")
-				}
-				#endif
-				
 				if let solar {
 					DailyOverview(solar: solar, location: location)
 				} else {
@@ -67,20 +60,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			.toolbar {
 				toolbarItems
 			}
-			.task(id: timeMachine.isOn) {
-				if timeMachine.isOn {
-					withAnimation {
-						scrollProxy.scrollTo("timeMachineView")
-					}
-				}
-			}
-			.task(id: timeMachine.targetDate) {
-				if timeMachine.isOn {
-					withAnimation {
-						scrollProxy.scrollTo("timeMachineView")
-					}
-				}
-			}
+			
 			.userActivity(Self.userActivity) { userActivity in
 				var navigationSelection: String? = nil
 				
@@ -153,12 +133,6 @@ struct DetailView<Location: ObservableLocation>: View {
 						}
 					}
 				}
-			}
-		}
-		#else
-		ToolbarItem(id: "timeMachineToggle") {
-			Toggle(isOn: $timeMachine.isOn.animation()) {
-				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
 			}
 		}
 		#endif

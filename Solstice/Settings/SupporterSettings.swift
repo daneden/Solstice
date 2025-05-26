@@ -131,7 +131,7 @@ struct SupporterSettings: View {
 		purchaseInProgress = true
 		
 		#if os(visionOS)
-		guard let scene = await UIApplication.shared.connectedScenes.first else {
+		guard let scene = UIApplication.shared.connectedScenes.first else {
 			throw PurchaseError.failed
 		}
 		let result = try await product.purchase(confirmIn: scene)

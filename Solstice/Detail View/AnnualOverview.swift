@@ -53,7 +53,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							Text(nextSolstice.startOfDay, style: .date)
 						} else {
 							Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-								.contentTransition(.numericText())
 						}
 					}
 				} label: {
@@ -70,7 +69,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
-							timeMachine.isOn = true
 							timeMachine.targetDate = nextSolstice
 						}
 					} label: {
@@ -84,7 +82,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							Text(nextEquinox, style: .date)
 						} else {
 							Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
-								.contentTransition(.numericText())
 						}
 					}
 				} label: {
@@ -93,7 +90,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
-							timeMachine.isOn = true
 							timeMachine.targetDate = nextEquinox
 						}
 					} label: {
@@ -102,8 +98,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.backgroundStyle(.tint)
 				}
 			}
-			.animation(.default, value: timeMachine.date)
-			.contentTransition(.numericText())
 			
 			AnnualDaylightChart(location: location)
 				.frame(height: chartHeight)
@@ -126,7 +120,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.swipeActions(edge: .leading) {
 						Button {
 							withAnimation {
-								timeMachine.isOn = true
 								timeMachine.targetDate = longestDay.date
 							}
 						} label: {
@@ -150,7 +143,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.swipeActions(edge: .leading) {
 						Button {
 							withAnimation {
-								timeMachine.isOn = true
 								timeMachine.targetDate = shortestDay.date
 							}
 						} label: {
@@ -158,37 +150,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						}
 					}
 			}
-		} footer: {
-#if !os(watchOS)
-			Button {
-				#if os(macOS)
-				openWindow.callAsFunction(id: "about-equinox-and-solstice")
-				#elseif os(visionOS)
-				openWindow(value: AnnualSolarEvent.juneSolstice)
-				#else
-				isInformationSheetPresented = true
-				#endif
-			} label: {
-				Label("Learn more about the equinox and solstice", systemImage: "info.circle")
-					.font(.footnote)
-			}
-			.buttonStyle(.automatic)
-			.sheet(isPresented: $isInformationSheetPresented) {
-				NavigationStack {
-					EquinoxAndSolsticeInfoSheet()
-#if os(macOS)
-						.frame(minWidth: 500, minHeight: 500)
-#endif
-						.toolbar {
-							Button("Close") {
-								isInformationSheetPresented = false
-							}
-						}
-				}
-			}
-#endif
 		}
-		.buttonStyle(.plain)
 		.materialListRowBackground()
 	}
 }
