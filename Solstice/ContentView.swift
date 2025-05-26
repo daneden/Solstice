@@ -62,6 +62,7 @@ struct ContentView: View {
 					#if os(macOS)
 					.frame(minWidth: 600, minHeight: 400)
 					#endif
+					.timeMachineOverlay()
 			}
 			.environmentObject(locationSearchService)
 			.timeMachineOverlay()
