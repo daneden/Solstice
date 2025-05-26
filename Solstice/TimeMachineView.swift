@@ -81,7 +81,7 @@ struct TimeMachineView: View {
 		#if os(iOS) || os(macOS)
 		Slider(value: timeMachine.offset.animation(),
 					 in: -182...182,
-					 step: 1,
+					 step: 7,
 					 minimumValueLabel: Text("-6mo").font(.footnote).monospaced(),
 					 maximumValueLabel: Text("+6mo").font(.footnote).monospaced()) {
 			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
