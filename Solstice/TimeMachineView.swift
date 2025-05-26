@@ -94,6 +94,15 @@ struct TimeMachineView: View {
 						#endif
 					 .foregroundStyle(.secondary)
 					 .labelsHidden()
+		#if !os(visionOS)
+					 .sensoryFeedback(trigger: timeMachine.offsetAmount) { oldValue, newValue in
+						 if newValue == 0 {
+							 return .impact
+						 } else {
+							 return newValue > oldValue ? .increase : .decrease
+						 }
+					 }
+		#endif
 		
 		if showDatePicker {
 			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
