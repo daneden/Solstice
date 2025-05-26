@@ -96,7 +96,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 
 extension AnnualDaylightChart {
 	var monthlySolars: Array<Solar> {
-		guard let year = calendar.dateInterval(of: .year, for: Date()) else {
+		guard let year = calendar.dateInterval(of: .year, for: timeMachine.date) else {
 			return []
 		}
 		

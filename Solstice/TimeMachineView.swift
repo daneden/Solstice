@@ -14,10 +14,10 @@ struct TimeMachineView: View {
 	@State private var referenceDate = Date()
 	@State private var showDatePicker = false
 	
-#if os(watchOS) || os(macOS)
+	#if os(watchOS)
 	var body: some View {
 		Section {
-			Toggle(isOn: timeMachine.isOn.animation(.interactiveSpring())) {
+			Toggle(isOn: timeMachine.isOn) {
 				Text("Enable Time Travel")
 			}
 			
@@ -55,9 +55,7 @@ struct TimeMachineView: View {
 							.foregroundStyle(.secondary)
 							.imageScale(.small)
 					}
-					.contentTransition(.numericText())
 					.transition(.blurReplace)
-					.animation(.snappy, value: timeMachine.date)
 				} icon: {
 					Image(systemName: "clock.arrow.2.circlepath")
 				}
@@ -82,7 +80,7 @@ struct TimeMachineView: View {
 		#endif
 		
 		#if !os(watchOS)
-		Slider(value: timeMachine.offset.animation(),
+		Slider(value: timeMachine.offset,
 					 in: -182...182,
 					 step: 7,
 					 minimumValueLabel: Text("-6mo").font(.footnote).monospaced(),

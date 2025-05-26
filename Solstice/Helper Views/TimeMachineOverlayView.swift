@@ -152,7 +152,11 @@ fileprivate struct CornerAnchorView: View {
 	var isActive = false
 	
 	var size: Double {
+		#if os(macOS)
+		isActive ? 32 : 24
+		#else
 		isActive ? 72 : 64
+		#endif
 	}
 	
 	var body: some View {
@@ -160,5 +164,8 @@ fileprivate struct CornerAnchorView: View {
 			.resizable()
 			.frame(width: size, height: size)
 			.foregroundStyle(isActive ? AnyShapeStyle(.primary) : AnyShapeStyle(.tertiary))
+			#if os(macOS)
+			.padding(12)
+			#endif
 	}
 }

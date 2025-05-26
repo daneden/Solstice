@@ -84,7 +84,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 			Group {
 				AdaptiveLabeledContent {
 					Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
-						.contentTransition(.numericText())
 				} label: {
 					Label("Total daylight", systemImage: "hourglass")
 				}
@@ -129,8 +128,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 				}
 			}
 			.environment(\.timeZone, location.timeZone)
-			.animation(.default, value: timeMachine.date)
-			.contentTransition(.numericText())
 			.materialListRowBackground()
 		} header: {
 			if location.timeZoneIdentifier != localTimeZone.identifier,

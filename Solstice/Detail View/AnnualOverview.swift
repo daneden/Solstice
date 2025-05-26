@@ -53,7 +53,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							Text(nextSolstice.startOfDay, style: .date)
 						} else {
 							Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
-								.contentTransition(.numericText())
 						}
 					}
 				} label: {
@@ -83,7 +82,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							Text(nextEquinox, style: .date)
 						} else {
 							Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
-								.contentTransition(.numericText())
 						}
 					}
 				} label: {
@@ -100,8 +98,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.backgroundStyle(.tint)
 				}
 			}
-			.animation(.default, value: timeMachine.date)
-			.contentTransition(.numericText())
 			
 			AnnualDaylightChart(location: location)
 				.frame(height: chartHeight)
