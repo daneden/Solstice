@@ -42,12 +42,11 @@ struct TimeMachineView: View {
 				Label {
 					HStack {
 						Group {
-							if timeMachine.enabled {
-								Text(timeMachine.date, style: .date)
-									.monospacedDigit()
-							} else {
-								Text("Time Travel")
-							}
+							let date = Text(timeMachine.date, style: .date)
+							let label = Text("Time Travel")
+							
+							Text("\(timeMachine.enabled ? date : label)")
+								.monospacedDigit()
 						}
 						
 						Image(systemName: "chevron.forward")
@@ -56,6 +55,7 @@ struct TimeMachineView: View {
 							.imageScale(.small)
 					}
 					.transition(.blurReplace)
+					.contentTransition(.numericText())
 				} icon: {
 					Image(systemName: "clock.arrow.2.circlepath")
 				}
