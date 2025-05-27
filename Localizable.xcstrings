@@ -13,7 +13,14 @@
       }
     },
     "-6mo" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "-6 mesi"
+          }
+        }
+      }
     },
     "—" : {
       "localizations" : {
@@ -317,7 +324,14 @@
       }
     },
     "+6mo" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+6 mesi"
+          }
+        }
+      }
     },
     "a specific time" : {
       "localizations" : {
@@ -355,17 +369,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Informazioni sull'app e sul suo creatore"
-          }
-        }
-      }
-    },
-    "active" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "attivo"
           }
         }
       }
@@ -491,7 +494,14 @@
       }
     },
     "Choose date" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli la data"
+          }
+        }
+      }
     },
     "Civil Sunrise" : {
       "localizations" : {
@@ -824,17 +834,6 @@
         }
       }
     },
-    "Future" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Futuro"
-          }
-        }
-      }
-    },
     "Get sunrise time" : {
       "localizations" : {
         "it" : {
@@ -968,17 +967,6 @@
         }
       }
     },
-    "inactive" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "inattivo"
-          }
-        }
-      }
-    },
     "Jump to %@" : {
       "localizations" : {
         "it" : {
@@ -1016,17 +1004,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Solstizio di giugno oggi"
-          }
-        }
-      }
-    },
-    "Learn more about the equinox and solstice" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ulteriori informazioni sull'equinozio e sul solstizio"
           }
         }
       }
@@ -1423,17 +1400,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "passato"
-          }
-        }
-      }
-    },
-    "Past" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passato"
           }
         }
       }
@@ -1855,17 +1821,6 @@
         }
       }
     },
-    "Time Travel %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viaggio nel tempo %@"
-          }
-        }
-      }
-    },
     "Time until next solstice" : {
       "localizations" : {
         "it" : {
@@ -1908,7 +1863,14 @@
       }
     },
     "Toggle advanced time travel controls" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attiva/disattiva i controlli avanzati del viaggio nel tempo"
+          }
+        }
+      }
     },
     "Tomorrow" : {
       "localizations" : {
