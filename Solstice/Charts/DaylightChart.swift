@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 import Solar
+import Suite
 
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced

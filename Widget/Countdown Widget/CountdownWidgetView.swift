@@ -8,6 +8,7 @@
 import SwiftUI
 import Solar
 import WidgetKit
+import Suite
 
 struct CountdownWidgetView: View {
 	@Environment(\.widgetFamily) var family

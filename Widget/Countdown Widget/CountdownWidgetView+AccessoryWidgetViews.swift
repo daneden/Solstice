@@ -9,6 +9,7 @@
 import SwiftUI
 import Solar
 import WidgetKit
+import Suite
 
 extension CountdownWidgetView {
 	struct AccessoryInlineView: View {

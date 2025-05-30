@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Solar
+import Suite
 
 struct ShareSolarChartView<Location: AnyLocation>: View {
 	@Environment(\.dismiss) var dismiss

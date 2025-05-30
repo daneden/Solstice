@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Suite
 
 struct ContentToggle<Content: View>: View {
 	@State var showToggledContent = false

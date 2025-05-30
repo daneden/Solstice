@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Solar
+import Suite
 
 struct DailyOverview<Location: AnyLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine

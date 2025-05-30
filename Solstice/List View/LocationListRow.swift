@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Solar
+import Suite
 
 struct LocationListRow<Location: ObservableLocation>: View {
 	@EnvironmentObject var timeMachine: TimeMachine

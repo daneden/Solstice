@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Solar
+import Suite
 
 fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 	let formatter = RelativeDateTimeFormatter()

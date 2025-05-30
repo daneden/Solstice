@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Suite
 
 struct TimeMachineOverlayView: View {
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -30,12 +31,6 @@ struct TimeMachineOverlayView: View {
 		.scenePadding(.bottom)
 		#endif
 		#endif
-		.overlay {
-			GeometryReader { g in
-				Color.clear
-					.preference(key: TimeMachineBarHeightKey.self, value: g.size.height)
-			}
-		}
 	}
 }
 
@@ -61,7 +56,9 @@ struct TimeMachineDraggableOverlayView: View {
 	@State private var measureScreenWidthTaskID = UUID()
 	@State private var targetAlignment: TimeMachineDraggableBarAlignment = .trailing
 	@State private var offset: CGSize = .zero
-	@State private var screenWidth: Double = 0
+	@State private var screenSize: CGSize = .zero
+	
+	var screenWidth: Double { screenSize.width }
 	
 	private var barWidth: Double = 393
 	
@@ -114,14 +111,7 @@ struct TimeMachineDraggableOverlayView: View {
 				.frame(maxWidth: barWidth)
 		}
 		.frame(maxWidth: .infinity, alignment: resolvedAlignment)
-		.overlay {
-			GeometryReader { g in
-				Color.clear
-					.task(id: measureScreenWidthTaskID) {
-						self.screenWidth = g.size.width
-					}
-			}
-		}
+		.readSize($screenSize)
 		.background(alignment: .bottom) {
 			HStack {
 				CornerAnchorView(corner: .leading, isActive: targetAlignment == .leading)
