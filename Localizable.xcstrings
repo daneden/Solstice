@@ -454,6 +454,7 @@
       }
     },
     "Calculating..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1241,6 +1242,9 @@
         }
       }
     },
+    "No location selected" : {
+
+    },
     "No locations" : {
       "localizations" : {
         "it" : {
@@ -1510,6 +1514,9 @@
         }
       }
     },
+    "Select a location to view details" : {
+
+    },
     "Send at" : {
       "localizations" : {
         "it" : {
@@ -1672,6 +1679,7 @@
       }
     },
     "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

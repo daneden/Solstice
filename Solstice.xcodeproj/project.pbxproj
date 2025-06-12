@@ -102,6 +102,10 @@
 		7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718B136B29A918680001D4DC /* SupporterSettings.swift */; };
 		718B136E29A9196C0001D4DC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 718B136D29A918AD0001D4DC /* README.md */; };
+		718FC2EB2DFB6D6D00E1A437 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */; };
+		718FC2EC2DFB6D6D00E1A437 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */; };
+		718FC2ED2DFB6D6D00E1A437 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */; };
+		718FC2EE2DFB6D6D00E1A437 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */; };
 		71908ACD2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908ACE2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
 		71908ACF2AC95A5500C7B610 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71908ACC2AC95A5500C7B610 /* StringBuilder.swift */; };
@@ -366,6 +370,7 @@
 		7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+RectangularEdgeMask.swift"; sourceTree = "<group>"; };
 		718B136B29A918680001D4DC /* SupporterSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupporterSettings.swift; sourceTree = "<group>"; };
 		718B136D29A918AD0001D4DC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		71908ACC2AC95A5500C7B610 /* StringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringBuilder.swift; sourceTree = "<group>"; };
 		7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppChangeMigrator.swift; sourceTree = "<group>"; };
 		719465142C294B42008408C0 /* Color+Mix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Mix.swift"; sourceTree = "<group>"; };
@@ -596,6 +601,7 @@
 		7198467828E5895E00E866CE = {
 			isa = PBXGroup;
 			children = (
+				718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */,
 				71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */,
 				718B136D29A918AD0001D4DC /* README.md */,
 				71691B9F2C2E827200E4ED96 /* Packages */,
@@ -928,6 +934,7 @@
 				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 				711A97B929CDBCA500333927 /* Assets.xcassets in Resources */,
+				718FC2ED2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -939,6 +946,7 @@
 				719465552C2C1E09008408C0 /* Localizable.xcstrings in Resources */,
 				719465572C2C1E09008408C0 /* Assets.xcassets in Resources */,
 				719465582C2C1E09008408C0 /* Assets.xcassets in Resources */,
+				718FC2EE2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,6 +956,7 @@
 			files = (
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
 				71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */,
+				718FC2EB2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
 				711A97B729CDBCA200333927 /* Assets.xcassets in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
@@ -962,6 +971,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
+				718FC2EC2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711A97B829CDBCA300333927 /* Assets.xcassets in Resources */,
 				71A029BA2C36928400E19819 /* defaultData.json in Resources */,
 			);
@@ -1067,7 +1077,6 @@
 				719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */,
 				719465432C2C1E09008408C0 /* OverviewWidgetTimelineProvider.swift in Sources */,
 				719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */,
-				719465452C2C1E09008408C0 /* BackwardCompatibleContainerBackground.swift in Sources */,
 				719465462C2C1E09008408C0 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				719465472C2C1E09008408C0 /* DaylightSummaryTitle.swift in Sources */,
@@ -1443,7 +1452,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 2.3.2;
+				MARKETING_VERSION = 2.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1504,7 +1513,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 2.3.2;
+				MARKETING_VERSION = 2.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = xros;

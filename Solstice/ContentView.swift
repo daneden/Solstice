@@ -91,11 +91,11 @@ struct ContentView: View {
 	}
 	
 	private var placeholderView: some View {
-		Image(.solstice)
-			.resizable()
-			.foregroundStyle(.quaternary)
-			.frame(width: 100, height: 100)
-			.aspectRatio(contentMode: .fit)
+		ContentUnavailableView {
+			Label("No location selected", image: .solstice)
+		} description: {
+			Text("Select a location to view details")
+		}
 	}
 	
 	@ToolbarContentBuilder
