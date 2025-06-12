@@ -146,14 +146,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
-						.modify { content in
-							if #available(iOS 17, macOS 14, watchOS 10, *) {
-								content
-									.contentTransition(.symbolEffect)
-							} else {
-								content
-							}
-						}
+						.contentTransition(.symbolEffect)
 				}
 			}
 		}

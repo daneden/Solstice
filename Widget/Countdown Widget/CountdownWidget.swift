@@ -25,8 +25,7 @@ struct CountdownWidget: Widget {
 			provider: CountdownWidgetTimelineProvider()
 		) { timelineEntry in
 			CountdownWidgetView(entry: timelineEntry)
-				.backwardCompatibleContentMargins()
-				.backwardCompatibleContainerBackground {
+				.containerBackground(for: .widget) {
 					SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
 				}
 				.widgetURL(timelineEntry.location?.url)

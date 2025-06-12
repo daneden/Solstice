@@ -98,14 +98,7 @@ extension CountdownWidgetView {
 			} icon: {
 				Image(systemName: nextEvent.imageName)
 			}
-			.modify { content in
-				if #available(iOS 17, watchOS 10, *) {
-					content
-						.widgetCurvesContent()
-				} else {
-					content
-				}
-			}
+			.widgetCurvesContent()
 			.widgetLabel {
 				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
 					Image(systemName: previousEvent.imageName)

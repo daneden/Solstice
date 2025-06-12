@@ -63,9 +63,7 @@ struct SolarChartWidgetView: View {
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.backwardCompatibleContainerBackground {
-			Color.clear.background(.background)
-		}
+		.containerBackground(.background, for: .widget)
 	}
 }
 

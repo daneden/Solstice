@@ -65,14 +65,7 @@ extension OverviewWidgetView {
 							}
 						}
 						.foregroundStyle(.secondary)
-						.modify { content in
-							if #available(iOS 17, watchOS 10, macOS 14, *) {
-								content
-									.transition(.blurReplace)
-							} else {
-								content
-							}
-						}
+						.transition(.blurReplace)
 					}
 				}
 				

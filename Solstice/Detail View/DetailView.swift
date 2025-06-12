@@ -36,64 +36,45 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 	
 	var body: some View {
-		ScrollViewReader { scrollProxy in
-			Form {
-				if let solar {
-					DailyOverview(solar: solar, location: location)
-				} else {
-					ProgressView {
-						HStack {
-							Spacer()
-							Text("Calculating...")
-							Spacer()
-						}
-						.padding()
-					}
-				}
-				
-				AnnualOverview(location: location)
-				#if os(watchOS)
-					.padding(.vertical, 8)
-				#endif
-			}
-			.formStyle(.grouped)
-			.navigationTitle(navBarTitleText)
-			.toolbar {
-				toolbarItems
+		Form {
+			if let solar {
+				DailyOverview(solar: solar, location: location)
 			}
 			
-			.userActivity(Self.userActivity) { userActivity in
-				var navigationSelection: String? = nil
-				
-				if let location = location as? SavedLocation {
-					navigationSelection = location.uuid?.uuidString
-				} else if let location = location as? CurrentLocation {
-					navigationSelection = location.id
-				}
-				
-				userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
-				
-				userActivity.targetContentIdentifier = navigationSelection
-				userActivity.isEligibleForSearch = true
-				userActivity.isEligibleForHandoff = false
-			}
-			#if os(watchOS)
-			.modify {
-				if #available(watchOS 10, *) {
-					if let solar {
-						$0.containerBackground(
-							SkyGradient(solar: solar),
-							for: .navigation
-						)
-					} else {
-						$0
-					}
-				} else {
-					$0
-				}
-			}
-			#endif
+			AnnualOverview(location: location)
 		}
+		.formStyle(.grouped)
+		.navigationTitle(navBarTitleText)
+		.toolbar {
+			toolbarItems
+		}
+		.userActivity(Self.userActivity) { userActivity in
+			var navigationSelection: String? = nil
+			
+			if let location = location as? SavedLocation {
+				navigationSelection = location.uuid?.uuidString
+			} else if let location = location as? CurrentLocation {
+				navigationSelection = location.id
+			}
+			
+			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+			
+			userActivity.targetContentIdentifier = navigationSelection
+			userActivity.isEligibleForSearch = true
+			userActivity.isEligibleForHandoff = false
+		}
+		#if os(watchOS)
+		.modify {
+			if let solar {
+				$0.containerBackground(
+					SkyGradient(solar: solar),
+					for: .navigation
+				)
+			} else {
+				$0
+			}
+		}
+		#endif
 	}
 	
 	var solar: Solar? {
@@ -104,11 +85,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		#if os(macOS)
 		return .automatic
 		#else
-		if #available(watchOS 10, *) {
-			return .topBarTrailing
-		} else {
-			return .automatic
-		}
+		return .topBarTrailing
 		#endif
 	}
 	

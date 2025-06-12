@@ -81,7 +81,6 @@
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
-		7166CD382ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
 		71691B892C2E816A00E4ED96 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71691B882C2E816A00E4ED96 /* RealityKitContent */; };
 		71691B8B2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */; };
 		71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */ = {isa = PBXBuildFile; fileRef = 71691B9E2C2E827200E4ED96 /* RealityKitContent */; platformFilters = (xros, ); };
@@ -111,7 +110,6 @@
 		7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B829995ED000FE5AB5 /* DaylightChart.swift */; };
 		7194650E2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */; };
 		7194650F2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */; };
-		719465112C24DF78008408C0 /* BackwardCompatibleContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465102C24DF78008408C0 /* BackwardCompatibleContentMargins.swift */; };
 		719465152C294B42008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
 		719465162C294B42008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
 		719465172C294B42008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
@@ -125,7 +123,6 @@
 		719465282C2C1E09008408C0 /* Color+Mix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465142C294B42008408C0 /* Color+Mix.swift */; };
 		719465292C2C1E09008408C0 /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
 		7194652A2C2C1E09008408C0 /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
-		7194652B2C2C1E09008408C0 /* BackwardCompatibleContentMargins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719465102C24DF78008408C0 /* BackwardCompatibleContentMargins.swift */; };
 		7194652C2C2C1E09008408C0 /* TimeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C0299FCCFF00FE5AB5 /* TimeMachine.swift */; };
 		7194652D2C2C1E09008408C0 /* ConditionalGlobals+WidgetTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */; };
 		7194652E2C2C1E09008408C0 /* Solar+SolarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */; };
@@ -151,7 +148,6 @@
 		719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
 		719465432C2C1E09008408C0 /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
 		719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
-		719465452C2C1E09008408C0 /* BackwardCompatibleContainerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */; };
 		719465462C2C1E09008408C0 /* SolarChartWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */; };
 		719465472C2C1E09008408C0 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		719465482C2C1E09008408C0 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
@@ -358,7 +354,6 @@
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
-		7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwardCompatibleContainerBackground.swift; sourceTree = "<group>"; };
 		71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemMiniMap.swift; sourceTree = "<group>"; };
 		71691B9E2C2E827200E4ED96 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		716BE04F2C2E752F004DDCBC /* DeepLinkResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkResolver.swift; sourceTree = "<group>"; };
@@ -373,7 +368,6 @@
 		718B136D29A918AD0001D4DC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71908ACC2AC95A5500C7B610 /* StringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringBuilder.swift; sourceTree = "<group>"; };
 		7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppChangeMigrator.swift; sourceTree = "<group>"; };
-		719465102C24DF78008408C0 /* BackwardCompatibleContentMargins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwardCompatibleContentMargins.swift; sourceTree = "<group>"; };
 		719465142C294B42008408C0 /* Color+Mix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Mix.swift"; sourceTree = "<group>"; };
 		7194655C2C2C1E09008408C0 /* watchOS Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		719511F529AF5CB4009D282F /* GetSunriseTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunriseTime.swift; sourceTree = "<group>"; };
@@ -733,8 +727,6 @@
 				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
 				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */,
-				7166CD372ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift */,
-				719465102C24DF78008408C0 /* BackwardCompatibleContentMargins.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -994,7 +986,6 @@
 				719465172C294B42008408C0 /* Color+Mix.swift in Sources */,
 				719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
-				719465112C24DF78008408C0 /* BackwardCompatibleContentMargins.swift in Sources */,
 				7106C88229A2774A0007A7EC /* TimeMachine.swift in Sources */,
 				7132AC1529E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
 				7106C88829A2775C0007A7EC /* Solar+SolarEvent.swift in Sources */,
@@ -1022,7 +1013,6 @@
 				7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
-				7166CD382ABB595D000E6E4B /* BackwardCompatibleContainerBackground.swift in Sources */,
 				7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				7124339A2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
@@ -1050,7 +1040,6 @@
 				719465282C2C1E09008408C0 /* Color+Mix.swift in Sources */,
 				719465292C2C1E09008408C0 /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7194652A2C2C1E09008408C0 /* TimeInterval++.swift in Sources */,
-				7194652B2C2C1E09008408C0 /* BackwardCompatibleContentMargins.swift in Sources */,
 				7194652C2C2C1E09008408C0 /* TimeMachine.swift in Sources */,
 				7194652D2C2C1E09008408C0 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
 				7194652E2C2C1E09008408C0 /* Solar+SolarEvent.swift in Sources */,
@@ -1360,7 +1349,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 10.6;
 			};
 			name = Debug;
 		};
@@ -1394,7 +1383,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 10.6;
 			};
 			name = Release;
 		};
@@ -1638,7 +1627,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 10.6;
 			};
 			name = Debug;
 		};
@@ -1671,7 +1660,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 10.6;
 			};
 			name = Release;
 		};

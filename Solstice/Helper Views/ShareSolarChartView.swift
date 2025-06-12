@@ -91,14 +91,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					
 					Toggle(isOn: $showLocationName) {
 						Label("Show location", systemImage: showLocationName ? "location" : "location.slash")
-							.modify { view in
-								if #available(iOS 17, macOS 14, watchOS 10, *) {
-									view
-										.contentTransition(.symbolEffect(.replace))
-								} else {
-									view
-								}
-							}
+							.contentTransition(.symbolEffect(.replace))
 					}
 					
 					Section {

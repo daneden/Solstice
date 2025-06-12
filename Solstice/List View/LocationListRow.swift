@@ -129,13 +129,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					Text("Current location")
 				}
 			}
-			.modify { content in
-				if #available(iOS 17, macOS 14, watchOS 10, *) {
-					content.transition(.blurReplace)
-				} else {
-					content.transition(.scale)
-				}
-			}
+			.transition(.blurReplace)
 			.lineLimit(2)
 		}
 	}
@@ -148,13 +142,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 				.id(subtitle)
 				.foregroundStyle(.secondary)
 				.font(.footnote)
-				.modify { content in
-					if #available(iOS 17, macOS 14, watchOS 10, *) {
-						content.transition(.blurReplace)
-					} else {
-						content.transition(.scale)
-					}
-				}
+				.transition(.blurReplace)
 		} else {
 			EmptyView()
 		}

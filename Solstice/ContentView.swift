@@ -39,19 +39,17 @@ struct ContentView: View {
 					.navigationSplitViewColumnWidth(256)
 				#endif
 			} detail: {
-				Group {
-					switch selectedLocation {
-					case currentLocation.id:
-						DetailView(location: currentLocation)
-					case .some(let id):
-						if let item = items.first(where: { $0.uuid?.uuidString == id }) {
-							DetailView(location: item)
-						} else {
-							placeholderView
-						}
-					case .none:
+				switch selectedLocation {
+				case currentLocation.id:
+					DetailView(location: currentLocation)
+				case .some(let id):
+					if let item = items.first(where: { $0.uuid?.uuidString == id }) {
+						DetailView(location: item)
+					} else {
 						placeholderView
 					}
+				default:
+					placeholderView
 				}
 			}
 			.navigationSplitViewStyle(.balanced)

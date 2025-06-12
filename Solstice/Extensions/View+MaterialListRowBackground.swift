@@ -12,25 +12,12 @@ struct MateriaListRowBackground: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			#if os(watchOS)
-			.modify { content in
-				if #available(watchOS 10, *) {
-					content
-						.listRowBackground(
-							Color.clear.background(
-								.ultraThinMaterial,
-								in: RoundedRectangle(cornerRadius: 12)
-							)
-						)
-				} else {
-					content
-						.listRowBackground(
-							Color.clear.background(
-								.background,
-								in: RoundedRectangle(cornerRadius: 12)
-							)
-						)
-				}
-			}
+			.listRowBackground(
+				Color.clear.background(
+					.ultraThinMaterial,
+					in: RoundedRectangle(cornerRadius: 12)
+				)
+			)
 			#endif
 	}
 }
