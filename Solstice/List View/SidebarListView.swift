@@ -94,9 +94,15 @@ struct SidebarListView: View {
 		}
 		.navigationTitle(Text(verbatim: "Solstice"))
 		.navigationSplitViewColumnWidth(ideal: 300)
+		#if os(macOS)
+		.searchable(text: $locationSearchService.queryFragment,
+								placement: .automatic,
+								prompt: "Search locations")
+		#else
 		.searchable(text: $locationSearchService.queryFragment,
 								placement: .navigationBarDrawer,
 								prompt: "Search locations")
+		#endif
 		.searchSuggestions {
 			ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
 				LocationSearchResultRow(
