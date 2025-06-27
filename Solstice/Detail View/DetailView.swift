@@ -27,9 +27,11 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
+	@State var solar: Solar?
+	
 	var navBarTitleText: Text {
 		guard let title = location.title else {
-			return location is CurrentLocation ? Text("Current Location") : Text(verbatim: "Solstice")
+			return location is CurrentLocation ? Text("Current Location") : Text("Solstice")
 		}
 		
 		return Text(title)
@@ -43,26 +45,28 @@ struct DetailView<Location: ObservableLocation>: View {
 			
 			AnnualOverview(location: location)
 		}
-		.formStyle(.grouped)
-		.navigationTitle(navBarTitleText)
-		.toolbar {
-			toolbarItems
+		.task {
+			solar = Solar(for: timeMachine.date, coordinate: location.coordinate)
 		}
-		.userActivity(Self.userActivity) { userActivity in
-			var navigationSelection: String? = nil
-			
-			if let location = location as? SavedLocation {
-				navigationSelection = location.uuid?.uuidString
-			} else if let location = location as? CurrentLocation {
-				navigationSelection = location.id
-			}
-			
-			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
-			
-			userActivity.targetContentIdentifier = navigationSelection
-			userActivity.isEligibleForSearch = true
-			userActivity.isEligibleForHandoff = false
-		}
+		.navigationTitle(location.title ?? "Solstice")
+//		.toolbar {
+//			toolbarItems
+//		}
+//		.userActivity(Self.userActivity) { userActivity in
+//			var navigationSelection: String? = nil
+//			
+//			if let location = location as? SavedLocation {
+//				navigationSelection = location.uuid?.uuidString
+//			} else if let location = location as? CurrentLocation {
+//				navigationSelection = location.id
+//			}
+//			
+//			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+//			
+//			userActivity.targetContentIdentifier = navigationSelection
+//			userActivity.isEligibleForSearch = true
+//			userActivity.isEligibleForHandoff = false
+//		}
 		#if os(watchOS)
 		.modify {
 			if let solar {
@@ -75,10 +79,6 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 		#endif
-	}
-	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	var toolbarItemPlacement: ToolbarItemPlacement {

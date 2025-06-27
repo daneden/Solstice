@@ -19,20 +19,18 @@ struct TimeMachineOverlayModifier: ViewModifier {
 			}
 		#else
 			.floatingOverlay(alignment: .bottom) {
-				switch horizontalSizeClass {
-				case .regular:
-					TimeMachineDraggableOverlayView()
-				default:
-					TimeMachineOverlayView()
-						#if os(iOS)
-						.background {
-							VariableBlurView(maxBlurRadius: 10, direction: .blurredBottomClearTop)
-								.ignoresSafeArea(.container, edges: .bottom)
-						}
-						#endif
-				}
+				overlay
 			}
 		#endif
+	}
+	
+	@ViewBuilder var overlay: some View {
+		switch horizontalSizeClass {
+		case .regular:
+			TimeMachineDraggableOverlayView()
+		default:
+			TimeMachineOverlayView()
+		}
 	}
 }
 

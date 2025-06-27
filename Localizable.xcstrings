@@ -1081,6 +1081,7 @@
       }
     },
     "Locations" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
