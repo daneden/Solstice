@@ -31,7 +31,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	var navBarTitleText: Text {
 		guard let title = location.title else {
-			return location is CurrentLocation ? Text("Current Location") : Text("Solstice")
+			return location is CurrentLocation ? Text("Current Location") : Text(verbatim: "Solstice")
 		}
 		
 		return Text(title)
@@ -45,28 +45,28 @@ struct DetailView<Location: ObservableLocation>: View {
 			
 			AnnualOverview(location: location)
 		}
-		.task {
+		.task(id: timeMachine.date) {
 			solar = Solar(for: timeMachine.date, coordinate: location.coordinate)
 		}
-		.navigationTitle(location.title ?? "Solstice")
-//		.toolbar {
-//			toolbarItems
-//		}
-//		.userActivity(Self.userActivity) { userActivity in
-//			var navigationSelection: String? = nil
-//			
-//			if let location = location as? SavedLocation {
-//				navigationSelection = location.uuid?.uuidString
-//			} else if let location = location as? CurrentLocation {
-//				navigationSelection = location.id
-//			}
-//			
-//			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
-//			
-//			userActivity.targetContentIdentifier = navigationSelection
-//			userActivity.isEligibleForSearch = true
-//			userActivity.isEligibleForHandoff = false
-//		}
+		.navigationTitle(navBarTitleText)
+		.toolbar {
+			toolbarItems
+		}
+		.userActivity(Self.userActivity) { userActivity in
+			var navigationSelection: String? = nil
+			
+			if let location = location as? SavedLocation {
+				navigationSelection = location.uuid?.uuidString
+			} else if let location = location as? CurrentLocation {
+				navigationSelection = location.id
+			}
+			
+			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+			
+			userActivity.targetContentIdentifier = navigationSelection
+			userActivity.isEligibleForSearch = true
+			userActivity.isEligibleForHandoff = false
+		}
 		#if os(watchOS)
 		.modify {
 			if let solar {
