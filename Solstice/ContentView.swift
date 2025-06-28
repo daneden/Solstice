@@ -138,7 +138,7 @@ struct ContentView: View {
 		
 		#if os(iOS)
 		ToolbarItem(placement: .bottomBar) {
-			EmptyView()
+			Text("").accessibilityHidden().opacity(0)
 		}
 		#endif
 		
