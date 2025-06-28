@@ -22,9 +22,16 @@ struct TimeMachineOverlayView: View {
 		#if os(visionOS)
 		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
 		#else
-		.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
+		.modify { content in
+				if #available(iOS 26, macOS 26, *) {
+					content.glassEffect(in: .rect(cornerRadius: 20, style: .continuous))
+				} else {
+					content
+						.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
+						.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
+				}
+			}
 		.clipped()
-		.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
 		.scenePadding(.horizontal)
 		.scenePadding(.top)
 		#if os(macOS)
