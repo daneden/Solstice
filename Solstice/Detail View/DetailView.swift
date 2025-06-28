@@ -141,6 +141,12 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 		#endif
+		
+		#if os(iOS)
+		ToolbarItem(placement: .bottomBar) {
+			EmptyView()
+		}
+		#endif
 	}
 }
 
