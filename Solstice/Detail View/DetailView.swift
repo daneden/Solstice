@@ -144,7 +144,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		
 		#if os(iOS)
 		ToolbarItem(placement: .bottomBar) {
-			Text("").accessibilityHidden().opacity(0)
+			Text("").accessibilityHidden(true).opacity(0)
 		}
 		#endif
 	}
