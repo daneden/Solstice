@@ -136,6 +136,12 @@ struct ContentView: View {
 			}
 		}
 		
+		#if os(iOS)
+		ToolbarItem(placement: .bottomBar) {
+			EmptyView()
+		}
+		#endif
+		
 #if os(visionOS)
 		ToolbarItem {
 			Button {
