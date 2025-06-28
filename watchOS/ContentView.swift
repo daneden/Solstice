@@ -53,7 +53,7 @@ struct ContentView: View {
 							.listRowBackground(
 								Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
 									.view
-									.clipShape(.buttonBorder)
+									.clipShape(.rect(cornerRadius: 20, style: .continuous))
 							)
 					}
 					
@@ -64,7 +64,7 @@ struct ContentView: View {
 								.listRowBackground(
 									Solar(for: timeMachine.date, coordinate: item.coordinate)?
 										.view
-										.clipShape(.buttonBorder)
+										.clipShape(.rect(cornerRadius: 20, style: .continuous))
 								)
 						}
 					}
