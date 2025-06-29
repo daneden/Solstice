@@ -31,7 +31,6 @@ struct TimeMachineOverlayView: View {
 						.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
 				}
 			}
-		.clipped()
 		.scenePadding(.horizontal)
 		.scenePadding(.top)
 		#if os(macOS)

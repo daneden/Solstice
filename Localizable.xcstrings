@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "-" : {
       "comment" : "Less daylight middle of sentence",
       "localizations" : {

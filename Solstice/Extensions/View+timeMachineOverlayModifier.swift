@@ -18,8 +18,12 @@ struct TimeMachineOverlayModifier: ViewModifier {
 				TimeMachineOverlayView()
 			}
 		#else
-			.floatingOverlay(alignment: .bottom) {
-				overlay
+			.modify { content in
+				if #available(iOS 26, macOS 26, *) {
+					content.safeAreaBar(edge: .bottom) { overlay }
+				} else {
+					content.floatingOverlay(alignment: .bottom) { overlay }
+				}
 			}
 		#endif
 	}

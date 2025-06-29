@@ -27,7 +27,9 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
-	@State var solar: Solar?
+	var solar: Solar? {
+		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	}
 	
 	var navBarTitleText: Text {
 		guard let title = location.title else {
@@ -44,9 +46,6 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 			
 			AnnualOverview(location: location)
-		}
-		.task(id: timeMachine.date) {
-			solar = Solar(for: timeMachine.date, coordinate: location.coordinate)
 		}
 		.navigationTitle(navBarTitleText)
 		.toolbar {
@@ -143,8 +142,11 @@ struct DetailView<Location: ObservableLocation>: View {
 		#endif
 		
 		#if os(iOS)
-		ToolbarItem(placement: .bottomBar) {
-			Text("").accessibilityHidden(true).opacity(0)
+		if #available(iOS 26, *) {
+			ToolbarItem(placement: .bottomBar) {
+				Text("").hidden()
+			}
+			.sharedBackgroundVisibility(.hidden)
 		}
 		#endif
 	}

@@ -137,25 +137,29 @@ struct ContentView: View {
 		}
 		
 		#if os(iOS)
-		ToolbarItem(placement: .bottomBar) {
-			Text("").accessibilityHidden(true).opacity(0)
+		if #available(iOS 26, *) {
+			ToolbarItem(placement: .bottomBar) {
+				Text("").hidden()
+			}
+			.sharedBackgroundVisibility(.hidden)
 		}
 		#endif
+			
 		
 #if os(visionOS)
 		ToolbarItem {
 			Button {
 				openWindow(id: "settings")
 			} label: {
-				Label("Settings", systemImage: "gearshape")
+				Label("Settings", systemImage: "ellipsis")
 			}
 		}
 #elseif !os(macOS)
-		ToolbarItem {
+		ToolbarItem(placement: .navigation) {
 			Button {
 				settingsViewOpen = true
 			} label: {
-				Label("Settings", systemImage: "gearshape")
+				Label("Settings", systemImage: "ellipsis")
 			}
 		}
 #endif
