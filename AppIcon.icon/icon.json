@@ -10,12 +10,7 @@
     },
     {
       "appearance" : "dark",
-      "value" : {
-        "linear-gradient" : [
-          "display-p3:0.20109,0.22317,0.35757,1.00000",
-          "display-p3:0.00700,0.03000,0.17000,1.00000"
-        ]
-      }
+      "value" : "system-dark"
     }
   ],
   "groups" : [
