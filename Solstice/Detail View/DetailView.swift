@@ -140,15 +140,6 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 		#endif
-		
-		#if os(iOS)
-		if #available(iOS 26, *) {
-			ToolbarItem(placement: .bottomBar) {
-				Text("").hidden()
-			}
-			.sharedBackgroundVisibility(.hidden)
-		}
-		#endif
 	}
 }
 

@@ -19,7 +19,7 @@ struct SupporterSettings: View {
 	var aboutString: String {
 		if let filepath = Bundle.main.path(forResource: "README", ofType: "md") {
 			do {
-				let contents = try String(contentsOfFile: filepath)
+				let contents = try String(contentsOfFile: filepath, encoding: .utf8)
 				return contents
 			} catch {
 				print("Markdown file README.md could not be parsed")

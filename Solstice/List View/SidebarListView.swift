@@ -9,6 +9,8 @@ import SwiftUI
 import Solar
 
 struct SidebarListView: View {
+	let namespace: Namespace.ID
+	
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@EnvironmentObject var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
@@ -55,6 +57,7 @@ struct SidebarListView: View {
 						
 						return NSItemProvider(object: userActivity)
 					}
+					.matchedTransitionSource(id: "zoom", in: namespace)
 				#endif
 			}
 			
@@ -86,6 +89,7 @@ struct SidebarListView: View {
 							
 							return NSItemProvider(object: userActivity)
 						}
+						.matchedTransitionSource(id: "zoom", in: namespace)
 						#endif
 						.tag(tag)
 				}
@@ -168,9 +172,10 @@ extension SidebarListView {
 }
 
 struct SidebarListView_Previews: PreviewProvider {
+	@Namespace static var namespace
 	static var previews: some View {
 		NavigationStack {
-			SidebarListView()
+			SidebarListView(namespace: namespace)
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.environmentObject(TimeMachine.preview)
