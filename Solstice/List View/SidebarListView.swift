@@ -57,7 +57,7 @@ struct SidebarListView: View {
 						
 						return NSItemProvider(object: userActivity)
 					}
-					.matchedTransitionSource(id: "zoom", in: namespace)
+					.matchedTransitionSource(id: currentLocation.id, in: namespace)
 				#endif
 			}
 			
@@ -89,7 +89,7 @@ struct SidebarListView: View {
 							
 							return NSItemProvider(object: userActivity)
 						}
-						.matchedTransitionSource(id: "zoom", in: namespace)
+						.matchedTransitionSource(id: tag, in: namespace)
 						#endif
 						.tag(tag)
 				}
