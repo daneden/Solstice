@@ -55,7 +55,7 @@ struct ContentView: View {
 					}
 				}
 				#if os(iOS)
-				.navigationTransition(.zoom(sourceID: "zoom", in: namespace))
+				.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
 				#endif
 			}
 			.navigationSplitViewStyle(.balanced)
