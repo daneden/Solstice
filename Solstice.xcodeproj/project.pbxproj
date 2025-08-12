@@ -260,6 +260,11 @@
 		71F641C3299FD39E00FE5AB5 /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */; };
 		71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */; };
+		71FBEE672E4B342F00EC1EF0 /* AboutSolsticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */; };
+		71FBEE692E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
+		71FBEE6A2E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
+		71FBEE6B2E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
+		71FBEE6C2E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -438,6 +443,8 @@
 		71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CapsuleAppearance.swift"; sourceTree = "<group>"; };
 		71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualDaylightChart.swift; sourceTree = "<group>"; };
 		71F641C629A0F4A900FE5AB5 /* TimeMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineView.swift; sourceTree = "<group>"; };
+		71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
+		71FBEE682E4B345700EC1EF0 /* Bundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle++.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -537,6 +544,7 @@
 				717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */,
 				717F8BBB29A908E30015ECCB /* SettingsView.swift */,
 				718B136B29A918680001D4DC /* SupporterSettings.swift */,
+				71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -699,6 +707,7 @@
 				71789AA42C32DCC7002B8A33 /* View+MaterialListRowBackground.swift */,
 				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
 				7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */,
+				71FBEE682E4B345700EC1EF0 /* Bundle++.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -886,7 +895,7 @@
 					earth,
 				);
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					7106C86729A276B30007A7EC = {
 						CreatedOnToolsVersion = 14.2;
@@ -1009,6 +1018,7 @@
 				7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */,
 				7106C88929A277680007A7EC /* Persistence.swift in Sources */,
 				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
+				71FBEE692E4B345700EC1EF0 /* Bundle++.swift in Sources */,
 				7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
 				712433AD2D79090500709C20 /* NSImage+pngData.swift in Sources */,
@@ -1063,6 +1073,7 @@
 				719465362C2C1E09008408C0 /* CurrentLocation.swift in Sources */,
 				719465372C2C1E09008408C0 /* Persistence.swift in Sources */,
 				719465382C2C1E09008408C0 /* SkyGradient.swift in Sources */,
+				71FBEE6C2E4B345700EC1EF0 /* Bundle++.swift in Sources */,
 				719465392C2C1E09008408C0 /* WidgetHeadingModifier.swift in Sources */,
 				7194653A2C2C1E09008408C0 /* WidgetLocationHeadingView.swift in Sources */,
 				712433AE2D79090500709C20 /* NSImage+pngData.swift in Sources */,
@@ -1132,6 +1143,7 @@
 				7188714329DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */,
 				714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */,
+				71FBEE672E4B342F00EC1EF0 /* AboutSolsticeView.swift in Sources */,
 				712433A02D77C02D00709C20 /* Color+toHex.swift in Sources */,
 				716BE0502C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */,
 				71F641C729A0F4A900FE5AB5 /* TimeMachineView.swift in Sources */,
@@ -1148,6 +1160,7 @@
 				712433A62D78867300709C20 /* StackedLabelStyle.swift in Sources */,
 				71AEB7BB29AE3F0D00A7952D /* LocationPermissionScreenerView.swift in Sources */,
 				7198469E28E58CCD00E866CE /* DetailView.swift in Sources */,
+				71FBEE6A2E4B345700EC1EF0 /* Bundle++.swift in Sources */,
 				71691B8B2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift in Sources */,
 				71A029AD2C30501900E19819 /* EarthRealityView.swift in Sources */,
 				71F641C529A0290700FE5AB5 /* AnnualDaylightChart.swift in Sources */,
@@ -1209,6 +1222,7 @@
 				7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				719F927D29ACD22100C06921 /* CurrentLocation.swift in Sources */,
 				719F928029ACD22100C06921 /* TimeMachine.swift in Sources */,
+				71FBEE6B2E4B345700EC1EF0 /* Bundle++.swift in Sources */,
 				712433992D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				713F800029BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				71789AA32C32DBF8002B8A33 /* LocationPermissionScreenerView.swift in Sources */,
@@ -1268,6 +1282,9 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_LOCATION = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
@@ -1302,6 +1319,9 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_LOCATION = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
@@ -1336,6 +1356,7 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
@@ -1370,6 +1391,7 @@
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widget;
@@ -1457,6 +1479,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1517,6 +1540,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1532,8 +1556,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Solstice/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_LOCATION = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;
@@ -1574,8 +1601,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Solstice/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_LOCATION = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Solstice/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Solstice;

@@ -96,7 +96,7 @@ struct SidebarListView: View {
 			}
 			.onDelete(perform: deleteItems)
 		}
-		.navigationTitle(Text(verbatim: "Solstice"))
+		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)
 		#if os(macOS)
 		.searchable(text: $locationSearchService.queryFragment,

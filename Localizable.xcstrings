@@ -367,6 +367,7 @@
       }
     },
     "About Solstice and its maker" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -606,6 +607,9 @@
           }
         }
       }
+    },
+    "Dan is prone to Seasonal Affective Disorder (SAD), a mood disorder often associated with the reduction in total daily sunlight hours during the darker months of the year. Solstice was created to help everyone look forward to brighter days." : {
+
     },
     "Date" : {
       "localizations" : {
@@ -1084,7 +1088,6 @@
       }
     },
     "Locations" : {
-      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1342,6 +1345,7 @@
       }
     },
     "Notifications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1421,6 +1425,9 @@
           }
         }
       }
+    },
+    "Read more" : {
+
     },
     "Remaining daylight" : {
       "localizations" : {
@@ -1682,6 +1689,9 @@
         }
       }
     },
+    "Solstice is an app made by [Dan Eden](https://daneden.me), a designer and developer based in Manchester, England." : {
+
+    },
     "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1900,6 +1910,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Luce del giorno totale"
+          }
+        }
+      }
+    },
+    "v%@, #%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "v%1$@, #%2$@"
           }
         }
       }

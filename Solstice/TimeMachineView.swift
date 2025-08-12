@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+fileprivate struct SliderLabel: View {
+	enum LabelType {
+		case min, max
+	}
+	
+	var type: LabelType
+	
+	var body: some View {
+		switch type {
+		case .min: Text("-6mo").font(.footnote).monospaced()
+		case .max: Text("+6mo").font(.footnote).monospaced()
+		}
+	}
+}
+
 struct TimeMachineView: View {
 	@EnvironmentObject var timeMachine: TimeMachine
 	
@@ -80,27 +95,33 @@ struct TimeMachineView: View {
 		#endif
 		
 		#if !os(watchOS)
-		Slider(value: timeMachine.offset,
-					 in: -182...182,
-					 step: 7,
-					 minimumValueLabel: Text("-6mo").font(.footnote).monospaced(),
-					 maximumValueLabel: Text("+6mo").font(.footnote).monospaced()) {
-			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+		if #available(iOS 26, visionOS 26, macOS 26, *) {
+			Slider(value: timeMachine.offset,
+						 in: -182...182,
+						 step: 7,
+						 neutralValue: 0) {
+				Text("Time Travel")
+			} currentValueLabel: {
+				Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+			} minimumValueLabel: {
+				SliderLabel(type: .min)
+			} maximumValueLabel: {
+				SliderLabel(type: .max)
+			}
+		} else {
+			Slider(value: timeMachine.offset,
+						 in: -182...182,
+						 step: 7,
+						 minimumValueLabel: SliderLabel(type: .min),
+						 maximumValueLabel: SliderLabel(type: .max)) {
+				Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+			}
+							#if os(iOS)
+						 .tint(Color(UIColor.systemFill))
+							#endif
+						 .foregroundStyle(.secondary)
+						 .labelsHidden()
 		}
-						#if os(iOS)
-					 .tint(Color(UIColor.systemFill))
-						#endif
-					 .foregroundStyle(.secondary)
-					 .labelsHidden()
-		#if !os(visionOS)
-					 .sensoryFeedback(trigger: timeMachine.offsetAmount) { oldValue, newValue in
-						 if newValue == 0 {
-							 return .impact
-						 } else {
-							 return newValue > oldValue ? .increase : .decrease
-						 }
-					 }
-		#endif
 		
 		if showDatePicker {
 			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {

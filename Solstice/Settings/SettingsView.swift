@@ -11,21 +11,17 @@ struct SettingsView: View {
 	@Environment(\.dismiss) var dismiss
 	
     var body: some View {
-			TabView {
-				NotificationSettings()
-					.frame(idealWidth: 300, idealHeight: 400)
-					.tabItem {
-						Label("Notifications", systemImage: "app.badge")
+			NavigationStack {
+				Form {
+					Section {
+						AboutSolsticeView()
 					}
-				
-				SupporterSettings()
-					.frame(idealWidth: 300, idealHeight: 600)
-					.tabItem {
-						Label("About Solstice", systemImage: "heart")
-					}
+					
+					NotificationSettings()
+					
+					SupporterSettings()
+				}
 			}
-			.formStyle(.grouped)
-			.navigationTitle("Settings")
 			#if !os(macOS)
 			.toolbar {
 				Button {
