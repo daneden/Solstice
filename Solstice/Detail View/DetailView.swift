@@ -48,6 +48,7 @@ struct DetailView<Location: ObservableLocation>: View {
 			
 			AnnualOverview(location: location)
 		}
+		.formStyle(.grouped)
 		.navigationTitle(navBarTitleText)
 		.toolbar {
 			toolbarItems
