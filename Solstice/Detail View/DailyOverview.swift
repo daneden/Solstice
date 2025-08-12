@@ -15,7 +15,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solar: Solar
 	var location: Location
 	
-	@State private var showShareSheet = false
 	@State private var gradientSolar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
@@ -56,12 +55,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.frame(height: chartHeight)
 				#if !os(watchOS)
 				.contextMenu {
-					#if !os(macOS)
-					Button("Share...", systemImage: "square.and.arrow.up") {
-						showShareSheet.toggle()
-					}
-					#endif
-
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 							Text(appearance.description)
@@ -76,11 +69,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.listRowBackground(Color.clear)
 				#endif
 				.environment(\.timeZone, location.timeZone)
-				#if !os(watchOS)
-				.sheet(isPresented: $showShareSheet) {
-					ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
-				}
-				#endif
 			
 			Group {
 				AdaptiveLabeledContent {

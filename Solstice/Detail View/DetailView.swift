@@ -23,6 +23,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	#endif
 	@State private var showRemainingDaylight = false
+	@State private var showShareSheet = false
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
@@ -78,6 +79,13 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 		#endif
+		#if !os(watchOS)
+		.sheet(isPresented: $showShareSheet) {
+			if let solar {
+				ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+			}
+		}
+		#endif
 	}
 	
 	var toolbarItemPlacement: ToolbarItemPlacement {
@@ -110,6 +118,14 @@ struct DetailView<Location: ObservableLocation>: View {
 						}
 					}
 				}
+			}
+		}
+		#endif
+		
+		#if !os(macOS)
+		ToolbarItem {
+			Button("Share...", systemImage: "square.and.arrow.up") {
+				showShareSheet.toggle()
 			}
 		}
 		#endif

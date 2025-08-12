@@ -40,6 +40,8 @@ struct AboutSolsticeView: View {
 				
 				NavigationLink(destination: FullStoryView()) {
 					Text("Read more")
+						.fontWeight(.medium)
+						.foregroundStyle(.tint)
 				}
 				.padding(.vertical, 4)
 			}
