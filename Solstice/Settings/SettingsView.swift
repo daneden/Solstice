@@ -21,6 +21,7 @@ struct SettingsView: View {
 					
 					SupporterSettings()
 				}
+				.formStyle(.grouped)
 			}
 			#if !os(macOS)
 			.toolbar {
