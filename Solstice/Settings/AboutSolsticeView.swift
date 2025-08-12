@@ -96,6 +96,7 @@ fileprivate struct FullStoryView: View {
 				Text("Open Source Acknowledgements")
 			}
 		}
+		.formStyle(.grouped)
 		.navigationTitle("About Solstice")
 	}
 }
