@@ -16,6 +16,7 @@
       }
     },
     "-6mo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -276,6 +277,9 @@
         }
       }
     },
+    "%@6mo" : {
+
+    },
     "%lld" : {
       "comment" : "Number of days in the past or future for Time Travel on Apple Watch",
       "localizations" : {
@@ -327,6 +331,7 @@
       }
     },
     "+6mo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

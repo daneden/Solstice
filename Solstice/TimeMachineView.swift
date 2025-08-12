@@ -10,15 +10,21 @@ import SwiftUI
 fileprivate struct SliderLabel: View {
 	enum LabelType {
 		case min, max
+		
+		var prefix: String {
+			switch self {
+			case .min: return "-"
+			case .max: return "+"
+			}
+		}
 	}
 	
-	var type: LabelType
+	let type: LabelType
 	
 	var body: some View {
-		switch type {
-		case .min: Text("-6mo").font(.footnote).monospaced()
-		case .max: Text("+6mo").font(.footnote).monospaced()
-		}
+		Text("\(type.prefix)6mo")
+			.textScale(.secondary)
+			.foregroundStyle(.secondary)
 	}
 }
 
@@ -98,7 +104,6 @@ struct TimeMachineView: View {
 		if #available(iOS 26, visionOS 26, macOS 26, *) {
 			Slider(value: timeMachine.offset,
 						 in: -182...182,
-						 step: 7,
 						 neutralValue: 0) {
 				Text("Time Travel")
 			} currentValueLabel: {

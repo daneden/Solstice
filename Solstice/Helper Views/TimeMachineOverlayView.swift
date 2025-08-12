@@ -19,6 +19,7 @@ struct TimeMachineOverlayView: View {
 			#endif
 		}
 		.padding()
+		.clipped()
 		#if os(visionOS)
 		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
 		#else
