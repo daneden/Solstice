@@ -106,7 +106,7 @@ struct ContentView: View {
 	
 	@ToolbarContentBuilder
 	private var toolbarItems: some ToolbarContent {
-		ToolbarItem {
+		ToolbarItem(placement: .topBarTrailing) {
 			Menu {
 				Menu {
 					Picker(selection: $itemSortDimension.animation()) {
@@ -150,7 +150,7 @@ struct ContentView: View {
 			}
 		}
 #elseif !os(macOS)
-		ToolbarItem(placement: .navigation) {
+		ToolbarItem(placement: .topBarLeading) {
 			Button {
 				settingsViewOpen = true
 			} label: {
