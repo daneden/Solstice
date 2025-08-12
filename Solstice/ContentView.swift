@@ -10,7 +10,6 @@ import CoreData
 import Solar
 
 struct ContentView: View {
-	@Namespace private var namespace
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
@@ -32,7 +31,7 @@ struct ContentView: View {
 			
 	var body: some View {
 			NavigationSplitView(columnVisibility: $sidebarVisibility) {
-				SidebarListView(namespace: namespace)
+				SidebarListView()
 					.toolbar {
 						toolbarItems
 					}
@@ -54,9 +53,6 @@ struct ContentView: View {
 						placeholderView
 					}
 				}
-				#if os(iOS)
-				.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
-				#endif
 			}
 			.navigationSplitViewStyle(.balanced)
 			.sheet(item: $locationSearchService.location) { value in
