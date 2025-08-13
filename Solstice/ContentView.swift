@@ -13,6 +13,7 @@ struct ContentView: View {
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
+	@Environment(\.managedObjectContext) private var context
 	@Environment(\.openWindow) private var openWindow
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	
@@ -27,7 +28,7 @@ struct ContentView: View {
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 	
-	@FetchRequest(sortDescriptors: []) private var items: FetchedResults<SavedLocation>
+	@FetchRequest(sortDescriptors: []) private var locations: FetchedResults<SavedLocation>
 			
 	var body: some View {
 			NavigationSplitView(columnVisibility: $sidebarVisibility) {
@@ -44,8 +45,8 @@ struct ContentView: View {
 					case currentLocation.id:
 						DetailView(location: currentLocation)
 					case .some(let id):
-						if let item = items.first(where: { $0.uuid?.uuidString == id }) {
-							DetailView(location: item)
+						if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
+							DetailView(location: location)
 						} else {
 							placeholderView
 						}
@@ -77,7 +78,7 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
-			.resolveDeepLink(Array(items))
+			.resolveDeepLink(Array(locations))
 			.overlay {
 				TimelineView(.everyMinute) { timelineContext in
 					Color.clear.task(id: timelineContext.date) {
@@ -85,12 +86,33 @@ struct ContentView: View {
 					}
 				}
 			}
-		#if os(iOS)
+			#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
 					.presentationDetents([.large, .medium])
 			}
-		#endif
+			#endif
+			.task(id: locations.count) {
+				var seenUUIDs = Set<UUID>()
+				
+				for location in locations {
+					if let uuid = location.uuid {
+						if seenUUIDs.contains(uuid) {
+							context.delete(location)
+						} else {
+							seenUUIDs.insert(uuid)
+						}
+					}
+				}
+				
+				if context.hasChanges {
+					do {
+						try context.save()
+					} catch {
+						print("Failed to delete duplicate locations: \(error)")
+					}
+				}
+			}
 	}
 	
 	private var placeholderView: some View {
@@ -164,3 +186,4 @@ struct ContentView: View {
 		.environmentObject(TimeMachine.preview)
 		.environmentObject(CurrentLocation())
 }
+

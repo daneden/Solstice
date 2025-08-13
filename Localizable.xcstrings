@@ -2,7 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "shouldTranslate" : false
     },
     "-" : {
       "comment" : "Less daylight middle of sentence",
@@ -11,17 +11,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "-"
-          }
-        }
-      }
-    },
-    "-6mo" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "-6 mesi"
           }
         }
       }
@@ -278,7 +267,14 @@
       }
     },
     "%@6mo" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@6 mesi"
+          }
+        }
+      }
     },
     "%lld" : {
       "comment" : "Number of days in the past or future for Time Travel on Apple Watch",
@@ -330,17 +326,6 @@
         }
       }
     },
-    "+6mo" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+6 mesi"
-          }
-        }
-      }
-    },
     "a specific time" : {
       "localizations" : {
         "it" : {
@@ -367,17 +352,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Circa Solstice"
-          }
-        }
-      }
-    },
-    "About Solstice and its maker" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Informazioni sull'app e sul suo creatore"
           }
         }
       }
@@ -458,17 +432,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calcola l'ora del tramonto in una determinata data in una determinata località"
-          }
-        }
-      }
-    },
-    "Calculating..." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calcolo..."
           }
         }
       }
@@ -614,7 +577,14 @@
       }
     },
     "Dan is prone to Seasonal Affective Disorder (SAD), a mood disorder often associated with the reduction in total daily sunlight hours during the darker months of the year. Solstice was created to help everyone look forward to brighter days." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dan è incline al disturbo affettivo stagionale (SAD), un disturbo dell'umore spesso associato alla riduzione delle ore giornaliere totali di luce solare durante i mesi più bui dell'anno. Solstice è stato creato per aiutare tutti ad aspettarsi giorni più luminosi."
+          }
+        }
+      }
     },
     "Date" : {
       "localizations" : {
@@ -1255,7 +1225,14 @@
       }
     },
     "No location selected" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna posizione selezionata"
+          }
+        }
+      }
     },
     "No locations" : {
       "localizations" : {
@@ -1349,17 +1326,6 @@
         }
       }
     },
-    "Notifications" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notifiche"
-          }
-        }
-      }
-    },
     "Open app Settings" : {
       "localizations" : {
         "it" : {
@@ -1432,7 +1398,14 @@
       }
     },
     "Read more" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leggi di più"
+          }
+        }
+      }
     },
     "Remaining daylight" : {
       "localizations" : {
@@ -1531,7 +1504,14 @@
       }
     },
     "Select a location to view details" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona una posizione per visualizzare i dettagli"
+          }
+        }
+      }
     },
     "Send at" : {
       "localizations" : {
@@ -1695,15 +1675,11 @@
       }
     },
     "Solstice is an app made by [Dan Eden](https://daneden.me), a designer and developer based in Manchester, England." : {
-
-    },
-    "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
-      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Solstice su Apple Watch richiede l'accesso alla posizione per mostrare gli orari locali di alba e tramonto. Per posizioni personalizzate e salvate, usa Solstice su iPhone, iPad o Mac."
+            "value" : "Solstice è un'app realizzata da [Dan Eden](https://daneden.me), un designer e sviluppatore con sede a Manchester, in Inghilterra."
           }
         }
       }
@@ -1927,7 +1903,8 @@
             "value" : "v%1$@, #%2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "View daylight" : {
       "localizations" : {
