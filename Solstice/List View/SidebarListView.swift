@@ -96,7 +96,9 @@ struct SidebarListView: View {
 			}
 			.onDelete(perform: deleteItems)
 		}
+		#if os(iOS)
 		.listRowSpacing(8)
+		#endif
 		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)
 		#if os(macOS)

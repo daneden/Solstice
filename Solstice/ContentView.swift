@@ -55,7 +55,9 @@ struct ContentView: View {
 						placeholderView
 					}
 				}
+				#if os(iOS)
 				.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
+				#endif
 			}
 			.navigationSplitViewStyle(.balanced)
 			.sheet(item: $locationSearchService.location) { value in

@@ -38,7 +38,9 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		if let solar {
 			VStack(alignment: .trailing) {
 				Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
+				#if os(iOS)
 					.font(.headline)
+				#endif
 				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 					.foregroundStyle(.secondary)
 			}
@@ -106,6 +108,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			
 			trailingContent
 		}
+		#if os(iOS)
 		.foregroundStyle(.white)
 		.fontWeight(.medium)
 		.blendMode(.plusLighter)
@@ -117,6 +120,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		.listRowSeparator(.hidden)
 		.listRowBackground(Color.clear)
 		.listRowInsets(.zero)
+		#endif
 		#endif
 	}
 	
@@ -142,7 +146,9 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			.lineLimit(2)
 		}
 		.font(.headline)
+		#if os(iOS)
 		.fontWeight(.bold)
+		#endif
 	}
 	
 	@ViewBuilder
