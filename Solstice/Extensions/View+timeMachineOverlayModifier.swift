@@ -10,6 +10,7 @@ import Suite
 
 struct TimeMachineOverlayModifier: ViewModifier {
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
+	@State private var size = CGSize.zero
 	
 	func body(content: Content) -> some View {
 		content
@@ -20,7 +21,17 @@ struct TimeMachineOverlayModifier: ViewModifier {
 		#else
 			.modify { content in
 				if #available(iOS 26, macOS 26, *) {
-					content.safeAreaBar(edge: .bottom) { overlay }
+					content
+						.contentMargins(.bottom, size.height, for: .automatic)
+						.safeAreaBar(edge: .bottom) {
+							overlay
+								.overlay {
+									GeometryReader { g in
+										Color.clear
+											.task(id: g.size) { size = g.size }
+									}
+								}
+						}
 				} else {
 					content.floatingOverlay(alignment: .bottom) { overlay }
 				}

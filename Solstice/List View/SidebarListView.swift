@@ -26,6 +26,8 @@ struct SidebarListView: View {
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
+	let namespace: Namespace.ID
+	
 	var body: some View {
 		List(selection: $selectedLocation) {
 			if currentLocation.authorizationStatus == .notDetermined {
@@ -55,6 +57,7 @@ struct SidebarListView: View {
 						
 						return NSItemProvider(object: userActivity)
 					}
+					.matchedTransitionSource(id: currentLocation.id, in: namespace)
 				#endif
 			}
 			
@@ -86,12 +89,14 @@ struct SidebarListView: View {
 							
 							return NSItemProvider(object: userActivity)
 						}
+						.matchedTransitionSource(id: tag, in: namespace)
 						#endif
 						.tag(tag)
 				}
 			}
 			.onDelete(perform: deleteItems)
 		}
+		.listRowSpacing(8)
 		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)
 		#if os(macOS)
@@ -168,9 +173,10 @@ extension SidebarListView {
 }
 
 struct SidebarListView_Previews: PreviewProvider {
+	@Namespace static private var namespace
 	static var previews: some View {
 		NavigationStack {
-			SidebarListView()
+			SidebarListView(namespace: namespace)
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.environmentObject(TimeMachine.preview)

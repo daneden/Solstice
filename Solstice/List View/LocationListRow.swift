@@ -38,10 +38,9 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		if let solar {
 			VStack(alignment: .trailing) {
 				Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
-					.foregroundStyle(.secondary)
+					.font(.headline)
 				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
-					.font(.footnote)
-					.foregroundStyle(.tertiary)
+					.foregroundStyle(.secondary)
 			}
 			.contentTransition(.identity)
 			
@@ -84,7 +83,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			if let solar {
 				Group {
 					Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
-						.font(.title3)
+						.font(.headline)
 					Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 						.font(.footnote.weight(.light))
 						.foregroundStyle(.secondary)
@@ -95,19 +94,29 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		.animation(.default, value: location.subtitle)
 		.shadow(radius: 4, x: 0, y: 2)
 		#else
-			HStack {
-				VStack(alignment: .leading, spacing: 2) {
-					locationTitleLabel
-					locationSubtitleLabel
-				}
-				.animation(.default, value: location.title)
-				.animation(.default, value: location.subtitle)
-				
-				Spacer()
-				
-				trailingContent
+		HStack {
+			VStack(alignment: .leading, spacing: 2) {
+				locationTitleLabel
+				locationSubtitleLabel
 			}
-		.padding(.vertical, 4)
+			.animation(.default, value: location.title)
+			.animation(.default, value: location.subtitle)
+			
+			Spacer()
+			
+			trailingContent
+		}
+		.foregroundStyle(.white)
+		.fontWeight(.medium)
+		.blendMode(.plusLighter)
+		.shadow(color: .black.opacity(0.3), radius: 6, y: 2)
+		.padding()
+		.background {
+			solar?.view.clipShape(.rect(cornerRadius: 20, style: .continuous))
+		}
+		.listRowSeparator(.hidden)
+		.listRowBackground(Color.clear)
+		.listRowInsets(.zero)
 		#endif
 	}
 	
@@ -132,6 +141,8 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			.transition(.blurReplace)
 			.lineLimit(2)
 		}
+		.font(.headline)
+		.fontWeight(.bold)
 	}
 	
 	@ViewBuilder
@@ -141,10 +152,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			Text(subtitle)
 				.id(subtitle)
 				.foregroundStyle(.secondary)
-				.font(.footnote)
 				.transition(.blurReplace)
-		} else {
-			EmptyView()
 		}
 	}
 }
