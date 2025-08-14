@@ -10,6 +10,7 @@ import CoreData
 import Solar
 
 struct ContentView: View {
+	@Namespace private var namespace
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
@@ -32,7 +33,7 @@ struct ContentView: View {
 			
 	var body: some View {
 			NavigationSplitView(columnVisibility: $sidebarVisibility) {
-				SidebarListView()
+				SidebarListView(namespace: namespace)
 					.toolbar {
 						toolbarItems
 					}
@@ -54,6 +55,7 @@ struct ContentView: View {
 						placeholderView
 					}
 				}
+				.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
 			}
 			.navigationSplitViewStyle(.balanced)
 			.sheet(item: $locationSearchService.location) { value in
@@ -92,27 +94,7 @@ struct ContentView: View {
 					.presentationDetents([.large, .medium])
 			}
 			#endif
-			.task(id: locations.count) {
-				var seenUUIDs = Set<UUID>()
-				
-				for location in locations {
-					if let uuid = location.uuid {
-						if seenUUIDs.contains(uuid) {
-							context.delete(location)
-						} else {
-							seenUUIDs.insert(uuid)
-						}
-					}
-				}
-				
-				if context.hasChanges {
-					do {
-						try context.save()
-					} catch {
-						print("Failed to delete duplicate locations: \(error)")
-					}
-				}
-			}
+			.deduplicateLocationRecords()
 	}
 	
 	private var placeholderView: some View {
