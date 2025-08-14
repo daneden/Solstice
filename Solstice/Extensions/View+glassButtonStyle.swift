@@ -18,16 +18,24 @@ extension View {
 		switch style {
 		case .prominent:
 			self.modify { content in
-				if #available(iOS 26, macOS 26, visionOS 26, watchOS 26, *) {
+				if #available(iOS 26, macOS 26, watchOS 26, *) {
+					#if !os(visionOS)
 					content.buttonStyle(.glassProminent)
+					#else
+					content.buttonStyle(.borderedProminent)
+					#endif
 				} else {
 					content.buttonStyle(.borderedProminent)
 				}
 			}
 		case .regular:
 			self.modify { content in
-				if #available(iOS 26, macOS 26, visionOS 26, watchOS 26, *) {
+				if #available(iOS 26, macOS 26, watchOS 26, *) {
+					#if !os(visionOS)
 					content.buttonStyle(.glass)
+					#else
+					content.buttonStyle(.bordered)
+					#endif
 				} else {
 					content.buttonStyle(.bordered)
 				}

@@ -26,9 +26,13 @@ struct SettingsView: View {
 								case .notDetermined:
 									currentLocation.requestAccess()
 								case .restricted, .denied:
+									#if !os(macOS)
 									if let url = URL(string: UIApplication.openSettingsURLString) {
 										openURL(url)
 									}
+									#else
+									return
+									#endif
 								default: return
 								}
 							}

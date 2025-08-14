@@ -1348,6 +1348,7 @@
       }
     },
     "Open app Settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -2046,6 +2047,7 @@
       }
     },
     "You will need to enable location services for Solstice or choose a different location in order to receive notifications." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
