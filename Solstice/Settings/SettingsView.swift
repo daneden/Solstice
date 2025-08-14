@@ -8,13 +8,33 @@
 import SwiftUI
 
 struct SettingsView: View {
-	@Environment(\.dismiss) var dismiss
+	@Environment(\.dismiss) private var dismiss
+	@Environment(\.openURL) private var openURL
+	@EnvironmentObject private var currentLocation: CurrentLocation
 	
     var body: some View {
 			NavigationStack {
 				Form {
 					Section {
 						AboutSolsticeView()
+					}
+					
+					if !currentLocation.isAuthorized {
+						Section {
+							Button("Enable location services", systemImage: "location") {
+								switch currentLocation.authorizationStatus {
+								case .notDetermined:
+									currentLocation.requestAccess()
+								case .restricted, .denied:
+									if let url = URL(string: UIApplication.openSettingsURLString) {
+										openURL(url)
+									}
+								default: return
+								}
+							}
+						} footer: {
+							Text("Enable location services to see the daylight duration in your current location")
+						}
 					}
 					
 					NotificationSettings()

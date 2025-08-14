@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Suite
 
 fileprivate struct SliderLabel: View {
 	enum LabelType {
@@ -29,6 +30,7 @@ fileprivate struct SliderLabel: View {
 }
 
 struct TimeMachineView: View {
+	@Environment(\.dynamicTypeSize) private var dynamicTypeSize
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var date = Date()
@@ -66,7 +68,7 @@ struct TimeMachineView: View {
 							let date = Text(timeMachine.date, style: .date)
 							let label = Text("Time Travel")
 							
-							Text("\(timeMachine.enabled ? date : label)")
+							Text("\(timeMachine.enabled && !showDatePicker ? date : label)")
 								.monospacedDigit()
 						}
 						
@@ -82,6 +84,9 @@ struct TimeMachineView: View {
 				}
 				.accessibilityLabel("Toggle advanced time travel controls")
 			}
+			.if(dynamicTypeSize > .xxLarge) {
+				$0.labelStyle(.titleOnly)
+			}
 			.tint(.primary)
 			.fontWeight(.medium)
 			#if os(visionOS)
@@ -94,6 +99,9 @@ struct TimeMachineView: View {
 				withAnimation {
 					timeMachine.offset.wrappedValue = 0
 				}
+			}
+			.if(dynamicTypeSize > .xxLarge) {
+				$0.labelStyle(.iconOnly)
 			}
 			.fontWeight(.medium)
 			.disabled(!timeMachine.enabled)
@@ -134,6 +142,9 @@ struct TimeMachineView: View {
 				Text("Choose date")
 			}
 			.transition(.blurReplace.combined(with: .move(edge: .bottom)))
+			.if(dynamicTypeSize > .xLarge) {
+				$0.labelsHidden()
+			}
 		}
 		#else
 		Stepper(

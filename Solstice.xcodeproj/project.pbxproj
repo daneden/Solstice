@@ -37,6 +37,14 @@
 		711782D82E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782D62E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift */; };
 		711782D92E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782D62E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift */; };
 		711782DA2E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782D62E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift */; };
+		711782DC2E4E0E030006CE5B /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782DB2E4E0E030006CE5B /* LandingView.swift */; };
+		711782DD2E4E0E030006CE5B /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782DB2E4E0E030006CE5B /* LandingView.swift */; };
+		711782E42E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */; };
+		711782E52E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */; };
+		711782E62E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */; };
+		711782E72E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */; };
+		711782E92E4E7CE20006CE5B /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E82E4E7CE20006CE5B /* AsyncButton.swift */; };
+		711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E82E4E7CE20006CE5B /* AsyncButton.swift */; };
 		711A97B729CDBCA200333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97B829CDBCA300333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
 		711A97B929CDBCA500333927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468828E5895F00E866CE /* Assets.xcassets */; };
@@ -348,6 +356,9 @@
 		7117008829A52ABE001BE478 /* CountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetView.swift; sourceTree = "<group>"; };
 		7117008A29A52B04001BE478 /* SkyGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyGradient.swift; sourceTree = "<group>"; };
 		711782D62E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeduplicateLocationRecordsModifier.swift; sourceTree = "<group>"; };
+		711782DB2E4E0E030006CE5B /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
+		711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+glassButtonStyle.swift"; sourceTree = "<group>"; };
+		711782E82E4E7CE20006CE5B /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
 		712433922D77A4CE00709C20 /* EdgeInsets++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets++.swift"; sourceTree = "<group>"; };
@@ -598,6 +609,7 @@
 		7195127F29B713D6009D282F /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
+				711782E82E4E7CE20006CE5B /* AsyncButton.swift */,
 				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
 				7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */,
 				7195128029B713EC009D282F /* AdaptiveLabeledContent.swift */,
@@ -607,6 +619,7 @@
 				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				712433A72D78870600709C20 /* StackedButtonStyle.swift */,
 				712433A42D78867300709C20 /* StackedLabelStyle.swift */,
+				711782DB2E4E0E030006CE5B /* LandingView.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -714,6 +727,7 @@
 				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
 				7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */,
 				71FBEE682E4B345700EC1EF0 /* Bundle++.swift */,
+				711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1002,6 +1016,7 @@
 				71F2C3A52ABB366E00E69426 /* Widget.intentdefinition in Sources */,
 				71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */,
 				712433A32D77C02D00709C20 /* Color+toHex.swift in Sources */,
+				711782E52E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71A029B62C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
 				7187147729DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */,
@@ -1058,6 +1073,7 @@
 				719465212C2C1E09008408C0 /* Widget.intentdefinition in Sources */,
 				719465222C2C1E09008408C0 /* AnyLocation.swift in Sources */,
 				712433A22D77C02D00709C20 /* Color+toHex.swift in Sources */,
+				711782E62E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71A029B72C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				719465232C2C1E09008408C0 /* AppStorage++.swift in Sources */,
 				719465242C2C1E09008408C0 /* CLLocationCoordinate2D++.swift in Sources */,
@@ -1135,6 +1151,7 @@
 				7195125829B48ECD009D282F /* TimeZone++.swift in Sources */,
 				7116B1F52DDDE2130018A294 /* VariableBlurView.swift in Sources */,
 				7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */,
+				711782DC2E4E0E030006CE5B /* LandingView.swift in Sources */,
 				71A029AB2C304FFA00E19819 /* EquinoxAndSolsticeInfoWindow.swift in Sources */,
 				717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */,
 				717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */,
@@ -1148,6 +1165,7 @@
 				711782D82E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,
 				712433A92D78870600709C20 /* StackedButtonStyle.swift in Sources */,
 				71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */,
+				711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
 				7116B1EE2DDD12BA0018A294 /* TimeMachineOverlayView.swift in Sources */,
 				7188714329DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */,
@@ -1179,6 +1197,7 @@
 				71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift in Sources */,
 				71A029A92C2E838100E19819 /* EarthSceneKitView.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
+				711782E42E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71F2C3A42ABB366E00E69426 /* Widget.intentdefinition in Sources */,
 				7198469128E5895F00E866CE /* Solstice.xcdatamodeld in Sources */,
 				71A029AF2C3050CA00E19819 /* AnnualSolarEvent.swift in Sources */,
@@ -1199,10 +1218,12 @@
 				71908ACE2AC95A5500C7B610 /* StringBuilder.swift in Sources */,
 				7187147629DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */,
 				7195120129AFBBEC009D282F /* View+EllipticalEdgeMask.swift in Sources */,
+				711782DD2E4E0E030006CE5B /* LandingView.swift in Sources */,
 				719F928829ACD29100C06921 /* ContentView.swift in Sources */,
 				713F7FFA29BE843700BEA156 /* AnnualOverview.swift in Sources */,
 				7132AC1A29E6962D00523215 /* ConditionalGlobals.swift in Sources */,
 				711782DA2E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,
+				711782E72E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
 				719F927B29ACD21A00C06921 /* TimeInterval++.swift in Sources */,
 				719F926D29ACD21300C06921 /* LocationListRow.swift in Sources */,
@@ -1235,6 +1256,7 @@
 				71FBEE6B2E4B345700EC1EF0 /* Bundle++.swift in Sources */,
 				712433992D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				713F800029BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
+				711782E92E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
 				71789AA32C32DBF8002B8A33 /* LocationPermissionScreenerView.swift in Sources */,
 				719F927A29ACD21A00C06921 /* AppStorage++.swift in Sources */,
 				719F927629ACD21A00C06921 /* Solar+SolarEvent.swift in Sources */,

@@ -234,6 +234,9 @@
         }
       }
     },
+    "%@ Welcome to Solstice" : {
+
+    },
     "%@, %@" : {
       "localizations" : {
         "en" : {
@@ -516,6 +519,12 @@
         }
       }
     },
+    "Continue with location" : {
+
+    },
+    "Continue without location" : {
+
+    },
     "Countdown" : {
       "localizations" : {
         "it" : {
@@ -717,6 +726,9 @@
         }
       }
     },
+    "Enable location services" : {
+
+    },
     "Enable location services for Solstice, or choose a location by configuring the widget" : {
       "localizations" : {
         "it" : {
@@ -726,6 +738,9 @@
           }
         }
       }
+    },
+    "Enable location services to see the daylight duration in your current location" : {
+
     },
     "Enable notifications" : {
       "localizations" : {
@@ -806,6 +821,9 @@
           }
         }
       }
+    },
+    "For savouring the minutes you have, or looking forward to the minutes you’ll gain." : {
+
     },
     "future" : {
       "localizations" : {
@@ -949,6 +967,9 @@
           }
         }
       }
+    },
+    "In order for Solstice to calculate the sun’s position, it needs to access your location." : {
+
     },
     "Jump to %@" : {
       "localizations" : {
@@ -1513,6 +1534,9 @@
         }
       }
     },
+    "Select location" : {
+
+    },
     "Send at" : {
       "localizations" : {
         "it" : {
@@ -1684,6 +1708,9 @@
           }
         }
       }
+    },
+    "Solstice tells you how much daylight there is today compared to yesterday." : {
+
     },
     "Sort by" : {
       "localizations" : {

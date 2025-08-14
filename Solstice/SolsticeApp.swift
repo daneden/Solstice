@@ -21,6 +21,7 @@ struct SolsticeApp: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
+				.withAppOnboarding()
 				.environmentObject(currentLocation)
 				.environmentObject(timeMachine)
 				.environmentObject(locationSearchService)

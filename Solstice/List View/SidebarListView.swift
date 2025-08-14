@@ -30,21 +30,6 @@ struct SidebarListView: View {
 	
 	var body: some View {
 		List(selection: $selectedLocation) {
-			if currentLocation.authorizationStatus == .notDetermined {
-				LocationPermissionScreenerView()
-			}
-			
-			if !currentLocation.isAuthorized && items.isEmpty {
-				VStack {
-					Text("No locations")
-						.font(.headline)
-					Text("Search for a location or enable location services")
-				}
-				.frame(maxWidth: .infinity)
-				.multilineTextAlignment(.center)
-				.foregroundStyle(.secondary)
-			}
-			
 			if currentLocation.isAuthorized {
 				LocationListRow(location: currentLocation)
 					.tag(currentLocation.id)
@@ -95,6 +80,15 @@ struct SidebarListView: View {
 				}
 			}
 			.onDelete(perform: deleteItems)
+		}
+		.overlay {
+			if !currentLocation.isAuthorized && items.isEmpty {
+				ContentUnavailableView(
+					"No locations",
+					systemImage: "magnifyingglass",
+					description: Text("Search for a location or enable location services")
+				)
+			}
 		}
 		#if os(iOS)
 		.listRowSpacing(8)
