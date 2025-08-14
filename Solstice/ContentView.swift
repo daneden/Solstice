@@ -13,7 +13,6 @@ struct ContentView: View {
 	@Namespace private var namespace
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
-	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	@Environment(\.managedObjectContext) private var context
 	@Environment(\.openWindow) private var openWindow
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -111,35 +110,27 @@ struct ContentView: View {
 	private var toolbarItems: some ToolbarContent {
 		ToolbarItem(placement: .primaryAction) {
 			Menu {
-				Menu {
-					Picker(selection: $itemSortDimension.animation()) {
-						Text("Timezone")
-							.tag(Preferences.SortingFunction.timezone)
-						
-						Text("Daylight duration")
-							.tag(Preferences.SortingFunction.daylightDuration)
-					} label: {
-						Text("Sort by")
-					}
+				Picker(selection: $itemSortDimension.animation()) {
+					Text("Timezone")
+						.tag(Preferences.SortingFunction.timezone)
 					
-					Picker(selection: $itemSortOrder.animation()) {
-						Text("Ascending")
-							.tag(SortOrder.forward)
-						
-						Text("Descending")
-							.tag(SortOrder.reverse)
-					} label: {
-						Text("Order")
-					}
+					Text("Daylight duration")
+						.tag(Preferences.SortingFunction.daylightDuration)
 				} label: {
-					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+					Text("Sort by")
 				}
 				
-				Toggle(isOn: $showComplication.animation()) {
-					Text("Show chart in list")
+				Picker(selection: $itemSortOrder.animation()) {
+					Text("Ascending")
+						.tag(SortOrder.forward)
+					
+					Text("Descending")
+						.tag(SortOrder.reverse)
+				} label: {
+					Text("Order")
 				}
 			} label: {
-				Label("View options", systemImage: "eye.circle")
+				Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
 			}
 		}
 			

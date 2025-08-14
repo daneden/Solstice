@@ -113,6 +113,7 @@ struct TimeMachineView: View {
 			} maximumValueLabel: {
 				SliderLabel(type: .max)
 			}
+			.labelsHidden()
 		} else {
 			Slider(value: timeMachine.offset,
 						 in: -182...182,

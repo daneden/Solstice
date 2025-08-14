@@ -1615,6 +1615,7 @@
       }
     },
     "Show chart in list" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1957,6 +1958,7 @@
       }
     },
     "View options" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

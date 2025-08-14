@@ -10,22 +10,20 @@ import Solar
 import Suite
 
 struct LocationListRow<Location: ObservableLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@EnvironmentObject private var timeMachine: TimeMachine
 	var location: Location
-	
-	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
 	@State private var showRemainingDaylight = false
 	
-	var solar: Solar? {
+	private var solar: Solar? {
 		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
-	var isCurrentLocation: Bool {
+	private var isCurrentLocation: Bool {
 		location is CurrentLocation
 	}
 	
-	var subtitle: String? {
+	private var subtitle: String? {
 		if location is CurrentLocation && location.title == nil {
 			return "—"
 		} else {
@@ -45,26 +43,6 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					.foregroundStyle(.secondary)
 			}
 			.contentTransition(.identity)
-			
-			if showComplication {
-				DaylightChart(
-					solar: solar,
-					timeZone: location.timeZone,
-					showEventTypes: false,
-					includesSummaryTitle: false,
-					hideXAxis: true,
-					markSize: 2
-				)
-				.frame(width: 36, height: 36)
-				#if !os(watchOS)
-				.background(.ultraThinMaterial)
-				#endif
-				.ellipticalEdgeMask()
-				.transition(
-					.move(edge: .trailing)
-					.combined(with: .opacity)
-				)
-			}
 		}
 	}
 	
