@@ -8,6 +8,14 @@
 import SwiftUI
 import Suite
 
+fileprivate struct SizePreferenceKey: PreferenceKey {
+	static let defaultValue: Double = 0
+	
+	static func reduce(value: inout Double, nextValue: () -> Double) {
+		value = nextValue()
+	}
+}
+
 fileprivate extension View {
 	func animateIn(active: Bool, delay: TimeInterval, speed: Double = 0.6) -> some View {
 		self
@@ -20,10 +28,14 @@ fileprivate extension View {
 }
 
 struct LandingView: View {
+	@Environment(\.dynamicTypeSize) private var dynamicTypeSize
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject private var currentLocation: CurrentLocation
 	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
 	@State private var animate = false
+	
+	@State private var contentSize: CGSize = .zero
+	@State private var bottomButtonSize: CGSize = .zero
 	
 	private var isWatch: Bool {
 		#if os(watchOS)
@@ -33,6 +45,51 @@ struct LandingView: View {
 		#endif
 	}
 	
+	@ViewBuilder
+	private var bottomButtons: some View {
+		VStack {
+			Text("In order for Solstice to calculate the sun’s position, it needs to access your location.")
+				.font(.footnote)
+				.foregroundStyle(.secondary)
+				.foregroundStyle(.white)
+				.blendMode(.plusLighter)
+				.padding(.bottom)
+				.animateIn(active: animate, delay: 1)
+			
+			Button {
+				currentLocation.requestAccess()
+				dismiss()
+			} label: {
+				Label("Continue with location", systemImage: "location.fill")
+					.frame(maxWidth: .infinity)
+			}
+			.glassButtonStyle(.prominent)
+			.animateIn(active: animate, delay: 1.1)
+			
+			Button {
+				dismiss()
+			} label: {
+				Text("Continue without location")
+					.frame(maxWidth: .infinity)
+			}
+			.glassButtonStyle()
+			.animateIn(active: animate, delay: 1.2)
+		}
+		.scenePadding(.horizontal)
+#if os(iOS)
+		.background {
+			VariableBlurView(direction: .blurredBottomClearTop)
+				.ignoresSafeArea()
+		}
+#endif
+		.controlSize(.extraLarge)
+		.readSize($bottomButtonSize)
+	}
+	
+	private var shouldUseCompactDisplay: Bool {
+		dynamicTypeSize < .accessibility2
+	}
+	
     var body: some View {
 			ZStack {
 				SkyGradient()
@@ -40,7 +97,6 @@ struct LandingView: View {
 				
 				ScrollView {
 					VStack(alignment: .leading, spacing: 8) {
-						
 						Text("\(Image(.solstice)) Welcome to Solstice")
 							.font(isWatch ? .headline : .largeTitle)
 							.fontWeight(.semibold)
@@ -57,52 +113,25 @@ struct LandingView: View {
 					.foregroundStyle(.white)
 					.blendMode(.plusLighter)
 					.shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 4)
+					.readSize($contentSize)
+					
+					if shouldUseCompactDisplay {
+						bottomButtons
+					}
 				}
 			}
 			.task {
 				animate = true
 			}
 			.floatingOverlay {
-				VStack {
-					Text("In order for Solstice to calculate the sun’s position, it needs to access your location.")
-						.font(.footnote)
-						.foregroundStyle(.secondary)
-						.foregroundStyle(.white)
-						.blendMode(.plusLighter)
-						.padding(.bottom)
-						.animateIn(active: animate, delay: 1)
-					
-					Button {
-						currentLocation.requestAccess()
-						dismiss()
-					} label: {
-						Label("Continue with location", systemImage: "location.fill")
-							.frame(maxWidth: .infinity)
-					}
-					.glassButtonStyle(.prominent)
-					.animateIn(active: animate, delay: 1.1)
-					
-					Button {
-						dismiss()
-					} label: {
-						Text("Continue without location")
-							.frame(maxWidth: .infinity)
-					}
-					.glassButtonStyle()
-					.animateIn(active: animate, delay: 1.2)
+				if !shouldUseCompactDisplay {
+					bottomButtons
 				}
-				.scenePadding(.horizontal)
-				#if os(iOS)
-				.background {
-					VariableBlurView(direction: .blurredBottomClearTop)
-						.ignoresSafeArea()
-				}
-				#endif
-				.controlSize(.extraLarge)
 			}
 			.onDisappear {
 				hasCompletedOnboarding = true
 			}
+			.preference(key: SizePreferenceKey.self, value: contentSize.height + bottomButtonSize.height)
     }
 }
 
@@ -116,6 +145,8 @@ fileprivate struct WithOnboardingViewModifier: ViewModifier {
 	
 	@State private var shouldPresentOnboarding = false
 	
+	@State private var sheetSize: Double = 0
+	
 	func body(content: Content) -> some View {
 		content
 			.task {
@@ -123,7 +154,10 @@ fileprivate struct WithOnboardingViewModifier: ViewModifier {
 			}
 			.sheet(isPresented: $shouldPresentOnboarding) {
 				LandingView()
-					.presentationDetents([.medium])
+					.onPreferenceChange(SizePreferenceKey.self, perform: { size in
+						sheetSize = size
+					})
+					.presentationDetents([.height(sheetSize)])
 			}
 	}
 }
