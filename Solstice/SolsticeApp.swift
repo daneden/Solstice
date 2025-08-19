@@ -63,7 +63,7 @@ struct SolsticeApp: App {
 		}
 		.defaultSize(width: 600, height: 600)
 		
-		WindowGroup(Text("About Equinox and Solstices")) { _ in
+		WindowGroup(Text("About solstices and equinoxes")) { _ in
 			EquinoxAndSolsticeInfoWindow()
 		} defaultValue: {
 			AnnualSolarEvent.juneSolstice
@@ -79,7 +79,7 @@ struct SolsticeApp: App {
 				.environmentObject(currentLocation)
 		}
 		
-		Window("About Equinox and Solstices", id: "about-equinox-and-solstice") {
+		Window("About solstices and equinoxes", id: "about-equinox-and-solstice") {
 			EquinoxAndSolsticeInfoSheet()
 		}
 		.defaultSize(width: 400, height: 650)

@@ -44,6 +44,16 @@ struct SettingsView: View {
 					NotificationSettings()
 					
 					SupporterSettings()
+					
+					#if os(iOS)
+					Section {
+						NavigationLink {
+							EquinoxAndSolsticeInfoSheet()
+						} label: {
+							Label("About solstices and equinoxes", systemImage: "info.circle")
+						}
+					}
+					#endif
 				}
 				.formStyle(.grouped)
 			}

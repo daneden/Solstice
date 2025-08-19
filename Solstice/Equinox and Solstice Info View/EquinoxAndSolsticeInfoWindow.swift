@@ -12,7 +12,7 @@ struct EquinoxAndSolsticeInfoWindow: View {
 			HStack {
 				ScrollView {
 					VStack(alignment: .leading, spacing: 20) {
-						Text("About Equinox and Solstices")
+						Text("About solstices and equinoxes")
 							.font(.largeTitle.weight(.semibold))
 						EquinoxAndSolsticeDescriptions()
 					}
