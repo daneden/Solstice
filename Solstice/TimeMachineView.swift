@@ -134,7 +134,6 @@ struct TimeMachineView: View {
 						 .tint(Color(UIColor.systemFill))
 							#endif
 						 .foregroundStyle(.secondary)
-						 .labelsHidden()
 		}
 		
 		if showDatePicker {
