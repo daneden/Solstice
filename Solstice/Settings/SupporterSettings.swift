@@ -25,44 +25,42 @@ struct SupporterSettings: View {
 	@State var purchaseInProgress = false
 	
 	var body: some View {
-		Group {
-			if !products.isEmpty {
-				Section(header: Label("Leave a tip", systemImage: "heart")) {
-					if latestTransaction != nil {
-						Text("**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous.")
-							.padding(.vertical, 4)
-					}
-					
-					ForEach(products.sorted { $0.price > $1.price }, id: \.id) { product in
-						HStack {
-							Text(product.displayName)
-							
-							Spacer()
-							
-							Button {
-								Task {
-									self.latestTransaction = try await purchaseProduct(product)
-								}
-							} label: {
-								Text(product.displayPrice)
-							}
-							.buttonStyle(.bordered)
-							#if os(iOS)
-							.buttonBorderShape(.capsule)
-							#endif
-						}
-					}
-				}
-				.symbolRenderingMode(.multicolor)
-				.disabled(purchaseInProgress)
-			}
-			
-			Link(destination: appStoreReviewURL) {
-				Label("Leave a review", systemImage: "star")
-			}
+		Link(destination: appStoreReviewURL) {
+			Label("Leave a review", systemImage: "star")
 		}
 		.task {
 			await fetchProducts()
+		}
+		
+		if !products.isEmpty {
+			Section(header: Label("Leave a tip", systemImage: "heart")) {
+				if latestTransaction != nil {
+					Text("**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous.")
+						.padding(.vertical, 4)
+				}
+				
+				ForEach(products.sorted { $0.price > $1.price }, id: \.id) { product in
+					HStack {
+						Text(product.displayName)
+						
+						Spacer()
+						
+						Button {
+							Task {
+								self.latestTransaction = try await purchaseProduct(product)
+							}
+						} label: {
+							Text(product.displayPrice)
+						}
+						.buttonStyle(.bordered)
+						#if os(iOS)
+						.buttonBorderShape(.capsule)
+						#endif
+					}
+				}
+			}
+			.symbolRenderingMode(.multicolor)
+			.disabled(purchaseInProgress)
 		}
 	}
 	
