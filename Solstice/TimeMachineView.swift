@@ -25,7 +25,6 @@ fileprivate struct SliderLabel: View {
 	var body: some View {
 		Text("\(type.prefix)6mo")
 			.textScale(.secondary)
-			.foregroundStyle(.secondary)
 	}
 }
 
@@ -125,15 +124,17 @@ struct TimeMachineView: View {
 		} else {
 			Slider(value: timeMachine.offset,
 						 in: -182...182,
-						 step: 7,
-						 minimumValueLabel: SliderLabel(type: .min),
-						 maximumValueLabel: SliderLabel(type: .max)) {
+						 step: 7) {
 				Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+			} minimumValueLabel: {
+				SliderLabel(type: .min)
+			} maximumValueLabel: {
+				SliderLabel(type: .max)
 			}
-							#if os(iOS)
-						 .tint(Color(UIColor.systemFill))
-							#endif
-						 .foregroundStyle(.secondary)
+			#if os(iOS)
+		 .tint(Color(UIColor.systemFill))
+			#endif
+		 .labelsVisibility(.visible)
 		}
 		
 		if showDatePicker {
@@ -175,11 +176,9 @@ struct TimeMachineView: View {
 	}
 }
 
-struct TimeMachineView_Previews: PreviewProvider {
-	static var previews: some View {
-		Form {
-			TimeMachineView()
-		}
-		.environmentObject(TimeMachine.preview)
+#Preview {
+	Form {
+		TimeMachineView()
 	}
+	.environmentObject(TimeMachine.preview)
 }
