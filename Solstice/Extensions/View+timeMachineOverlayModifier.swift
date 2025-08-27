@@ -33,7 +33,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 								}
 						}
 				} else {
-					content.floatingOverlay(alignment: .bottom) { overlay }
+					content.backportSafeAreaBar { overlay }
 				}
 			}
 		#endif

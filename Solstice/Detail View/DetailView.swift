@@ -132,7 +132,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		#endif
 		
 		if let location = location as? TemporaryLocation {
-			ToolbarItem {
+			ToolbarItem(placement: .confirmationAction) {
 				Button {
 					dismiss()
 					withAnimation {
@@ -141,7 +141,8 @@ struct DetailView<Location: ObservableLocation>: View {
 						}
 					}
 				} label: {
-					Label("Save Location", systemImage: "plus.circle")
+					Label("Save Location", systemImage: "plus")
+						.backportCircleSymbolVariant()
 				}
 			}
 		}

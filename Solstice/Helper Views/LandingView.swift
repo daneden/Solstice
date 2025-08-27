@@ -123,7 +123,7 @@ struct LandingView: View {
 			.task {
 				animate = true
 			}
-			.floatingOverlay {
+			.backportSafeAreaBar {
 				if !shouldUseCompactDisplay {
 					bottomButtons
 				}

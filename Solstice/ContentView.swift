@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import Solar
+import Suite
 
 struct ContentView: View {
 	@Namespace private var namespace
@@ -130,7 +131,8 @@ struct ContentView: View {
 					Text("Order")
 				}
 			} label: {
-				Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+				Label("Sort locations", systemImage: "arrow.up.arrow.down")
+					.backportCircleSymbolVariant()
 			}
 		}
 			
@@ -150,6 +152,7 @@ struct ContentView: View {
 			} label: {
 				Label("Settings", systemImage: "ellipsis")
 			}
+			.backportCircleSymbolVariant()
 		}
 #endif
 	}
