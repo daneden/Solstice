@@ -55,6 +55,9 @@ struct SettingsView: View {
 					}
 					#endif
 				}
+				#if os(visionOS)
+				.navigationTitle("Settings")
+				#endif
 				.formStyle(.grouped)
 			}
 			#if !os(macOS)
