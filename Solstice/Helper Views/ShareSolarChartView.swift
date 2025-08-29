@@ -73,7 +73,9 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					} label: {
 						Text("Chart appearance")
 					}
+					#if !os(watchOS)
 					.pickerStyle(.segmented)
+					#endif
 					
 					VStack {
 						if let chartRenderedAsImage {
@@ -129,10 +131,14 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 							}
 						}
 						.foregroundStyle(.tint)
+						#if !os(watchOS)
 						.listRowSeparator(.visible)
+						#endif
 					}
 				}
+				#if !os(watchOS)
 				.listRowSeparator(.hidden)
+				#endif
 				
 			}
 			.listStyle(.plain)

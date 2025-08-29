@@ -264,6 +264,7 @@
 		71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
 		71F2C3A42ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
 		71F2C3A52ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
+		71F58A412E617E08007A5E45 /* ShareSolarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339C2D77B06900709C20 /* ShareSolarChartView.swift */; };
 		71F641B729994DD900FE5AB5 /* LocationListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* LocationListRow.swift */; };
 		71F641BB2999631D00FE5AB5 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
 		71F641BD299968BF00FE5AB5 /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
@@ -1241,6 +1242,7 @@
 				7195125929B48ECD009D282F /* TimeZone++.swift in Sources */,
 				719F927929ACD21A00C06921 /* Date++.swift in Sources */,
 				719F927729ACD21A00C06921 /* View+CapsuleAppearance.swift in Sources */,
+				71F58A412E617E08007A5E45 /* ShareSolarChartView.swift in Sources */,
 				719F927F29ACD22100C06921 /* NotificationManager.swift in Sources */,
 				71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */,
 				7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */,

@@ -80,13 +80,11 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 		#endif
-		#if !os(watchOS)
 		.sheet(isPresented: $showShareSheet) {
 			if let solar {
 				ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
 			}
 		}
-		#endif
 	}
 	
 	var toolbarItemPlacement: ToolbarItemPlacement {
