@@ -57,6 +57,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					Text(timeMachine.date, style: .time)
 						.environment(\.timeZone, location.timeZone)
 						.foregroundStyle(.secondary)
+						.contentTransition(.numericText())
 				}
 			}
 			
@@ -64,14 +65,17 @@ struct LocationListRow<Location: ObservableLocation>: View {
 				Group {
 					Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
 						.font(.headline)
+						.contentTransition(.numericText())
 					Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 						.font(.footnote.weight(.light))
 						.foregroundStyle(.secondary)
+						.contentTransition(.numericText())
 				}
 			}
 		}
 		.animation(.default, value: location.title)
 		.animation(.default, value: location.subtitle)
+		.animation(.default, value: timeMachine.date)
 		.shadow(radius: 4, x: 0, y: 2)
 		#else
 		HStack {

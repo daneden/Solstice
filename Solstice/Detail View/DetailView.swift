@@ -97,32 +97,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
-		#if os(watchOS)
-		ToolbarItem(id: "timeMachineToggle", placement: toolbarItemPlacement) {
-			Button {
-				timeMachine.controlsVisible.toggle()
-			} label: {
-				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-			}
-			.sheet(isPresented: $timeMachine.controlsVisible) {
-				Form {
-					TimeMachineView()
-				}
-				.toolbar {
-					ToolbarItem(placement: .cancellationAction) {
-						Button {
-							timeMachine.controlsVisible.toggle()
-						} label: {
-							Label("Close", systemImage: "xmark")
-						}
-					}
-				}
-			}
-		}
-		#endif
-		
 		#if !os(macOS)
-		ToolbarItem {
+		ToolbarItem(placement: .topBarTrailing) {
 			Button("Share...", systemImage: "square.and.arrow.up") {
 				showShareSheet.toggle()
 			}

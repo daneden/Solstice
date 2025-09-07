@@ -73,6 +73,7 @@ struct ContentView: View {
 				}
 			}
 			.navigationTitle(Text(verbatim: "Solstice"))
+			.timeTravelToolbar()
 		} detail: {
 			switch selectedLocation {
 			case currentLocation.id:
@@ -82,6 +83,7 @@ struct ContentView: View {
 							solar.view
 						}
 					}
+					.timeTravelToolbar()
 			case .some(let id):
 				if let item = items.first(where: { $0.uuid?.uuidString == id }) {
 					DetailView(location: item)
@@ -90,6 +92,7 @@ struct ContentView: View {
 								solar.view
 							}
 						}
+						.timeTravelToolbar()
 				} else {
 					placeholderView
 				}

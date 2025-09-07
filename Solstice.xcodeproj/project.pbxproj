@@ -93,6 +93,7 @@
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
+		716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */; };
 		71691B892C2E816A00E4ED96 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71691B882C2E816A00E4ED96 /* RealityKitContent */; };
 		71691B8B2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */; };
 		71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */ = {isa = PBXBuildFile; fileRef = 71691B9E2C2E827200E4ED96 /* RealityKitContent */; platformFilters = (xros, ); };
@@ -380,6 +381,7 @@
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
+		716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelToolbar.swift; sourceTree = "<group>"; };
 		71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemMiniMap.swift; sourceTree = "<group>"; };
 		71691B9E2C2E827200E4ED96 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		716BE04F2C2E752F004DDCBC /* DeepLinkResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkResolver.swift; sourceTree = "<group>"; };
@@ -782,6 +784,7 @@
 				713F7FF529BE054400BEA156 /* Solstice.entitlements */,
 				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
 				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
+				716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */,
 			);
 			path = watchOS;
 			sourceTree = "<group>";
@@ -1236,6 +1239,7 @@
 				713F7FF629BE091D00BEA156 /* TimeMachineView.swift in Sources */,
 				712433A52D78867300709C20 /* StackedLabelStyle.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
+				716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
 				71A029B52C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				716BE0512C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */,

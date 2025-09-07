@@ -1894,6 +1894,26 @@
         }
       }
     },
+    "Time travel 1 week earlier" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viaggio nel tempo 1 settimana prima"
+          }
+        }
+      }
+    },
+    "Time travel 1 week later" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viaggio nel tempo 1 settimana dopo"
+          }
+        }
+      }
+    },
     "Time until next solstice" : {
       "localizations" : {
         "it" : {
