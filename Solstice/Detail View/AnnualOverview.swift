@@ -48,7 +48,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	var body: some View {
 		Section {
 			Group {
-				AdaptiveLabeledContent {
+				LabeledContent {
 					ContentToggle { showContent in
 						if showContent {
 							Text(nextSolstice.startOfDay, style: .date)
@@ -66,11 +66,11 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							timeMachine.targetDate = nextSolstice
 						}
 					} label: {
-						Label("Jump to \(nextSolstice, style: .date)", systemImage: "clock.arrow.2.circlepath")
+						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
 				
-				AdaptiveLabeledContent {
+				LabeledContent {
 					ContentToggle { showContent in
 						if showContent {
 							Text(nextEquinox, style: .date)
@@ -87,7 +87,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							timeMachine.targetDate = nextEquinox
 						}
 					} label: {
-						Label("Jump to \(nextEquinox, style: .date)", systemImage: "clock.arrow.2.circlepath")
+						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 					}
 					.backgroundStyle(.tint)
 				}
@@ -143,6 +143,22 @@ struct AnnualOverview<Location: AnyLocation>: View {
 							Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
 						}
 					}
+			}
+			
+			if let daylightSavingsChange = location.timeZone.nextDaylightSavingTimeTransition(after: timeMachine.date) {
+				LabeledContent {
+					Text(daylightSavingsChange, style: .date)
+				} label: {
+					Label {
+						if location.timeZone.isDaylightSavingTime(for: timeMachine.date) {
+							Text("Daylight savings ends")
+						} else {
+							Text("Daylight savings begins")
+						}
+					} icon: {
+						Image(.daylightsavings)
+					}
+				}
 			}
 		}
 		.materialListRowBackground()

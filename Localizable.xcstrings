@@ -666,6 +666,26 @@
         }
       }
     },
+    "Daylight savings begins" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia l'ora legale"
+          }
+        }
+      }
+    },
+    "Daylight savings ends" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'ora legale termina"
+          }
+        }
+      }
+    },
     "Daylight today" : {
       "localizations" : {
         "it" : {
@@ -1026,6 +1046,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vai al %@"
+          }
+        }
+      }
+    },
+    "Jump to date" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vai alla data"
           }
         }
       }
