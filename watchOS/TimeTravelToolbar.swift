@@ -24,10 +24,13 @@ struct TimeTravelToolbar: ViewModifier{
 						Spacer(minLength: 0)
 						
 						if timeMachine.enabled {
-							Button("Reset") {
+							Button {
 								withAnimation {
 									timeMachine.offset.wrappedValue = 0
 								}
+							} label: {
+								Text("Reset")
+									.frame(maxWidth: .infinity)
 							}
 						}
 						

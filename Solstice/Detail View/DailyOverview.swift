@@ -71,14 +71,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.environment(\.timeZone, location.timeZone)
 			
 			Group {
-				AdaptiveLabeledContent {
+				LabeledContent {
 					Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
 				} label: {
 					Label("Total daylight", systemImage: "hourglass")
 				}
 				
 				if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
-					AdaptiveLabeledContent {
+					LabeledContent {
 						Text(timerInterval: solar.safeSunrise...solar.safeSunset)
 							.monospacedDigit()
 					} label: {
@@ -86,7 +86,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 					}
 				}
 				
-				AdaptiveLabeledContent {
+				LabeledContent {
 					if let sunrise = solar.sunrise {
 						Text(sunrise, style: .time)
 					} else {
@@ -96,7 +96,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Label("Sunrise", systemImage: "sunrise")
 				}
 				
-				AdaptiveLabeledContent {
+				LabeledContent {
 					if let solarNoon = solar.solarNoon {
 						Text(solarNoon, style: .time)
 					} else {
@@ -106,7 +106,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Label("Solar noon", systemImage: "sun.max")
 				}
 				
-				AdaptiveLabeledContent {
+				LabeledContent {
 					if let sunset = solar.sunset {
 						Text(sunset, style: .time)
 					} else {

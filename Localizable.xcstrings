@@ -1041,6 +1041,7 @@
       }
     },
     "Jump to %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1655,6 +1656,7 @@
       }
     },
     "Set up" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

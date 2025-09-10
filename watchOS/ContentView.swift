@@ -31,10 +31,6 @@ struct ContentView: View {
 	var body: some View {
 		NavigationSplitView {
 			List(selection: $selectedLocation) {
-				if currentLocation.authorizationStatus == .notDetermined {
-					LocationPermissionScreenerView()
-				}
-				
 				Section {
 					if !currentLocation.isAuthorized && items.isEmpty {
 						VStack {

@@ -98,7 +98,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			
 			if let shortestDay,
 				 let longestDay {
-					StackedLabeledContent {
+					LabeledContent {
 						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 						
 						ContentToggle { showContent in
@@ -117,11 +117,11 @@ struct AnnualOverview<Location: AnyLocation>: View {
 								timeMachine.targetDate = longestDay.date
 							}
 						} label: {
-							Label("Jump to \(longestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
+							Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 						}
 					}
 					
-					StackedLabeledContent {
+					LabeledContent {
 						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 						
 						ContentToggle { showContent in
@@ -140,7 +140,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 								timeMachine.targetDate = shortestDay.date
 							}
 						} label: {
-							Label("Jump to \(shortestDay.date, style: .date)", systemImage: "clock.arrow.2.circlepath")
+							Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 						}
 					}
 			}
@@ -157,6 +157,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						}
 					} icon: {
 						Image(.daylightsavings)
+							.imageScale(.large)
 					}
 				}
 			}
