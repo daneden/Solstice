@@ -8,24 +8,58 @@
 import SwiftUI
 
 struct SettingsView: View {
-	@Environment(\.dismiss) var dismiss
+	@Environment(\.dismiss) private var dismiss
+	@Environment(\.openURL) private var openURL
+	@EnvironmentObject private var currentLocation: CurrentLocation
 	
     var body: some View {
-			TabView {
-				NotificationSettings()
-					.frame(idealWidth: 300, idealHeight: 400)
-					.tabItem {
-						Label("Notifications", systemImage: "app.badge")
+			NavigationStack {
+				Form {
+					Section {
+						AboutSolsticeView()
 					}
-				
-				SupporterSettings()
-					.frame(idealWidth: 300, idealHeight: 600)
-					.tabItem {
-						Label("About Solstice", systemImage: "heart")
+					
+					if !currentLocation.isAuthorized {
+						Section {
+							Button("Enable location services", systemImage: "location") {
+								switch currentLocation.authorizationStatus {
+								case .notDetermined:
+									currentLocation.requestAccess()
+								case .restricted, .denied:
+									#if !os(macOS)
+									if let url = URL(string: UIApplication.openSettingsURLString) {
+										openURL(url)
+									}
+									#else
+									return
+									#endif
+								default: return
+								}
+							}
+						} footer: {
+							Text("Enable location services to see the daylight duration in your current location")
+						}
 					}
+					
+					NotificationSettings()
+					
+					SupporterSettings()
+					
+					#if os(iOS)
+					Section {
+						NavigationLink {
+							EquinoxAndSolsticeInfoSheet()
+						} label: {
+							Label("About solstices and equinoxes", systemImage: "info.circle")
+						}
+					}
+					#endif
+				}
+				#if os(visionOS)
+				.navigationTitle("Settings")
+				#endif
+				.formStyle(.grouped)
 			}
-			.formStyle(.grouped)
-			.navigationTitle("Settings")
 			#if !os(macOS)
 			.toolbar {
 				Button {

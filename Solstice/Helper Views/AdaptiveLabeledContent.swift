@@ -51,19 +51,19 @@ struct AdaptiveLabeledContent<Label: View, Content: View>: View {
 	
 	var body: some View {
 		ViewThatFits {
-			#if !os(watchOS)
 			LabeledContent {
 				content()
 			} label: {
 				label()
 			}
-			#endif
 			
+			#if os(watchOS)
 			StackedLabeledContent {
 				content()
 			} label: {
 				label()
 			}
+			#endif
 		}
 	}
 }

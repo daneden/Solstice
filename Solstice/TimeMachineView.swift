@@ -6,8 +6,30 @@
 //
 
 import SwiftUI
+import Suite
+
+fileprivate struct SliderLabel: View {
+	enum LabelType {
+		case min, max
+		
+		var prefix: String {
+			switch self {
+			case .min: return "-"
+			case .max: return "+"
+			}
+		}
+	}
+	
+	let type: LabelType
+	
+	var body: some View {
+		Text("\(type.prefix)6mo")
+			.textScale(.secondary)
+	}
+}
 
 struct TimeMachineView: View {
+	@Environment(\.dynamicTypeSize) private var dynamicTypeSize
 	@EnvironmentObject var timeMachine: TimeMachine
 	
 	@State private var date = Date()
@@ -45,7 +67,7 @@ struct TimeMachineView: View {
 							let date = Text(timeMachine.date, style: .date)
 							let label = Text("Time Travel")
 							
-							Text("\(timeMachine.enabled ? date : label)")
+							Text("\(timeMachine.enabled && !showDatePicker ? date : label)")
 								.monospacedDigit()
 						}
 						
@@ -61,6 +83,9 @@ struct TimeMachineView: View {
 				}
 				.accessibilityLabel("Toggle advanced time travel controls")
 			}
+			.if(dynamicTypeSize > .xxLarge) {
+				$0.labelStyle(.titleOnly)
+			}
 			.tint(.primary)
 			.fontWeight(.medium)
 			#if os(visionOS)
@@ -74,39 +99,52 @@ struct TimeMachineView: View {
 					timeMachine.offset.wrappedValue = 0
 				}
 			}
+			.if(dynamicTypeSize > .xxLarge) {
+				$0.labelStyle(.iconOnly)
+			}
 			.fontWeight(.medium)
 			.disabled(!timeMachine.enabled)
 		}
 		#endif
 		
 		#if !os(watchOS)
-		Slider(value: timeMachine.offset,
-					 in: -182...182,
-					 step: 7,
-					 minimumValueLabel: Text("-6mo").font(.footnote).monospaced(),
-					 maximumValueLabel: Text("+6mo").font(.footnote).monospaced()) {
-			Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+		if #available(iOS 26, visionOS 26, macOS 26, *) {
+			Slider(value: timeMachine.offset,
+						 in: -182...182,
+						 neutralValue: 0) {
+				Text("Time Travel")
+			} currentValueLabel: {
+				Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+			} minimumValueLabel: {
+				SliderLabel(type: .min)
+			} maximumValueLabel: {
+				SliderLabel(type: .max)
+			}
+			.labelsHidden()
+		} else {
+			Slider(value: timeMachine.offset,
+						 in: -182...182,
+						 step: 7) {
+				Text("\(Int(abs(timeMachine.offset.wrappedValue))) days in the \(timeMachine.offset.wrappedValue > 0 ? Text("future") : Text("past"))")
+			} minimumValueLabel: {
+				SliderLabel(type: .min)
+			} maximumValueLabel: {
+				SliderLabel(type: .max)
+			}
+			#if os(iOS)
+		 .tint(Color(UIColor.systemFill))
+			#endif
+		 .labelsVisibility(.visible)
 		}
-						#if os(iOS)
-					 .tint(Color(UIColor.systemFill))
-						#endif
-					 .foregroundStyle(.secondary)
-					 .labelsHidden()
-		#if !os(visionOS)
-					 .sensoryFeedback(trigger: timeMachine.offsetAmount) { oldValue, newValue in
-						 if newValue == 0 {
-							 return .impact
-						 } else {
-							 return newValue > oldValue ? .increase : .decrease
-						 }
-					 }
-		#endif
 		
 		if showDatePicker {
 			DatePicker(selection: $timeMachine.targetDate.animation(), displayedComponents: [.date]) {
 				Text("Choose date")
 			}
 			.transition(.blurReplace.combined(with: .move(edge: .bottom)))
+			.if(dynamicTypeSize > .xLarge) {
+				$0.labelsHidden()
+			}
 		}
 		#else
 		Stepper(
@@ -138,11 +176,9 @@ struct TimeMachineView: View {
 	}
 }
 
-struct TimeMachineView_Previews: PreviewProvider {
-	static var previews: some View {
-		Form {
-			TimeMachineView()
-		}
-		.environmentObject(TimeMachine.preview)
+#Preview {
+	Form {
+		TimeMachineView()
 	}
+	.environmentObject(TimeMachine.preview)
 }

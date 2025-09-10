@@ -9,8 +9,6 @@ import SwiftUI
 import Suite
 
 struct TimeMachineOverlayView: View {
-	@Environment(\.horizontalSizeClass) var horizontalSizeClass
-	
 	var body: some View {
 		VStack {
 			TimeMachineView()
@@ -19,17 +17,36 @@ struct TimeMachineOverlayView: View {
 			#endif
 		}
 		.padding()
+		.clipped()
 		#if os(visionOS)
 		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
 		#else
-		.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
-		.clipped()
-		.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
+		.modify { content in
+				if #available(iOS 26, macOS 26, *) {
+					content.glassEffect(in: .rect(cornerRadius: 24, style: .continuous))
+				} else {
+					content
+						.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
+						.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
+				}
+			}
 		.scenePadding(.horizontal)
+		#if os(iOS)
+		.background {
+			VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
+				.background {
+					Color.clear
+						.background()
+						.opacity(0.2)
+						.mask(LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom))
+				}
+				.ignoresSafeArea()
+		}
+		#endif
 		.scenePadding(.top)
+		#endif
 		#if os(macOS)
 		.scenePadding(.bottom)
-		#endif
 		#endif
 	}
 }

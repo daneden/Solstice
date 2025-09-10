@@ -31,3 +31,11 @@ struct OverviewWidget: Widget {
 		.supportedFamilies(OverviewWidget.supportedFamilies)
 	}
 }
+
+#if os(iOS)
+#Preview(as: .systemMedium) {
+	OverviewWidget()
+} timeline: {
+	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
+}
+#endif

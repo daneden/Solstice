@@ -23,9 +23,14 @@ struct DetailView<Location: ObservableLocation>: View {
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	#endif
 	@State private var showRemainingDaylight = false
+	@State private var showShareSheet = false
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
+	
+	var solar: Solar? {
+		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	}
 	
 	var navBarTitleText: Text {
 		guard let title = location.title else {
@@ -36,110 +41,72 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 	
 	var body: some View {
-		ScrollViewReader { scrollProxy in
-			Form {
-				if let solar {
-					DailyOverview(solar: solar, location: location)
-				} else {
-					ProgressView {
-						HStack {
-							Spacer()
-							Text("Calculating...")
-							Spacer()
-						}
-						.padding()
-					}
-				}
-				
-				AnnualOverview(location: location)
-				#if os(watchOS)
-					.padding(.vertical, 8)
-				#endif
-			}
-			.formStyle(.grouped)
-			.navigationTitle(navBarTitleText)
-			.toolbar {
-				toolbarItems
+		Form {
+			if let solar {
+				DailyOverview(solar: solar, location: location)
 			}
 			
-			.userActivity(Self.userActivity) { userActivity in
-				var navigationSelection: String? = nil
-				
-				if let location = location as? SavedLocation {
-					navigationSelection = location.uuid?.uuidString
-				} else if let location = location as? CurrentLocation {
-					navigationSelection = location.id
-				}
-				
-				userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
-				
-				userActivity.targetContentIdentifier = navigationSelection
-				userActivity.isEligibleForSearch = true
-				userActivity.isEligibleForHandoff = false
-			}
-			#if os(watchOS)
-			.modify {
-				if #available(watchOS 10, *) {
-					if let solar {
-						$0.containerBackground(
-							SkyGradient(solar: solar),
-							for: .navigation
-						)
-					} else {
-						$0
-					}
-				} else {
-					$0
-				}
-			}
-			#endif
+			AnnualOverview(location: location)
 		}
-	}
-	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+		.formStyle(.grouped)
+		.navigationTitle(navBarTitleText)
+		.toolbar {
+			toolbarItems
+		}
+		.userActivity(Self.userActivity) { userActivity in
+			var navigationSelection: String? = nil
+			
+			if let location = location as? SavedLocation {
+				navigationSelection = location.uuid?.uuidString
+			} else if let location = location as? CurrentLocation {
+				navigationSelection = location.id
+			}
+			
+			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+			
+			userActivity.targetContentIdentifier = navigationSelection
+			userActivity.isEligibleForSearch = true
+			userActivity.isEligibleForHandoff = false
+		}
+		#if os(watchOS)
+		.modify {
+			if let solar {
+				$0.containerBackground(
+					SkyGradient(solar: solar),
+					for: .navigation
+				)
+			} else {
+				$0
+			}
+		}
+		#endif
+		.sheet(isPresented: $showShareSheet) {
+			if let solar {
+				ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+			}
+		}
 	}
 	
 	var toolbarItemPlacement: ToolbarItemPlacement {
 		#if os(macOS)
 		return .automatic
 		#else
-		if #available(watchOS 10, *) {
-			return .topBarTrailing
-		} else {
-			return .automatic
-		}
+		return .topBarTrailing
 		#endif
 	}
 	
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
-		#if os(watchOS)
-		ToolbarItem(id: "timeMachineToggle", placement: toolbarItemPlacement) {
-			Button {
-				timeMachine.controlsVisible.toggle()
-			} label: {
-				Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-			}
-			.sheet(isPresented: $timeMachine.controlsVisible) {
-				Form {
-					TimeMachineView()
-				}
-				.toolbar {
-					ToolbarItem(placement: .cancellationAction) {
-						Button {
-							timeMachine.controlsVisible.toggle()
-						} label: {
-							Label("Close", systemImage: "xmark")
-						}
-					}
-				}
+		#if !os(macOS)
+		ToolbarItem(placement: .topBarTrailing) {
+			Button("Share...", systemImage: "square.and.arrow.up") {
+				showShareSheet.toggle()
 			}
 		}
 		#endif
 		
 		if let location = location as? TemporaryLocation {
-			ToolbarItem {
+			ToolbarItem(placement: .confirmationAction) {
 				Button {
 					dismiss()
 					withAnimation {
@@ -148,7 +115,8 @@ struct DetailView<Location: ObservableLocation>: View {
 						}
 					}
 				} label: {
-					Label("Save Location", systemImage: "plus.circle")
+					Label("Save Location", systemImage: "plus")
+						.backportCircleSymbolVariant()
 				}
 			}
 		}

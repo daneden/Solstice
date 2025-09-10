@@ -73,7 +73,9 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					} label: {
 						Text("Chart appearance")
 					}
+					#if !os(watchOS)
 					.pickerStyle(.segmented)
+					#endif
 					
 					VStack {
 						if let chartRenderedAsImage {
@@ -91,14 +93,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					
 					Toggle(isOn: $showLocationName) {
 						Label("Show location", systemImage: showLocationName ? "location" : "location.slash")
-							.modify { view in
-								if #available(iOS 17, macOS 14, watchOS 10, *) {
-									view
-										.contentTransition(.symbolEffect(.replace))
-								} else {
-									view
-								}
-							}
+							.contentTransition(.symbolEffect(.replace))
 					}
 					
 					Section {
@@ -136,10 +131,14 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 							}
 						}
 						.foregroundStyle(.tint)
+						#if !os(watchOS)
 						.listRowSeparator(.visible)
+						#endif
 					}
 				}
+				#if !os(watchOS)
 				.listRowSeparator(.hidden)
+				#endif
 				
 			}
 			.listStyle(.plain)

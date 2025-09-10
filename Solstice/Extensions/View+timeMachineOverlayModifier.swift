@@ -10,6 +10,7 @@ import Suite
 
 struct TimeMachineOverlayModifier: ViewModifier {
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
+	@State private var size = CGSize.zero
 	
 	func body(content: Content) -> some View {
 		content
@@ -18,21 +19,33 @@ struct TimeMachineOverlayModifier: ViewModifier {
 				TimeMachineOverlayView()
 			}
 		#else
-			.floatingOverlay(alignment: .bottom) {
-				switch horizontalSizeClass {
-				case .regular:
-					TimeMachineDraggableOverlayView()
-				default:
-					TimeMachineOverlayView()
-						#if os(iOS)
-						.background {
-							VariableBlurView(maxBlurRadius: 10, direction: .blurredBottomClearTop)
-								.ignoresSafeArea(.container, edges: .bottom)
+			.modify { content in
+				if #available(iOS 26, macOS 26, *) {
+					content
+						.contentMargins(.bottom, size.height, for: .automatic)
+						.safeAreaBar(edge: .bottom) {
+							overlay
+								.overlay {
+									GeometryReader { g in
+										Color.clear
+											.task(id: g.size) { size = g.size }
+									}
+								}
 						}
-						#endif
+				} else {
+					content.backportSafeAreaBar { overlay }
 				}
 			}
 		#endif
+	}
+	
+	@ViewBuilder var overlay: some View {
+		switch horizontalSizeClass {
+		case .regular:
+			TimeMachineDraggableOverlayView()
+		default:
+			TimeMachineOverlayView()
+		}
 	}
 }
 

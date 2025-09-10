@@ -10,22 +10,20 @@ import Solar
 import Suite
 
 struct LocationListRow<Location: ObservableLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
-	@ObservedObject var location: Location
-	
-	@AppStorage(Preferences.listViewShowComplication) private var showComplication
+	@EnvironmentObject private var timeMachine: TimeMachine
+	var location: Location
 	
 	@State private var showRemainingDaylight = false
 	
-	var solar: Solar? {
+	private var solar: Solar? {
 		Solar(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
-	var isCurrentLocation: Bool {
+	private var isCurrentLocation: Bool {
 		location is CurrentLocation
 	}
 	
-	var subtitle: String? {
+	private var subtitle: String? {
 		if location is CurrentLocation && location.title == nil {
 			return "—"
 		} else {
@@ -38,32 +36,13 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		if let solar {
 			VStack(alignment: .trailing) {
 				Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
-					.foregroundStyle(.secondary)
+				#if os(iOS)
+					.font(.headline)
+				#endif
 				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
-					.font(.footnote)
-					.foregroundStyle(.tertiary)
+					.foregroundStyle(.secondary)
 			}
 			.contentTransition(.identity)
-			
-			if showComplication {
-				DaylightChart(
-					solar: solar,
-					timeZone: location.timeZone,
-					showEventTypes: false,
-					includesSummaryTitle: false,
-					hideXAxis: true,
-					markSize: 2
-				)
-				.frame(width: 36, height: 36)
-				#if !os(watchOS)
-				.background(.ultraThinMaterial)
-				#endif
-				.ellipticalEdgeMask()
-				.transition(
-					.move(edge: .trailing)
-					.combined(with: .opacity)
-				)
-			}
 		}
 	}
 	
@@ -78,36 +57,52 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					Text(timeMachine.date, style: .time)
 						.environment(\.timeZone, location.timeZone)
 						.foregroundStyle(.secondary)
+						.contentTransition(.numericText())
 				}
 			}
 			
 			if let solar {
 				Group {
 					Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
-						.font(.title3)
+						.font(.headline)
+						.contentTransition(.numericText())
 					Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 						.font(.footnote.weight(.light))
 						.foregroundStyle(.secondary)
+						.contentTransition(.numericText())
 				}
 			}
 		}
 		.animation(.default, value: location.title)
 		.animation(.default, value: location.subtitle)
+		.animation(.default, value: timeMachine.date)
 		.shadow(radius: 4, x: 0, y: 2)
 		#else
-			HStack {
-				VStack(alignment: .leading, spacing: 2) {
-					locationTitleLabel
-					locationSubtitleLabel
-				}
-				.animation(.default, value: location.title)
-				.animation(.default, value: location.subtitle)
-				
-				Spacer()
-				
-				trailingContent
+		HStack {
+			VStack(alignment: .leading, spacing: 2) {
+				locationTitleLabel
+				locationSubtitleLabel
 			}
-		.padding(.vertical, 4)
+			.animation(.default, value: location.title)
+			.animation(.default, value: location.subtitle)
+			
+			Spacer()
+			
+			trailingContent
+		}
+		#if os(iOS)
+		.foregroundStyle(.white)
+		.fontWeight(.medium)
+		.blendMode(.plusLighter)
+		.shadow(color: .black.opacity(0.3), radius: 6, y: 2)
+		.padding()
+		.background {
+			solar?.view.clipShape(.rect(cornerRadius: 20, style: .continuous))
+		}
+		.listRowSeparator(.hidden)
+		.listRowBackground(Color.clear)
+		.listRowInsets(.zero)
+		#endif
 		#endif
 	}
 	
@@ -129,15 +124,13 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					Text("Current location")
 				}
 			}
-			.modify { content in
-				if #available(iOS 17, macOS 14, watchOS 10, *) {
-					content.transition(.blurReplace)
-				} else {
-					content.transition(.scale)
-				}
-			}
+			.transition(.blurReplace)
 			.lineLimit(2)
 		}
+		.font(.headline)
+		#if os(iOS)
+		.fontWeight(.bold)
+		#endif
 	}
 	
 	@ViewBuilder
@@ -147,16 +140,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			Text(subtitle)
 				.id(subtitle)
 				.foregroundStyle(.secondary)
-				.font(.footnote)
-				.modify { content in
-					if #available(iOS 17, macOS 14, watchOS 10, *) {
-						content.transition(.blurReplace)
-					} else {
-						content.transition(.scale)
-					}
-				}
-		} else {
-			EmptyView()
+				.transition(.blurReplace)
 		}
 	}
 }

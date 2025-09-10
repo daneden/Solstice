@@ -29,81 +29,78 @@ struct ContentView: View {
 	}
 	
 	var body: some View {
-		Group {
-			if #available(watchOS 10, *) {
-				NavigationSplitView {
-					List(selection: $selectedLocation) {
-						if currentLocation.authorizationStatus == .notDetermined {
-							LocationPermissionScreenerView()
-						}
-						
-						Section {
-							if !currentLocation.isAuthorized && items.isEmpty {
-								VStack {
-									Text("No locations")
-										.font(.headline)
-									Text("Search for a location or enable location services")
-								}
-								.frame(maxWidth: .infinity)
-								.multilineTextAlignment(.center)
-								.foregroundStyle(.secondary)
-							}
-							
-							if currentLocation.isAuthorized {
-								LocationListRow(location: currentLocation)
-									.tag(currentLocation.id)
-									.listRowBackground(
-										Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
-											.view
-											.clipShape(.buttonBorder)
-									)
-							}
-							
-							ForEach(sortedItems) { item in
-								if let tag = item.uuid?.uuidString {
-									LocationListRow(location: item)
-										.tag(tag)
-										.listRowBackground(
-											Solar(for: timeMachine.date, coordinate: item.coordinate)?
-												.view
-												.clipShape(.buttonBorder)
-										)
-								}
-							}
-						} footer: {
-							Text("Locations are synced via iCloud. Delete or add new locations by using Solstice on Mac, iPhone, iPad, or Apple Vision Pro")
-						}
-					}
-					.navigationTitle(Text(verbatim: "Solstice"))
-				} detail: {
-					switch selectedLocation {
-					case currentLocation.id:
-						DetailView(location: currentLocation)
-							.containerBackground(for: .navigation) {
-								if let solar = Solar(for: timeMachine.date, coordinate: currentLocation.coordinate) {
-									solar.view
-								}
-							}
-					case .some(let id):
-						if let item = items.first(where: { $0.uuid?.uuidString == id }) {
-							DetailView(location: item)
-								.containerBackground(for: .navigation) {
-									if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
-										solar.view
-									}
-								}
-						} else {
-							placeholderView
-						}
-					case .none:
-						placeholderView
-					}
+		NavigationSplitView {
+			List(selection: $selectedLocation) {
+				if currentLocation.authorizationStatus == .notDetermined {
+					LocationPermissionScreenerView()
 				}
-				.resolveDeepLink(sortedItems)
-			} else {
-				fallbackBody
+				
+				Section {
+					if !currentLocation.isAuthorized && items.isEmpty {
+						VStack {
+							Text("No locations")
+								.font(.headline)
+							Text("Search for a location or enable location services")
+						}
+						.frame(maxWidth: .infinity)
+						.multilineTextAlignment(.center)
+						.foregroundStyle(.secondary)
+					}
+					
+					if currentLocation.isAuthorized {
+						LocationListRow(location: currentLocation)
+							.tag(currentLocation.id)
+							.listRowBackground(
+								Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
+									.view
+									.clipShape(.rect(cornerRadius: 20, style: .continuous))
+							)
+					}
+					
+					ForEach(sortedItems) { item in
+						if let tag = item.uuid?.uuidString {
+							LocationListRow(location: item)
+								.tag(tag)
+								.listRowBackground(
+									Solar(for: timeMachine.date, coordinate: item.coordinate)?
+										.view
+										.clipShape(.rect(cornerRadius: 20, style: .continuous))
+								)
+						}
+					}
+				} footer: {
+					Text("Locations are synced via iCloud. Delete or add new locations by using Solstice on Mac, iPhone, iPad, or Apple Vision Pro")
+				}
+			}
+			.navigationTitle(Text(verbatim: "Solstice"))
+			.timeTravelToolbar()
+		} detail: {
+			switch selectedLocation {
+			case currentLocation.id:
+				DetailView(location: currentLocation)
+					.containerBackground(for: .navigation) {
+						if let solar = Solar(for: timeMachine.date, coordinate: currentLocation.coordinate) {
+							solar.view
+						}
+					}
+					.timeTravelToolbar()
+			case .some(let id):
+				if let item = items.first(where: { $0.uuid?.uuidString == id }) {
+					DetailView(location: item)
+						.containerBackground(for: .navigation) {
+							if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+								solar.view
+							}
+						}
+						.timeTravelToolbar()
+				} else {
+					placeholderView
+				}
+			case .none:
+				placeholderView
 			}
 		}
+		.resolveDeepLink(sortedItems)
 		.overlay {
 			TimelineView(.everyMinute) { t in
 				Color.clear
@@ -113,29 +110,11 @@ struct ContentView: View {
 			}
 		}
 	}
-	
-	var fallbackBody: some View {
-		NavigationStack {
-			switch currentLocation.authorizationStatus {
-			case .notDetermined:
-				LocationPermissionScreenerView()
-			case .authorizedAlways, .authorizedWhenInUse:
-				DetailView(location: currentLocation)
-			case .denied, .restricted:
-				Text("Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac.")
-			@unknown default:
-				fatalError()
-			}
-		}
-		.navigationTitle(Text(verbatim: "Solstice"))
-	}
 		
-		var placeholderView: some View {
-			VStack {
-				Image(.solstice)
-					.foregroundStyle(.tertiary)
-			}
-		}
+	var placeholderView: some View {
+		Image(.solstice)
+			.foregroundStyle(.tertiary)
+	}
 }
 
 #Preview {

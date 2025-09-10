@@ -8,11 +8,13 @@
 import SwiftUI
 import CoreData
 import Solar
+import Suite
 
 struct ContentView: View {
+	@Namespace private var namespace
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
-	@AppStorage(Preferences.listViewShowComplication) private var showComplication
+	@Environment(\.managedObjectContext) private var context
 	@Environment(\.openWindow) private var openWindow
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	
@@ -27,11 +29,11 @@ struct ContentView: View {
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 	
-	@FetchRequest(sortDescriptors: []) private var items: FetchedResults<SavedLocation>
+	@FetchRequest(sortDescriptors: []) private var locations: FetchedResults<SavedLocation>
 			
 	var body: some View {
 			NavigationSplitView(columnVisibility: $sidebarVisibility) {
-				SidebarListView()
+				SidebarListView(namespace: namespace)
 					.toolbar {
 						toolbarItems
 					}
@@ -39,20 +41,23 @@ struct ContentView: View {
 					.navigationSplitViewColumnWidth(256)
 				#endif
 			} detail: {
-				Group {
+				NavigationStack {
 					switch selectedLocation {
 					case currentLocation.id:
 						DetailView(location: currentLocation)
 					case .some(let id):
-						if let item = items.first(where: { $0.uuid?.uuidString == id }) {
-							DetailView(location: item)
+						if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
+							DetailView(location: location)
 						} else {
 							placeholderView
 						}
-					case .none:
+					default:
 						placeholderView
 					}
 				}
+				#if os(iOS)
+				.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
+				#endif
 			}
 			.navigationSplitViewStyle(.balanced)
 			.sheet(item: $locationSearchService.location) { value in
@@ -77,7 +82,7 @@ struct ContentView: View {
 					selectedLocation = currentLocation.id
 				}
 			}
-			.resolveDeepLink(Array(items))
+			.resolveDeepLink(Array(locations))
 			.overlay {
 				TimelineView(.everyMinute) { timelineContext in
 					Color.clear.task(id: timelineContext.date) {
@@ -85,82 +90,78 @@ struct ContentView: View {
 					}
 				}
 			}
-		#if os(iOS)
+			#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
+					.presentationDetents([.large, .medium])
 			}
-		#endif
+			#endif
+			.deduplicateLocationRecords()
 	}
 	
 	private var placeholderView: some View {
-		Image(.solstice)
-			.resizable()
-			.foregroundStyle(.quaternary)
-			.frame(width: 100, height: 100)
-			.aspectRatio(contentMode: .fit)
+		ContentUnavailableView {
+			Label("No location selected", image: .solstice)
+		} description: {
+			Text("Select a location to view details")
+		}
 	}
 	
 	@ToolbarContentBuilder
 	private var toolbarItems: some ToolbarContent {
-		ToolbarItem {
+		ToolbarItem(placement: .primaryAction) {
 			Menu {
-				Menu {
-					Picker(selection: $itemSortDimension.animation()) {
-						Text("Timezone")
-							.tag(Preferences.SortingFunction.timezone)
-						
-						Text("Daylight duration")
-							.tag(Preferences.SortingFunction.daylightDuration)
-					} label: {
-						Text("Sort by")
-					}
+				Picker(selection: $itemSortDimension.animation()) {
+					Text("Timezone")
+						.tag(Preferences.SortingFunction.timezone)
 					
-					Picker(selection: $itemSortOrder.animation()) {
-						Text("Ascending")
-							.tag(SortOrder.forward)
-						
-						Text("Descending")
-							.tag(SortOrder.reverse)
-					} label: {
-						Text("Order")
-					}
+					Text("Daylight duration")
+						.tag(Preferences.SortingFunction.daylightDuration)
 				} label: {
-					Label("Sort locations", systemImage: "arrow.up.arrow.down.circle")
+					Text("Sort by")
 				}
 				
-				Toggle(isOn: $showComplication.animation()) {
-					Text("Show chart in list")
+				Picker(selection: $itemSortOrder.animation()) {
+					Text("Ascending")
+						.tag(SortOrder.forward)
+					
+					Text("Descending")
+						.tag(SortOrder.reverse)
+				} label: {
+					Text("Order")
 				}
 			} label: {
-				Label("View options", systemImage: "eye.circle")
+				Label("Sort locations", systemImage: "arrow.up.arrow.down")
+					.backportCircleSymbolVariant()
 			}
 		}
+			
 		
 #if os(visionOS)
 		ToolbarItem {
 			Button {
 				openWindow(id: "settings")
 			} label: {
-				Label("Settings", systemImage: "gearshape")
+				Label("Settings", systemImage: "ellipsis")
 			}
 		}
 #elseif !os(macOS)
-		ToolbarItem {
+		ToolbarItem(placement: .navigation) {
 			Button {
 				settingsViewOpen = true
 			} label: {
-				Label("Settings", systemImage: "gearshape")
+				Label("Settings", systemImage: "ellipsis")
 			}
+			.backportCircleSymbolVariant()
 		}
 #endif
 	}
 }
 
-struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-		ContentView()
-			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.environmentObject(TimeMachine.preview)
-			.environmentObject(CurrentLocation())
-	}
+#Preview {
+	ContentView()
+		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+		.environmentObject(TimeMachine.preview)
+		.environmentObject(CurrentLocation())
 }
+

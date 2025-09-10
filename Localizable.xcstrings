@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
     "-" : {
       "comment" : "Less daylight middle of sentence",
       "localizations" : {
@@ -8,16 +11,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "-"
-          }
-        }
-      }
-    },
-    "-6mo" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "-6 mesi"
           }
         }
       }
@@ -241,6 +234,16 @@
         }
       }
     },
+    "%@ Welcome to Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Benvenuti al Solstice"
+          }
+        }
+      }
+    },
     "%@, %@" : {
       "localizations" : {
         "en" : {
@@ -269,6 +272,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@%2$@"
+          }
+        }
+      }
+    },
+    "%@6mo" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@6 mesi"
           }
         }
       }
@@ -323,32 +336,12 @@
         }
       }
     },
-    "+6mo" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+6 mesi"
-          }
-        }
-      }
-    },
     "a specific time" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "un momento specifico"
-          }
-        }
-      }
-    },
-    "About Equinox and Solstices" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A proposito di equinozio e solstizi"
           }
         }
       }
@@ -363,12 +356,12 @@
         }
       }
     },
-    "About Solstice and its maker" : {
+    "About solstices and equinoxes" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informazioni sull'app e sul suo creatore"
+            "value" : "A proposito di solstizi ed equinozi"
           }
         }
       }
@@ -453,16 +446,6 @@
         }
       }
     },
-    "Calculating..." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calcolo..."
-          }
-        }
-      }
-    },
     "ceeK/Solar" : {
       "localizations" : {
         "it" : {
@@ -543,6 +526,26 @@
         }
       }
     },
+    "Continue with location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua con la posizione"
+          }
+        }
+      }
+    },
+    "Continue without location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua senza posizione"
+          }
+        }
+      }
+    },
     "Countdown" : {
       "localizations" : {
         "it" : {
@@ -599,6 +602,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personalizza il contenuto delle notifiche"
+          }
+        }
+      }
+    },
+    "Dan is prone to Seasonal Affective Disorder (SAD), a mood disorder often associated with the reduction in total daily sunlight hours during the darker months of the year. Solstice was created to help everyone look forward to brighter days." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dan è incline al disturbo affettivo stagionale (SAD), un disturbo dell'umore spesso associato alla riduzione delle ore giornaliere totali di luce solare durante i mesi più bui dell'anno. Solstice è stato creato per aiutare tutti ad aspettarsi giorni più luminosi."
           }
         }
       }
@@ -734,12 +747,32 @@
         }
       }
     },
+    "Enable location services" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita i servizi di localizzazione"
+          }
+        }
+      }
+    },
     "Enable location services for Solstice, or choose a location by configuring the widget" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abilita i servizi di localizzazione per Solstice o scegli una posizione configurando il widget"
+          }
+        }
+      }
+    },
+    "Enable location services to see the daylight duration in your current location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita i servizi di localizzazione per vedere la durata della luce diurna nella tua posizione attuale"
           }
         }
       }
@@ -820,6 +853,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Segui il viaggio del sole durante il giorno"
+          }
+        }
+      }
+    },
+    "For savouring the minutes you have, or looking forward to the minutes you’ll gain." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per assaporare i minuti che hai, o aspettare con ansia i minuti che guadagnerai."
           }
         }
       }
@@ -963,6 +1006,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fonte delle immagini: [Catalogo Visible Earth della NASA](https://visibleearth.nasa.gov/collection/1484/blue-marble)"
+          }
+        }
+      }
+    },
+    "In order for Solstice to calculate the sun’s position, it needs to access your location." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affinché il Solstice calcoli la posizione del sole, deve accedere alla tua posizione."
           }
         }
       }
@@ -1241,6 +1294,16 @@
         }
       }
     },
+    "No location selected" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna posizione selezionata"
+          }
+        }
+      }
+    },
     "No locations" : {
       "localizations" : {
         "it" : {
@@ -1333,26 +1396,6 @@
         }
       }
     },
-    "Notifications" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notifiche"
-          }
-        }
-      }
-    },
-    "Open app Settings" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apri le impostazioni dell'app"
-          }
-        }
-      }
-    },
     "Open Solstice to see how today’s daylight has changed." : {
       "comment" : "Fallthrough notification content for when notification settings specify no content.",
       "localizations" : {
@@ -1410,6 +1453,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fase"
+          }
+        }
+      }
+    },
+    "Read more" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leggi di più"
           }
         }
       }
@@ -1506,6 +1559,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza la durata della luce del giorno di oggi, il confronto con quella di ieri e gli orari di alba/tramonto."
+          }
+        }
+      }
+    },
+    "Select a location to view details" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona una posizione per visualizzare i dettagli"
+          }
+        }
+      }
+    },
+    "Select location" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona la posizione"
           }
         }
       }
@@ -1611,16 +1684,6 @@
         }
       }
     },
-    "Show chart in list" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra il grafico nell'elenco"
-          }
-        }
-      }
-    },
     "Show location" : {
       "localizations" : {
         "it" : {
@@ -1671,12 +1734,22 @@
         }
       }
     },
-    "Solstice on Apple Watch requires location access in order to show local sunrise and sunset times. For custom and saved locations, use Solstice on iPhone, iPad, or Mac." : {
+    "Solstice is an app made by [Dan Eden](https://daneden.me), a designer and developer based in Manchester, England." : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Solstice su Apple Watch richiede l'accesso alla posizione per mostrare gli orari locali di alba e tramonto. Per posizioni personalizzate e salvate, usa Solstice su iPhone, iPad o Mac."
+            "value" : "Solstice è un'app realizzata da [Dan Eden](https://daneden.me), un designer e sviluppatore con sede a Manchester, in Inghilterra."
+          }
+        }
+      }
+    },
+    "Solstice tells you how much daylight there is today compared to yesterday." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solstice ti dice quanta luce c'è oggi rispetto a ieri."
           }
         }
       }
@@ -1821,6 +1894,26 @@
         }
       }
     },
+    "Time travel 1 week earlier" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viaggio nel tempo 1 settimana prima"
+          }
+        }
+      }
+    },
+    "Time travel 1 week later" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viaggio nel tempo 1 settimana dopo"
+          }
+        }
+      }
+    },
     "Time until next solstice" : {
       "localizations" : {
         "it" : {
@@ -1892,6 +1985,17 @@
         }
       }
     },
+    "v%@, #%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "v%1$@, #%2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "View daylight" : {
       "localizations" : {
         "it" : {
@@ -1942,16 +2046,6 @@
         }
       }
     },
-    "View options" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opzioni per la visualizzazione"
-          }
-        }
-      }
-    },
     "View remaining daylight" : {
       "localizations" : {
         "it" : {
@@ -1998,16 +2092,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In quale luogo vuoi vedere il tramonto?"
-          }
-        }
-      }
-    },
-    "You will need to enable location services for Solstice or choose a different location in order to receive notifications." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dovrai abilitare i servizi di localizzazione per Solstice o scegliere una posizione diversa per ricevere le notifiche."
           }
         }
       }

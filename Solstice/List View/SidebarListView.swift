@@ -26,78 +26,84 @@ struct SidebarListView: View {
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 	
+	let namespace: Namespace.ID
+	
 	var body: some View {
 		List(selection: $selectedLocation) {
-			Section("Locations") {
-				if currentLocation.authorizationStatus == .notDetermined {
-					LocationPermissionScreenerView()
-				}
-				
-				if !currentLocation.isAuthorized && items.isEmpty {
-					VStack {
-						Text("No locations")
-							.font(.headline)
-						Text("Search for a location or enable location services")
+			if currentLocation.isAuthorized {
+				LocationListRow(location: currentLocation)
+					.tag(currentLocation.id)
+				#if os(iOS)
+					.onDrag {
+						let userActivity = NSUserActivity(activityType: DetailView<CurrentLocation>.userActivity)
+						
+						userActivity.title = "See daylight for current location"
+						userActivity.targetContentIdentifier = currentLocation.id
+						
+						return NSItemProvider(object: userActivity)
 					}
-					.frame(maxWidth: .infinity)
-					.multilineTextAlignment(.center)
-					.foregroundStyle(.secondary)
-				}
-				
-				if currentLocation.isAuthorized {
-					LocationListRow(location: currentLocation)
-						.tag(currentLocation.id)
-					#if os(iOS)
+					.matchedTransitionSource(id: currentLocation.id, in: namespace)
+				#endif
+			}
+			
+			ForEach(sortedItems) { item in
+				if let tag = item.uuid?.uuidString {
+					LocationListRow(location: item)
+						.contextMenu {
+							Section(item.title!) {
+								Button(role: .destructive) {
+									deleteItem(item)
+								} label: {
+									Label("Delete Location", systemImage: "trash")
+								}
+							}
+						} preview: {
+							Form {
+								if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+									DailyOverview(solar: solar, location: item)
+								}
+							}
+								.environmentObject(timeMachine)
+						}
+						#if os(iOS)
 						.onDrag {
-							let userActivity = NSUserActivity(activityType: DetailView<CurrentLocation>.userActivity)
+							let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
 							
-							userActivity.title = "See daylight for current location"
-							userActivity.targetContentIdentifier = currentLocation.id
+							userActivity.title = "See daylight for \(item.title!)"
+							userActivity.targetContentIdentifier = item.uuid?.uuidString
 							
 							return NSItemProvider(object: userActivity)
 						}
-					#endif
+						.matchedTransitionSource(id: tag, in: namespace)
+						#endif
+						.tag(tag)
 				}
-				
-				ForEach(sortedItems) { item in
-					if let tag = item.uuid?.uuidString {
-						LocationListRow(location: item)
-							.contextMenu {
-								Section(item.title!) {
-									Button(role: .destructive) {
-										deleteItem(item)
-									} label: {
-										Label("Delete Location", systemImage: "trash")
-									}
-								}
-							} preview: {
-								Form {
-									if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
-										DailyOverview(solar: solar, location: item)
-									}
-								}
-									.environmentObject(timeMachine)
-							}
-							#if os(iOS)
-							.onDrag {
-								let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
-								
-								userActivity.title = "See daylight for \(item.title!)"
-								userActivity.targetContentIdentifier = item.uuid?.uuidString
-								
-								return NSItemProvider(object: userActivity)
-							}
-							#endif
-							.tag(tag)
-					}
-				}
-				.onDelete(perform: deleteItems)
+			}
+			.onDelete(perform: deleteItems)
+		}
+		.overlay {
+			if !currentLocation.isAuthorized && items.isEmpty {
+				ContentUnavailableView(
+					"No locations",
+					systemImage: "magnifyingglass",
+					description: Text("Search for a location or enable location services")
+				)
 			}
 		}
-		.navigationTitle(Text(verbatim: "Solstice"))
+		#if os(iOS)
+		.listRowSpacing(8)
+		#endif
+		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)
+		#if os(macOS)
 		.searchable(text: $locationSearchService.queryFragment,
+								placement: .automatic,
 								prompt: "Search locations")
+		#else
+		.searchable(text: $locationSearchService.queryFragment,
+								placement: .navigationBarDrawer,
+								prompt: "Search locations")
+		#endif
 		.searchSuggestions {
 			ForEach(locationSearchService.searchResults, id: \.hashValue) { result in
 				LocationSearchResultRow(
@@ -163,9 +169,10 @@ extension SidebarListView {
 }
 
 struct SidebarListView_Previews: PreviewProvider {
+	@Namespace static private var namespace
 	static var previews: some View {
 		NavigationStack {
-			SidebarListView()
+			SidebarListView(namespace: namespace)
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.environmentObject(TimeMachine.preview)
