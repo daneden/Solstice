@@ -25,12 +25,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 						.contentMargins(.bottom, size.height, for: .automatic)
 						.safeAreaBar(edge: .bottom) {
 							overlay
-								.overlay {
-									GeometryReader { g in
-										Color.clear
-											.task(id: g.size) { size = g.size }
-									}
-								}
+								.readSize($size)
 						}
 				} else {
 					content.backportSafeAreaBar { overlay }

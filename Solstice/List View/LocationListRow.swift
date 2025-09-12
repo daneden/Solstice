@@ -97,7 +97,8 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		.shadow(color: .black.opacity(0.3), radius: 6, y: 2)
 		.padding()
 		.background {
-			solar?.view.clipShape(.rect(cornerRadius: 20, style: .continuous))
+			solar?.view
+				.clipShape(.rect(cornerRadius: 20, style: .continuous))
 		}
 		.listRowSeparator(.hidden)
 		.listRowBackground(Color.clear)

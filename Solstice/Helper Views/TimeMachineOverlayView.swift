@@ -9,6 +9,8 @@ import SwiftUI
 import Suite
 
 struct TimeMachineOverlayView: View {
+	@Environment(\.colorScheme) private var colorScheme
+	
 	var body: some View {
 		VStack {
 			TimeMachineView()
@@ -23,24 +25,27 @@ struct TimeMachineOverlayView: View {
 		#else
 		.modify { content in
 				if #available(iOS 26, macOS 26, *) {
-					content.glassEffect(in: .rect(cornerRadius: 24, style: .continuous))
+					content
+						.glassEffect(in: .rect(cornerRadius: 24, style: .continuous))
+						.animation(.default.delay(0.2), value: colorScheme)
 				} else {
 					content
 						.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
-						.shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 4)
 				}
 			}
 		.scenePadding(.horizontal)
 		#if os(iOS)
 		.background {
-			VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
-				.background {
-					Color.clear
-						.background()
-						.opacity(0.2)
-						.mask(LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom))
-				}
-				.ignoresSafeArea()
+			if #unavailable(iOS 26) {
+				VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
+					.background {
+						Color.clear
+							.background()
+							.opacity(0.2)
+							.mask(LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom))
+					}
+					.ignoresSafeArea()
+			}
 		}
 		#endif
 		.scenePadding(.top)
