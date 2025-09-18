@@ -13,6 +13,8 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	@EnvironmentObject private var timeMachine: TimeMachine
 	var location: Location
 	
+	@FocusState private var focused: Bool
+	
 	@State private var showRemainingDaylight = false
 	
 	private var solar: Solar? {
@@ -103,6 +105,15 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		.listRowSeparator(.hidden)
 		.listRowBackground(Color.clear)
 		.listRowInsets(.zero)
+		.focusEffectDisabled()
+		.focused($focused)
+		.overlay {
+			if focused {
+				RoundedRectangle(cornerRadius: 20, style: .continuous)
+					.fill(.clear)
+					.strokeBorder(.tint, lineWidth: 3)
+			}
+		}
 		#endif
 		#endif
 	}
@@ -146,11 +157,9 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	}
 }
 
-struct LocationListRow_Previews: PreviewProvider {
-	static var previews: some View {
-		List {
-			LocationListRow(location: TemporaryLocation.placeholderLondon)
-		}
-		.environmentObject(TimeMachine.preview)
+#Preview {
+	List {
+		LocationListRow(location: TemporaryLocation.placeholderLondon)
 	}
+	.environmentObject(TimeMachine.preview)
 }

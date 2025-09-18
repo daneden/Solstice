@@ -65,15 +65,6 @@ struct LandingView: View {
 			}
 			.glassButtonStyle(.prominent)
 			.animateIn(active: animate, delay: 1.1)
-			
-			Button {
-				dismiss()
-			} label: {
-				Text("Continue without location")
-					.frame(maxWidth: .infinity)
-			}
-			.glassButtonStyle()
-			.animateIn(active: animate, delay: 1.2)
 		}
 		.scenePadding(.horizontal)
 #if os(iOS)
@@ -158,6 +149,7 @@ fileprivate struct WithOnboardingViewModifier: ViewModifier {
 						sheetSize = size
 					})
 					.presentationDetents([.height(sheetSize)])
+					.interactiveDismissDisabled()
 			}
 	}
 }

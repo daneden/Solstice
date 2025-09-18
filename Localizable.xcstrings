@@ -536,16 +536,6 @@
         }
       }
     },
-    "Continue without location" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continua senza posizione"
-          }
-        }
-      }
-    },
     "Countdown" : {
       "localizations" : {
         "it" : {
@@ -1040,17 +1030,6 @@
         }
       }
     },
-    "Jump to %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vai al %@"
-          }
-        }
-      }
-    },
     "Jump to date" : {
       "localizations" : {
         "it" : {
@@ -1091,6 +1070,9 @@
           }
         }
       }
+    },
+    "Label" : {
+      "shouldTranslate" : false
     },
     "Leave a review" : {
       "localizations" : {
@@ -1651,17 +1633,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Equinozio di settembre oggi"
-          }
-        }
-      }
-    },
-    "Set up" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configurare"
           }
         }
       }

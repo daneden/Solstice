@@ -71,49 +71,69 @@ struct DailyOverview<Location: AnyLocation>: View {
 				.environment(\.timeZone, location.timeZone)
 			
 			Group {
-				LabeledContent {
-					Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
-				} label: {
-					Label("Total daylight", systemImage: "hourglass")
+				Label {
+					AdaptiveStack {
+						Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
+					} label: {
+						Text("Total daylight")
+					}
+				} icon: {
+					Image(systemName: "hourglass")
 				}
 				
 				if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
-					LabeledContent {
-						Text(timerInterval: solar.safeSunrise...solar.safeSunset)
-							.monospacedDigit()
+					Label {
+						AdaptiveStack {
+							Text(timerInterval: solar.safeSunrise...solar.safeSunset)
+								.monospacedDigit()
+						} label: {
+							Text("Remaining daylight")
+						}
+					} icon: {
+						Image(systemName: "timer")
+					}
+				}
+				
+				Label {
+					AdaptiveStack {
+						if let sunrise = solar.sunrise {
+							Text(sunrise, style: .time)
+						} else {
+							Text("—")
+						}
 					} label: {
-						Label("Remaining daylight", systemImage: "timer")
+						Text("Sunrise")
 					}
+				} icon: {
+					Image(systemName: "sunrise")
 				}
 				
-				LabeledContent {
-					if let sunrise = solar.sunrise {
-						Text(sunrise, style: .time)
-					} else {
-						Text("—")
+				Label {
+					AdaptiveStack {
+						if let solarNoon = solar.solarNoon {
+							Text(solarNoon, style: .time)
+						} else {
+							Text("—")
+						}
+					} label: {
+						Text("Solar noon")
 					}
-				} label: {
-					Label("Sunrise", systemImage: "sunrise")
+				} icon: {
+					Image(systemName: "sun.max")
 				}
 				
-				LabeledContent {
-					if let solarNoon = solar.solarNoon {
-						Text(solarNoon, style: .time)
-					} else {
-						Text("—")
+				Label {
+					AdaptiveStack {
+						if let sunset = solar.sunset {
+							Text(sunset, style: .time)
+						} else {
+							Text("—")
+						}
+					} label: {
+						Text("Sunset")
 					}
-				} label: {
-					Label("Solar noon", systemImage: "sun.max")
-				}
-				
-				LabeledContent {
-					if let sunset = solar.sunset {
-						Text(sunset, style: .time)
-					} else {
-						Text("—")
-					}
-				} label: {
-					Label("Sunset", systemImage: "sunset")
+				} icon: {
+					Image(systemName: "sunset")
 				}
 			}
 			.environment(\.timeZone, location.timeZone)

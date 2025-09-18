@@ -48,16 +48,20 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	var body: some View {
 		Section {
 			Group {
-				LabeledContent {
-					ContentToggle { showContent in
-						if showContent {
-							Text(nextSolstice.startOfDay, style: .date)
-						} else {
-							Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+				Label {
+					AdaptiveStack {
+						ContentToggle { showContent in
+							if showContent {
+								Text(nextSolstice.startOfDay, style: .date)
+							} else {
+								Text(solsticeAndEquinoxFormatter.localizedString(for: nextSolstice.startOfDay, relativeTo: date.startOfDay))
+							}
 						}
+					} label: {
+						Text("Next solstice")
 					}
-				} label: {
-					Label("Next solstice", systemImage: nextGreaterThanPrevious ? "sun.max" : "sun.min")
+				} icon: {
+					Image(systemName: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 						.contentTransition(.symbolEffect)
 				}
 				.swipeActions(edge: .leading) {
@@ -70,16 +74,20 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					}
 				}
 				
-				LabeledContent {
-					ContentToggle { showContent in
-						if showContent {
-							Text(nextEquinox, style: .date)
-						} else {
-							Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+				Label {
+					AdaptiveStack {
+						ContentToggle { showContent in
+							if showContent {
+								Text(nextEquinox, style: .date)
+							} else {
+								Text(solsticeAndEquinoxFormatter.localizedString(for: nextEquinox.startOfDay, relativeTo: date.startOfDay))
+							}
 						}
+					} label: {
+						Text("Next equinox")
 					}
-				} label: {
-					Label("Next equinox", systemImage: "circle.and.line.horizontal")
+				} icon: {
+					Image(systemName: "circle.and.line.horizontal")
 				}
 				.swipeActions(edge: .leading) {
 					Button {
@@ -98,18 +106,22 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			
 			if let shortestDay,
 				 let longestDay {
-					LabeledContent {
+					Label {
 						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 						
-						ContentToggle { showContent in
-							if showContent {
-								Text("\(duration) of daylight")
-							} else {
-								Text(longestDay.date, style: .date)
+						AdaptiveStack {
+							ContentToggle { showContent in
+								if showContent {
+									Text("\(duration) of daylight")
+								} else {
+									Text(longestDay.date, style: .date)
+								}
 							}
+						} label: {
+							Text("Longest day")
 						}
-					} label: {
-						Label("Longest day", systemImage: "sun.max")
+					} icon: {
+						Image(systemName: "sun.max")
 					}
 					.swipeActions(edge: .leading) {
 						Button {
@@ -121,18 +133,22 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						}
 					}
 					
-					LabeledContent {
+					Label {
 						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
 						
-						ContentToggle { showContent in
-							if showContent {
-								Text("\(duration) of daylight")
-							} else {
-								Text(shortestDay.date, style: .date)
+						AdaptiveStack {
+							ContentToggle { showContent in
+								if showContent {
+									Text("\(duration) of daylight")
+								} else {
+									Text(shortestDay.date, style: .date)
+								}
 							}
+						} label: {
+							Text("Shortest day")
 						}
-					} label: {
-						Label("Shortest day", systemImage: "sun.min")
+					} icon: {
+						Image(systemName: "sun.min")
 					}
 					.swipeActions(edge: .leading) {
 						Button {
@@ -146,19 +162,19 @@ struct AnnualOverview<Location: AnyLocation>: View {
 			}
 			
 			if let daylightSavingsChange = location.timeZone.nextDaylightSavingTimeTransition(after: timeMachine.date) {
-				LabeledContent {
-					Text(daylightSavingsChange, style: .date)
-				} label: {
-					Label {
+				Label {
+					AdaptiveStack {
+						Text(daylightSavingsChange, style: .date)
+					} label: {
 						if location.timeZone.isDaylightSavingTime(for: timeMachine.date) {
 							Text("Daylight savings ends")
 						} else {
 							Text("Daylight savings begins")
 						}
-					} icon: {
-						Image(.daylightsavings)
-							.imageScale(.large)
 					}
+				} icon: {
+					Image(.daylightsavings)
+						.imageScale(.large)
 				}
 			}
 		}
