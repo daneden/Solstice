@@ -8,9 +8,10 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 struct LocationListRow<Location: ObservableLocation>: View {
-	@EnvironmentObject private var timeMachine: TimeMachine
+	@Environment(\.timeMachine) private var timeMachine: TimeMachine
 	var location: Location
 	
 	@FocusState private var focused: Bool
@@ -161,5 +162,5 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	List {
 		LocationListRow(location: TemporaryLocation.placeholderLondon)
 	}
-	.environmentObject(TimeMachine.preview)
+	.withTimeMachine(.solsticeTimeMachine)
 }

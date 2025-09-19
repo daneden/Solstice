@@ -17,6 +17,15 @@
         "branch" : "main",
         "revision" : "13cd0bedf813f14f26787862818aef29ca13a7e5"
       }
+    },
+    {
+      "identity" : "timemachine",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/daneden/TimeMachine",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ed7f4d119c108aab4b39cb067a056a15e567915e"
+      }
     }
   ],
   "version" : 2

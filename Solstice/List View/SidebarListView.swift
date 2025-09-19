@@ -7,10 +7,11 @@
 
 import SwiftUI
 import Solar
+import TimeMachine
 
 struct SidebarListView: View {
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	
 	@Environment(\.managedObjectContext) private var viewContext
@@ -63,7 +64,7 @@ struct SidebarListView: View {
 									DailyOverview(solar: solar, location: item)
 								}
 							}
-								.environmentObject(timeMachine)
+							.withTimeMachine(.solsticeTimeMachine)
 						}
 						#if os(iOS)
 						.onDrag {
@@ -175,7 +176,7 @@ struct SidebarListView_Previews: PreviewProvider {
 			SidebarListView(namespace: namespace)
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.environmentObject(TimeMachine.preview)
+			.withTimeMachine(.solsticeTimeMachine)
 			.environmentObject(CurrentLocation())
 	}
 }

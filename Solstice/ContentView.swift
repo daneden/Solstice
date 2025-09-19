@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 import Solar
 import Suite
+import TimeMachine
 
 struct ContentView: View {
 	@Namespace private var namespace
@@ -23,7 +24,6 @@ struct ContentView: View {
 	@Environment(\.scenePhase) private var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
-	@StateObject var timeMachine = TimeMachine()
 	@StateObject var locationSearchService = LocationSearchService()
 	
 	@State private var settingsViewOpen = false
@@ -71,7 +71,6 @@ struct ContentView: View {
 			}
 			.environmentObject(locationSearchService)
 			.timeMachineOverlay()
-			.environmentObject(timeMachine)
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {
 					selectedLocation = selection
@@ -83,13 +82,6 @@ struct ContentView: View {
 				}
 			}
 			.resolveDeepLink(Array(locations))
-			.overlay {
-				TimelineView(.everyMinute) { timelineContext in
-					Color.clear.task(id: timelineContext.date) {
-						timeMachine.referenceDate = timelineContext.date
-					}
-				}
-			}
 			#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
@@ -161,7 +153,7 @@ struct ContentView: View {
 #Preview {
 	ContentView()
 		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-		.environmentObject(TimeMachine.preview)
+		.withTimeMachine(.solsticeTimeMachine)
 		.environmentObject(CurrentLocation())
 }
 

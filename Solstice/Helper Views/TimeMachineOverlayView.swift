@@ -7,13 +7,16 @@
 
 import SwiftUI
 import Suite
+import TimeMachine
 
 struct TimeMachineOverlayView: View {
 	@Environment(\.colorScheme) private var colorScheme
 	
 	var body: some View {
 		VStack {
-			TimeMachineView()
+			TimeMachineView(datePickerComponents: .date)
+				.environment(\.timeMachineViewHeaderTimestampFormat, .date)
+				.environment(\.timeMachineViewHeaderShowRelativeOffset, false)
 			#if os(visionOS)
 				.frame(minWidth: 400)
 			#endif
@@ -31,6 +34,7 @@ struct TimeMachineOverlayView: View {
 				} else {
 					content
 						.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
+						.shadow(color: .black, radius: 12, x: 0, y: 8)
 				}
 			}
 		.scenePadding(.horizontal)

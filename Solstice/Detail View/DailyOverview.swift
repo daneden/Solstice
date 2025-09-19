@@ -8,9 +8,10 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 struct DailyOverview<Location: AnyLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) private var timeMachine
 
 	var solar: Solar
 	var location: Location
@@ -195,6 +196,6 @@ struct DailyOverview_Previews: PreviewProvider {
 		Form {
 			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
 		}
-		.environmentObject(TimeMachine.preview)
+		.withTimeMachine(.solsticeTimeMachine)
 	}
 }

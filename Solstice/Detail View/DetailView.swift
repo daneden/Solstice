@@ -8,6 +8,7 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 struct DetailView<Location: ObservableLocation>: View {
 	static var userActivity: String {
@@ -18,7 +19,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.dismiss) var dismiss
 	
 	@ObservedObject var location: Location
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	#if !os(watchOS)
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	#endif
@@ -139,5 +140,5 @@ struct DetailView<Location: ObservableLocation>: View {
 	NavigationStack {
 		DetailView(location: TemporaryLocation.placeholderLondon)
 	}
-	.environmentObject(TimeMachine.preview)
+	.withTimeMachine(.solsticeTimeMachine)
 }

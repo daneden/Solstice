@@ -8,12 +8,12 @@
 import SwiftUI
 import StoreKit
 import TipKit
+import TimeMachine
 
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var currentLocation = CurrentLocation()
-	@StateObject private var timeMachine = TimeMachine()
 	@StateObject private var locationSearchService = LocationSearchService()
 	
 	private let persistenceController = PersistenceController.shared
@@ -23,7 +23,7 @@ struct SolsticeApp: App {
 			ContentView()
 				.withAppOnboarding()
 				.environmentObject(currentLocation)
-				.environmentObject(timeMachine)
+				.withTimeMachine(.solsticeTimeMachine)
 				.environmentObject(locationSearchService)
 				.task {
 					for await result in Transaction.updates {

@@ -8,9 +8,10 @@
 import SwiftUI
 import Solar
 import Charts
+import TimeMachine
 
 struct AnnualDaylightChart<Location: AnyLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	var location: Location
 	
 	var kvPairs: KeyValuePairs<Solar.Phase, Color> = [

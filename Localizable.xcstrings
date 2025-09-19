@@ -277,6 +277,7 @@
       }
     },
     "%@6mo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -298,6 +299,7 @@
       }
     },
     "%lld days in the %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -477,6 +479,7 @@
       }
     },
     "Choose date" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -798,6 +801,7 @@
       }
     },
     "Enable Time Travel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -878,6 +882,7 @@
       }
     },
     "future" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1451,6 +1456,7 @@
       }
     },
     "past" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1888,6 +1894,7 @@
       }
     },
     "Time Travel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1959,6 +1966,7 @@
       }
     },
     "Toggle advanced time travel controls" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import TimeMachine
 
 struct TimeTravelToolbar: ViewModifier{
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	
 	func body(content: Content) -> some View {
 		content
@@ -17,16 +18,16 @@ struct TimeTravelToolbar: ViewModifier{
 					HStack {
 						Button("Time travel 1 week earlier", systemImage: "backward") {
 							withAnimation {
-								timeMachine.offset.wrappedValue -= 7
+								timeMachine.offset -= 7
 							}
 						}
 						
 						Spacer(minLength: 0)
 						
-						if timeMachine.enabled {
+						if timeMachine.isActive {
 							Button {
 								withAnimation {
-									timeMachine.offset.wrappedValue = 0
+									timeMachine.offset = 0
 								}
 							} label: {
 								Text("Reset")
@@ -38,7 +39,7 @@ struct TimeTravelToolbar: ViewModifier{
 						
 						Button("Time travel 1 week later", systemImage: "forward") {
 							withAnimation {
-								timeMachine.offset.wrappedValue += 7
+								timeMachine.offset += 7
 							}
 						}
 					}

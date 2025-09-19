@@ -8,10 +8,11 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 struct ShareSolarChartView<Location: AnyLocation>: View {
 	@Environment(\.dismiss) var dismiss
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	
 	var solar: Solar
 	var location: Location
@@ -248,5 +249,5 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 
 #Preview {
 	ShareSolarChartView(solar: .init(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
-		.environmentObject(TimeMachine.preview)
+		.withTimeMachine(.solsticeTimeMachine)
 }

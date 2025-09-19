@@ -8,6 +8,7 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 	let formatter = RelativeDateTimeFormatter()
@@ -20,7 +21,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	#if !os(watchOS)
 	@Environment(\.openWindow) var openWindow
 	#endif
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	
 	@State private var isInformationSheetPresented = false
 	
@@ -67,7 +68,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
-							timeMachine.targetDate = nextSolstice
+							timeMachine.date = nextSolstice
 						}
 					} label: {
 						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
@@ -92,7 +93,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
-							timeMachine.targetDate = nextEquinox
+							timeMachine.date = nextEquinox
 						}
 					} label: {
 						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
@@ -126,7 +127,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.swipeActions(edge: .leading) {
 						Button {
 							withAnimation {
-								timeMachine.targetDate = longestDay.date
+								timeMachine.date = longestDay.date
 							}
 						} label: {
 							Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
@@ -153,7 +154,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.swipeActions(edge: .leading) {
 						Button {
 							withAnimation {
-								timeMachine.targetDate = shortestDay.date
+								timeMachine.date = shortestDay.date
 							}
 						} label: {
 							Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
@@ -219,5 +220,5 @@ extension AnnualOverview {
 		TimeMachineView()
 		AnnualOverview(location: TemporaryLocation.placeholderLondon)
 	}
-	.environmentObject(TimeMachine.preview)
+	.withTimeMachine(.solsticeTimeMachine)
 }
