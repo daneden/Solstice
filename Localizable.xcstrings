@@ -479,7 +479,6 @@
       }
     },
     "Choose date" : {
-      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1892,6 +1891,9 @@
           }
         }
       }
+    },
+    "Time Machine" : {
+
     },
     "Time Travel" : {
       "extractionState" : "stale",

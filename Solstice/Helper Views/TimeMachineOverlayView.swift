@@ -14,9 +14,13 @@ struct TimeMachineOverlayView: View {
 	
 	var body: some View {
 		VStack {
-			TimeMachineView(datePickerComponents: .date)
-				.environment(\.timeMachineViewHeaderTimestampFormat, .date)
-				.environment(\.timeMachineViewHeaderShowRelativeOffset, false)
+			TimeMachineView(showAbsoluteTime: .never, datePickerComponents: .date) {
+				Text("Time Travel")
+			} relativeTimestampLabel: { t, _ in
+				Text(t.date, format: .dateTime.day().month().year())
+			} datePickerLabel: { _, _ in
+				Text("Choose date")
+			}
 			#if os(visionOS)
 				.frame(minWidth: 400)
 			#endif

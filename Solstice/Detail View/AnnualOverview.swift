@@ -217,7 +217,7 @@ extension AnnualOverview {
 
 #Preview {
 	Form {
-		TimeMachineView()
+		TimeMachineView() { Text("Time Machine") }
 		AnnualOverview(location: TemporaryLocation.placeholderLondon)
 	}
 	.withTimeMachine(.solsticeTimeMachine)
