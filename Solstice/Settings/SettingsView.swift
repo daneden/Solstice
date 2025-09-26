@@ -12,6 +12,8 @@ struct SettingsView: View {
 	@Environment(\.openURL) private var openURL
 	@EnvironmentObject private var currentLocation: CurrentLocation
 	
+	@AppStorage(Preferences.timeTravelAppearance) private var timeTravelAppearance
+	
     var body: some View {
 			NavigationStack {
 				Form {
@@ -36,8 +38,42 @@ struct SettingsView: View {
 								default: return
 								}
 							}
+						} header: {
+							Text("Location")
 						} footer: {
 							Text("Enable location services to see the daylight duration in your current location")
+						}
+					}
+					
+					Section("Time Travel") {
+						HStack {
+							HStack {
+								ForEach(TimeTravelAppearance.allCases) { appearance in
+									let isActive = timeTravelAppearance == appearance
+									Button {
+										timeTravelAppearance = appearance
+									} label: {
+										VStack(spacing: 8) {
+											Image(appearance.image)
+												.resizable()
+												.aspectRatio(contentMode: .fit)
+												.frame(maxHeight: 80)
+												.foregroundStyle(.tint)
+												.tint(isActive ? .accent : .secondary)
+											Text(appearance.title)
+											
+											Image(systemName: isActive ? "checkmark.circle" : "circle")
+												.symbolVariant(isActive ? .fill : .none)
+												.foregroundStyle(.tint)
+												.tint(isActive ? .accent : .secondary)
+												.imageScale(.large)
+										}
+										.frame(maxWidth: .infinity)
+										.contentShape(.rect)
+									}
+									.buttonStyle(.plain)
+								}
+							}
 						}
 					}
 					

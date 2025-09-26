@@ -10,6 +10,7 @@ import Suite
 
 struct TimeMachineOverlayModifier: ViewModifier {
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
+	@AppStorage(Preferences.timeTravelAppearance) private var timeMachineAppearance
 	@State private var size = CGSize.zero
 	
 	func body(content: Content) -> some View {
@@ -31,6 +32,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					content.backportSafeAreaBar { overlay }
 				}
 			}
+			.animation(.default, value: timeMachineAppearance)
 		#endif
 	}
 	
@@ -39,7 +41,14 @@ struct TimeMachineOverlayModifier: ViewModifier {
 		case .regular:
 			TimeMachineDraggableOverlayView()
 		default:
-			TimeMachineOverlayView()
+			switch timeMachineAppearance {
+			case .compact:
+				TimeTravelCompactView()
+					.transition(.blurReplace)
+			default:
+				TimeMachinePanelView()
+					.transition(.blurReplace)
+			}
 		}
 	}
 }

@@ -55,12 +55,14 @@ struct NotificationSettings: View {
 	}
 	
 	var body: some View {
-		Toggle("Enable notifications", isOn: $notificationsEnabled)
-			.task(id: notificationsEnabled) {
-				if notificationsEnabled == true {
-					notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
+		Section("Notifications") {
+			Toggle("Enable notifications", isOn: $notificationsEnabled)
+				.task(id: notificationsEnabled) {
+					if notificationsEnabled == true {
+						notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
+					}
 				}
-			}
+		}
 		
 		Group {
 			Section {

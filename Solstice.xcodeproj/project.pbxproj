@@ -26,7 +26,7 @@
 		710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		7116B1EA2DDD07F70018A294 /* View+timeMachineOverlayModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */; };
-		7116B1EE2DDD12BA0018A294 /* TimeMachineOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */; };
+		7116B1EE2DDD12BA0018A294 /* TimeMachinePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1EC2DDD12BA0018A294 /* TimeMachinePanelView.swift */; };
 		7116B1F22DDD13A00018A294 /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1EF2DDD13A00018A294 /* DeviceRotationViewModifier.swift */; };
 		7116B1F52DDDE2130018A294 /* VariableBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1F42DDDE2130018A294 /* VariableBlurView.swift */; };
 		7116B1F62DDDE2130018A294 /* VariableBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1F42DDDE2130018A294 /* VariableBlurView.swift */; };
@@ -258,6 +258,7 @@
 		71C105A72E7D311B00A76EBB /* TimeMachine++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C105A32E7D311700A76EBB /* TimeMachine++.swift */; };
 		71C105A92E7D313900A76EBB /* TimeMachine in Frameworks */ = {isa = PBXBuildFile; productRef = 71C105A82E7D313900A76EBB /* TimeMachine */; };
 		71C105AB2E7D313D00A76EBB /* TimeMachine in Frameworks */ = {isa = PBXBuildFile; productRef = 71C105AA2E7D313D00A76EBB /* TimeMachine */; };
+		71C718222E83361C006A6835 /* TimeTravelCompactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C718202E83361C006A6835 /* TimeTravelCompactView.swift */; };
 		71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		71CB96D82DE9AC3600660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96D72DE9AC3600660AA9 /* Suite */; };
 		71CB96DA2DE9AC3E00660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96D92DE9AC3E00660AA9 /* Suite */; };
@@ -354,7 +355,7 @@
 		7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetView.swift; sourceTree = "<group>"; };
 		710D9B702AB4752D0093A9A6 /* ContentToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentToggle.swift; sourceTree = "<group>"; };
 		7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+timeMachineOverlayModifier.swift"; sourceTree = "<group>"; };
-		7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachineOverlayView.swift; sourceTree = "<group>"; };
+		7116B1EC2DDD12BA0018A294 /* TimeMachinePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachinePanelView.swift; sourceTree = "<group>"; };
 		7116B1EF2DDD13A00018A294 /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		7116B1F42DDDE2130018A294 /* VariableBlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableBlurView.swift; sourceTree = "<group>"; };
 		7117008829A52ABE001BE478 /* CountdownWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetView.swift; sourceTree = "<group>"; };
@@ -447,6 +448,7 @@
 		71C1058C2E7C07A900A76EBB /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
 		71C1058F2E7C08DA00A76EBB /* AlignedIconLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedIconLabelStyle.swift; sourceTree = "<group>"; };
 		71C105A32E7D311700A76EBB /* TimeMachine++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeMachine++.swift"; sourceTree = "<group>"; };
+		71C718202E83361C006A6835 /* TimeTravelCompactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelCompactView.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
 		71DAB3D129CD862A00E30148 /* EarthNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthNode.swift; sourceTree = "<group>"; };
 		71DAB3D329CD865800E30148 /* EarthScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthScene.swift; sourceTree = "<group>"; };
@@ -626,8 +628,9 @@
 				7117008A29A52B04001BE478 /* SkyGradient.swift */,
 				712433A72D78870600709C20 /* StackedButtonStyle.swift */,
 				712433A42D78867300709C20 /* StackedLabelStyle.swift */,
-				7116B1EC2DDD12BA0018A294 /* TimeMachineOverlayView.swift */,
+				7116B1EC2DDD12BA0018A294 /* TimeMachinePanelView.swift */,
 				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
+				71C718202E83361C006A6835 /* TimeTravelCompactView.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -1180,7 +1183,7 @@
 				712433A92D78870600709C20 /* StackedButtonStyle.swift in Sources */,
 				71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */,
 				711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
-				7116B1EE2DDD12BA0018A294 /* TimeMachineOverlayView.swift in Sources */,
+				7116B1EE2DDD12BA0018A294 /* TimeMachinePanelView.swift in Sources */,
 				7188714329DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */,
 				714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */,
@@ -1207,6 +1210,7 @@
 				712433AC2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift in Sources */,
 				71A029A92C2E838100E19819 /* EarthSceneKitView.swift in Sources */,
+				71C718222E83361C006A6835 /* TimeTravelCompactView.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
 				711782E42E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71C105A72E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
@@ -1325,8 +1329,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_RESOURCE_ACCESS_LOCATION = YES;
@@ -1343,6 +1349,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1362,8 +1369,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_RESOURCE_ACCESS_LOCATION = YES;
@@ -1380,6 +1389,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1399,8 +1409,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
@@ -1415,6 +1427,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
@@ -1434,8 +1447,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/WidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widget/Info.plist;
@@ -1450,6 +1465,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
@@ -1598,9 +1614,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Solstice/Preview Content\"";
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -1626,6 +1644,7 @@
 				ON_DEMAND_RESOURCES_PREFETCH_ORDER = earth;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1643,9 +1662,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solstice/Solstice.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Solstice/Preview Content\"";
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -1671,6 +1692,7 @@
 				ON_DEMAND_RESOURCES_PREFETCH_ORDER = earth;
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1688,9 +1710,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = watchOS/Solstice.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = watchOS/Info.plist;
@@ -1705,6 +1729,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchsimulator watchos";
@@ -1721,9 +1746,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = watchOS/Solstice.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = YC249PY26F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = watchOS/Info.plist;
@@ -1738,6 +1765,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchsimulator watchos";

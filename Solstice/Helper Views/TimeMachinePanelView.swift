@@ -9,35 +9,45 @@ import SwiftUI
 import Suite
 import TimeMachine
 
-struct TimeMachineOverlayView: View {
+struct SolsticeTimeMachineView: View {
+	var body: some View {
+		TimeMachineView(showAbsoluteTime: .never, datePickerComponents: .date) {
+			Text("Time Travel")
+		} relativeTimestampLabel: { t, _ in
+			Text(t.date, format: .dateTime.day().month().year())
+		} minimumValueLabel: { _, _ in
+			Text("-12mo")
+		} maximumValueLabel: { _, _ in
+			Text("+12mo")
+		} datePickerLabel: { _, _ in
+			Text("Choose date")
+		}
+	}
+}
+
+struct TimeMachinePanelView: View {
 	@Environment(\.colorScheme) private var colorScheme
 	
 	var body: some View {
 		VStack {
-			TimeMachineView(showAbsoluteTime: .never, datePickerComponents: .date) {
-				Text("Time Travel")
-			} relativeTimestampLabel: { t, _ in
-				Text(t.date, format: .dateTime.day().month().year())
-			} datePickerLabel: { _, _ in
-				Text("Choose date")
-			}
+			SolsticeTimeMachineView()
 			#if os(visionOS)
 				.frame(minWidth: 400)
 			#endif
 		}
 		.padding()
-		.clipped()
+		.clipShape(.panel)
 		#if os(visionOS)
 		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
 		#else
 		.modify { content in
 				if #available(iOS 26, macOS 26, *) {
 					content
-						.glassEffect(in: .rect(cornerRadius: 24, style: .continuous))
+						.glassEffect(in: .panel)
 						.animation(.default.delay(0.2), value: colorScheme)
 				} else {
 					content
-						.background(.regularMaterial, in: .rect(cornerRadius: 16, style: .continuous))
+						.background(.regularMaterial, in: .panel)
 						.shadow(color: .black, radius: 12, x: 0, y: 8)
 				}
 			}
@@ -98,7 +108,7 @@ struct TimeMachineDraggableOverlayView: View {
 	
 	var body: some View {
 		ZStack(alignment: resolvedAlignment) {
-			TimeMachineOverlayView()
+			TimeMachinePanelView()
 				.offset(offset)
 				.gesture(DragGesture()
 					.onChanged { value in

@@ -133,6 +133,30 @@ struct Preferences {
 	
 	static let listViewSortOrder: Value<SortOrder> = ("listViewSortOrder", .forward)
 	static let listViewShowComplication: Value<Bool> = ("listViewShowComplication", showComplicationDefaultValue)
+	
+	static let timeTravelAppearance: Value<TimeTravelAppearance> = ("timeTravelAppearance", .expanded)
+}
+
+enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable {
+	case expanded, compact
+	
+	var id: Self { self }
+	
+	var title: LocalizedStringKey {
+		switch self {
+		case .expanded: return "Classic"
+		case .compact: return "Compact"
+		}
+	}
+	
+	var image: ImageResource {
+		switch self {
+		case .expanded:
+			return .timetravelClassic
+		case .compact:
+			return .timetravelCompact
+		}
+	}
 }
 
 extension Preferences {
