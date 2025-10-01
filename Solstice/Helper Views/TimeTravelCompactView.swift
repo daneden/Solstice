@@ -175,7 +175,21 @@ struct TimeTravelCompactView: View {
 				}
 			}
 		}
+		.modify {
+			if #available(iOS 26, macOS 26, visionOS 26, watchOS 26, *) {
+				$0
+			} else {
+				$0.shadow(color: .black.opacity(0.2), radius: 8, y: 4)
+			}
+		}
 		.scenePadding()
+		#if os(iOS)
+		.background {
+			if #unavailable(iOS 26) {
+				VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
+			}
+		}
+		#endif
 	}
 }
 

@@ -34,10 +34,14 @@ extension View {
 					#if !os(visionOS)
 					content.buttonStyle(.glass)
 					#else
-					content.buttonStyle(.bordered)
+					content
+						.buttonStyle(.bordered)
+						.backgroundStyle(.regularMaterial)
 					#endif
 				} else {
-					content.buttonStyle(.bordered)
+					content
+						.buttonStyle(.bordered)
+						.backgroundStyle(.regularMaterial)
 				}
 			}
 		}
