@@ -147,6 +147,8 @@ struct TimeTravelCompactView: View {
 						}
 						.buttonStyle(CompactViewButtonStyle())
 					}
+					.padding(.vertical, 2)
+					.padding(.horizontal, -2)
 					.transition(.blurReplace)
 					.modify {
 						if #available(iOS 26, macOS 26, watchOS 26, *) {
@@ -184,6 +186,8 @@ struct CompactViewButtonStyle: ButtonStyle {
 			.buttonBorderShape(.circle)
 			.labelStyle(.iconOnly)
 			.symbolVariant(.fill)
+			.background(.primary.opacity(configuration.isPressed ? 0.3 : 0), in: .circle)
+			.font(.subheadline)
 	}
 }
 
