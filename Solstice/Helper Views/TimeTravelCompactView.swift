@@ -58,6 +58,12 @@ struct _TimeTravelCompactView: View {
 		.animation(.default, value: timeMachine.interfaceState.datePickerVisible)
 		.clipShape(.panel)
 		.modify {
+			#if os(visionOS)
+			$0
+				.background(.regularMaterial, in: .panel)
+				.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+				.transition(.blurReplace)
+			#else
 			if #available(iOS 26, watchOS 26, macOS 26, *) {
 				$0.glassEffect(.regular.interactive(), in: .panel)
 			} else {
@@ -66,6 +72,7 @@ struct _TimeTravelCompactView: View {
 					.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 					.transition(.blurReplace)
 			}
+			#endif
 		}
 		.offset(x: isOffscreen ? -sheetContentSize.width + 44 : 0)
 		.animation(.default, value: isOffscreen)
@@ -91,11 +98,15 @@ struct TimeTravelCompactView: View {
 							.padding(6)
 							.padding(.horizontal, 4)
 							.modify {
-								if #available(iOS 26, *) {
+								#if os(visionOS)
+								$0.background(.regularMaterial, in: .capsule)
+								#else
+								if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
 									$0.glassEffect()
 								} else {
 									$0.background(.regularMaterial, in: .capsule)
 								}
+								#endif
 							}
 							.font(.subheadline)
 						
@@ -151,11 +162,15 @@ struct TimeTravelCompactView: View {
 					.padding(.horizontal, -2)
 					.transition(.blurReplace)
 					.modify {
-						if #available(iOS 26, macOS 26, watchOS 26, *) {
+						#if os(visionOS)
+						$0.background(.regularMaterial, in: .capsule)
+						#else
+						if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
 							$0.glassEffect()
 						} else {
 							$0.background(.regularMaterial, in: .capsule)
 						}
+						#endif
 					}
 				}
 			}
@@ -195,6 +210,9 @@ struct BackportGlassEffectContainer<Content: View>: View {
 	@ViewBuilder var content: Content
 	
 	var body: some View {
+		#if os(visionOS)
+		content
+		#else
 		if #available(iOS 26, macOS 26, watchOS 26, *) {
 			GlassEffectContainer {
 				content
@@ -202,6 +220,7 @@ struct BackportGlassEffectContainer<Content: View>: View {
 		} else {
 			content
 		}
+		#endif
 	}
 }
 

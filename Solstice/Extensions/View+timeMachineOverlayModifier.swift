@@ -17,7 +17,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 		content
 		#if os(visionOS)
 			.ornament(attachmentAnchor: .scene(.bottomTrailing), contentAlignment: .trailing) {
-				TimeMachineOverlayView()
+				TimeMachinePanelView()
 			}
 		#else
 			.modify { content in

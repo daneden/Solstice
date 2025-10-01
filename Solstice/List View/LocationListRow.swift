@@ -121,7 +121,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	
 	@ViewBuilder
 	var locationTitleLabel: some View {
-		HStack {
+		HStack(spacing: 4) {
 			if location is CurrentLocation {
 				Image(systemName: "location")
 					.imageScale(.small)
