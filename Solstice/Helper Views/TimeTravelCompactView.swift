@@ -86,27 +86,19 @@ struct TimeTravelCompactView: View {
 		BackportGlassEffectContainer {
 			VStack {
 				HStack {
-					Group {
-						if !isExpanded {
-							Spacer()
-							
-							Button("Time Travel", systemImage: "clock.arrow.2.circlepath") {
-								withAnimation { isExpanded = true }
-							}
-							.labelStyle(.iconOnly)
-							.buttonBorderShape(.circle)
-							.accessibilityLabel("Show time travel")
-						} else {
-							Button("Time Travel", systemImage: "clock.arrow.2.circlepath") {
-								withAnimation { isExpanded = false }
-							}
-							.accessibilityLabel("Hide time travel")
-						}
-					}
-					.glassButtonStyle(timeMachine.isActive ? .prominent : .regular)
-					.controlSize(isExpanded ? .small : .large)
-					
 					if isExpanded {
+						Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+							.padding(6)
+							.padding(.horizontal, 4)
+							.modify {
+								if #available(iOS 26, *) {
+									$0.glassEffect()
+								} else {
+									$0.background(.regularMaterial, in: .capsule)
+								}
+							}
+							.font(.subheadline)
+						
 						Spacer()
 						
 						Button("Reset", systemImage: "arrow.counterclockwise") {
@@ -114,12 +106,28 @@ struct TimeTravelCompactView: View {
 								timeMachine.reset()
 							}
 						}
+						.glassButtonStyle(timeMachine.isActive ? .prominent : .regular)
 						.disabled(!timeMachine.isActive)
-						.glassButtonStyle()
+					} else {
+						Spacer()
 					}
+					
+					Button {
+						withAnimation { isExpanded.toggle() }
+					} label: {
+						Label(
+							isExpanded ? "Hide time travel" : "Show time travel",
+							systemImage: isExpanded ? "xmark" : "clock.arrow.2.circlepath"
+						)
+						.padding(isExpanded ? 2 : 0)
+					}
+					.labelStyle(.iconOnly)
+					.buttonBorderShape(.circle)
+					.controlSize(isExpanded ? .small : .large)
+					.glassButtonStyle(timeMachine.isActive && !isExpanded ? .prominent : .regular)
 				}
-				.textScale(.secondary)
 				.controlSize(.small)
+				.fontWeight(.medium)
 				
 				if isExpanded {
 					HStack {
@@ -128,7 +136,7 @@ struct TimeTravelCompactView: View {
 						}
 						.buttonStyle(CompactViewButtonStyle())
 						
-						DatePicker(selection: $timeMachine.date, displayedComponents: .date) {
+						DatePicker(selection: $timeMachine.date.animation(), displayedComponents: .date) {
 							Text("Time travel to date")
 						}
 						.labelsHidden()
