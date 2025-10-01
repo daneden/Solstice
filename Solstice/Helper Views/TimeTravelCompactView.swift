@@ -94,31 +94,34 @@ struct TimeTravelCompactView: View {
 			VStack {
 				HStack {
 					if isExpanded {
-						Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
-							.padding(6)
-							.padding(.horizontal, 4)
-							.modify {
-								#if os(visionOS)
-								$0.background(.regularMaterial, in: .capsule)
-								#else
-								if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
-									$0.glassEffect()
-								} else {
+						Group {
+							Label("Time Travel", systemImage: "clock.arrow.2.circlepath")
+								.padding(6)
+								.padding(.horizontal, 4)
+								.modify {
+									#if os(visionOS)
 									$0.background(.regularMaterial, in: .capsule)
+									#else
+									if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
+										$0.glassEffect()
+									} else {
+										$0.background(.regularMaterial, in: .capsule)
+									}
+									#endif
 								}
-								#endif
+								.font(.subheadline)
+							
+							Spacer()
+							
+							Button("Reset", systemImage: "arrow.counterclockwise") {
+								withAnimation {
+									timeMachine.reset()
+								}
 							}
-							.font(.subheadline)
-						
-						Spacer()
-						
-						Button("Reset", systemImage: "arrow.counterclockwise") {
-							withAnimation {
-								timeMachine.reset()
-							}
+							.glassButtonStyle(timeMachine.isActive ? .prominent : .regular)
+							.disabled(!timeMachine.isActive)
 						}
-						.glassButtonStyle(timeMachine.isActive ? .prominent : .regular)
-						.disabled(!timeMachine.isActive)
+						.transition(.blurReplace.combined(with: .opacity))
 					} else {
 						Spacer()
 					}
@@ -160,7 +163,7 @@ struct TimeTravelCompactView: View {
 					}
 					.padding(.vertical, 2)
 					.padding(.horizontal, -2)
-					.transition(.blurReplace)
+					.transition(.blurReplace.combined(with: .opacity))
 					.modify {
 						#if os(visionOS)
 						$0.background(.regularMaterial, in: .capsule)
@@ -183,13 +186,6 @@ struct TimeTravelCompactView: View {
 			}
 		}
 		.scenePadding()
-		#if os(iOS)
-		.background {
-			if #unavailable(iOS 26) {
-				VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
-			}
-		}
-		#endif
 	}
 }
 

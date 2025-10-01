@@ -40,11 +40,57 @@ extension View {
 					#endif
 				} else {
 					content
-						.buttonStyle(.bordered)
+						.buttonStyle(MaterialButtonStyle())
 						.backgroundStyle(.regularMaterial)
 				}
 			}
 		}
+	}
+}
+
+struct MaterialButtonStyle: ButtonStyle {
+	@Environment(\.controlSize) private var controlSize
+
+	var paddingAmount: Double {
+		switch controlSize {
+		case .mini:
+			return 4
+		case .small:
+			return 6
+		case .regular:
+			return 12
+		case .large:
+			return 16
+		case .extraLarge:
+			return 20
+		@unknown default:
+			return 16
+		}
+	}
+	
+	var font: Font {
+		switch controlSize {
+		case .mini:
+			return .caption
+		case .small:
+			return .subheadline
+		case .regular:
+			return .body
+		case .large:
+			return .title3
+		case .extraLarge:
+			return .title2
+		@unknown default:
+			return .body
+		}
+	}
+	
+	func makeBody(configuration: Configuration) -> some View {
+		configuration.label
+			.font(font)
+			.padding(paddingAmount)
+			.padding(.horizontal, paddingAmount / 2)
+			.background(.regularMaterial, in: .buttonBorder)
 	}
 }
 

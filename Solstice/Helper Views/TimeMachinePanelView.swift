@@ -47,25 +47,10 @@ struct TimeMachinePanelView: View {
 						.animation(.default.delay(0.2), value: colorScheme)
 				} else {
 					content
-						.background(.regularMaterial, in: .panel)
-						.shadow(color: .black, radius: 12, x: 0, y: 8)
+						.background(.regularMaterial.shadow(.drop(color: .black.opacity(0.2), radius: 8, y: 4)), in: .panel)
 				}
 			}
 		.scenePadding(.horizontal)
-		#if os(iOS)
-		.background {
-			if #unavailable(iOS 26) {
-				VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
-					.background {
-						Color.clear
-							.background()
-							.opacity(0.2)
-							.mask(LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom))
-					}
-					.ignoresSafeArea()
-			}
-		}
-		#endif
 		.scenePadding(.top)
 		#endif
 		#if os(macOS)

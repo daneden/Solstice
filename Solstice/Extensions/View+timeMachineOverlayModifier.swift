@@ -29,7 +29,23 @@ struct TimeMachineOverlayModifier: ViewModifier {
 								.readSize($size)
 						}
 				} else {
-					content.backportSafeAreaBar { overlay }
+					content
+						.backportSafeAreaBar {
+							overlay
+#if os(iOS)
+								.background {
+									if #unavailable(iOS 26) {
+										VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
+											.background {
+												Color.clear
+													.background(.background)
+													.mask(LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom))
+											}
+											.ignoresSafeArea()
+									}
+								}
+#endif
+						}
 				}
 			}
 			.animation(.default, value: timeMachineAppearance)
