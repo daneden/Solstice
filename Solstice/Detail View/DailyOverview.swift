@@ -19,6 +19,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 	@State private var gradientSolar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
+	@AppStorage(Preferences.chartType) private var chartType
 	
 	var solarDateIsInToday: Bool {
 		var calendar = Calendar.autoupdatingCurrent
@@ -52,24 +53,34 @@ struct DailyOverview<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Section {
-			daylightChartView
-				.frame(height: chartHeight)
-				#if !os(watchOS)
-				.contextMenu {
-					Picker(selection: $chartAppearance.animation()) {
-						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-							Text(appearance.description)
+			switch chartType {
+			#if os(iOS)
+			case .circular:
+				CircularSolarChart(location: location)
+					.listRowInsets(.zero)
+					.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
+					.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
+			#endif
+			default:
+				daylightChartView
+					.frame(height: chartHeight)
+					#if !os(watchOS)
+					.contextMenu {
+						Picker(selection: $chartAppearance.animation()) {
+							ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+								Text(appearance.description)
+							}
+						} label: {
+							Label("Appearance", systemImage: "paintpalette")
 						}
-					} label: {
-						Label("Appearance", systemImage: "paintpalette")
 					}
-				}
-				#endif
-				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-				#if os(watchOS)
-				.listRowBackground(Color.clear)
-				#endif
-				.environment(\.timeZone, location.timeZone)
+					#endif
+					.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+					#if os(watchOS)
+					.listRowBackground(Color.clear)
+					#endif
+					.environment(\.timeZone, location.timeZone)
+			}
 			
 			Group {
 				Label {

@@ -486,6 +486,9 @@
         }
       }
     },
+    "Chart type" : {
+
+    },
     "Choose date" : {
       "localizations" : {
         "it" : {
@@ -495,6 +498,9 @@
           }
         }
       }
+    },
+    "Circular" : {
+
     },
     "Civil Sunrise" : {
       "localizations" : {

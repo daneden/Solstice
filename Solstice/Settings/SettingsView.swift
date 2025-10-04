@@ -13,6 +13,7 @@ struct SettingsView: View {
 	@EnvironmentObject private var currentLocation: CurrentLocation
 	
 	@AppStorage(Preferences.timeTravelAppearance) private var timeTravelAppearance
+	@AppStorage(Preferences.chartType) private var chartType
 	
     var body: some View {
 			NavigationStack {
@@ -76,6 +77,17 @@ struct SettingsView: View {
 							}
 						}
 					}
+					
+					#if os(iOS)
+					Section("Chart appearance") {
+						Picker("Chart type", selection: $chartType) {
+							ForEach(ChartType.allCases) { type in
+								Text(type.title)
+							}
+						}
+						.pickerStyle(.segmented)
+					}
+					#endif
 					
 					NotificationSettings()
 					

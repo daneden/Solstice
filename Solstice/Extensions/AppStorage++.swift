@@ -135,6 +135,8 @@ struct Preferences {
 	static let listViewShowComplication: Value<Bool> = ("listViewShowComplication", showComplicationDefaultValue)
 	
 	static let timeTravelAppearance: Value<TimeTravelAppearance> = ("timeTravelAppearance", .expanded)
+	
+	static let chartType: Value<ChartType> = ("chartType", .classic)
 }
 
 enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable {
@@ -157,6 +159,19 @@ enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable 
 			return .timetravelCompact
 		}
 	}
+}
+
+enum ChartType: String, CaseIterable, RawRepresentable, Identifiable {
+	case classic, circular
+	
+	var title: LocalizedStringKey {
+		switch self {
+		case .classic: return "Classic"
+		case .circular: return "Circular"
+		}
+	}
+	
+	var id: Self { self }
 }
 
 extension Preferences {

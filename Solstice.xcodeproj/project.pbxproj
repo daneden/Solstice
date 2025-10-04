@@ -244,6 +244,7 @@
 		71AEB7B129AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
+		71BC51CB2E91B56D0025892F /* CircularSolarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC51C72E91B56D0025892F /* CircularSolarChart.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C1058D2E7C07A900A76EBB /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C1058C2E7C07A900A76EBB /* AdaptiveStack.swift */; };
@@ -443,6 +444,7 @@
 		71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
+		71BC51C72E91B56D0025892F /* CircularSolarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularSolarChart.swift; sourceTree = "<group>"; };
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C1058C2E7C07A900A76EBB /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 		7193E92B29C0BA1200103D6B /* Charts */ = {
 			isa = PBXGroup;
 			children = (
+				71BC51C72E91B56D0025892F /* CircularSolarChart.swift */,
 				71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */,
 				71F641B829995ED000FE5AB5 /* DaylightChart.swift */,
 			);
@@ -1181,6 +1184,7 @@
 				7132AC1929E6962D00523215 /* ConditionalGlobals.swift in Sources */,
 				711782D82E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,
 				712433A92D78870600709C20 /* StackedButtonStyle.swift in Sources */,
+				71BC51CB2E91B56D0025892F /* CircularSolarChart.swift in Sources */,
 				71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */,
 				711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
 				7116B1EE2DDD12BA0018A294 /* TimeMachinePanelView.swift in Sources */,
