@@ -9,6 +9,7 @@ import SwiftUI
 import Solar
 import TimeMachine
 import Suite
+import enum Accelerate.vDSP
 
 struct CircularSolarChart<Location: AnyLocation>: View {
 	@Environment(\.colorScheme) private var colorScheme
@@ -22,6 +23,14 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	var solar: Solar? {
 		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	}
+	
+	var majorSunSize: Double {
+		max(16, max(size.width, size.height) * 0.075)
+	}
+	
+	var minorSunSize: Double {
+		max(4, majorSunSize / 3)
 	}
 	
 	private var calendar: Calendar {
@@ -38,9 +47,9 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	var aboveHorizonSun: some View {
 		Circle()
 			.fill(.white)
-			.frame(width: 32)
+			.frame(width: majorSunSize)
 			.frame(maxWidth: .infinity, alignment: .trailing)
-			.offset(x: -1.5)
+			.padding(.trailing, minorSunSize / 2)
 			.rotationEffect(angle(for: solar?.date ?? .now))
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
@@ -54,15 +63,15 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				.fill(.clear)
 				.strokeBorder(.white, lineWidth: 3)
 		}
-				.frame(width: 32)
+				.frame(width: majorSunSize)
 				.frame(maxWidth: .infinity, alignment: .trailing)
-				.offset(x: -1.5)
+				.padding(.trailing, minorSunSize / 2)
 				.rotationEffect(angle(for: solar?.date ?? .now))
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 	
 	var safeSunriseSunsetShape: some Shape {
-		CircleWithSlice(startAngle: angle(for: solar?.sunrise ?? .now), endAngle: angle(for: solar?.sunset ?? .now))
+		CircleWithSlice(startAngle: angle(for: solar?.sunrise ?? .now).degrees, endAngle: angle(for: solar?.sunset ?? .now).degrees)
 	}
 	
 	var sundial: some View {
@@ -74,7 +83,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			.overlay {
 				Circle()
 					.fill(.clear)
-					.strokeBorder(colorScheme == .dark ? .white : .black.opacity(0.5), lineWidth: 0.5)
+					.strokeBorder(colorScheme == .dark ? .white : .black.opacity(0.5), lineWidth: 1)
 					.opacity(0.2)
 					.blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
 			}
@@ -85,7 +94,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 						if let (sunrise, sunset) = phases[key],
 							 let sunrise,
 							 let sunset {
-							CircleWithSlice(startAngle: angle(for: sunrise), endAngle: angle(for: sunset))
+							CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
 								.fill(.black)
 								.opacity(0.06)
 								.blendMode(.plusDarker)
@@ -102,7 +111,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 						ZStack {
 							Circle()
 								.fill(.clear)
-								.strokeBorder(.black, lineWidth: 1)
+								.stroke(.black, lineWidth: 1)
 								.padding()
 							
 							if let phases = solar?.phases {
@@ -112,18 +121,18 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 										 let sunset {
 										Circle()
 											.fill(.ultraThinMaterial)
-											.frame(width: 8)
+											.frame(width: minorSunSize)
 											.frame(maxWidth: .infinity, alignment: .trailing)
 											.padding(.trailing)
-											.offset(x: 4)
+											.offset(x: minorSunSize / 2)
 											.rotationEffect(angle(for: sunrise))
 										
 										Circle()
 											.fill(.ultraThinMaterial)
-											.frame(width: 8)
+											.frame(width: minorSunSize)
 											.frame(maxWidth: .infinity, alignment: .trailing)
 											.padding(.trailing)
-											.offset(x: 4)
+											.offset(x: minorSunSize / 2)
 											.rotationEffect(angle(for: sunset))
 									}
 								}
@@ -152,6 +161,18 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 					.padding()
 					.padding()
 				
+				ForEach(0...23, id: \.self) { i in
+					RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
+						.fill(.white.opacity(0.3))
+						.blendMode(.plusLighter)
+						.frame(width: Double(i).remainder(dividingBy: 6) == 0 ? majorSunSize / 1.5 : minorSunSize, height: 2)
+						.frame(maxWidth: .infinity, alignment: .trailing)
+						.padding(.trailing)
+						.padding(.trailing)
+						.padding(.trailing)
+						.rotationEffect(Angle(degrees: (360 / 24) * Double(i)))
+				}
+				
 				if let solar {
 					ChartLabel(text: Text(solar.safeSunrise, style: .time),
 										 imageName: "sunrise",
@@ -166,7 +187,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 					 let diff = solar?.compactDifferenceString {
 					VStack(spacing: 2) {
 							HStack(spacing: 2) {
-								Image(systemName: "sun.horizon")
+								Image(systemName: "hourglass")
 								Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
 							}
 							
@@ -191,8 +212,16 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 }
 
 struct CircleWithSlice: Shape {
-	var startAngle: Angle
-	var endAngle: Angle
+	var startAngle: Double // degrees
+	var endAngle: Double // degrees
+	
+	var animatableData: AnimatablePair<Double, Double> {
+		get { AnimatablePair(startAngle, endAngle) }
+		set {
+			startAngle = newValue.first
+			endAngle = newValue.second
+		}
+	}
 	
 	func path(in rect: CGRect) -> Path {
 		let center = CGPoint(x: rect.midX, y: rect.midY)
@@ -208,8 +237,8 @@ struct CircleWithSlice: Shape {
 		slice.move(to: center)
 		slice.addArc(center: center,
 								 radius: radius,
-								 startAngle: startAngle,
-								 endAngle: endAngle,
+								 startAngle: Angle(degrees: startAngle),
+								 endAngle: Angle(degrees: endAngle),
 								 clockwise: false)
 		slice.closeSubpath()
 		
@@ -279,7 +308,7 @@ extension View {
 		if #available(iOS 26, macOS 26, watchOS 26, *) {
 			return glassEffect(in: shape)
 		} else {
-			return background(.regularMaterial, in: shape)
+			return background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
 		}
 	}
 }
@@ -290,3 +319,4 @@ extension View {
 		.timeMachineOverlay()
 		.withTimeMachine(.solsticeTimeMachine)
 }
+
