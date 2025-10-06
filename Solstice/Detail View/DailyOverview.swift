@@ -53,34 +53,42 @@ struct DailyOverview<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Section {
-			switch chartType {
-			#if os(iOS)
-			case .circular:
-				CircularSolarChart(location: location)
-					.listRowInsets(.zero)
-					.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
-					.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
-			#endif
-			default:
-				daylightChartView
-					.frame(height: chartHeight)
-					#if !os(watchOS)
-					.contextMenu {
-						Picker(selection: $chartAppearance.animation()) {
-							ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-								Text(appearance.description)
-							}
-						} label: {
-							Label("Appearance", systemImage: "paintpalette")
-						}
-					}
-					#endif
-					.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-					#if os(watchOS)
-					.listRowBackground(Color.clear)
-					#endif
-					.environment(\.timeZone, location.timeZone)
+			VStack {
+				switch chartType {
+				#if os(iOS)
+				case .circular:
+					CircularSolarChart(location: location)
+				#endif
+				default:
+					daylightChartView
+						.frame(height: chartHeight)
+						.environment(\.timeZone, location.timeZone)
+				}
 			}
+			#if !os(watchOS)
+			.contextMenu {
+				Picker(selection: $chartType.animation()) {
+					ForEach(ChartType.allCases) { chartType in
+						Text(chartType.title).tag(chartType)
+					}
+				} label: {
+					Text("Chart type")
+				}
+				
+				Picker(selection: $chartAppearance.animation()) {
+					ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+						Text(appearance.description)
+					}
+				} label: {
+					Label("Appearance", systemImage: "paintpalette")
+				}
+			}
+			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
+			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
+			#else
+			.listRowBackground(Color.clear)
+			#endif
+			.listRowInsets(.zero)
 			
 			Group {
 				Label {

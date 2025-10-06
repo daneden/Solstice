@@ -12,6 +12,7 @@ import Suite
 import enum Accelerate.vDSP
 
 struct CircularSolarChart<Location: AnyLocation>: View {
+	@AppStorage(Preferences.detailViewChartAppearance) private var appearance
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
 	
@@ -33,6 +34,20 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		max(4, majorSunSize / 3)
 	}
 	
+	var foregroundStyle: AnyShapeStyle {
+		switch appearance {
+		case .graphical: return AnyShapeStyle(.white)
+		case .simple: return AnyShapeStyle(.primary)
+		}
+	}
+	
+	var blendMode: BlendMode {
+		switch appearance {
+		case .graphical: return .plusLighter
+		case .simple: return .normal
+		}
+	}
+	
 	private var calendar: Calendar {
 		var calendar = Calendar.current
 		calendar.timeZone = timeZone
@@ -44,9 +59,18 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		Helpers.angle(for: date, timeZone: timeZone)
 	}
 	
+	@ViewBuilder
+	var background: some View {
+		if appearance == .graphical {
+			solar?.view
+		} else {
+			Rectangle().fill(.regularMaterial)
+		}
+	}
+	
 	var aboveHorizonSun: some View {
 		Circle()
-			.fill(.white)
+			.fill(foregroundStyle)
 			.frame(width: majorSunSize)
 			.frame(maxWidth: .infinity, alignment: .trailing)
 			.padding(.trailing, minorSunSize / 2)
@@ -55,13 +79,13 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 	
 	var belowHorizonSun: some View {
-		solar?.view.mask {
+		background.mask {
 			Circle()
 		}
 		.overlay {
 			Circle()
 				.fill(.clear)
-				.strokeBorder(.white, lineWidth: 3)
+				.strokeBorder(foregroundStyle, lineWidth: 3)
 		}
 				.frame(width: majorSunSize)
 				.frame(maxWidth: .infinity, alignment: .trailing)
@@ -76,7 +100,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	var sundial: some View {
 		ZStack {
-			solar?.view.mask {
+			background.mask {
 				Circle()
 					.readSize($size)
 			}
@@ -95,9 +119,27 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 							 let sunrise,
 							 let sunset {
 							CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
-								.fill(.black)
-								.opacity(0.06)
+								.fill(.black.opacity(0.06))
 								.blendMode(.plusDarker)
+							
+							Group {
+								Rectangle()
+									.fill(foregroundStyle.opacity(0.1))
+									.frame(height: 1)
+									.mask {
+										LinearGradient(stops: [Gradient.Stop.init(color: .clear, location: 0.499), .init(color: .black, location: 0.5)], startPoint: .leading, endPoint: .trailing)
+									}
+									.rotationEffect(angle(for: sunrise))
+								
+								Rectangle()
+									.fill(foregroundStyle.opacity(0.1))
+									.frame(height: 1)
+									.mask {
+										LinearGradient(stops: [Gradient.Stop.init(color: .clear, location: 0.499), .init(color: .black, location: 0.5)], startPoint: .leading, endPoint: .trailing)
+									}
+									.rotationEffect(angle(for: sunset))
+							}
+							.blendMode(blendMode)
 						}
 					}
 				}
@@ -106,7 +148,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			
 			ZStack {
 				Circle()
-					.fill(.white.opacity(0.4))
+					.fill(foregroundStyle.opacity(0.4))
 					.mask {
 						ZStack {
 							Circle()
@@ -120,7 +162,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 										 let sunrise,
 										 let sunset {
 										Circle()
-											.fill(.ultraThinMaterial)
 											.frame(width: minorSunSize)
 											.frame(maxWidth: .infinity, alignment: .trailing)
 											.padding(.trailing)
@@ -128,7 +169,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 											.rotationEffect(angle(for: sunrise))
 										
 										Circle()
-											.fill(.ultraThinMaterial)
 											.frame(width: minorSunSize)
 											.frame(maxWidth: .infinity, alignment: .trailing)
 											.padding(.trailing)
@@ -139,7 +179,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 							}
 						}
 					}
-					.blendMode(.plusLighter)
+					.blendMode(blendMode)
 				
 				aboveHorizonSun
 					.reverseMask {
@@ -163,8 +203,8 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				
 				ForEach(0...23, id: \.self) { i in
 					RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
-						.fill(.white.opacity(0.3))
-						.blendMode(.plusLighter)
+						.fill(foregroundStyle.opacity(0.3))
+						.blendMode(blendMode)
 						.frame(width: Double(i).remainder(dividingBy: 6) == 0 ? majorSunSize / 1.5 : minorSunSize, height: 2)
 						.frame(maxWidth: .infinity, alignment: .trailing)
 						.padding(.trailing)
@@ -244,8 +284,9 @@ struct CircleWithSlice: Shape {
 		
 		// Subtract the slice from the circle
 		path.addPath(slice, transform: .identity)
+		path.closeSubpath()
 		return path
-			.subtracting(slice) // requires iOS 17+ (Shape subtraction!)
+			.subtracting(slice)
 	}
 }
 
