@@ -346,11 +346,15 @@ extension View {
 
 extension View {
 	func backportGlassEffect<S: Shape>(in shape: S) -> some View {
+		#if os(visionOS)
+		return background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+		#else
 		if #available(iOS 26, macOS 26, watchOS 26, *) {
 			return glassEffect(in: shape)
 		} else {
 			return background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
 		}
+		#endif
 	}
 }
 

@@ -46,48 +46,13 @@ struct SettingsView: View {
 						}
 					}
 					
-					Section("Time Travel") {
-						HStack {
-							HStack {
-								ForEach(TimeTravelAppearance.allCases) { appearance in
-									let isActive = timeTravelAppearance == appearance
-									Button {
-										timeTravelAppearance = appearance
-									} label: {
-										VStack(spacing: 8) {
-											Image(appearance.image)
-												.resizable()
-												.aspectRatio(contentMode: .fit)
-												.frame(maxHeight: 80)
-												.foregroundStyle(.tint)
-												.tint(isActive ? .accent : .secondary)
-											Text(appearance.title)
-											
-											Image(systemName: isActive ? "checkmark.circle" : "circle")
-												.symbolVariant(isActive ? .fill : .none)
-												.foregroundStyle(.tint)
-												.tint(isActive ? .accent : .secondary)
-												.imageScale(.large)
-										}
-										.frame(maxWidth: .infinity)
-										.contentShape(.rect)
-									}
-									.buttonStyle(.plain)
-								}
-							}
+					Section {
+						NavigationLink {
+							AppearanceSettingsView()
+						} label: {
+							Label("Appearance", systemImage: "paintpalette")
 						}
 					}
-					
-					#if os(iOS)
-					Section("Chart appearance") {
-						Picker("Chart type", selection: $chartType) {
-							ForEach(ChartType.allCases) { type in
-								Text(type.title)
-							}
-						}
-						.pickerStyle(.segmented)
-					}
-					#endif
 					
 					NotificationSettings()
 					

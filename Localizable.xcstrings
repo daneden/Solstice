@@ -486,6 +486,9 @@
         }
       }
     },
+    "Chart theme" : {
+
+    },
     "Chart type" : {
 
     },
@@ -1035,6 +1038,9 @@
           }
         }
       }
+    },
+    "Hidden" : {
+
     },
     "Hide time travel" : {
 

@@ -245,6 +245,7 @@
 		71AEB7B229AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71AEB7B329AE0A9B00A7952D /* AnyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */; };
 		71BC51CB2E91B56D0025892F /* CircularSolarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC51C72E91B56D0025892F /* CircularSolarChart.swift */; };
+		71BC51CD2E944C190025892F /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC51CC2E944C190025892F /* AppearanceSettingsView.swift */; };
 		71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */; };
 		71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
 		71C1058D2E7C07A900A76EBB /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C1058C2E7C07A900A76EBB /* AdaptiveStack.swift */; };
@@ -445,6 +446,7 @@
 		71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyLocation.swift; sourceTree = "<group>"; };
 		71B3C7C029A1422A0041BAB6 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
 		71BC51C72E91B56D0025892F /* CircularSolarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularSolarChart.swift; sourceTree = "<group>"; };
+		71BC51CC2E944C190025892F /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
 		71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationHeadingView.swift; sourceTree = "<group>"; };
 		71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71C1058C2E7C07A900A76EBB /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
@@ -569,10 +571,11 @@
 		717F8BBA29A908D00015ECCB /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */,
+				71BC51CC2E944C190025892F /* AppearanceSettingsView.swift */,
 				717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */,
 				717F8BBB29A908E30015ECCB /* SettingsView.swift */,
 				718B136B29A918680001D4DC /* SupporterSettings.swift */,
-				71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1165,6 +1168,7 @@
 				719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */,
 				71A2BDE629B747940071ACE9 /* Globals.swift in Sources */,
 				719511FC29AF5D0E009D282F /* ViewRemainingDaylight.swift in Sources */,
+				71BC51CD2E944C190025892F /* AppearanceSettingsView.swift in Sources */,
 				719511F629AF5CB4009D282F /* GetSunriseTime.swift in Sources */,
 				71F641BD299968BF00FE5AB5 /* TimeInterval++.swift in Sources */,
 				7195125829B48ECD009D282F /* TimeZone++.swift in Sources */,

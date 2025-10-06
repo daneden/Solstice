@@ -7,14 +7,21 @@
 
 import SwiftUI
 import Suite
+import TimeMachine
 
 struct TimeMachineOverlayModifier: ViewModifier {
+	@Environment(\.timeMachine) private var timeMachine
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	@AppStorage(Preferences.timeTravelAppearance) private var timeMachineAppearance
 	@State private var size = CGSize.zero
 	
 	func body(content: Content) -> some View {
 		content
+			.task(id: timeMachineAppearance) {
+				if timeMachineAppearance == .hidden {
+					timeMachine.reset()
+				}
+			}
 		#if os(visionOS)
 			.ornament(attachmentAnchor: .scene(.bottomTrailing), contentAlignment: .trailing) {
 				TimeMachinePanelView()
@@ -32,7 +39,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					content
 						.backportSafeAreaBar {
 							overlay
-#if os(iOS)
+								#if os(iOS)
 								.background {
 									if #unavailable(iOS 26) {
 										VariableBlurView(maxBlurRadius: 1, direction: .blurredBottomClearTop)
@@ -44,7 +51,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 											.ignoresSafeArea()
 									}
 								}
-#endif
+								#endif
 						}
 				}
 			}
@@ -53,17 +60,19 @@ struct TimeMachineOverlayModifier: ViewModifier {
 	}
 	
 	@ViewBuilder var overlay: some View {
-		switch horizontalSizeClass {
-		case .regular:
-			TimeMachineDraggableOverlayView()
-		default:
-			switch timeMachineAppearance {
-			case .compact:
-				TimeTravelCompactView()
-					.transition(.blurReplace)
+		if timeMachineAppearance != .hidden {
+			switch horizontalSizeClass {
+			case .regular:
+				TimeMachineDraggableOverlayView()
 			default:
-				TimeMachinePanelView()
-					.transition(.blurReplace)
+				switch timeMachineAppearance {
+				case .compact:
+					TimeTravelCompactView()
+						.transition(.blurReplace)
+				default:
+					TimeMachinePanelView()
+						.transition(.blurReplace)
+				}
 			}
 		}
 	}

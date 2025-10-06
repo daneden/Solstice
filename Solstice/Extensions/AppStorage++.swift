@@ -140,7 +140,7 @@ struct Preferences {
 }
 
 enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable {
-	case expanded, compact
+	case expanded, compact, hidden
 	
 	var id: Self { self }
 	
@@ -148,6 +148,7 @@ enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable 
 		switch self {
 		case .expanded: return "Classic"
 		case .compact: return "Compact"
+		case .hidden: return "Hidden"
 		}
 	}
 	
@@ -157,6 +158,8 @@ enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable 
 			return .timetravelClassic
 		case .compact:
 			return .timetravelCompact
+		case .hidden:
+			return .timetravelHidden
 		}
 	}
 }
