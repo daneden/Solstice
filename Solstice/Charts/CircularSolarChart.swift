@@ -238,8 +238,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 					.padding(4)
 					.padding(.horizontal, 4)
 					.backportGlassEffect(in: .rect(cornerRadius: 12, style: .continuous))
-					.contentTransition(.numericText())
-					.animation(.snappy, value: timeMachine.date)
 				}
 			}
 			.environment(\.timeZone, timeZone)
@@ -299,7 +297,6 @@ fileprivate struct ChartLabel: View {
 		HStack(spacing: 2) {
 			Image(systemName: imageName)
 			text
-				.contentTransition(.numericText())
 		}
 		.padding(4)
 		.backportGlassEffect(in: .capsule)

@@ -16,50 +16,70 @@ struct AppearanceSettingsView: View {
 			Form {
 				Section("Time Travel") {
 					HStack {
-						HStack {
-							ForEach(TimeTravelAppearance.allCases) { appearance in
-								let isActive = timeTravelAppearance == appearance
-								Button {
-									timeTravelAppearance = appearance
-								} label: {
-									VStack(spacing: 8) {
-										Image(appearance.image)
-											.resizable()
-											.aspectRatio(contentMode: .fit)
-											.frame(maxHeight: 80)
-											.foregroundStyle(.tint)
-											.tint(isActive ? .accent : .secondary)
-										Text(appearance.title)
-										
-										Image(systemName: isActive ? "checkmark.circle" : "circle")
-											.symbolVariant(isActive ? .fill : .none)
-											.foregroundStyle(.tint)
-											.tint(isActive ? .accent : .secondary)
-											.imageScale(.large)
-									}
-									.frame(maxWidth: .infinity)
-									.contentShape(.rect)
+						ForEach(TimeTravelAppearance.allCases) { appearance in
+							let isActive = timeTravelAppearance == appearance
+							Button {
+								timeTravelAppearance = appearance
+							} label: {
+								VStack(spacing: 8) {
+									Image(appearance.image)
+										.resizable()
+										.aspectRatio(contentMode: .fit)
+										.frame(maxHeight: 80)
+										.foregroundStyle(.tint)
+										.tint(isActive ? .accent : .secondary)
+									Text(appearance.title)
+									
+									Image(systemName: isActive ? "checkmark.circle" : "circle")
+										.symbolVariant(isActive ? .fill : .none)
+										.foregroundStyle(.tint)
+										.tint(isActive ? .accent : .secondary)
+										.imageScale(.large)
 								}
-								.buttonStyle(.plain)
+								.frame(maxWidth: .infinity)
+								.contentShape(.rect)
 							}
+							.buttonStyle(.plain)
 						}
 					}
 				}
 				
 				Section("Chart appearance") {
-					Picker("Chart type", selection: $chartType) {
-						ForEach(ChartType.allCases) { type in
-							Text(type.title)
+					HStack {
+						ForEach(ChartType.allCases) { chartType in
+							let isActive = self.chartType == chartType
+							Button {
+								self.chartType = chartType
+							} label: {
+								VStack(spacing: 8) {
+									Image(chartType.icon)
+										.font(.largeTitle)
+										.fontWeight(.light)
+										.symbolRenderingMode(.hierarchical)
+										.foregroundStyle(.tint)
+										.tint(isActive ? .accent : .secondary)
+									
+									Text(chartType.title)
+									
+									Image(systemName: isActive ? "checkmark.circle" : "circle")
+										.symbolVariant(isActive ? .fill : .none)
+										.foregroundStyle(.tint)
+										.tint(isActive ? .accent : .secondary)
+										.imageScale(.large)
+								}
+								.frame(maxWidth: .infinity)
+								.contentShape(.rect)
+							}
+							.buttonStyle(.plain)
 						}
 					}
-					.pickerStyle(.segmented)
 					
 					Picker("Chart theme", selection: $chartAppearance) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 							Text(appearance.description)
 						}
 					}
-					.pickerStyle(.inline)
+					.pickerStyle(.segmented)
 				}
 			}
 			.navigationTitle("Appearance")

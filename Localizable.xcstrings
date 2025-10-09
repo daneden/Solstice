@@ -1241,6 +1241,9 @@
         }
       }
     },
+    "Monochrome" : {
+
+    },
     "Month:" : {
       "localizations" : {
         "it" : {

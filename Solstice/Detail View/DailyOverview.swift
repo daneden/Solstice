@@ -69,19 +69,25 @@ struct DailyOverview<Location: AnyLocation>: View {
 			.contextMenu {
 				Picker(selection: $chartType.animation()) {
 					ForEach(ChartType.allCases) { chartType in
-						Text(chartType.title).tag(chartType)
+						Label(chartType.title, image: chartType.icon)
+							.symbolRenderingMode(.hierarchical)
+							.imageScale(.large)
+							.labelStyle(.titleAndIcon)
 					}
 				} label: {
 					Text("Chart type")
 				}
+				.pickerStyle(.palette)
 				
 				Picker(selection: $chartAppearance.animation()) {
 					ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-						Text(appearance.description)
+						Label(appearance.description, systemImage: "circle.fill")
+							.tint(appearance.tintColor.gradient)
 					}
 				} label: {
-					Label("Appearance", systemImage: "paintpalette")
+					Text("Appearance")
 				}
+				.pickerStyle(.palette)
 			}
 			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
 			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }

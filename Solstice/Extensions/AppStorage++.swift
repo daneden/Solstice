@@ -174,6 +174,13 @@ enum ChartType: String, CaseIterable, RawRepresentable, Identifiable {
 		}
 	}
 	
+	var icon: ImageResource {
+		switch self {
+		case .classic: return .solarchartLinear
+		case .circular: return .solarchartCircularFill
+		}
+	}
+	
 	var id: Self { self }
 }
 

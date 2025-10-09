@@ -55,94 +55,97 @@ struct NotificationSettings: View {
 	}
 	
 	var body: some View {
-		Section("Notifications") {
-			Toggle("Enable notifications", isOn: $notificationsEnabled)
-				.task(id: notificationsEnabled) {
-					if notificationsEnabled == true {
-						notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
-					}
-				}
-		}
-		
-		Group {
+		Form {
 			Section {
-				Picker("Location", selection: $customNotificationLocationUUID.animation()) {
-					if currentLocation.isAuthorized {
-						Text("Current location")
-							.tag(String?.none)
-					} else if customNotificationLocationUUID == nil {
-						Text("Select location")
-							.tag(String?.none)
-							.disabled(true)
-					}
-					ForEach(items) { location in
-						if let title = location.title {
-							Text(title)
-								.tag(location.uuid?.uuidString)
+				Toggle("Enable notifications", isOn: $notificationsEnabled)
+					.task(id: notificationsEnabled) {
+						if notificationsEnabled == true {
+							notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
 						}
 					}
-				}
 			}
 			
-			Section {
-				Picker(selection: $scheduleType) {
-					ForEach(Preferences.NotificationSettings.ScheduleType.allCases, id: \.self) { scheduleType in
-						Text(scheduleType.description)
-					}
-				} label: {
-					Text("Send at")
-				}
-				
-				if scheduleType == .specificTime {
-					DatePicker(selection: notificationTime, displayedComponents: [.hourAndMinute]) {
-						Text("Time")
-					}
-				} else {
-					Picker(selection: $notificationOffset) {
-						ForEach(Preferences.NotificationSettings.relativeOffsetDetents, id: \.self) { timeInterval in
-							switch timeInterval {
-							case let x where x < 0:
-								Text("\(Duration.seconds(abs(timeInterval)).formatted(.units(maximumUnitCount: 2))) before")
-							case let x where x > 0:
-								Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
-							default:
-								Text("at \(Text(scheduleType.description))")
+			Group {
+				Section {
+					Picker("Location", selection: $customNotificationLocationUUID.animation()) {
+						if currentLocation.isAuthorized {
+							Text("Current location")
+								.tag(String?.none)
+						} else if customNotificationLocationUUID == nil {
+							Text("Select location")
+								.tag(String?.none)
+								.disabled(true)
+						}
+						ForEach(items) { location in
+							if let title = location.title {
+								Text(title)
+									.tag(location.uuid?.uuidString)
 							}
 						}
-					} label: {
-						Text("Time")
 					}
-				}
-			}
-			
-			DisclosureGroup {
-				ForEach(notificationFragments, id: \.label) { fragment in
-					Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
 				}
 				
-				VStack(alignment: .leading) {
-					Text("Notification Preview")
-						.font(.footnote)
-						.foregroundStyle(.secondary)
-					NotificationPreview()
+				Section {
+					Picker(selection: $scheduleType) {
+						ForEach(Preferences.NotificationSettings.ScheduleType.allCases, id: \.self) { scheduleType in
+							Text(scheduleType.description)
+						}
+					} label: {
+						Text("Send at")
+					}
+					
+					if scheduleType == .specificTime {
+						DatePicker(selection: notificationTime, displayedComponents: [.hourAndMinute]) {
+							Text("Time")
+						}
+					} else {
+						Picker(selection: $notificationOffset) {
+							ForEach(Preferences.NotificationSettings.relativeOffsetDetents, id: \.self) { timeInterval in
+								switch timeInterval {
+								case let x where x < 0:
+									Text("\(Duration.seconds(abs(timeInterval)).formatted(.units(maximumUnitCount: 2))) before")
+								case let x where x > 0:
+									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
+								default:
+									Text("at \(Text(scheduleType.description))")
+								}
+							}
+						} label: {
+							Text("Time")
+						}
+					}
 				}
-			} label: {
-				Text("Customise notification content")
-			}
-			
-			Section {
-				Picker(selection: $sadPreference) {
-					ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
-						Text(sadPreference.description)
+				
+				DisclosureGroup {
+					ForEach(notificationFragments, id: \.label) { fragment in
+						Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
+					}
+					
+					VStack(alignment: .leading) {
+						Text("Notification Preview")
+							.font(.footnote)
+							.foregroundStyle(.secondary)
+						NotificationPreview()
 					}
 				} label: {
-					Text("SAD preference")
+					Text("Customise notification content")
 				}
-			} footer: {
-				Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
+				
+				Section {
+					Picker(selection: $sadPreference) {
+						ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
+							Text(sadPreference.description)
+						}
+					} label: {
+						Text("SAD preference")
+					}
+				} footer: {
+					Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
+				}
 			}
+			.disabled(!notificationsEnabled)
 		}
-		.disabled(!notificationsEnabled)
+		.navigationTitle("Notifications")
 	}
 }
 

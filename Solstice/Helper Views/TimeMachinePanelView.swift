@@ -36,18 +36,18 @@ struct TimeMachinePanelView: View {
 			#endif
 		}
 		.padding()
-		.clipShape(.panel)
+		.clipShape(AnyShape.panel())
 		#if os(visionOS)
 		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
 		#else
 		.modify { content in
 				if #available(iOS 26, macOS 26, *) {
 					content
-						.glassEffect(in: .panel)
+						.glassEffect(in: AnyShape.panel())
 						.animation(.default.delay(0.2), value: colorScheme)
 				} else {
 					content
-						.background(.regularMaterial.shadow(.drop(color: .black.opacity(0.2), radius: 8, y: 4)), in: .panel)
+						.background(.regularMaterial.shadow(.drop(color: .black.opacity(0.2), radius: 8, y: 4)), in: AnyShape.panel())
 				}
 			}
 		.scenePadding(.horizontal)

@@ -52,9 +52,13 @@ struct SettingsView: View {
 						} label: {
 							Label("Appearance", systemImage: "paintpalette")
 						}
+						
+						NavigationLink {
+							NotificationSettings()
+						} label: {
+							Label("Notifications", systemImage: "bell.badge")
+						}
 					}
-					
-					NotificationSettings()
 					
 					SupporterSettings()
 					
