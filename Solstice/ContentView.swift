@@ -85,7 +85,7 @@ struct ContentView: View {
 			#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
-					.presentationDetents([.large, .medium])
+					.presentationDetents(horizontalSizeClass == .regular ? [.large] : [.large, .medium])
 			}
 			#endif
 			.deduplicateLocationRecords()

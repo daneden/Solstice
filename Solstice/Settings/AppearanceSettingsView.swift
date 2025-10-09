@@ -83,6 +83,7 @@ struct AppearanceSettingsView: View {
 				}
 			}
 			.navigationTitle("Appearance")
+			.formStyle(.grouped)
     }
 }
 

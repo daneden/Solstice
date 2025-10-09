@@ -64,7 +64,7 @@ struct _TimeTravelCompactView: View {
 		.modify {
 			#if os(visionOS)
 			$0
-				.background(.regularMaterial, in: .panel)
+				.background(.regularMaterial, in: AnyShape.panel())
 				.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 				.transition(.blurReplace)
 			#else

@@ -58,6 +58,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 				#if os(iOS)
 				case .circular:
 					CircularSolarChart(location: location)
+						.frame(maxHeight: chartHeight)
+						.frame(maxWidth: .infinity)
 				#endif
 				default:
 					daylightChartView

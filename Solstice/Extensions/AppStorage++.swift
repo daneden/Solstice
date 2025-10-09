@@ -152,6 +152,7 @@ enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable 
 		}
 	}
 	
+	#if !os(watchOS)
 	var image: ImageResource {
 		switch self {
 		case .expanded:
@@ -162,6 +163,7 @@ enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable 
 			return .timetravelHidden
 		}
 	}
+	#endif
 }
 
 enum ChartType: String, CaseIterable, RawRepresentable, Identifiable {

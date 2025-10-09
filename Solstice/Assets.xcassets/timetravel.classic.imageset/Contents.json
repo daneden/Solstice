@@ -2,16 +2,19 @@
   "images" : [
     {
       "filename" : "timetravel.classic.svg",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "idiom" : "iphone"
     },
     {
-      "idiom" : "universal",
-      "scale" : "2x"
+      "filename" : "timeTravel.classic 1.svg",
+      "idiom" : "ipad"
     },
     {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "timeTravel.classic 2.svg",
+      "idiom" : "mac"
+    },
+    {
+      "filename" : "timeTravel.classic 3.svg",
+      "idiom" : "vision"
     }
   ],
   "info" : {

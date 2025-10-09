@@ -61,14 +61,21 @@ struct TimeMachineOverlayModifier: ViewModifier {
 	
 	@ViewBuilder var overlay: some View {
 		if timeMachineAppearance != .hidden {
-			switch horizontalSizeClass {
-			case .regular:
-				TimeMachineDraggableOverlayView()
+			switch timeMachineAppearance {
+			case .compact:
+				TimeTravelCompactView()
+					.if(horizontalSizeClass == .regular) { content in
+						HStack {
+							Spacer()
+							content
+								.frame(maxWidth: 400)
+						}
+					}
+					.transition(.blurReplace)
 			default:
-				switch timeMachineAppearance {
-				case .compact:
-					TimeTravelCompactView()
-						.transition(.blurReplace)
+				switch horizontalSizeClass {
+				case .regular:
+					TimeMachineDraggableOverlayView()
 				default:
 					TimeMachinePanelView()
 						.transition(.blurReplace)

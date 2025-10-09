@@ -355,10 +355,3 @@ extension View {
 	}
 }
 
-
-#Preview {
-	CircularSolarChart(location: TemporaryLocation.placeholderLondon)
-		.timeMachineOverlay()
-		.withTimeMachine(.solsticeTimeMachine)
-}
-

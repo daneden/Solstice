@@ -146,6 +146,7 @@ struct NotificationSettings: View {
 			.disabled(!notificationsEnabled)
 		}
 		.navigationTitle("Notifications")
+		.formStyle(.grouped)
 	}
 }
 

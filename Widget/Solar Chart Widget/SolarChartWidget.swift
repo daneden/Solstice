@@ -27,3 +27,23 @@ struct SolarChartWidget: Widget {
 	}
 }
 #endif
+
+#if !os(watchOS)
+struct SundialWidget: Widget {
+	static var supportedFamilies: [WidgetFamily] = [.systemLarge]
+	
+	var body: some WidgetConfiguration {
+		IntentConfiguration(
+			kind: SolsticeWidgetKind.SundialWidget.rawValue,
+			intent: ConfigurationIntent.self,
+			provider: SolarChartWidgetTimelineProvider()
+		) { timelineEntry in
+			SundialWidgetView(entry: timelineEntry)
+				.widgetURL(timelineEntry.location?.url)
+		}
+		.configurationDisplayName("Sundial")
+		.description("Follow the sun's journey throughout the day")
+		.supportedFamilies(Self.supportedFamilies)
+	}
+}
+#endif
