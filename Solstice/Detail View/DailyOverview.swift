@@ -69,28 +69,29 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 			#if !os(watchOS)
 			.contextMenu {
-				Picker(selection: $chartType.animation()) {
-					ForEach(ChartType.allCases) { chartType in
-						Label(chartType.title, image: chartType.icon)
-							.symbolRenderingMode(.hierarchical)
-							.imageScale(.large)
-							.labelStyle(.titleAndIcon)
+					Picker(selection: $chartType.animation()) {
+						ForEach(ChartType.allCases) { chartType in
+							Label(chartType.title, image: chartType.icon)
+								.symbolRenderingMode(.hierarchical)
+								.imageScale(.large)
+								.labelStyle(.titleAndIcon)
+						}
+					} label: {
+						Text("Chart type")
 					}
-				} label: {
-					Text("Chart type")
-				}
-				.pickerStyle(.palette)
-				
-				Picker(selection: $chartAppearance.animation()) {
-					ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-						Label(appearance.description, systemImage: "circle.fill")
-							.tint(appearance.tintColor.gradient)
+					.pickerStyle(.menu)
+					
+					Picker(selection: $chartAppearance.animation()) {
+						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+							Label(appearance.description, systemImage: "circle.fill")
+								.tint(appearance.tintColor.gradient)
+						}
+					} label: {
+						Text("Chart theme")
 					}
-				} label: {
-					Text("Appearance")
-				}
-				.pickerStyle(.palette)
+					.pickerStyle(.menu)
 			}
+			.menuActionDismissBehavior(.disabled)
 			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
 			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
 			#else

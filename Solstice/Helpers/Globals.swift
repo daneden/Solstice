@@ -8,10 +8,8 @@
 import Foundation
 
 var chartHeight: CGFloat = {
-#if os(macOS)
+#if !os(watchOS)
 	300
-#elseif !os(watchOS)
-	400
 #else
 	200
 #endif
