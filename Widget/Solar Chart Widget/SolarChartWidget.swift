@@ -5,10 +5,10 @@
 //  Created by Daniel Eden on 12/04/2023.
 //
 
-#if !os(macOS)
 import WidgetKit
 import SwiftUI
 
+#if !os(macOS)
 struct SolarChartWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.accessoryRectangular]
 	
