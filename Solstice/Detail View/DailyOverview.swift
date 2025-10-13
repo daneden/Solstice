@@ -92,7 +92,9 @@ struct DailyOverview<Location: AnyLocation>: View {
 					}
 					.pickerStyle(.menu)
 			}
+			#if !os(macOS)
 			.menuActionDismissBehavior(.disabled)
+			#endif
 			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
 			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
 			#else
