@@ -15,6 +15,9 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var appearance
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
+	#if WIDGET_EXTENSION
+	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
+	#endif
 	
 	@State private var size = CGSize.zero
 	var date: Date?
@@ -36,17 +39,39 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 	
 	var foregroundStyle: AnyShapeStyle {
+		#if WIDGET_EXTENSION
+		if widgetRenderingMode == .fullColor {
+			switch appearance {
+			case .graphical: return AnyShapeStyle(.white)
+			case .simple: return AnyShapeStyle(.primary)
+			}
+		} else {
+			return AnyShapeStyle(.primary)
+		}
+		#else
 		switch appearance {
 		case .graphical: return AnyShapeStyle(.white)
 		case .simple: return AnyShapeStyle(.primary)
 		}
+		#endif
 	}
 	
 	var blendMode: BlendMode {
+		#if WIDGET_EXTENSION
+		if widgetRenderingMode == .fullColor {
+			switch appearance {
+			case .graphical: return .plusLighter
+			case .simple: return .normal
+			}
+		} else {
+			return .normal
+		}
+		#else
 		switch appearance {
 		case .graphical: return .plusLighter
 		case .simple: return .normal
 		}
+		#endif
 	}
 	
 	private var calendar: Calendar {
@@ -62,11 +87,20 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	@ViewBuilder
 	var background: some View {
+		#if WIDGET_EXTENSION
+		if widgetRenderingMode == .fullColor,
+			 appearance == .graphical {
+			solar?.view
+		} else {
+			Rectangle().fill(.regularMaterial)
+			}
+		#else
 		if appearance == .graphical {
 			solar?.view
 		} else {
 			Rectangle().fill(.regularMaterial)
 		}
+		#endif
 	}
 	
 	var aboveHorizonSun: some View {
