@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="80px" height="60px" viewBox="0 0 80 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>timeTravel.classic</title>
+    <title>timeTravel.classic.window</title>
     <defs>
         <path d="M0,0 L80,0 L80,60 L0,60 L0,0 Z" id="path-1"></path>
     </defs>
-    <g id="timeTravel.classic" stroke="none" fill="none" xlink:href="#path-1" fill-rule="nonzero">
+    <g id="timeTravel.classic.window" stroke="none" fill="none" xlink:href="#path-1" fill-rule="nonzero">
         <rect id="Panel-Copy" fill="color(display-p3 0.000 0.000 0.000)" opacity="0.5" x="47" y="44" width="27" height="10" rx="3"></rect>
         <rect id="Track-Copy" fill="color(display-p3 0.000 0.000 0.000)" x="49" y="50" width="23" height="1" rx="0.5"></rect>
         <rect id="Slider-Copy" fill="color(display-p3 0.000 0.000 0.000)" x="51" y="49" width="5" height="3" rx="1.5"></rect>

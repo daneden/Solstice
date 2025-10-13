@@ -1,19 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "timetravel.compact.svg",
+      "filename" : "timetravel.classic.svg",
       "idiom" : "iphone"
     },
     {
-      "filename" : "timeTravel.compact 1.svg",
+      "filename" : "timetravel.classic.ipad.svg",
       "idiom" : "ipad"
     },
     {
-      "filename" : "timeTravel.compact 2.svg",
+      "filename" : "timetravel.classic.mac.svg",
       "idiom" : "mac"
     },
     {
-      "filename" : "timeTravel.compact 3.svg",
+      "filename" : "timetravel.classic.vision.svg",
       "idiom" : "vision"
     }
   ],

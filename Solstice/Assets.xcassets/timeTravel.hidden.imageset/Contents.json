@@ -5,15 +5,15 @@
       "idiom" : "iphone"
     },
     {
-      "filename" : "timeTravel.hidden 1.svg",
+      "filename" : "timetravel.hidden.ipad.svg",
       "idiom" : "ipad"
     },
     {
-      "filename" : "timeTravel.hidden 2.svg",
+      "filename" : "timetravel.hidden.mac.svg",
       "idiom" : "mac"
     },
     {
-      "filename" : "timeTravel.hidden 3.svg",
+      "filename" : "timetravel.hidden.vision.svg",
       "idiom" : "vision"
     }
   ],
