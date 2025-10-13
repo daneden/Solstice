@@ -27,7 +27,20 @@ struct SundialWidgetView: View {
 	var body: some View {
 		Group {
 			if let location {
-				CircularSolarChart(location: location)
+				ZStack(alignment: .top) {
+					HStack {
+						Label("Solstice", image: .solstice)
+							.fontWeight(.semibold)
+						Spacer()
+						if let title = location.title {
+							Label(title, systemImage: "mappin")
+								.foregroundStyle(.secondary)
+						}
+					}
+					.font(.footnote)
+					.labelStyle(CompactLabelStyle())
+					CircularSolarChart(date: entry.date, location: location)
+				}
 			} else {
 				WidgetMissingLocationView()
 			}

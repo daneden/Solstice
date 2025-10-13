@@ -58,7 +58,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 				#if os(iOS)
 				case .circular:
 					CircularSolarChart(location: location)
-						.frame(maxHeight: chartHeight)
+						.padding()
+						.frame(maxHeight: chartHeight + 100)
 						.frame(maxWidth: .infinity)
 				#endif
 				default:

@@ -17,13 +17,14 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 	
 	@State private var size = CGSize.zero
+	var date: Date?
 	
 	var location: Location
 	
 	var timeZone: TimeZone { location.timeZone }
 	
 	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+		Solar(for: date ?? timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	var majorSunSize: Double {
@@ -102,7 +103,16 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		ZStack {
 			background.mask {
 				Circle()
-					.readSize($size)
+					.overlay {
+						GeometryReader { g in
+							Color.clear.task(id: g.size) {
+								size = g.size
+							}
+							.onAppear {
+								size = g.size
+							}
+						}
+					}
 			}
 			.overlay {
 				Circle()
@@ -198,8 +208,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	var body: some View {
 			ZStack {
 				sundial
-					.padding()
-					.padding()
 				
 				ForEach(0...23, id: \.self) { i in
 					RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
@@ -302,7 +310,7 @@ fileprivate struct ChartLabel: View {
 		.backportGlassEffect(in: .capsule)
 		.rotationEffect(-angle)
 		.frame(maxWidth: .infinity, alignment: .trailing)
-		.padding()
+		.padding(.trailing, -16)
 		.rotationEffect(angle)
 	}
 }
@@ -343,13 +351,16 @@ extension View {
 
 extension View {
 	func backportGlassEffect<S: Shape>(in shape: S) -> some View {
-		#if os(visionOS)
-		return background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+		let fallback = background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+		#if WIDGET_EXTENSION
+		return fallback
+		#elseif os(visionOS)
+		return fallback
 		#else
 		if #available(iOS 26, macOS 26, watchOS 26, *) {
 			return glassEffect(in: shape)
 		} else {
-			return background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+			return fallback
 		}
 		#endif
 	}
