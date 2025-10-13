@@ -55,7 +55,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 		Section {
 			VStack {
 				switch chartType {
-				#if os(iOS)
+				#if !os(watchOS)
 				case .circular:
 					CircularSolarChart(location: location)
 						.padding()

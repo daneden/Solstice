@@ -42,17 +42,19 @@ struct ContentView: View {
 				#endif
 			} detail: {
 				NavigationStack {
-					switch selectedLocation {
-					case currentLocation.id:
-						DetailView(location: currentLocation)
-					case .some(let id):
-						if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
-							DetailView(location: location)
-						} else {
+					Group {
+						switch selectedLocation {
+						case currentLocation.id:
+							DetailView(location: currentLocation)
+						case .some(let id):
+							if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
+								DetailView(location: location)
+							} else {
+								placeholderView
+							}
+						default:
 							placeholderView
 						}
-					default:
-						placeholderView
 					}
 				}
 				#if os(iOS)
