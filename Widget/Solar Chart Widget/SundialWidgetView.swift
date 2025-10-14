@@ -41,14 +41,14 @@ struct SundialWidgetView: View {
 					CircularSolarChart(date: entry.date, location: location)
 				}
 				.containerBackground(for: .widget) {
-					solar?.view.opacity(0.3)
+					solar?.view.opacity(0.15)
 					}
 			} else {
 				WidgetMissingLocationView()
+				.containerBackground(.background, for: .widget)
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.containerBackground(.background, for: .widget)
 	}
 }
 
