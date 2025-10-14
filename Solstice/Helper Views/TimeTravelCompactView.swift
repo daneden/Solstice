@@ -9,13 +9,9 @@ import SwiftUI
 import TimeMachine
 import Suite
 
-extension Shape {
-	static func panel() -> some Shape {
-		if #available(iOS 26, watchOS 26, macOS 26, visionOS 26, *) {
-			return ConcentricRectangle(corners: .concentric, isUniform: true)
-		} else {
-			return RoundedRectangle(cornerRadius: 24, style: .continuous)
-		}
+extension Shape where Self == RoundedRectangle {
+	static var panel: Self {
+		.rect(cornerRadius: 28, style: .continuous)
 	}
 }
 
@@ -60,19 +56,19 @@ struct _TimeTravelCompactView: View {
 			}
 		}
 		.animation(.default, value: timeMachine.interfaceState.datePickerVisible)
-		.clipShape(AnyShape.panel())
+		.clipShape(.panel)
 		.modify {
 			#if os(visionOS)
 			$0
-				.background(.regularMaterial, in: AnyShape.panel())
+				.background(.regularMaterial, in: .panel)
 				.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 				.transition(.blurReplace)
 			#else
 			if #available(iOS 26, watchOS 26, macOS 26, *) {
-				$0.glassEffect(.regular.interactive(), in: AnyShape.panel())
+				$0.glassEffect(.regular.interactive(), in: .panel)
 			} else {
 				$0
-					.background(.regularMaterial, in: AnyShape.panel())
+					.background(.regularMaterial, in: .panel)
 					.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 					.transition(.blurReplace)
 			}
