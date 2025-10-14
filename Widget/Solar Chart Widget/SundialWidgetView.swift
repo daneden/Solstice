@@ -5,14 +5,6 @@
 //  Created by Daniel Eden on 09/10/2025.
 //
 
-
-//
-//  SolarChartWidgetView.swift
-//  Solstice
-//
-//  Created by Daniel Eden on 12/04/2023.
-//
-
 import SwiftUI
 import WidgetKit
 import Solar
@@ -22,6 +14,11 @@ struct SundialWidgetView: View {
 	
 	var location: SolsticeWidgetLocation? {
 		entry.location
+	}
+	
+	var solar: Solar? {
+		guard let location else { return nil }
+		return Solar(for: entry.date, coordinate: location.coordinate)
 	}
 	
 	var body: some View {
@@ -43,6 +40,9 @@ struct SundialWidgetView: View {
 					.labelStyle(CompactLabelStyle())
 					CircularSolarChart(date: entry.date, location: location)
 				}
+				.containerBackground(for: .widget) {
+					solar?.view.opacity(0.15)
+					}
 			} else {
 				WidgetMissingLocationView()
 			}
