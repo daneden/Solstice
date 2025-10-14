@@ -30,14 +30,16 @@ struct SundialWidgetView: View {
 				ZStack(alignment: .top) {
 					HStack {
 						Label("Solstice", image: .solstice)
-							.fontWeight(.semibold)
+							.fontWeight(.bold)
 						Spacer()
 						if let title = location.title {
-							Label(title, systemImage: "mappin")
+							Label(title, systemImage: entry.location?.isRealLocation == true ? "location" : "mappin")
 								.foregroundStyle(.secondary)
+								.imageScale(.small)
 						}
 					}
-					.font(.footnote)
+					.symbolVariant(.fill)
+					.font(.footnote.weight(.medium))
 					.labelStyle(CompactLabelStyle())
 					CircularSolarChart(date: entry.date, location: location)
 				}

@@ -88,12 +88,15 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@ViewBuilder
 	var background: some View {
 		#if WIDGET_EXTENSION
-		if widgetRenderingMode == .fullColor,
-			 appearance == .graphical {
-			solar?.view
-		} else {
-			Rectangle().fill(.regularMaterial)
+		if widgetRenderingMode == .fullColor {
+			if appearance == .graphical {
+				solar?.view
+			} else {
+				Rectangle().fill(.regularMaterial)
 			}
+		} else {
+			Rectangle().fill(.primary.quinary)
+		}
 		#else
 		if appearance == .graphical {
 			solar?.view
@@ -239,48 +242,65 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		}
 	}
 	
+	@ViewBuilder
+	var labels: some View {
+		if let solar {
+			ChartLabel(text: Text(solar.safeSunrise, style: .time),
+								 imageName: "sunrise",
+								 angle: angle(for: solar.safeSunrise))
+			
+			ChartLabel(text: Text(solar.safeSunset, style: .time),
+								 imageName: "sunrise",
+								 angle: angle(for: solar.safeSunset))
+		}
+		
+		if let duration = solar?.daylightDuration,
+			 let diff = solar?.compactDifferenceString {
+			VStack(spacing: 2) {
+				HStack(spacing: 2) {
+					Image(systemName: "hourglass")
+					Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
+				}
+				
+				Text(diff)
+					.textScale(.secondary)
+					.foregroundStyle(.secondary)
+			}
+			.padding(4)
+			.padding(.horizontal, 4)
+			.backportGlassEffect(in: .rect(cornerRadius: 12, style: .continuous))
+		}
+	}
+	
 	var body: some View {
 			ZStack {
-				sundial
-				
-				ForEach(0...23, id: \.self) { i in
-					RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
-						.fill(foregroundStyle.opacity(0.3))
-						.blendMode(blendMode)
-						.frame(width: Double(i).remainder(dividingBy: 6) == 0 ? majorSunSize / 1.5 : minorSunSize, height: 2)
-						.frame(maxWidth: .infinity, alignment: .trailing)
-						.padding(.trailing)
-						.padding(.trailing)
-						.padding(.trailing)
-						.rotationEffect(Angle(degrees: (360 / 24) * Double(i)))
-				}
-				
-				if let solar {
-					ChartLabel(text: Text(solar.safeSunrise, style: .time),
-										 imageName: "sunrise",
-										 angle: angle(for: solar.safeSunrise))
+				ZStack {
+					sundial
 					
-					ChartLabel(text: Text(solar.safeSunset, style: .time),
-										 imageName: "sunrise",
-										 angle: angle(for: solar.safeSunset))
-				}
-				
-				if let duration = solar?.daylightDuration,
-					 let diff = solar?.compactDifferenceString {
-					VStack(spacing: 2) {
-							HStack(spacing: 2) {
-								Image(systemName: "hourglass")
-								Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
-							}
-							
-							Text(diff)
-								.textScale(.secondary)
-								.foregroundStyle(.secondary)
+					ForEach(0...23, id: \.self) { i in
+						RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
+							.fill(foregroundStyle.opacity(0.3))
+							.blendMode(blendMode)
+							.frame(width: Double(i).remainder(dividingBy: 6) == 0 ? majorSunSize / 1.5 : minorSunSize, height: 2)
+							.frame(maxWidth: size.width * 0.9, alignment: .trailing)
+							.rotationEffect(Angle(degrees: (360 / 24) * Double(i)))
 					}
-					.padding(4)
-					.padding(.horizontal, 4)
-					.backportGlassEffect(in: .rect(cornerRadius: 12, style: .continuous))
 				}
+				#if WIDGET_EXTENSION
+				.if(widgetRenderingMode != .fullColor) {
+					$0.reverseMask {
+						labels
+							.backgroundStyle(.black)
+					}
+				}
+				#endif
+				
+				labels
+				#if WIDGET_EXTENSION
+					.if(widgetRenderingMode != .fullColor) {
+						$0.backgroundStyle(.primary.quinary)
+					}
+				#endif
 			}
 			.environment(\.timeZone, timeZone)
 			.font(.footnote)
@@ -383,20 +403,44 @@ extension View {
 	}
 }
 
-extension View {
-	func backportGlassEffect<S: Shape>(in shape: S) -> some View {
-		let fallback = background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+struct BackportGlassEffectViewModifier<S: Shape>: ViewModifier {
+	#if WIDGET_EXTENSION
+	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
+	#endif
+	
+	var shape: S
+	
+	func body(content: Content) -> some View {
+		let fallback = content.background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+		
 		#if WIDGET_EXTENSION
-		return fallback
+		content
+			.modify { content in
+				if widgetRenderingMode == .fullColor {
+					fallback
+				} else {
+					content.background(.background, in: shape)
+				}
+			}
 		#elseif os(visionOS)
-		return fallback
+		fallback
 		#else
 		if #available(iOS 26, macOS 26, watchOS 26, *) {
-			return glassEffect(in: shape)
+			content.glassEffect(in: shape)
 		} else {
-			return fallback
+			fallback
 		}
 		#endif
 	}
 }
 
+extension View {
+	func backportGlassEffect<S: Shape>(in shape: S) -> some View {
+		modifier(BackportGlassEffectViewModifier(shape: shape))
+	}
+}
+
+#Preview {
+	CircularSolarChart(location: TemporaryLocation.placeholderLondon)
+		.padding()
+}
