@@ -68,7 +68,9 @@ struct DailyOverview<Location: AnyLocation>: View {
 						.environment(\.timeZone, location.timeZone)
 				}
 			}
-			#if !os(watchOS)
+			#if os(watchOS)
+			.listRowBackground(Color.clear)
+			#else
 			.contextMenu {
 					Picker(selection: $chartType.animation()) {
 						ForEach(ChartType.allCases) { chartType in
@@ -92,15 +94,25 @@ struct DailyOverview<Location: AnyLocation>: View {
 					}
 					.pickerStyle(.menu)
 			}
+			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
+			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
+			.listRowInsets(.zero)
+			#if !os(visionOS)
+			.if(chartType == .circular && chartAppearance == .graphical) {
+				$0.listRowBackground(
+					solar.view
+						.opacity(0.3)
+						.mask {
+							LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+						}
+						.background(Color("listRowBackgroundColor"))
+				)
+			}
+			#endif
 			#if !os(macOS)
 			.menuActionDismissBehavior(.disabled)
 			#endif
-			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
-			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
-			#else
-			.listRowBackground(Color.clear)
 			#endif
-			.listRowInsets(.zero)
 			
 			Group {
 				Label {

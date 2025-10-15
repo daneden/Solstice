@@ -38,7 +38,7 @@ struct ContentView: View {
 						toolbarItems
 					}
 				#if os(macOS)
-					.navigationSplitViewColumnWidth(256)
+					.frame(minWidth: 256)
 				#endif
 			} detail: {
 				NavigationStack {

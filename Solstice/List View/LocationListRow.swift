@@ -129,16 +129,9 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					.symbolVariant(.fill)
 			}
 			
-			Group {
-				if let title = location.title {
-					Text(verbatim: title)
-						.id(location.title)
-				} else {
-					Text("Current location")
-				}
-			}
-			.transition(.blurReplace)
-			.lineLimit(2)
+			Text(location.title ?? "Current location")
+				.contentTransition(.numericText())
+				.lineLimit(2)
 		}
 		.font(.headline)
 		#if os(iOS)
@@ -151,7 +144,6 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		if let subtitle,
 			 !subtitle.isEmpty {
 			Text(subtitle)
-				.id(subtitle)
 				.foregroundStyle(.secondary)
 				.transition(.blurReplace)
 		}
