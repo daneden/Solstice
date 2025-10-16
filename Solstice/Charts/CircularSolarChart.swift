@@ -311,45 +311,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 }
 
-struct CircleWithSlice: Shape {
-	var startAngle: Double // degrees
-	var endAngle: Double // degrees
-	
-	var animatableData: AnimatablePair<Double, Double> {
-		get { AnimatablePair(startAngle, endAngle) }
-		set {
-			startAngle = newValue.first
-			endAngle = newValue.second
-		}
-	}
-	
-	func path(in rect: CGRect) -> Path {
-		let center = CGPoint(x: rect.midX, y: rect.midY)
-		let radius = min(rect.width, rect.height) / 2
-		
-		var path = Path()
-		
-		// Draw the full circle
-		path.addEllipse(in: rect)
-		
-		// Create the slice path
-		var slice = Path()
-		slice.move(to: center)
-		slice.addArc(center: center,
-								 radius: radius,
-								 startAngle: Angle(degrees: startAngle),
-								 endAngle: Angle(degrees: endAngle),
-								 clockwise: false)
-		slice.closeSubpath()
-		
-		// Subtract the slice from the circle
-		path.addPath(slice, transform: .identity)
-		path.closeSubpath()
-		return path
-			.subtracting(slice)
-	}
-}
-
 fileprivate struct ChartLabel: View {
 	var text: Text
 	var imageName: String
@@ -384,59 +345,6 @@ fileprivate struct Helpers {
 		
 		let degrees = fractionOfDay * 360
 		return .degrees(degrees + 90) // shift so midnight is at bottom
-	}
-}
-
-extension View {
-	@inlinable
-	public func reverseMask<Mask: View>(
-		alignment: Alignment = .center,
-		@ViewBuilder _ mask: () -> Mask
-	) -> some View {
-		self.mask {
-			Rectangle()
-				.overlay(alignment: alignment) {
-					mask()
-						.blendMode(.destinationOut)
-				}
-		}
-	}
-}
-
-struct BackportGlassEffectViewModifier<S: Shape>: ViewModifier {
-	#if WIDGET_EXTENSION
-	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
-	#endif
-	
-	var shape: S
-	
-	func body(content: Content) -> some View {
-		let fallback = content.background(.regularMaterial, in: shape).shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-		
-		#if WIDGET_EXTENSION
-		content
-			.modify { content in
-				if widgetRenderingMode == .fullColor {
-					fallback
-				} else {
-					content.background(.background, in: shape)
-				}
-			}
-		#elseif os(visionOS)
-		fallback
-		#else
-		if #available(iOS 26, macOS 26, watchOS 26, *) {
-			content.glassEffect(in: shape)
-		} else {
-			fallback
-		}
-		#endif
-	}
-}
-
-extension View {
-	func backportGlassEffect<S: Shape>(in shape: S) -> some View {
-		modifier(BackportGlassEffectViewModifier(shape: shape))
 	}
 }
 

@@ -270,6 +270,14 @@
 		71CB96DE2DE9AC4700660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96DD2DE9AC4700660AA9 /* Suite */; };
 		71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D129CD862A00E30148 /* EarthNode.swift */; };
 		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
+		71E3C4132EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
+		71E3C4142EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
+		71E3C4152EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
+		71E3C4162EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
+		71E3C4182EA12B030005C884 /* View+backportGlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */; };
+		71E3C4192EA12B030005C884 /* View+backportGlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */; };
+		71E3C41A2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */; };
+		71E3C41B2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */; };
 		71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */; };
 		71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
 		71F2C3A42ABB366E00E69426 /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A92ABB366E00E69426 /* Widget.intentdefinition */; };
@@ -461,6 +469,8 @@
 		71DAB3D329CD865800E30148 /* EarthScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthScene.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleWithSlice.swift; sourceTree = "<group>"; };
+		71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+backportGlassEffect.swift"; sourceTree = "<group>"; };
 		71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquinoxAndSolsticeInfoSheet.swift; sourceTree = "<group>"; };
 		71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLabelStyle.swift; sourceTree = "<group>"; };
 		71F2C3A82ABB366E00E69426 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Widget.intentdefinition; sourceTree = "<group>"; };
@@ -632,6 +642,7 @@
 				71C1058C2E7C07A900A76EBB /* AdaptiveStack.swift */,
 				71C1058F2E7C08DA00A76EBB /* AlignedIconLabelStyle.swift */,
 				711782E82E4E7CE20006CE5B /* AsyncButton.swift */,
+				71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */,
 				710D9B702AB4752D0093A9A6 /* ContentToggle.swift */,
 				711782DB2E4E0E030006CE5B /* LandingView.swift */,
 				7124339C2D77B06900709C20 /* ShareSolarChartView.swift */,
@@ -639,8 +650,8 @@
 				712433A72D78870600709C20 /* StackedButtonStyle.swift */,
 				712433A42D78867300709C20 /* StackedLabelStyle.swift */,
 				7116B1EC2DDD12BA0018A294 /* TimeMachinePanelView.swift */,
-				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
 				71C718202E83361C006A6835 /* TimeTravelCompactView.swift */,
+				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -727,8 +738,8 @@
 		719846AB28E9A9FF00E866CE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				71C105A32E7D311700A76EBB /* TimeMachine++.swift */,
 				717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */,
+				71FBEE682E4B345700EC1EF0 /* Bundle++.swift */,
 				7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */,
 				719465142C294B42008408C0 /* Color+Mix.swift */,
 				7124339F2D77C02A00709C20 /* Color+toHex.swift */,
@@ -738,16 +749,17 @@
 				719846AC28E9AA0E00E866CE /* Solar++.swift */,
 				71F641BE299B7C7000FE5AB5 /* Solar+SolarEvent.swift */,
 				71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */,
+				71C105A32E7D311700A76EBB /* TimeMachine++.swift */,
 				7195125729B48ECD009D282F /* TimeZone++.swift */,
+				71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
 				712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */,
 				7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */,
 				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
+				711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */,
 				71789AA42C32DCC7002B8A33 /* View+MaterialListRowBackground.swift */,
 				7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */,
 				7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */,
-				71FBEE682E4B345700EC1EF0 /* Bundle++.swift */,
-				711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1076,8 +1088,10 @@
 				7106C88529A2775C0007A7EC /* Solar++.swift in Sources */,
 				71A2BDE829B747940071ACE9 /* Globals.swift in Sources */,
 				7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */,
+				71E3C4182EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7106C88629A2775C0007A7EC /* Date++.swift in Sources */,
 				7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
+				71E3C4142EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 				71BC51D42E9861CC0025892F /* SundialWidgetView.swift in Sources */,
 				71C105A62E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
@@ -1129,6 +1143,8 @@
 				7194653A2C2C1E09008408C0 /* WidgetLocationHeadingView.swift in Sources */,
 				712433AE2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				7194653B2C2C1E09008408C0 /* CompactLabelStyle.swift in Sources */,
+				71E3C41A2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
+				71E3C4152EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 				712433942D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
 				7194653C2C2C1E09008408C0 /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7194653D2C2C1E09008408C0 /* Solar++.swift in Sources */,
@@ -1159,6 +1175,7 @@
 				71C1058E2E7C07A900A76EBB /* AdaptiveStack.swift in Sources */,
 				719846A828E991FA00E866CE /* LocationSearchService.swift in Sources */,
 				71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */,
+				71E3C4132EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 				7198468E28E5895F00E866CE /* Persistence.swift in Sources */,
 				710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
 				7124339B2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
@@ -1225,6 +1242,7 @@
 				71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift in Sources */,
 				71A029A92C2E838100E19819 /* EarthSceneKitView.swift in Sources */,
 				71C718222E83361C006A6835 /* TimeTravelCompactView.swift in Sources */,
+				71E3C4192EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
 				711782E42E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71C105A72E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
@@ -1281,6 +1299,7 @@
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,
 				719465162C294B42008408C0 /* Color+Mix.swift in Sources */,
 				712433A12D77C02D00709C20 /* Color+toHex.swift in Sources */,
+				71E3C41B2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7194650F2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */,
 				7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				719F927D29ACD22100C06921 /* CurrentLocation.swift in Sources */,
@@ -1296,6 +1315,7 @@
 				712433AB2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				7116B1F62DDDE2130018A294 /* VariableBlurView.swift in Sources */,
 				713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */,
+				71E3C4162EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
