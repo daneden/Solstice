@@ -146,7 +146,7 @@ extension Date {
 	}
 	
 	var previousSolstice: Date {
-		let index = recentSolstices.firstIndex(where: { $0 > self })!
+		let index = recentSolstices.firstIndex(where: { $0 > self }) ?? 1
 		return recentSolstices[index - 1]
 	}
 	

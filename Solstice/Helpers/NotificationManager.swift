@@ -136,7 +136,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		guard let solar = Solar(for: date, coordinate: location.coordinate) else { return nil }
 		
 		let duration = solar.daylightDuration.localizedString
-		let difference = solar.daylightDuration - solar.yesterday.daylightDuration
+		let difference = solar.daylightDuration - (solar.yesterday?.daylightDuration ?? 0)
 		let differenceString = difference.localizedString
 		
 		if difference < 0 && sadPreference == .suppressNotifications && context != .preview {

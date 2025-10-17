@@ -70,7 +70,7 @@ struct SidebarListView: View {
 						.onDrag {
 							let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
 							
-							userActivity.title = "See daylight for \(item.title!)"
+							userActivity.title = "See daylight for \(item.title ?? "location")"
 							userActivity.targetContentIdentifier = item.uuid?.uuidString
 							
 							return NSItemProvider(object: userActivity)
