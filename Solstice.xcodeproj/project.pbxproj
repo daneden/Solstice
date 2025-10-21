@@ -45,6 +45,7 @@
 		711782E92E4E7CE20006CE5B /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E82E4E7CE20006CE5B /* AsyncButton.swift */; };
 		711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711782E82E4E7CE20006CE5B /* AsyncButton.swift */; };
 		711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */; platformFilters = (ios, macos, ); };
+		711DDC762EA7A1A400DFE99B /* GraphicalLocationListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DDC742EA7A1A400DFE99B /* GraphicalLocationListRow.swift */; };
 		7121DE0029C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
@@ -377,6 +378,7 @@
 		711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+glassButtonStyle.swift"; sourceTree = "<group>"; };
 		711782E82E4E7CE20006CE5B /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
+		711DDC742EA7A1A400DFE99B /* GraphicalLocationListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicalLocationListRow.swift; sourceTree = "<group>"; };
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
 		712433922D77A4CE00709C20 /* EdgeInsets++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets++.swift"; sourceTree = "<group>"; };
 		712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DaylightGradientTimePreferenceKey.swift"; sourceTree = "<group>"; };
@@ -609,6 +611,7 @@
 			children = (
 				71F641B629994DD900FE5AB5 /* LocationListRow.swift */,
 				714A944529C7318D00C67A4A /* SidebarListView.swift */,
+				711DDC742EA7A1A400DFE99B /* GraphicalLocationListRow.swift */,
 			);
 			path = "List View";
 			sourceTree = "<group>";
@@ -1244,6 +1247,7 @@
 				71C718222E83361C006A6835 /* TimeTravelCompactView.swift in Sources */,
 				71E3C4192EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
+				711DDC762EA7A1A400DFE99B /* GraphicalLocationListRow.swift in Sources */,
 				711782E42E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71C105A72E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				71F2C3A42ABB366E00E69426 /* Widget.intentdefinition in Sources */,

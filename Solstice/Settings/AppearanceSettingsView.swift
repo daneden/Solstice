@@ -10,6 +10,7 @@ import SwiftUI
 struct AppearanceSettingsView: View {
 	@AppStorage(Preferences.timeTravelAppearance) private var timeTravelAppearance
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
+	@AppStorage(Preferences.listViewAppearance) private var listAppearance
 	@AppStorage(Preferences.chartType) private var chartType
 	
     var body: some View {
@@ -43,6 +44,19 @@ struct AppearanceSettingsView: View {
 						}
 					}
 				}
+				
+				#if os(iOS)
+				Section("List appearance") {
+					Picker(selection: $listAppearance.animation()) {
+						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+							Text(appearance.description)
+						}
+					} label: {
+						Text("List row style")
+					}
+					.pickerStyle(.segmented)
+				}
+				#endif
 				
 				Section("Chart appearance") {
 					HStack {
