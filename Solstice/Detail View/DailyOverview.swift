@@ -59,7 +59,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				case .circular:
 					CircularSolarChart(location: location)
 						.padding()
-						.frame(maxHeight: chartHeight + 100)
+						.frame(maxHeight: chartHeight)
 						.frame(maxWidth: .infinity)
 				#endif
 				default:
@@ -98,16 +98,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
 			.listRowInsets(.zero)
 			#if !os(visionOS)
-			.if(chartType == .circular && chartAppearance == .graphical) {
-				$0.listRowBackground(
-					solar.view
-						.opacity(0.3)
-						.mask {
-							LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-						}
-						.background(Color("listRowBackgroundColor"))
-				)
-			}
+			.listRowBackground(
+				solar.view
+					.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
+					.mask {
+						LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+					}
+					.background(Color("listRowBackgroundColor"))
+			)
 			#endif
 			#if !os(macOS)
 			.menuActionDismissBehavior(.disabled)
@@ -234,11 +232,9 @@ extension DailyOverview {
 	}
 }
 
-struct DailyOverview_Previews: PreviewProvider {
-	static var previews: some View {
-		Form {
-			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
-		}
-		.withTimeMachine(.solsticeTimeMachine)
+#Preview {
+	Form {
+		DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
 	}
+	.withTimeMachine(.solsticeTimeMachine)
 }

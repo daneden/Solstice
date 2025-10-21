@@ -16,20 +16,20 @@ let iapProductIDs = Set([
 ])
 
 struct SupporterSettings: View {
-	var appStoreReviewURL: URL {
-		URL(string: "https://apps.apple.com/app/id1547580907?action=write-review")!
-	}
+	private let appStoreReviewURL: URL? = URL(string: "https://apps.apple.com/app/id1547580907?action=write-review")
 	
 	@State var products: [Product] = []
 	@State var latestTransaction: StoreKit.Transaction?
 	@State var purchaseInProgress = false
 	
 	var body: some View {
-		Link(destination: appStoreReviewURL) {
-			Label("Leave a review", systemImage: "star")
-		}
-		.task {
-			await fetchProducts()
+		if let appStoreReviewURL {
+			Link(destination: appStoreReviewURL) {
+				Label("Leave a review", systemImage: "star")
+			}
+			.task {
+				await fetchProducts()
+			}
 		}
 		
 		if !products.isEmpty {

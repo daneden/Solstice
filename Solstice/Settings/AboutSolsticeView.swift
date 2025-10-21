@@ -88,12 +88,14 @@ fileprivate struct FullStoryView: View {
 				}
 			}
 			
-			Section {
-				Link(destination: URL(string: "https://github.com/ceeK/Solar")!) {
-					Text("ceeK/Solar")
+			if let url = URL(string: "https://github.com/ceeK/Solar") {
+				Section {
+					Link(destination: url) {
+						Text("ceeK/Solar")
+					}
+				} header: {
+					Text("Open Source Acknowledgements")
 				}
-			} header: {
-				Text("Open Source Acknowledgements")
 			}
 		}
 		.formStyle(.grouped)

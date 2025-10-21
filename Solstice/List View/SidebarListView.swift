@@ -32,7 +32,7 @@ struct SidebarListView: View {
 	var body: some View {
 		List(selection: $selectedLocation) {
 			if currentLocation.isAuthorized {
-				LocationListRow(location: currentLocation)
+				ListRow(location: currentLocation)
 					.tag(currentLocation.id)
 				#if os(iOS)
 					.onDrag {
@@ -49,7 +49,7 @@ struct SidebarListView: View {
 			
 			ForEach(sortedItems) { item in
 				if let tag = item.uuid?.uuidString {
-					LocationListRow(location: item)
+					ListRow(location: item)
 						.contextMenu {
 							Section(item.title!) {
 								Button(role: .destructive) {
@@ -70,7 +70,7 @@ struct SidebarListView: View {
 						.onDrag {
 							let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
 							
-							userActivity.title = "See daylight for \(item.title!)"
+							userActivity.title = "See daylight for \(item.title ?? "location")"
 							userActivity.targetContentIdentifier = item.uuid?.uuidString
 							
 							return NSItemProvider(object: userActivity)
@@ -178,5 +178,23 @@ struct SidebarListView_Previews: PreviewProvider {
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.withTimeMachine(.solsticeTimeMachine)
 			.environmentObject(CurrentLocation())
+	}
+}
+
+fileprivate extension SidebarListView {
+	struct ListRow<Location: ObservableLocation>: View {
+		@AppStorage(Preferences.listViewAppearance) private var appearance
+		var location: Location
+		
+		var body: some View {
+			switch appearance {
+			#if os(iOS)
+			case .graphical:
+				GraphicalLocationListRow(location: location)
+			#endif
+			default:
+				LocationListRow(location: location)
+			}
+		}
 	}
 }

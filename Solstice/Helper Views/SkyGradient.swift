@@ -13,7 +13,7 @@ import CoreLocation
 extension Solar: @unchecked @retroactive Sendable {}
 
 struct SkyGradient: View, ShapeStyle {
-	var solar: Solar = Solar(coordinate: .proxiedToTimeZone)!
+	var solar: Solar? = Solar(coordinate: .proxiedToTimeZone)
 	
 	static let dawn = [
 		Color(red: 0.388, green: 0.435, blue: 0.643),
@@ -51,15 +51,16 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var colors: [[Color]] {
-		let daylightHours = Int((solar.daylightDuration / (60 * 60)) / 2)
+		let duration = solar?.daylightDuration ?? 43200
+		let daylightHours = Int((duration / (60 * 60)) / 2)
 		let amColors = [Self.night, Self.dawn, Self.morning]
 		let pmColors = [Self.afternoon, Self.evening, Self.night]
 		
 		let noon = Array(repeating: Self.noon, count: daylightHours)
 		
-		if solar.daylightDuration <= 0 {
+		if duration <= 0 {
 			return [Self.night, Self.dawn, Self.evening, Self.night]
-		} else if solar.daylightDuration >= .twentyFourHours {
+		} else if duration >= .twentyFourHours {
 			return [Self.dawn, Self.morning] + noon + [Self.afternoon, Self.evening]
 		}
 		
@@ -67,11 +68,11 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var stops: [Color] {
-		let sunrise = solar.safeSunrise
-		let sunset = solar.safeSunset
+		let sunrise = solar?.safeSunrise ?? .now.startOfDay
+		let sunset = solar?.safeSunset ?? .now.endOfDay
 		let twilightDuration: TimeInterval = 60 * 180
 		let duration = sunrise.addingTimeInterval(-twilightDuration).distance(to: sunset.addingTimeInterval(twilightDuration))
-		let progress = sunrise.addingTimeInterval(-twilightDuration / 1.5).distance(to: solar.date) / duration
+		let progress = sunrise.addingTimeInterval(-twilightDuration / 1.5).distance(to: solar?.date ?? .now) / duration
 		let progressThroughStops = progress * Double(colors.count)
 		let index = min(max(0, Int(floor(progressThroughStops))), colors.count - 1)
 		let nextIndex = max(0, min(colors.count - 1, Int(ceil(progressThroughStops))))

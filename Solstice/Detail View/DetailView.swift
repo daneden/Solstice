@@ -63,7 +63,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				navigationSelection = location.id
 			}
 			
-			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title!)"
+			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title ?? "location")"
 			
 			userActivity.targetContentIdentifier = navigationSelection
 			userActivity.isEligibleForSearch = true

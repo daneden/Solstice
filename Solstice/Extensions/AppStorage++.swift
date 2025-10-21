@@ -8,7 +8,7 @@
 import SwiftUI
 import Solar
 
-fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
+fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? .now
 
 fileprivate let store = UserDefaults(suiteName: "group.me.daneden.Solstice")
 
@@ -126,6 +126,7 @@ struct Preferences {
 	}
 	
 	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", chartAppearanceDefaultValue)
+	static let listViewAppearance: Value<DaylightChart.Appearance> = ("listViewAppearance", .graphical)
 	
 	#if !os(watchOS)
 	static let listViewSortDimension: Value<SortingFunction> = ("listViewOrderBy", .timezone)
