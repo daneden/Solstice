@@ -15,7 +15,7 @@
       "location" : "https://github.com/daneden/Suite",
       "state" : {
         "branch" : "main",
-        "revision" : "690dc5733a94d851f2081a1c0f48d1d9e3251558"
+        "revision" : "e9aea55d107c4185103243a1f389d96e12e239e1"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/daneden/TimeMachine",
       "state" : {
         "branch" : "main",
-        "revision" : "4707d3bceec2018f72f47bf7da1c99816f310797"
+        "revision" : "8cac5fd0667c4c867e9e0babc08284462feed8f8"
       }
     }
   ],
