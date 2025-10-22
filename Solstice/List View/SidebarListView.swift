@@ -10,6 +10,7 @@ import Solar
 import TimeMachine
 
 struct SidebarListView: View {
+	@AppStorage(Preferences.listViewAppearance) private var appearance
 	@EnvironmentObject var currentLocation: CurrentLocation
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
@@ -92,7 +93,7 @@ struct SidebarListView: View {
 			}
 		}
 		#if os(iOS)
-		.listRowSpacing(8)
+		.listRowSpacing(appearance == .graphical ? 8 : 0)
 		#endif
 		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)

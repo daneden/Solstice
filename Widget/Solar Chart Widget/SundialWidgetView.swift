@@ -27,7 +27,8 @@ struct SundialWidgetView: View {
 				ZStack(alignment: .top) {
 					HStack {
 						Label("Solstice", image: .solstice)
-							.fontWeight(.bold)
+							.fontWeight(.semibold)
+							.fontDesign(.rounded)
 						Spacer()
 						if let title = location.title {
 							Label(title, systemImage: entry.location?.isRealLocation == true ? "location" : "mappin")

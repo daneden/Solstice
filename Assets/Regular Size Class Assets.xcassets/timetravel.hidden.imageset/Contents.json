@@ -1,19 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "timetravel.classic.pdf",
+      "filename" : "timetravel.hidden.pdf",
       "idiom" : "iphone"
     },
     {
-      "filename" : "timetravel.classic.ipad.pdf",
+      "filename" : "timetravel.hidden.ipad.pdf",
       "idiom" : "ipad"
     },
     {
-      "filename" : "timetravel.classic.mac.pdf",
+      "filename" : "timetravel.hidden.mac.pdf",
       "idiom" : "mac"
     },
     {
-      "filename" : "timetravel.classic.vision.pdf",
+      "filename" : "timetravel.hidden.vision.pdf",
       "idiom" : "vision"
     }
   ],
@@ -22,7 +22,6 @@
     "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true,
     "template-rendering-intent" : "template"
   }
 }
