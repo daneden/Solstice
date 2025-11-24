@@ -49,6 +49,7 @@ struct ContentView: View {
 						case .some(let id):
 							if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
 								DetailView(location: location)
+									.id(location)
 							} else {
 								placeholderView
 							}
