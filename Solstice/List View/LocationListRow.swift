@@ -85,8 +85,11 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		#else
 		HStack {
 			VStack(alignment: .leading, spacing: 2) {
-				locationTitleLabel
-				locationSubtitleLabel
+				Group {
+					locationTitleLabel
+					locationSubtitleLabel
+				}
+				.lineLimit(2)
 			}
 			.animation(.default, value: location.title)
 			.animation(.default, value: location.subtitle)
