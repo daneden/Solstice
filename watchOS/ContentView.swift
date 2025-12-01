@@ -7,11 +7,12 @@
 
 import SwiftUI
 import Solar
+import TimeMachine
 
 struct ContentView: View {
 	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
@@ -97,14 +98,7 @@ struct ContentView: View {
 			}
 		}
 		.resolveDeepLink(sortedItems)
-		.overlay {
-			TimelineView(.everyMinute) { t in
-				Color.clear
-					.task(id: t.date) {
-						timeMachine.referenceDate = t.date
-					}
-			}
-		}
+		.withTimeMachine(.solsticeTimeMachine)
 	}
 		
 	var placeholderView: some View {
@@ -115,6 +109,6 @@ struct ContentView: View {
 
 #Preview {
 	ContentView()
-		.environmentObject(TimeMachine.preview)
+		.withTimeMachine(.solsticeTimeMachine)
 		.environmentObject(CurrentLocation())
 }

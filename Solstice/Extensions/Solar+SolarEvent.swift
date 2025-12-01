@@ -51,6 +51,15 @@ extension Solar {
 		static let plottablePhases: [Phase] = [.astronomical, .nautical, .civil]
 	}
 	
+	var phases: [Phase: (sunrise: Date?, sunset: Date?)] {
+		[
+			.astronomical: (astronomicalSunrise, astronomicalSunset),
+			.nautical: (nauticalSunrise, nauticalSunset),
+			.civil: (civilSunrise, civilSunset),
+			.day: (safeSunrise, safeSunset)
+		]
+	}
+	
 	var startOfDay: Date {
 		calendar.startOfDay(for: date)
 	}

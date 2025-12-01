@@ -8,14 +8,17 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 struct LocationListRow<Location: ObservableLocation>: View {
-	@EnvironmentObject private var timeMachine: TimeMachine
+	@Environment(\.timeMachine) private var timeMachine: TimeMachine
 	var location: Location
 	
 	@FocusState private var focused: Bool
 	
 	@State private var showRemainingDaylight = false
+	
+	var headingFontWeight: Font.Weight = .medium
 	
 	private var solar: Solar? {
 		Solar(for: timeMachine.date, coordinate: location.coordinate)
@@ -39,7 +42,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			VStack(alignment: .trailing) {
 				Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
 				#if os(iOS)
-					.font(.headline)
+					.font(.headline.weight(headingFontWeight))
 				#endif
 				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 					.foregroundStyle(.secondary)
@@ -69,7 +72,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 						.font(.headline)
 						.contentTransition(.numericText())
 					Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
-						.font(.footnote.weight(.light))
+						.font(.footnote)
 						.foregroundStyle(.secondary)
 						.contentTransition(.numericText())
 				}
@@ -92,35 +95,12 @@ struct LocationListRow<Location: ObservableLocation>: View {
 			
 			trailingContent
 		}
-		#if os(iOS)
-		.foregroundStyle(.white)
-		.fontWeight(.medium)
-		.blendMode(.plusLighter)
-		.shadow(color: .black.opacity(0.3), radius: 6, y: 2)
-		.padding()
-		.background {
-			solar?.view
-				.clipShape(.rect(cornerRadius: 20, style: .continuous))
-		}
-		.listRowSeparator(.hidden)
-		.listRowBackground(Color.clear)
-		.listRowInsets(.zero)
-		.focusEffectDisabled()
-		.focused($focused)
-		.overlay {
-			if focused {
-				RoundedRectangle(cornerRadius: 20, style: .continuous)
-					.fill(.clear)
-					.strokeBorder(.tint, lineWidth: 3)
-			}
-		}
-		#endif
 		#endif
 	}
 	
 	@ViewBuilder
 	var locationTitleLabel: some View {
-		HStack {
+		HStack(spacing: 4) {
 			if location is CurrentLocation {
 				Image(systemName: "location")
 					.imageScale(.small)
@@ -128,21 +108,11 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					.symbolVariant(.fill)
 			}
 			
-			Group {
-				if let title = location.title {
-					Text(verbatim: title)
-						.id(location.title)
-				} else {
-					Text("Current location")
-				}
-			}
-			.transition(.blurReplace)
-			.lineLimit(2)
+			Text(location.title ?? "Current location")
+				.contentTransition(.numericText())
+				.lineLimit(2)
 		}
-		.font(.headline)
-		#if os(iOS)
-		.fontWeight(.bold)
-		#endif
+		.font(.headline.weight(headingFontWeight))
 	}
 	
 	@ViewBuilder
@@ -150,7 +120,6 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		if let subtitle,
 			 !subtitle.isEmpty {
 			Text(subtitle)
-				.id(subtitle)
 				.foregroundStyle(.secondary)
 				.transition(.blurReplace)
 		}
@@ -161,5 +130,5 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	List {
 		LocationListRow(location: TemporaryLocation.placeholderLondon)
 	}
-	.environmentObject(TimeMachine.preview)
+	.withTimeMachine(.solsticeTimeMachine)
 }

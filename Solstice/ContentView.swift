@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 import Solar
 import Suite
+import TimeMachine
 
 struct ContentView: View {
 	@Namespace private var namespace
@@ -23,7 +24,6 @@ struct ContentView: View {
 	@Environment(\.scenePhase) private var scenePhase
 	@EnvironmentObject var currentLocation: CurrentLocation
 	
-	@StateObject var timeMachine = TimeMachine()
 	@StateObject var locationSearchService = LocationSearchService()
 	
 	@State private var settingsViewOpen = false
@@ -38,21 +38,24 @@ struct ContentView: View {
 						toolbarItems
 					}
 				#if os(macOS)
-					.navigationSplitViewColumnWidth(256)
+					.frame(minWidth: 256)
 				#endif
 			} detail: {
 				NavigationStack {
-					switch selectedLocation {
-					case currentLocation.id:
-						DetailView(location: currentLocation)
-					case .some(let id):
-						if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
-							DetailView(location: location)
-						} else {
+					Group {
+						switch selectedLocation {
+						case currentLocation.id:
+							DetailView(location: currentLocation)
+						case .some(let id):
+							if let location = locations.first(where: { $0.uuid?.uuidString == id }) {
+								DetailView(location: location)
+									.id(location)
+							} else {
+								placeholderView
+							}
+						default:
 							placeholderView
 						}
-					default:
-						placeholderView
 					}
 				}
 				#if os(iOS)
@@ -71,7 +74,6 @@ struct ContentView: View {
 			}
 			.environmentObject(locationSearchService)
 			.timeMachineOverlay()
-			.environmentObject(timeMachine)
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {
 					selectedLocation = selection
@@ -83,17 +85,10 @@ struct ContentView: View {
 				}
 			}
 			.resolveDeepLink(Array(locations))
-			.overlay {
-				TimelineView(.everyMinute) { timelineContext in
-					Color.clear.task(id: timelineContext.date) {
-						timeMachine.referenceDate = timelineContext.date
-					}
-				}
-			}
 			#if os(iOS)
 			.sheet(isPresented: $settingsViewOpen) {
 				SettingsView()
-					.presentationDetents([.large, .medium])
+					.presentationDetents(horizontalSizeClass == .regular ? [.large] : [.large, .medium])
 			}
 			#endif
 			.deduplicateLocationRecords()
@@ -161,7 +156,7 @@ struct ContentView: View {
 #Preview {
 	ContentView()
 		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-		.environmentObject(TimeMachine.preview)
+		.withTimeMachine(.solsticeTimeMachine)
 		.environmentObject(CurrentLocation())
 }
 

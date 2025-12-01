@@ -12,6 +12,9 @@ struct SettingsView: View {
 	@Environment(\.openURL) private var openURL
 	@EnvironmentObject private var currentLocation: CurrentLocation
 	
+	@AppStorage(Preferences.timeTravelAppearance) private var timeTravelAppearance
+	@AppStorage(Preferences.chartType) private var chartType
+	
     var body: some View {
 			NavigationStack {
 				Form {
@@ -36,12 +39,26 @@ struct SettingsView: View {
 								default: return
 								}
 							}
+						} header: {
+							Text("Location")
 						} footer: {
 							Text("Enable location services to see the daylight duration in your current location")
 						}
 					}
 					
-					NotificationSettings()
+					Section {
+						NavigationLink {
+							AppearanceSettingsView()
+						} label: {
+							Label("Appearance", systemImage: "paintpalette")
+						}
+						
+						NavigationLink {
+							NotificationSettings()
+						} label: {
+							Label("Notifications", systemImage: "bell.badge")
+						}
+					}
 					
 					SupporterSettings()
 					

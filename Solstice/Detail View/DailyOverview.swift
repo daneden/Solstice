@@ -8,9 +8,10 @@
 import SwiftUI
 import Solar
 import Suite
+import TimeMachine
 
 struct DailyOverview<Location: AnyLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) private var timeMachine
 
 	var solar: Solar
 	var location: Location
@@ -18,6 +19,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 	@State private var gradientSolar: Solar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
+	@AppStorage(Preferences.chartType) private var chartType
 	
 	var solarDateIsInToday: Bool {
 		var calendar = Calendar.autoupdatingCurrent
@@ -51,24 +53,64 @@ struct DailyOverview<Location: AnyLocation>: View {
 	
 	var body: some View {
 		Section {
-			daylightChartView
-				.frame(height: chartHeight)
+			VStack {
+				switch chartType {
 				#if !os(watchOS)
-				.contextMenu {
-					Picker(selection: $chartAppearance.animation()) {
-						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-							Text(appearance.description)
+				case .circular:
+					CircularSolarChart(location: location)
+						.padding()
+						.frame(maxHeight: chartHeight)
+						.frame(maxWidth: .infinity)
+				#endif
+				default:
+					daylightChartView
+						.frame(height: chartHeight)
+						.environment(\.timeZone, location.timeZone)
+				}
+			}
+			#if os(watchOS)
+			.listRowBackground(Color.clear)
+			#else
+			.contextMenu {
+					Picker(selection: $chartType.animation()) {
+						ForEach(ChartType.allCases) { chartType in
+							Label(chartType.title, image: chartType.icon)
+								.symbolRenderingMode(.hierarchical)
+								.imageScale(.large)
+								.labelStyle(.titleAndIcon)
 						}
 					} label: {
-						Label("Appearance", systemImage: "paintpalette")
+						Text("Chart type")
 					}
-				}
-				#endif
-				.listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-				#if os(watchOS)
-				.listRowBackground(Color.clear)
-				#endif
-				.environment(\.timeZone, location.timeZone)
+					.pickerStyle(.menu)
+					
+					Picker(selection: $chartAppearance.animation()) {
+						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+							Label(appearance.description, systemImage: "circle.fill")
+								.tint(appearance.tintColor.gradient)
+						}
+					} label: {
+						Text("Chart theme")
+					}
+					.pickerStyle(.menu)
+			}
+			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
+			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
+			.listRowInsets(.zero)
+			#if !os(visionOS)
+			.listRowBackground(
+				solar.view
+					.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
+					.mask {
+						LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+					}
+					.background(Color("listRowBackgroundColor"))
+			)
+			#endif
+			#if !os(macOS)
+			.menuActionDismissBehavior(.disabled)
+			#endif
+			#endif
 			
 			Group {
 				Label {
@@ -190,11 +232,9 @@ extension DailyOverview {
 	}
 }
 
-struct DailyOverview_Previews: PreviewProvider {
-	static var previews: some View {
-		Form {
-			DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
-		}
-		.environmentObject(TimeMachine.preview)
+#Preview {
+	Form {
+		DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
 	}
+	.withTimeMachine(.solsticeTimeMachine)
 }

@@ -8,9 +8,10 @@
 import SwiftUI
 import Solar
 import Charts
+import TimeMachine
 
 struct AnnualDaylightChart<Location: AnyLocation>: View {
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	var location: Location
 	
 	var kvPairs: KeyValuePairs<Solar.Phase, Color> = [
@@ -106,7 +107,7 @@ extension AnnualDaylightChart {
 		
 		while lastDate < year.end {
 			dates.append(lastDate)
-			lastDate = calendar.date(byAdding: .month, value: 1, to: lastDate)!
+			lastDate = calendar.date(byAdding: .month, value: 1, to: lastDate) ?? lastDate.addingTimeInterval(60 * 60 * 24 * 7 * 4)
 		}
 		
 		return dates.map { date in

@@ -323,9 +323,16 @@ extension DaylightChart {
 		var description: LocalizedStringKey {
 			switch self {
 			case .simple:
-				return "Simple"
+				return "Monochrome"
 			case .graphical:
 				return "Graphical"
+			}
+		}
+		
+		var tintColor: Color {
+			switch self {
+			case .simple: return .primary
+			case .graphical: return .accent
 			}
 		}
 	}

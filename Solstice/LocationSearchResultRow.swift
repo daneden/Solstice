@@ -62,8 +62,11 @@ struct LocationSearchResultRow: View {
 		if let item = searchResult.mapItems.first {
 			let coords = item.placemark.coordinate
 			
-			if let location = item.placemark.location,
-				 let savedLocation = items.first(where: { savedLocation in
+			guard let location = item.placemark.location else {
+				return nil
+			}
+			
+			if let savedLocation = items.first(where: { savedLocation in
 					 // Avoid duplicate items by filtering locations less than 5km from the specified location
 					 CLLocation(
 						latitude: savedLocation.coordinate.latitude,
@@ -73,7 +76,7 @@ struct LocationSearchResultRow: View {
 				return savedLocation
 			}
 
-			let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(item.placemark.location!)
+			let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(location)
 			searchService.queryFragment = ""
 			isAddingItem = false
 			
@@ -89,9 +92,3 @@ struct LocationSearchResultRow: View {
 		}
 	}
 }
-
-//struct AddLocationView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LocationSearchResultRow()
-//    }
-//}

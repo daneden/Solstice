@@ -8,7 +8,7 @@
 import SwiftUI
 import Solar
 
-fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
+fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? .now
 
 fileprivate let store = UserDefaults(suiteName: "group.me.daneden.Solstice")
 
@@ -126,6 +126,7 @@ struct Preferences {
 	}
 	
 	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", chartAppearanceDefaultValue)
+	static let listViewAppearance: Value<DaylightChart.Appearance> = ("listViewAppearance", .graphical)
 	
 	#if !os(watchOS)
 	static let listViewSortDimension: Value<SortingFunction> = ("listViewOrderBy", .timezone)
@@ -133,6 +134,57 @@ struct Preferences {
 	
 	static let listViewSortOrder: Value<SortOrder> = ("listViewSortOrder", .forward)
 	static let listViewShowComplication: Value<Bool> = ("listViewShowComplication", showComplicationDefaultValue)
+	
+	static let timeTravelAppearance: Value<TimeTravelAppearance> = ("timeTravelAppearance", .expanded)
+	
+	static let chartType: Value<ChartType> = ("chartType", .classic)
+}
+
+enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable {
+	case expanded, compact, hidden
+	
+	var id: Self { self }
+	
+	var title: LocalizedStringKey {
+		switch self {
+		case .expanded: return "Classic"
+		case .compact: return "Compact"
+		case .hidden: return "Hidden"
+		}
+	}
+	
+	#if !os(watchOS)
+	var image: ImageResource {
+		switch self {
+		case .expanded:
+			return .timetravelClassic
+		case .compact:
+			return .timetravelCompact
+		case .hidden:
+			return .timetravelHidden
+		}
+	}
+	#endif
+}
+
+enum ChartType: String, CaseIterable, RawRepresentable, Identifiable {
+	case classic, circular
+	
+	var title: LocalizedStringKey {
+		switch self {
+		case .classic: return "Classic"
+		case .circular: return "Circular"
+		}
+	}
+	
+	var icon: ImageResource {
+		switch self {
+		case .classic: return .solarchartLinear
+		case .circular: return .solarchartCircularFill
+		}
+	}
+	
+	var id: Self { self }
 }
 
 extension Preferences {

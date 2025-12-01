@@ -62,8 +62,10 @@ struct LandingView: View {
 			} label: {
 				Label("Continue with location", systemImage: "location.fill")
 					.frame(maxWidth: .infinity)
+					.foregroundStyle(.black)
 			}
 			.glassButtonStyle(.prominent)
+			.tint(.white)
 			.animateIn(active: animate, delay: 1.1)
 		}
 		.scenePadding(.horizontal)
@@ -78,7 +80,7 @@ struct LandingView: View {
 	}
 	
 	private var shouldUseCompactDisplay: Bool {
-		dynamicTypeSize < .accessibility2
+		dynamicTypeSize > .accessibility2
 	}
 	
     var body: some View {

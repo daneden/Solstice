@@ -7,10 +7,12 @@
 
 import SwiftUI
 import Solar
+import TimeMachine
 
 struct SidebarListView: View {
+	@AppStorage(Preferences.listViewAppearance) private var appearance
 	@EnvironmentObject var currentLocation: CurrentLocation
-	@EnvironmentObject var timeMachine: TimeMachine
+	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	
 	@Environment(\.managedObjectContext) private var viewContext
@@ -31,7 +33,7 @@ struct SidebarListView: View {
 	var body: some View {
 		List(selection: $selectedLocation) {
 			if currentLocation.isAuthorized {
-				LocationListRow(location: currentLocation)
+				ListRow(location: currentLocation)
 					.tag(currentLocation.id)
 				#if os(iOS)
 					.onDrag {
@@ -48,7 +50,7 @@ struct SidebarListView: View {
 			
 			ForEach(sortedItems) { item in
 				if let tag = item.uuid?.uuidString {
-					LocationListRow(location: item)
+					ListRow(location: item)
 						.contextMenu {
 							Section(item.title!) {
 								Button(role: .destructive) {
@@ -63,13 +65,13 @@ struct SidebarListView: View {
 									DailyOverview(solar: solar, location: item)
 								}
 							}
-								.environmentObject(timeMachine)
+							.withTimeMachine(.solsticeTimeMachine)
 						}
 						#if os(iOS)
 						.onDrag {
 							let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
 							
-							userActivity.title = "See daylight for \(item.title!)"
+							userActivity.title = "See daylight for \(item.title ?? "location")"
 							userActivity.targetContentIdentifier = item.uuid?.uuidString
 							
 							return NSItemProvider(object: userActivity)
@@ -91,7 +93,7 @@ struct SidebarListView: View {
 			}
 		}
 		#if os(iOS)
-		.listRowSpacing(8)
+		.listRowSpacing(appearance == .graphical ? 8 : 0)
 		#endif
 		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)
@@ -175,7 +177,25 @@ struct SidebarListView_Previews: PreviewProvider {
 			SidebarListView(namespace: namespace)
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.environmentObject(TimeMachine.preview)
+			.withTimeMachine(.solsticeTimeMachine)
 			.environmentObject(CurrentLocation())
+	}
+}
+
+fileprivate extension SidebarListView {
+	struct ListRow<Location: ObservableLocation>: View {
+		@AppStorage(Preferences.listViewAppearance) private var appearance
+		var location: Location
+		
+		var body: some View {
+			switch appearance {
+			#if os(iOS)
+			case .graphical:
+				GraphicalLocationListRow(location: location)
+			#endif
+			default:
+				LocationListRow(location: location)
+			}
+		}
 	}
 }
