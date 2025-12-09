@@ -16,9 +16,9 @@ struct SolsticeTimeMachineView: View {
 		} relativeTimestampLabel: { t, _ in
 			Text(t.date, format: .dateTime.day().month().year())
 		} minimumValueLabel: { _, _ in
-			Text("-12mo")
+			Text("-6mo")
 		} maximumValueLabel: { _, _ in
-			Text("+12mo")
+			Text("+6mo")
 		} datePickerLabel: { _, _ in
 			Text("Choose date")
 		}

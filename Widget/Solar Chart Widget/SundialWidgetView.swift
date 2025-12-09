@@ -25,15 +25,24 @@ struct SundialWidgetView: View {
 		Group {
 			if let location {
 				ZStack(alignment: .top) {
-					HStack {
+					HStack(alignment: .top) {
 						Label("Solstice", image: .solstice)
 							.fontWeight(.semibold)
 							.fontDesign(.rounded)
 						Spacer()
 						if let title = location.title {
-							Label(title, systemImage: entry.location?.isRealLocation == true ? "location" : "mappin")
-								.foregroundStyle(.secondary)
-								.imageScale(.small)
+							HStack(alignment: .top, spacing: 4) {
+								if entry.location?.isRealLocation == true {
+									Image(systemName: "location")
+								}
+								
+								Text(title)
+									.multilineTextAlignment(.trailing)
+									.allowsTightening(true)
+							}
+							.foregroundStyle(.secondary)
+							.imageScale(.small)
+							.frame(maxWidth: 80)
 						}
 					}
 					.symbolVariant(.fill)

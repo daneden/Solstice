@@ -250,7 +250,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 								 angle: angle(for: solar.safeSunrise))
 			
 			ChartLabel(text: Text(solar.safeSunset, style: .time),
-								 imageName: "sunrise",
+								 imageName: "sunset",
 								 angle: angle(for: solar.safeSunset))
 		}
 		
@@ -322,6 +322,7 @@ fileprivate struct ChartLabel: View {
 			text
 		}
 		.padding(4)
+		.padding(.horizontal, 2)
 		.backportGlassEffect(in: .capsule)
 		.rotationEffect(-angle)
 		.frame(maxWidth: .infinity, alignment: .trailing)
