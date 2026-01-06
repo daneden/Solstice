@@ -140,7 +140,7 @@ extension SolsticeWidgetTimelineProvider {
 		
 		func processPlacemark(_ placemark: CLPlacemark) {
 			let currentDate = Date()
-			let entryLimit = calendar.date(byAdding: .day, value: 1, to: currentDate)
+			let entryLimit = calendar.date(byAdding: .day, value: 3, to: currentDate)
 			
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
 			
@@ -191,9 +191,9 @@ extension SolsticeWidgetTimelineProvider {
 		let handler: CLGeocodeCompletionHandler = { placemarks, error in
 			guard let placemark = placemarks?.first,
 						error == nil else {
-				return completion(Timeline(entries: [], policy: .atEnd))
+				return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)], policy: .after(Date().addingTimeInterval(60 * 15))))
 			}
-			
+
 			processPlacemark(placemark)
 		}
 		
@@ -208,12 +208,12 @@ extension SolsticeWidgetTimelineProvider {
 			} else {
 				locationManager.addLocationUpdateCallback { locations in
 					guard let location = locations.last else {
-						return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date())], policy: .never))
+						return completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)], policy: .after(Date().addingTimeInterval(60 * 15))))
 					}
-					
+
 					geocoder.reverseGeocodeLocation(location, completionHandler: handler)
 				}
-				
+
 				locationManager.requestLocation()
 			}
 		}
