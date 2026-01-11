@@ -28,7 +28,7 @@ struct NotificationSettings: View {
 	
 	@AppStorage(Preferences.sadPreference) var sadPreference
 	
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],

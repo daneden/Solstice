@@ -18,7 +18,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	@Environment(\.managedObjectContext) var viewContext
 	@Environment(\.dismiss) var dismiss
 	
-	@ObservedObject var location: Location
+	var location: Location
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	#if !os(watchOS)
 	@EnvironmentObject var locationSearchService: LocationSearchService

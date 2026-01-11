@@ -7,10 +7,10 @@
 
 import CoreLocation
 import SwiftUI
-import Combine
 
-class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
-	@Published private(set) var placemark: CLPlacemark?
+@Observable
+class CurrentLocation: NSObject, CLLocationManagerDelegate {
+	private(set) var placemark: CLPlacemark?
 	
 	private(set) var location: CLLocation? {
 		didSet {
@@ -21,8 +21,8 @@ class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
 		}
 	}
 	
-	private let locationManager = CLLocationManager()
-	private let geocoder = CLGeocoder()
+	@ObservationIgnored private let locationManager = CLLocationManager()
+	@ObservationIgnored private let geocoder = CLGeocoder()
 	
 	override init() {
 		super.init()

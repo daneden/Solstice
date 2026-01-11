@@ -11,7 +11,7 @@ import TimeMachine
 
 struct SidebarListView: View {
 	@AppStorage(Preferences.listViewAppearance) private var appearance
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	@EnvironmentObject var locationSearchService: LocationSearchService
 	
@@ -178,7 +178,7 @@ struct SidebarListView_Previews: PreviewProvider {
 		}
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.withTimeMachine(.solsticeTimeMachine)
-			.environmentObject(CurrentLocation())
+			.environment(CurrentLocation())
 	}
 }
 
