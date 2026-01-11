@@ -15,7 +15,7 @@ struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var currentLocation = CurrentLocation()
 	@StateObject private var locationSearchService = LocationSearchService()
-	
+
 	private let persistenceController = PersistenceController.shared
 
 	var body: some Scene {
@@ -40,7 +40,7 @@ struct SolsticeApp: App {
 					switch phase {
 					#if !os(watchOS)
 					case .background:
-						await NotificationManager.scheduleNotifications(currentLocation: currentLocation)
+						await NotificationManager.scheduleNotifications(location: currentLocation.location)
 					#endif
 					case .active:
 						currentLocation.requestLocation()
@@ -51,6 +51,11 @@ struct SolsticeApp: App {
 				.migrateAppFeatures()
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 		}
+		#if os(iOS)
+		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
+			await NotificationManager.scheduleNotifications()
+		}
+		#endif
 		#if os(macOS)
 		.defaultSize(width: 800, height: 600)
 		#elseif os(visionOS)

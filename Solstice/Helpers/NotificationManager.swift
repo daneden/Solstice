@@ -11,6 +11,9 @@ import CoreLocation
 import Solar
 import SwiftUI
 import CoreData
+#if os(iOS) && !WIDGET_EXTENSION
+import BackgroundTasks
+#endif
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
@@ -38,72 +41,115 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 	}
 	
-	static func scheduleNotifications(currentLocation: CurrentLocation) async {
-		// Always clear notifications when scheduling new ones
+	/// Schedules notifications for the next 64 days
+	/// - Parameter location: Optional location to use. If nil, will attempt to fetch current location.
+	static func scheduleNotifications(location existingLocation: CLLocation? = nil) async {
 		await clearScheduledNotifications()
-		
-		guard (currentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
-			return
-		}
-		
+
+		guard notificationsEnabled else { return }
+
 		var location: CLLocation?
 		var timeZone = localTimeZone
-		
+
+		// Check for custom notification location first
 		if let customNotificationLocationUUID {
 			let request = NSFetchRequest<SavedLocation>(entityName: "SavedLocation")
 			request.fetchLimit = 1
 			request.predicate = NSPredicate(format: "uuid LIKE %@", customNotificationLocationUUID)
 			let context = PersistenceController.shared.container.viewContext
 			let objects = try? context.fetch(request)
-			
+
 			if let latitude = objects?.first?.latitude,
-				 let longitude = objects?.first?.longitude,
-				 let objectTimeZone = objects?.first?.timeZone {
+			   let longitude = objects?.first?.longitude,
+			   let objectTimeZone = objects?.first?.timeZone {
 				location = CLLocation(latitude: latitude, longitude: longitude)
 				timeZone = objectTimeZone
 			}
+		} else if let existingLocation {
+			// Use the provided location
+			location = existingLocation
 		} else {
-			location = currentLocation.location
+			// Fetch current location using async API
+			do {
+				location = try await CurrentLocation.fetchCurrentLocation()
+			} catch {
+				print("Could not fetch location: \(error.localizedDescription)")
+				return
+			}
 		}
-		
+
 		guard let location else {
-			print("Could not retrieve user location")
+			print("Could not retrieve location for notification scheduling")
 			return
 		}
-		
+
 		for i in 0...63 {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
-			
+
 			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
 				continue
 			}
-			
+
 			let notificationDate = getNextNotificationDate(after: date, with: solar)
-			
+
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
 				return
 			}
-			
+
 			let content = UNMutableNotificationContent()
-			
 			content.title = notificationContent.title
 			content.body = notificationContent.body
-			
+
 			var components = calendar.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
 			components.timeZone = .autoupdatingCurrent
-			
+
 			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-			
 			let request = UNNotificationRequest(identifier: "me.daneden.Solstice.notification-\(notificationDate.ISO8601Format())", content: content, trigger: trigger)
-			
+
 			do {
 				try await UNUserNotificationCenter.current().add(request)
 			} catch {
 				print(error)
 			}
 		}
+
+		#if os(iOS) && !WIDGET_EXTENSION
+		scheduleBackgroundTask()
+		#endif
 	}
-	
+
+	// MARK: Background Task Management
+
+	#if os(iOS) && !WIDGET_EXTENSION
+	/// Schedules the next background app refresh task
+	/// This should be called after scheduling notifications to ensure periodic refresh
+	static func scheduleBackgroundTask() {
+		let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
+
+		// Schedule to run after at least 7 days (well before the 64-day window expires)
+		request.earliestBeginDate = Date(timeIntervalSinceNow: 7 * 24 * 60 * 60)
+
+		do {
+			try BGTaskScheduler.shared.submit(request)
+			print("Background task scheduled successfully for notification refresh")
+		} catch let error as BGTaskScheduler.Error {
+			switch error.code {
+			case .unavailable:
+				// This is expected in the simulator or when the app is in the foreground
+				print("Background task scheduling unavailable (expected in simulator)")
+			case .tooManyPendingTaskRequests:
+				print("Too many pending background task requests")
+			case .notPermitted:
+				print("Background task not permitted - check Info.plist configuration")
+			@unknown default:
+				print("Failed to schedule background task: \(error.localizedDescription)")
+			}
+		} catch {
+			print("Failed to schedule background task: \(error.localizedDescription)")
+		}
+	}
+	#endif
+
 	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
 		if scheduleType == .specificTime {
 			let hour = notificationDateComponents.hour ?? 0
