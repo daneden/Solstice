@@ -11,6 +11,7 @@ import CoreLocation
 import Solar
 import SwiftUI
 import CoreData
+import BackgroundTasks
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
@@ -102,8 +103,67 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 				print(error)
 			}
 		}
+
+		// Schedule the background task to refresh notifications in the future
+		scheduleBackgroundTask()
 	}
-	
+
+	// MARK: Background Task Management
+
+	/// Registers the background task handler with BGTaskScheduler
+	/// Call this once during app launch
+	static func registerBackgroundTask() {
+		#if !os(watchOS)
+		BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskIdentifier, using: nil) { task in
+			guard let task = task as? BGProcessingTask else { return }
+			handleBackgroundTask(task: task)
+		}
+		#endif
+	}
+
+	/// Handles the background task execution
+	/// This reschedules notifications and submits the next background task
+	private static func handleBackgroundTask(task: BGProcessingTask) {
+		// Create a background task operation
+		let taskOperation = Task {
+			// Get the current location for scheduling
+			let currentLocation = CurrentLocation()
+
+			// Schedule notifications
+			await scheduleNotifications(currentLocation: currentLocation)
+
+			// Mark task as completed
+			task.setTaskCompleted(success: true)
+		}
+
+		// Handle expiration
+		task.expirationHandler = {
+			taskOperation.cancel()
+		}
+	}
+
+	/// Schedules the next background task to run
+	/// This should be called after scheduling notifications to ensure periodic refresh
+	private static func scheduleBackgroundTask() {
+		#if !os(watchOS)
+		let request = BGProcessingTaskRequest(identifier: backgroundTaskIdentifier)
+
+		// Require network and external power to be conservative with battery
+		request.requiresNetworkConnectivity = false
+		request.requiresExternalPower = false
+
+		// Schedule to run after at least 7 days (well before the 64-day window expires)
+		request.earliestBeginDate = Date(timeIntervalSinceNow: 7 * 24 * 60 * 60)
+
+		do {
+			try BGTaskScheduler.shared.submit(request)
+			print("Background task scheduled successfully for notification refresh")
+		} catch {
+			print("Failed to schedule background task: \(error.localizedDescription)")
+		}
+		#endif
+	}
+
 	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
 		if scheduleType == .specificTime {
 			let hour = notificationDateComponents.hour ?? 0

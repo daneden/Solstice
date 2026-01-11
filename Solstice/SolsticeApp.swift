@@ -15,8 +15,13 @@ struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@StateObject private var currentLocation = CurrentLocation()
 	@StateObject private var locationSearchService = LocationSearchService()
-	
+
 	private let persistenceController = PersistenceController.shared
+
+	init() {
+		// Register background task handler for notification scheduling
+		NotificationManager.registerBackgroundTask()
+	}
 
 	var body: some Scene {
 		WindowGroup {
