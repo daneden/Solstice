@@ -38,7 +38,7 @@
 	<array>
 		<string>location</string>
 		<string>remote-notification</string>
-		<string>processing</string>
+		<string>fetch</string>
 	</array>
 </dict>
 </plist>

@@ -16,7 +16,7 @@ class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
 		didSet {
 			Task {
 				await processLocation(location)
-				await NotificationManager.scheduleNotifications(currentLocation: self)
+				await NotificationManager.scheduleNotifications(location: location)
 			}
 		}
 	}
@@ -51,6 +51,18 @@ class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
 		for try await update in updates {
 			self.location = update.location
 		}
+	}
+
+	/// Fetches a single location update and returns it
+	/// Useful for background tasks where we need to await a location
+	static func fetchCurrentLocation() async throws -> CLLocation {
+		let updates = CLLocationUpdate.liveUpdates()
+		for try await update in updates {
+			if let location = update.location {
+				return location
+			}
+		}
+		throw CLError(.locationUnknown)
 	}
 }
 
