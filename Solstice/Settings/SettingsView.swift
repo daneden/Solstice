@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
 	@Environment(\.dismiss) private var dismiss
 	@Environment(\.openURL) private var openURL
-	@EnvironmentObject private var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) private var currentLocation
 	
 	@AppStorage(Preferences.timeTravelAppearance) private var timeTravelAppearance
 	@AppStorage(Preferences.chartType) private var chartType

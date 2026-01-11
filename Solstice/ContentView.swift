@@ -22,7 +22,7 @@ struct ContentView: View {
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
 	@Environment(\.scenePhase) private var scenePhase
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	
 	@StateObject var locationSearchService = LocationSearchService()
 	
@@ -157,6 +157,6 @@ struct ContentView: View {
 	ContentView()
 		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 		.withTimeMachine(.solsticeTimeMachine)
-		.environmentObject(CurrentLocation())
+		.environment(CurrentLocation())
 }
 

@@ -13,7 +13,7 @@ import TimeMachine
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
-	@StateObject private var currentLocation = CurrentLocation()
+	@State private var currentLocation = CurrentLocation()
 	@StateObject private var locationSearchService = LocationSearchService()
 
 	private let persistenceController = PersistenceController.shared
@@ -22,7 +22,7 @@ struct SolsticeApp: App {
 		WindowGroup {
 			ContentView()
 				.withAppOnboarding()
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 				.withTimeMachine(.solsticeTimeMachine)
 				.environmentObject(locationSearchService)
 				.task {
@@ -65,7 +65,7 @@ struct SolsticeApp: App {
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
 			SettingsView()
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 		}
 		.defaultSize(width: 600, height: 600)
 		
@@ -82,7 +82,7 @@ struct SolsticeApp: App {
 			SettingsView()
 				.frame(maxWidth: 500)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 		}
 		
 		Window("About solstices and equinoxes", id: "about-equinox-and-solstice") {

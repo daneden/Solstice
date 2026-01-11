@@ -30,7 +30,7 @@ fileprivate extension View {
 struct LandingView: View {
 	@Environment(\.dynamicTypeSize) private var dynamicTypeSize
 	@Environment(\.dismiss) private var dismiss
-	@EnvironmentObject private var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) private var currentLocation
 	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
 	@State private var animate = false
 	
@@ -134,7 +134,7 @@ struct LandingView: View {
 
 fileprivate struct WithOnboardingViewModifier: ViewModifier {
 	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
-	@EnvironmentObject private var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) private var currentLocation
 	
 	@State private var shouldPresentOnboarding = false
 	
