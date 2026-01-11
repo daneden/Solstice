@@ -20,7 +20,7 @@ struct SolsticeApp: App {
 
 	init() {
 		// Register background task handler for notification scheduling
-		#if os(iOS)
+		#if os(iOS) && !WIDGET_EXTENSION
 		NotificationManager.registerBackgroundTask()
 		#endif
 	}

@@ -11,7 +11,7 @@ import CoreLocation
 import Solar
 import SwiftUI
 import CoreData
-#if os(iOS)
+#if os(iOS) && !WIDGET_EXTENSION
 import BackgroundTasks
 #endif
 
@@ -107,7 +107,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 
 		// Schedule the background task to refresh notifications in the future
-		#if os(iOS)
+		#if os(iOS) && !WIDGET_EXTENSION
 		scheduleBackgroundTask()
 		#endif
 	}
@@ -117,7 +117,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	/// Registers the background task handler with BGTaskScheduler
 	/// Call this once during app launch
 	static func registerBackgroundTask() {
-		#if os(iOS)
+		#if os(iOS) && !WIDGET_EXTENSION
 		BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskIdentifier, using: nil) { task in
 			guard let task = task as? BGProcessingTask else { return }
 			handleBackgroundTask(task: task)
@@ -125,7 +125,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		#endif
 	}
 
-	#if os(iOS)
+	#if os(iOS) && !WIDGET_EXTENSION
 	/// Handles the background task execution
 	/// This reschedules notifications and submits the next background task
 	private static func handleBackgroundTask(task: BGProcessingTask) {
