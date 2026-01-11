@@ -20,7 +20,9 @@ struct SolsticeApp: App {
 
 	init() {
 		// Register background task handler for notification scheduling
+		#if os(iOS)
 		NotificationManager.registerBackgroundTask()
+		#endif
 	}
 
 	var body: some Scene {

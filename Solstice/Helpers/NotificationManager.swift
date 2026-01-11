@@ -11,7 +11,9 @@ import CoreLocation
 import Solar
 import SwiftUI
 import CoreData
+#if os(iOS)
 import BackgroundTasks
+#endif
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
@@ -105,7 +107,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 
 		// Schedule the background task to refresh notifications in the future
+		#if os(iOS)
 		scheduleBackgroundTask()
+		#endif
 	}
 
 	// MARK: Background Task Management
@@ -113,7 +117,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	/// Registers the background task handler with BGTaskScheduler
 	/// Call this once during app launch
 	static func registerBackgroundTask() {
-		#if !os(watchOS)
+		#if os(iOS)
 		BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskIdentifier, using: nil) { task in
 			guard let task = task as? BGProcessingTask else { return }
 			handleBackgroundTask(task: task)
@@ -121,6 +125,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		#endif
 	}
 
+	#if os(iOS)
 	/// Handles the background task execution
 	/// This reschedules notifications and submits the next background task
 	private static func handleBackgroundTask(task: BGProcessingTask) {
@@ -145,7 +150,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	/// Schedules the next background task to run
 	/// This should be called after scheduling notifications to ensure periodic refresh
 	private static func scheduleBackgroundTask() {
-		#if !os(watchOS)
 		let request = BGProcessingTaskRequest(identifier: backgroundTaskIdentifier)
 
 		// Require network and external power to be conservative with battery
@@ -161,8 +165,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		} catch {
 			print("Failed to schedule background task: \(error.localizedDescription)")
 		}
-		#endif
 	}
+	#endif
 
 	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
 		if scheduleType == .specificTime {
