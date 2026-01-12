@@ -12,7 +12,7 @@ import TimeMachine
 
 struct DetailView<Location: ObservableLocation>: View {
 	static var userActivity: String {
-		"me.daneden.Solstice.viewLocation"
+		Constants.viewLocationActivityType
 	}
 	
 	@Environment(\.managedObjectContext) var viewContext

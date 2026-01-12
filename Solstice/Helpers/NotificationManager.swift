@@ -27,7 +27,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	@AppStorage(Preferences.sadPreference) static var sadPreference
 	@AppStorage(Preferences.customNotificationLocationUUID) static var customNotificationLocationUUID
 	
-	static var backgroundTaskIdentifier = "me.daneden.Solstice.notificationScheduler"
+	static var backgroundTaskIdentifier = Constants.backgroundTaskIdentifier
 	
 	static func requestAuthorization() async -> Bool? {
 		return try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert])
@@ -104,7 +104,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			components.timeZone = .autoupdatingCurrent
 
 			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-			let request = UNNotificationRequest(identifier: "me.daneden.Solstice.notification-\(notificationDate.ISO8601Format())", content: content, trigger: trigger)
+			let request = UNNotificationRequest(identifier: "\(Constants.notificationIdentifierPrefix)\(notificationDate.ISO8601Format())", content: content, trigger: trigger)
 
 			do {
 				try await UNUserNotificationCenter.current().add(request)

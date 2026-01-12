@@ -753,6 +753,7 @@
       }
     },
     "December solstice" : {
+      "comment" : "Name of December solstice",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1087,6 +1088,7 @@
       }
     },
     "June solstice" : {
+      "comment" : "Name of June solstice",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1443,6 +1445,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ di luce diurna in più rispetto a ieri."
+          }
+        }
+      }
+    },
+    "notif-solstice-countdown" : {
+      "comment" : "Notification fragment for days until next solstice",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld days until the %2$@."
           }
         }
       }

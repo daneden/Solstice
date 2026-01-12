@@ -45,7 +45,7 @@ class PersistenceController {
 			container.persistentStoreDescriptions.first?.url = URL(filePath: fileUrl)
 		}
 		
-		container.persistentStoreDescriptions.first?.cloudKitContainerOptions = .init(containerIdentifier: "iCloud.me.daneden.Solstice")
+		container.persistentStoreDescriptions.first?.cloudKitContainerOptions = .init(containerIdentifier: Constants.iCloudContainerIdentifier)
 		
 		container.viewContext.automaticallyMergesChangesFromParent = true
 		
