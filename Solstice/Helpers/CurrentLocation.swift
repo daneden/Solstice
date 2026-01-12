@@ -17,8 +17,18 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 			Task {
 				await processLocation(location)
 				await NotificationManager.scheduleNotifications(location: location)
+				cacheLocationToAppGroup(location)
 			}
 		}
+	}
+
+	/// Caches the current location to the App Group for widget access
+	private func cacheLocationToAppGroup(_ location: CLLocation?) {
+		guard let location else { return }
+		let defaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
+		defaults?.set(location.coordinate.latitude, forKey: "cachedLatitude")
+		defaults?.set(location.coordinate.longitude, forKey: "cachedLongitude")
+		defaults?.set(Date().timeIntervalSince1970, forKey: "cachedLocationTimestamp")
 	}
 	
 	@ObservationIgnored private let locationManager = CLLocationManager()

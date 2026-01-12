@@ -9,6 +9,8 @@ import WidgetKit
 import CoreLocation
 import Solar
 
+fileprivate let appGroupIdentifier = "group.me.daneden.Solstice"
+
 fileprivate actor LocationManager {
 	static let shared = LocationManager()
 
@@ -18,14 +20,21 @@ fileprivate actor LocationManager {
 
 	/// Returns cached location if valid, otherwise fetches a new one
 	func getLocation() async -> CLLocation? {
-		// Return cached location if still valid
+		// First, check the in-memory cache
 		if let cachedLocation,
 		   let cacheTimestamp,
 		   Date().timeIntervalSince(cacheTimestamp) < cacheValidityDuration {
 			return cachedLocation
 		}
 
-		// Fetch fresh location with timeout
+		// Second, check the shared App Group cache from the main app
+		if let sharedLocation = getSharedAppGroupLocation() {
+			cachedLocation = sharedLocation
+			cacheTimestamp = Date()
+			return sharedLocation
+		}
+
+		// Finally, fetch fresh location with timeout
 		do {
 			let location = try await fetchLocationWithTimeout(seconds: 10)
 			cachedLocation = location
@@ -35,6 +44,23 @@ fileprivate actor LocationManager {
 			// Fall back to cached location even if expired, or CLLocationManager's last known location
 			return cachedLocation ?? CLLocationManager().location
 		}
+	}
+
+	/// Retrieves cached location from the shared App Group UserDefaults
+	private func getSharedAppGroupLocation() -> CLLocation? {
+		guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else { return nil }
+
+		let latitude = defaults.double(forKey: "cachedLatitude")
+		let longitude = defaults.double(forKey: "cachedLongitude")
+		let timestamp = defaults.double(forKey: "cachedLocationTimestamp")
+
+		// Validate the cached data exists and is recent (within cache validity duration)
+		guard latitude != 0, longitude != 0, timestamp > 0 else { return nil }
+
+		let cacheAge = Date().timeIntervalSince1970 - timestamp
+		guard cacheAge < cacheValidityDuration else { return nil }
+
+		return CLLocation(latitude: latitude, longitude: longitude)
 	}
 
 	private func fetchLocationWithTimeout(seconds: TimeInterval) async throws -> CLLocation {
