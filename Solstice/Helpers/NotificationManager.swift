@@ -250,7 +250,27 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 					}
 				}
 			}
-			
+
+			if includeSolsticeCountdown {
+				// Find the next solstice
+				let nextJuneSolstice = juneSolstice > date ? juneSolstice : SolsticeCalculator.juneSolstice(year: year + 1)
+				let nextDecemberSolstice = decemberSolstice > date ? decemberSolstice : SolsticeCalculator.decemberSolstice(year: year + 1)
+				let nextSolstice = nextJuneSolstice < nextDecemberSolstice ? nextJuneSolstice : nextDecemberSolstice
+				let isJuneSolstice = nextSolstice == nextJuneSolstice
+
+				if let daysUntil = calendar.dateComponents([.day], from: date, to: nextSolstice).day, daysUntil > 0 {
+					let solsticeName = isJuneSolstice
+						? NSLocalizedString("June solstice", comment: "Name of June solstice")
+						: NSLocalizedString("December solstice", comment: "Name of December solstice")
+					let format = NSLocalizedString(
+						"notif-solstice-countdown",
+						value: "%lld days until the %@.",
+						comment: "Notification fragment for days until next solstice"
+					)
+					String.localizedStringWithFormat(format, daysUntil, solsticeName)
+				}
+			}
+
 			if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
 				NSLocalizedString(
 					"Open Solstice to see how today’s daylight has changed.",
