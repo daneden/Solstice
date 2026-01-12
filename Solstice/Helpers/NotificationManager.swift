@@ -15,7 +15,7 @@ import CoreData
 import BackgroundTasks
 #endif
 
-class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
 	@AppStorage(Preferences.notificationsIncludeSunTimes) static var includeSunTimes
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) static var includeDaylightChange
