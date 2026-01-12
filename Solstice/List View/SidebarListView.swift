@@ -13,7 +13,7 @@ struct SidebarListView: View {
 	@AppStorage(Preferences.listViewAppearance) private var appearance
 	@Environment(CurrentLocation.self) var currentLocation
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
-	@EnvironmentObject var locationSearchService: LocationSearchService
+	@Environment(LocationSearchService.self) var locationSearchService
 	
 	@Environment(\.managedObjectContext) private var viewContext
 	
@@ -98,11 +98,11 @@ struct SidebarListView: View {
 		.navigationTitle("Locations")
 		.navigationSplitViewColumnWidth(ideal: 300)
 		#if os(macOS)
-		.searchable(text: $locationSearchService.queryFragment,
+		.searchable(text: Bindable(locationSearchService).queryFragment,
 								placement: .automatic,
 								prompt: "Search locations")
 		#else
-		.searchable(text: $locationSearchService.queryFragment,
+		.searchable(text: Bindable(locationSearchService).queryFragment,
 								placement: .navigationBarDrawer,
 								prompt: "Search locations")
 		#endif
@@ -179,6 +179,7 @@ struct SidebarListView_Previews: PreviewProvider {
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.withTimeMachine(.solsticeTimeMachine)
 			.environment(CurrentLocation())
+			.environment(LocationSearchService())
 	}
 }
 

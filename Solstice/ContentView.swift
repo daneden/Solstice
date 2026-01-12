@@ -23,8 +23,7 @@ struct ContentView: View {
 	
 	@Environment(\.scenePhase) private var scenePhase
 	@Environment(CurrentLocation.self) var currentLocation
-	
-	@StateObject var locationSearchService = LocationSearchService()
+	@Environment(LocationSearchService.self) var locationSearchService
 	
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
@@ -63,7 +62,7 @@ struct ContentView: View {
 				#endif
 			}
 			.navigationSplitViewStyle(.balanced)
-			.sheet(item: $locationSearchService.location) { value in
+			.sheet(item: Bindable(locationSearchService).location) { value in
 					NavigationStack {
 						DetailView(location: value)
 					}
@@ -72,7 +71,6 @@ struct ContentView: View {
 					#endif
 					.timeMachineOverlay()
 			}
-			.environmentObject(locationSearchService)
 			.timeMachineOverlay()
 			.onContinueUserActivity(DetailView<SavedLocation>.userActivity) { userActivity in
 				if let selection = userActivity.targetContentIdentifier {
@@ -158,5 +156,6 @@ struct ContentView: View {
 		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 		.withTimeMachine(.solsticeTimeMachine)
 		.environment(CurrentLocation())
+		.environment(LocationSearchService())
 }
 

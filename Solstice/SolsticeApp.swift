@@ -14,7 +14,7 @@ import TimeMachine
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
 	@State private var currentLocation = CurrentLocation()
-	@StateObject private var locationSearchService = LocationSearchService()
+	@State private var locationSearchService = LocationSearchService()
 
 	private let persistenceController = PersistenceController.shared
 
@@ -24,7 +24,7 @@ struct SolsticeApp: App {
 				.withAppOnboarding()
 				.environment(currentLocation)
 				.withTimeMachine(.solsticeTimeMachine)
-				.environmentObject(locationSearchService)
+				.environment(locationSearchService)
 				.task {
 					for await result in Transaction.updates {
 						switch result {

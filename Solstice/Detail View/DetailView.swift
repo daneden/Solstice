@@ -21,7 +21,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	var location: Location
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	#if !os(watchOS)
-	@EnvironmentObject var locationSearchService: LocationSearchService
+	@Environment(LocationSearchService.self) var locationSearchService
 	#endif
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
@@ -141,4 +141,5 @@ struct DetailView<Location: ObservableLocation>: View {
 		DetailView(location: TemporaryLocation.placeholderLondon)
 	}
 	.withTimeMachine(.solsticeTimeMachine)
+	.environment(LocationSearchService())
 }

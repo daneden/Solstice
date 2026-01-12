@@ -10,7 +10,7 @@ import CoreLocation
 
 struct DeepLinkResolver: ViewModifier {
 	@SceneStorage("selectedLocation") var selectedLocation: String?
-	@ObservedObject var searchService: LocationSearchService = .shared
+	@Environment(LocationSearchService.self) var searchService
 	var items: [SavedLocation] = []
 	
 	func body(content: Content) -> some View {
