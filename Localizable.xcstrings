@@ -1531,7 +1531,7 @@
         }
       }
     },
-    "Open Solstice to see how today’s daylight has changed." : {
+    "Open Solstice to see how today's daylight has changed." : {
       "comment" : "Fallthrough notification content for when notification settings specify no content.",
       "localizations" : {
         "it" : {
@@ -2093,7 +2093,7 @@
         }
       }
     },
-    "Today’s Daylight" : {
+    "Today's Daylight" : {
       "comment" : "Notification title fallback",
       "localizations" : {
         "it" : {
