@@ -145,16 +145,16 @@ extension SolsticeWidgetTimelineProvider {
 		Task {
 			let (placemark, isRealLocation) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-
+			
 			let currentDate = Date()
 			var entries: [Entry] = []
-
+			
 			guard let solar = Solar(for: currentDate, coordinate: widgetLocation.coordinate) else {
 				completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation)], policy: .after(currentDate.endOfDay)))
 				return
 			}
-
-			// Generate entries at key times rather than every 30 minutes
+			
+			// Build key times as before
 			var keyTimes = [
 				currentDate,
 				solar.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
@@ -165,41 +165,72 @@ extension SolsticeWidgetTimelineProvider {
 				solar.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
 				currentDate.endOfDay
 			]
+			
 			if let solarNoon = solar.solarNoon {
 				keyTimes.append(solarNoon)
 			}
+			
 			keyTimes = keyTimes.filter { $0 >= currentDate }
-
-			for entryDate in keyTimes {
-				let distanceToSunrise = abs(entryDate.distance(to: solar.safeSunrise))
-				let distanceToSunset = abs(entryDate.distance(to: solar.safeSunset))
+			
+			// Generate hourly times from next hour boundary through end of day
+			var hourlyTimes: [Date] = []
+			let calendar = Calendar.current
+			let nextHourStart: Date = {
+				let comps = calendar.dateComponents([.year, .month, .day, .hour], from: currentDate)
+				let hourStart = calendar.date(from: comps) ?? currentDate
+				if hourStart < currentDate { return calendar.date(byAdding: .hour, value: 1, to: hourStart) ?? currentDate }
+				return hourStart
+			}()
+			
+			var iter = nextHourStart
+			let end = currentDate.endOfDay
+			while iter <= end {
+				hourlyTimes.append(iter)
+				iter = iter.addingTimeInterval(60 * 60)
+			}
+			
+			// Filter out hourly times that are within 5 minutes of any key time
+			let fiveMinutes: TimeInterval = 5 * 60
+			let filteredHourlyTimes = hourlyTimes.filter { hour in
+				!keyTimes.contains { abs($0.timeIntervalSince(hour)) <= fiveMinutes }
+			}
+			
+			// Helper to build an entry with relevance
+			func makeEntry(at date: Date) -> Entry {
+				let distanceToSunrise = abs(date.distance(to: solar.safeSunrise))
+				let distanceToSunset = abs(date.distance(to: solar.safeSunset))
 				let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
 				let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
-					? .init(score: 10, duration: nearestEventDistance)
-					: nil
-
-				entries.append(
-					SolsticeWidgetTimelineEntry(
-						date: entryDate,
-						location: widgetLocation,
-						relevance: relevance
-					)
+				? .init(score: 10, duration: nearestEventDistance)
+				: nil
+				
+				return Entry(
+					date: date,
+					location: widgetLocation,
+					relevance: relevance
 				)
 			}
-
-			// Sort and deduplicate entries that are too close together
-			entries = entries
+			
+			// Create entries for key times and hourly times, then merge
+			var mergedEntries: [Entry] = []
+			for date in keyTimes { mergedEntries.append(makeEntry(at: date)) }
+			for date in filteredHourlyTimes { mergedEntries.append(makeEntry(at: date)) }
+			
+			// Sort and dedupe entries less than 60 seconds apart
+			entries = mergedEntries
 				.sorted { $0.date < $1.date }
 				.reduce(into: [Entry]()) { result, entry in
 					if let last = result.last, entry.date.timeIntervalSince(last.date) < 60 {
-						return // Skip entries less than 1 minute apart
+						return
 					}
 					result.append(entry)
 				}
-
+			
 			completion(Timeline(entries: entries, policy: .after(solar.nextSolarEvent?.date ?? currentDate.endOfDay)))
 		}
 	}
+	
+
 
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
