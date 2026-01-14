@@ -17,7 +17,7 @@ protocol AnyLocation: Hashable {
 	var longitude: Double { get }
 }
 
-protocol ObservableLocation: AnyLocation, ObservableObject { }
+protocol ObservableLocation: AnyLocation, AnyObject { }
 
 extension AnyLocation {
 	var timeZone: TimeZone {
@@ -36,12 +36,13 @@ extension AnyLocation {
 
 extension SavedLocation: ObservableLocation { }
 
+@Observable
 class TemporaryLocation: ObservableLocation {
-	@Published var title: String?
-	@Published var subtitle: String?
-	@Published var timeZoneIdentifier: String?
-	@Published var latitude: Double = 0.0
-	@Published var longitude: Double = 0.0
+	var title: String?
+	var subtitle: String?
+	var timeZoneIdentifier: String?
+	var latitude: Double = 0.0
+	var longitude: Double = 0.0
 	
 	init(title: String?, subtitle: String?, timeZoneIdentifier: String?, latitude: Double, longitude: Double) {
 		self.title = title

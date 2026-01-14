@@ -13,7 +13,7 @@ struct LocationSearchResultRow: View {
 	@Environment(\.dismissSearch) private var dismiss
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
-	@ObservedObject var searchService: LocationSearchService
+	var searchService: LocationSearchService
 	
 	var items: Array<SavedLocation> = []
 	

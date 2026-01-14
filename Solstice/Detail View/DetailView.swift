@@ -12,16 +12,16 @@ import TimeMachine
 
 struct DetailView<Location: ObservableLocation>: View {
 	static var userActivity: String {
-		"me.daneden.Solstice.viewLocation"
+		Constants.viewLocationActivityType
 	}
 	
 	@Environment(\.managedObjectContext) var viewContext
 	@Environment(\.dismiss) var dismiss
 	
-	@ObservedObject var location: Location
+	var location: Location
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	#if !os(watchOS)
-	@EnvironmentObject var locationSearchService: LocationSearchService
+	@Environment(LocationSearchService.self) var locationSearchService
 	#endif
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
@@ -141,4 +141,5 @@ struct DetailView<Location: ObservableLocation>: View {
 		DetailView(location: TemporaryLocation.placeholderLondon)
 	}
 	.withTimeMachine(.solsticeTimeMachine)
+	.environment(LocationSearchService())
 }

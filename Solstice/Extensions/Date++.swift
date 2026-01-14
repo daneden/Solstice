@@ -25,6 +25,21 @@ extension Date {
 		let tzOffset = timeZone.secondsFromGMT(for: self) - localTimeZone.secondsFromGMT(for: self)
 		return self.addingTimeInterval(TimeInterval(tzOffset))
 	}
+
+	var nextSolsticeMonth: Int {
+		calendar.dateComponents([.month], from: nextSolstice).month ?? 6
+	}
+
+	func nextSolsticeIncreasesLight(at latitude: Double) -> Bool {
+		switch nextSolsticeMonth {
+		case 6:
+			return latitude > 0
+		case 12:
+			return latitude < 0
+		default:
+			return true
+		}
+	}
 }
 
 /// Allows dates to be stored in AppStorage

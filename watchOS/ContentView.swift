@@ -11,7 +11,7 @@ import TimeMachine
 
 struct ContentView: View {
 	@Environment(\.scenePhase) var scenePhase
-	@EnvironmentObject var currentLocation: CurrentLocation
+	@Environment(CurrentLocation.self) var currentLocation
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
@@ -110,5 +110,5 @@ struct ContentView: View {
 #Preview {
 	ContentView()
 		.withTimeMachine(.solsticeTimeMachine)
-		.environmentObject(CurrentLocation())
+		.environment(CurrentLocation())
 }

@@ -101,7 +101,7 @@ extension CountdownWidgetView {
 			.widgetCurvesContent()
 			.widgetLabel {
 				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
-					Image(systemName: previousEvent.imageName)
+					Image(systemName: nextEvent.imageName)
 				} currentValueLabel: {
 					Label {
 						Text("\(Text(nextEvent.date, style: .timer)) until \(Text(nextEvent.description))")

@@ -7,22 +7,32 @@
 
 import CoreLocation
 import SwiftUI
-import Combine
 
-class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
-	@Published private(set) var placemark: CLPlacemark?
+@Observable
+class CurrentLocation: NSObject, CLLocationManagerDelegate {
+	private(set) var placemark: CLPlacemark?
 	
 	private(set) var location: CLLocation? {
 		didSet {
 			Task {
 				await processLocation(location)
-				await NotificationManager.scheduleNotifications(currentLocation: self)
+				await NotificationManager.scheduleNotifications(location: location)
+				cacheLocationToAppGroup(location)
 			}
 		}
 	}
+
+	/// Caches the current location to the App Group for widget access
+	private func cacheLocationToAppGroup(_ location: CLLocation?) {
+		guard let location else { return }
+		let defaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
+		defaults?.set(location.coordinate.latitude, forKey: "cachedLatitude")
+		defaults?.set(location.coordinate.longitude, forKey: "cachedLongitude")
+		defaults?.set(Date().timeIntervalSince1970, forKey: "cachedLocationTimestamp")
+	}
 	
-	private let locationManager = CLLocationManager()
-	private let geocoder = CLGeocoder()
+	@ObservationIgnored private let locationManager = CLLocationManager()
+	@ObservationIgnored private let geocoder = CLGeocoder()
 	
 	override init() {
 		super.init()
@@ -51,6 +61,18 @@ class CurrentLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
 		for try await update in updates {
 			self.location = update.location
 		}
+	}
+
+	/// Fetches a single location update and returns it
+	/// Useful for background tasks where we need to await a location
+	static func fetchCurrentLocation() async throws -> CLLocation {
+		let updates = CLLocationUpdate.liveUpdates()
+		for try await update in updates {
+			if let location = update.location {
+				return location
+			}
+		}
+		throw CLError(.locationUnknown)
 	}
 }
 

@@ -11,8 +11,11 @@ import CoreLocation
 import Solar
 import SwiftUI
 import CoreData
+#if os(iOS) && !WIDGET_EXTENSION
+import BackgroundTasks
+#endif
 
-class NotificationManager: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
 	@AppStorage(Preferences.notificationsIncludeSunTimes) static var includeSunTimes
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) static var includeDaylightChange
@@ -24,7 +27,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 	@AppStorage(Preferences.sadPreference) static var sadPreference
 	@AppStorage(Preferences.customNotificationLocationUUID) static var customNotificationLocationUUID
 	
-	static var backgroundTaskIdentifier = "me.daneden.Solstice.notificationScheduler"
+	static var backgroundTaskIdentifier = Constants.backgroundTaskIdentifier
 	
 	static func requestAuthorization() async -> Bool? {
 		return try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert])
@@ -38,72 +41,115 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 	}
 	
-	static func scheduleNotifications(currentLocation: CurrentLocation) async {
-		// Always clear notifications when scheduling new ones
+	/// Schedules notifications for the next 64 days
+	/// - Parameter location: Optional location to use. If nil, will attempt to fetch current location.
+	static func scheduleNotifications(location existingLocation: CLLocation? = nil) async {
 		await clearScheduledNotifications()
-		
-		guard (currentLocation.isAuthorized || customNotificationLocationUUID != nil), notificationsEnabled else {
-			return
-		}
-		
+
+		guard notificationsEnabled else { return }
+
 		var location: CLLocation?
 		var timeZone = localTimeZone
-		
+
+		// Check for custom notification location first
 		if let customNotificationLocationUUID {
 			let request = NSFetchRequest<SavedLocation>(entityName: "SavedLocation")
 			request.fetchLimit = 1
 			request.predicate = NSPredicate(format: "uuid LIKE %@", customNotificationLocationUUID)
 			let context = PersistenceController.shared.container.viewContext
 			let objects = try? context.fetch(request)
-			
+
 			if let latitude = objects?.first?.latitude,
-				 let longitude = objects?.first?.longitude,
-				 let objectTimeZone = objects?.first?.timeZone {
+			   let longitude = objects?.first?.longitude,
+			   let objectTimeZone = objects?.first?.timeZone {
 				location = CLLocation(latitude: latitude, longitude: longitude)
 				timeZone = objectTimeZone
 			}
+		} else if let existingLocation {
+			// Use the provided location
+			location = existingLocation
 		} else {
-			location = currentLocation.location
+			// Fetch current location using async API
+			do {
+				location = try await CurrentLocation.fetchCurrentLocation()
+			} catch {
+				print("Could not fetch location: \(error.localizedDescription)")
+				return
+			}
 		}
-		
+
 		guard let location else {
-			print("Could not retrieve user location")
+			print("Could not retrieve location for notification scheduling")
 			return
 		}
-		
+
 		for i in 0...63 {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
-			
+
 			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
 				continue
 			}
-			
+
 			let notificationDate = getNextNotificationDate(after: date, with: solar)
-			
+
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
 				return
 			}
-			
+
 			let content = UNMutableNotificationContent()
-			
 			content.title = notificationContent.title
 			content.body = notificationContent.body
-			
+
 			var components = calendar.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
 			components.timeZone = .autoupdatingCurrent
-			
+
 			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-			
-			let request = UNNotificationRequest(identifier: "me.daneden.Solstice.notification-\(notificationDate.ISO8601Format())", content: content, trigger: trigger)
-			
+			let request = UNNotificationRequest(identifier: "\(Constants.notificationIdentifierPrefix)\(notificationDate.ISO8601Format())", content: content, trigger: trigger)
+
 			do {
 				try await UNUserNotificationCenter.current().add(request)
 			} catch {
 				print(error)
 			}
 		}
+
+		#if os(iOS) && !WIDGET_EXTENSION
+		scheduleBackgroundTask()
+		#endif
 	}
-	
+
+	// MARK: Background Task Management
+
+	#if os(iOS) && !WIDGET_EXTENSION
+	/// Schedules the next background app refresh task
+	/// This should be called after scheduling notifications to ensure periodic refresh
+	static func scheduleBackgroundTask() {
+		let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
+
+		// Schedule to run after at least 7 days (well before the 64-day window expires)
+		request.earliestBeginDate = Date(timeIntervalSinceNow: 7 * 24 * 60 * 60)
+
+		do {
+			try BGTaskScheduler.shared.submit(request)
+			print("Background task scheduled successfully for notification refresh")
+		} catch let error as BGTaskScheduler.Error {
+			switch error.code {
+			case .unavailable:
+				// This is expected in the simulator or when the app is in the foreground
+				print("Background task scheduling unavailable (expected in simulator)")
+			case .tooManyPendingTaskRequests:
+				print("Too many pending background task requests")
+			case .notPermitted:
+				print("Background task not permitted - check Info.plist configuration")
+			@unknown default:
+				print("Failed to schedule background task: \(error.localizedDescription)")
+			}
+		} catch {
+			print("Failed to schedule background task: \(error.localizedDescription)")
+		}
+	}
+	#endif
+
 	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
 		if scheduleType == .specificTime {
 			let hour = notificationDateComponents.hour ?? 0
@@ -122,100 +168,184 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Observabl
 		}
 	}
 	
-	// MARK: Notification content builder
+	// MARK: - Notification Content Building
+
 	/// Creates notification content from a given date. Can be used either for legitimate notifications or for
 	/// notification previews.
 	/// - Parameters:
 	///   - date: The date for which to generate sunrise/sunset information.
 	///   - location: The location for sunrise/sunset times
+	///   - timeZone: The time zone for formatting times
 	///   - context: The context in which this content will be used. This is to ensure that SAD preferences
 	///   don't alter notification previews.
 	/// - Returns: A `NotificationContent` object appropriate for the context
 	static func buildNotificationContent(for date: Date, location: CLLocation, timeZone: TimeZone = .autoupdatingCurrent, in context: Context = .notification) -> NotificationContent? {
-		var content = (title: "", body: "")
 		guard let solar = Solar(for: date, coordinate: location.coordinate) else { return nil }
-		
-		let duration = solar.daylightDuration.localizedString
+
 		let difference = solar.daylightDuration - (solar.yesterday?.daylightDuration ?? 0)
-		let differenceString = difference.localizedString
-		
-		if difference < 0 && sadPreference == .suppressNotifications && context != .preview {
+
+		// Check if we should suppress the notification entirely (SAD preference)
+		if shouldSuppressNotification(difference: difference, context: context) {
 			return nil
 		}
-		
-		let year = calendar.component(.year, from: date)
-		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
-		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
-		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
-		
-		if calendar.isDate(date, inSameDayAs: marchEquinox) {
-			content.title = NSLocalizedString("March Equinox Today", comment: "Notification title for March equinox")
-		} else if calendar.isDate(date, inSameDayAs: septemberEquinox) {
-			content.title = NSLocalizedString("September Equinox Today", comment: "Notification title for September equinox")
-		} else if calendar.isDate(date, inSameDayAs: juneSolstice) {
-			content.title = NSLocalizedString("June Solstice Today", comment: "Notification title for June solstice")
-		} else if calendar.isDate(date, inSameDayAs: decemberSolstice) {
-			content.title = NSLocalizedString("December Solstice Today", comment: "Notification title for December solstice")
-		} else {
-			let components = calendar.dateComponents([.hour], from: date)
-			let hour = components.hour ?? 0
-			if hour >= 18 || hour < 3 {
-				content.title = NSLocalizedString("Good Evening", comment: "Notification title for evening notification")
-			} else if hour >= 3 && hour < 12 {
-				content.title = NSLocalizedString("Good Morning", comment: "Notification title for morning notification")
-			} else if hour >= 12 && hour < 18 {
-				content.title = NSLocalizedString("Good Afternoon", comment: "Notification title for afternoon notification")
-			} else {
-				content.title = NSLocalizedString("Today’s Daylight", comment: "Notification title fallback")
-			}
+
+		let title = buildNotificationTitle(for: date)
+		let body = buildNotificationBody(solar: solar, timeZone: timeZone, difference: difference, date: date, context: context)
+
+		return (title: title, body: body)
+	}
+
+	// MARK: SAD Preference Handling
+
+	/// Determines if the notification should be suppressed based on SAD preferences
+	private static func shouldSuppressNotification(difference: TimeInterval, context: Context) -> Bool {
+		guard context != .preview else { return false }
+		return difference < 0 && sadPreference == .suppressNotifications
+	}
+
+	/// Determines if daylight change should be hidden based on SAD preferences
+	private static func shouldHideDaylightChange(difference: TimeInterval, context: Context) -> Bool {
+		guard context != .preview else { return false }
+		return difference < 0 && sadPreference == .removeDifference
+	}
+
+	// MARK: Title Generation
+
+	/// Generates the notification title based on the date
+	private static func buildNotificationTitle(for date: Date) -> String {
+		// Check for special solar events first
+		if let solarEventTitle = solarEventTitle(for: date) {
+			return solarEventTitle
 		}
-		
-		@StringBuilder var notificationBody: String {
+
+		// Fall back to time-of-day greeting
+		return greetingTitle(for: date)
+	}
+
+	/// Returns a title if the date falls on a solstice or equinox
+	private static func solarEventTitle(for date: Date) -> String? {
+		let year = calendar.component(.year, from: date)
+
+		let solarEvents: [(date: Date, title: String)] = [
+			(SolsticeCalculator.marchEquinox(year: year),
+			 NSLocalizedString("March Equinox Today", comment: "Notification title for March equinox")),
+			(SolsticeCalculator.septemberEquinox(year: year),
+			 NSLocalizedString("September Equinox Today", comment: "Notification title for September equinox")),
+			(SolsticeCalculator.juneSolstice(year: year),
+			 NSLocalizedString("June Solstice Today", comment: "Notification title for June solstice")),
+			(SolsticeCalculator.decemberSolstice(year: year),
+			 NSLocalizedString("December Solstice Today", comment: "Notification title for December solstice"))
+		]
+
+		return solarEvents.first { calendar.isDate(date, inSameDayAs: $0.date) }?.title
+	}
+
+	/// Returns a greeting based on the time of day
+	private static func greetingTitle(for date: Date) -> String {
+		let hour = calendar.component(.hour, from: date)
+
+		switch hour {
+		case 0..<3, 18...23:
+			return NSLocalizedString("Good Evening", comment: "Notification title for evening notification")
+		case 3..<12:
+			return NSLocalizedString("Good Morning", comment: "Notification title for morning notification")
+		case 12..<18:
+			return NSLocalizedString("Good Afternoon", comment: "Notification title for afternoon notification")
+		default:
+			return NSLocalizedString("Today's Daylight", comment: "Notification title fallback")
+		}
+	}
+
+	// MARK: Body Generation
+
+	/// Builds the notification body with all enabled content fragments
+	private static func buildNotificationBody(solar: Solar, timeZone: TimeZone, difference: TimeInterval, date: Date, context: Context) -> String {
+		let duration = solar.daylightDuration.localizedString
+		let differenceString = difference.localizedString
+
+		@StringBuilder var body: String {
 			if includeSunTimes {
-				let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
-				let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
-				let sunriseSunset = NSLocalizedString(
-					"notif-sunrise-sunset",
-					value: "The sun rises at %1$@ and sets at %2$@.",
-					comment: "Notification fragment for sunrise and sunset times"
-				)
-				
-				String.localizedStringWithFormat(sunriseSunset, sunriseTime, sunsetTime)
+				sunTimesFragment(solar: solar, timeZone: timeZone)
 			}
-			
+
 			if includeDaylightDuration {
-				let daylightDuration = NSLocalizedString(
-					"notif-daylight-duration",
-					value: "%@ of daylight today.",
-					comment: "Notification fragment for length of daylight"
-				)
-				String.localizedStringWithFormat(daylightDuration, duration)
+				daylightDurationFragment(duration: duration)
 			}
-			
-			if includeDaylightChange {
-				if !(difference < 0 && sadPreference == .removeDifference) || context == .preview {
-					if difference >= 0 {
-						let moreDaylightFormat = NSLocalizedString("notif-more-daylight", value: "%@ more daylight than yesterday.", comment: "Notification fragment for more daylight compared to yesterday")
-						String.localizedStringWithFormat(moreDaylightFormat, differenceString)
-					} else {
-						let lessDaylightFormat = NSLocalizedString("notif-less-daylight", value: "%@ less daylight than yesterday.", comment: "Notification fragment for less daylight compared to yesterday")
-						String.localizedStringWithFormat(lessDaylightFormat, differenceString)
-					}
-				}
+
+			if includeDaylightChange && !shouldHideDaylightChange(difference: difference, context: context) {
+				daylightChangeFragment(difference: difference, differenceString: differenceString)
 			}
-			
+
+			if includeSolsticeCountdown, let countdown = solsticeCountdownFragment(for: date) {
+				countdown
+			}
+
 			if !includeDaylightChange && !includeDaylightDuration && !includeSolsticeCountdown && !includeSunTimes {
 				NSLocalizedString(
-					"Open Solstice to see how today’s daylight has changed.",
+					"Open Solstice to see how today's daylight has changed.",
 					comment: "Fallthrough notification content for when notification settings specify no content."
 				)
 			}
 		}
-		
-		content.body = notificationBody
-		
-		return content
+
+		return body
+	}
+
+	// MARK: Body Fragments
+
+	private static func sunTimesFragment(solar: Solar, timeZone: TimeZone) -> String {
+		let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+		let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+		let format = NSLocalizedString(
+			"notif-sunrise-sunset",
+			value: "The sun rises at %1$@ and sets at %2$@.",
+			comment: "Notification fragment for sunrise and sunset times"
+		)
+		return String.localizedStringWithFormat(format, sunriseTime, sunsetTime)
+	}
+
+	private static func daylightDurationFragment(duration: String) -> String {
+		let format = NSLocalizedString(
+			"notif-daylight-duration",
+			value: "%@ of daylight today.",
+			comment: "Notification fragment for length of daylight"
+		)
+		return String.localizedStringWithFormat(format, duration)
+	}
+
+	private static func daylightChangeFragment(difference: TimeInterval, differenceString: String) -> String {
+		if difference >= 0 {
+			let format = NSLocalizedString("notif-more-daylight", value: "%@ more daylight than yesterday.", comment: "Notification fragment for more daylight compared to yesterday")
+			return String.localizedStringWithFormat(format, differenceString)
+		} else {
+			let format = NSLocalizedString("notif-less-daylight", value: "%@ less daylight than yesterday.", comment: "Notification fragment for less daylight compared to yesterday")
+			return String.localizedStringWithFormat(format, differenceString)
+		}
+	}
+
+	private static func solsticeCountdownFragment(for date: Date) -> String? {
+		let year = calendar.component(.year, from: date)
+		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
+		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
+
+		let nextJuneSolstice = juneSolstice > date ? juneSolstice : SolsticeCalculator.juneSolstice(year: year + 1)
+		let nextDecemberSolstice = decemberSolstice > date ? decemberSolstice : SolsticeCalculator.decemberSolstice(year: year + 1)
+		let nextSolstice = nextJuneSolstice < nextDecemberSolstice ? nextJuneSolstice : nextDecemberSolstice
+		let isJuneSolstice = nextSolstice == nextJuneSolstice
+
+		guard let daysUntil = calendar.dateComponents([.day], from: date, to: nextSolstice).day, daysUntil > 0 else {
+			return nil
+		}
+
+		let solsticeName = isJuneSolstice
+			? NSLocalizedString("June solstice", comment: "Name of June solstice")
+			: NSLocalizedString("December solstice", comment: "Name of December solstice")
+		let format = NSLocalizedString(
+			"notif-solstice-countdown",
+			value: "%lld days until the %@.",
+			comment: "Notification fragment for days until next solstice"
+		)
+		return String.localizedStringWithFormat(format, daysUntil, solsticeName)
 	}
 }
 

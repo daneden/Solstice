@@ -26,3 +26,38 @@ var chartMarkSize: Double = {
 let calendar =  Calendar.autoupdatingCurrent
 
 let localTimeZone = TimeZone.ReferenceType.local
+
+// MARK: - App Constants
+enum Constants {
+	/// App Group identifier for sharing data between app and extensions
+	static let appGroupIdentifier = "group.me.daneden.Solstice"
+
+	/// iCloud container identifier for CloudKit sync
+	static let iCloudContainerIdentifier = "iCloud.me.daneden.Solstice"
+
+	/// Background task identifier for notification scheduling
+	static let backgroundTaskIdentifier = "me.daneden.Solstice.notificationScheduler"
+
+	/// User activity type for viewing locations (Handoff/Spotlight)
+	static let viewLocationActivityType = "me.daneden.Solstice.viewLocation"
+
+	/// Prefix for notification request identifiers
+	static let notificationIdentifierPrefix = "me.daneden.Solstice.notification-"
+
+	/// URL scheme for deep links
+	static let urlScheme = "solstice"
+
+	/// Deep link path for current location
+	static let currentLocationPath = "currentLocation"
+
+	/// Deep link path for coordinates
+	static let coordinatesPath = "coordinates"
+
+	enum IAPProducts {
+		static let tipSmall = "me.daneden.Solstice.iap.tip.small"
+		static let tipMedium = "me.daneden.Solstice.iap.tip.medium"
+		static let tipLarge = "me.daneden.Solstice.iap.tip.large"
+
+		static let all = [tipSmall, tipMedium, tipLarge]
+	}
+}

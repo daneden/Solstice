@@ -13,18 +13,18 @@ import TimeMachine
 @main
 struct SolsticeApp: App {
 	@Environment(\.scenePhase) var phase
-	@StateObject private var currentLocation = CurrentLocation()
-	@StateObject private var locationSearchService = LocationSearchService()
-	
+	@State private var currentLocation = CurrentLocation()
+	@State private var locationSearchService = LocationSearchService()
+
 	private let persistenceController = PersistenceController.shared
 
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
 				.withAppOnboarding()
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 				.withTimeMachine(.solsticeTimeMachine)
-				.environmentObject(locationSearchService)
+				.environment(locationSearchService)
 				.task {
 					for await result in Transaction.updates {
 						switch result {
@@ -40,7 +40,7 @@ struct SolsticeApp: App {
 					switch phase {
 					#if !os(watchOS)
 					case .background:
-						await NotificationManager.scheduleNotifications(currentLocation: currentLocation)
+						await NotificationManager.scheduleNotifications(location: currentLocation.location)
 					#endif
 					case .active:
 						currentLocation.requestLocation()
@@ -51,6 +51,11 @@ struct SolsticeApp: App {
 				.migrateAppFeatures()
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 		}
+		#if os(iOS)
+		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
+			await NotificationManager.scheduleNotifications()
+		}
+		#endif
 		#if os(macOS)
 		.defaultSize(width: 800, height: 600)
 		#elseif os(visionOS)
@@ -60,7 +65,7 @@ struct SolsticeApp: App {
 		#if os(visionOS)
 		WindowGroup(id: "settings") {
 			SettingsView()
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 		}
 		.defaultSize(width: 600, height: 600)
 		
@@ -77,7 +82,7 @@ struct SolsticeApp: App {
 			SettingsView()
 				.frame(maxWidth: 500)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
-				.environmentObject(currentLocation)
+				.environment(currentLocation)
 		}
 		
 		Window("About solstices and equinoxes", id: "about-equinox-and-solstice") {

@@ -9,11 +9,7 @@ import SwiftUI
 import StoreKit
 
 // MARK: In-App Purchase Product IDs
-let iapProductIDs = Set([
-	"me.daneden.Solstice.iap.tip.small",
-	"me.daneden.Solstice.iap.tip.medium",
-	"me.daneden.Solstice.iap.tip.large"
-])
+let iapProductIDs = Set(Constants.IAPProducts.all)
 
 struct SupporterSettings: View {
 	private let appStoreReviewURL: URL? = URL(string: "https://apps.apple.com/app/id1547580907?action=write-review")

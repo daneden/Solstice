@@ -6,102 +6,76 @@
 //
 
 import Foundation
-import Combine
 import SwiftUI
 import MapKit
 import CoreLocation
 
-struct LocationSearchResult: Identifiable, Hashable {
-	static func == (lhs: LocationSearchResult, rhs: LocationSearchResult) -> Bool {
-		lhs.hashValue == rhs.hashValue
-	}
-	
-	func hash(into hasher: inout Hasher) {
-		hasher.combine(id)
-		hasher.combine(name)
-		hasher.combine(coordinates?.longitude ?? 0)
-		hasher.combine(coordinates?.latitude ?? 0)
-	}
-	
-	var id = UUID()
-	var name: String
-	@State var coordinates: CLLocationCoordinate2D?
-	
-	init(name: String) {
-		self.name = name
-		
-		findCoordinates()
-	}
-	
-	mutating func findCoordinates() {
-		let geocoder = CLGeocoder()
-		geocoder.geocodeAddressString(name) { [self] (response, error) in
-			if let response = response, !response.isEmpty {
-				self.coordinates = response[0].location?.coordinate
-			}
-		}
-	}
-}
-
 #if !os(watchOS)
-class LocationSearchService: NSObject, ObservableObject {
+@Observable
+class LocationSearchService: NSObject, MKLocalSearchCompleterDelegate {
 	static let shared = LocationSearchService()
-	
+
 	enum LocationStatus: Equatable {
 		case idle, noResults, isSearching, result
 		case error(String)
 	}
-		
-	@Published var queryFragment = ""
-	@Published private(set) var status: LocationStatus = .idle
-	
-	@Published private(set) var searchResults: [MKLocalSearchCompletion] = []
-	@Published var location: TemporaryLocation?
-	
-	private var queryCancellable: AnyCancellable?
-	private let searchCompleter: MKLocalSearchCompleter!
-	
-	init(searchCompleter: MKLocalSearchCompleter = MKLocalSearchCompleter()) {
-		self.searchCompleter = searchCompleter
-		super.init()
-		self.searchCompleter.delegate = self
-		self.searchCompleter.region = MKCoordinateRegion(.world)
-		self.searchCompleter.resultTypes = [.address, .pointOfInterest]
-		self.searchCompleter.pointOfInterestFilter = .init(including: [.airport, .nationalPark])
-		
-		queryCancellable = $queryFragment
-			.receive(on: DispatchQueue.main)
-			.debounce(for: .milliseconds(250), scheduler: RunLoop.main, options: nil)
-			.sink(receiveValue: { fragment in
-				self.status = .isSearching
-				if !fragment.isEmpty {
-					self.searchCompleter.queryFragment = fragment
-				} else {
-					self.status = .idle
-					self.searchResults = []
-				}
-			})
-	}
-}
 
-extension LocationSearchService: MKLocalSearchCompleterDelegate {
+	var queryFragment = "" {
+		didSet {
+			handleQueryChange()
+		}
+	}
+	private(set) var status: LocationStatus = .idle
+	private(set) var searchResults: [MKLocalSearchCompletion] = []
+	var location: TemporaryLocation?
+
+	@ObservationIgnored private var searchTask: Task<Void, Never>?
+	@ObservationIgnored private let searchCompleter: MKLocalSearchCompleter
+
+	override init() {
+		searchCompleter = MKLocalSearchCompleter()
+		super.init()
+		searchCompleter.delegate = self
+		searchCompleter.region = MKCoordinateRegion(.world)
+		searchCompleter.resultTypes = [.address, .pointOfInterest]
+		searchCompleter.pointOfInterestFilter = .init(including: [.airport, .nationalPark])
+	}
+
+	private func handleQueryChange() {
+		searchTask?.cancel()
+		status = .isSearching
+
+		guard !queryFragment.isEmpty else {
+			status = .idle
+			searchResults = []
+			return
+		}
+
+		searchTask = Task { @MainActor in
+			try? await Task.sleep(for: .milliseconds(250))
+			guard !Task.isCancelled else { return }
+			searchCompleter.queryFragment = queryFragment
+		}
+	}
+
 	func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-		self.searchResults = completer.results.filter { result in
+		searchResults = completer.results.filter { result in
 			guard result.title.contains(",") || !result.subtitle.isEmpty else { return false }
 			guard !result.subtitle.contains("Nearby") else { return false }
 			return true
 		}
-		
-		self.status = completer.results.isEmpty ? .noResults : .result
+
+		status = completer.results.isEmpty ? .noResults : .result
 	}
-	
+
 	func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-		self.status = .error(error.localizedDescription)
+		status = .error(error.localizedDescription)
 	}
 }
 #else
-class LocationSearchService: NSObject, ObservableObject {
+@Observable
+class LocationSearchService {
 	static var shared = LocationSearchService()
-	@Published var location: TemporaryLocation?
+	var location: TemporaryLocation?
 }
 #endif

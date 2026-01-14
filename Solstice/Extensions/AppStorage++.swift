@@ -10,7 +10,7 @@ import Solar
 
 fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? .now
 
-fileprivate let store = UserDefaults(suiteName: "group.me.daneden.Solstice")
+fileprivate let store = UserDefaults(suiteName: Constants.appGroupIdentifier)
 
 extension AppStorage {
 	init(_ kv: AppStorageKVPair<Value>) where Value == String {

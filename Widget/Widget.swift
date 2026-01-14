@@ -17,15 +17,6 @@ struct SolsticeWidgetLocation: AnyLocation {
 	var isRealLocation = false
 	var locationUUID: UUID?
 	
-	var timeZone: TimeZone {
-		guard let timeZoneIdentifier else { return .autoupdatingCurrent }
-		return TimeZone(identifier: timeZoneIdentifier) ?? .autoupdatingCurrent
-	}
-	
-	var coordinate: CLLocationCoordinate2D {
-		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-	}
-	
 	static let defaultLocation = SolsticeWidgetLocation(title: "London",
 																											subtitle: "United Kingdom",
 																											timeZoneIdentifier: "Europe/London",
