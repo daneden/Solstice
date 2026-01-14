@@ -57,6 +57,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 						.environment(\.timeZone, location.timeZone)
 				}
 			}
+			.listRowInsets(.zero)
 			#if os(watchOS)
 			.listRowBackground(Color.clear)
 			#else
@@ -85,7 +86,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
 			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
-			.listRowInsets(.zero)
 			#if !os(visionOS)
 			.listRowBackground(
 				solar.view

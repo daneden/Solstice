@@ -22,8 +22,6 @@ struct TimeTravelToolbar: ViewModifier{
 							}
 						}
 						
-						Spacer(minLength: 0)
-						
 						if timeMachine.isActive {
 							Button {
 								withAnimation {
@@ -33,9 +31,9 @@ struct TimeTravelToolbar: ViewModifier{
 								Text("Reset")
 									.frame(maxWidth: .infinity)
 							}
+						} else {
+							Spacer()
 						}
-						
-						Spacer(minLength: 0)
 						
 						Button("Time travel 1 week later", systemImage: "forward") {
 							withAnimation {
