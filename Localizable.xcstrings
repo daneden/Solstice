@@ -1458,6 +1458,12 @@
             "state" : "new",
             "value" : "%1$lld days until the %2$@."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld giorni al %2$@."
+          }
         }
       }
     },
