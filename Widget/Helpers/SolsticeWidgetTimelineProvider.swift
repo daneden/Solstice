@@ -98,9 +98,14 @@ protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == S
 }
 
 extension SolsticeWidgetTimelineProvider {
-	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
+	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation? {
 		guard let placemark,
 					let location = placemark.location else {
+			// If the user chose to use their real location and it failed to load,
+			// return nil to show placeholder state instead of defaulting to "London"
+			if isRealLocation {
+				return nil
+			}
 			return .defaultLocation
 		}
 
