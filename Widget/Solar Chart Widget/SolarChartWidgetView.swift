@@ -24,9 +24,9 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 							Image(systemName: "sunrise")
 						}
 						.labelStyle(CompactLabelStyle())
-						
+
 						Spacer()
-						
+
 						Label {
 							Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 						} icon: {
@@ -39,7 +39,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
-					
+
 					DaylightChart(
 						solar: solar,
 						timeZone: location.timeZone,
@@ -49,6 +49,9 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 						yScale: -1.0...1.5
 					)
 				}
+			} else if shouldShowPlaceholder {
+				SolarChartWidgetView(entry: .placeholder)
+					.redacted(reason: .placeholder)
 			} else {
 				WidgetMissingLocationView()
 			}

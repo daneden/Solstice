@@ -48,16 +48,9 @@ struct OverviewWidgetView: SolsticeWidgetView {
 				default:
 					RectangularView(entry: entry)
 				}
-			} else if let error = entry.locationError {
-				switch error {
-				case .locationUpdateFailed, .reverseGeocodingFailed:
-					RectangularView(entry: .placeholder)
-						.redacted(reason: .placeholder)
-					
-				case .notAuthorized:
-					WidgetMissingLocationView()
-						.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-				}
+			} else if shouldShowPlaceholder {
+				RectangularView(entry: .placeholder)
+					.redacted(reason: .placeholder)
 			} else {
 				WidgetMissingLocationView()
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

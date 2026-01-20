@@ -41,19 +41,19 @@ struct CountdownWidgetView: SolsticeWidgetView {
 			default:
 				VStack(alignment: .leading, spacing: 4) {
 					WidgetLocationView(location: location)
-					
+
 					Spacer(minLength: 0)
-					
+
 					HStack {
 						nextEventText
 							.widgetHeading()
 							.minimumScaleFactor(0.8)
 							.lineLimit(3)
 							.contentTransition(.numericText())
-						
+
 						Spacer()
 					}
-					
+
 					Label{
 						Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
 					} icon: {
@@ -72,6 +72,9 @@ struct CountdownWidgetView: SolsticeWidgetView {
 				.symbolVariant(.fill)
 				.preferredColorScheme(.dark)
 			}
+		} else if shouldShowPlaceholder {
+			CountdownWidgetView(entry: .placeholder)
+				.redacted(reason: .placeholder)
 		} else {
 			WidgetMissingLocationView()
 		}

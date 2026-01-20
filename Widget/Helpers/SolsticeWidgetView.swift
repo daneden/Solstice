@@ -16,21 +16,34 @@ extension SolsticeWidgetView {
 		guard let location else { return nil }
 		return Solar(for: entry.date, coordinate: location.coordinate)
 	}
-	
+
 	var tomorrowSolar: Solar? {
 		solar?.tomorrow
 	}
-	
+
 	var relevantSolar: Solar? {
 		isAfterTodaySunset ? tomorrowSolar : solar
 	}
-	
+
 	var isAfterTodaySunset: Bool {
 		guard let solar else { return false }
 		return solar.safeSunset < entry.date
 	}
-	
+
 	var location: SolsticeWidgetLocation? {
 		entry.location
+	}
+
+	// MARK: - Error handling helpers
+
+	/// True when we have valid data to display
+	var hasValidData: Bool {
+		location != nil && solar != nil
+	}
+
+	/// True when we should show a placeholder/redacted view (temporary location failure)
+	var shouldShowPlaceholder: Bool {
+		guard let error = entry.locationError else { return false }
+		return error == .locationUpdateFailed || error == .reverseGeocodingFailed
 	}
 }
