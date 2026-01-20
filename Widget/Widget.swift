@@ -23,6 +23,11 @@ struct SolsticeWidgetLocation: AnyLocation {
 																											latitude: 51.5072,
 																											longitude: -0.1276)
 	
+	static let proxiedToTimeZone = SolsticeWidgetLocation(title: "Local",
+																												timeZoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
+																												latitude: CLLocationCoordinate2D.proxiedToTimeZone.latitude,
+																												longitude: CLLocationCoordinate2D.proxiedToTimeZone.longitude)
+	
 	var url: URL? {
 		switch isRealLocation {
 		case true: return URL(string: "solstice://location/currentLocation")

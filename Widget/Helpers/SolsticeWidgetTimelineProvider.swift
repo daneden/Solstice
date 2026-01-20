@@ -17,6 +17,14 @@ fileprivate actor LocationManager {
 	private var cachedLocation: CLLocation?
 	private var cacheTimestamp: Date?
 	private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
+	
+	static var isAuthorized: Bool {
+		#if os(watchOS)
+		[.authorizedAlways, .authorizedWhenInUse].contains(CLLocationManager().authorizationStatus)
+		#else
+		CLLocationManager().isAuthorizedForWidgetUpdates
+		#endif
+	}
 
 	/// Returns cached location if valid, otherwise fetches a new one
 	func getLocation() async -> CLLocation? {
@@ -90,6 +98,11 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
 	var location: SolsticeWidgetLocation?
 	var relevance: TimelineEntryRelevance?
+	var locationError: LocationError?
+}
+
+enum LocationError: Error {
+	case notAuthorized, locationUpdateFailed, reverseGeocodingFailed
 }
 
 protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
@@ -101,12 +114,7 @@ extension SolsticeWidgetTimelineProvider {
 	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation? {
 		guard let placemark,
 					let location = placemark.location else {
-			// If the user chose to use their real location and it failed to load,
-			// return nil to show placeholder state instead of defaulting to "London"
-			if isRealLocation {
-				return nil
-			}
-			return .defaultLocation
+			return isRealLocation ? nil : .defaultLocation
 		}
 
 		return SolsticeWidgetLocation(title: placemark.locality,
@@ -118,7 +126,7 @@ extension SolsticeWidgetTimelineProvider {
 	}
 
 	/// Fetches location and reverse geocodes it to a placemark
-	private func fetchWidgetLocation(for configuration: ConfigurationIntent) async -> (placemark: CLPlacemark?, isRealLocation: Bool) {
+	private func fetchWidgetLocation(for configuration: ConfigurationIntent) async -> (placemark: CLPlacemark?, isRealLocation: Bool, error: LocationError?) {
 		let isRealLocation = (configuration.locationType == .currentLocation) || (configuration.locationType == .unknown)
 
 		let location: CLLocation?
@@ -126,29 +134,36 @@ extension SolsticeWidgetTimelineProvider {
 		case .customLocation:
 			location = configuration.location?.location
 		default:
+			guard LocationManager.isAuthorized else {
+				return (nil, isRealLocation, .notAuthorized)
+			}
+			
 			location = await LocationManager.shared.getLocation()
 		}
 
 		guard let location else {
-			return (nil, isRealLocation)
+			return (nil, isRealLocation, .locationUpdateFailed)
 		}
 
-		let placemark = try? await geocoder.reverseGeocodeLocation(location).first
-		return (placemark, isRealLocation)
+		guard let placemark = try? await geocoder.reverseGeocodeLocation(location).first else {
+			return (nil, isRealLocation, .reverseGeocodingFailed)
+		}
+		
+		return (placemark, isRealLocation, nil)
 	}
 
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
 		Task {
-			let (placemark, isRealLocation) = await fetchWidgetLocation(for: configuration)
+			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: widgetLocation)
+			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: widgetLocation, locationError: error)
 			completion(entry)
 		}
 	}
 
 	func getTimeline(for configuration: Intent, in context: TimelineProviderContext, completion: @escaping (Timeline<Entry>) -> Void) {
 		Task {
-			let (placemark, isRealLocation) = await fetchWidgetLocation(for: configuration)
+			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
 			
 			let currentDate = Date()
@@ -156,7 +171,7 @@ extension SolsticeWidgetTimelineProvider {
 			
 			guard let coordinate = widgetLocation?.coordinate,
 				  let solar = Solar(for: currentDate, coordinate: coordinate) else {
-				completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation)], policy: .after(currentDate.endOfDay)))
+				completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)], policy: .after(currentDate.endOfDay)))
 				return
 			}
 			
@@ -252,7 +267,15 @@ extension SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation),
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation),
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(1), location: nil),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(2), location: nil, locationError: .locationUpdateFailed),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(3), location: nil, locationError: .notAuthorized),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(4), location: nil, locationError: .reverseGeocodingFailed),
 		]
+	}
+	
+	static var placeholder: Self {
+		SolsticeWidgetTimelineEntry(date: .now, location: .proxiedToTimeZone)
 	}
 }

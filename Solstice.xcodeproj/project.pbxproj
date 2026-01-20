@@ -93,6 +93,8 @@
 		7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */; };
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
+		715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */; };
+		715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */; };
 		716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */; };
 		71691B892C2E816A00E4ED96 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71691B882C2E816A00E4ED96 /* RealityKitContent */; };
 		71691B8B2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */; };
@@ -399,6 +401,7 @@
 		713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightSummaryTitle.swift; sourceTree = "<group>"; };
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
+		715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetView.swift; sourceTree = "<group>"; };
 		716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelToolbar.swift; sourceTree = "<group>"; };
 		71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemMiniMap.swift; sourceTree = "<group>"; };
 		71691B9E2C2E827200E4ED96 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
@@ -803,6 +806,7 @@
 		719F557B29DB0DB200D7AE8E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */,
 				71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */,
 				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
 				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
@@ -1117,6 +1121,7 @@
 				7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				7124339A2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
+				715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
 				719F558529DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
 				7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */,
@@ -1173,6 +1178,7 @@
 				719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */,
 				719465462C2C1E09008408C0 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
+				715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
 				719465472C2C1E09008408C0 /* DaylightSummaryTitle.swift in Sources */,
 				719465482C2C1E09008408C0 /* Widget.swift in Sources */,
 				719465492C2C1E09008408C0 /* SolsticeWidgetTimelineProvider.swift in Sources */,
