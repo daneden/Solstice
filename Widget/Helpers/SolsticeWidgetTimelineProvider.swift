@@ -165,12 +165,12 @@ extension SolsticeWidgetTimelineProvider {
 		Task {
 			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-			
+
 			let currentDate = Date()
-			var entries: [Entry] = []
-			
+			let calendar = Calendar.current
+
 			guard let coordinate = widgetLocation?.coordinate,
-				  let solar = Solar(for: currentDate, coordinate: coordinate) else {
+				  let todaySolar = Solar(for: currentDate, coordinate: coordinate) else {
 				return completion(
 					Timeline(
 						entries: [
@@ -180,81 +180,109 @@ extension SolsticeWidgetTimelineProvider {
 					)
 				)
 			}
-			
-			// Build key times as before
-			var keyTimes = [
-				currentDate,
-				solar.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
-				solar.safeSunrise,
-				solar.safeSunrise.addingTimeInterval(30 * 60),   // 30 min after sunrise
-				solar.safeSunset.addingTimeInterval(-30 * 60),   // 30 min before sunset
-				solar.safeSunset,
-				solar.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
-				currentDate.endOfDay
-			]
-			
-			if let solarNoon = solar.solarNoon {
-				keyTimes.append(solarNoon)
+
+			// Generate entries for today + next 2 days (3 days total)
+			let daysToGenerate = 3
+			var allKeyTimes: [Date] = [currentDate]
+			var allHourlyTimes: [Date] = []
+			var solarByDay: [Date: Solar] = [:]
+
+			for dayOffset in 0..<daysToGenerate {
+				guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: currentDate),
+					  let daySolar = Solar(for: dayDate, coordinate: coordinate) else {
+					continue
+				}
+
+				let dayStart = calendar.startOfDay(for: dayDate)
+				solarByDay[dayStart] = daySolar
+
+				// Key times for this day
+				var dayKeyTimes = [
+					daySolar.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
+					daySolar.safeSunrise,
+					daySolar.safeSunrise.addingTimeInterval(30 * 60),   // 30 min after sunrise
+					daySolar.safeSunset.addingTimeInterval(-30 * 60),   // 30 min before sunset
+					daySolar.safeSunset,
+					daySolar.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
+					dayDate.endOfDay
+				]
+
+				if let solarNoon = daySolar.solarNoon {
+					dayKeyTimes.append(solarNoon)
+				}
+
+				allKeyTimes.append(contentsOf: dayKeyTimes)
+
+				// Generate hourly times for this day
+				let dayEndOfDay = dayDate.endOfDay
+				var hourIter: Date
+
+				if dayOffset == 0 {
+					// For today, start from next hour boundary
+					let comps = calendar.dateComponents([.year, .month, .day, .hour], from: currentDate)
+					let hourStart = calendar.date(from: comps) ?? currentDate
+					hourIter = hourStart < currentDate
+						? (calendar.date(byAdding: .hour, value: 1, to: hourStart) ?? currentDate)
+						: hourStart
+				} else {
+					// For future days, start from midnight
+					hourIter = dayStart
+				}
+
+				while hourIter <= dayEndOfDay {
+					allHourlyTimes.append(hourIter)
+					hourIter = hourIter.addingTimeInterval(60 * 60)
+				}
 			}
-			
-			keyTimes = keyTimes.filter { $0 >= currentDate }
-			
-			// Generate hourly times from next hour boundary through end of day
-			var hourlyTimes: [Date] = []
-			let calendar = Calendar.current
-			let nextHourStart: Date = {
-				let comps = calendar.dateComponents([.year, .month, .day, .hour], from: currentDate)
-				let hourStart = calendar.date(from: comps) ?? currentDate
-				if hourStart < currentDate { return calendar.date(byAdding: .hour, value: 1, to: hourStart) ?? currentDate }
-				return hourStart
-			}()
-			
-			var iter = nextHourStart
-			let end = currentDate.endOfDay
-			while iter <= end {
-				hourlyTimes.append(iter)
-				iter = iter.addingTimeInterval(60 * 60)
-			}
-			
+
+			// Filter to only future times
+			allKeyTimes = allKeyTimes.filter { $0 >= currentDate }
+			allHourlyTimes = allHourlyTimes.filter { $0 >= currentDate }
+
 			// Filter out hourly times that are within 5 minutes of any key time
 			let fiveMinutes: TimeInterval = 5 * 60
-			let filteredHourlyTimes = hourlyTimes.filter { hour in
-				!keyTimes.contains { abs($0.timeIntervalSince(hour)) <= fiveMinutes }
+			let filteredHourlyTimes = allHourlyTimes.filter { hour in
+				!allKeyTimes.contains { abs($0.timeIntervalSince(hour)) <= fiveMinutes }
 			}
-			
-			// Helper to build an entry with relevance
+
+			// Helper to build an entry with relevance based on that day's solar data
 			func makeEntry(at date: Date) -> Entry {
+				let dayStart = calendar.startOfDay(for: date)
+				let solar = solarByDay[dayStart] ?? todaySolar
+
 				let distanceToSunrise = abs(date.distance(to: solar.safeSunrise))
 				let distanceToSunset = abs(date.distance(to: solar.safeSunset))
 				let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
 				let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
-				? .init(score: 10, duration: nearestEventDistance)
-				: nil
-				
+					? .init(score: 10, duration: nearestEventDistance)
+					: nil
+
 				return Entry(
 					date: date,
 					location: widgetLocation,
 					relevance: relevance
 				)
 			}
-			
+
 			// Create entries for key times and hourly times, then merge
 			var mergedEntries: [Entry] = []
-			for date in keyTimes { mergedEntries.append(makeEntry(at: date)) }
+			for date in allKeyTimes { mergedEntries.append(makeEntry(at: date)) }
 			for date in filteredHourlyTimes { mergedEntries.append(makeEntry(at: date)) }
-			
+
 			// Sort and dedupe entries less than 60 seconds apart
-			entries = mergedEntries
+			let entries = mergedEntries
 				.sorted { $0.date < $1.date }
 				.reduce(into: [Entry]()) { result, entry in
 					if let last = result.last, entry.date.timeIntervalSince(last.date) < 60 {
 						return
 					}
-					
+
 					result.append(entry)
 				}
-			
-			return completion(Timeline(entries: entries, policy: .after(currentDate.endOfDay)))
+
+			// Refresh after the last entry, or after 3 days if no entries
+			let lastEntryDate = entries.last?.date ?? currentDate
+			return completion(Timeline(entries: entries, policy: .after(lastEntryDate)))
 		}
 	}
 	
