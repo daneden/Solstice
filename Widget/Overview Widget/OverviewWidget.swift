@@ -33,9 +33,7 @@ struct OverviewWidget: Widget {
 }
 
 #if os(iOS)
-#Preview(as: .systemMedium) {
-	OverviewWidget()
-} timeline: {
-	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
-}
+#Preview(as: .systemMedium,
+				 widget: { OverviewWidget() },
+				 timeline: SolsticeWidgetTimelineEntry.previewTimeline )
 #endif
