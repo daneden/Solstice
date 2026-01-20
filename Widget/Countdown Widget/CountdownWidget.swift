@@ -22,7 +22,7 @@ struct CountdownWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: CountdownWidgetTimelineProvider()
+			provider: SolsticeTimelineProvider(widgetKind: .CountdownWidget, recommendationDescription: "Countdown")
 		) { timelineEntry in
 			CountdownWidgetView(entry: timelineEntry)
 				.containerBackground(for: .widget) {

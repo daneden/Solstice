@@ -21,7 +21,7 @@ struct OverviewWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: OverviewWidgetTimelineProvider()
+			provider: SolsticeTimelineProvider(widgetKind: .OverviewWidget, recommendationDescription: "Overview")
 		) { timelineEntry in
 			OverviewWidgetView(entry: timelineEntry)
 				.widgetURL(timelineEntry.location?.url)

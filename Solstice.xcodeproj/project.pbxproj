@@ -76,7 +76,6 @@
 		712433AE2D79090500709C20 /* NSImage+pngData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433AA2D79090100709C20 /* NSImage+pngData.swift */; };
 		7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		7132AC0F29E6922500523215 /* SolarChartWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */; };
-		7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */; };
 		7132AC1529E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */; };
 		7132AC1929E6962D00523215 /* ConditionalGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1829E6962D00523215 /* ConditionalGlobals.swift */; };
 		7132AC1A29E6962D00523215 /* ConditionalGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1829E6962D00523215 /* ConditionalGlobals.swift */; };
@@ -160,11 +159,8 @@
 		7194653E2C2C1E09008408C0 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A2BDE529B747940071ACE9 /* Globals.swift */; };
 		7194653F2C2C1E09008408C0 /* SolarChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC0B29E6917F00523215 /* SolarChartWidget.swift */; };
 		719465402C2C1E09008408C0 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BA2999631D00FE5AB5 /* Date++.swift */; };
-		719465412C2C1E09008408C0 /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
 		719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */; };
-		719465432C2C1E09008408C0 /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
 		719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */; };
-		719465462C2C1E09008408C0 /* SolarChartWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */; };
 		719465472C2C1E09008408C0 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		719465482C2C1E09008408C0 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
 		719465492C2C1E09008408C0 /* SolsticeWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */; };
@@ -199,8 +195,6 @@
 		719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A928E992A200E866CE /* LocationSearchResultRow.swift */; };
 		719846AD28E9AA0E00E866CE /* Solar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AC28E9AA0E00E866CE /* Solar++.swift */; };
 		719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
-		7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */; };
-		7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */; };
 		7198C40A29DB06A8009A457E /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40929DB06A8009A457E /* CountdownWidget.swift */; };
 		7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198C40D29DB06C1009A457E /* OverviewWidget.swift */; };
 		719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */; };
@@ -392,7 +386,6 @@
 		712433AA2D79090100709C20 /* NSImage+pngData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+pngData.swift"; sourceTree = "<group>"; };
 		7132AC0B29E6917F00523215 /* SolarChartWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidget.swift; sourceTree = "<group>"; };
 		7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetView.swift; sourceTree = "<group>"; };
-		7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarChartWidgetTimelineProvider.swift; sourceTree = "<group>"; };
 		7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConditionalGlobals+WidgetTargets.swift"; sourceTree = "<group>"; };
 		7132AC1829E6962D00523215 /* ConditionalGlobals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalGlobals.swift; sourceTree = "<group>"; };
 		713F7FF529BE054400BEA156 /* Solstice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Solstice.entitlements; sourceTree = "<group>"; };
@@ -441,8 +434,6 @@
 		719846A928E992A200E866CE /* LocationSearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultRow.swift; sourceTree = "<group>"; };
 		719846AC28E9AA0E00E866CE /* Solar++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Solar++.swift"; sourceTree = "<group>"; };
 		719846AF28EEE48900E866CE /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
-		7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetTimelineProvider.swift; sourceTree = "<group>"; };
-		7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidgetTimelineProvider.swift; sourceTree = "<group>"; };
 		7198C40929DB06A8009A457E /* CountdownWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownWidget.swift; sourceTree = "<group>"; };
 		7198C40D29DB06C1009A457E /* OverviewWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidget.swift; sourceTree = "<group>"; };
 		719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CountdownWidgetView+AccessoryWidgetViews.swift"; sourceTree = "<group>"; };
@@ -575,7 +566,6 @@
 			children = (
 				71BC51D32E9861CC0025892F /* SundialWidgetView.swift */,
 				7132AC0B29E6917F00523215 /* SolarChartWidget.swift */,
-				7132AC1129E6930300523215 /* SolarChartWidgetTimelineProvider.swift */,
 				7132AC0E29E6922500523215 /* SolarChartWidgetView.swift */,
 			);
 			path = "Solar Chart Widget";
@@ -785,7 +775,6 @@
 			isa = PBXGroup;
 			children = (
 				7198C40D29DB06C1009A457E /* OverviewWidget.swift */,
-				7198C40029DB0641009A457E /* OverviewWidgetTimelineProvider.swift */,
 				7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */,
 				719F558029DB1ABB00D7AE8E /* OverviewWidgetView+AccessoryWidgetViews.swift */,
 			);
@@ -796,7 +785,6 @@
 			isa = PBXGroup;
 			children = (
 				7198C40929DB06A8009A457E /* CountdownWidget.swift */,
-				7198C40529DB0670009A457E /* CountdownWidgetTimelineProvider.swift */,
 				7117008829A52ABE001BE478 /* CountdownWidgetView.swift */,
 				719F557C29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift */,
 			);
@@ -1111,14 +1099,11 @@
 				7132AC0C29E6917F00523215 /* SolarChartWidget.swift in Sources */,
 				71E3C4182EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7106C88629A2775C0007A7EC /* Date++.swift in Sources */,
-				7198C40629DB0670009A457E /* CountdownWidgetTimelineProvider.swift in Sources */,
 				71E3C4142EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 				71BC51D42E9861CC0025892F /* SundialWidgetView.swift in Sources */,
 				71C105A62E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
-				7198C40129DB0641009A457E /* OverviewWidgetTimelineProvider.swift in Sources */,
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
-				7132AC1229E6930300523215 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				7124339A2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
@@ -1171,12 +1156,9 @@
 				7194653E2C2C1E09008408C0 /* Globals.swift in Sources */,
 				7194653F2C2C1E09008408C0 /* SolarChartWidget.swift in Sources */,
 				719465402C2C1E09008408C0 /* Date++.swift in Sources */,
-				719465412C2C1E09008408C0 /* CountdownWidgetTimelineProvider.swift in Sources */,
 				71C105A52E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */,
-				719465432C2C1E09008408C0 /* OverviewWidgetTimelineProvider.swift in Sources */,
 				719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */,
-				719465462C2C1E09008408C0 /* SolarChartWidgetTimelineProvider.swift in Sources */,
 				712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
 				719465472C2C1E09008408C0 /* DaylightSummaryTitle.swift in Sources */,

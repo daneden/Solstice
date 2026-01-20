@@ -107,7 +107,18 @@ enum LocationError: Error {
 
 protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
 	var geocoder: CLGeocoder { get }
-	static var widgetKind: SolsticeWidgetKind { get }
+	var widgetKind: SolsticeWidgetKind { get }
+	var recommendationDescription: String { get }
+}
+
+struct SolsticeTimelineProvider: SolsticeWidgetTimelineProvider {
+	let widgetKind: SolsticeWidgetKind
+	let recommendationDescription: String
+	let geocoder = CLGeocoder()
+
+	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
+		[IntentRecommendation(intent: ConfigurationIntent(), description: recommendationDescription)]
+	}
 }
 
 extension SolsticeWidgetTimelineProvider {
