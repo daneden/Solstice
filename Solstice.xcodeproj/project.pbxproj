@@ -94,6 +94,8 @@
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */; };
 		715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */; };
+		715489B42F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */; };
+		715489B52F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */; };
 		716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */; };
 		71691B892C2E816A00E4ED96 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; platformFilters = (xros, ); productRef = 71691B882C2E816A00E4ED96 /* RealityKitContent */; };
 		71691B8B2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */; };
@@ -395,6 +397,7 @@
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
 		715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetView.swift; sourceTree = "<group>"; };
+		715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetLocationManager.swift; sourceTree = "<group>"; };
 		716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelToolbar.swift; sourceTree = "<group>"; };
 		71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemMiniMap.swift; sourceTree = "<group>"; };
 		71691B9E2C2E827200E4ED96 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
@@ -794,9 +797,10 @@
 		719F557B29DB0DB200D7AE8E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */,
 				71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */,
+				715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */,
 				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
+				715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */,
 				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
 				71BD5E3A29A7778900E40C01 /* WidgetLocationHeadingView.swift */,
 				7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */,
@@ -1073,6 +1077,7 @@
 				7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */,
 				719465172C294B42008408C0 /* Color+Mix.swift in Sources */,
+				715489B52F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */,
 				719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
 				7132AC1529E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
@@ -1158,6 +1163,7 @@
 				719465402C2C1E09008408C0 /* Date++.swift in Sources */,
 				71C105A52E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */,
+				715489B42F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */,
 				719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */,
 				712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
