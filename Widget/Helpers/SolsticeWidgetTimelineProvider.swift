@@ -105,24 +105,19 @@ enum LocationError: Error {
 	case notAuthorized, locationUpdateFailed, reverseGeocodingFailed
 }
 
-protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
-	var geocoder: CLGeocoder { get }
-	var widgetKind: SolsticeWidgetKind { get }
-	var recommendationDescription: String { get }
-}
+struct SolsticeTimelineProvider: IntentTimelineProvider {
+	typealias Entry = SolsticeWidgetTimelineEntry
+	typealias Intent = ConfigurationIntent
 
-struct SolsticeTimelineProvider: SolsticeWidgetTimelineProvider {
 	let widgetKind: SolsticeWidgetKind
 	let recommendationDescription: String
-	let geocoder = CLGeocoder()
+	private let geocoder = CLGeocoder()
 
 	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
 		[IntentRecommendation(intent: ConfigurationIntent(), description: recommendationDescription)]
 	}
-}
 
-extension SolsticeWidgetTimelineProvider {
-	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation? {
+	private func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation? {
 		guard let placemark,
 					let location = placemark.location else {
 			return isRealLocation ? nil : .defaultLocation
