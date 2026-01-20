@@ -247,7 +247,7 @@ extension SolsticeWidgetTimelineProvider {
 					result.append(entry)
 				}
 			
-			completion(Timeline(entries: entries, policy: .after(solar.nextSolarEvent?.date ?? currentDate.endOfDay)))
+			completion(Timeline(entries: entries, policy: .after(currentDate.endOfDay)))
 		}
 	}
 	
