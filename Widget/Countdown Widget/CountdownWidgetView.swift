@@ -10,24 +10,12 @@ import Solar
 import WidgetKit
 import Suite
 
-struct CountdownWidgetView: View {
+struct CountdownWidgetView: SolsticeWidgetView {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.sizeCategory) var sizeCategory
 	@Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground
-	
+
 	var entry: SolsticeWidgetTimelineEntry
-	
-	var solar: Solar? {
-		guard let location = entry.location else {
-			return nil
-		}
-		
-		return Solar(for: entry.date, coordinate: location.coordinate)
-	}
-	
-	var location: SolsticeWidgetLocation? {
-		entry.location
-	}
 	
 	var body: some View {
 		if let location,

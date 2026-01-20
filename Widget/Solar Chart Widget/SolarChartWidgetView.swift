@@ -9,17 +9,8 @@ import SwiftUI
 import WidgetKit
 import Solar
 
-struct SolarChartWidgetView: View {
+struct SolarChartWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
-	
-	var solar: Solar? {
-		guard let location else { return nil }
-		return Solar(for: entry.date, coordinate: location.coordinate)
-	}
-	
-	var location: SolsticeWidgetLocation? {
-		entry.location
-	}
 	
 	var body: some View {
 		Group {
