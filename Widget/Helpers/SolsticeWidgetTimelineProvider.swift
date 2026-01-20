@@ -171,8 +171,14 @@ extension SolsticeWidgetTimelineProvider {
 			
 			guard let coordinate = widgetLocation?.coordinate,
 				  let solar = Solar(for: currentDate, coordinate: coordinate) else {
-				completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)], policy: .after(currentDate.endOfDay)))
-				return
+				return completion(
+					Timeline(
+						entries: [
+							SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)
+						],
+						policy: .after(.now.addingTimeInterval(60 * 15))
+					)
+				)
 			}
 			
 			// Build key times as before
@@ -244,10 +250,11 @@ extension SolsticeWidgetTimelineProvider {
 					if let last = result.last, entry.date.timeIntervalSince(last.date) < 60 {
 						return
 					}
+					
 					result.append(entry)
 				}
 			
-			completion(Timeline(entries: entries, policy: .after(currentDate.endOfDay)))
+			return completion(Timeline(entries: entries, policy: .after(currentDate.endOfDay)))
 		}
 	}
 	
