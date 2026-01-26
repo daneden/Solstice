@@ -48,12 +48,6 @@
 		711DDC772EA8172200DFE99B /* Shared Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */; };
 		711DDC782EA8172200DFE99B /* Shared Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */; };
 		711DDC792EA8172200DFE99B /* Shared Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */; };
-		711DDC7C2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711DDC7B2EA8176400DFE99B /* visionOS Assets.xcassets */; };
-		711DDC7D2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711DDC7B2EA8176400DFE99B /* visionOS Assets.xcassets */; };
-		711DDC7E2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711DDC7B2EA8176400DFE99B /* visionOS Assets.xcassets */; };
-		711DDC7F2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711DDC7B2EA8176400DFE99B /* visionOS Assets.xcassets */; };
-		711DDC812EA817B100DFE99B /* Regular Size Class Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711DDC802EA817B100DFE99B /* Regular Size Class Assets.xcassets */; };
-		711DDC822EA817B100DFE99B /* Regular Size Class Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 711DDC802EA817B100DFE99B /* Regular Size Class Assets.xcassets */; };
 		7121DE0029C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
@@ -377,8 +371,6 @@
 		711782E82E4E7CE20006CE5B /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
 		711DDC742EA7A1A400DFE99B /* GraphicalLocationListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicalLocationListRow.swift; sourceTree = "<group>"; };
-		711DDC7B2EA8176400DFE99B /* visionOS Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "visionOS Assets.xcassets"; sourceTree = "<group>"; };
-		711DDC802EA817B100DFE99B /* Regular Size Class Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Regular Size Class Assets.xcassets"; sourceTree = "<group>"; };
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
 		712433922D77A4CE00709C20 /* EdgeInsets++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets++.swift"; sourceTree = "<group>"; };
 		712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DaylightGradientTimePreferenceKey.swift"; sourceTree = "<group>"; };
@@ -557,9 +549,7 @@
 			children = (
 				718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */,
 				711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */,
-				711DDC802EA817B100DFE99B /* Regular Size Class Assets.xcassets */,
 				71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */,
-				711DDC7B2EA8176400DFE99B /* visionOS Assets.xcassets */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1007,11 +997,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A029BB2C36928400E19819 /* defaultData.json in Resources */,
-				711DDC7D2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */,
 				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 				718FC2ED2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
-				711DDC822EA817B100DFE99B /* Regular Size Class Assets.xcassets in Resources */,
 				711DDC782EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1021,7 +1009,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A029BC2C36928400E19819 /* defaultData.json in Resources */,
-				711DDC7F2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */,
 				719465552C2C1E09008408C0 /* Localizable.xcstrings in Resources */,
 				719465572C2C1E09008408C0 /* Assets.xcassets in Resources */,
 				718FC2EE2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
@@ -1037,9 +1024,7 @@
 				71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */,
 				718FC2EB2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
-				711DDC812EA817B100DFE99B /* Regular Size Class Assets.xcassets in Resources */,
 				71C635C82E9D9A8C003FA1AE /* Shared Assets.xcassets in Resources */,
-				711DDC7E2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
 				71A029B92C36928400E19819 /* defaultData.json in Resources */,
@@ -1051,7 +1036,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				711DDC7C2EA8176400DFE99B /* visionOS Assets.xcassets in Resources */,
 				71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				718FC2EC2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711DDC772EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
