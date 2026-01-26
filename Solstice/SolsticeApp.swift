@@ -22,9 +22,7 @@ struct SolsticeApp: App {
 		WindowGroup {
 			ContentView()
 				.withAppOnboarding()
-				.environment(currentLocation)
 				.withTimeMachine(.solsticeTimeMachine)
-				.environment(locationSearchService)
 				.task {
 					for await result in Transaction.updates {
 						switch result {
@@ -49,6 +47,8 @@ struct SolsticeApp: App {
 					}
 				}
 				.migrateAppFeatures()
+				.environment(currentLocation)
+				.environment(locationSearchService)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 		}
 		#if os(iOS)
