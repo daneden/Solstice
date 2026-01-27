@@ -29,6 +29,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CC295EF547FB0D0358A5BF31"
+               BuildableName = "SolsticeTests.xctest"
+               BlueprintName = "SolsticeTests"
+               ReferencedContainer = "container:Solstice.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6DDD079BFCFFB3E4538605DF"
+               BuildableName = "SolsticeUITests.xctest"
+               BlueprintName = "SolsticeUITests"
+               ReferencedContainer = "container:Solstice.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
