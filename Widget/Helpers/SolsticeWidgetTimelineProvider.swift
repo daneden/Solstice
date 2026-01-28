@@ -108,8 +108,9 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 			var allHourlyTimes: [Date] = []
 			var solarByDay: [Date: Solar] = [:]
 
+			let today = calendar.startOfDay(for: currentDate)
 			for dayOffset in 0..<daysToGenerate {
-				guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: currentDate),
+				guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: today),
 					  let daySolar = Solar(for: dayDate, coordinate: coordinate) else {
 					continue
 				}
