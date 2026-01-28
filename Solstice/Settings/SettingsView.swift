@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+#if os(macOS)
 import AppKit
+#endif
 
 struct SettingsView: View {
 	@Environment(\.dismiss) private var dismiss
