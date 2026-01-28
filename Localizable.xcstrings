@@ -244,16 +244,6 @@
         }
       }
     },
-    "%@ Welcome to Solstice" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Benvenuti al Solstice"
-          }
-        }
-      }
-    },
     "%@, %@" : {
       "localizations" : {
         "en" : {
@@ -2213,6 +2203,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza la luce del giorno rimanente"
+          }
+        }
+      }
+    },
+    "Welcome to Solstice" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benvenuti al Solstice"
           }
         }
       }

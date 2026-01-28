@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Solar
 import Suite
 
 fileprivate struct SizePreferenceKey: PreferenceKey {
@@ -34,7 +35,7 @@ struct LandingView: View {
 	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
 	@State private var animate = false
 	
-	@State private var contentSize: CGSize = .zero
+	@State private var contentSize: CGSize = CGSize(width: 0, height: 200)
 	@State private var bottomButtonSize: CGSize = .zero
 	
 	private var isWatch: Bool {
@@ -62,10 +63,9 @@ struct LandingView: View {
 			} label: {
 				Label("Continue with location", systemImage: "location.fill")
 					.frame(maxWidth: .infinity)
-					.foregroundStyle(.black)
+					.fontWeight(.semibold)
 			}
 			.glassButtonStyle(.prominent)
-			.tint(.white)
 			.animateIn(active: animate, delay: 1.1)
 		}
 		.scenePadding(.horizontal)
@@ -83,18 +83,32 @@ struct LandingView: View {
 		dynamicTypeSize > .accessibility2
 	}
 	
+	@State private var solar = Solar(coordinate: .proxiedToTimeZone)
+	private let renderTime = Date.now
+	
     var body: some View {
 			ZStack {
-				SkyGradient()
-					.ignoresSafeArea()
+				TimelineView(.animation) { context in
+					SkyGradient(solar: solar)
+						.ignoresSafeArea()
+						.task(id: context.date) {
+							solar = Solar(
+								for: renderTime.addingTimeInterval(context.date.distance(to: renderTime) * 1000),
+								coordinate: .proxiedToTimeZone
+							) ?? solar
+						}
+				}
 				
 				ScrollView {
 					VStack(alignment: .leading, spacing: 8) {
-						Text("\(Image(.solstice)) Welcome to Solstice")
-							.font(isWatch ? .headline : .largeTitle)
-							.fontWeight(.semibold)
-							.animateIn(active: animate, delay: 0.1)
-							.padding(.vertical)
+						HStack(alignment: .firstTextBaseline) {
+							Image(.solstice)
+							Text("Welcome to Solstice")
+						}
+						.font(isWatch ? .headline : .largeTitle)
+						.fontWeight(.semibold)
+						.animateIn(active: animate, delay: 0.1)
+						.padding(.vertical)
 						
 						Text("Solstice tells you how much daylight there is today compared to yesterday.")
 							.animateIn(active: animate, delay: 0.4)

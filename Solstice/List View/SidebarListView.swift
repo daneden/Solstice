@@ -83,6 +83,8 @@ struct SidebarListView: View {
 			}
 			.onDelete(perform: deleteItems)
 		}
+		.animation(.default, value: currentLocation.isAuthorized)
+		.animation(.default, value: items.count)
 		.overlay {
 			if !currentLocation.isAuthorized && items.isEmpty {
 				ContentUnavailableView(

@@ -100,7 +100,13 @@ extension CurrentLocation {
 	
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
 		if location == nil && isAuthorized {
-			requestLocation()
+			Task {
+				do {
+					try await requestLocationFromLiveUpdates()
+				} catch {
+					requestLocation()
+				}
+			}
 		}
 	}
 }
