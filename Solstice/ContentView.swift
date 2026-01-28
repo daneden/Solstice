@@ -20,6 +20,11 @@ struct ContentView: View {
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
+
+	#if os(macOS)
+	/// Fallback storage for macOS where SceneStorage doesn't persist across app launches
+	@AppStorage("lastSelectedLocation") private var lastSelectedLocation: String?
+	#endif
 	
 	@Environment(\.scenePhase) private var scenePhase
 	@Environment(CurrentLocation.self) var currentLocation
@@ -102,6 +107,18 @@ struct ContentView: View {
 					return
 				}
 			}
+			#if os(macOS)
+			.onAppear {
+				// Restore selection from AppStorage if SceneStorage is empty
+				if selectedLocation == nil, let lastSelected = lastSelectedLocation {
+					selectedLocation = lastSelected
+				}
+			}
+			.onChange(of: selectedLocation) { _, newValue in
+				// Sync selection to AppStorage for persistence across launches
+				lastSelectedLocation = newValue
+			}
+			#endif
 	}
 	
 	private var placeholderView: some View {
