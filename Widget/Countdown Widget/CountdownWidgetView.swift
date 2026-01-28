@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import WidgetKit
 import Suite
 
@@ -16,7 +16,7 @@ struct CountdownWidgetView: SolsticeWidgetView {
 	@Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground
 
 	var entry: SolsticeWidgetTimelineEntry
-	
+
 	var body: some View {
 		if let location,
 			 let nextSolarEvent,
@@ -82,18 +82,18 @@ struct CountdownWidgetView: SolsticeWidgetView {
 }
 
 extension CountdownWidgetView {
-	var nextSolarEvent: Solar.Event? {
-		solar?.nextSolarEvent
+	var nextSolarEvent: Sun.Event? {
+		sun?.nextSolarEvent
 	}
-	
-	var previousSolarEvent: Solar.Event? {
-		solar?.previousSolarEvent
+
+	var previousSolarEvent: Sun.Event? {
+		sun?.previousSolarEvent
 	}
-	
+
 	var timeZone: TimeZone {
 		location?.timeZone ?? .autoupdatingCurrent
 	}
-	
+
 	var nextEventText: some View {
 		if let nextSolarEvent {
 			return Text("\(nextSolarEvent.description.localizedCapitalized) in \(Text(nextSolarEvent.date, style: .relative))")
@@ -101,7 +101,7 @@ extension CountdownWidgetView {
 			return Text("—")
 		}
 	}
-	
+
 	var currentEventImageName: String {
 		nextSolarEvent?.phase == .sunrise ? "moon.stars" : "sun.max"
 	}
@@ -113,7 +113,7 @@ struct CountdownWidgetPreview: PreviewProvider {
 		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
 			.previewContext(WidgetPreviewContext(family: .systemSmall))
 		#endif
-		
+
 		#if !os(macOS)
 		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
 			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))

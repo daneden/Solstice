@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WidgetKit
-import Solar
+import SunKit
 
 struct OverviewWidgetView: SolsticeWidgetView {
 	@Environment(\.widgetRenderingMode) private var renderingMode
@@ -18,20 +18,20 @@ struct OverviewWidgetView: SolsticeWidgetView {
 	
 	var body: some View {
 		Group {
-			if let solar,
+			if let sun,
 				 let location {
 				switch family {
 				#if !os(macOS)
 				case .accessoryCircular:
-					AccessoryCircularView(solar: solar, location: location)
+					AccessoryCircularView(sun: sun, location: location)
 				case .accessoryInline:
-					Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
+					Label(sun.daylightDuration.localizedString, systemImage: "sun.max")
 				case .accessoryRectangular:
 					AccessoryRectangularView(
 						isAfterTodaySunset: isAfterTodaySunset,
 						location: location,
-						relevantSolar: relevantSolar,
-						comparisonSolar: isAfterTodaySunset ? solar : nil
+						relevantSun: relevantSun,
+						comparisonSun: isAfterTodaySunset ? sun : nil
 					)
 				#if os(watchOS)
 				case .accessoryCorner:
@@ -40,7 +40,7 @@ struct OverviewWidgetView: SolsticeWidgetView {
 						.symbolVariant(.fill)
 						.imageScale(.large)
 						.widgetLabel {
-							Text(solar.daylightDuration.localizedString)
+							Text(sun.daylightDuration.localizedString)
 								.widgetAccentable()
 						}
 				#endif // end watchOS
@@ -73,11 +73,11 @@ extension OverviewWidgetView {
 			ZStack(alignment: .bottomLeading) {
 				#if !os(watchOS)
 				if family != .systemSmall,
-					 let solar,
+					 let sun,
 					 let location {
 					GeometryReader { geom in
 						DaylightChart(
-							solar: solar,
+							sun: sun,
 							timeZone: location.timeZone,
 							showEventTypes: false,
 							includesSummaryTitle: false,
@@ -109,7 +109,7 @@ extension OverviewWidgetView {
 					
 					Spacer()
 					
-					if let duration = relevantSolar?.daylightDuration.localizedString {
+					if let duration = relevantSun?.daylightDuration.localizedString {
 						if sizeCategory < .xLarge {
 							Group {
 								if isAfterTodaySunset {
@@ -130,9 +130,9 @@ extension OverviewWidgetView {
 					
 					Group {
 						if let location,
-							 let begins = relevantSolar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone),
-							 let ends = relevantSolar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
-							if let differenceString = relevantSolar?.compactDifferenceString {
+							 let begins = relevantSun?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone),
+							 let ends = relevantSun?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
+							if let differenceString = relevantSun?.compactDifferenceString {
 								Text(differenceString)
 									.lineLimit(4)
 									.font(.footnote)

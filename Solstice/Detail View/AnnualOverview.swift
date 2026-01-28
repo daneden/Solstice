@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 
@@ -173,34 +173,34 @@ struct AnnualOverview<Location: AnyLocation>: View {
 }
 
 extension AnnualOverview {
-	var decemberSolsticeSolar: Solar? {
+	var decemberSolsticeSun: Sun? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		return Solar(for: decemberSolstice, coordinate: location.coordinate)
+		return Sun(for: decemberSolstice, coordinate: location.coordinate)
 	}
-	
-	var juneSolsticeSolar: Solar? {
+
+	var juneSolsticeSun: Sun? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
-		return Solar(for: juneSolstice, coordinate: location.coordinate)
+		return Sun(for: juneSolstice, coordinate: location.coordinate)
 	}
-	
-	var longestDay: Solar? {
-		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+
+	var longestDay: Sun? {
+		guard let decemberSolsticeSun,
+					let juneSolsticeSun else {
 			return nil
 		}
-		
-		return decemberSolsticeSolar.daylightDuration > juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
+
+		return decemberSolsticeSun.daylightDuration > juneSolsticeSun.daylightDuration ? decemberSolsticeSun : juneSolsticeSun
 	}
-	
-	var shortestDay: Solar? {
-		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+
+	var shortestDay: Sun? {
+		guard let decemberSolsticeSun,
+					let juneSolsticeSun else {
 			return nil
 		}
-		
-		return decemberSolsticeSolar.daylightDuration < juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
+
+		return decemberSolsticeSun.daylightDuration < juneSolsticeSun.daylightDuration ? decemberSolsticeSun : juneSolsticeSun
 	}
 }
 

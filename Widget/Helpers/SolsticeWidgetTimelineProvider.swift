@@ -7,7 +7,7 @@
 
 import WidgetKit
 import CoreLocation
-import Solar
+import SunKit
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
@@ -58,7 +58,7 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 			guard SolsticeWidgetLocationManager.isAuthorized else {
 				return (nil, isRealLocation, .notAuthorized)
 			}
-			
+
 			location = await SolsticeWidgetLocationManager.shared.getLocation()
 		}
 
@@ -69,7 +69,7 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 		guard let placemark = try? await geocoder.reverseGeocodeLocation(location).first else {
 			return (nil, isRealLocation, .reverseGeocodingFailed)
 		}
-		
+
 		return (placemark, isRealLocation, nil)
 	}
 
@@ -90,8 +90,7 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 			let currentDate = Date()
 			let calendar = Calendar.current
 
-			guard let coordinate = widgetLocation?.coordinate,
-				  let todaySolar = Solar(for: currentDate, coordinate: coordinate) else {
+			guard let coordinate = widgetLocation?.coordinate else {
 				return completion(
 					Timeline(
 						entries: [
@@ -102,36 +101,37 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 				)
 			}
 
+			let timeZone = widgetLocation?.timeZone ?? .current
+			let todaySun = Sun(for: currentDate, coordinate: coordinate, timeZone: timeZone)
+
 			// Generate entries for today + next 2 days (3 days total)
 			let daysToGenerate = 3
 			var allKeyTimes: [Date] = [currentDate]
 			var allHourlyTimes: [Date] = []
-			var solarByDay: [Date: Solar] = [:]
+			var sunByDay: [Date: Sun] = [:]
 
 			let today = calendar.startOfDay(for: currentDate)
 			for dayOffset in 0..<daysToGenerate {
-				guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: today),
-					  let daySolar = Solar(for: dayDate, coordinate: coordinate) else {
+				guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else {
 					continue
 				}
 
+				let daySun = Sun(for: dayDate, coordinate: coordinate, timeZone: timeZone)
 				let dayStart = calendar.startOfDay(for: dayDate)
-				solarByDay[dayStart] = daySolar
+				sunByDay[dayStart] = daySun
 
 				// Key times for this day
 				var dayKeyTimes = [
-					daySolar.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
-					daySolar.safeSunrise,
-					daySolar.safeSunrise.addingTimeInterval(30 * 60),   // 30 min after sunrise
-					daySolar.safeSunset.addingTimeInterval(-30 * 60),   // 30 min before sunset
-					daySolar.safeSunset,
-					daySolar.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
+					daySun.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
+					daySun.safeSunrise,
+					daySun.safeSunrise.addingTimeInterval(30 * 60),   // 30 min after sunrise
+					daySun.safeSunset.addingTimeInterval(-30 * 60),   // 30 min before sunset
+					daySun.safeSunset,
+					daySun.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
 					dayDate.endOfDay
 				]
 
-				if let solarNoon = daySolar.solarNoon {
-					dayKeyTimes.append(solarNoon)
-				}
+				dayKeyTimes.append(daySun.solarNoon)
 
 				allKeyTimes.append(contentsOf: dayKeyTimes)
 
@@ -170,10 +170,10 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 			// Helper to build an entry with relevance based on that day's solar data
 			func makeEntry(at date: Date) -> Entry {
 				let dayStart = calendar.startOfDay(for: date)
-				let solar = solarByDay[dayStart] ?? todaySolar
+				let sun = sunByDay[dayStart] ?? todaySun
 
-				let distanceToSunrise = abs(date.distance(to: solar.safeSunrise))
-				let distanceToSunset = abs(date.distance(to: solar.safeSunset))
+				let distanceToSunrise = abs(sun.safeSunrise.timeIntervalSince(date))
+				let distanceToSunset = abs(sun.safeSunset.timeIntervalSince(date))
 				let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
 				let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
 					? .init(score: 10, duration: nearestEventDistance)
@@ -207,7 +207,7 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 			return completion(Timeline(entries: entries, policy: .after(lastEntryDate)))
 		}
 	}
-	
+
 
 
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
@@ -231,7 +231,7 @@ extension SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(4), location: nil, locationError: .reverseGeocodingFailed),
 		]
 	}
-	
+
 	static var placeholder: Self {
 		SolsticeWidgetTimelineEntry(date: .now, location: .proxiedToTimeZone)
 	}

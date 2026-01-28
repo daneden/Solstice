@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import TimeMachine
 
 struct SolarExtremetiesOverview<Location: ObservableLocation>: View {
@@ -17,8 +17,8 @@ struct SolarExtremetiesOverview<Location: ObservableLocation>: View {
 	var body: some View {
 		if let shortestDay,
 			 let longestDay {
-			SolarExtremityView(solar: longestDay, extremity: .longest)
-			SolarExtremityView(solar: shortestDay, extremity: .shortest)
+			SolarExtremityView(sun: longestDay, extremity: .longest)
+			SolarExtremityView(sun: shortestDay, extremity: .shortest)
 		}
 	}
 }
@@ -48,19 +48,19 @@ fileprivate struct SolarExtremityView: View {
 		}
 	}
 	
-	var solar: Solar
+	var sun: Sun
 	var extremity: Extremity
 	
 	var body: some View {
 		CompatibleDisclosureGroup {
 			Button("Time travel to date", systemImage: "clock.arrow.2.circlepath") {
 				withAnimation {
-					timeMachine.date = solar.date
+					timeMachine.date = sun.date
 				}
 			}
-			
-			let duration = Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2))
-			
+
+			let duration = Duration.seconds(sun.daylightDuration).formatted(.units(maximumUnitCount: 2))
+
 			Label {
 				AdaptiveStack {
 					Text(duration)
@@ -70,34 +70,30 @@ fileprivate struct SolarExtremityView: View {
 			} icon: {
 				Image(systemName: "hourglass")
 			}
-			
-			if let sunrise = solar.sunrise {
-				Label {
-					AdaptiveStack {
-						Text(sunrise, style: .time)
-					} label: {
-						Text("Sunrise")
-					}
-				} icon: {
-					Image(systemName: "sunrise")
+
+			Label {
+				AdaptiveStack {
+					Text(sun.sunrise, style: .time)
+				} label: {
+					Text("Sunrise")
 				}
+			} icon: {
+				Image(systemName: "sunrise")
 			}
-			
-			if let sunset = solar.sunset {
-				Label {
-					AdaptiveStack {
-						Text(sunset, style: .time)
-					} label: {
-						Text("Sunset")
-					}
-				} icon: {
-					Image(systemName: "sunset")
+
+			Label {
+				AdaptiveStack {
+					Text(sun.sunset, style: .time)
+				} label: {
+					Text("Sunset")
 				}
+			} icon: {
+				Image(systemName: "sunset")
 			}
 		} label: {
 			Label {
 				AdaptiveStack {
-					Text(solar.date, style: .date)
+					Text(sun.date, style: .date)
 				} label: {
 					Text(extremity.title)
 				}
@@ -157,34 +153,34 @@ extension CompatibleDisclosureGroup {
 }
 
 extension SolarExtremetiesOverview {
-	var decemberSolsticeSolar: Solar? {
+	var decemberSolsticeSun: Sun? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		return Solar(for: decemberSolstice, coordinate: location.coordinate)
+		return Sun(for: decemberSolstice, coordinate: location.coordinate)
 	}
-	
-	var juneSolsticeSolar: Solar? {
+
+	var juneSolsticeSun: Sun? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
-		return Solar(for: juneSolstice, coordinate: location.coordinate)
+		return Sun(for: juneSolstice, coordinate: location.coordinate)
 	}
-	
-	var longestDay: Solar? {
-		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+
+	var longestDay: Sun? {
+		guard let decemberSolsticeSun,
+					let juneSolsticeSun else {
 			return nil
 		}
-		
-		return decemberSolsticeSolar.daylightDuration > juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
+
+		return decemberSolsticeSun.daylightDuration > juneSolsticeSun.daylightDuration ? decemberSolsticeSun : juneSolsticeSun
 	}
-	
-	var shortestDay: Solar? {
-		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+
+	var shortestDay: Sun? {
+		guard let decemberSolsticeSun,
+					let juneSolsticeSun else {
 			return nil
 		}
-		
-		return decemberSolsticeSolar.daylightDuration < juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
+
+		return decemberSolsticeSun.daylightDuration < juneSolsticeSun.daylightDuration ? decemberSolsticeSun : juneSolsticeSun
 	}
 }
 

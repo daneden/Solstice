@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 import CoreLocation
-import Solar
+import SunKit
 import SwiftUI
 import CoreData
 #if os(iOS) && !WIDGET_EXTENSION
@@ -86,11 +86,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		for i in 0...63 {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
 
-			guard let solar = Solar(for: date, coordinate: location.coordinate) else {
-				continue
-			}
+			let sun = Sun(for: date, coordinate: location.coordinate, timeZone: timeZone)
 
-			let notificationDate = getNextNotificationDate(after: date, with: solar)
+			let notificationDate = getNextNotificationDate(after: date, with: sun)
 
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
 				return
@@ -150,14 +148,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	}
 	#endif
 
-	static func getNextNotificationDate(after date: Date, with solar: Solar? = nil) -> Date {
+	static func getNextNotificationDate(after date: Date, with sun: Sun? = nil) -> Date {
 		if scheduleType == .specificTime {
 			let hour = notificationDateComponents.hour ?? 0
 			let minute = notificationDateComponents.minute ?? 0
 			return calendar.date(bySettingHour: hour, minute: minute, second: 0, of: date) ?? date
 		} else {
-			guard let solar else { return date }
-			let relativeDate = scheduleType == .sunset ? solar.safeSunset : solar.safeSunrise
+			guard let sun else { return date }
+			let relativeDate = scheduleType == .sunset ? sun.safeSunset : sun.safeSunrise
 			let offsetDate = relativeDate.addingTimeInterval(userPreferenceNotificationOffset)
 			let scheduleComponents = calendar.dateComponents([.hour, .minute], from: offsetDate)
 			return calendar.date(
@@ -180,9 +178,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	///   don't alter notification previews.
 	/// - Returns: A `NotificationContent` object appropriate for the context
 	static func buildNotificationContent(for date: Date, location: CLLocation, timeZone: TimeZone = .autoupdatingCurrent, in context: Context = .notification) -> NotificationContent? {
-		guard let solar = Solar(for: date, coordinate: location.coordinate) else { return nil }
+		let sun = Sun(for: date, coordinate: location.coordinate, timeZone: timeZone)
 
-		let difference = solar.daylightDuration - (solar.yesterday?.daylightDuration ?? 0)
+		let difference = sun.daylightDuration - sun.yesterday.daylightDuration
 
 		// Check if we should suppress the notification entirely (SAD preference)
 		if shouldSuppressNotification(difference: difference, context: context) {
@@ -190,7 +188,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		}
 
 		let title = buildNotificationTitle(for: date)
-		let body = buildNotificationBody(solar: solar, timeZone: timeZone, difference: difference, date: date, context: context)
+		let body = buildNotificationBody(sun: sun, timeZone: timeZone, difference: difference, date: date, context: context)
 
 		return (title: title, body: body)
 	}
@@ -259,13 +257,13 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	// MARK: Body Generation
 
 	/// Builds the notification body with all enabled content fragments
-	private static func buildNotificationBody(solar: Solar, timeZone: TimeZone, difference: TimeInterval, date: Date, context: Context) -> String {
-		let duration = solar.daylightDuration.localizedString
+	private static func buildNotificationBody(sun: Sun, timeZone: TimeZone, difference: TimeInterval, date: Date, context: Context) -> String {
+		let duration = sun.daylightDuration.localizedString
 		let differenceString = difference.localizedString
 
 		@StringBuilder var body: String {
 			if includeSunTimes {
-				sunTimesFragment(solar: solar, timeZone: timeZone)
+				sunTimesFragment(sun: sun, timeZone: timeZone)
 			}
 
 			if includeDaylightDuration {
@@ -293,9 +291,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
 	// MARK: Body Fragments
 
-	private static func sunTimesFragment(solar: Solar, timeZone: TimeZone) -> String {
-		let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
-		let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+	private static func sunTimesFragment(sun: Sun, timeZone: TimeZone) -> String {
+		let sunriseTime = sun.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+		let sunsetTime = sun.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
 		let format = NSLocalizedString(
 			"notif-sunrise-sunset",
 			value: "The sun rises at %1$@ and sets at %2$@.",

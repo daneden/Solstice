@@ -7,13 +7,11 @@
 
 import Foundation
 import SwiftUI
-import Solar
+import SunKit
 import CoreLocation
 
-extension Solar: @unchecked @retroactive Sendable {}
-
 struct SkyGradient: View, ShapeStyle {
-	var solar: Solar? = Solar(coordinate: .proxiedToTimeZone)
+	var sun: Sun? = Sun(coordinate: .proxiedToTimeZone)
 	
 	static let dawn = [
 		Color(red: 0.388, green: 0.435, blue: 0.643),
@@ -51,7 +49,7 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var colors: [[Color]] {
-		let duration = solar?.daylightDuration ?? 43200
+		let duration = sun?.daylightDuration ?? 43200
 		let daylightHours = Int((duration / (60 * 60)) / 2)
 		let amColors = [Self.night, Self.dawn, Self.morning]
 		let pmColors = [Self.afternoon, Self.evening, Self.night]
@@ -68,11 +66,11 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var stops: [Color] {
-		let sunrise = solar?.safeSunrise ?? .now.startOfDay
-		let sunset = solar?.safeSunset ?? .now.endOfDay
+		let sunrise = sun?.safeSunrise ?? .now.startOfDay
+		let sunset = sun?.safeSunset ?? .now.endOfDay
 		let twilightDuration: TimeInterval = 60 * 180
-		let duration = sunrise.addingTimeInterval(-twilightDuration).distance(to: sunset.addingTimeInterval(twilightDuration))
-		let progress = sunrise.addingTimeInterval(-twilightDuration / 1.5).distance(to: solar?.date ?? .now) / duration
+		let duration = sunset.addingTimeInterval(twilightDuration).timeIntervalSince(sunrise.addingTimeInterval(-twilightDuration))
+		let progress = (sun?.date ?? .now).timeIntervalSince(sunrise.addingTimeInterval(-twilightDuration / 1.5)) / duration
 		let progressThroughStops = progress * Double(colors.count)
 		let index = min(max(0, Int(floor(progressThroughStops))), colors.count - 1)
 		let nextIndex = max(0, min(colors.count - 1, Int(ceil(progressThroughStops))))
@@ -91,41 +89,41 @@ struct SkyGradient: View, ShapeStyle {
 	}
 }
 
-extension Solar {
+extension Sun {
 	var view: some View {
-		SkyGradient(solar: self)
+		SkyGradient(sun: self)
 	}
 }
 
 fileprivate struct PreviewContainer: View {
 	@State var date = Date.now
-	
-	var solars: [Solar] {
-		var result = [Solar?]()
-		
+
+	var suns: [Sun] {
+		var result = [Sun]()
+
 		for i in stride(from: 0, to: 180, by: 15) {
 			let location = CLLocationCoordinate2D(latitude: Double(i) - 90, longitude: 0)
-			result.append(Solar(for: date, coordinate: location))
+			result.append(Sun(for: date, coordinate: location))
 		}
-		
-		return result.compactMap { $0 }
+
+		return result
 	}
-	
+
 	var body: some View {
 		TimelineView(.animation) { t in
 			VStack(spacing: 0) {
-				ForEach(solars, id: \.coordinate.latitude) { solar in
+				ForEach(suns, id: \.coordinate.latitude) { sun in
 					ZStack {
-						SkyGradient(solar: solar)
-						
+						SkyGradient(sun: sun)
+
 						HStack {
-							Text(solar.date, style: .time)
+							Text(sun.date, style: .time)
 								.font(.largeTitle)
-							
+
 							Spacer()
 							VStack {
-								Text(solar.safeSunrise...solar.safeSunset)
-								Text(solar.daylightDuration.localizedString)
+								Text(sun.safeSunrise...sun.safeSunset)
+								Text(sun.daylightDuration.localizedString)
 							}
 						}
 						.padding()

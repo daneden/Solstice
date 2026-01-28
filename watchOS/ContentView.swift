@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import TimeMachine
 
 struct ContentView: View {
@@ -48,18 +48,18 @@ struct ContentView: View {
 						LocationListRow(location: currentLocation)
 							.tag(currentLocation.id)
 							.listRowBackground(
-								Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
+								Sun(for: timeMachine.date, coordinate: currentLocation.coordinate)
 									.view
 									.clipShape(.rect(cornerRadius: 20, style: .continuous))
 							)
 					}
-					
+
 					ForEach(sortedItems) { item in
 						if let tag = item.uuid?.uuidString {
 							LocationListRow(location: item)
 								.tag(tag)
 								.listRowBackground(
-									Solar(for: timeMachine.date, coordinate: item.coordinate)?
+									Sun(for: timeMachine.date, coordinate: item.coordinate)
 										.view
 										.clipShape(.rect(cornerRadius: 20, style: .continuous))
 								)
@@ -76,8 +76,8 @@ struct ContentView: View {
 			case currentLocation.id:
 				DetailView(location: currentLocation)
 					.containerBackground(for: .navigation) {
-						if let solar = Solar(for: timeMachine.date, coordinate: currentLocation.coordinate) {
-							solar.view
+						if let sun = Sun(for: timeMachine.date, coordinate: currentLocation.coordinate) {
+							sun.view
 						}
 					}
 					.timeTravelToolbar()
@@ -85,8 +85,8 @@ struct ContentView: View {
 				if let item = items.first(where: { $0.uuid?.uuidString == id }) {
 					DetailView(location: item)
 						.containerBackground(for: .navigation) {
-							if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
-								solar.view
+							if let sun = Sun(for: timeMachine.date, coordinate: item.coordinate) {
+								sun.view
 							}
 						}
 						.timeTravelToolbar()

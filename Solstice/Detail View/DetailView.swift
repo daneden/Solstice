@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 
@@ -29,8 +29,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	var sun: Sun? {
+		Sun(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	var navBarTitleText: Text {
@@ -43,8 +43,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	var body: some View {
 		Form {
-			if let solar {
-				DailyOverview(solar: solar, location: location)
+			if let sun {
+				DailyOverview(sun: sun, location: location)
 			}
 			
 			AnnualOverview(location: location)
@@ -71,9 +71,9 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		#if os(watchOS)
 		.modify {
-			if let solar {
+			if let sun {
 				$0.containerBackground(
-					SkyGradient(solar: solar),
+					SkyGradient(sun: sun),
 					for: .navigation
 				)
 			} else {
@@ -82,8 +82,8 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		#endif
 		.sheet(isPresented: $showShareSheet) {
-			if let solar {
-				ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+			if let sun {
+				ShareSolarChartView(sun: sun, location: location, chartAppearance: chartAppearance)
 			}
 		}
 	}

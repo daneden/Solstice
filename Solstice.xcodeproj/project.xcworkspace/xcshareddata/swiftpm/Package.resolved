@@ -1,21 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "solar",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ceeK/Solar",
-      "state" : {
-        "revision" : "c2b96f2d5fb7f835b91cefac5e83101f54643901",
-        "version" : "3.0.1"
-      }
-    },
-    {
       "identity" : "suite",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/Suite",
       "state" : {
         "branch" : "main",
         "revision" : "e9aea55d107c4185103243a1f389d96e12e239e1"
+      }
+    },
+    {
+      "identity" : "sunkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SunKit-Swift/SunKit",
+      "state" : {
+        "revision" : "086d345cd9886b037ae0af0db49fcaf849acb887",
+        "version" : "2.8.1"
       }
     },
     {

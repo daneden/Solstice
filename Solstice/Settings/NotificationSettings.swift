@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import CoreLocation
 
 fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool>)

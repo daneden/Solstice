@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import TimeMachine
 
 struct SidebarListView: View {
@@ -61,9 +61,8 @@ struct SidebarListView: View {
 							}
 						} preview: {
 							Form {
-								if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
-									DailyOverview(solar: solar, location: item)
-								}
+								let sun = Sun(for: timeMachine.date, coordinate: item.coordinate)
+								DailyOverview(sun: sun, location: item)
 							}
 							.withTimeMachine(.solsticeTimeMachine)
 						}
@@ -132,16 +131,14 @@ extension SidebarListView {
 					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
 				}
 			case .daylightDuration:
-				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate),
-							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate) else {
-					return true
-				}
-				
+				let lhsSun = Sun(for: timeMachine.date, coordinate: lhs.coordinate)
+				let rhsSun = Sun(for: timeMachine.date, coordinate: rhs.coordinate)
+
 				switch itemSortOrder {
 				case .forward:
-					return lhsSolar.daylightDuration < rhsSolar.daylightDuration
+					return lhsSun.daylightDuration < rhsSun.daylightDuration
 				case .reverse:
-					return lhsSolar.daylightDuration > rhsSolar.daylightDuration
+					return lhsSun.daylightDuration > rhsSun.daylightDuration
 				}
 			}
 		}

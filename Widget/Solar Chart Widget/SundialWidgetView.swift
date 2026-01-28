@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WidgetKit
-import Solar
+import SunKit
 
 struct SundialWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
@@ -42,7 +42,7 @@ struct SundialWidgetView: SolsticeWidgetView {
 					CircularSolarChart(date: entry.date, location: location)
 				}
 				.containerBackground(for: .widget) {
-					solar?.view.opacity(0.15)
+					sun?.view.opacity(0.15)
 				}
 			} else if shouldShowPlaceholder {
 				SundialWidgetView(entry: .placeholder)

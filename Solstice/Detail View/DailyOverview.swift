@@ -6,17 +6,17 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 
 struct DailyOverview<Location: AnyLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 
-	var solar: Solar
+	var sun: Sun
 	var location: Location
 	
-	@State private var gradientSolar: Solar?
+	@State private var gradientSun: Sun?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
@@ -24,16 +24,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solarDateIsInToday: Bool {
 		var calendar = Calendar.autoupdatingCurrent
 		calendar.timeZone = location.timeZone
-		return calendar.isDate(solar.date, inSameDayAs: Date())
+		return calendar.isDate(sun.date, inSameDayAs: Date())
 	}
 	
-	var differenceFromPreviousSolstice: TimeInterval? {
-		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate),
-					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate) else {
-			return nil
-		}
-		
-		return previousSolsticeSolar.daylightDuration - solar.daylightDuration
+	var differenceFromPreviousSolstice: TimeInterval {
+		let currentSun = Sun(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+		let previousSolsticeSun = Sun(for: currentSun.date.previousSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
+
+		return previousSolsticeSun.daylightDuration - currentSun.daylightDuration
 	}
 	
 	var nextGreaterThanPrevious: Bool {
@@ -88,7 +86,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
 			#if !os(visionOS)
 			.listRowBackground(
-				solar.view
+				sun.view
 					.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
 					.mask {
 						LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
@@ -104,7 +102,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 			Group {
 				Label {
 					AdaptiveStack {
-						Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
+						Text(Duration.seconds(sun.daylightDuration).formatted(.units(maximumUnitCount: 2)))
 					} label: {
 						Text("Total daylight")
 					}
@@ -112,10 +110,10 @@ struct DailyOverview<Location: AnyLocation>: View {
 					Image(systemName: "hourglass")
 				}
 				
-				if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
+				if solarDateIsInToday && (sun.safeSunrise...sun.safeSunset).contains(sun.date) {
 					Label {
 						AdaptiveStack {
-							Text(timerInterval: solar.safeSunrise...solar.safeSunset)
+							Text(timerInterval: sun.safeSunrise...sun.safeSunset)
 								.monospacedDigit()
 						} label: {
 							Text("Remaining daylight")
@@ -127,39 +125,27 @@ struct DailyOverview<Location: AnyLocation>: View {
 				
 				Label {
 					AdaptiveStack {
-						if let sunrise = solar.sunrise {
-							Text(sunrise, style: .time)
-						} else {
-							Text("—")
-						}
+						Text(sun.sunrise, style: .time)
 					} label: {
 						Text("Sunrise")
 					}
 				} icon: {
 					Image(systemName: "sunrise")
 				}
-				
+
 				Label {
 					AdaptiveStack {
-						if let solarNoon = solar.solarNoon {
-							Text(solarNoon, style: .time)
-						} else {
-							Text("—")
-						}
+						Text(sun.solarNoon, style: .time)
 					} label: {
 						Text("Solar noon")
 					}
 				} icon: {
 					Image(systemName: "sun.max")
 				}
-				
+
 				Label {
 					AdaptiveStack {
-						if let sunset = solar.sunset {
-							Text(sunset, style: .time)
-						} else {
-							Text("—")
-						}
+						Text(sun.sunset, style: .time)
 					} label: {
 						Text("Sunset")
 					}
@@ -175,18 +161,16 @@ struct DailyOverview<Location: AnyLocation>: View {
 				HStack {
 					Text("Local time")
 					Spacer()
-					Text("\(solar.date, style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
+					Text("\(sun.date, style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
 				}
 				.environment(\.timeZone, location.timeZone)
 			}
 		} footer: {
-			if let differenceFromPreviousSolstice {
-				Label {
-					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
-				} icon: {
-					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
-						.contentTransition(.symbolEffect)
-				}
+			Label {
+				Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
+			} icon: {
+				Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
+					.contentTransition(.symbolEffect)
 			}
 		}
 	}
@@ -196,7 +180,7 @@ extension DailyOverview {
 	@ViewBuilder
 	var daylightChartView: some View {
 		DaylightChart(
-			solar: solar,
+			sun: sun,
 			timeZone: location.timeZone,
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize
@@ -208,11 +192,11 @@ extension DailyOverview {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					SkyGradient(solar: gradientSolar ?? solar)
+					SkyGradient(sun: gradientSun ?? sun)
 				}
 		}
 		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
-			self.gradientSolar = Solar(for: date, coordinate: solar.coordinate)
+			self.gradientSun = Sun(for: date, coordinate: sun.coordinate)
 		}
 		#endif
 		#if os(macOS)
@@ -223,7 +207,7 @@ extension DailyOverview {
 
 #Preview {
 	Form {
-		DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
+		DailyOverview(sun: Sun(coordinate: TemporaryLocation.placeholderLondon.coordinate), location: TemporaryLocation.placeholderLondon)
 	}
 	.withTimeMachine(.solsticeTimeMachine)
 }

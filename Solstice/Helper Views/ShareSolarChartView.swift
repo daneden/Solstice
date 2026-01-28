@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 
 struct ShareSolarChartView<Location: AnyLocation>: View {
 	@Environment(\.dismiss) var dismiss
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
-	
-	var solar: Solar
+
+	var sun: Sun
 	var location: Location
 	
 	@State var chartAppearance: DaylightChart.Appearance = .graphical
@@ -30,7 +30,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	@ViewBuilder
 	var daylightChartView: some View {
 		DaylightChart(
-			solar: solar,
+			sun: sun,
 			timeZone: location.timeZone,
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize
@@ -38,13 +38,13 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					SkyGradient(solar: solar)
+					SkyGradient(sun: sun)
 				}
 		}
 	}
-	
+
 	var deps: [AnyHashable] {
-		[showLocationName, solar.date, location, chartAppearance]
+		[showLocationName, sun.date, location, chartAppearance]
 	}
 	
 	private let igStoriesUrl: URL? = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice")
@@ -100,7 +100,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					Section {
 						Group {
 #if os(iOS)
-							let solarGradient = SkyGradient(solar: solar)
+							let solarGradient = SkyGradient(sun: sun)
 							if let igStoriesUrl,
 								 let imageData,
 								 let topColor = solarGradient.stops.first?.toHex(),
@@ -173,26 +173,26 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 							}
 							.font(.headline)
 							
-							let duration = solar.daylightDuration.localizedString
+							let duration = sun.daylightDuration.localizedString
 							Text("\(duration) of daylight")
 								.foregroundStyle(.secondary)
 						}
-						
+
 						Spacer()
-						
+
 						VStack(alignment: .trailing) {
-							Label("\(solar.safeSunrise, style: .time)", systemImage: "sunrise")
-							Label("\(solar.safeSunset, style: .time)", systemImage: "sunset")
+							Label("\(sun.safeSunrise, style: .time)", systemImage: "sunrise")
+							Label("\(sun.safeSunset, style: .time)", systemImage: "sunset")
 						}
 						.foregroundStyle(.secondary)
 					}
 				} else {
 					VStack(alignment: .leading) {
-						let duration = solar.daylightDuration.localizedString
+						let duration = sun.daylightDuration.localizedString
 						Text("\(duration) of daylight")
 							.font(.headline)
-						
-						Label("\(solar.safeSunrise...solar.safeSunset)", systemImage: "sun.max")
+
+						Label("\(sun.safeSunrise...sun.safeSunset)", systemImage: "sun.max")
 							.foregroundStyle(.secondary)
 					}
 				}
@@ -248,6 +248,6 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 }
 
 #Preview {
-	ShareSolarChartView(solar: .init(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
+	ShareSolarChartView(sun: .init(coordinate: TemporaryLocation.placeholderLondon.coordinate), location: TemporaryLocation.placeholderLondon)
 		.withTimeMachine(.solsticeTimeMachine)
 }

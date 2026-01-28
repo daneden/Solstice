@@ -6,22 +6,22 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 
 struct LocationListRow<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine: TimeMachine
 	var location: Location
-	
+
 	@FocusState private var focused: Bool
-	
+
 	@State private var showRemainingDaylight = false
-	
+
 	var headingFontWeight: Font.Weight = .medium
-	
-	private var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+
+	private var sun: Sun? {
+		Sun(for: timeMachine.date, coordinate: location.coordinate)
 	}
 	
 	private var isCurrentLocation: Bool {
@@ -38,13 +38,13 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	
 	@ViewBuilder
 	var trailingContent: some View {
-		if let solar {
+		if let sun {
 			VStack(alignment: .trailing) {
-				Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
+				Text(Duration.seconds(sun.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
 				#if os(iOS)
 					.font(.headline.weight(headingFontWeight))
 				#endif
-				Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
+				Text(sun.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...sun.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 					.foregroundStyle(.secondary)
 			}
 			.contentTransition(.identity)
@@ -66,12 +66,12 @@ struct LocationListRow<Location: ObservableLocation>: View {
 				}
 			}
 			
-			if let solar {
+			if let sun {
 				Group {
-					Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
+					Text(Duration.seconds(sun.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
 						.font(.headline)
 						.contentTransition(.numericText())
-					Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
+					Text(sun.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...sun.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
 						.font(.footnote)
 						.foregroundStyle(.secondary)
 						.contentTransition(.numericText())
