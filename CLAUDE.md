@@ -19,7 +19,22 @@ xcodebuild -scheme Solstice -destination 'platform=macOS' build
 xcodebuild -scheme "Solstice watchOS Watch App" -destination 'platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)' build
 ```
 
-There are no unit tests in this project.
+## Test Commands
+
+```bash
+# Run unit tests (Swift Testing framework) on iOS Simulator
+xcodebuild test -scheme Solstice -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:SolsticeTests
+
+# Run UI tests on iOS Simulator
+xcodebuild test -scheme Solstice -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:SolsticeUITests
+
+# Run all tests
+xcodebuild test -scheme Solstice -destination 'platform=iOS Simulator,name=iPhone 16'
+```
+
+### Test Targets
+- **SolsticeTests**: Unit tests using Swift Testing (`@Test` macro). Covers `SolsticeCalculator` solar event date calculations.
+- **SolsticeUITests**: UI tests using XCUITest. Includes screenshot capture for accent color visual regression detection.
 
 ## Architecture
 
