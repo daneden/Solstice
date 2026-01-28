@@ -76,18 +76,14 @@ struct ContentView: View {
 			case currentLocation.id:
 				DetailView(location: currentLocation)
 					.containerBackground(for: .navigation) {
-						if let sun = Sun(for: timeMachine.date, coordinate: currentLocation.coordinate) {
-							sun.view
-						}
+						Sun(for: timeMachine.date, coordinate: currentLocation.coordinate).view
 					}
 					.timeTravelToolbar()
 			case .some(let id):
 				if let item = items.first(where: { $0.uuid?.uuidString == id }) {
 					DetailView(location: item)
 						.containerBackground(for: .navigation) {
-							if let sun = Sun(for: timeMachine.date, coordinate: item.coordinate) {
-								sun.view
-							}
+							Sun(for: timeMachine.date, coordinate: item.coordinate).view
 						}
 						.timeTravelToolbar()
 				} else {

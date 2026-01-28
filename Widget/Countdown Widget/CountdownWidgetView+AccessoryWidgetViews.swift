@@ -30,11 +30,14 @@ extension CountdownWidgetView {
 		var previousEvent: Sun.Event
 		var nextEvent: Sun.Event
 		
+		var durationToNextEvent: TimeInterval {
+			nextEvent.date.timeIntervalSince(entryDate)
+		}
+		
 		@ViewBuilder
 		var currentValueLabel: some View {
-			let duration = entryDate.distance(to: nextEvent.date)
-			if duration >= 60 * 60 {
-				Text(Duration.seconds(duration).formatted(.units(width: .narrow, maximumUnitCount: 1)))
+			if durationToNextEvent >= 60 * 60 {
+				Text(Duration.seconds(durationToNextEvent).formatted(.units(width: .narrow, maximumUnitCount: 1)))
 			} else {
 				Text(nextEvent.date, style: .timer)
 					.monospacedDigit()
