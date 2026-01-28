@@ -12,7 +12,6 @@ import TimeMachine
 
 @main
 struct SolsticeApp: App {
-	@Environment(\.scenePhase) var phase
 	@State private var currentLocation = CurrentLocation()
 	@State private var locationSearchService = LocationSearchService()
 
@@ -22,9 +21,7 @@ struct SolsticeApp: App {
 		WindowGroup {
 			ContentView()
 				.withAppOnboarding()
-				.environment(currentLocation)
 				.withTimeMachine(.solsticeTimeMachine)
-				.environment(locationSearchService)
 				.task {
 					for await result in Transaction.updates {
 						switch result {
@@ -36,19 +33,9 @@ struct SolsticeApp: App {
 						}
 					}
 				}
-				.task(id: phase) {
-					switch phase {
-					#if !os(watchOS)
-					case .background:
-						await NotificationManager.scheduleNotifications(location: currentLocation.location)
-					#endif
-					case .active:
-						currentLocation.requestLocation()
-					default:
-						return
-					}
-				}
 				.migrateAppFeatures()
+				.environment(currentLocation)
+				.environment(locationSearchService)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 		}
 		#if os(iOS)

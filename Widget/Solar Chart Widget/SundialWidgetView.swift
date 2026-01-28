@@ -9,17 +9,8 @@ import SwiftUI
 import WidgetKit
 import Solar
 
-struct SundialWidgetView: View {
+struct SundialWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
-	
-	var location: SolsticeWidgetLocation? {
-		entry.location
-	}
-	
-	var solar: Solar? {
-		guard let location else { return nil }
-		return Solar(for: entry.date, coordinate: location.coordinate)
-	}
 	
 	var body: some View {
 		Group {
@@ -35,7 +26,7 @@ struct SundialWidgetView: View {
 								if entry.location?.isRealLocation == true {
 									Image(systemName: "location")
 								}
-								
+
 								Text(title)
 									.multilineTextAlignment(.trailing)
 									.allowsTightening(true)
@@ -52,10 +43,13 @@ struct SundialWidgetView: View {
 				}
 				.containerBackground(for: .widget) {
 					solar?.view.opacity(0.15)
-					}
+				}
+			} else if shouldShowPlaceholder {
+				SundialWidgetView(entry: .placeholder)
+					.redacted(reason: .placeholder)
 			} else {
 				WidgetMissingLocationView()
-				.containerBackground(.background, for: .widget)
+					.containerBackground(.background, for: .widget)
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)

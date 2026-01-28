@@ -90,6 +90,18 @@ struct ContentView: View {
 			}
 			#endif
 			.deduplicateLocationRecords()
+			.task(id: scenePhase) {
+				switch scenePhase {
+				#if !os(watchOS)
+				case .background:
+					await NotificationManager.scheduleNotifications(location: currentLocation.location)
+				#endif
+				case .active:
+					currentLocation.requestLocation()
+				default:
+					return
+				}
+			}
 	}
 	
 	private var placeholderView: some View {

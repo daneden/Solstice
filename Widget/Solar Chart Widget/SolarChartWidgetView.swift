@@ -9,17 +9,8 @@ import SwiftUI
 import WidgetKit
 import Solar
 
-struct SolarChartWidgetView: View {
+struct SolarChartWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
-	
-	var solar: Solar? {
-		guard let location else { return nil }
-		return Solar(for: entry.date, coordinate: location.coordinate)
-	}
-	
-	var location: SolsticeWidgetLocation? {
-		entry.location
-	}
 	
 	var body: some View {
 		Group {
@@ -33,9 +24,9 @@ struct SolarChartWidgetView: View {
 							Image(systemName: "sunrise")
 						}
 						.labelStyle(CompactLabelStyle())
-						
+
 						Spacer()
-						
+
 						Label {
 							Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 						} icon: {
@@ -48,7 +39,7 @@ struct SolarChartWidgetView: View {
 					.font(.caption)
 					.widgetAccentable()
 					.contentTransition(.numericText())
-					
+
 					DaylightChart(
 						solar: solar,
 						timeZone: location.timeZone,
@@ -58,6 +49,9 @@ struct SolarChartWidgetView: View {
 						yScale: -1.0...1.5
 					)
 				}
+			} else if shouldShowPlaceholder {
+				SolarChartWidgetView(entry: .placeholder)
+					.redacted(reason: .placeholder)
 			} else {
 				WidgetMissingLocationView()
 			}

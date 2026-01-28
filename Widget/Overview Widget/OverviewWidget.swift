@@ -21,7 +21,7 @@ struct OverviewWidget: Widget {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
 			intent: ConfigurationIntent.self,
-			provider: OverviewWidgetTimelineProvider()
+			provider: SolsticeTimelineProvider(widgetKind: .OverviewWidget, recommendationDescription: "Overview")
 		) { timelineEntry in
 			OverviewWidgetView(entry: timelineEntry)
 				.widgetURL(timelineEntry.location?.url)
@@ -33,9 +33,7 @@ struct OverviewWidget: Widget {
 }
 
 #if os(iOS)
-#Preview(as: .systemMedium) {
-	OverviewWidget()
-} timeline: {
-	SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation)
-}
+#Preview(as: .systemMedium,
+				 widget: { OverviewWidget() },
+				 timeline: SolsticeWidgetTimelineEntry.previewTimeline )
 #endif

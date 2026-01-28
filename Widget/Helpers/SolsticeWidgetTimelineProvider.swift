@@ -9,99 +9,33 @@ import WidgetKit
 import CoreLocation
 import Solar
 
-fileprivate let appGroupIdentifier = "group.me.daneden.Solstice"
-
-fileprivate actor LocationManager {
-	static let shared = LocationManager()
-
-	private var cachedLocation: CLLocation?
-	private var cacheTimestamp: Date?
-	private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
-
-	/// Returns cached location if valid, otherwise fetches a new one
-	func getLocation() async -> CLLocation? {
-		// First, check the in-memory cache
-		if let cachedLocation,
-		   let cacheTimestamp,
-		   Date().timeIntervalSince(cacheTimestamp) < cacheValidityDuration {
-			return cachedLocation
-		}
-
-		// Second, check the shared App Group cache from the main app
-		if let sharedLocation = getSharedAppGroupLocation() {
-			cachedLocation = sharedLocation
-			cacheTimestamp = Date()
-			return sharedLocation
-		}
-
-		// Finally, fetch fresh location with timeout
-		do {
-			let location = try await fetchLocationWithTimeout(seconds: 10)
-			cachedLocation = location
-			cacheTimestamp = Date()
-			return location
-		} catch {
-			// Fall back to cached location even if expired, or CLLocationManager's last known location
-			return cachedLocation ?? CLLocationManager().location
-		}
-	}
-
-	/// Retrieves cached location from the shared App Group UserDefaults
-	private func getSharedAppGroupLocation() -> CLLocation? {
-		guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else { return nil }
-
-		let latitude = defaults.double(forKey: "cachedLatitude")
-		let longitude = defaults.double(forKey: "cachedLongitude")
-		let timestamp = defaults.double(forKey: "cachedLocationTimestamp")
-
-		// Validate the cached data exists and is recent (within cache validity duration)
-		guard latitude != 0, longitude != 0, timestamp > 0 else { return nil }
-
-		let cacheAge = Date().timeIntervalSince1970 - timestamp
-		guard cacheAge < cacheValidityDuration else { return nil }
-
-		return CLLocation(latitude: latitude, longitude: longitude)
-	}
-
-	private func fetchLocationWithTimeout(seconds: TimeInterval) async throws -> CLLocation {
-		try await withThrowingTaskGroup(of: CLLocation.self) { group in
-			group.addTask {
-				for try await update in CLLocationUpdate.liveUpdates() {
-					if let location = update.location {
-						return location
-					}
-				}
-				throw CLError(.locationUnknown)
-			}
-
-			group.addTask {
-				try await Task.sleep(for: .seconds(seconds))
-				throw CLError(.locationUnknown)
-			}
-
-			let result = try await group.next()!
-			group.cancelAll()
-			return result
-		}
-	}
-}
-
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
 	var location: SolsticeWidgetLocation?
 	var relevance: TimelineEntryRelevance?
+	var locationError: LocationError?
 }
 
-protocol SolsticeWidgetTimelineProvider: IntentTimelineProvider where Entry == SolsticeWidgetTimelineEntry, Intent == ConfigurationIntent {
-	var geocoder: CLGeocoder { get }
-	static var widgetKind: SolsticeWidgetKind { get }
+enum LocationError: Error {
+	case notAuthorized, locationUpdateFailed, reverseGeocodingFailed
 }
 
-extension SolsticeWidgetTimelineProvider {
-	func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation {
+struct SolsticeTimelineProvider: IntentTimelineProvider {
+	typealias Entry = SolsticeWidgetTimelineEntry
+	typealias Intent = ConfigurationIntent
+
+	let widgetKind: SolsticeWidgetKind
+	let recommendationDescription: String
+	private let geocoder = CLGeocoder()
+
+	func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
+		[IntentRecommendation(intent: ConfigurationIntent(), description: recommendationDescription)]
+	}
+
+	private func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation? {
 		guard let placemark,
 					let location = placemark.location else {
-			return .defaultLocation
+			return isRealLocation ? nil : .defaultLocation
 		}
 
 		return SolsticeWidgetLocation(title: placemark.locality,
@@ -113,7 +47,7 @@ extension SolsticeWidgetTimelineProvider {
 	}
 
 	/// Fetches location and reverse geocodes it to a placemark
-	private func fetchWidgetLocation(for configuration: ConfigurationIntent) async -> (placemark: CLPlacemark?, isRealLocation: Bool) {
+	private func fetchWidgetLocation(for configuration: ConfigurationIntent) async -> (placemark: CLPlacemark?, isRealLocation: Bool, error: LocationError?) {
 		let isRealLocation = (configuration.locationType == .currentLocation) || (configuration.locationType == .unknown)
 
 		let location: CLLocation?
@@ -121,112 +55,156 @@ extension SolsticeWidgetTimelineProvider {
 		case .customLocation:
 			location = configuration.location?.location
 		default:
-			location = await LocationManager.shared.getLocation()
+			guard SolsticeWidgetLocationManager.isAuthorized else {
+				return (nil, isRealLocation, .notAuthorized)
+			}
+			
+			location = await SolsticeWidgetLocationManager.shared.getLocation()
 		}
 
 		guard let location else {
-			return (nil, isRealLocation)
+			return (nil, isRealLocation, .locationUpdateFailed)
 		}
 
-		let placemark = try? await geocoder.reverseGeocodeLocation(location).first
-		return (placemark, isRealLocation)
+		guard let placemark = try? await geocoder.reverseGeocodeLocation(location).first else {
+			return (nil, isRealLocation, .reverseGeocodingFailed)
+		}
+		
+		return (placemark, isRealLocation, nil)
 	}
 
 	func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SolsticeWidgetTimelineEntry) -> Void) {
 		Task {
-			let (placemark, isRealLocation) = await fetchWidgetLocation(for: configuration)
+			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: widgetLocation)
+			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: widgetLocation, locationError: error)
 			completion(entry)
 		}
 	}
 
 	func getTimeline(for configuration: Intent, in context: TimelineProviderContext, completion: @escaping (Timeline<Entry>) -> Void) {
 		Task {
-			let (placemark, isRealLocation) = await fetchWidgetLocation(for: configuration)
+			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-			
+
 			let currentDate = Date()
-			var entries: [Entry] = []
-			
-			guard let solar = Solar(for: currentDate, coordinate: widgetLocation.coordinate) else {
-				completion(Timeline(entries: [SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation)], policy: .after(currentDate.endOfDay)))
-				return
-			}
-			
-			// Build key times as before
-			var keyTimes = [
-				currentDate,
-				solar.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
-				solar.safeSunrise,
-				solar.safeSunrise.addingTimeInterval(30 * 60),   // 30 min after sunrise
-				solar.safeSunset.addingTimeInterval(-30 * 60),   // 30 min before sunset
-				solar.safeSunset,
-				solar.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
-				currentDate.endOfDay
-			]
-			
-			if let solarNoon = solar.solarNoon {
-				keyTimes.append(solarNoon)
-			}
-			
-			keyTimes = keyTimes.filter { $0 >= currentDate }
-			
-			// Generate hourly times from next hour boundary through end of day
-			var hourlyTimes: [Date] = []
 			let calendar = Calendar.current
-			let nextHourStart: Date = {
-				let comps = calendar.dateComponents([.year, .month, .day, .hour], from: currentDate)
-				let hourStart = calendar.date(from: comps) ?? currentDate
-				if hourStart < currentDate { return calendar.date(byAdding: .hour, value: 1, to: hourStart) ?? currentDate }
-				return hourStart
-			}()
-			
-			var iter = nextHourStart
-			let end = currentDate.endOfDay
-			while iter <= end {
-				hourlyTimes.append(iter)
-				iter = iter.addingTimeInterval(60 * 60)
+
+			guard let coordinate = widgetLocation?.coordinate,
+				  let todaySolar = Solar(for: currentDate, coordinate: coordinate) else {
+				return completion(
+					Timeline(
+						entries: [
+							SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)
+						],
+						policy: .after(.now.addingTimeInterval(60 * 15))
+					)
+				)
 			}
-			
+
+			// Generate entries for today + next 2 days (3 days total)
+			let daysToGenerate = 3
+			var allKeyTimes: [Date] = [currentDate]
+			var allHourlyTimes: [Date] = []
+			var solarByDay: [Date: Solar] = [:]
+
+			let today = calendar.startOfDay(for: currentDate)
+			for dayOffset in 0..<daysToGenerate {
+				guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: today),
+					  let daySolar = Solar(for: dayDate, coordinate: coordinate) else {
+					continue
+				}
+
+				let dayStart = calendar.startOfDay(for: dayDate)
+				solarByDay[dayStart] = daySolar
+
+				// Key times for this day
+				var dayKeyTimes = [
+					daySolar.safeSunrise.addingTimeInterval(-30 * 60),  // 30 min before sunrise
+					daySolar.safeSunrise,
+					daySolar.safeSunrise.addingTimeInterval(30 * 60),   // 30 min after sunrise
+					daySolar.safeSunset.addingTimeInterval(-30 * 60),   // 30 min before sunset
+					daySolar.safeSunset,
+					daySolar.safeSunset.addingTimeInterval(30 * 60),    // 30 min after sunset
+					dayDate.endOfDay
+				]
+
+				if let solarNoon = daySolar.solarNoon {
+					dayKeyTimes.append(solarNoon)
+				}
+
+				allKeyTimes.append(contentsOf: dayKeyTimes)
+
+				// Generate hourly times for this day
+				let dayEndOfDay = dayDate.endOfDay
+				var hourIter: Date
+
+				if dayOffset == 0 {
+					// For today, start from next hour boundary
+					let comps = calendar.dateComponents([.year, .month, .day, .hour], from: currentDate)
+					let hourStart = calendar.date(from: comps) ?? currentDate
+					hourIter = hourStart < currentDate
+						? (calendar.date(byAdding: .hour, value: 1, to: hourStart) ?? currentDate)
+						: hourStart
+				} else {
+					// For future days, start from midnight
+					hourIter = dayStart
+				}
+
+				while hourIter <= dayEndOfDay {
+					allHourlyTimes.append(hourIter)
+					hourIter = hourIter.addingTimeInterval(60 * 60)
+				}
+			}
+
+			// Filter to only future times
+			allKeyTimes = allKeyTimes.filter { $0 >= currentDate }
+			allHourlyTimes = allHourlyTimes.filter { $0 >= currentDate }
+
 			// Filter out hourly times that are within 5 minutes of any key time
 			let fiveMinutes: TimeInterval = 5 * 60
-			let filteredHourlyTimes = hourlyTimes.filter { hour in
-				!keyTimes.contains { abs($0.timeIntervalSince(hour)) <= fiveMinutes }
+			let filteredHourlyTimes = allHourlyTimes.filter { hour in
+				!allKeyTimes.contains { abs($0.timeIntervalSince(hour)) <= fiveMinutes }
 			}
-			
-			// Helper to build an entry with relevance
+
+			// Helper to build an entry with relevance based on that day's solar data
 			func makeEntry(at date: Date) -> Entry {
+				let dayStart = calendar.startOfDay(for: date)
+				let solar = solarByDay[dayStart] ?? todaySolar
+
 				let distanceToSunrise = abs(date.distance(to: solar.safeSunrise))
 				let distanceToSunset = abs(date.distance(to: solar.safeSunset))
 				let nearestEventDistance = min(distanceToSunset, distanceToSunrise)
 				let relevance: TimelineEntryRelevance? = nearestEventDistance < (60 * 30)
-				? .init(score: 10, duration: nearestEventDistance)
-				: nil
-				
+					? .init(score: 10, duration: nearestEventDistance)
+					: nil
+
 				return Entry(
 					date: date,
 					location: widgetLocation,
 					relevance: relevance
 				)
 			}
-			
+
 			// Create entries for key times and hourly times, then merge
 			var mergedEntries: [Entry] = []
-			for date in keyTimes { mergedEntries.append(makeEntry(at: date)) }
+			for date in allKeyTimes { mergedEntries.append(makeEntry(at: date)) }
 			for date in filteredHourlyTimes { mergedEntries.append(makeEntry(at: date)) }
-			
+
 			// Sort and dedupe entries less than 60 seconds apart
-			entries = mergedEntries
+			let entries = mergedEntries
 				.sorted { $0.date < $1.date }
 				.reduce(into: [Entry]()) { result, entry in
 					if let last = result.last, entry.date.timeIntervalSince(last.date) < 60 {
 						return
 					}
+
 					result.append(entry)
 				}
-			
-			completion(Timeline(entries: entries, policy: .after(solar.nextSolarEvent?.date ?? currentDate.endOfDay)))
+
+			// Refresh after the last entry, or after 3 days if no entries
+			let lastEntryDate = entries.last?.date ?? currentDate
+			return completion(Timeline(entries: entries, policy: .after(lastEntryDate)))
 		}
 	}
 	
@@ -246,7 +224,15 @@ extension SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation),
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation),
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation)
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(1), location: nil),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(2), location: nil, locationError: .locationUpdateFailed),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(3), location: nil, locationError: .notAuthorized),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(4), location: nil, locationError: .reverseGeocodingFailed),
 		]
+	}
+	
+	static var placeholder: Self {
+		SolsticeWidgetTimelineEntry(date: .now, location: .proxiedToTimeZone)
 	}
 }

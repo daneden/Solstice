@@ -10,24 +10,12 @@ import Solar
 import WidgetKit
 import Suite
 
-struct CountdownWidgetView: View {
+struct CountdownWidgetView: SolsticeWidgetView {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.sizeCategory) var sizeCategory
 	@Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground
-	
+
 	var entry: SolsticeWidgetTimelineEntry
-	
-	var solar: Solar? {
-		guard let location = entry.location else {
-			return nil
-		}
-		
-		return Solar(for: entry.date, coordinate: location.coordinate)
-	}
-	
-	var location: SolsticeWidgetLocation? {
-		entry.location
-	}
 	
 	var body: some View {
 		if let location,
@@ -53,19 +41,19 @@ struct CountdownWidgetView: View {
 			default:
 				VStack(alignment: .leading, spacing: 4) {
 					WidgetLocationView(location: location)
-					
+
 					Spacer(minLength: 0)
-					
+
 					HStack {
 						nextEventText
 							.widgetHeading()
 							.minimumScaleFactor(0.8)
 							.lineLimit(3)
 							.contentTransition(.numericText())
-						
+
 						Spacer()
 					}
-					
+
 					Label{
 						Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
 					} icon: {
@@ -84,6 +72,9 @@ struct CountdownWidgetView: View {
 				.symbolVariant(.fill)
 				.preferredColorScheme(.dark)
 			}
+		} else if shouldShowPlaceholder {
+			CountdownWidgetView(entry: .placeholder)
+				.redacted(reason: .placeholder)
 		} else {
 			WidgetMissingLocationView()
 		}
