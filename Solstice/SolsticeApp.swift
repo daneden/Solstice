@@ -43,9 +43,8 @@ struct SolsticeApp: App {
 			await NotificationManager.scheduleNotifications()
 		}
 		#endif
-		#if os(macOS)
-		.defaultSize(width: 800, height: 600)
-		#elseif os(visionOS)
+		.windowResizability(.contentSize)
+		#if os(visionOS)
 		.defaultSize(width: 900, height: 720)
 		#endif
 		
