@@ -364,7 +364,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0B50A6F822ECAD61113A41DB /* SolsticeCalculatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SolsticeCalculatorTests.swift; sourceTree = "<group>"; };
 		13AEC2685232EF694BB4BB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7106C86829A276B30007A7EC /* Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7106C86929A276B30007A7EC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -494,7 +493,6 @@
 		71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualDaylightChart.swift; sourceTree = "<group>"; };
 		71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
 		71FBEE682E4B345700EC1EF0 /* Bundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle++.swift"; sourceTree = "<group>"; };
-		92CDDDBF48F3419653B679BD /* SolsticeUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SolsticeUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -565,22 +563,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A2E781101C9C6407C1A34BF /* SolsticeUITests */ = {
-			isa = PBXGroup;
-			children = (
-				92CDDDBF48F3419653B679BD /* SolsticeUITests.swift */,
-			);
-			path = SolsticeUITests;
-			sourceTree = "<group>";
-		};
-		4D5B233E2F0AA70E96C1C216 /* SolsticeTests */ = {
-			isa = PBXGroup;
-			children = (
-				0B50A6F822ECAD61113A41DB /* SolsticeCalculatorTests.swift */,
-			);
-			path = SolsticeTests;
-			sourceTree = "<group>";
-		};
 		7106C86D29A276B40007A7EC /* Widget */ = {
 			isa = PBXGroup;
 			children = (
@@ -729,8 +711,6 @@
 				7198468328E5895E00E866CE /* Solstice */,
 				71DB52AC29ABD17F00D62BB7 /* watchOS */,
 				7106C86D29A276B40007A7EC /* Widget */,
-				4D5B233E2F0AA70E96C1C216 /* SolsticeTests */,
-				0A2E781101C9C6407C1A34BF /* SolsticeUITests */,
 			);
 			sourceTree = "<group>";
 		};
