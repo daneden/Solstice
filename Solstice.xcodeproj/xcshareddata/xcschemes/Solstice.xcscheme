@@ -33,7 +33,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CC295EF547FB0D0358A5BF31"
+               BlueprintIdentifier = "71615FDB2F29F0610082944D"
                BuildableName = "SolsticeTests.xctest"
                BlueprintName = "SolsticeTests"
                ReferencedContainer = "container:Solstice.xcodeproj">
@@ -43,7 +43,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6DDD079BFCFFB3E4538605DF"
+               BlueprintIdentifier = "71615FEA2F29F06F0082944D"
                BuildableName = "SolsticeUITests.xctest"
                BlueprintName = "SolsticeUITests"
                ReferencedContainer = "container:Solstice.xcodeproj">

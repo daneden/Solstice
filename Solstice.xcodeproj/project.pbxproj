@@ -3,12 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3548FB4361AE685495786607 /* SolsticeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CDDDBF48F3419653B679BD /* SolsticeUITests.swift */; };
-		525EFB83F2783F83CB79FC22 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13AEC2685232EF694BB4BB09 /* Foundation.framework */; };
 		7106C86A29A276B40007A7EC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7106C86C29A276B40007A7EC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
 		7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
@@ -289,24 +287,29 @@
 		71FBEE6A2E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
 		71FBEE6B2E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
 		71FBEE6C2E4B345700EC1EF0 /* Bundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FBEE682E4B345700EC1EF0 /* Bundle++.swift */; };
-		82296853D0D0FB709E94DBF8 /* SolsticeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B50A6F822ECAD61113A41DB /* SolsticeCalculatorTests.swift */; };
-		C2617FB37B15458160AF0D62 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13AEC2685232EF694BB4BB09 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		637801D81BCA4A3A22BF1EAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7198467928E5895E00E866CE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7198468028E5895E00E866CE;
-			remoteInfo = Solstice;
-		};
 		7106C87A29A276B40007A7EC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7198467928E5895E00E866CE /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 7106C86729A276B30007A7EC;
 			remoteInfo = WidgetExtension;
+		};
+		71615FE02F29F0610082944D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7198467928E5895E00E866CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7198468028E5895E00E866CE;
+			remoteInfo = Solstice;
+		};
+		71615FF12F29F06F0082944D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7198467928E5895E00E866CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7198468028E5895E00E866CE;
+			remoteInfo = Solstice;
 		};
 		7194655F2C2C1E29008408C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -321,13 +324,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 719F924229ACD1CC00C06921;
 			remoteInfo = "Solstice watchOS Watch App";
-		};
-		9F6D376896DC4F09E39E5F02 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7198467928E5895E00E866CE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7198468028E5895E00E866CE;
-			remoteInfo = Solstice;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -370,7 +366,6 @@
 /* Begin PBXFileReference section */
 		0B50A6F822ECAD61113A41DB /* SolsticeCalculatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SolsticeCalculatorTests.swift; sourceTree = "<group>"; };
 		13AEC2685232EF694BB4BB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		63D3EA1060DC27055252526E /* SolsticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SolsticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7106C86829A276B30007A7EC /* Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7106C86929A276B30007A7EC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		7106C86B29A276B40007A7EC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -411,6 +406,8 @@
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
 		715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetView.swift; sourceTree = "<group>"; };
 		715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetLocationManager.swift; sourceTree = "<group>"; };
+		71615FDC2F29F0610082944D /* SolsticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SolsticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		71615FEB2F29F06F0082944D /* SolsticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SolsticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelToolbar.swift; sourceTree = "<group>"; };
 		71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemMiniMap.swift; sourceTree = "<group>"; };
 		71691B9E2C2E827200E4ED96 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
@@ -498,8 +495,12 @@
 		71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
 		71FBEE682E4B345700EC1EF0 /* Bundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle++.swift"; sourceTree = "<group>"; };
 		92CDDDBF48F3419653B679BD /* SolsticeUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SolsticeUITests.swift; sourceTree = "<group>"; };
-		B0546301326CCC1237507CA4 /* SolsticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SolsticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		71615FDD2F29F0610082944D /* SolsticeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SolsticeTests; sourceTree = "<group>"; };
+		71615FEC2F29F06F0082944D /* SolsticeUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SolsticeUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7106C86529A276B30007A7EC /* Frameworks */ = {
@@ -511,6 +512,20 @@
 				7106C86C29A276B40007A7EC /* SwiftUI.framework in Frameworks */,
 				7106C86A29A276B40007A7EC /* WidgetKit.framework in Frameworks */,
 				71CB96DC2DE9AC4300660AA9 /* Suite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71615FD92F29F0610082944D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71615FE82F29F06F0082944D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,22 +562,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C14E25AD0CEA6E3DCDDC3C3B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2617FB37B15458160AF0D62 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C7C5B90CD3075005329AB4D5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				525EFB83F2783F83CB79FC22 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -571,7 +570,6 @@
 			children = (
 				92CDDDBF48F3419653B679BD /* SolsticeUITests.swift */,
 			);
-			name = SolsticeUITests;
 			path = SolsticeUITests;
 			sourceTree = "<group>";
 		};
@@ -580,7 +578,6 @@
 			children = (
 				0B50A6F822ECAD61113A41DB /* SolsticeCalculatorTests.swift */,
 			);
-			name = SolsticeTests;
 			path = SolsticeTests;
 			sourceTree = "<group>";
 		};
@@ -723,6 +720,8 @@
 				71A9A54F2AB82D6200C3A38C /* Localizable.xcstrings */,
 				711DDC7A2EA8173800DFE99B /* Assets */,
 				7195126629B6324C009D282F /* Data Model */,
+				71615FDD2F29F0610082944D /* SolsticeTests */,
+				71615FEC2F29F06F0082944D /* SolsticeUITests */,
 				71F641EE29A13C5300FE5AB5 /* Frameworks */,
 				719511F429AF5CA8009D282F /* Intents */,
 				71691B9F2C2E827200E4ED96 /* Packages */,
@@ -742,8 +741,8 @@
 				7106C86829A276B30007A7EC /* Widget Extension.appex */,
 				719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */,
 				7194655C2C2C1E09008408C0 /* watchOS Widget Extension.appex */,
-				63D3EA1060DC27055252526E /* SolsticeTests.xctest */,
-				B0546301326CCC1237507CA4 /* SolsticeUITests.xctest */,
+				71615FDC2F29F0610082944D /* SolsticeTests.xctest */,
+				71615FEB2F29F06F0082944D /* SolsticeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -915,24 +914,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6DDD079BFCFFB3E4538605DF /* SolsticeUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DF3216BB911FC2CC6FEF9318 /* Build configuration list for PBXNativeTarget "SolsticeUITests" */;
-			buildPhases = (
-				C3EA2B934A22C5A56177AF07 /* Sources */,
-				C7C5B90CD3075005329AB4D5 /* Frameworks */,
-				2C5ECE8FEA289E0231EC165B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8842FFF6EF83A3E4E8AA239A /* PBXTargetDependency */,
-			);
-			name = SolsticeUITests;
-			productName = SolsticeUITests;
-			productReference = B0546301326CCC1237507CA4 /* SolsticeUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		7106C86729A276B30007A7EC /* Widget Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7106C87D29A276B40007A7EC /* Build configuration list for PBXNativeTarget "Widget Extension" */;
@@ -954,6 +935,52 @@
 			productName = WidgetExtension;
 			productReference = 7106C86829A276B30007A7EC /* Widget Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		71615FDB2F29F0610082944D /* SolsticeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71615FE22F29F0610082944D /* Build configuration list for PBXNativeTarget "SolsticeTests" */;
+			buildPhases = (
+				71615FD82F29F0610082944D /* Sources */,
+				71615FD92F29F0610082944D /* Frameworks */,
+				71615FDA2F29F0610082944D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				71615FE12F29F0610082944D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				71615FDD2F29F0610082944D /* SolsticeTests */,
+			);
+			name = SolsticeTests;
+			packageProductDependencies = (
+			);
+			productName = SolsticeTests;
+			productReference = 71615FDC2F29F0610082944D /* SolsticeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		71615FEA2F29F06F0082944D /* SolsticeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71615FF32F29F06F0082944D /* Build configuration list for PBXNativeTarget "SolsticeUITests" */;
+			buildPhases = (
+				71615FE72F29F06F0082944D /* Sources */,
+				71615FE82F29F06F0082944D /* Frameworks */,
+				71615FE92F29F06F0082944D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				71615FF22F29F06F0082944D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				71615FEC2F29F06F0082944D /* SolsticeUITests */,
+			);
+			name = SolsticeUITests;
+			packageProductDependencies = (
+			);
+			productName = SolsticeUITests;
+			productReference = 71615FEB2F29F06F0082944D /* SolsticeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		7194651D2C2C1E09008408C0 /* watchOS Widget Extension */ = {
 			isa = PBXNativeTarget;
@@ -1028,24 +1055,6 @@
 			productReference = 719F924329ACD1CC00C06921 /* Solstice watchOS Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CC295EF547FB0D0358A5BF31 /* SolsticeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3EFA26C1392B2D00ECB7CBB4 /* Build configuration list for PBXNativeTarget "SolsticeTests" */;
-			buildPhases = (
-				20A8A00E6081DBC8A25DFB44 /* Sources */,
-				C14E25AD0CEA6E3DCDDC3C3B /* Frameworks */,
-				B2FD32509F5B9DFD9B61238C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6AA2C13587481262EDCAAE45 /* PBXTargetDependency */,
-			);
-			name = SolsticeTests;
-			productName = SolsticeTests;
-			productReference = 63D3EA1060DC27055252526E /* SolsticeTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1056,11 +1065,19 @@
 				KnownAssetTags = (
 					earth,
 				);
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					7106C86729A276B30007A7EC = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					71615FDB2F29F0610082944D = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 7198468028E5895E00E866CE;
+					};
+					71615FEA2F29F06F0082944D = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 7198468028E5895E00E866CE;
 					};
 					7198468028E5895E00E866CE = {
 						CreatedOnToolsVersion = 14.1;
@@ -1093,20 +1110,13 @@
 				719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */,
 				7106C86729A276B30007A7EC /* Widget Extension */,
 				7194651D2C2C1E09008408C0 /* watchOS Widget Extension */,
-				CC295EF547FB0D0358A5BF31 /* SolsticeTests */,
-				6DDD079BFCFFB3E4538605DF /* SolsticeUITests */,
+				71615FDB2F29F0610082944D /* SolsticeTests */,
+				71615FEA2F29F06F0082944D /* SolsticeUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2C5ECE8FEA289E0231EC165B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		7106C86629A276B30007A7EC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1116,6 +1126,20 @@
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
 				718FC2ED2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711DDC782EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71615FDA2F29F0610082944D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71615FE92F29F06F0082944D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1158,24 +1182,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2FD32509F5B9DFD9B61238C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		20A8A00E6081DBC8A25DFB44 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				82296853D0D0FB709E94DBF8 /* SolsticeCalculatorTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		7106C86429A276B30007A7EC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1231,6 +1240,20 @@
 				7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */,
 				7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */,
 				7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71615FD82F29F0610082944D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71615FE72F29F06F0082944D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1441,23 +1464,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C3EA2B934A22C5A56177AF07 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3548FB4361AE685495786607 /* SolsticeUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6AA2C13587481262EDCAAE45 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Solstice;
-			target = 7198468028E5895E00E866CE /* Solstice */;
-			targetProxy = 9F6D376896DC4F09E39E5F02 /* PBXContainerItemProxy */;
-		};
 		7106C87B29A276B40007A7EC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilters = (
@@ -1466,6 +1475,18 @@
 			);
 			target = 7106C86729A276B30007A7EC /* Widget Extension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
+		};
+		71615FE12F29F0610082944D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 7198468028E5895E00E866CE /* Solstice */;
+			targetProxy = 71615FE02F29F0610082944D /* PBXContainerItemProxy */;
+		};
+		71615FF22F29F06F0082944D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 7198468028E5895E00E866CE /* Solstice */;
+			targetProxy = 71615FF12F29F06F0082944D /* PBXContainerItemProxy */;
 		};
 		719465602C2C1E29008408C0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1477,12 +1498,6 @@
 			platformFilter = ios;
 			target = 719F924229ACD1CC00C06921 /* Solstice watchOS Watch App */;
 			targetProxy = 71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */;
-		};
-		8842FFF6EF83A3E4E8AA239A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Solstice;
-			target = 7198468028E5895E00E866CE /* Solstice */;
-			targetProxy = 637801D81BCA4A3A22BF1EAD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1499,49 +1514,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1F253A30BB9ECC4B57163369 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Tests;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Solstice.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Solstice";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		2408EF77B8E770B4D889CEE6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.Tests;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Solstice.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Solstice";
-			};
-			name = Debug;
-		};
 		7106C87E29A276B40007A7EC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1621,6 +1593,104 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Release;
+		};
+		71615FE32F29F0610082944D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.SolsticeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Solstice.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Solstice";
+			};
+			name = Debug;
+		};
+		71615FE42F29F0610082944D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.SolsticeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Solstice.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Solstice";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		71615FF42F29F06F0082944D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.SolsticeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Solstice;
+			};
+			name = Debug;
+		};
+		71615FF52F29F06F0082944D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YC249PY26F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.SolsticeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Solstice;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -1997,64 +2067,32 @@
 			};
 			name = Release;
 		};
-		8E1E5263B587FE5C98AE5C49 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.UITests;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = Solstice;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		E2BB83D9988AD307AA179E5B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YC249PY26F;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.daneden.Solstice.UITests;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = Solstice;
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3EFA26C1392B2D00ECB7CBB4 /* Build configuration list for PBXNativeTarget "SolsticeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1F253A30BB9ECC4B57163369 /* Release */,
-				2408EF77B8E770B4D889CEE6 /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		7106C87D29A276B40007A7EC /* Build configuration list for PBXNativeTarget "Widget Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7106C87E29A276B40007A7EC /* Debug */,
 				7106C87F29A276B40007A7EC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		71615FE22F29F0610082944D /* Build configuration list for PBXNativeTarget "SolsticeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71615FE32F29F0610082944D /* Debug */,
+				71615FE42F29F0610082944D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		71615FF32F29F06F0082944D /* Build configuration list for PBXNativeTarget "SolsticeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71615FF42F29F06F0082944D /* Debug */,
+				71615FF52F29F06F0082944D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2091,15 +2129,6 @@
 			buildConfigurations = (
 				719F926429ACD1CD00C06921 /* Debug */,
 				719F926529ACD1CD00C06921 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DF3216BB911FC2CC6FEF9318 /* Build configuration list for PBXNativeTarget "SolsticeUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8E1E5263B587FE5C98AE5C49 /* Release */,
-				E2BB83D9988AD307AA179E5B /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
