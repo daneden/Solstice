@@ -8,18 +8,18 @@
 #if !os(macOS)
 import SwiftUI
 import WidgetKit
-import Solar
+import SunKit
 import Suite
 
 extension OverviewWidgetView {
 	struct AccessoryCircularView: View {
 		@Environment(\.widgetRenderingMode) var renderingMode
-		var solar: Solar
+		var sun: Sun
 		var location: SolsticeWidgetLocation
 		
 		var body: some View {
 			DaylightChart(
-				solar: solar,
+				sun: sun,
 				timeZone: location.timeZone,
 				showEventTypes: false,
 				appearance: renderingMode == .fullColor ? .graphical : .simple,
@@ -31,7 +31,7 @@ extension OverviewWidgetView {
 			.background { AccessoryWidgetBackground() }
 			.mask(Circle())
 			.widgetLabel {
-				Label(solar.daylightDuration.localizedString, systemImage: "sun.max")
+				Label(sun.daylightDuration.localizedString, systemImage: "sun.max")
 			}
 		}
 	}
@@ -39,8 +39,8 @@ extension OverviewWidgetView {
 	struct AccessoryRectangularView: View {
 		var isAfterTodaySunset: Bool
 		var location: SolsticeWidgetLocation?
-		var relevantSolar: Solar?
-		var comparisonSolar: Solar?
+		var relevantSun: Sun?
+		var comparisonSun: Sun?
 		
 		var body: some View {
 			HStack {
@@ -52,16 +52,16 @@ extension OverviewWidgetView {
 						.allowsTightening(true)
 						.contentTransition(.interpolate)
 					
-					if let relevantSolar {
-						Text(relevantSolar.daylightDuration.localizedString)
+					if let relevantSun {
+						Text(relevantSun.daylightDuration.localizedString)
 							.contentTransition(.numericText())
 						
 						Group {
-							if let comparisonSolar {
-								let difference = relevantSolar.daylightDuration - comparisonSolar.daylightDuration
+							if let comparisonSun {
+								let difference = relevantSun.daylightDuration - comparisonSun.daylightDuration
 								Text("\(difference >= 0 ? "+" : "-")\(Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2)))")
 							} else {
-								Text(relevantSolar.safeSunrise...relevantSolar.safeSunset)
+								Text(relevantSun.safeSunrise...relevantSun.safeSunset)
 							}
 						}
 						.foregroundStyle(.secondary)

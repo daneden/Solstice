@@ -7,7 +7,7 @@
 
 import WidgetKit
 import SwiftUI
-import Solar
+import SunKit
 
 struct CountdownWidget: Widget {
 #if os(iOS)
@@ -17,7 +17,7 @@ struct CountdownWidget: Widget {
 #elseif os(watchOS)
 	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 #endif
-	
+
 	var body: some WidgetConfiguration {
 		IntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
@@ -26,7 +26,8 @@ struct CountdownWidget: Widget {
 		) { timelineEntry in
 			CountdownWidgetView(entry: timelineEntry)
 				.containerBackground(for: .widget) {
-					SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
+					let location = timelineEntry.location ?? .defaultLocation
+					SkyGradient(sun: Sun(for: timelineEntry.date, coordinate: location.coordinate, timeZone: location.timeZone))
 				}
 				.widgetURL(timelineEntry.location?.url)
 		}

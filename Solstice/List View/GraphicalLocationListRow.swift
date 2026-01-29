@@ -7,16 +7,16 @@
 
 import SwiftUI
 import TimeMachine
-import Solar
+import SunKit
 
 struct GraphicalLocationListRow<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 	var location: Location
-	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+
+	var sun: Sun? {
+		Sun(for: timeMachine.date, coordinate: location.coordinate)
 	}
-	
+
 	var body: some View {
 		LocationListRow(location: location, headingFontWeight: .semibold)
 			.foregroundStyle(.white)
@@ -25,7 +25,7 @@ struct GraphicalLocationListRow<Location: ObservableLocation>: View {
 			.shadow(color: .black.opacity(0.3), radius: 6, y: 2)
 			.padding()
 			.background {
-				solar?.view
+				sun?.view
 					.clipShape(.rect(cornerRadius: 20, style: .continuous))
 			}
 			.listRowSeparator(.hidden)

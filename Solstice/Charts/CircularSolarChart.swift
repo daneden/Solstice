@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import TimeMachine
 import Suite
 import enum Accelerate.vDSP
@@ -18,16 +18,20 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	#if WIDGET_EXTENSION
 	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
 	#endif
-	
+
 	@State private var size = CGSize.zero
+	@State private var cachedSun: Sun?
+	@State private var lastLocationKey: String?
 	var date: Date?
-	
+
 	var location: Location
-	
+
 	var timeZone: TimeZone { location.timeZone }
-	
-	var solar: Solar? {
-		Solar(for: date ?? timeMachine.date, coordinate: location.coordinate)
+
+	var sun: Sun? { cachedSun }
+
+	private var locationKey: String {
+		"\(location.coordinate.latitude),\(location.coordinate.longitude)"
 	}
 	
 	var majorSunSize: Double {
@@ -81,7 +85,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		return calendar
 	}
 	
-	func angle(for date: Date) -> Angle {
+	func angle(for date: Date) -> SwiftUI.Angle {
 		Helpers.angle(for: date, timeZone: timeZone)
 	}
 	
@@ -90,7 +94,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		#if WIDGET_EXTENSION
 		if widgetRenderingMode == .fullColor {
 			if appearance == .graphical {
-				solar?.view
+				sun?.view
 			} else {
 				Rectangle().fill(.regularMaterial)
 			}
@@ -99,7 +103,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		}
 		#else
 		if appearance == .graphical {
-			solar?.view
+			sun?.view
 		} else {
 			Rectangle().fill(.regularMaterial)
 		}
@@ -112,7 +116,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			.frame(width: majorSunSize)
 			.frame(maxWidth: .infinity, alignment: .trailing)
 			.padding(.trailing, minorSunSize / 2)
-			.rotationEffect(angle(for: solar?.date ?? .now))
+			.rotationEffect(angle(for: sun?.date ?? .now))
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 	
@@ -128,12 +132,12 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				.frame(width: majorSunSize)
 				.frame(maxWidth: .infinity, alignment: .trailing)
 				.padding(.trailing, minorSunSize / 2)
-				.rotationEffect(angle(for: solar?.date ?? .now))
+				.rotationEffect(angle(for: sun?.date ?? .now))
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 	
 	var safeSunriseSunsetShape: some Shape {
-		CircleWithSlice(startAngle: angle(for: solar?.sunrise ?? .now).degrees, endAngle: angle(for: solar?.sunset ?? .now).degrees)
+		CircleWithSlice(startAngle: angle(for: sun?.sunrise ?? .now).degrees, endAngle: angle(for: sun?.sunset ?? .now).degrees)
 	}
 	
 	var sundial: some View {
@@ -175,8 +179,8 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 
 	private var phaseSlices: some View {
 		Group {
-			if let phases = solar?.phases {
-				let phaseKeys: [Solar.Phase] = Array(phases.keys)
+			if let phases = sun?.phases {
+				let phaseKeys: [Sun.Phase] = Array(phases.keys)
 				ForEach(phaseKeys, id: \.self) { key in
 					phaseSlice(for: key, phases: phases)
 				}
@@ -186,7 +190,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	@ViewBuilder
-	private func phaseSlice(for key: Solar.Phase, phases: [Solar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
+	private func phaseSlice(for key: Sun.Phase, phases: [Sun.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
 		if let (sunrise, sunset) = phases[key],
 			 let sunrise,
 			 let sunset {
@@ -257,8 +261,8 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 
 	@ViewBuilder
 	private var phaseMarkers: some View {
-		if let phases = solar?.phases {
-			let phaseKeys: [Solar.Phase] = Array(phases.keys)
+		if let phases = sun?.phases {
+			let phaseKeys: [Sun.Phase] = Array(phases.keys)
 			ForEach(phaseKeys, id: \.self) { key in
 				phaseMarker(for: key, phases: phases)
 			}
@@ -266,7 +270,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	@ViewBuilder
-	private func phaseMarker(for key: Solar.Phase, phases: [Solar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
+	private func phaseMarker(for key: Sun.Phase, phases: [Sun.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
 		if let (sunrise, sunset) = phases[key],
 			 let sunrise,
 			 let sunset {
@@ -288,18 +292,18 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	@ViewBuilder
 	var labels: some View {
-		if let solar {
-			ChartLabel(text: Text(solar.safeSunrise, style: .time),
+		if let sun {
+			ChartLabel(text: Text(sun.safeSunrise, style: .time),
 								 imageName: "sunrise",
-								 angle: angle(for: solar.safeSunrise))
-			
-			ChartLabel(text: Text(solar.safeSunset, style: .time),
+								 angle: angle(for: sun.safeSunrise))
+
+			ChartLabel(text: Text(sun.safeSunset, style: .time),
 								 imageName: "sunset",
-								 angle: angle(for: solar.safeSunset))
+								 angle: angle(for: sun.safeSunset))
 		}
 		
-		if let duration = solar?.daylightDuration,
-			 let diff = solar?.compactDifferenceString {
+		if let duration = sun?.daylightDuration,
+			 let diff = sun?.compactDifferenceString {
 			VStack(spacing: 2) {
 				HStack(spacing: 2) {
 					Image(systemName: "hourglass")
@@ -352,13 +356,26 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			.monospacedDigit()
 			.frame(maxWidth: .infinity)
 			.aspectRatio(1, contentMode: .fit)
+			.onChange(of: date ?? timeMachine.date) { _, newDate in
+				cachedSun?.setDate(newDate)
+			}
+			.onChange(of: locationKey) { _, _ in
+				cachedSun = Sun(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+				lastLocationKey = locationKey
+			}
+			.onAppear {
+				if cachedSun == nil || lastLocationKey != locationKey {
+					cachedSun = Sun(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+					lastLocationKey = locationKey
+				}
+			}
 	}
 }
 
 fileprivate struct ChartLabel: View {
 	var text: Text
 	var imageName: String
-	var angle: Angle
+	var angle: SwiftUI.Angle
 	
 	var body: some View {
 		HStack(spacing: 2) {
@@ -376,7 +393,7 @@ fileprivate struct ChartLabel: View {
 }
 
 fileprivate struct Helpers {
-	static func angle(for date: Date, timeZone: TimeZone = .current) -> Angle {
+	static func angle(for date: Date, timeZone: TimeZone = .current) -> SwiftUI.Angle {
 		var calendar = Calendar.current
 		calendar.timeZone = timeZone
 		let components = calendar.dateComponents([.hour, .minute, .second], from: date)

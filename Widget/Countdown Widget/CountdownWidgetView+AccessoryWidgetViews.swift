@@ -7,13 +7,13 @@
 
 #if !os(macOS)
 import SwiftUI
-import Solar
+import SunKit
 import WidgetKit
 import Suite
 
 extension CountdownWidgetView {
 	struct AccessoryInlineView: View {
-		var nextEvent: Solar.Event
+		var nextEvent: Sun.Event
 		var body: some View {
 			HStack {
 				Image(systemName: nextEvent.imageName)
@@ -27,14 +27,17 @@ extension CountdownWidgetView {
 		
 		var entryDate: Date
 		
-		var previousEvent: Solar.Event
-		var nextEvent: Solar.Event
+		var previousEvent: Sun.Event
+		var nextEvent: Sun.Event
+		
+		var durationToNextEvent: TimeInterval {
+			nextEvent.date.timeIntervalSince(entryDate)
+		}
 		
 		@ViewBuilder
 		var currentValueLabel: some View {
-			let duration = entryDate.distance(to: nextEvent.date)
-			if duration >= 60 * 60 {
-				Text(Duration.seconds(duration).formatted(.units(width: .narrow, maximumUnitCount: 1)))
+			if durationToNextEvent >= 60 * 60 {
+				Text(Duration.seconds(durationToNextEvent).formatted(.units(width: .narrow, maximumUnitCount: 1)))
 			} else {
 				Text(nextEvent.date, style: .timer)
 					.monospacedDigit()
@@ -65,7 +68,7 @@ extension CountdownWidgetView {
 	}
 	
 	struct AccessoryRectangularView: View {
-		var nextEvent: Solar.Event
+		var nextEvent: Sun.Event
 		
 		var body: some View {
 			HStack {
@@ -89,8 +92,8 @@ extension CountdownWidgetView {
 	}
 	
 	struct AccessoryCornerView: View {
-		var previousEvent: Solar.Event
-		var nextEvent: Solar.Event
+		var previousEvent: Sun.Event
+		var nextEvent: Sun.Event
 		
 		var body: some View {
 			Label {

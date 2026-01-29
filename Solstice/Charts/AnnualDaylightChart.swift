@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Charts
 import TimeMachine
 
 struct AnnualDaylightChart<Location: AnyLocation>: View {
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	var location: Location
-	
-	var kvPairs: KeyValuePairs<Solar.Phase, Color> = [
+
+	var kvPairs: KeyValuePairs<Sun.Phase, Color> = [
 		.astronomical: .indigo,
 		.nautical: .blue,
 		.civil: .teal,
@@ -39,75 +39,72 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	}
 
 	private var monthlyBarMarks: some ChartContent {
-		ForEach(monthlySolars, id: \.date) { solar in
-			solarBarMarks(for: solar)
+		ForEach(monthlySolars, id: \.date) { sun in
+			solarBarMarks(for: sun)
 		}
 	}
 
 	@ChartContentBuilder
-	private func solarBarMarks(for solar: Solar) -> some ChartContent {
-		astronomicalBarMark(for: solar)
-		nauticalBarMark(for: solar)
-		civilBarMark(for: solar)
-		daylightBarMark(for: solar)
+	private func solarBarMarks(for sun: Sun) -> some ChartContent {
+		astronomicalBarMark(for: sun)
+		nauticalBarMark(for: sun)
+		civilBarMark(for: sun)
+		daylightBarMark(for: sun)
 	}
 
 	@ChartContentBuilder
-	private func astronomicalBarMark(for solar: Solar) -> some ChartContent {
-		if let astronomicalSunrise = solar.astronomicalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-			 let astronomicalSunset = solar.astronomicalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
-			let yStart: Double = max(0, solar.startOfDay.distance(to: astronomicalSunrise))
-			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: astronomicalSunset))
-			BarMark(
-				x: .value("Astronomical Twilight", solar.date, unit: .month),
-				yStart: .value("Astronomical Sunrise", yStart),
-				yEnd: .value("Astronomical Sunset", yEnd)
-			)
-			.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
-		}
+	private func astronomicalBarMark(for sun: Sun) -> some ChartContent {
+		let astronomicalSunrise = sun.astronomicalSunrise.withTimeZoneAdjustment(for: location.timeZone)
+		let astronomicalSunset = sun.astronomicalSunset.withTimeZoneAdjustment(for: location.timeZone)
+		let yStart: Double = max(0, astronomicalSunrise.timeIntervalSince(sun.startOfDay))
+		let yEnd: Double = min(dayLength, astronomicalSunset.timeIntervalSince(sun.startOfDay))
+		BarMark(
+			x: .value("Astronomical Twilight", sun.date, unit: .month),
+			yStart: .value("Astronomical Sunrise", yStart),
+			yEnd: .value("Astronomical Sunset", yEnd)
+		)
+		.foregroundStyle(by: .value("Phase", Sun.Phase.astronomical))
 	}
 
 	@ChartContentBuilder
-	private func nauticalBarMark(for solar: Solar) -> some ChartContent {
-		if let nauticalSunrise = solar.nauticalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-			 let nauticalSunset = solar.nauticalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
-			let yStart: Double = max(0, solar.startOfDay.distance(to: nauticalSunrise))
-			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: nauticalSunset))
-			BarMark(
-				x: .value("Nautical Twilight", solar.date, unit: .month),
-				yStart: .value("Nautical Sunrise", yStart),
-				yEnd: .value("Nautical Sunset", yEnd)
-			)
-			.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
-		}
+	private func nauticalBarMark(for sun: Sun) -> some ChartContent {
+		let nauticalSunrise = sun.nauticalSunrise.withTimeZoneAdjustment(for: location.timeZone)
+		let nauticalSunset = sun.nauticalSunset.withTimeZoneAdjustment(for: location.timeZone)
+		let yStart: Double = max(0, nauticalSunrise.timeIntervalSince(sun.startOfDay))
+		let yEnd: Double = min(dayLength, nauticalSunset.timeIntervalSince(sun.startOfDay))
+		BarMark(
+			x: .value("Nautical Twilight", sun.date, unit: .month),
+			yStart: .value("Nautical Sunrise", yStart),
+			yEnd: .value("Nautical Sunset", yEnd)
+		)
+		.foregroundStyle(by: .value("Phase", Sun.Phase.nautical))
 	}
 
 	@ChartContentBuilder
-	private func civilBarMark(for solar: Solar) -> some ChartContent {
-		if let civilSunrise = solar.civilSunrise?.withTimeZoneAdjustment(for: location.timeZone),
-			 let civilSunset = solar.civilSunset?.withTimeZoneAdjustment(for: location.timeZone) {
-			let yStart: Double = max(0, solar.startOfDay.distance(to: civilSunrise))
-			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: civilSunset))
-			BarMark(
-				x: .value("Civil Twilight", solar.date, unit: .month),
-				yStart: .value("Civil Sunrise", yStart),
-				yEnd: .value("Civil Sunset", yEnd)
-			)
-			.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
-		}
+	private func civilBarMark(for sun: Sun) -> some ChartContent {
+		let civilSunrise = sun.civilSunrise.withTimeZoneAdjustment(for: location.timeZone)
+		let civilSunset = sun.civilSunset.withTimeZoneAdjustment(for: location.timeZone)
+		let yStart: Double = max(0, civilSunrise.timeIntervalSince(sun.startOfDay))
+		let yEnd: Double = min(dayLength, civilSunset.timeIntervalSince(sun.startOfDay))
+		BarMark(
+			x: .value("Civil Twilight", sun.date, unit: .month),
+			yStart: .value("Civil Sunrise", yStart),
+			yEnd: .value("Civil Sunset", yEnd)
+		)
+		.foregroundStyle(by: .value("Phase", Sun.Phase.civil))
 	}
 
-	private func daylightBarMark(for solar: Solar) -> some ChartContent {
-		let sunrise: Date = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
-		let sunset: Date = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
-		let yStart: Double = max(0, solar.startOfDay.distance(to: sunrise))
-		let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: sunset))
+	private func daylightBarMark(for sun: Sun) -> some ChartContent {
+		let sunrise: Date = sun.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
+		let sunset: Date = sun.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
+		let yStart: Double = max(0, sunrise.timeIntervalSince(sun.startOfDay))
+		let yEnd: Double = min(dayLength, sunset.timeIntervalSince(sun.startOfDay))
 		return BarMark(
-			x: .value("Daylight", solar.date, unit: .month),
+			x: .value("Daylight", sun.date, unit: .month),
 			yStart: .value("Sunrise", yStart),
 			yEnd: .value("Sunset", yEnd)
 		)
-		.foregroundStyle(by: .value("Phase", Solar.Phase.day))
+		.foregroundStyle(by: .value("Phase", Sun.Phase.day))
 	}
 
 	private var yAxisMarks: some AxisContent {
@@ -138,23 +135,23 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 }
 
 extension AnnualDaylightChart {
-	var monthlySolars: Array<Solar> {
+	var monthlySolars: Array<Sun> {
 		guard let year = calendar.dateInterval(of: .year, for: timeMachine.date) else {
 			return []
 		}
-		
+
 		var lastDate = calendar.date(bySetting: .day, value: 21, of: year.start) ?? year.start
 		lastDate = calendar.date(bySetting: .hour, value: 12, of: lastDate) ?? lastDate
 		var dates: Array<Date> = []
-		
+
 		while lastDate < year.end {
 			dates.append(lastDate)
 			lastDate = calendar.date(byAdding: .month, value: 1, to: lastDate) ?? lastDate.addingTimeInterval(60 * 60 * 24 * 7 * 4)
 		}
-		
+
 		return dates.map { date in
-			return Solar(for: date, coordinate: location.coordinate)
-		}.compactMap { $0 }
+			return Sun(for: date, coordinate: location.coordinate)
+		}
 	}
 }
 

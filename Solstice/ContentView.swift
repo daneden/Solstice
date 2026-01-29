@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CoreData
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 

@@ -7,17 +7,17 @@
 
 import SwiftUI
 import Charts
-import Solar
+import SunKit
 import Suite
 
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
 	
-	@State private var selectedEvent: Solar.Event?
+	@State private var selectedEvent: Sun.Event?
 	@State private var currentX: Date?
 	
-	var solar: Solar
+	var sun: Sun
 	var timeZone: TimeZone
 	var showEventTypes = true
 	
@@ -29,7 +29,7 @@ struct DaylightChart: View {
 	var yScale = -1.5...1.5
 	
 	var plotDate: Date {
-		currentX ?? solar.date
+		currentX ?? sun.date
 	}
 	
 	var markForegroundColor: Color {
@@ -52,15 +52,15 @@ struct DaylightChart: View {
 		var calendar = Calendar.current
 		calendar.timeZone = timeZone
 		
-		let startOfDay = calendar.startOfDay(for: solar.date)
-		let endOfDay = max(solar.safeSunset, calendar.date(byAdding: DateComponents(day: 1), to: startOfDay) ?? solar.date)
+		let startOfDay = calendar.startOfDay(for: sun.date)
+		let endOfDay = max(sun.safeSunset, calendar.date(byAdding: DateComponents(day: 1), to: startOfDay) ?? sun.date)
 		return startOfDay...endOfDay
 	}
 	
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
-				DaylightSummaryTitle(solar: solar, event: selectedEvent, date: currentX, timeZone: timeZone)
+				DaylightSummaryTitle(sun: sun, event: selectedEvent, date: currentX, timeZone: timeZone)
 			}
 
 			chartContent
@@ -77,7 +77,7 @@ struct DaylightChart: View {
 				.environment(\.colorScheme, .dark)
 		}
 		.environment(\.timeZone, timeZone)
-		.preference(key: DaylightGradientTimePreferenceKey.self, value: currentX ?? solar.date)
+		.preference(key: DaylightGradientTimePreferenceKey.self, value: currentX ?? sun.date)
 	}
 
 	private var chartContent: some View {
@@ -109,11 +109,11 @@ struct DaylightChart: View {
 		}
 	}
 
-	private var filteredEvents: [Solar.Event] {
-		solar.events.filter { range.contains($0.date) }
+	private var filteredEvents: [Sun.Event] {
+		sun.events.filter { range.contains($0.date) }
 	}
 
-	private func eventPointMark(for solarEvent: Solar.Event) -> some ChartContent {
+	private func eventPointMark(for solarEvent: Sun.Event) -> some ChartContent {
 		PointMark(
 			x: .value("Event Time", solarEvent.date),
 			y: .value("Event", yValue(for: solarEvent.date))
@@ -123,15 +123,15 @@ struct DaylightChart: View {
 		.symbolSize(markSize * .pi * 2)
 	}
 
-	private func eventPointOpacity(for phase: Solar.Phase) -> Double {
-		let hiddenPhases: Set<Solar.Phase> = [.night, .day, .sunrise, .sunset]
-		let shouldShow: Bool = showEventTypes || !Solar.Phase.plottablePhases.contains(phase)
+	private func eventPointOpacity(for phase: Sun.Phase) -> Double {
+		let hiddenPhases: Set<Sun.Phase> = [.night, .day, .sunrise, .sunset]
+		let shouldShow: Bool = showEventTypes || !Sun.Phase.plottablePhases.contains(phase)
 		return (shouldShow && !hiddenPhases.contains(phase)) ? 1 : 0
 	}
 
 	@ViewBuilder
 	private func chartOverlayContent(proxy: ChartProxy, geo: GeometryProxy) -> some View {
-		let horizonY: CGFloat = proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0
+		let horizonY: CGFloat = proxy.position(forY: yValue(for: sun.safeSunrise)) ?? 0
 
 		Group {
 			horizonLine(width: geo.size.width, yOffset: horizonY)
@@ -286,7 +286,7 @@ extension DaylightChart {
 	var relativeEventTimeString: String {
 		if let selectedEvent,
 			 calendar.isDateInToday(selectedEvent.date) {
-			return " (\((selectedEvent.date..<solar.date.withTimeZoneAdjustment(for: timeZone)).formatted(.timeDuration))"
+			return " (\((selectedEvent.date..<sun.date.withTimeZoneAdjustment(for: timeZone)).formatted(.timeDuration))"
 		}
 		return ""
 	}
@@ -301,13 +301,13 @@ extension DaylightChart {
 	
 	var noonish: Date { startOfDay.addingTimeInterval(TimeInterval.twentyFourHours / 2) }
 	
-	var culminationDelta: TimeInterval { solar.solarNoon?.distance(to: noonish) ?? 0 }
+	var culminationDelta: TimeInterval { noonish.timeIntervalSince(sun.solarNoon) }
 	
 	var daylightProportion: Double {
-		solar.daylightDuration / dayLength
+		sun.daylightDuration / dayLength
 	}
 	
-	func pointMarkColor(for eventPhase: Solar.Phase) -> HierarchicalShapeStyle {
+	func pointMarkColor(for eventPhase: Sun.Phase) -> HierarchicalShapeStyle {
 		switch eventPhase {
 		case .astronomical:
 			return .quaternary
@@ -321,7 +321,7 @@ extension DaylightChart {
 	}
 	
 	func resetSelectedEvent() {
-		selectedEvent = solar.events.filter {
+		selectedEvent = sun.events.filter {
 			$0.phase == .sunset || $0.phase == .sunrise
 		}.sorted(by: { a, b in
 			a.date.compare(.now) == .orderedDescending
@@ -329,7 +329,7 @@ extension DaylightChart {
 	}
 	
 	func progressValue(for date: Date) -> Double {
-		return (date.distance(to: startOfDay) - culminationDelta) / dayLength
+		return (startOfDay.timeIntervalSince(date) - culminationDelta) / dayLength
 	}
 	
 	func yValue(for date: Date) -> Double {
@@ -348,8 +348,8 @@ extension DaylightChart {
 		currentX = proxy.value(atX: xCurrent)
 		
 		if let currentX,
-			 let nearestEvent = solar.events.sorted(by: { lhs, rhs in
-				 abs(lhs.date.distance(to: currentX)) <= abs(rhs.date.distance(to: currentX))
+			 let nearestEvent = sun.events.sorted(by: { lhs, rhs in
+				 abs(currentX.timeIntervalSince(lhs.date)) <= abs(currentX.timeIntervalSince(rhs.date))
 			 }).first {
 			selectedEvent = nearestEvent
 		}
@@ -383,13 +383,13 @@ extension DaylightChart {
 	Form {
 		Group {
 			DaylightChart(
-				solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!,
+				sun: Sun(coordinate: TemporaryLocation.placeholderLondon.coordinate),
 				timeZone: TimeZone.autoupdatingCurrent,
 				scrubbable: true
 			)
 			
 			DaylightChart(
-				solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!,
+				sun: Sun(coordinate: TemporaryLocation.placeholderLondon.coordinate),
 				timeZone: TimeZone.autoupdatingCurrent,
 				appearance: .graphical,
 				scrubbable: true

@@ -5,29 +5,35 @@
 //  Created by Daniel Eden on 20/01/2026.
 //
 import SwiftUI
-import Solar
+import SunKit
 
 protocol SolsticeWidgetView: View {
 	var entry: SolsticeWidgetTimelineEntry { get set }
 }
 
 extension SolsticeWidgetView {
-	var solar: Solar? {
+	/// Uses pre-computed Sun from timeline entry if available, otherwise computes (fallback)
+	var sun: Sun? {
+		if let cached = entry.cachedSun {
+			return cached
+		}
+		// Fallback for backwards compatibility
 		guard let location else { return nil }
-		return Solar(for: entry.date, coordinate: location.coordinate)
+		return Sun(for: entry.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 
-	var tomorrowSolar: Solar? {
-		solar?.tomorrow
+	/// Uses pre-computed tomorrow Sun from timeline entry if available
+	var tomorrowSun: Sun? {
+		entry.cachedTomorrowSun ?? sun?.tomorrow
 	}
 
-	var relevantSolar: Solar? {
-		isAfterTodaySunset ? tomorrowSolar : solar
+	var relevantSun: Sun? {
+		isAfterTodaySunset ? tomorrowSun : sun
 	}
 
 	var isAfterTodaySunset: Bool {
-		guard let solar else { return false }
-		return solar.safeSunset < entry.date
+		guard let sun else { return false }
+		return sun.safeSunset < entry.date
 	}
 
 	var location: SolsticeWidgetLocation? {
@@ -38,7 +44,7 @@ extension SolsticeWidgetView {
 
 	/// True when we have valid data to display
 	var hasValidData: Bool {
-		location != nil && solar != nil
+		location != nil && sun != nil
 	}
 
 	/// True when we should show a placeholder/redacted view (temporary location failure)

@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 
 struct DaylightSummaryTitle: View {
-	var solar: Solar
-	var event: Solar.Event?
+	var sun: Sun
+	var event: Sun.Event?
 	var date: Date?
 	var timeZone = localTimeZone
 	
@@ -37,7 +37,7 @@ struct DaylightSummaryTitle: View {
     var body: some View {
 			VStack(alignment: .leading) {
 				HStack {
-					Text(solar.differenceString)
+					Text(sun.differenceString)
 						.contentTransition(.numericText())
 						.font(summaryFont)
 						.fontWeight(.semibold)
@@ -66,12 +66,12 @@ struct DaylightSummaryTitle: View {
 										.foregroundStyle(.secondary)
 									
 									Group {
-										if date < solar.safeSunrise {
-											Text("Sunrise in \((date..<solar.safeSunrise).formatted(formatter))")
-										} else if date < solar.safeSunset {
-											Text("Sunset in \((date..<solar.safeSunset).formatted(formatter))")
-										} else if date > solar.safeSunset && date <= (solar.tomorrow?.safeSunrise ?? solar.endOfDay) {
-											Text("Sunrise in \((date..<(solar.tomorrow?.safeSunrise ?? solar.endOfDay)).formatted(formatter))")
+										if date < sun.safeSunrise {
+											Text("Sunrise in \((date..<sun.safeSunrise).formatted(formatter))")
+										} else if date < sun.safeSunset {
+											Text("Sunset in \((date..<sun.safeSunset).formatted(formatter))")
+										} else if date > sun.safeSunset && date <= sun.tomorrow.safeSunrise {
+											Text("Sunrise in \((date..<sun.tomorrow.safeSunrise).formatted(formatter))")
 										}
 									}
 									.foregroundStyle(.tertiary)
@@ -94,6 +94,6 @@ struct DaylightSummaryTitle: View {
 
 struct DaylightSummaryTitle_Previews: PreviewProvider {
     static var previews: some View {
-			DaylightSummaryTitle(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!)
+			DaylightSummaryTitle(sun: Sun(coordinate: TemporaryLocation.placeholderLondon.coordinate))
     }
 }

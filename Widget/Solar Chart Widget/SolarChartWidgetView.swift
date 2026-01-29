@@ -7,19 +7,19 @@
 
 import SwiftUI
 import WidgetKit
-import Solar
+import SunKit
 
 struct SolarChartWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
 	
 	var body: some View {
 		Group {
-			if let solar,
+			if let sun,
 				 let location {
 				ZStack(alignment: .topLeading) {
 					HStack {
 						Label {
-							Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+							Text(sun.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 						} icon: {
 							Image(systemName: "sunrise")
 						}
@@ -28,7 +28,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 						Spacer()
 
 						Label {
-							Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+							Text(sun.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
 						} icon: {
 							Image(systemName: "sunset")
 						}
@@ -41,7 +41,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 					.contentTransition(.numericText())
 
 					DaylightChart(
-						solar: solar,
+						sun: sun,
 						timeZone: location.timeZone,
 						showEventTypes: false,
 						includesSummaryTitle: false,

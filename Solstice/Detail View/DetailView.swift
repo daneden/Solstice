@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Solar
+import SunKit
 import Suite
 import TimeMachine
 
@@ -25,12 +25,16 @@ struct DetailView<Location: ObservableLocation>: View {
 	#endif
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
-	
+	@State private var cachedSun: Sun?
+	@State private var lastLocationKey: String?
+
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
-	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+
+	var sun: Sun? { cachedSun }
+
+	private var locationKey: String {
+		"\(location.coordinate.latitude),\(location.coordinate.longitude)"
 	}
 	
 	var navBarTitleText: Text {
@@ -43,8 +47,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	
 	var body: some View {
 		Form {
-			if let solar {
-				DailyOverview(solar: solar, location: location)
+			if let sun {
+				DailyOverview(sun: sun, location: location)
 			}
 			
 			AnnualOverview(location: location)
@@ -71,9 +75,9 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		#if os(watchOS)
 		.modify {
-			if let solar {
+			if let sun {
 				$0.containerBackground(
-					SkyGradient(solar: solar),
+					SkyGradient(sun: sun),
 					for: .navigation
 				)
 			} else {
@@ -82,8 +86,21 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		#endif
 		.sheet(isPresented: $showShareSheet) {
-			if let solar {
-				ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+			if let sun {
+				ShareSolarChartView(sun: sun, location: location, chartAppearance: chartAppearance)
+			}
+		}
+		.onChange(of: timeMachine.date) { _, newDate in
+			cachedSun?.setDate(newDate)
+		}
+		.onChange(of: locationKey) { _, _ in
+			cachedSun = Sun(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+			lastLocationKey = locationKey
+		}
+		.onAppear {
+			if cachedSun == nil || lastLocationKey != locationKey {
+				cachedSun = Sun(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+				lastLocationKey = locationKey
 			}
 		}
 	}

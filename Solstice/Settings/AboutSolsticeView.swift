@@ -88,10 +88,10 @@ fileprivate struct FullStoryView: View {
 				}
 			}
 			
-			if let url = URL(string: "https://github.com/ceeK/Solar") {
+			if let url = URL(string: "https://github.com/Sunlight-dev/SunKit") {
 				Section {
 					Link(destination: url) {
-						Text("ceeK/Solar")
+						Text("Sunlight-dev/SunKit")
 					}
 				} header: {
 					Text("Open Source Acknowledgements")

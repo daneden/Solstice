@@ -419,6 +419,7 @@
       }
     },
     "ceeK/Solar" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1901,6 +1902,9 @@
         }
       }
     },
+    "Sunlight-dev/SunKit" : {
+
+    },
     "Sunrise" : {
       "localizations" : {
         "it" : {
@@ -2177,7 +2181,11 @@
         }
       }
     },
+    "View how much daylight there is on a given day, based on the duration from that day's sunrise to sunset." : {
+
+    },
     "View how much daylight there is on a given day, based on the duration from that day’s sunrise to sunset." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
