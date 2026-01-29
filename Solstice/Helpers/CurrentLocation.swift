@@ -42,7 +42,7 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 	}
 	
 	func requestAccess() {
-		self.locationManager.requestWhenInUseAuthorization()
+		locationManager.requestWhenInUseAuthorization()
 	}
 	
 	func requestLocation() {

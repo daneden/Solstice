@@ -66,22 +66,31 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var stops: [Color] {
-		let sunrise = sun?.safeSunrise ?? .now.startOfDay
-		let sunset = sun?.safeSunset ?? .now.endOfDay
+		let sunrise: Date = sun?.safeSunrise ?? .now.startOfDay
+		let sunset: Date = sun?.safeSunset ?? .now.endOfDay
+		let currentDate: Date = sun?.date ?? .now
 		let twilightDuration: TimeInterval = 60 * 180
-		let duration = sunset.addingTimeInterval(twilightDuration).timeIntervalSince(sunrise.addingTimeInterval(-twilightDuration))
-		let progress = (sun?.date ?? .now).timeIntervalSince(sunrise.addingTimeInterval(-twilightDuration / 1.5)) / duration
-		let progressThroughStops = progress * Double(colors.count)
-		let index = min(max(0, Int(floor(progressThroughStops))), colors.count - 1)
-		let nextIndex = max(0, min(colors.count - 1, Int(ceil(progressThroughStops))))
-		let stopsA = colors[index]
-		let stopsB = colors[nextIndex]
-		let progressThroughCurrentStops = progressThroughStops - Double(index)
-		
-		return [
-			stopsA[0].mix(with: stopsB[0], by: progressThroughCurrentStops),
-			stopsA[1].mix(with: stopsB[1], by: progressThroughCurrentStops),
-		]
+
+		let dayStart: Date = sunrise.addingTimeInterval(-twilightDuration)
+		let dayEnd: Date = sunset.addingTimeInterval(twilightDuration)
+		let duration: TimeInterval = dayEnd.timeIntervalSince(dayStart)
+
+		let progressStart: Date = sunrise.addingTimeInterval(-twilightDuration / 1.5)
+		let progress: Double = currentDate.timeIntervalSince(progressStart) / duration
+
+		let colorCount: Int = colors.count
+		let progressThroughStops: Double = progress * Double(colorCount)
+		let index: Int = min(max(0, Int(floor(progressThroughStops))), colorCount - 1)
+		let nextIndex: Int = max(0, min(colorCount - 1, Int(ceil(progressThroughStops))))
+
+		let stopsA: [Color] = colors[index]
+		let stopsB: [Color] = colors[nextIndex]
+		let progressThroughCurrentStops: Double = progressThroughStops - Double(index)
+
+		let color0: Color = stopsA[0].mix(with: stopsB[0], by: progressThroughCurrentStops)
+		let color1: Color = stopsA[1].mix(with: stopsB[1], by: progressThroughCurrentStops)
+
+		return [color0, color1]
 	}
 	
 	var body: LinearGradient {

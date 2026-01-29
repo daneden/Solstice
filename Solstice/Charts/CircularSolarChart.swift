@@ -18,16 +18,20 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	#if WIDGET_EXTENSION
 	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
 	#endif
-	
+
 	@State private var size = CGSize.zero
+	@State private var cachedSun: Sun?
+	@State private var lastLocationKey: String?
 	var date: Date?
-	
+
 	var location: Location
-	
+
 	var timeZone: TimeZone { location.timeZone }
-	
-	var sun: Sun? {
-		Sun(for: date ?? timeMachine.date, coordinate: location.coordinate)
+
+	var sun: Sun? { cachedSun }
+
+	private var locationKey: String {
+		"\(location.coordinate.latitude),\(location.coordinate.longitude)"
 	}
 	
 	var majorSunSize: Double {
@@ -138,103 +142,151 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	var sundial: some View {
 		ZStack {
-			background.mask {
-				Circle()
-					.overlay {
-						GeometryReader { g in
-							Color.clear.task(id: g.size) {
-								size = g.size
-							}
-							.onAppear {
-								size = g.size
-							}
+			sundialBackground
+			phaseSlices
+			sundialCenter
+		}
+	}
+
+	private var sundialBackground: some View {
+		background.mask {
+			Circle()
+				.overlay {
+					GeometryReader { g in
+						Color.clear.task(id: g.size) {
+							size = g.size
 						}
-					}
-			}
-			.overlay {
-				Circle()
-					.fill(.clear)
-					.strokeBorder(colorScheme == .dark ? .white : .black.opacity(0.5), lineWidth: 1)
-					.opacity(0.2)
-					.blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
-			}
-			
-			Group {
-				if let phases = sun?.phases {
-					ForEach(Array(phases.keys), id: \.self) { key in
-						if let (sunrise, sunset) = phases[key] {
-							CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
-								.fill(.black.opacity(0.06))
-								.blendMode(.plusDarker)
-							
-							Group {
-								Rectangle()
-									.fill(foregroundStyle.opacity(0.1))
-									.frame(height: 1)
-									.mask {
-										LinearGradient(stops: [Gradient.Stop.init(color: .clear, location: 0.499), .init(color: .black, location: 0.5)], startPoint: .leading, endPoint: .trailing)
-									}
-									.rotationEffect(angle(for: sunrise))
-								
-								Rectangle()
-									.fill(foregroundStyle.opacity(0.1))
-									.frame(height: 1)
-									.mask {
-										LinearGradient(stops: [Gradient.Stop.init(color: .clear, location: 0.499), .init(color: .black, location: 0.5)], startPoint: .leading, endPoint: .trailing)
-									}
-									.rotationEffect(angle(for: sunset))
-							}
-							.blendMode(blendMode)
+						.onAppear {
+							size = g.size
 						}
 					}
 				}
+		}
+		.overlay {
+			sundialBorderOverlay
+		}
+	}
+
+	private var sundialBorderOverlay: some View {
+		let borderColor: Color = colorScheme == .dark ? .white : .black.opacity(0.5)
+		let borderBlendMode: BlendMode = colorScheme == .dark ? .plusLighter : .plusDarker
+		return Circle()
+			.fill(.clear)
+			.strokeBorder(borderColor, lineWidth: 1)
+			.opacity(0.2)
+			.blendMode(borderBlendMode)
+	}
+
+	private var phaseSlices: some View {
+		Group {
+			if let phases = sun?.phases {
+				let phaseKeys: [Sun.Phase] = Array(phases.keys)
+				ForEach(phaseKeys, id: \.self) { key in
+					phaseSlice(for: key, phases: phases)
+				}
 			}
-			.aspectRatio(1, contentMode: .fit)
-			
-			ZStack {
-				Circle()
-					.fill(foregroundStyle.opacity(0.4))
-					.mask {
-						ZStack {
-							Circle()
-								.fill(.clear)
-								.stroke(.black, lineWidth: 1)
-								.padding()
-							
-							if let phases = sun?.phases {
-								ForEach(Array(phases.keys), id: \.self) { key in
-									if let (sunrise, sunset) = phases[key] {
-										Circle()
-											.frame(width: minorSunSize)
-											.frame(maxWidth: .infinity, alignment: .trailing)
-											.padding(.trailing)
-											.offset(x: minorSunSize / 2)
-											.rotationEffect(angle(for: sunrise))
-										
-										Circle()
-											.frame(width: minorSunSize)
-											.frame(maxWidth: .infinity, alignment: .trailing)
-											.padding(.trailing)
-											.offset(x: minorSunSize / 2)
-											.rotationEffect(angle(for: sunset))
-									}
-								}
-							}
-						}
-					}
-					.blendMode(blendMode)
-				
-				aboveHorizonSun
-					.reverseMask {
-						safeSunriseSunsetShape
-					}
-				
-				belowHorizonSun
-					.mask {
-						safeSunriseSunsetShape
-					}
+		}
+		.aspectRatio(1, contentMode: .fit)
+	}
+
+	@ViewBuilder
+	private func phaseSlice(for key: Sun.Phase, phases: [Sun.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
+		if let (sunrise, sunset) = phases[key],
+			 let sunrise,
+			 let sunset {
+			CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
+				.fill(.black.opacity(0.06))
+				.blendMode(.plusDarker)
+
+			phaseLines(sunrise: sunrise, sunset: sunset)
+		}
+	}
+
+	private func phaseLines(sunrise: Date, sunset: Date) -> some View {
+		let lineMaskGradient = LinearGradient(
+			stops: [
+				Gradient.Stop(color: .clear, location: 0.499),
+				Gradient.Stop(color: .black, location: 0.5)
+			],
+			startPoint: .leading,
+			endPoint: .trailing
+		)
+
+		return Group {
+			Rectangle()
+				.fill(foregroundStyle.opacity(0.1))
+				.frame(height: 1)
+				.mask { lineMaskGradient }
+				.rotationEffect(angle(for: sunrise))
+
+			Rectangle()
+				.fill(foregroundStyle.opacity(0.1))
+				.frame(height: 1)
+				.mask { lineMaskGradient }
+				.rotationEffect(angle(for: sunset))
+		}
+		.blendMode(blendMode)
+	}
+
+	private var sundialCenter: some View {
+		ZStack {
+			sundialCenterCircle
+			aboveHorizonSun
+				.reverseMask {
+					safeSunriseSunsetShape
+				}
+			belowHorizonSun
+				.mask {
+					safeSunriseSunsetShape
+				}
+		}
+		.frame(width: size.width / 1.5, height: size.height / 1.5)
+	}
+
+	private var sundialCenterCircle: some View {
+		Circle()
+			.fill(foregroundStyle.opacity(0.4))
+			.mask {
+				ZStack {
+					Circle()
+						.fill(.clear)
+						.stroke(.black, lineWidth: 1)
+						.padding()
+
+					phaseMarkers
+				}
 			}
-			.frame(width: size.width / 1.5, height: size.height / 1.5)
+			.blendMode(blendMode)
+	}
+
+	@ViewBuilder
+	private var phaseMarkers: some View {
+		if let phases = sun?.phases {
+			let phaseKeys: [Sun.Phase] = Array(phases.keys)
+			ForEach(phaseKeys, id: \.self) { key in
+				phaseMarker(for: key, phases: phases)
+			}
+		}
+	}
+
+	@ViewBuilder
+	private func phaseMarker(for key: Sun.Phase, phases: [Sun.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
+		if let (sunrise, sunset) = phases[key],
+			 let sunrise,
+			 let sunset {
+			Circle()
+				.frame(width: minorSunSize)
+				.frame(maxWidth: .infinity, alignment: .trailing)
+				.padding(.trailing)
+				.offset(x: minorSunSize / 2)
+				.rotationEffect(angle(for: sunrise))
+
+			Circle()
+				.frame(width: minorSunSize)
+				.frame(maxWidth: .infinity, alignment: .trailing)
+				.padding(.trailing)
+				.offset(x: minorSunSize / 2)
+				.rotationEffect(angle(for: sunset))
 		}
 	}
 	
@@ -304,6 +356,19 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			.monospacedDigit()
 			.frame(maxWidth: .infinity)
 			.aspectRatio(1, contentMode: .fit)
+			.onChange(of: date ?? timeMachine.date) { _, newDate in
+				cachedSun?.setDate(newDate)
+			}
+			.onChange(of: locationKey) { _, _ in
+				cachedSun = Sun(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+				lastLocationKey = locationKey
+			}
+			.onAppear {
+				if cachedSun == nil || lastLocationKey != locationKey {
+					cachedSun = Sun(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+					lastLocationKey = locationKey
+				}
+			}
 	}
 }
 

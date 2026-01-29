@@ -66,81 +66,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	var body: some View {
 		NavigationStack {
 			List {
-				Group {
-					Picker(selection: $chartAppearance) {
-						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-							Text(appearance.description)
-						}
-					} label: {
-						Text("Chart appearance")
-					}
-					#if !os(watchOS)
-					.pickerStyle(.segmented)
-					#endif
-					
-					VStack {
-						if let chartRenderedAsImage {
-							chartRenderedAsImage
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 8)
-						} else {
-							ProgressView()
-						}
-					}
-					.frame(height: 360)
-					.frame(maxWidth: .infinity, alignment: .center)
-					.padding(.bottom)
-					
-					Toggle(isOn: $showLocationName) {
-						Label("Show location", systemImage: showLocationName ? "location" : "location.slash")
-							.contentTransition(.symbolEffect(.replace))
-					}
-					
-					Section {
-						Group {
-#if os(iOS)
-							let solarGradient = SkyGradient(sun: sun)
-							if let igStoriesUrl,
-								 let imageData,
-								 let topColor = solarGradient.stops.first?.toHex(),
-								 let bottomColor = solarGradient.stops.last?.toHex(),
-								 displayIgShareButton {
-								Button {
-									let pasteboardItems = [[
-										"com.instagram.sharedSticker.stickerImage": imageData,
-										"com.instagram.sharedSticker.backgroundTopColor": topColor,
-										"com.instagram.sharedSticker.backgroundBottomColor": bottomColor
-									]]
-									
-									UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
-									UIApplication.shared.open(igStoriesUrl)
-								} label: {
-									Label {
-										Text("Share to Instagram Story")
-									} icon: {
-										Image(.instagram)
-									}
-								}
-							}
-#endif
-							if let chartRenderedAsImage {
-								ShareLink(
-									item: chartRenderedAsImage,
-									preview: SharePreview("Daylight in \(location.title ?? "Current Location")", image: chartRenderedAsImage)
-								)
-							}
-						}
-						.foregroundStyle(.tint)
-						#if !os(watchOS)
-						.listRowSeparator(.visible)
-						#endif
-					}
-				}
-				#if !os(watchOS)
-				.listRowSeparator(.hidden)
-				#endif
-				
+				mainListContent
 			}
 			.listStyle(.plain)
 			.toolbar {
@@ -154,6 +80,113 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 			.task(id: deps) {
 				self.chartRenderedAsImage = buildChartRenderedAsImage()
 			}
+		}
+	}
+
+	@ViewBuilder
+	private var mainListContent: some View {
+		Group {
+			appearancePicker
+			chartPreview
+			locationToggle
+			shareSection
+		}
+		#if !os(watchOS)
+		.listRowSeparator(.hidden)
+		#endif
+	}
+
+	private var appearancePicker: some View {
+		Picker(selection: $chartAppearance) {
+			ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+				Text(appearance.description)
+			}
+		} label: {
+			Text("Chart appearance")
+		}
+		#if !os(watchOS)
+		.pickerStyle(.segmented)
+		#endif
+	}
+
+	private var chartPreview: some View {
+		VStack {
+			if let chartRenderedAsImage {
+				chartRenderedAsImage
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 8)
+			} else {
+				ProgressView()
+			}
+		}
+		.frame(height: 360)
+		.frame(maxWidth: .infinity, alignment: .center)
+		.padding(.bottom)
+	}
+
+	private var locationToggle: some View {
+		Toggle(isOn: $showLocationName) {
+			Label("Show location", systemImage: showLocationName ? "location" : "location.slash")
+				.contentTransition(.symbolEffect(.replace))
+		}
+	}
+
+	private var shareSection: some View {
+		Section {
+			shareButtons
+				.foregroundStyle(.tint)
+				#if !os(watchOS)
+				.listRowSeparator(.visible)
+				#endif
+		}
+	}
+
+	@ViewBuilder
+	private var shareButtons: some View {
+#if os(iOS)
+		instagramShareButton
+#endif
+		standardShareLink
+	}
+
+#if os(iOS)
+	@ViewBuilder
+	private var instagramShareButton: some View {
+		let solarGradient = SkyGradient(sun: sun)
+		if let igStoriesUrl,
+			 let imageData,
+			 let topColor = solarGradient.stops.first?.toHex(),
+			 let bottomColor = solarGradient.stops.last?.toHex(),
+			 displayIgShareButton {
+			Button {
+				let pasteboardItems: [[String: Any]] = [[
+					"com.instagram.sharedSticker.stickerImage": imageData,
+					"com.instagram.sharedSticker.backgroundTopColor": topColor,
+					"com.instagram.sharedSticker.backgroundBottomColor": bottomColor
+				]]
+
+				UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
+				UIApplication.shared.open(igStoriesUrl)
+			} label: {
+				Label {
+					Text("Share to Instagram Story")
+				} icon: {
+					Image(.instagram)
+				}
+			}
+		}
+	}
+#endif
+
+	@ViewBuilder
+	private var standardShareLink: some View {
+		if let chartRenderedAsImage {
+			let title: String = location.title ?? "Current Location"
+			ShareLink(
+				item: chartRenderedAsImage,
+				preview: SharePreview("Daylight in \(title)", image: chartRenderedAsImage)
+			)
 		}
 	}
 	

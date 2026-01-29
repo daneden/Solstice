@@ -12,13 +12,19 @@ protocol SolsticeWidgetView: View {
 }
 
 extension SolsticeWidgetView {
+	/// Uses pre-computed Sun from timeline entry if available, otherwise computes (fallback)
 	var sun: Sun? {
+		if let cached = entry.cachedSun {
+			return cached
+		}
+		// Fallback for backwards compatibility
 		guard let location else { return nil }
 		return Sun(for: entry.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 
+	/// Uses pre-computed tomorrow Sun from timeline entry if available
 	var tomorrowSun: Sun? {
-		sun?.tomorrow
+		entry.cachedTomorrowSun ?? sun?.tomorrow
 	}
 
 	var relevantSun: Sun? {

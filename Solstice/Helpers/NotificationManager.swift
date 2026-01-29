@@ -139,7 +139,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 				print("Too many pending background task requests")
 			case .notPermitted:
 				print("Background task not permitted - check Info.plist configuration")
-			@unknown default:
+			default:
 				print("Failed to schedule background task: \(error.localizedDescription)")
 			}
 		} catch {
@@ -190,7 +190,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		let title = buildNotificationTitle(for: date)
 		let body = buildNotificationBody(sun: sun, timeZone: timeZone, difference: difference, date: date, context: context)
 
-		return (title: title, body: body)
+		return NotificationContent(title: title, body: body)
 	}
 
 	// MARK: SAD Preference Handling
@@ -348,7 +348,10 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 }
 
 extension NotificationManager {
-	typealias NotificationContent = (title: String, body: String)
+	struct NotificationContent {
+		let title: String
+		let body: String
+	}
 	
 	enum Context {
 		case preview, notification

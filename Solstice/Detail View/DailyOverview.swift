@@ -15,23 +15,34 @@ struct DailyOverview<Location: AnyLocation>: View {
 
 	var sun: Sun
 	var location: Location
-	
+
 	@State private var gradientSun: Sun?
-	
+	@State private var cachedDifferenceFromPreviousSolstice: TimeInterval = 0
+	@State private var lastDifferenceKey: String?
+
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
-	
+
 	var solarDateIsInToday: Bool {
 		var calendar = Calendar.autoupdatingCurrent
 		calendar.timeZone = location.timeZone
 		return calendar.isDate(sun.date, inSameDayAs: Date())
 	}
-	
+
 	var differenceFromPreviousSolstice: TimeInterval {
+		cachedDifferenceFromPreviousSolstice
+	}
+
+	private var differenceKey: String {
+		let year = calendar.component(.year, from: timeMachine.date)
+		return "\(year),\(location.coordinate.latitude),\(location.coordinate.longitude)"
+	}
+
+	private func updateDifferenceFromPreviousSolstice() {
 		let currentSun = Sun(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 		let previousSolsticeSun = Sun(for: currentSun.date.previousSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
-
-		return previousSolsticeSun.daylightDuration - currentSun.daylightDuration
+		cachedDifferenceFromPreviousSolstice = previousSolsticeSun.daylightDuration - currentSun.daylightDuration
+		lastDifferenceKey = differenceKey
 	}
 	
 	var nextGreaterThanPrevious: Bool {
@@ -173,6 +184,14 @@ struct DailyOverview<Location: AnyLocation>: View {
 					.contentTransition(.symbolEffect)
 			}
 		}
+		.onChange(of: differenceKey) { _, _ in
+			updateDifferenceFromPreviousSolstice()
+		}
+		.onAppear {
+			if lastDifferenceKey != differenceKey {
+				updateDifferenceFromPreviousSolstice()
+			}
+		}
 	}
 }
 
@@ -196,7 +215,11 @@ extension DailyOverview {
 				}
 		}
 		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
-			self.gradientSun = Sun(for: date, coordinate: sun.coordinate)
+			if gradientSun != nil {
+				gradientSun?.setDate(date)
+			} else {
+				gradientSun = Sun(for: date, coordinate: sun.coordinate, timeZone: location.timeZone)
+			}
 		}
 		#endif
 		#if os(macOS)

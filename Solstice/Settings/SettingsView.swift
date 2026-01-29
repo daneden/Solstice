@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(macOS)
+import AppKit
+#endif
 
 struct SettingsView: View {
 	@Environment(\.dismiss) private var dismiss
@@ -25,19 +28,23 @@ struct SettingsView: View {
 					if !currentLocation.isAuthorized {
 						Section {
 							Button("Enable location services", systemImage: "location") {
+								#if os(macOS)
+								// On macOS, open System Settings directly since requestWhenInUseAuthorization
+								// doesn't reliably trigger the authorization prompt
+								if let url = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_LocationServices") {
+									NSWorkspace.shared.open(url)
+								}
+								#else
 								switch currentLocation.authorizationStatus {
 								case .notDetermined:
 									currentLocation.requestAccess()
 								case .restricted, .denied:
-									#if !os(macOS)
 									if let url = URL(string: UIApplication.openSettingsURLString) {
 										openURL(url)
 									}
-									#else
-									return
-									#endif
 								default: return
 								}
+								#endif
 							}
 						} header: {
 							Text("Location")

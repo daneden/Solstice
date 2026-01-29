@@ -14,7 +14,7 @@ struct WidgetMissingLocationView: View {
 	
 	var body: some View {
 		switch family {
-#if !os(macOS)
+#if os(watchOS) || os(iOS)
 		case .accessoryCorner:
 			locationMissingIcon
 				.widgetLabel {

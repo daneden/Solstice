@@ -11,14 +11,22 @@ import TimeMachine
 
 struct SolarExtremetiesOverview<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
-	
+
+	@State private var cachedDecemberSolsticeSun: Sun?
+	@State private var cachedJuneSolsticeSun: Sun?
+
 	var location: Location
-	
+
 	var body: some View {
-		if let shortestDay,
-			 let longestDay {
-			SolarExtremityView(sun: longestDay, extremity: .longest)
-			SolarExtremityView(sun: shortestDay, extremity: .shortest)
+		Group {
+			if let shortestDay,
+				 let longestDay {
+				SolarExtremityView(sun: longestDay, extremity: .longest)
+				SolarExtremityView(sun: shortestDay, extremity: .shortest)
+			}
+		}
+		.task(id: solsticeDependencies) {
+			updateSolsticeSuns()
 		}
 	}
 }
@@ -153,24 +161,14 @@ extension CompatibleDisclosureGroup {
 }
 
 extension SolarExtremetiesOverview {
-	var decemberSolsticeSun: Sun? {
-		let year = calendar.component(.year, from: timeMachine.date)
-		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		return Sun(for: decemberSolstice, coordinate: location.coordinate)
-	}
-
-	var juneSolsticeSun: Sun? {
-		let year = calendar.component(.year, from: timeMachine.date)
-		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
-		return Sun(for: juneSolstice, coordinate: location.coordinate)
-	}
+	var decemberSolsticeSun: Sun? { cachedDecemberSolsticeSun }
+	var juneSolsticeSun: Sun? { cachedJuneSolsticeSun }
 
 	var longestDay: Sun? {
 		guard let decemberSolsticeSun,
 					let juneSolsticeSun else {
 			return nil
 		}
-
 		return decemberSolsticeSun.daylightDuration > juneSolsticeSun.daylightDuration ? decemberSolsticeSun : juneSolsticeSun
 	}
 
@@ -179,8 +177,20 @@ extension SolarExtremetiesOverview {
 					let juneSolsticeSun else {
 			return nil
 		}
-
 		return decemberSolsticeSun.daylightDuration < juneSolsticeSun.daylightDuration ? decemberSolsticeSun : juneSolsticeSun
+	}
+
+	var solsticeDependencies: [AnyHashable] {
+		let year = calendar.component(.year, from: timeMachine.date)
+		return [year, location.coordinate.latitude, location.coordinate.longitude]
+	}
+
+	func updateSolsticeSuns() {
+		let year = calendar.component(.year, from: timeMachine.date)
+		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
+		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
+		cachedDecemberSolsticeSun = Sun(for: decemberSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
+		cachedJuneSolsticeSun = Sun(for: juneSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 }
 

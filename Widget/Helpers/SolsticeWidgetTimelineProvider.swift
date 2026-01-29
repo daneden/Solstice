@@ -14,6 +14,11 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	var location: SolsticeWidgetLocation?
 	var relevance: TimelineEntryRelevance?
 	var locationError: LocationError?
+
+	/// Pre-computed Sun for this entry's date and location (avoids recomputation in views)
+	var cachedSun: Sun?
+	/// Pre-computed tomorrow Sun for this entry (avoids recomputation in views)
+	var cachedTomorrowSun: Sun?
 }
 
 enum LocationError: Error {
@@ -77,7 +82,22 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 		Task {
 			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: widgetLocation, locationError: error)
+			let resolvedLocation = widgetLocation ?? (context.isPreview ? .proxiedToTimeZone : nil)
+			// Pre-compute Sun for snapshot
+			var cachedSun: Sun?
+			var cachedTomorrowSun: Sun?
+			if let coord = resolvedLocation?.coordinate {
+				let tz = resolvedLocation?.timeZone ?? .current
+				cachedSun = Sun(for: Date(), coordinate: coord, timeZone: tz)
+				cachedTomorrowSun = cachedSun?.tomorrow
+			}
+			let entry = SolsticeWidgetTimelineEntry(
+				date: Date(),
+				location: resolvedLocation,
+				locationError: context.isPreview ? nil : error,
+				cachedSun: cachedSun,
+				cachedTomorrowSun: cachedTomorrowSun
+			)
 			completion(entry)
 		}
 	}
@@ -94,7 +114,7 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 				return completion(
 					Timeline(
 						entries: [
-							SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)
+							SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error, cachedSun: nil, cachedTomorrowSun: nil)
 						],
 						policy: .after(.now.addingTimeInterval(60 * 15))
 					)
@@ -170,7 +190,10 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 			// Helper to build an entry with relevance based on that day's solar data
 			func makeEntry(at date: Date) -> Entry {
 				let dayStart = calendar.startOfDay(for: date)
-				let sun = sunByDay[dayStart] ?? todaySun
+				var sun = sunByDay[dayStart] ?? todaySun
+
+				// Update the sun's date to the entry time (reuses cached calculations if same day)
+				sun.setDate(date)
 
 				let distanceToSunrise = abs(sun.safeSunrise.timeIntervalSince(date))
 				let distanceToSunset = abs(sun.safeSunset.timeIntervalSince(date))
@@ -179,10 +202,16 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 					? .init(score: 10, duration: nearestEventDistance)
 					: nil
 
+				// Pre-compute tomorrow sun for widgets that need it
+				let tomorrowStart = calendar.date(byAdding: .day, value: 1, to: dayStart) ?? dayStart
+				let tomorrowSun = sunByDay[tomorrowStart] ?? sun.tomorrow
+
 				return Entry(
 					date: date,
 					location: widgetLocation,
-					relevance: relevance
+					relevance: relevance,
+					cachedSun: sun,
+					cachedTomorrowSun: tomorrowSun
 				)
 			}
 
@@ -211,28 +240,38 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 
 
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
-		SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation)
+		let sun = Sun(for: Date(), coordinate: SolsticeWidgetLocation.defaultLocation.coordinate, timeZone: SolsticeWidgetLocation.defaultLocation.timeZone)
+		return SolsticeWidgetTimelineEntry(date: Date(), location: .defaultLocation, cachedSun: sun, cachedTomorrowSun: sun.tomorrow)
 	}
 }
 
 extension SolsticeWidgetTimelineEntry {
+	/// Helper to create an entry with pre-computed Sun
+	static func withSun(date: Date, location: SolsticeWidgetLocation?, locationError: LocationError? = nil) -> SolsticeWidgetTimelineEntry {
+		guard let loc = location else {
+			return SolsticeWidgetTimelineEntry(date: date, location: nil, locationError: locationError, cachedSun: nil, cachedTomorrowSun: nil)
+		}
+		let sun = Sun(for: date, coordinate: loc.coordinate, timeZone: loc.timeZone)
+		return SolsticeWidgetTimelineEntry(date: date, location: loc, locationError: locationError, cachedSun: sun, cachedTomorrowSun: sun.tomorrow)
+	}
+
 	static func previewTimeline() async -> [SolsticeWidgetTimelineEntry] {
 		[
-		SolsticeWidgetTimelineEntry(date: .now, location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(1), location: nil),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(2), location: nil, locationError: .locationUpdateFailed),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(3), location: nil, locationError: .notAuthorized),
-		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(4), location: nil, locationError: .reverseGeocodingFailed),
+		.withSun(date: .now, location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 6), location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 12), location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 18), location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 24), location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 30), location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 36), location: .defaultLocation),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(1), location: nil),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(2), location: nil, locationError: .locationUpdateFailed),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(3), location: nil, locationError: .notAuthorized),
+		.withSun(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(4), location: nil, locationError: .reverseGeocodingFailed),
 		]
 	}
 
 	static var placeholder: Self {
-		SolsticeWidgetTimelineEntry(date: .now, location: .proxiedToTimeZone)
+		.withSun(date: .now, location: .proxiedToTimeZone)
 	}
 }

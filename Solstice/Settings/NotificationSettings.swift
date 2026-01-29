@@ -56,135 +56,189 @@ struct NotificationSettings: View {
 	
 	var body: some View {
 		Form {
-			Section {
-				Toggle("Enable notifications", isOn: $notificationsEnabled)
-					.task(id: notificationsEnabled) {
-						if notificationsEnabled == true {
-							notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
-						}
-					}
-			}
-			
-			Group {
-				Section {
-					Picker("Location", selection: $customNotificationLocationUUID.animation()) {
-						if currentLocation.isAuthorized {
-							Text("Current location")
-								.tag(String?.none)
-						} else if customNotificationLocationUUID == nil {
-							Text("Select location")
-								.tag(String?.none)
-								.disabled(true)
-						}
-						ForEach(items) { location in
-							if let title = location.title {
-								Text(title)
-									.tag(location.uuid?.uuidString)
-							}
-						}
-					}
-				}
-				
-				Section {
-					Picker(selection: $scheduleType) {
-						ForEach(Preferences.NotificationSettings.ScheduleType.allCases, id: \.self) { scheduleType in
-							Text(scheduleType.description)
-						}
-					} label: {
-						Text("Send at")
-					}
-					
-					if scheduleType == .specificTime {
-						DatePicker(selection: notificationTime, displayedComponents: [.hourAndMinute]) {
-							Text("Time")
-						}
-					} else {
-						Picker(selection: $notificationOffset) {
-							ForEach(Preferences.NotificationSettings.relativeOffsetDetents, id: \.self) { timeInterval in
-								switch timeInterval {
-								case let x where x < 0:
-									Text("\(Duration.seconds(abs(timeInterval)).formatted(.units(maximumUnitCount: 2))) before")
-								case let x where x > 0:
-									Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
-								default:
-									Text("at \(Text(scheduleType.description))")
-								}
-							}
-						} label: {
-							Text("Time")
-						}
-					}
-				}
-				
-				DisclosureGroup {
-					ForEach(notificationFragments, id: \.label) { fragment in
-						Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
-					}
-					
-					VStack(alignment: .leading) {
-						Text("Notification Preview")
-							.font(.footnote)
-							.foregroundStyle(.secondary)
-						NotificationPreview()
-					}
-				} label: {
-					Text("Customise notification content")
-				}
-				
-				Section {
-					Picker(selection: $sadPreference) {
-						ForEach(Preferences.SADPreference.allCases, id: \.self) { sadPreference in
-							Text(sadPreference.description)
-						}
-					} label: {
-						Text("SAD preference")
-					}
-				} footer: {
-					Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
-				}
-			}
-			.disabled(!notificationsEnabled)
+			enableSection
+			settingsGroup
 		}
 		.navigationTitle("Notifications")
 		.formStyle(.grouped)
 	}
+
+	private var enableSection: some View {
+		Section {
+			Toggle("Enable notifications", isOn: $notificationsEnabled)
+				.task(id: notificationsEnabled) {
+					if notificationsEnabled == true {
+						notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
+					}
+				}
+		}
+	}
+
+	private var settingsGroup: some View {
+		Group {
+			locationSection
+			scheduleSection
+			contentCustomizationGroup
+			sadPreferenceSection
+		}
+		.disabled(!notificationsEnabled)
+	}
+
+	private var locationSection: some View {
+		Section {
+			Picker("Location", selection: $customNotificationLocationUUID.animation()) {
+				locationPickerContent
+			}
+		}
+	}
+
+	@ViewBuilder
+	private var locationPickerContent: some View {
+		if currentLocation.isAuthorized {
+			Text("Current location")
+				.tag(String?.none)
+		} else if customNotificationLocationUUID == nil {
+			Text("Select location")
+				.tag(String?.none)
+				.disabled(true)
+		}
+		ForEach(items) { location in
+			if let title = location.title {
+				Text(title)
+					.tag(location.uuid?.uuidString)
+			}
+		}
+	}
+
+	private var scheduleSection: some View {
+		Section {
+			scheduleTypePicker
+			scheduleTimePicker
+		}
+	}
+
+	private var scheduleTypePicker: some View {
+		Picker(selection: $scheduleType) {
+			ForEach(Preferences.NotificationSettings.ScheduleType.allCases, id: \.self) { type in
+				Text(type.description)
+			}
+		} label: {
+			Text("Send at")
+		}
+	}
+
+	@ViewBuilder
+	private var scheduleTimePicker: some View {
+		if scheduleType == .specificTime {
+			DatePicker(selection: notificationTime, displayedComponents: [.hourAndMinute]) {
+				Text("Time")
+			}
+		} else {
+			relativeOffsetPicker
+		}
+	}
+
+	private var relativeOffsetPicker: some View {
+		Picker(selection: $notificationOffset) {
+			ForEach(Preferences.NotificationSettings.relativeOffsetDetents, id: \.self) { timeInterval in
+				relativeOffsetLabel(for: timeInterval)
+			}
+		} label: {
+			Text("Time")
+		}
+	}
+
+	private func relativeOffsetLabel(for timeInterval: TimeInterval) -> some View {
+		let text: Text
+		if timeInterval < 0 {
+			text = Text("\(Duration.seconds(abs(timeInterval)).formatted(.units(maximumUnitCount: 2))) before")
+		} else if timeInterval > 0 {
+			text = Text("\(Duration.seconds(timeInterval).formatted(.units(maximumUnitCount: 2))) after")
+		} else {
+			text = Text("at \(Text(scheduleType.description))")
+		}
+		return text
+	}
+
+	private var contentCustomizationGroup: some View {
+		DisclosureGroup {
+			ForEach(notificationFragments, id: \.label) { fragment in
+				Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
+			}
+
+			VStack(alignment: .leading) {
+				Text("Notification Preview")
+					.font(.footnote)
+					.foregroundStyle(.secondary)
+				NotificationPreview()
+			}
+		} label: {
+			Text("Customise notification content")
+		}
+	}
+
+	private var sadPreferenceSection: some View {
+		Section {
+			Picker(selection: $sadPreference) {
+				ForEach(Preferences.SADPreference.allCases, id: \.self) { pref in
+					Text(pref.description)
+				}
+			} label: {
+				Text("SAD preference")
+			}
+		} footer: {
+			Text("Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder.")
+		}
+	}
 }
 
 struct NotificationPreview: View {
-	var title: String = ""
-	var bodyContent: String = ""
+	@AppStorage(Preferences.notificationsIncludeSunTimes) private var notifsIncludeSunTimes
+	@AppStorage(Preferences.notificationsIncludeDaylightDuration) private var notifsIncludeDaylightDuration
+	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) private var notifsIncludeSolsticeCountdown
+	@AppStorage(Preferences.notificationsIncludeDaylightChange) private var notifsIncludeDaylightChange
 	
-	init() {
-		guard let content = NotificationManager.buildNotificationContent(for: NotificationManager.getNextNotificationDate(after: Date()), location: .init(), in: .preview) else {
-			return
-		}
-		
-		title = content.title
-		bodyContent = content.body
-	}
+	@State var content: NotificationManager.NotificationContent?
 	
 	var body: some View {
-		HStack {
-			Image("notificationPreviewAppIcon")
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.frame(width: 20, height: 20)
-			
-			VStack(alignment: .leading) {
-				Text(title).font(.footnote.bold())
-				Text(bodyContent).font(.footnote.leading(.tight))
-					.fixedSize(horizontal: false, vertical: true)
-					.lineLimit(4)
-					.contentTransition(.interpolate)
+		VStack {
+			if let content {
+				HStack {
+					Image(.notificationPreviewAppIcon)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.frame(width: 20, height: 20)
+					
+					VStack(alignment: .leading) {
+						Text(content.title).font(.footnote.bold())
+						Text(content.body).font(.footnote.leading(.tight))
+							.fixedSize(horizontal: false, vertical: true)
+							.lineLimit(4)
+					}
+					.contentTransition(.numericText())
+					
+					Spacer(minLength: 0)
+				}
+				.padding(.vertical, 8)
+				.padding(.horizontal, 12)
+				.background {
+					RoundedRectangle(cornerRadius: 12, style: .continuous)
+						.fill(.regularMaterial)
+				}
 			}
-			
-			Spacer(minLength: 0)
 		}
-		.padding(.vertical, 8)
-		.padding(.horizontal, 12)
-		.background(.regularMaterial)
-		.cornerRadius(12)
-		.animation(.default, value: bodyContent)
+		.task(id: [notifsIncludeSunTimes, notifsIncludeDaylightChange, notifsIncludeDaylightDuration, notifsIncludeSolsticeCountdown]) {
+			withAnimation {
+				content = NotificationManager.buildNotificationContent(
+					for: NotificationManager.getNextNotificationDate(after: Date()),
+					location: CLLocation(
+						latitude: CLLocationCoordinate2D.proxiedToTimeZone.latitude,
+						longitude: CLLocationCoordinate2D.proxiedToTimeZone.longitude
+					),
+					in: .preview
+				)
+			}
+		}
 	}
 }
 

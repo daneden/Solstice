@@ -44,8 +44,14 @@ struct LocationListRow<Location: ObservableLocation>: View {
 				#if os(iOS)
 					.font(.headline.weight(headingFontWeight))
 				#endif
-				Text(sun.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...sun.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
-					.foregroundStyle(.secondary)
+
+				let sunrise = sun.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
+				let sunset = sun.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
+
+				if sunrise < sunset {
+					Text(sunrise...sunset)
+						.foregroundStyle(.secondary)
+				}
 			}
 			.contentTransition(.identity)
 		}

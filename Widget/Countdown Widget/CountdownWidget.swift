@@ -12,7 +12,7 @@ import SunKit
 struct CountdownWidget: Widget {
 #if os(iOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular, .accessoryCircular]
-#elseif os(macOS)
+#elseif os(macOS) || os(visionOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
 #elseif os(watchOS)
 	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]

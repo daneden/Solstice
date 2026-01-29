@@ -25,12 +25,16 @@ struct DetailView<Location: ObservableLocation>: View {
 	#endif
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
-	
+	@State private var cachedSun: Sun?
+	@State private var lastLocationKey: String?
+
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
-	
-	var sun: Sun? {
-		Sun(for: timeMachine.date, coordinate: location.coordinate)
+
+	var sun: Sun? { cachedSun }
+
+	private var locationKey: String {
+		"\(location.coordinate.latitude),\(location.coordinate.longitude)"
 	}
 	
 	var navBarTitleText: Text {
@@ -84,6 +88,19 @@ struct DetailView<Location: ObservableLocation>: View {
 		.sheet(isPresented: $showShareSheet) {
 			if let sun {
 				ShareSolarChartView(sun: sun, location: location, chartAppearance: chartAppearance)
+			}
+		}
+		.onChange(of: timeMachine.date) { _, newDate in
+			cachedSun?.setDate(newDate)
+		}
+		.onChange(of: locationKey) { _, _ in
+			cachedSun = Sun(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+			lastLocationKey = locationKey
+		}
+		.onAppear {
+			if cachedSun == nil || lastLocationKey != locationKey {
+				cachedSun = Sun(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+				lastLocationKey = locationKey
 			}
 		}
 	}

@@ -9,13 +9,13 @@ import WidgetKit
 import SwiftUI
 
 struct OverviewWidget: Widget {
-#if os(iOS)
+	#if os(iOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular, .accessoryCircular]
-#elseif os(macOS)
+	#elseif os(macOS) || os(visionOS)
 	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
-#elseif os(watchOS)
+	#elseif os(watchOS)
 	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
-#endif
+	#endif
 	
 	var body: some WidgetConfiguration {
 		IntentConfiguration(

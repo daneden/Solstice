@@ -189,13 +189,46 @@ extension Sun {
 		let tomorrowDate = calendar.date(byAdding: .day, value: 1, to: date) ?? date.addingTimeInterval(.twentyFourHours)
 		return Sun(location: location, timeZone: timeZone, date: tomorrowDate)
 	}
+
+	/// Creates a Sun for the previous day, reusing an existing instance if provided
+	func getYesterday(cachedYesterday: inout Sun?) -> Sun {
+		if let cached = cachedYesterday {
+			let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: date) ?? date.addingTimeInterval(-(.twentyFourHours))
+			var updated = cached
+			updated.setDate(yesterdayDate)
+			cachedYesterday = updated
+			return updated
+		}
+		let newYesterday = yesterday
+		cachedYesterday = newYesterday
+		return newYesterday
+	}
+
+	/// Creates a Sun for the next day, reusing an existing instance if provided
+	func getTomorrow(cachedTomorrow: inout Sun?) -> Sun {
+		if let cached = cachedTomorrow {
+			let tomorrowDate = calendar.date(byAdding: .day, value: 1, to: date) ?? date.addingTimeInterval(.twentyFourHours)
+			var updated = cached
+			updated.setDate(tomorrowDate)
+			cachedTomorrow = updated
+			return updated
+		}
+		let newTomorrow = tomorrow
+		cachedTomorrow = newTomorrow
+		return newTomorrow
+	}
 }
 
 // MARK: - Difference Strings
 extension Sun {
 	var compactDifferenceString: LocalizedStringKey {
-		let comparator = date.isToday ? yesterday : Sun(location: location, timeZone: timeZone)
-		let difference = daylightDuration - comparator.daylightDuration
+		compactDifferenceString(comparator: nil)
+	}
+
+	/// Computes the compact difference string, optionally using a pre-computed comparator Sun
+	func compactDifferenceString(comparator: Sun?) -> LocalizedStringKey {
+		let comp = comparator ?? (date.isToday ? yesterday : Sun(location: location, timeZone: timeZone))
+		let difference = daylightDuration - comp.daylightDuration
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
 		let moreOrLess = difference >= 0 ? "+" : "-"
@@ -204,13 +237,18 @@ extension Sun {
 	}
 
 	var differenceString: LocalizedStringKey {
+		differenceString(comparator: nil)
+	}
+
+	/// Computes the difference string, optionally using a pre-computed comparator Sun
+	func differenceString(comparator: Sun?) -> LocalizedStringKey {
 		let formatter = DateFormatter()
 		formatter.doesRelativeDateFormatting = true
 		formatter.dateStyle = .medium
 		formatter.formattingContext = .middleOfSentence
 
-		let comparator = date.isToday ? yesterday : Sun(location: location, timeZone: timeZone)
-		let difference = daylightDuration - comparator.daylightDuration
+		let comp = comparator ?? (date.isToday ? yesterday : Sun(location: location, timeZone: timeZone))
+		let difference = daylightDuration - comp.daylightDuration
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
 		let moreOrLess = difference >= 0 ? NSLocalizedString("more", comment: "More daylight middle of sentence") : NSLocalizedString("less", comment: "Less daylight middle of sentence")
@@ -220,7 +258,7 @@ extension Sun {
 			baseDateString = NSLocalizedString("on \(baseDateString)", comment: "Sentence fragment for nominal date")
 		}
 
-		let comparatorDate = comparator.date
+		let comparatorDate = comp.date
 
 		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))")
 	}
@@ -246,13 +284,23 @@ extension Sun {
 	}
 
 	var nextSolarEvent: Event? {
+		nextSolarEvent(cachedTomorrow: nil)
+	}
+
+	/// Gets the next solar event, optionally using a pre-computed tomorrow Sun
+	func nextSolarEvent(cachedTomorrow: Sun?) -> Event? {
 		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
-		?? tomorrow.events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
+		?? (cachedTomorrow ?? tomorrow).events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
 	}
 
 	var previousSolarEvent: Event? {
+		previousSolarEvent(cachedYesterday: nil)
+	}
+
+	/// Gets the previous solar event, optionally using a pre-computed yesterday Sun
+	func previousSolarEvent(cachedYesterday: Sun?) -> Event? {
 		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
-		?? yesterday.events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
+		?? (cachedYesterday ?? yesterday).events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
 	}
 }
 

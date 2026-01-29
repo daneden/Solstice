@@ -8,7 +8,7 @@
 import WidgetKit
 import SwiftUI
 
-#if !os(macOS)
+#if os(watchOS) || os(iOS)
 struct SolarChartWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.accessoryRectangular]
 	

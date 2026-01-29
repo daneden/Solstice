@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/Suite",
       "state" : {
-        "branch" : "main",
-        "revision" : "e9aea55d107c4185103243a1f389d96e12e239e1"
+        "revision" : "e9aea55d107c4185103243a1f389d96e12e239e1",
+        "version" : "1.0.0"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/TimeMachine",
       "state" : {
-        "branch" : "main",
-        "revision" : "aa5ecbd7eeaf733143184f706c7b170ed547bb4d"
+        "revision" : "aa5ecbd7eeaf733143184f706c7b170ed547bb4d",
+        "version" : "1.0.0"
       }
     }
   ],

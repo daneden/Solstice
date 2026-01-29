@@ -62,173 +62,13 @@ struct DaylightChart: View {
 			if includesSummaryTitle {
 				DaylightSummaryTitle(sun: sun, event: selectedEvent, date: currentX, timeZone: timeZone)
 			}
-			
-			Chart {
-				ForEach(sun.events.filter { range.contains($0.date) }) { solarEvent in
-					if showEventTypes || !Sun.Phase.plottablePhases.contains(solarEvent.phase) {
-						PointMark(
-							x: .value("Event Time", solarEvent.date),
-							y: .value("Event", yValue(for: solarEvent.date ))
-						)
-						.foregroundStyle(pointMarkColor(for: solarEvent.phase))
-						.opacity(solarEvent.phase == .night
-										 || solarEvent.phase == .day
-										 || solarEvent.phase == .sunrise
-										 || solarEvent.phase == .sunset ? 0 : 1)
-						.symbolSize(markSize * .pi * 2)
-					}
+
+			chartContent
+				.frame(maxHeight: 500)
+				.foregroundStyle(.primary)
+				.if(!hideXAxis && !IS_WIDGET_TARGET) { view in
+					view.padding(.bottom)
 				}
-			}
-			.chartYAxis(.hidden)
-			.chartYScale(domain: yScale)
-			.chartXAxis(hideXAxis ? .hidden : .automatic)
-			.chartXAxis {
-				if !hideXAxis {
-					AxisMarks(format: Date.FormatStyle(
-						date: .omitted,
-						time: .shortened,
-						timeZone: timeZone
-					))
-				}
-			}
-			.chartXScale(domain: range)
-			.chartOverlay { proxy in
-				GeometryReader { geo in
-					// MARK: Basic elements
-					Group {
-						// MARK: Horizon Line
-						Rectangle()
-							.fill(.tertiary)
-							.frame(width: geo.size.width, height: 1)
-							.offset(y: proxy.position(forY: yValue(for: sun.safeSunrise)) ?? 0)
-						
-						ZStack {
-							// MARK: Scrub indicator
-							if let currentX {
-								// MARK: Scrub bar
-								Rectangle()
-									.fill(markForegroundColor)
-									.frame(width: 2, height: geo.size.height)
-									.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
-									.overlay {
-										Rectangle()
-											.stroke(style: StrokeStyle(lineWidth: 1))
-											.fill(.background)
-											.frame(width: 2, height: geo.size.height)
-											.position(x: proxy.position(forX: currentX) ?? 0, y: geo.size.height / 2)
-									}
-							}
-							
-							// MARK: Sun below horizon
-							ZStack {
-								Circle()
-									.fill(markBackgroundColor)
-									.overlay {
-										Circle()
-											.strokeBorder(style: StrokeStyle(lineWidth: max(1, markSize / 4)))
-											.fill(markForegroundColor)
-									}
-									.frame(width: markSize * 2.5, height: markSize * 2.5)
-									.position(
-										x: proxy.position(forX: plotDate) ?? 0,
-										y: proxy.position(forY: yValue(for: plotDate)) ?? 0
-									)
-									.shadow(color: .secondary.opacity(0.5), radius: 2)
-									.blendMode(.normal)
-							}
-							.background {
-								Rectangle()
-									.fill(.clear)
-									.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
-									.mask {
-										LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-									}
-									.blendMode(.overlay)
-							}
-							.mask(alignment: .bottom) {
-								Rectangle()
-									.frame(height: geo.size.height - (proxy.position(forY: yValue(for: sun.safeSunrise)) ?? 0))
-							}
-							
-							// MARK: Sun above horizon
-							ZStack {
-								Circle()
-									.fill(markForegroundColor)
-									.frame(width: markSize * 2.5, height: markSize * 2.5)
-									.position(
-										x: proxy.position(forX: plotDate) ?? 0,
-										y: proxy.position(forY: yValue(for: plotDate)) ?? 0
-									)
-									.shadow(color: .secondary.opacity(0.5), radius: 3)
-							}
-							.mask(alignment: .top) {
-								Rectangle()
-									.frame(height: proxy.position(forY: yValue(for: sun.safeSunrise)) ?? 0)
-							}
-						}
-					}
-					
-					// MARK: Scrub hit area
-					Color.clear
-						.contentShape(Rectangle())
-						.if(scrubbable) { view in
-							view
-#if os(iOS)
-								.gesture(DragGesture()
-									.onChanged { value in
-										scrub(to: value.location, in: geo, proxy: proxy)
-									}
-									.onEnded { _ in
-										selectedEvent = nil
-										currentX = nil
-									})
-#elseif os(macOS)
-								.onContinuousHover { value in
-									switch value {
-									case .active(let point):
-										scrub(to: point, in: geo, proxy: proxy)
-									case .ended:
-										selectedEvent = nil
-										currentX = nil
-									}
-								}
-#endif
-						}
-				}
-			}
-			.chartBackground { proxy in
-				// MARK: Solar path
-				Path { path in
-					if let firstPoint = hours.first,
-						 let x = proxy.position(forX: firstPoint),
-						 let y = proxy.position(forY: yValue(for: firstPoint)) {
-						path.move(to: CGPoint(x: x, y: y))
-					}
-					
-					hours.forEach { hour in
-						let x = proxy.position(forX: hour) ?? 0
-						let y = proxy.position(forY: yValue(for: hour)) ?? 0
-						path.addLine(to: CGPoint(x: x, y: y))
-					}
-					
-					if let lastPoint = hours.last,
-						 let x = proxy.position(forX: lastPoint),
-						 let y = proxy.position(forY: yValue(for: lastPoint)) {
-						path.move(to: CGPoint(x: x, y: y))
-					}
-				}
-				.strokedPath(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
-				.fill(.linearGradient(stops: [
-					Gradient.Stop(color: .secondary.opacity(0), location: 0),
-					Gradient.Stop(color: .secondary.opacity(0.2), location: 2 / 6),
-					Gradient.Stop(color: .secondary.opacity(0.6), location: 1),
-				], startPoint: .bottom, endPoint: .top))
-			}
-			.frame(maxHeight: 500)
-			.foregroundStyle(.primary)
-			.if(!hideXAxis && !IS_WIDGET_TARGET) { view in
-				view.padding(.bottom)
-			}
 		}
 		.foregroundStyle(markForegroundColor)
 		.if(appearance == .graphical) { view in
@@ -238,6 +78,207 @@ struct DaylightChart: View {
 		}
 		.environment(\.timeZone, timeZone)
 		.preference(key: DaylightGradientTimePreferenceKey.self, value: currentX ?? sun.date)
+	}
+
+	private var chartContent: some View {
+		Chart {
+			ForEach(filteredEvents, id: \.id) { solarEvent in
+				eventPointMark(for: solarEvent)
+			}
+		}
+		.chartYAxis(.hidden)
+		.chartYScale(domain: yScale)
+		.chartXAxis(hideXAxis ? .hidden : .automatic)
+		.chartXAxis {
+			if !hideXAxis {
+				AxisMarks(format: Date.FormatStyle(
+					date: .omitted,
+					time: .shortened,
+					timeZone: timeZone
+				))
+			}
+		}
+		.chartXScale(domain: range)
+		.chartOverlay { proxy in
+			GeometryReader { geo in
+				chartOverlayContent(proxy: proxy, geo: geo)
+			}
+		}
+		.chartBackground { proxy in
+			solarPathView(proxy: proxy)
+		}
+	}
+
+	private var filteredEvents: [Sun.Event] {
+		sun.events.filter { range.contains($0.date) }
+	}
+
+	private func eventPointMark(for solarEvent: Sun.Event) -> some ChartContent {
+		PointMark(
+			x: .value("Event Time", solarEvent.date),
+			y: .value("Event", yValue(for: solarEvent.date))
+		)
+		.foregroundStyle(pointMarkColor(for: solarEvent.phase))
+		.opacity(eventPointOpacity(for: solarEvent.phase))
+		.symbolSize(markSize * .pi * 2)
+	}
+
+	private func eventPointOpacity(for phase: Sun.Phase) -> Double {
+		let hiddenPhases: Set<Sun.Phase> = [.night, .day, .sunrise, .sunset]
+		let shouldShow: Bool = showEventTypes || !Sun.Phase.plottablePhases.contains(phase)
+		return (shouldShow && !hiddenPhases.contains(phase)) ? 1 : 0
+	}
+
+	@ViewBuilder
+	private func chartOverlayContent(proxy: ChartProxy, geo: GeometryProxy) -> some View {
+		let horizonY: CGFloat = proxy.position(forY: yValue(for: sun.safeSunrise)) ?? 0
+
+		Group {
+			horizonLine(width: geo.size.width, yOffset: horizonY)
+
+			ZStack {
+				scrubIndicator(proxy: proxy, geoHeight: geo.size.height)
+				sunBelowHorizon(proxy: proxy, geo: geo, horizonY: horizonY)
+				sunAboveHorizon(proxy: proxy, horizonY: horizonY)
+			}
+		}
+
+		scrubHitArea(geo: geo, proxy: proxy)
+	}
+
+	private func horizonLine(width: CGFloat, yOffset: CGFloat) -> some View {
+		Rectangle()
+			.fill(.tertiary)
+			.frame(width: width, height: 1)
+			.offset(y: yOffset)
+	}
+
+	@ViewBuilder
+	private func scrubIndicator(proxy: ChartProxy, geoHeight: CGFloat) -> some View {
+		if let currentX {
+			let xPos: CGFloat = proxy.position(forX: currentX) ?? 0
+			Rectangle()
+				.fill(markForegroundColor)
+				.frame(width: 2, height: geoHeight)
+				.position(x: xPos, y: geoHeight / 2)
+				.overlay {
+					Rectangle()
+						.stroke(style: StrokeStyle(lineWidth: 1))
+						.fill(.background)
+						.frame(width: 2, height: geoHeight)
+						.position(x: xPos, y: geoHeight / 2)
+				}
+		}
+	}
+
+	private func sunBelowHorizon(proxy: ChartProxy, geo: GeometryProxy, horizonY: CGFloat) -> some View {
+		let sunX: CGFloat = proxy.position(forX: plotDate) ?? 0
+		let sunY: CGFloat = proxy.position(forY: yValue(for: plotDate)) ?? 0
+		let belowHorizonHeight: CGFloat = geo.size.height - horizonY
+
+		return ZStack {
+			Circle()
+				.fill(markBackgroundColor)
+				.overlay {
+					Circle()
+						.strokeBorder(style: StrokeStyle(lineWidth: max(1, markSize / 4)))
+						.fill(markForegroundColor)
+				}
+				.frame(width: markSize * 2.5, height: markSize * 2.5)
+				.position(x: sunX, y: sunY)
+				.shadow(color: .secondary.opacity(0.5), radius: 2)
+				.blendMode(.normal)
+		}
+		.background {
+			Rectangle()
+				.fill(.clear)
+				.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
+				.mask {
+					LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+				}
+				.blendMode(.overlay)
+		}
+		.mask(alignment: .bottom) {
+			Rectangle()
+				.frame(height: belowHorizonHeight)
+		}
+	}
+
+	private func sunAboveHorizon(proxy: ChartProxy, horizonY: CGFloat) -> some View {
+		let sunX: CGFloat = proxy.position(forX: plotDate) ?? 0
+		let sunY: CGFloat = proxy.position(forY: yValue(for: plotDate)) ?? 0
+
+		return ZStack {
+			Circle()
+				.fill(markForegroundColor)
+				.frame(width: markSize * 2.5, height: markSize * 2.5)
+				.position(x: sunX, y: sunY)
+				.shadow(color: .secondary.opacity(0.5), radius: 3)
+		}
+		.mask(alignment: .top) {
+			Rectangle()
+				.frame(height: horizonY)
+		}
+	}
+
+	private func scrubHitArea(geo: GeometryProxy, proxy: ChartProxy) -> some View {
+		Color.clear
+			.contentShape(Rectangle())
+			.if(scrubbable) { view in
+				view
+#if os(iOS)
+					.gesture(DragGesture()
+						.onChanged { value in
+							scrub(to: value.location, in: geo, proxy: proxy)
+						}
+						.onEnded { _ in
+							selectedEvent = nil
+							currentX = nil
+						})
+#elseif os(macOS)
+					.onContinuousHover { value in
+						switch value {
+						case .active(let point):
+							scrub(to: point, in: geo, proxy: proxy)
+						case .ended:
+							selectedEvent = nil
+							currentX = nil
+						}
+					}
+#endif
+			}
+	}
+
+	private func solarPathView(proxy: ChartProxy) -> some View {
+		Path { path in
+			if let firstPoint = hours.first,
+				 let x = proxy.position(forX: firstPoint),
+				 let y = proxy.position(forY: yValue(for: firstPoint)) {
+				path.move(to: CGPoint(x: x, y: y))
+			}
+
+			hours.forEach { hour in
+				let x: CGFloat = proxy.position(forX: hour) ?? 0
+				let y: CGFloat = proxy.position(forY: yValue(for: hour)) ?? 0
+				path.addLine(to: CGPoint(x: x, y: y))
+			}
+
+			if let lastPoint = hours.last,
+				 let x = proxy.position(forX: lastPoint),
+				 let y = proxy.position(forY: yValue(for: lastPoint)) {
+				path.move(to: CGPoint(x: x, y: y))
+			}
+		}
+		.strokedPath(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
+		.fill(solarPathGradient)
+	}
+
+	private var solarPathGradient: LinearGradient {
+		LinearGradient(stops: [
+			Gradient.Stop(color: .secondary.opacity(0), location: 0),
+			Gradient.Stop(color: .secondary.opacity(0.2), location: 2 / 6),
+			Gradient.Stop(color: .secondary.opacity(0.6), location: 1),
+		], startPoint: .bottom, endPoint: .top)
 	}
 }
 
