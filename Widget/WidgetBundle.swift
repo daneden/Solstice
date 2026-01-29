@@ -17,7 +17,7 @@ struct SolsticeWidgets: WidgetBundle {
 		SundialWidget()
 		#endif
 		
-		#if !os(macOS)
+		#if os(watchOS) || os(iOS)
 		SolarChartWidget()
 		#endif
 	}

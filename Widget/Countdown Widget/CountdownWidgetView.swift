@@ -22,7 +22,7 @@ struct CountdownWidgetView: SolsticeWidgetView {
 			 let nextSolarEvent,
 			 let previousSolarEvent {
 			switch family {
-			#if !os(macOS)
+			#if os(watchOS) || os(iOS)
 			case .accessoryCircular:
 				AccessoryCircularView(
 					entryDate: entry.date,
@@ -114,7 +114,7 @@ struct CountdownWidgetPreview: PreviewProvider {
 			.previewContext(WidgetPreviewContext(family: .systemSmall))
 		#endif
 		
-		#if !os(macOS)
+		#if os(watchOS) || os(iOS)
 		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
 			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
 		#endif

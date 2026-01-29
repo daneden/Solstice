@@ -61,7 +61,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 	}
 }
 
-#if !os(macOS)
+#if os(watchOS) || os(iOS)
 struct SolarChartWidgetPreview: PreviewProvider {
 	static var previews: some View {
 		SolarChartWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))

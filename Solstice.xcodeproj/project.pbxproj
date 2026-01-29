@@ -12,7 +12,7 @@
 		7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
 		7106C87329A276B40007A7EC /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C87229A276B40007A7EC /* Widget.swift */; };
 		7106C87629A276B40007A7EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7106C87529A276B40007A7EC /* Assets.xcassets */; };
-		7106C87C29A276B40007A7EC /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* Widget Extension.appex */; platformFilters = (ios, macos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7106C87C29A276B40007A7EC /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7106C86829A276B30007A7EC /* Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846AF28EEE48900E866CE /* CurrentLocation.swift */; };
 		7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */; };
 		7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641BC299968BF00FE5AB5 /* TimeInterval++.swift */; };
@@ -1449,10 +1449,6 @@
 /* Begin PBXTargetDependency section */
 		7106C87B29A276B40007A7EC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilters = (
-				ios,
-				macos,
-			);
 			target = 7106C86729A276B30007A7EC /* Widget Extension */;
 			targetProxy = 7106C87A29A276B40007A7EC /* PBXContainerItemProxy */;
 		};
@@ -1523,14 +1519,14 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = WIDGET_EXTENSION;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 				WATCHOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Debug;
@@ -1564,14 +1560,14 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = WIDGET_EXTENSION;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 				WATCHOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Release;

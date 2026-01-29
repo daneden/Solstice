@@ -77,7 +77,12 @@ struct SolsticeTimelineProvider: IntentTimelineProvider {
 		Task {
 			let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
 			let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
-			let entry = SolsticeWidgetTimelineEntry(date: Date(), location: widgetLocation, locationError: error)
+			let resolvedLocation = widgetLocation ?? (context.isPreview ? .proxiedToTimeZone : nil)
+			let entry = SolsticeWidgetTimelineEntry(
+				date: Date(),
+				location: resolvedLocation,
+				locationError: context.isPreview ? nil : error
+			)
 			completion(entry)
 		}
 	}

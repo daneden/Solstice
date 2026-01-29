@@ -21,7 +21,7 @@ struct OverviewWidgetView: SolsticeWidgetView {
 			if let solar,
 				 let location {
 				switch family {
-				#if !os(macOS)
+				#if os(watchOS) || os(iOS)
 				case .accessoryCircular:
 					AccessoryCircularView(solar: solar, location: location)
 				case .accessoryInline:
