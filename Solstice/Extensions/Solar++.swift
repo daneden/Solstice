@@ -220,12 +220,23 @@ extension Solar {
 	}
 
 	var nextSolarEvent: Event? {
-		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
-		?? tomorrow?.events.filter { $0.phase == .sunset || $0.phase == .sunrise }.first(where: { $0.date > date })
+		let sunriseOrSunsetEvents: [Event] = events.filter { $0.phase == .sunset || $0.phase == .sunrise }
+		let todayEvent: Event? = sunriseOrSunsetEvents.first(where: { $0.date > date })
+		if let todayEvent {
+			return todayEvent
+		}
+		let tomorrowEvents: [Event] = tomorrow?.events.filter { $0.phase == .sunset || $0.phase == .sunrise } ?? []
+		return tomorrowEvents.first(where: { $0.date > date })
 	}
 
 	var previousSolarEvent: Event? {
-		events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
-		?? (yesterday ?? self).events.filter { $0.phase == .sunset || $0.phase == .sunrise }.last(where: { $0.date < date })
+		let sunriseOrSunsetEvents: [Event] = events.filter { $0.phase == .sunset || $0.phase == .sunrise }
+		let todayEvent: Event? = sunriseOrSunsetEvents.last(where: { $0.date < date })
+		if let todayEvent {
+			return todayEvent
+		}
+		let fallbackSolar: Solar = yesterday ?? self
+		let fallbackEvents: [Event] = fallbackSolar.events.filter { $0.phase == .sunset || $0.phase == .sunrise }
+		return fallbackEvents.last(where: { $0.date < date })
 	}
 }
