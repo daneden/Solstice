@@ -43,7 +43,9 @@ struct SolsticeApp: App {
 			await NotificationManager.scheduleNotifications()
 		}
 		#endif
+		#if !os(watchOS)
 		.windowResizability(.contentSize)
+		#endif
 		#if os(visionOS)
 		.defaultSize(width: 900, height: 720)
 		#endif
