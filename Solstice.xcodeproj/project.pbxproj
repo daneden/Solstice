@@ -2132,16 +2132,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daneden/TimeMachine";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		71CB96D62DE9AC3600660AA9 /* XCRemoteSwiftPackageReference "Suite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daneden/Suite";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
