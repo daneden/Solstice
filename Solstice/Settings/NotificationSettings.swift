@@ -193,40 +193,52 @@ struct NotificationSettings: View {
 }
 
 struct NotificationPreview: View {
-	var title: String = ""
-	var bodyContent: String = ""
+	@AppStorage(Preferences.notificationsIncludeSunTimes) private var notifsIncludeSunTimes
+	@AppStorage(Preferences.notificationsIncludeDaylightDuration) private var notifsIncludeDaylightDuration
+	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) private var notifsIncludeSolsticeCountdown
+	@AppStorage(Preferences.notificationsIncludeDaylightChange) private var notifsIncludeDaylightChange
 	
-	init() {
-		guard let content = NotificationManager.buildNotificationContent(for: NotificationManager.getNextNotificationDate(after: Date()), location: .init(), in: .preview) else {
-			return
-		}
-		
-		title = content.title
-		bodyContent = content.body
-	}
+	@State var content: NotificationManager.NotificationContent?
 	
 	var body: some View {
-		HStack {
-			Image("notificationPreviewAppIcon")
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.frame(width: 20, height: 20)
-			
-			VStack(alignment: .leading) {
-				Text(title).font(.footnote.bold())
-				Text(bodyContent).font(.footnote.leading(.tight))
-					.fixedSize(horizontal: false, vertical: true)
-					.lineLimit(4)
-					.contentTransition(.interpolate)
+		VStack {
+			if let content {
+				HStack {
+					Image(.notificationPreviewAppIcon)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.frame(width: 20, height: 20)
+					
+					VStack(alignment: .leading) {
+						Text(content.title).font(.footnote.bold())
+						Text(content.body).font(.footnote.leading(.tight))
+							.fixedSize(horizontal: false, vertical: true)
+							.lineLimit(4)
+					}
+					.contentTransition(.numericText())
+					
+					Spacer(minLength: 0)
+				}
+				.padding(.vertical, 8)
+				.padding(.horizontal, 12)
+				.background {
+					RoundedRectangle(cornerRadius: 12, style: .continuous)
+						.fill(.regularMaterial)
+				}
 			}
-			
-			Spacer(minLength: 0)
 		}
-		.padding(.vertical, 8)
-		.padding(.horizontal, 12)
-		.background(.regularMaterial)
-		.cornerRadius(12)
-		.animation(.default, value: bodyContent)
+		.task(id: [notifsIncludeSunTimes, notifsIncludeDaylightChange, notifsIncludeDaylightDuration, notifsIncludeSolsticeCountdown]) {
+			withAnimation {
+				content = NotificationManager.buildNotificationContent(
+					for: NotificationManager.getNextNotificationDate(after: Date()),
+					location: CLLocation(
+						latitude: CLLocationCoordinate2D.proxiedToTimeZone.latitude,
+						longitude: CLLocationCoordinate2D.proxiedToTimeZone.longitude
+					),
+					in: .preview
+				)
+			}
+		}
 	}
 }
 
