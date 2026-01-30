@@ -19,8 +19,6 @@
 			</array>
 		</dict>
 	</array>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>instagram-stories</string>
@@ -29,7 +27,6 @@
 	<true/>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>ConfigurationIntent</string>
 		<string>me.daneden.Solstice.viewLocation</string>
 	</array>
 	<key>NSWidgetWantsLocation</key>
