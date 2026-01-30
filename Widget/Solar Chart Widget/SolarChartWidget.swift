@@ -11,11 +11,11 @@ import SwiftUI
 #if os(watchOS) || os(iOS)
 struct SolarChartWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.accessoryRectangular]
-	
+
 	var body: some WidgetConfiguration {
-		IntentConfiguration(
+		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.SolarChartWidget.rawValue,
-			intent: ConfigurationIntent.self,
+			intent: SolsticeWidgetConfigurationIntent.self,
 			provider: SolsticeTimelineProvider(widgetKind: .SolarChartWidget, recommendationDescription: "Solar Chart")
 		) { timelineEntry in
 			SolarChartWidgetView(entry: timelineEntry)
@@ -31,11 +31,11 @@ struct SolarChartWidget: Widget {
 #if !os(watchOS)
 struct SundialWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.systemLarge]
-	
+
 	var body: some WidgetConfiguration {
-		IntentConfiguration(
+		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.SundialWidget.rawValue,
-			intent: ConfigurationIntent.self,
+			intent: SolsticeWidgetConfigurationIntent.self,
 			provider: SolsticeTimelineProvider(widgetKind: .SundialWidget, recommendationDescription: "Sundial")
 		) { timelineEntry in
 			SundialWidgetView(entry: timelineEntry)

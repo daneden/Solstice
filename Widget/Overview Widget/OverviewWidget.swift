@@ -16,18 +16,18 @@ struct OverviewWidget: Widget {
 	#elseif os(watchOS)
 	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 	#endif
-	
+
 	var body: some WidgetConfiguration {
-		IntentConfiguration(
+		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
-			intent: ConfigurationIntent.self,
+			intent: SolsticeWidgetConfigurationIntent.self,
 			provider: SolsticeTimelineProvider(widgetKind: .OverviewWidget, recommendationDescription: "Overview")
 		) { timelineEntry in
 			OverviewWidgetView(entry: timelineEntry)
 				.widgetURL(timelineEntry.location?.url)
 		}
 		.configurationDisplayName("Daylight Today")
-		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
+		.description("See today's daylight length, how it compares to yesterday, and sunrise/sunset times.")
 		.supportedFamilies(OverviewWidget.supportedFamilies)
 	}
 }
