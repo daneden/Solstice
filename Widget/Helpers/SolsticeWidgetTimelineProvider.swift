@@ -9,6 +9,20 @@ import WidgetKit
 import CoreLocation
 import AppIntents
 import Solar
+import CoreData
+import Contacts
+
+// If not already present, add the following extension for SavedLocation-to-placemark conversion:
+extension SavedLocation {
+    var clPlacemark: CLPlacemark? {
+        let coordinate = CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        var addressDict: [String: Any] = [:]
+        if let title = self.title { addressDict[CNPostalAddressStreetKey] = title }
+        if let subtitle = self.subtitle { addressDict[CNPostalAddressCityKey] = subtitle }
+        return CLPlacemark(location: location, name: title, postalAddress: nil)
+    }
+}
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
@@ -22,6 +36,27 @@ enum LocationError: Error {
 }
 
 struct SolsticeTimelineProvider: AppIntentTimelineProvider {
+	func recommendations() -> [AppIntentRecommendation<SolsticeWidgetConfigurationIntent>] {
+		// Attempt to fetch SavedLocations from the main context
+		let context = PersistenceController.shared.container.viewContext
+		let fetchRequest = NSFetchRequest<SavedLocation>(entityName: "SavedLocation")
+		let savedLocations: [SavedLocation] = (try? context.fetch(fetchRequest)) ?? []
+		
+		var recs: [AppIntentRecommendation<SolsticeWidgetConfigurationIntent>] = []
+		for location in savedLocations {
+			guard let placemark = location.clPlacemark else { continue }
+			let intent = SolsticeWidgetConfigurationIntent(locationType: .customLocation, customLocation: placemark)
+			let title = location.title ?? "Saved Location"
+			recs.append(AppIntentRecommendation(intent: intent, description: title))
+		}
+		
+		// Always provide a fallback for current location
+		let currentLocationIntent = SolsticeWidgetConfigurationIntent(locationType: .currentLocation)
+		recs.append(AppIntentRecommendation(intent: currentLocationIntent, description: "Current Location"))
+		
+		return recs
+	}
+	
 	typealias Entry = SolsticeWidgetTimelineEntry
 	typealias Intent = SolsticeWidgetConfigurationIntent
 

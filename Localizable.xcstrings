@@ -478,6 +478,9 @@
         }
       }
     },
+    "Choose the location for the widget" : {
+
+    },
     "Circular" : {
       "localizations" : {
         "it" : {
@@ -552,6 +555,9 @@
         }
       }
     },
+    "Configure Widget" : {
+
+    },
     "Continue with location" : {
       "localizations" : {
         "it" : {
@@ -611,6 +617,9 @@
           }
         }
       }
+    },
+    "Custom Location" : {
+
     },
     "Customise notification content" : {
       "localizations" : {
@@ -1193,6 +1202,9 @@
         }
       }
     },
+    "Location Type" : {
+
+    },
     "Locations" : {
       "localizations" : {
         "it" : {
@@ -1668,7 +1680,11 @@
         }
       }
     },
+    "See today's daylight length, how it compares to yesterday, and sunrise/sunset times." : {
+
+    },
     "See today’s daylight length, how it compares to yesterday, and sunrise/sunset times." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

@@ -36,7 +36,7 @@ struct SolsticeWidgetConfigurationIntent: WidgetConfigurationIntent {
 	var customLocation: CLPlacemark?
 
 	static var parameterSummary: some ParameterSummary {
-		When(\.$locationType, .equalTo, .customLocation) {
+		When(\SolsticeWidgetConfigurationIntent.$locationType, .equalTo, .customLocation) {
 			Summary {
 				\.$locationType
 				\.$customLocation

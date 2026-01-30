@@ -88,9 +88,6 @@
 		7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */; };
 		715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */; };
 		715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */; };
-		7F0000022F30000000000002 /* SolsticeWidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0000012F30000000000001 /* SolsticeWidgetConfiguration.swift */; };
-		7F0000032F30000000000003 /* SolsticeWidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0000012F30000000000001 /* SolsticeWidgetConfiguration.swift */; };
-		7F0000042F30000000000004 /* SolsticeWidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0000012F30000000000001 /* SolsticeWidgetConfiguration.swift */; };
 		715489B42F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */; };
 		715489B52F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */; };
 		716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */; };
@@ -105,6 +102,8 @@
 		717F8BB729A8CAC20015ECCB /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */; };
 		717F8BB929A8CAFC0015ECCB /* AppStorage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */; };
 		717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F8BBB29A908E30015ECCB /* SettingsView.swift */; };
+		718177562F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177552F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift */; };
+		718177572F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177552F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift */; };
 		7187147129DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
 		7187147529DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */; };
 		7187147629DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */; };
@@ -404,7 +403,6 @@
 		714A944529C7318D00C67A4A /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
 		7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeadingModifier.swift; sourceTree = "<group>"; };
 		715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetView.swift; sourceTree = "<group>"; };
-		7F0000012F30000000000001 /* SolsticeWidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetConfiguration.swift; sourceTree = "<group>"; };
 		715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetLocationManager.swift; sourceTree = "<group>"; };
 		71615FDC2F29F0610082944D /* SolsticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SolsticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71615FEB2F29F06F0082944D /* SolsticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SolsticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -416,6 +414,7 @@
 		717F8BB629A8CAC20015ECCB /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStorage++.swift"; sourceTree = "<group>"; };
 		717F8BBB29A908E30015ECCB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		718177552F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeWidgetConfiguration.swift; sourceTree = "<group>"; };
 		7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetMissingLocationView.swift; sourceTree = "<group>"; };
 		7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D++.swift"; sourceTree = "<group>"; };
 		7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+RectangularEdgeMask.swift"; sourceTree = "<group>"; };
@@ -484,7 +483,6 @@
 		71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+backportGlassEffect.swift"; sourceTree = "<group>"; };
 		71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquinoxAndSolsticeInfoSheet.swift; sourceTree = "<group>"; };
 		71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLabelStyle.swift; sourceTree = "<group>"; };
-		71F2C3AB2ABB367400E69426 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Widget.strings; sourceTree = "<group>"; };
 		71F641B629994DD900FE5AB5 /* LocationListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListRow.swift; sourceTree = "<group>"; };
 		71F641B829995ED000FE5AB5 /* DaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaylightChart.swift; sourceTree = "<group>"; };
 		71F641BA2999631D00FE5AB5 /* Date++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++.swift"; sourceTree = "<group>"; };
@@ -826,8 +824,8 @@
 		719F557B29DB0DB200D7AE8E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				718177552F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift */,
 				71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */,
-				7F0000012F30000000000001 /* SolsticeWidgetConfiguration.swift */,
 				715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */,
 				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
 				715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */,
@@ -1174,13 +1172,13 @@
 				711782E52E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71A029B62C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				7150CC5B29AB7B3C00E6B90C /* AppStorage++.swift in Sources */,
+				718177572F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift in Sources */,
 				7187147729DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
 				7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */,
 				719465172C294B42008408C0 /* Color+Mix.swift in Sources */,
 				715489B52F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */,
-				7F0000022F30000000000002 /* SolsticeWidgetConfiguration.swift in Sources */,
 				719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7106C88429A2775C0007A7EC /* TimeInterval++.swift in Sources */,
 				7132AC1529E6960400523215 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
@@ -1274,13 +1272,13 @@
 				712433942D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
 				7194653C2C2C1E09008408C0 /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7194653D2C2C1E09008408C0 /* Solar++.swift in Sources */,
+				718177562F2D5FCB007A2E9E /* SolsticeWidgetConfiguration.swift in Sources */,
 				7194653E2C2C1E09008408C0 /* Globals.swift in Sources */,
 				7194653F2C2C1E09008408C0 /* SolarChartWidget.swift in Sources */,
 				719465402C2C1E09008408C0 /* Date++.swift in Sources */,
 				71C105A52E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */,
 				715489B42F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */,
-				7F0000032F30000000000003 /* SolsticeWidgetConfiguration.swift in Sources */,
 				719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */,
 				712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
@@ -1475,16 +1473,6 @@
 			targetProxy = 71AEB7AE29AD0F2100A7952D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-			isa = PBXVariantGroup;
-			children = (
-				71F2C3A82ABB366E00E69426 /* Base */,
-				71F2C3AB2ABB367400E69426 /* it */,
-			);
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		7106C87E29A276B40007A7EC /* Debug */ = {
@@ -1799,7 +1787,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.0.4;
+				MARKETING_VERSION = 3.0.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1861,7 +1849,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.0.4;
+				MARKETING_VERSION = 3.0.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
