@@ -93,23 +93,18 @@ extension CountdownWidgetView {
 		var nextEvent: Solar.Event
 		
 		var body: some View {
-			Label {
-				Text("\(Text(nextEvent.date, style: .time)), \(Text(nextEvent.date, style: .relative))")
-			} icon: {
-				Image(systemName: nextEvent.imageName)
-			}
-			.widgetCurvesContent()
-			.widgetLabel {
-				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
-					Image(systemName: nextEvent.imageName)
-				} currentValueLabel: {
-					Label {
-						Text("\(Text(nextEvent.date, style: .timer)) until \(Text(nextEvent.description))")
-					} icon: {
-						Image(systemName: nextEvent.imageName)
-					}
+			Image(systemName: nextEvent.imageName)
+				.font(.title.bold())
+				.imageScale(.large)
+				.symbolRenderingMode(.hierarchical)
+				.symbolVariant(.fill)
+				.widgetLabel {
+					let time = Text(nextEvent.date, style: .time)
+					let countdown = Text(nextEvent.date, style: .relative)
+					
+					Text("\(time), \(countdown.textScale(.secondary))")
 				}
-			}
+				.widgetAccentable()
 		}
 	}
 }

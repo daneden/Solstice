@@ -41,8 +41,8 @@ struct OverviewWidgetView: SolsticeWidgetView {
 						.imageScale(.large)
 						.widgetLabel {
 							Text(solar.daylightDuration.localizedString)
-								.widgetAccentable()
 						}
+						.widgetAccentable()
 				#endif // end watchOS
 				#endif // end !macOS
 				default:
