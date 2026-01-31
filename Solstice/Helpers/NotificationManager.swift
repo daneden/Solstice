@@ -126,8 +126,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	static func scheduleBackgroundTask() {
 		let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
 
-		// Schedule to run after at least 7 days (well before the 64-day window expires)
-		request.earliestBeginDate = Date(timeIntervalSinceNow: 7 * 24 * 60 * 60)
+		// Schedule to run after at least 1 day to catch location changes sooner
+		request.earliestBeginDate = Date(timeIntervalSinceNow: 24 * 60 * 60)
 
 		do {
 			try BGTaskScheduler.shared.submit(request)
