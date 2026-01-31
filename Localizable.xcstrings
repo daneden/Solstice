@@ -468,6 +468,9 @@
         }
       }
     },
+    "Choose a Location" : {
+
+    },
     "Choose date" : {
       "localizations" : {
         "it" : {
@@ -477,6 +480,9 @@
           }
         }
       }
+    },
+    "Choose Location" : {
+
     },
     "Circular" : {
       "localizations" : {
@@ -551,6 +557,9 @@
           }
         }
       }
+    },
+    "Configuration" : {
+
     },
     "Continue with location" : {
       "localizations" : {
@@ -1099,6 +1108,9 @@
         }
       }
     },
+    "Just to confirm, you wanted ‘%@’?" : {
+
+    },
     "Label" : {
       "shouldTranslate" : false
     },
@@ -1192,6 +1204,9 @@
           }
         }
       }
+    },
+    "Location Type" : {
+
     },
     "Locations" : {
       "localizations" : {
@@ -1971,6 +1986,9 @@
         }
       }
     },
+    "The configuration options for Solstice widgets" : {
+
+    },
     "The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun." : {
       "localizations" : {
         "it" : {
@@ -1997,6 +2015,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il solstizio si verifica due volte l’anno, a giugno e a dicembre (altrimenti noto come solstizio d’estate e d’inverno) e segna le escursioni più a nord e a sud del sole. Durante il solstizio di giugno, l’emisfero settentrionale della Terra è puntato verso il sole, con conseguente aumento della luce solare e temperature più calde; lo stesso vale per l'emisfero australe durante il solstizio di dicembre."
+          }
+        }
+      }
+    },
+    "There are %lld options matching ‘%@’." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "There are %1$lld options matching ‘%2$@’."
           }
         }
       }
@@ -2126,6 +2154,9 @@
         }
       }
     },
+    "Use Current Location" : {
+
+    },
     "v%@, #%@" : {
       "localizations" : {
         "en" : {
@@ -2246,6 +2277,9 @@
           }
         }
       }
+    },
+    "Which location do you want to see daylight information for?" : {
+
     }
   },
   "version" : "1.1"

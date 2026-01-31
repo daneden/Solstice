@@ -18,9 +18,9 @@ struct OverviewWidget: Widget {
 	#endif
 	
 	var body: some WidgetConfiguration {
-		IntentConfiguration(
+		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
-			intent: ConfigurationIntent.self,
+			intent: SolsticeConfigurationIntent.self,
 			provider: SolsticeTimelineProvider(widgetKind: .OverviewWidget, recommendationDescription: "Overview")
 		) { timelineEntry in
 			OverviewWidgetView(entry: timelineEntry)

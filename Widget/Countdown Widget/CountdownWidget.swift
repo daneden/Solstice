@@ -19,9 +19,9 @@ struct CountdownWidget: Widget {
 #endif
 	
 	var body: some WidgetConfiguration {
-		IntentConfiguration(
+		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
-			intent: ConfigurationIntent.self,
+			intent: SolsticeConfigurationIntent.self,
 			provider: SolsticeTimelineProvider(widgetKind: .CountdownWidget, recommendationDescription: "Countdown")
 		) { timelineEntry in
 			CountdownWidgetView(entry: timelineEntry)
