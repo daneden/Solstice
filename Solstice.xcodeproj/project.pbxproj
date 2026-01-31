@@ -106,6 +106,10 @@
 		718177602F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7181775C2F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift */; };
 		718177622F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7181775C2F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift */; };
 		718177642F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7181775C2F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift */; };
+		718177672F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
+		718177682F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
+		718177692F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
+		7181776A2F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
 		7187147129DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
 		7187147529DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */; };
 		7187147629DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */; };
@@ -417,6 +421,7 @@
 		717F8BB829A8CAFC0015ECCB /* AppStorage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStorage++.swift"; sourceTree = "<group>"; };
 		717F8BBB29A908E30015ECCB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7181775C2F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeConfigurationIntent.swift; sourceTree = "<group>"; };
+		718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAppEntity.swift; sourceTree = "<group>"; };
 		7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetMissingLocationView.swift; sourceTree = "<group>"; };
 		7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D++.swift"; sourceTree = "<group>"; };
 		7188714229DC8C60001A4327 /* View+RectangularEdgeMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+RectangularEdgeMask.swift"; sourceTree = "<group>"; };
@@ -656,6 +661,7 @@
 			children = (
 				719511F529AF5CB4009D282F /* GetSunriseTime.swift */,
 				719511F729AF5CE1009D282F /* GetSunsetTime.swift */,
+				718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */,
 				7181775C2F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift */,
 				7197DD7F29CA312200FEBE55 /* SolsticeShortcutsProvider.swift */,
 				719511F929AF5CF7009D282F /* ViewDaylight.swift */,
@@ -1178,6 +1184,7 @@
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
 				7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */,
+				718177692F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
 				719465172C294B42008408C0 /* Color+Mix.swift in Sources */,
 				715489B52F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */,
 				719F557D29DB1A4300D7AE8E /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
@@ -1250,6 +1257,7 @@
 				719465262C2C1E09008408C0 /* View+Debugging.swift in Sources */,
 				719465272C2C1E09008408C0 /* OverviewWidget.swift in Sources */,
 				719465282C2C1E09008408C0 /* Color+Mix.swift in Sources */,
+				718177682F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
 				719465292C2C1E09008408C0 /* CountdownWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7194652A2C2C1E09008408C0 /* TimeInterval++.swift in Sources */,
 				7194652D2C2C1E09008408C0 /* ConditionalGlobals+WidgetTargets.swift in Sources */,
@@ -1305,6 +1313,7 @@
 				7198468E28E5895F00E866CE /* Persistence.swift in Sources */,
 				710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
 				7124339B2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
+				7181776A2F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
 				71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */,
 				71789AA52C32DCC7002B8A33 /* View+MaterialListRowBackground.swift in Sources */,
 				7198468728E5895E00E866CE /* ContentView.swift in Sources */,
@@ -1441,6 +1450,7 @@
 				712433AB2D79090500709C20 /* NSImage+pngData.swift in Sources */,
 				7116B1F62DDDE2130018A294 /* VariableBlurView.swift in Sources */,
 				713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */,
+				718177672F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
 				71E3C4162EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,6 +7,7 @@
 
 import WidgetKit
 import CoreLocation
+import CoreData
 import Solar
 import AppIntents
 
@@ -30,8 +31,25 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 	private let geocoder = CLGeocoder()
 
 	func recommendations() -> [AppIntentRecommendation<Intent>] {
-		
-		return []
+		// Provide recommendations based on saved locations
+		let context = PersistenceController.shared.container.viewContext
+		let request = SavedLocation.fetchRequest()
+		request.sortDescriptors = [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)]
+		request.fetchLimit = 5
+
+		guard let savedLocations = try? context.fetch(request) else {
+			return []
+		}
+
+		return savedLocations.compactMap { savedLocation in
+			let entity = LocationAppEntity(from: savedLocation)
+			var intent = Intent()
+			intent.location = entity
+			return AppIntentRecommendation(
+				intent: intent,
+				description: "\(recommendationDescription) for \(savedLocation.title ?? "Unknown")"
+			)
+		}
 	}
 
 	private func getLocation(for placemark: CLPlacemark? = nil, isRealLocation: Bool = false) -> SolsticeWidgetLocation? {
@@ -48,53 +66,60 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 																	isRealLocation: isRealLocation)
 	}
 
-	/// Fetches location and reverse geocodes it to a placemark
-	private func fetchWidgetLocation(for configuration: Intent) async -> (placemark: CLPlacemark?, isRealLocation: Bool, error: LocationError?) {
-		let isRealLocation = (configuration.locationType == .currentLocation) || (configuration.locationType == nil)
+	/// Creates a SolsticeWidgetLocation from a LocationAppEntity
+	private func getLocation(from entity: LocationAppEntity) -> SolsticeWidgetLocation {
+		SolsticeWidgetLocation(
+			title: entity.title,
+			subtitle: entity.subtitle,
+			timeZoneIdentifier: entity.timeZoneIdentifier,
+			latitude: entity.latitude,
+			longitude: entity.longitude,
+			isRealLocation: false,
+			locationUUID: entity.savedLocationUUID
+		)
+	}
 
-		let location: CLLocation?
-		switch configuration.locationType {
-		case .customLocation:
-			if let placemark = configuration.location {
-				return (placemark, false, nil)
-			} else {
-				location = configuration.location?.location
-			}
-		default:
-			guard SolsticeWidgetLocationManager.isAuthorized else {
-				return (nil, isRealLocation, .notAuthorized)
-			}
-			
-			location = await SolsticeWidgetLocationManager.shared.getLocation()
+	/// Fetches the widget location based on the configuration
+	private func fetchWidgetLocation(for configuration: Intent) async -> (location: SolsticeWidgetLocation?, isRealLocation: Bool, error: LocationError?) {
+		let locationEntity = configuration.resolvedLocation
+
+		// If a specific location is selected (not current location), use it directly
+		// Timezone was already fetched during search
+		if !locationEntity.isCurrentLocation {
+			return (getLocation(from: locationEntity), false, nil)
 		}
 
-		guard let location else {
-			return (nil, isRealLocation, .locationUpdateFailed)
+		// Use current location
+		guard SolsticeWidgetLocationManager.isAuthorized else {
+			return (nil, true, .notAuthorized)
 		}
-		
-		guard let placemark = try? await geocoder.reverseGeocodeLocation(location).first else {
-			return (nil, isRealLocation, .reverseGeocodingFailed)
+
+		guard let currentLocation = await SolsticeWidgetLocationManager.shared.getLocation() else {
+			return (nil, true, .locationUpdateFailed)
 		}
-		
-		return (placemark, isRealLocation, nil)
+
+		// Reverse geocode to get timezone for current location
+		guard let placemark = try? await geocoder.reverseGeocodeLocation(currentLocation).first else {
+			return (nil, true, .reverseGeocodingFailed)
+		}
+
+		return (getLocation(for: placemark, isRealLocation: true), true, nil)
 	}
 
 	func snapshot(for configuration: Intent, in context: Context) async -> SolsticeWidgetTimelineEntry {
-		let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
-		let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
+		let (widgetLocation, _, error) = await fetchWidgetLocation(for: configuration)
 		let resolvedLocation = widgetLocation ?? (context.isPreview ? .proxiedToTimeZone : nil)
 		let entry = SolsticeWidgetTimelineEntry(
 			date: Date(),
 			location: resolvedLocation,
 			locationError: context.isPreview ? nil : error
 		)
-		
+
 		return entry
 	}
-	
+
 	func timeline(for configuration: SolsticeConfigurationIntent, in context: Context) async -> Timeline<SolsticeWidgetTimelineEntry> {
-		let (placemark, isRealLocation, error) = await fetchWidgetLocation(for: configuration)
-		let widgetLocation = getLocation(for: placemark, isRealLocation: isRealLocation)
+		let (widgetLocation, _, error) = await fetchWidgetLocation(for: configuration)
 		
 		let currentDate = Date()
 		let calendar = Calendar.current

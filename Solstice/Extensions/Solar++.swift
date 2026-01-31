@@ -40,7 +40,7 @@ extension Solar {
 		}
 	}
 
-	enum Phase: String, Plottable, CaseIterable {
+	enum Phase: String, Plottable, CaseIterable, Codable {
 		case night = "Night",
 				 astronomical = "Astronomical Twilight",
 				 nautical = "Nautical Twilight",

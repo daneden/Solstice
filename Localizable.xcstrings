@@ -156,6 +156,16 @@
         }
       }
     },
+    "%@ for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ for %2$@"
+          }
+        }
+      }
+    },
     "%@ in %@" : {
       "localizations" : {
         "en" : {
@@ -480,9 +490,6 @@
           }
         }
       }
-    },
-    "Choose Location" : {
-
     },
     "Circular" : {
       "localizations" : {
@@ -1108,7 +1115,7 @@
         }
       }
     },
-    "Just to confirm, you wanted ‘%@’?" : {
+    "Just to confirm, you wanted '%@'?" : {
 
     },
     "Label" : {
@@ -1804,6 +1811,9 @@
         }
       }
     },
+    "Show daylight for ${location}" : {
+
+    },
     "Show location" : {
       "localizations" : {
         "it" : {
@@ -2019,12 +2029,12 @@
         }
       }
     },
-    "There are %lld options matching ‘%@’." : {
+    "There are %lld options matching '%@'." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "There are %1$lld options matching ‘%2$@’."
+            "value" : "There are %1$lld options matching '%2$@'."
           }
         }
       }
