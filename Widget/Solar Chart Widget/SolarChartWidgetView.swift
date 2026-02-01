@@ -57,6 +57,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.environment(\.timeZone, location?.timeZone ?? .autoupdatingCurrent)
 		.containerBackground(.background, for: .widget)
 	}
 }

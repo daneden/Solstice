@@ -59,6 +59,7 @@ struct OverviewWidgetView: SolsticeWidgetView {
 		.containerBackground(for: .widget) {
 			Color.clear.background(.background)
 		}
+		.environment(\.timeZone, location?.timeZone ?? .autoupdatingCurrent)
 	}
 }
 

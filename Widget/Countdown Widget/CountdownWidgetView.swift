@@ -18,66 +18,69 @@ struct CountdownWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
 	
 	var body: some View {
-		if let location,
-			 let nextSolarEvent,
-			 let previousSolarEvent {
-			switch family {
-			#if os(watchOS) || os(iOS)
-			case .accessoryCircular:
-				AccessoryCircularView(
-					entryDate: entry.date,
-					previousEvent: previousSolarEvent,
-					nextEvent: nextSolarEvent
-				)
-			case .accessoryInline:
-				AccessoryInlineView(nextEvent: nextSolarEvent)
-			case .accessoryRectangular:
-				AccessoryRectangularView(nextEvent: nextSolarEvent)
-			#if os(watchOS)
-			case .accessoryCorner:
-				AccessoryCornerView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
-			#endif // end watchOS
-			#endif // end !macOS
-			default:
-				VStack(alignment: .leading, spacing: 4) {
-					WidgetLocationView(location: location)
-
-					Spacer(minLength: 0)
-
-					HStack {
-						nextEventText
-							.widgetHeading()
-							.minimumScaleFactor(0.8)
-							.lineLimit(3)
-							.contentTransition(.numericText())
-
-						Spacer()
-					}
-
-					Label{
-						Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
-					} icon: {
-						Image(systemName: nextSolarEvent.imageName)
-					}
+		Group {
+			if let location,
+				 let nextSolarEvent,
+				 let previousSolarEvent {
+				switch family {
+#if os(watchOS) || os(iOS)
+				case .accessoryCircular:
+					AccessoryCircularView(
+						entryDate: entry.date,
+						previousEvent: previousSolarEvent,
+						nextEvent: nextSolarEvent
+					)
+				case .accessoryInline:
+					AccessoryInlineView(nextEvent: nextSolarEvent)
+				case .accessoryRectangular:
+					AccessoryRectangularView(nextEvent: nextSolarEvent)
+#if os(watchOS)
+				case .accessoryCorner:
+					AccessoryCornerView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
+#endif // end watchOS
+#endif // end !macOS
+				default:
+					VStack(alignment: .leading, spacing: 4) {
+						WidgetLocationView(location: location)
+						
+						Spacer(minLength: 0)
+						
+						HStack {
+							nextEventText
+								.widgetHeading()
+								.minimumScaleFactor(0.8)
+								.lineLimit(3)
+								.contentTransition(.numericText())
+							
+							Spacer()
+						}
+						
+						Label{
+							Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
+						} icon: {
+							Image(systemName: nextSolarEvent.imageName)
+						}
 						.font(.footnote.weight(.semibold))
 						.contentTransition(.numericText())
+					}
+					.if(showsWidgetContainerBackground) { content in
+						content
+							.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
+					}
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
+					.foregroundStyle(.white)
+					.symbolRenderingMode(.hierarchical)
+					.symbolVariant(.fill)
+					.preferredColorScheme(.dark)
 				}
-				.if(showsWidgetContainerBackground) { content in
-					content
-						.shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 2)
-				}
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.foregroundStyle(.white)
-				.symbolRenderingMode(.hierarchical)
-				.symbolVariant(.fill)
-				.preferredColorScheme(.dark)
+			} else if shouldShowPlaceholder {
+				CountdownWidgetView(entry: .placeholder)
+					.redacted(reason: .placeholder)
+			} else {
+				WidgetMissingLocationView()
 			}
-		} else if shouldShowPlaceholder {
-			CountdownWidgetView(entry: .placeholder)
-				.redacted(reason: .placeholder)
-		} else {
-			WidgetMissingLocationView()
 		}
+		.environment(\.timeZone, timeZone)
 	}
 }
 
