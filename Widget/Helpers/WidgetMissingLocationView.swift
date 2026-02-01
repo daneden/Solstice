@@ -59,21 +59,21 @@ struct WidgetNeedsReconfigurationView: View {
 		case .accessoryCorner:
 			reconfigureIcon
 				.widgetLabel {
-					Text("Tap to update")
+					Text("Location reset")
 				}
 		case .accessoryCircular:
 			reconfigureIcon
 				.widgetLabel {
-					Text("Tap to update")
+					Text("Location reset")
 				}
 		case .accessoryInline:
-			Label("Tap to update location", systemImage: "arrow.triangle.2.circlepath")
+			Label("Location reset", systemImage: "arrow.triangle.2.circlepath")
 #endif
 		default:
 			VStack(alignment: .leading) {
 				Text("\(reconfigureIcon) Location update needed")
 					.font(.headline)
-				Text("This widget's location was reset during an app update. Tap to reconfigure.")
+				Text("Edit this widget to select a new location.")
 					.foregroundStyle(.secondary)
 			}
 		}
