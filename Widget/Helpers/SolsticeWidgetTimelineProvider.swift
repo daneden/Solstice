@@ -29,7 +29,6 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 	typealias Intent = SolsticeConfigurationIntent
 
 	let widgetKind: SolsticeWidgetKind
-	let recommendationDescription: String
 	private let geocoder = CLGeocoder()
 
 	func recommendations() -> [AppIntentRecommendation<Intent>] {
@@ -45,11 +44,11 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 
 		return savedLocations.compactMap { savedLocation in
 			let entity = LocationAppEntity(from: savedLocation)
-			var intent = Intent()
+			let intent = Intent()
 			intent.selectedLocation = entity
 			return AppIntentRecommendation(
 				intent: intent,
-				description: "\(recommendationDescription) for \(savedLocation.title ?? "Unknown")"
+				description: savedLocation.title ?? "Location"
 			)
 		}
 	}

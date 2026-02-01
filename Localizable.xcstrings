@@ -156,16 +156,6 @@
         }
       }
     },
-    "%@ for %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ for %2$@"
-          }
-        }
-      }
-    },
     "%@ in %@" : {
       "localizations" : {
         "en" : {
@@ -178,17 +168,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ tra %2$@"
-          }
-        }
-      }
-    },
-    "%@ Location required" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Posizione richiesta"
           }
         }
       }
@@ -548,7 +527,14 @@
       }
     },
     "Configuration" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurazione"
+          }
+        }
+      }
     },
     "Continue with location" : {
       "localizations" : {
@@ -556,16 +542,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continua con la posizione"
-          }
-        }
-      }
-    },
-    "Countdown" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conto alla rovescia"
           }
         }
       }
@@ -611,7 +587,14 @@
       }
     },
     "Custom Location" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione personalizzata"
+          }
+        }
+      }
     },
     "Customise notification content" : {
       "localizations" : {
@@ -786,10 +769,24 @@
       }
     },
     "Edit this widget to select a new location." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica questo widget per selezionare una nuova posizione."
+          }
+        }
+      }
     },
     "Enable location access or edit to select a new location." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita l'accesso alla posizione o modifica per selezionare una nuova posizione."
+          }
+        }
+      }
     },
     "Enable location services" : {
       "localizations" : {
@@ -797,17 +794,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abilita i servizi di localizzazione"
-          }
-        }
-      }
-    },
-    "Enable location services for Solstice, or choose a location by configuring the widget" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abilita i servizi di localizzazione per Solstice o scegli una posizione configurando il widget"
           }
         }
       }
@@ -1108,7 +1094,14 @@
       }
     },
     "Just to confirm, you wanted '%@'?" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giusto per confermare, volevi ‘%@‘?"
+          }
+        }
+      }
     },
     "Label" : {
       "shouldTranslate" : false
@@ -1194,22 +1187,25 @@
         }
       }
     },
-    "Location required" : {
-      "extractionState" : "stale",
+    "Location Type" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posizione richiesta"
+            "value" : "Tipo di posizione"
           }
         }
       }
     },
-    "Location Type" : {
-
-    },
     "Location update needed" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiornamento della posizione necessario"
+          }
+        }
+      }
     },
     "Locations" : {
       "localizations" : {
@@ -1384,7 +1380,14 @@
       }
     },
     "No location found" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna posizione trovata"
+          }
+        }
+      }
     },
     "No location selected" : {
       "localizations" : {
@@ -1573,16 +1576,6 @@
         }
       }
     },
-    "Overview" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Osservazione"
-          }
-        }
-      }
-    },
     "Phase" : {
       "localizations" : {
         "it" : {
@@ -1690,15 +1683,11 @@
       }
     },
     "See today's daylight length, how it compares to yesterday, and sunrise/sunset times." : {
-
-    },
-    "See today’s daylight length, how it compares to yesterday, and sunrise/sunset times." : {
-      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visualizza la durata della luce del giorno di oggi, il confronto con quella di ieri e gli orari di alba/tramonto."
+            "value" : "Guarda la lunghezza della luce del giorno di oggi, come si confronta con ieri e gli orari dell'alba/tramonto."
           }
         }
       }
@@ -1815,10 +1804,24 @@
       }
     },
     "Show daylight for ${location}" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la luce del giorno per ${location}"
+          }
+        }
+      }
     },
     "Show daylight for ${selectedLocation}" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la luce del giorno per ${selectedLocation}"
+          }
+        }
+      }
     },
     "Show location" : {
       "localizations" : {
@@ -2003,7 +2006,14 @@
       }
     },
     "The configuration options for Solstice widgets" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The configuration options for Solstice widgets"
+          }
+        }
+      }
     },
     "The equinox and solstice define the transitions between the seasons of the astronomical calendar and are a key part of the Earth’s orbit around the Sun." : {
       "localizations" : {
@@ -2041,6 +2051,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "There are %1$lld options matching '%2$@'."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ci sono %1$lld opzioni che corrispondono a ‘%2$@’"
           }
         }
       }
@@ -2171,7 +2187,14 @@
       }
     },
     "Unknown" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sconosciuto"
+          }
+        }
+      }
     },
     "v%@, #%@" : {
       "localizations" : {
@@ -2295,7 +2318,14 @@
       }
     },
     "Which location do you want to see daylight information for?" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per quale luogo vuoi vedere le informazioni sulla luce del giorno?"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

@@ -16,7 +16,7 @@ struct SolarChartWidget: Widget {
 		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.SolarChartWidget.rawValue,
 			intent: SolsticeConfigurationIntent.self,
-			provider: SolsticeTimelineProvider(widgetKind: .SolarChartWidget, recommendationDescription: "Solar Chart")
+			provider: SolsticeTimelineProvider(widgetKind: .SolarChartWidget)
 		) { timelineEntry in
 			SolarChartWidgetView(entry: timelineEntry)
 				.widgetURL(timelineEntry.location?.url)
@@ -36,7 +36,7 @@ struct SundialWidget: Widget {
 		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.SundialWidget.rawValue,
 			intent: SolsticeConfigurationIntent.self,
-			provider: SolsticeTimelineProvider(widgetKind: .SundialWidget, recommendationDescription: "Sundial")
+			provider: SolsticeTimelineProvider(widgetKind: .SundialWidget)
 		) { timelineEntry in
 			SundialWidgetView(entry: timelineEntry)
 				.widgetURL(timelineEntry.location?.url)
