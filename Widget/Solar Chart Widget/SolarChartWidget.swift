@@ -11,7 +11,7 @@ import SwiftUI
 #if os(watchOS) || os(iOS)
 struct SolarChartWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.accessoryRectangular]
-	
+
 	var body: some WidgetConfiguration {
 		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.SolarChartWidget.rawValue,
@@ -31,7 +31,7 @@ struct SolarChartWidget: Widget {
 #if !os(watchOS)
 struct SundialWidget: Widget {
 	static var supportedFamilies: [WidgetFamily] = [.systemLarge]
-	
+
 	var body: some WidgetConfiguration {
 		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.SundialWidget.rawValue,

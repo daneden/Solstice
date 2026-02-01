@@ -13,7 +13,6 @@ import MapKit
 
 /// An AppEntity representing a location for widget configuration.
 /// Can represent either a SavedLocation from Core Data or a searched location.
-@available(iOS 17.0, macOS 14.0, watchOS 10.0, *)
 struct LocationAppEntity: AppEntity {
 	/// Special ID for the current location entity
 	static let currentLocationID = "currentLocation"
@@ -80,7 +79,6 @@ struct LocationAppEntity: AppEntity {
 
 // MARK: - Entity Query
 
-@available(iOS 17.0, macOS 14.0, watchOS 10.0, *)
 struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 	private static let geocoder = CLGeocoder()
 
@@ -307,7 +305,6 @@ private struct TemporaryLocationData: Codable {
 
 // MARK: - Convenience Initializers
 
-@available(iOS 17.0, macOS 14.0, watchOS 10.0, *)
 extension LocationAppEntity {
 	/// Initialize from a SavedLocation Core Data object
 	/// Encodes the full location data in the ID for resilient entity resolution

@@ -16,7 +16,7 @@ struct OverviewWidget: Widget {
 	#elseif os(watchOS)
 	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 	#endif
-	
+
 	var body: some WidgetConfiguration {
 		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.OverviewWidget.rawValue,
@@ -27,7 +27,7 @@ struct OverviewWidget: Widget {
 				.widgetURL(timelineEntry.location?.url)
 		}
 		.configurationDisplayName("Daylight Today")
-		.description("See today’s daylight length, how it compares to yesterday, and sunrise/sunset times.")
+		.description("See today's daylight length, how it compares to yesterday, and sunrise/sunset times.")
 		.supportedFamilies(OverviewWidget.supportedFamilies)
 	}
 }

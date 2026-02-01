@@ -17,18 +17,23 @@ struct CountdownWidget: Widget {
 #elseif os(watchOS)
 	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 #endif
-	
+
+	@ViewBuilder
+	private func widgetContent(for timelineEntry: SolsticeWidgetTimelineEntry) -> some View {
+		CountdownWidgetView(entry: timelineEntry)
+			.containerBackground(for: .widget) {
+				SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
+			}
+			.widgetURL(timelineEntry.location?.url)
+	}
+
 	var body: some WidgetConfiguration {
 		AppIntentConfiguration(
 			kind: SolsticeWidgetKind.CountdownWidget.rawValue,
 			intent: SolsticeConfigurationIntent.self,
 			provider: SolsticeTimelineProvider(widgetKind: .CountdownWidget, recommendationDescription: "Countdown")
 		) { timelineEntry in
-			CountdownWidgetView(entry: timelineEntry)
-				.containerBackground(for: .widget) {
-					SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
-				}
-				.widgetURL(timelineEntry.location?.url)
+			widgetContent(for: timelineEntry)
 		}
 		.configurationDisplayName("Sunrise/Sunset Countdown")
 		.description("See the time remaining until the next sunrise/sunset")

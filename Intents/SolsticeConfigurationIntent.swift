@@ -9,7 +9,6 @@ import Foundation
 import AppIntents
 import CoreLocation
 
-@available(iOS 17.0, macOS 14.0, watchOS 10.0, *)
 struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, CustomIntentMigratedAppIntent {
 	static let intentClassName = "ConfigurationIntent"
 
@@ -98,7 +97,6 @@ struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, Custom
 /// Matches the old LocationType enum from ConfigurationIntent
 /// Raw values must match for proper migration:
 /// - unknown = 0, currentLocation = 1, customLocation = 2
-@available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 enum LocationTypeAppEnum: Int, AppEnum {
 	case unknown = 0
 	case currentLocation = 1
@@ -114,7 +112,6 @@ enum LocationTypeAppEnum: Int, AppEnum {
 
 // MARK: - Intent Dialogs
 
-@available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 fileprivate extension IntentDialog {
 	static var locationParameterPrompt: Self {
 		"Which location do you want to see daylight information for?"

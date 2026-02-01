@@ -462,9 +462,6 @@
         }
       }
     },
-    "Choose a Location" : {
-
-    },
     "Choose date" : {
       "localizations" : {
         "it" : {
@@ -611,6 +608,9 @@
           }
         }
       }
+    },
+    "Custom Location" : {
+
     },
     "Customise notification content" : {
       "localizations" : {
@@ -1674,7 +1674,11 @@
         }
       }
     },
+    "See today's daylight length, how it compares to yesterday, and sunrise/sunset times." : {
+
+    },
     "See today’s daylight length, how it compares to yesterday, and sunrise/sunset times." : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1796,6 +1800,9 @@
       }
     },
     "Show daylight for ${location}" : {
+
+    },
+    "Show daylight for ${selectedLocation}" : {
 
     },
     "Show location" : {
@@ -2148,7 +2155,7 @@
         }
       }
     },
-    "Use Current Location" : {
+    "Unknown" : {
 
     },
     "v%@, #%@" : {
