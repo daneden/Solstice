@@ -16,48 +16,42 @@ struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, Custom
 	static var title: LocalizedStringResource = "Configuration"
 	static var description = IntentDescription("The configuration options for Solstice widgets")
 
-	/// The selected location for the widget. Uses current location when nil.
+	// MARK: - New Parameter (for fresh configurations)
+
+	/// The selected location for the widget using the new entity type
 	@Parameter(title: "Location")
-	var location: LocationAppEntity?
+	var selectedLocation: LocationAppEntity?
 
-	/// Resolved location - returns the selected location or current location as default
+	// MARK: - Legacy Parameters (for migration from old ConfigurationIntent)
+	// These match the old ConfigurationIntent parameter names and types exactly
+	// so the system can automatically migrate existing widget configurations.
+
+	/// Legacy: The location type from old ConfigurationIntent
+	/// Matches old parameter: `locationType: LocationType`
+	@Parameter(title: "Location Type")
+	var locationType: LocationTypeAppEnum?
+
+	/// Legacy: The custom location placemark from old ConfigurationIntent
+	/// Matches old parameter: `location: CLPlacemark?`
+	@Parameter(title: "Custom Location")
+	var location: CLPlacemark?
+
+	// MARK: - Resolved Location
+
+	/// Returns the effective location by checking new parameter first, then legacy parameters
 	var resolvedLocation: LocationAppEntity {
-		location ?? .currentLocation
-	}
+		// First, check if new selectedLocation is set
+		if let selectedLocation {
+			return selectedLocation
+		}
 
-	static var parameterSummary: some ParameterSummary {
-		Summary("Show daylight for \(\.$location)")
-	}
-
-	init() {}
-
-	init(location: LocationAppEntity?) {
-		self.location = location
-	}
-
-	func perform() async throws -> some IntentResult {
-		return .result()
-	}
-
-	// MARK: - Migration from old ConfigurationIntent
-
-	/// Migrates from the old ConfigurationIntent which used LocationTypeAppEnum and CLPlacemark
-	static func migrateConfiguration(
-		locationType: LocationTypeAppEnum_Legacy?,
-		placemark: CLPlacemark?
-	) -> SolsticeConfigurationIntent {
-		var intent = SolsticeConfigurationIntent()
-
+		// Fall back to legacy parameters for migrated widgets
 		switch locationType {
-		case .currentLocation, .none:
-			// Current location - use nil (will resolve to current location)
-			intent.location = nil
-
 		case .customLocation:
-			// Custom location - try to migrate the placemark
-			if let placemark,
+			// Custom location - convert CLPlacemark to LocationAppEntity
+			if let placemark = location,
 			   let coordinate = placemark.location?.coordinate {
-				intent.location = LocationAppEntity(
+				return LocationAppEntity(
 					id: "migrated:\(coordinate.latitude),\(coordinate.longitude)",
 					title: placemark.locality ?? placemark.name ?? "Custom Location",
 					subtitle: placemark.country,
@@ -67,25 +61,54 @@ struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, Custom
 					savedLocationUUID: nil
 				)
 			}
-			// If migration fails, location stays nil (current location)
-		}
+			// Fall through to current location if placemark is invalid
+			fallthrough
 
-		return intent
+		case .currentLocation, .unknown, .none:
+			return .currentLocation
+		}
+	}
+
+	/// Whether this configuration needs timezone lookup (legacy migrations may not have timezone)
+	var needsTimezoneResolution: Bool {
+		if selectedLocation != nil {
+			return false // New selections already have timezone
+		}
+		// Legacy custom locations need timezone lookup
+		return locationType == .customLocation && location?.timeZone == nil
+	}
+
+	static var parameterSummary: some ParameterSummary {
+		Summary("Show daylight for \(\.$selectedLocation)")
+	}
+
+	init() {}
+
+	init(selectedLocation: LocationAppEntity?) {
+		self.selectedLocation = selectedLocation
+	}
+
+	func perform() async throws -> some IntentResult {
+		return .result()
 	}
 }
 
-// MARK: - Legacy Types for Migration
+// MARK: - Legacy Enum for Migration
 
-/// Legacy enum used in the old ConfigurationIntent
+/// Matches the old LocationType enum from ConfigurationIntent
+/// Raw values must match for proper migration:
+/// - unknown = 0, currentLocation = 1, customLocation = 2
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
-enum LocationTypeAppEnum_Legacy: String, AppEnum {
-	case currentLocation
-	case customLocation
+enum LocationTypeAppEnum: Int, AppEnum {
+	case unknown = 0
+	case currentLocation = 1
+	case customLocation = 2
 
 	static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Location Type")
 	static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
-		.currentLocation: "Use Current Location",
-		.customLocation: "Choose a Location"
+		.unknown: "Unknown",
+		.currentLocation: "Current Location",
+		.customLocation: "Custom Location"
 	]
 }
 

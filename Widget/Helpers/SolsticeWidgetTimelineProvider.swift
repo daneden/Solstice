@@ -44,7 +44,7 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 		return savedLocations.compactMap { savedLocation in
 			let entity = LocationAppEntity(from: savedLocation)
 			var intent = Intent()
-			intent.location = entity
+			intent.selectedLocation = entity
 			return AppIntentRecommendation(
 				intent: intent,
 				description: "\(recommendationDescription) for \(savedLocation.title ?? "Unknown")"
@@ -83,10 +83,19 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 	private func fetchWidgetLocation(for configuration: Intent) async -> (location: SolsticeWidgetLocation?, isRealLocation: Bool, error: LocationError?) {
 		let locationEntity = configuration.resolvedLocation
 
-		// If a specific location is selected (not current location), use it directly
-		// Timezone was already fetched during search
+		// If a specific location is selected (not current location), use it
 		if !locationEntity.isCurrentLocation {
-			return (getLocation(from: locationEntity), false, nil)
+			var widgetLocation = getLocation(from: locationEntity)
+
+			// For legacy migrations, the timezone might be missing - fetch it if needed
+			if configuration.needsTimezoneResolution || widgetLocation.timeZoneIdentifier == nil {
+				let location = CLLocation(latitude: locationEntity.latitude, longitude: locationEntity.longitude)
+				if let placemark = try? await geocoder.reverseGeocodeLocation(location).first {
+					widgetLocation.timeZoneIdentifier = placemark.timeZone?.identifier
+				}
+			}
+
+			return (widgetLocation, false, nil)
 		}
 
 		// Use current location
