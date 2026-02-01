@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D7F5F692BDAD92E1A42BBFD /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E63C6609375907FE3E8C3C /* Secrets.swift */; };
 		7106C86A29A276B40007A7EC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7106C86C29A276B40007A7EC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
 		7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C86E29A276B40007A7EC /* WidgetBundle.swift */; };
@@ -110,6 +111,7 @@
 		718177682F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
 		718177692F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
 		7181776A2F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */; };
+		718177752F301426007A2E9E /* YapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 718177742F301426007A2E9E /* YapKit */; };
 		7187147129DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147029DDDAD500EADF03 /* WidgetMissingLocationView.swift */; };
 		7187147529DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */; };
 		7187147629DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7187147429DDE6B600EADF03 /* CLLocationCoordinate2D++.swift */; };
@@ -370,6 +372,7 @@
 
 /* Begin PBXFileReference section */
 		13AEC2685232EF694BB4BB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		48E63C6609375907FE3E8C3C /* Secrets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		7106C86829A276B30007A7EC /* Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7106C86929A276B30007A7EC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		7106C86B29A276B40007A7EC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -498,6 +501,7 @@
 		71F641C429A0290700FE5AB5 /* AnnualDaylightChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualDaylightChart.swift; sourceTree = "<group>"; };
 		71FBEE662E4B342F00EC1EF0 /* AboutSolsticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSolsticeView.swift; sourceTree = "<group>"; };
 		71FBEE682E4B345700EC1EF0 /* Bundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle++.swift"; sourceTree = "<group>"; };
+		BE27E44FFAA0D1493AA14281 /* Secrets.swift.template */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = Secrets.swift.template; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -548,6 +552,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				718177752F301426007A2E9E /* YapKit in Frameworks */,
 				71CB96D82DE9AC3600660AA9 /* Suite in Frameworks */,
 				71691B892C2E816A00E4ED96 /* RealityKitContent in Frameworks */,
 				7198469C28E58CAA00E866CE /* Solar in Frameworks */,
@@ -766,19 +771,21 @@
 		719846A628E991E800E866CE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				7116B1EF2DDD13A00018A294 /* DeviceRotationViewModifier.swift */,
 				71AEB7B029AE0A9B00A7952D /* AnyLocation.swift */,
 				7194650D2C22B61E008408C0 /* AppChangeMigrator.swift */,
 				7132AC1829E6962D00523215 /* ConditionalGlobals.swift */,
 				7132AC1429E6960400523215 /* ConditionalGlobals+WidgetTargets.swift */,
 				719846AF28EEE48900E866CE /* CurrentLocation.swift */,
+				711782D62E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift */,
+				716BE04F2C2E752F004DDCBC /* DeepLinkResolver.swift */,
+				7116B1EF2DDD13A00018A294 /* DeviceRotationViewModifier.swift */,
 				71A2BDE529B747940071ACE9 /* Globals.swift */,
 				719846A728E991FA00E866CE /* LocationSearchService.swift */,
 				71BD5E3F29A785FE00E40C01 /* NotificationManager.swift */,
+				48E63C6609375907FE3E8C3C /* Secrets.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71908ACC2AC95A5500C7B610 /* StringBuilder.swift */,
-				716BE04F2C2E752F004DDCBC /* DeepLinkResolver.swift */,
-				711782D62E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift */,
+				BE27E44FFAA0D1493AA14281 /* Secrets.swift.template */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -939,8 +946,6 @@
 				71615FDD2F29F0610082944D /* SolsticeTests */,
 			);
 			name = SolsticeTests;
-			packageProductDependencies = (
-			);
 			productName = SolsticeTests;
 			productReference = 71615FDC2F29F0610082944D /* SolsticeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -962,8 +967,6 @@
 				71615FEC2F29F06F0082944D /* SolsticeUITests */,
 			);
 			name = SolsticeUITests;
-			packageProductDependencies = (
-			);
 			productName = SolsticeUITests;
 			productReference = 71615FEB2F29F06F0082944D /* SolsticeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -1012,6 +1015,7 @@
 				71691B882C2E816A00E4ED96 /* RealityKitContent */,
 				71CB96D72DE9AC3600660AA9 /* Suite */,
 				71C105952E7D2F0800A76EBB /* TimeMachine */,
+				718177742F301426007A2E9E /* YapKit */,
 			);
 			productName = Solstice;
 			productReference = 7198468128E5895E00E866CE /* Solstice.app */;
@@ -1087,6 +1091,7 @@
 				7198469A28E58CAA00E866CE /* XCRemoteSwiftPackageReference "Solar" */,
 				71CB96D62DE9AC3600660AA9 /* XCRemoteSwiftPackageReference "Suite" */,
 				71C105942E7D2F0800A76EBB /* XCRemoteSwiftPackageReference "TimeMachine" */,
+				718177732F301426007A2E9E /* XCRemoteSwiftPackageReference "YapKit" */,
 			);
 			productRefGroup = 7198468228E5895E00E866CE /* Products */;
 			projectDirPath = "";
@@ -1388,6 +1393,7 @@
 				7121DE0029C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				719465152C294B42008408C0 /* Color+Mix.swift in Sources */,
 				719511F829AF5CE1009D282F /* GetSunsetTime.swift in Sources */,
+				5D7F5F692BDAD92E1A42BBFD /* Secrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2111,6 +2117,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		718177732F301426007A2E9E /* XCRemoteSwiftPackageReference "YapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yapback/YapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		7194651F2C2C1E09008408C0 /* XCRemoteSwiftPackageReference "Solar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ceeK/Solar";
@@ -2154,6 +2168,11 @@
 		71691B882C2E816A00E4ED96 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
+		};
+		718177742F301426007A2E9E /* YapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 718177732F301426007A2E9E /* XCRemoteSwiftPackageReference "YapKit" */;
+			productName = YapKit;
 		};
 		7194651E2C2C1E09008408C0 /* Solar */ = {
 			isa = XCSwiftPackageProductDependency;

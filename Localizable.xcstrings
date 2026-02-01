@@ -1925,6 +1925,16 @@
         }
       }
     },
+    "Submit feedback" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia feedback"
+          }
+        }
+      }
+    },
     "Sundial" : {
       "localizations" : {
         "it" : {

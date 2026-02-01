@@ -7,6 +7,11 @@
 
 import SwiftUI
 import StoreKit
+import YapKit
+
+fileprivate extension FeedbackConfig {
+	static let solstice = FeedbackConfig(apiKey: Secrets.yapKitAPIKey)
+}
 
 // MARK: In-App Purchase Product IDs
 let iapProductIDs = Set(Constants.IAPProducts.all)
@@ -17,6 +22,7 @@ struct SupporterSettings: View {
 	@State var products: [Product] = []
 	@State var latestTransaction: StoreKit.Transaction?
 	@State var purchaseInProgress = false
+	@State var feedbackFormPresented = false
 	
 	var body: some View {
 		if let appStoreReviewURL {
@@ -26,6 +32,13 @@ struct SupporterSettings: View {
 			.task {
 				await fetchProducts()
 			}
+		}
+		
+		Button("Submit feedback", systemImage: "ladybug") {
+			feedbackFormPresented = true
+		}
+		.sheet(isPresented: $feedbackFormPresented) {
+			FeedbackView(config: .solstice)
 		}
 		
 		if !products.isEmpty {

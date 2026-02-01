@@ -26,6 +26,15 @@
         "revision" : "aa5ecbd7eeaf733143184f706c7b170ed547bb4d",
         "version" : "1.0.0"
       }
+    },
+    {
+      "identity" : "yapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yapback/YapKit",
+      "state" : {
+        "revision" : "55f8dcc0ad625fb2e17a21a41b4baced2e3dd5cd",
+        "version" : "1.0.0"
+      }
     }
   ],
   "version" : 2
