@@ -34,7 +34,7 @@ struct SupporterSettings: View {
 			}
 		}
 		
-		Button("Submit feedback", systemImage: "ladybug") {
+		Button("Submit feedback", systemImage: "exclamationmark.bubble") {
 			feedbackFormPresented = true
 		}
 		.sheet(isPresented: $feedbackFormPresented) {
