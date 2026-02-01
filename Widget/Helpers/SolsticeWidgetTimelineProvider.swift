@@ -277,6 +277,7 @@ extension SolsticeWidgetTimelineEntry {
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(2), location: nil, locationError: .locationUpdateFailed),
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(3), location: nil, locationError: .notAuthorized),
 		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(4), location: nil, locationError: .reverseGeocodingFailed),
+		SolsticeWidgetTimelineEntry(date: .now.addingTimeInterval(60 * 60 * 36).addingTimeInterval(5), location: nil, locationError: .needsReconfiguration),
 		]
 	}
 	

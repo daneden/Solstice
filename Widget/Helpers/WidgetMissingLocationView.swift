@@ -8,74 +8,27 @@
 import SwiftUI
 
 struct WidgetMissingLocationView: View {
-	@Environment(\.widgetFamily) var family
-	
-	var locationMissingIcon = Image(systemName: "location.slash")
-	
 	var body: some View {
-		switch family {
-#if os(watchOS) || os(iOS)
-		case .accessoryCorner:
-			locationMissingIcon
-				.widgetLabel {
-					Text("Location required")
-				}
-		case .accessoryCircular:
-			locationMissingIcon
-				.widgetLabel {
-					Text("Location required")
-				}
-		case .accessoryInline:
-			Label("Location required", systemImage: "location.slash")
-#endif
-		default:
-			VStack(alignment: .leading) {
-				Text("\(locationMissingIcon) Location required")
-					.font(.headline)
-				Text("Enable location services for Solstice, or choose a location by configuring the widget")
-					.foregroundStyle(.secondary)
-			}
-		}
+		ContentUnavailableView(
+			"No location found",
+			systemImage: "location.slash",
+			description: Text("Enable location access or edit to select a new location.")
+		)
+		.imageScale(.small)
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 }
 
-struct WidgetMissingLocationView_Previews: PreviewProvider {
-    static var previews: some View {
-        WidgetMissingLocationView()
-    }
-}
-
 // MARK: - Needs Reconfiguration View
-
 /// Shown when a widget was configured with the old intent system and lost its custom location data during migration.
 struct WidgetNeedsReconfigurationView: View {
-	@Environment(\.widgetFamily) var family
-
-	private let reconfigureIcon = Image(systemName: "arrow.triangle.2.circlepath")
-
 	var body: some View {
-		switch family {
-#if os(watchOS) || os(iOS)
-		case .accessoryCorner:
-			reconfigureIcon
-				.widgetLabel {
-					Text("Location reset")
-				}
-		case .accessoryCircular:
-			reconfigureIcon
-				.widgetLabel {
-					Text("Location reset")
-				}
-		case .accessoryInline:
-			Label("Location reset", systemImage: "arrow.triangle.2.circlepath")
-#endif
-		default:
-			VStack(alignment: .leading) {
-				Text("\(reconfigureIcon) Location update needed")
-					.font(.headline)
-				Text("Edit this widget to select a new location.")
-					.foregroundStyle(.secondary)
-			}
-		}
+		ContentUnavailableView(
+			"Location update needed",
+			image: "solstice",
+			description: Text("Edit this widget to select a new location.")
+		)
+		.imageScale(.small)
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 }

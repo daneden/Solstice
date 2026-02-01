@@ -183,6 +183,7 @@
       }
     },
     "%@ Location required" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -784,6 +785,12 @@
         }
       }
     },
+    "Edit this widget to select a new location." : {
+
+    },
+    "Enable location access or edit to select a new location." : {
+
+    },
     "Enable location services" : {
       "localizations" : {
         "it" : {
@@ -795,6 +802,7 @@
       }
     },
     "Enable location services for Solstice, or choose a location by configuring the widget" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1187,6 +1195,7 @@
       }
     },
     "Location required" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1197,6 +1206,9 @@
       }
     },
     "Location Type" : {
+
+    },
+    "Location update needed" : {
 
     },
     "Locations" : {
@@ -1370,6 +1382,9 @@
           }
         }
       }
+    },
+    "No location found" : {
+
     },
     "No location selected" : {
       "localizations" : {

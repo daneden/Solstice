@@ -35,5 +35,5 @@ struct OverviewWidget: Widget {
 #if os(iOS)
 #Preview(as: .systemMedium,
 				 widget: { OverviewWidget() },
-				 timeline: SolsticeWidgetTimelineEntry.previewTimeline )
+				 timeline: SolsticeWidgetTimelineEntry.previewTimeline)
 #endif
