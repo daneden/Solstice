@@ -48,6 +48,9 @@ struct OverviewWidgetView: SolsticeWidgetView {
 				default:
 					RectangularView(entry: entry)
 				}
+			} else if needsReconfiguration {
+				WidgetNeedsReconfigurationView()
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			} else if shouldShowPlaceholder {
 				RectangularView(entry: .placeholder)
 					.redacted(reason: .placeholder)

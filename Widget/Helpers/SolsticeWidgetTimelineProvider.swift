@@ -20,6 +20,8 @@ struct SolsticeWidgetTimelineEntry: TimelineEntry {
 
 enum LocationError: Error {
 	case notAuthorized, locationUpdateFailed, reverseGeocodingFailed
+	/// Widget was configured with the old intent system and lost its custom location data during migration
+	case needsReconfiguration
 }
 
 struct SolsticeTimelineProvider: AppIntentTimelineProvider {
@@ -81,6 +83,11 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 
 	/// Fetches the widget location based on the configuration
 	private func fetchWidgetLocation(for configuration: Intent) async -> (location: SolsticeWidgetLocation?, isRealLocation: Bool, error: LocationError?) {
+		// Check if this is a legacy widget that lost its custom location data during migration
+		if configuration.needsReconfiguration {
+			return (nil, false, .needsReconfiguration)
+		}
+
 		let locationEntity = configuration.resolvedLocation
 
 		// If a specific location is selected (not current location), use it

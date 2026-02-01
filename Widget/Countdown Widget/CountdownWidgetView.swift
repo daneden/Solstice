@@ -73,6 +73,8 @@ struct CountdownWidgetView: SolsticeWidgetView {
 					.symbolVariant(.fill)
 					.preferredColorScheme(.dark)
 				}
+			} else if needsReconfiguration {
+				WidgetNeedsReconfigurationView()
 			} else if shouldShowPlaceholder {
 				CountdownWidgetView(entry: .placeholder)
 					.redacted(reason: .placeholder)

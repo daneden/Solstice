@@ -77,6 +77,14 @@ struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, Custom
 		return locationType == .customLocation && location?.timeZone == nil
 	}
 
+	/// Whether this widget was configured with the old intent's custom location but lost the placemark data during migration.
+	/// This happens because CLPlacemark is not a supported parameter type in App Intents, so the migration system
+	/// cannot transfer the location data from the old SiriKit Intents-based configuration.
+	var needsReconfiguration: Bool {
+		// Not using the new system, AND was set to custom location, AND the placemark data is missing
+		selectedLocation == nil && locationType == .customLocation && location == nil
+	}
+
 	static var parameterSummary: some ParameterSummary {
 		Summary("Show daylight for \(\.$selectedLocation)")
 	}

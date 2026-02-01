@@ -46,4 +46,9 @@ extension SolsticeWidgetView {
 		guard let error = entry.locationError else { return false }
 		return error == .locationUpdateFailed || error == .reverseGeocodingFailed
 	}
+
+	/// True when the widget needs reconfiguration due to lost location data from migration
+	var needsReconfiguration: Bool {
+		entry.locationError == .needsReconfiguration
+	}
 }

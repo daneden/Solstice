@@ -44,6 +44,9 @@ struct SundialWidgetView: SolsticeWidgetView {
 				.containerBackground(for: .widget) {
 					solar?.view.opacity(0.15)
 				}
+			} else if needsReconfiguration {
+				WidgetNeedsReconfigurationView()
+					.containerBackground(.background, for: .widget)
 			} else if shouldShowPlaceholder {
 				SundialWidgetView(entry: .placeholder)
 					.redacted(reason: .placeholder)

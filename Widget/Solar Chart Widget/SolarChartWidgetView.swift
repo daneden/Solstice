@@ -49,6 +49,8 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 						yScale: -1.0...1.5
 					)
 				}
+			} else if needsReconfiguration {
+				WidgetNeedsReconfigurationView()
 			} else if shouldShowPlaceholder {
 				SolarChartWidgetView(entry: .placeholder)
 					.redacted(reason: .placeholder)
