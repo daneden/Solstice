@@ -6,17 +6,16 @@
 //
 
 import SwiftUI
-import Solar
 import Suite
 import TimeMachine
 
 struct DailyOverview<Location: AnyLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 
-	var solar: Solar
+	var solar: NTSolar
 	var location: Location
 	
-	@State private var gradientSolar: Solar?
+	@State private var gradientSolar: NTSolar?
 	
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
@@ -28,8 +27,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 	}
 	
 	var differenceFromPreviousSolstice: TimeInterval? {
-		guard let solar = Solar(for: timeMachine.date, coordinate: location.coordinate),
-					let previousSolsticeSolar = Solar(for: solar.date.previousSolstice, coordinate: location.coordinate) else {
+		guard let solar = NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone),
+					let previousSolsticeSolar = NTSolar(for: solar.date.previousSolstice, coordinate: location.coordinate, timeZone: location.timeZone) else {
 			return nil
 		}
 		
@@ -208,12 +207,12 @@ extension DailyOverview {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					SkyGradient(solar: gradientSolar ?? solar)
+					SkyGradient(ntSolar: gradientSolar ?? solar)
 				}
 		}
 		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
-			self.gradientSolar = Solar(for: date, coordinate: solar.coordinate)
-		}
+			self.gradientSolar = NTSolar(for: date, coordinate: solar.coordinate, timeZone: location.timeZone)
+			}
 		#endif
 		#if os(macOS)
 		.padding(-12)
@@ -223,7 +222,7 @@ extension DailyOverview {
 
 #Preview {
 	Form {
-		DailyOverview(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
+		DailyOverview(solar: NTSolar(for: .now, coordinate: TemporaryLocation.placeholderLondon.coordinate, timeZone: TemporaryLocation.placeholderLondon.timeZone)!, location: TemporaryLocation.placeholderLondon)
 	}
 	.withTimeMachine(.solsticeTimeMachine)
 }

@@ -5,23 +5,22 @@
 //  Created by Daniel Eden on 20/01/2026.
 //
 import SwiftUI
-import Solar
 
 protocol SolsticeWidgetView: View {
 	var entry: SolsticeWidgetTimelineEntry { get set }
 }
 
 extension SolsticeWidgetView {
-	var solar: Solar? {
+	var solar: NTSolar? {
 		guard let location else { return nil }
-		return Solar(for: entry.date, coordinate: location.coordinate)
+		return NTSolar(for: entry.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 
-	var tomorrowSolar: Solar? {
+	var tomorrowSolar: NTSolar? {
 		solar?.tomorrow
 	}
 
-	var relevantSolar: Solar? {
+	var relevantSolar: NTSolar? {
 		isAfterTodaySunset ? tomorrowSolar : solar
 	}
 

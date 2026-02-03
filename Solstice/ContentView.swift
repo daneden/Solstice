@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoreData
-import Solar
 import Suite
 import TimeMachine
 
@@ -187,4 +186,3 @@ struct ContentView: View {
 		.environment(CurrentLocation())
 		.environment(LocationSearchService())
 }
-

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import WidgetKit
 import Suite
 
@@ -87,11 +86,11 @@ struct CountdownWidgetView: SolsticeWidgetView {
 }
 
 extension CountdownWidgetView {
-	var nextSolarEvent: Solar.Event? {
+	var nextSolarEvent: NTSolar.Event? {
 		solar?.nextSolarEvent
 	}
 	
-	var previousSolarEvent: Solar.Event? {
+	var previousSolarEvent: NTSolar.Event? {
 		solar?.previousSolarEvent
 	}
 	

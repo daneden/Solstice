@@ -8,7 +8,6 @@
 import WidgetKit
 import CoreLocation
 import CoreData
-import Solar
 import AppIntents
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
@@ -140,7 +139,7 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 		let calendar = Calendar.current
 		
 		guard let coordinate = widgetLocation?.coordinate,
-					let todaySolar = Solar(for: currentDate, coordinate: coordinate) else {
+					let todaySolar = NTSolar(for: currentDate, coordinate: coordinate, timeZone: widgetLocation?.timeZone ?? .autoupdatingCurrent) else {
 			return Timeline(
 				entries: [
 					SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)
@@ -156,12 +155,12 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 		#endif
 		var allKeyTimes: [Date] = [currentDate]
 		var allHourlyTimes: [Date] = []
-		var solarByDay: [Date: Solar] = [:]
+		var solarByDay: [Date: NTSolar] = [:]
 		
 		let today = calendar.startOfDay(for: currentDate)
 		for dayOffset in 0..<daysToGenerate {
 			guard let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: today),
-						let daySolar = Solar(for: dayDate, coordinate: coordinate) else {
+						let daySolar = NTSolar(for: dayDate, coordinate: coordinate, timeZone: widgetLocation?.timeZone ?? .autoupdatingCurrent) else {
 				continue
 			}
 			

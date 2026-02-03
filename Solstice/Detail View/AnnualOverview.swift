@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import Suite
 import TimeMachine
 
@@ -173,19 +172,19 @@ struct AnnualOverview<Location: AnyLocation>: View {
 }
 
 extension AnnualOverview {
-	var decemberSolsticeSolar: Solar? {
+var decemberSolsticeSolar: NTSolar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
-		return Solar(for: decemberSolstice, coordinate: location.coordinate)
+		return NTSolar(for: decemberSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 	
-	var juneSolsticeSolar: Solar? {
+	var juneSolsticeSolar: NTSolar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
-		return Solar(for: juneSolstice, coordinate: location.coordinate)
+		return NTSolar(for: juneSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 	
-	var longestDay: Solar? {
+	var longestDay: NTSolar? {
 		guard let decemberSolsticeSolar,
 					let juneSolsticeSolar else {
 			return nil
@@ -194,7 +193,7 @@ extension AnnualOverview {
 		return decemberSolsticeSolar.daylightDuration > juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
 	}
 	
-	var shortestDay: Solar? {
+	var shortestDay: NTSolar? {
 		guard let decemberSolsticeSolar,
 					let juneSolsticeSolar else {
 			return nil

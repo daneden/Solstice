@@ -1,16 +1,17 @@
 //
-//  Solar++.swift
+//  NTSolar++.swift
 //  Solstice
 //
-//  Created by Daniel Eden on 02/10/2022.
+//  Created by Daniel Eden on 03/02/2026.
 //
 
+import Foundation
 import SwiftUI
-import Solar
 import Charts
+import CoreLocation
 
 // MARK: - Solar Event Types
-extension Solar {
+extension NTSolar {
 	struct Event: Hashable, Identifiable {
 		var id: Int { hashValue }
 		let label: String
@@ -40,7 +41,7 @@ extension Solar {
 		}
 	}
 
-	enum Phase: String, Plottable, CaseIterable, Codable {
+	enum Phase: String, Plottable, CaseIterable {
 		case night = "Night",
 				 astronomical = "Astronomical Twilight",
 				 nautical = "Nautical Twilight",
@@ -63,7 +64,7 @@ extension Solar {
 }
 
 // MARK: - Day Boundaries
-extension Solar {
+extension NTSolar {
 	var startOfDay: Date {
 		calendar.startOfDay(for: date)
 	}
@@ -82,7 +83,7 @@ extension Solar {
 }
 
 // MARK: - Safe Sunrise/Sunset
-extension Solar {
+extension NTSolar {
 	var fallbackSunrise: Date? {
 		sunrise ?? civilSunrise ?? nauticalSunrise ?? astronomicalSunrise
 	}
@@ -128,7 +129,7 @@ extension Solar {
 			return safeSunrise.distance(to: safeSunset)
 		}
 
-		let month = Calendar.current.component(.month, from: date)
+		let month = calendar.component(.month, from: date)
 
 		switch month {
 		case 1...3, 10...12:
@@ -137,33 +138,28 @@ extension Solar {
 			return coordinate.insideArcticCircle ? TimeInterval.twentyFourHours : 0
 		}
 	}
-
-	var solarNoon: Date? {
-		guard let fallbackSunrise, let fallbackSunset else { return nil }
-		return fallbackSunrise.addingTimeInterval(fallbackSunrise.distance(to: fallbackSunset) / 2)
-	}
 }
 
 // MARK: - Related Days
-extension Solar {
-	var yesterday: Solar? {
+extension NTSolar {
+	var yesterday: NTSolar? {
 		let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: date) ?? date.addingTimeInterval(60 * 60 * 24 - 1)
-		return Solar(for: yesterdayDate, coordinate: coordinate)
+		return NTSolar(for: yesterdayDate, coordinate: coordinate, timeZone: timeZone, calendar: calendar)
 	}
 
-	var tomorrow: Solar? {
+	var tomorrow: NTSolar? {
 		guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: date) else {
 			return nil
 		}
 
-		return Solar(for: tomorrow, coordinate: coordinate)
+		return NTSolar(for: tomorrow, coordinate: coordinate, timeZone: timeZone, calendar: calendar)
 	}
 }
 
 // MARK: - Difference Strings
-extension Solar {
+extension NTSolar {
 	var compactDifferenceString: LocalizedStringKey {
-		let comparator = date.isToday ? yesterday : Solar(coordinate: self.coordinate)
+		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: self.coordinate, timeZone: timeZone, calendar: calendar)
 		let difference = daylightDuration - (comparator?.daylightDuration ?? 0)
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
@@ -178,7 +174,7 @@ extension Solar {
 		formatter.dateStyle = .medium
 		formatter.formattingContext = .middleOfSentence
 
-		let comparator = date.isToday ? yesterday : Solar(coordinate: self.coordinate)
+		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: self.coordinate, timeZone: timeZone, calendar: calendar)
 		let difference = daylightDuration - (comparator?.daylightDuration ?? 0)
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
@@ -200,7 +196,7 @@ extension Solar {
 }
 
 // MARK: - Events
-extension Solar {
+extension NTSolar {
 	var events: Array<Event> {
 		[
 			Event(label: "Astronomical Sunrise", date: astronomicalSunrise, phase: .astronomical),
@@ -235,8 +231,15 @@ extension Solar {
 		if let todayEvent {
 			return todayEvent
 		}
-		let fallbackSolar: Solar = yesterday ?? self
+		let fallbackSolar: NTSolar = yesterday ?? self
 		let fallbackEvents: [Event] = fallbackSolar.events.filter { $0.phase == .sunset || $0.phase == .sunrise }
 		return fallbackEvents.last(where: { $0.date < date })
+	}
+}
+
+// MARK: - View Helpers
+extension NTSolar {
+	var view: some View {
+		SkyGradient(ntSolar: self)
 	}
 }

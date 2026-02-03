@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import Suite
 import TimeMachine
 
@@ -29,8 +28,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
 	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	var solar: NTSolar? {
+		NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 	
 	var navBarTitleText: Text {
@@ -73,7 +72,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		.modify {
 			if let solar {
 				$0.containerBackground(
-					SkyGradient(solar: solar),
+					SkyGradient(ntSolar: solar),
 					for: .navigation
 				)
 			} else {

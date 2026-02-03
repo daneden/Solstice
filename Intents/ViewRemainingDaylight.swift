@@ -7,7 +7,6 @@
 
 import Foundation
 import AppIntents
-import Solar
 import CoreLocation
 
 struct ViewRemainingDaylight: AppIntent {
@@ -26,7 +25,7 @@ struct ViewRemainingDaylight: AppIntent {
 			throw $location.needsValueError("What location do you want to see the daylight for?")
 		}
 		
-		let solar = Solar(coordinate: coordinate)!
+		let solar = NTSolar(for: .now, coordinate: coordinate, timeZone: location.timeZone ?? .autoupdatingCurrent)!
 		
 		var resultValue: TimeInterval
 		

@@ -7,7 +7,6 @@
 
 import WidgetKit
 import SwiftUI
-import Solar
 
 struct CountdownWidget: Widget {
 #if os(iOS)
@@ -22,7 +21,7 @@ struct CountdownWidget: Widget {
 	private func widgetContent(for timelineEntry: SolsticeWidgetTimelineEntry) -> some View {
 		CountdownWidgetView(entry: timelineEntry)
 			.containerBackground(for: .widget) {
-				SkyGradient(solar: Solar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate)!)
+				SkyGradient(ntSolar: NTSolar(for: timelineEntry.date, coordinate: (timelineEntry.location ?? .defaultLocation).coordinate, timeZone: (timelineEntry.location ?? .defaultLocation).timeZone))
 			}
 			.widgetURL(timelineEntry.location?.url)
 	}

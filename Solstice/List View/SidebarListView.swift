@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import TimeMachine
 
 struct SidebarListView: View {
@@ -116,7 +115,7 @@ struct SidebarListView: View {
 
 	private func savedLocationPreview(for item: SavedLocation) -> some View {
 		Form {
-			if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+			if let solar = NTSolar(for: timeMachine.date, coordinate: item.coordinate, timeZone: item.timeZone) {
 				DailyOverview(solar: solar, location: item)
 			}
 		}
@@ -167,8 +166,8 @@ extension SidebarListView {
 					return lhs.timeZone.secondsFromGMT() > rhs.timeZone.secondsFromGMT()
 				}
 			case .daylightDuration:
-				guard let lhsSolar = Solar(for: timeMachine.date, coordinate: lhs.coordinate),
-							let rhsSolar = Solar(for: timeMachine.date, coordinate: rhs.coordinate) else {
+				guard let lhsSolar = NTSolar(for: timeMachine.date, coordinate: lhs.coordinate, timeZone: lhs.timeZone),
+							let rhsSolar = NTSolar(for: timeMachine.date, coordinate: rhs.coordinate, timeZone: rhs.timeZone) else {
 					return true
 				}
 				

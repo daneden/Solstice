@@ -7,14 +7,13 @@
 
 import SwiftUI
 import TimeMachine
-import Solar
 
 struct GraphicalLocationListRow<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 	var location: Location
 	
-	var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	var solar: NTSolar? {
+		NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 	
 	var body: some View {

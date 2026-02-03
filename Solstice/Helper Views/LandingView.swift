@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import Suite
 
 fileprivate struct SizePreferenceKey: PreferenceKey {
@@ -83,18 +82,19 @@ struct LandingView: View {
 		dynamicTypeSize > .accessibility2
 	}
 	
-	@State private var solar = Solar(coordinate: .proxiedToTimeZone)
+	@State private var solar = NTSolar(for: .now, coordinate: .proxiedToTimeZone, timeZone: .autoupdatingCurrent)
 	private let renderTime = Date.now
 	
     var body: some View {
 			ZStack {
 				TimelineView(.animation) { context in
-					SkyGradient(solar: solar)
+					SkyGradient(ntSolar: solar)
 						.ignoresSafeArea()
 						.task(id: context.date) {
-							solar = Solar(
+							solar = NTSolar(
 								for: renderTime.addingTimeInterval(context.date.distance(to: renderTime) * 1000),
-								coordinate: .proxiedToTimeZone
+								coordinate: .proxiedToTimeZone,
+								timeZone: .autoupdatingCurrent
 							) ?? solar
 						}
 				}

@@ -7,17 +7,16 @@
 
 import SwiftUI
 import Charts
-import Solar
 import Suite
 
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
 	
-	@State private var selectedEvent: Solar.Event?
+	@State private var selectedEvent: NTSolar.Event?
 	@State private var currentX: Date?
 	
-	var solar: Solar
+	var solar: NTSolar
 	var timeZone: TimeZone
 	var showEventTypes = true
 	
@@ -109,11 +108,11 @@ struct DaylightChart: View {
 		}
 	}
 
-	private var filteredEvents: [Solar.Event] {
+	private var filteredEvents: [NTSolar.Event] {
 		solar.events.filter { range.contains($0.date) }
 	}
 
-	private func eventPointMark(for solarEvent: Solar.Event) -> some ChartContent {
+	private func eventPointMark(for solarEvent: NTSolar.Event) -> some ChartContent {
 		PointMark(
 			x: .value("Event Time", solarEvent.date),
 			y: .value("Event", yValue(for: solarEvent.date))
@@ -123,9 +122,9 @@ struct DaylightChart: View {
 		.symbolSize(markSize * .pi * 2)
 	}
 
-	private func eventPointOpacity(for phase: Solar.Phase) -> Double {
-		let hiddenPhases: Set<Solar.Phase> = [.night, .day, .sunrise, .sunset]
-		let shouldShow: Bool = showEventTypes || !Solar.Phase.plottablePhases.contains(phase)
+	private func eventPointOpacity(for phase: NTSolar.Phase) -> Double {
+		let hiddenPhases: Set<NTSolar.Phase> = [.night, .day, .sunrise, .sunset]
+		let shouldShow: Bool = showEventTypes || !NTSolar.Phase.plottablePhases.contains(phase)
 		return (shouldShow && !hiddenPhases.contains(phase)) ? 1 : 0
 	}
 
@@ -307,7 +306,7 @@ extension DaylightChart {
 		solar.daylightDuration / dayLength
 	}
 	
-	func pointMarkColor(for eventPhase: Solar.Phase) -> HierarchicalShapeStyle {
+	func pointMarkColor(for eventPhase: NTSolar.Phase) -> HierarchicalShapeStyle {
 		switch eventPhase {
 		case .astronomical:
 			return .quaternary
@@ -383,13 +382,13 @@ extension DaylightChart {
 	Form {
 		Group {
 			DaylightChart(
-				solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!,
+				solar: NTSolar(for: .now, coordinate: TemporaryLocation.placeholderLondon.coordinate, timeZone: TemporaryLocation.placeholderLondon.timeZone)!,
 				timeZone: TimeZone.autoupdatingCurrent,
 				scrubbable: true
 			)
 			
 			DaylightChart(
-				solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!,
+				solar: NTSolar(for: .now, coordinate: TemporaryLocation.placeholderLondon.coordinate, timeZone: TemporaryLocation.placeholderLondon.timeZone)!,
 				timeZone: TimeZone.autoupdatingCurrent,
 				appearance: .graphical,
 				scrubbable: true

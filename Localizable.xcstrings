@@ -392,16 +392,6 @@
         }
       }
     },
-    "ceeK/Solar" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ceeK/Solar"
-          }
-        }
-      }
-    },
     "Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder." : {
       "localizations" : {
         "it" : {
@@ -1552,16 +1542,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apri Solstice per vedere come è cambiata la luce del giorno di oggi."
-          }
-        }
-      }
-    },
-    "Open Source Acknowledgements" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ringraziamenti Open Source"
           }
         }
       }

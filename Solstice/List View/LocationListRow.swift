@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import Suite
 import TimeMachine
 
@@ -20,8 +19,8 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	
 	var headingFontWeight: Font.Weight = .medium
 	
-	private var solar: Solar? {
-		Solar(for: timeMachine.date, coordinate: location.coordinate)
+	private var solar: NTSolar? {
+		NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 	
 	private var isCurrentLocation: Bool {
