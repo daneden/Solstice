@@ -93,13 +93,10 @@ struct NTSolar {
                                                          lon: coordinate.longitude,
                                                          lat: coordinate.latitude)
 
-        let offsetSeconds = NTSolar.gmtOffsetSeconds(forYear: year, month: month, day: day, timeZone: timeZone, calendar: calendar)
-
         self.sunrise = NTSolar.dateFromUTCHours(sunriseSet.trise,
                                                 year: year,
                                                 month: month,
                                                 day: day,
-                                                offsetSeconds: offsetSeconds,
                                                 calendar: calendar,
                                                 shouldReturn: sunriseSet.code == .RiseAndSet)
 
@@ -107,7 +104,6 @@ struct NTSolar {
                                                year: year,
                                                month: month,
                                                day: day,
-                                               offsetSeconds: offsetSeconds,
                                                calendar: calendar,
                                                shouldReturn: sunriseSet.code == .RiseAndSet)
 
@@ -115,7 +111,6 @@ struct NTSolar {
                                                      year: year,
                                                      month: month,
                                                      day: day,
-                                                     offsetSeconds: offsetSeconds,
                                                      calendar: calendar,
                                                      shouldReturn: civil.code == .RiseAndSet)
 
@@ -123,7 +118,6 @@ struct NTSolar {
                                                     year: year,
                                                     month: month,
                                                     day: day,
-                                                    offsetSeconds: offsetSeconds,
                                                     calendar: calendar,
                                                     shouldReturn: civil.code == .RiseAndSet)
 
@@ -131,7 +125,6 @@ struct NTSolar {
                                                         year: year,
                                                         month: month,
                                                         day: day,
-                                                        offsetSeconds: offsetSeconds,
                                                         calendar: calendar,
                                                         shouldReturn: nautical.code == .RiseAndSet)
 
@@ -139,7 +132,6 @@ struct NTSolar {
                                                        year: year,
                                                        month: month,
                                                        day: day,
-                                                       offsetSeconds: offsetSeconds,
                                                        calendar: calendar,
                                                        shouldReturn: nautical.code == .RiseAndSet)
 
@@ -147,7 +139,6 @@ struct NTSolar {
                                                             year: year,
                                                             month: month,
                                                             day: day,
-                                                            offsetSeconds: offsetSeconds,
                                                             calendar: calendar,
                                                             shouldReturn: astronomical.code == .RiseAndSet)
 
@@ -155,7 +146,6 @@ struct NTSolar {
                                                            year: year,
                                                            month: month,
                                                            day: day,
-                                                           offsetSeconds: offsetSeconds,
                                                            calendar: calendar,
                                                            shouldReturn: astronomical.code == .RiseAndSet)
 
@@ -164,7 +154,6 @@ struct NTSolar {
                                                   year: year,
                                                   month: month,
                                                   day: day,
-                                                  offsetSeconds: offsetSeconds,
                                                   calendar: calendar,
                                                   shouldReturn: true)
     }
@@ -195,46 +184,27 @@ struct NTSolar {
 
     // MARK: - Date Helpers
 
-    private static func gmtOffsetSeconds(forYear year: Int,
-                                         month: Int,
-                                         day: Int,
-                                         timeZone: TimeZone,
-                                         calendar: Calendar) -> Int {
-        var components = DateComponents()
-        components.calendar = calendar
-        components.year = year
-        components.month = month
-        components.day = day
-        components.hour = 12
-        components.minute = 0
-        components.second = 0
-
-        let localNoon = calendar.date(from: components) ?? Date()
-        return timeZone.secondsFromGMT(for: localNoon)
-    }
-
     private static func dateFromUTCHours(_ utcHours: Double,
                                          year: Int,
                                          month: Int,
                                          day: Int,
-                                         offsetSeconds: Int,
                                          calendar: Calendar,
                                          shouldReturn: Bool) -> Date? {
         guard shouldReturn else { return nil }
 
-        var localHours = utcHours + (Double(offsetSeconds) / 3600.0)
+        var utcHours = utcHours
         var dayOffset = 0
-        while localHours < 0 {
-            localHours += 24.0
+        while utcHours < 0 {
+            utcHours += 24.0
             dayOffset -= 1
         }
-        while localHours >= 24.0 {
-            localHours -= 24.0
+        while utcHours >= 24.0 {
+            utcHours -= 24.0
             dayOffset += 1
         }
 
-        var hour = Int(localHours)
-        var minute = Int(((localHours - Double(hour)) * 60.0).rounded())
+        var hour = Int(utcHours)
+        var minute = Int(((utcHours - Double(hour)) * 60.0).rounded())
 
         if minute == 60 {
             minute = 0
@@ -245,8 +215,11 @@ struct NTSolar {
             }
         }
 
+        var utcCalendar = calendar
+        utcCalendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .gmt
+
         var baseComponents = DateComponents()
-        baseComponents.calendar = calendar
+        baseComponents.calendar = utcCalendar
         baseComponents.year = year
         baseComponents.month = month
         baseComponents.day = day
@@ -254,11 +227,11 @@ struct NTSolar {
         baseComponents.minute = 0
         baseComponents.second = 0
 
-        guard let baseDate = calendar.date(from: baseComponents) else {
+        guard let baseDate = utcCalendar.date(from: baseComponents) else {
             return nil
         }
 
-        guard let adjustedDay = calendar.date(byAdding: .day, value: dayOffset, to: baseDate) else {
+        guard let adjustedDay = utcCalendar.date(byAdding: .day, value: dayOffset, to: baseDate) else {
             return nil
         }
 
@@ -267,7 +240,7 @@ struct NTSolar {
         timeComponents.minute = minute
         timeComponents.second = 0
 
-        guard let finalDate = calendar.date(byAdding: timeComponents, to: adjustedDay) else {
+        guard let finalDate = utcCalendar.date(byAdding: timeComponents, to: adjustedDay) else {
             return nil
         }
 

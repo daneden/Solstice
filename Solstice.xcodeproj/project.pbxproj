@@ -284,6 +284,7 @@
 		71E945A12F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E945A22F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E945A32F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
+		71E945C82F32506000B26D02 /* CircularSolarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC51C72E91B56D0025892F /* CircularSolarChart.swift */; };
 		71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
 		71F58A412E617E08007A5E45 /* ShareSolarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339C2D77B06900709C20 /* ShareSolarChartView.swift */; };
 		71F641B729994DD900FE5AB5 /* LocationListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641B629994DD900FE5AB5 /* LocationListRow.swift */; };
@@ -1437,6 +1438,7 @@
 				7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */,
 				71C4D80A2EA9856800EEB023 /* SolarExtremetiesOverview.swift in Sources */,
 				7188714429DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
+				71E945C82F32506000B26D02 /* CircularSolarChart.swift in Sources */,
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,
 				719465162C294B42008408C0 /* Color+Mix.swift in Sources */,
 				71E3C41B2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
