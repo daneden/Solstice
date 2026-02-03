@@ -10,8 +10,12 @@ import Suite
 import TimeMachine
 
 struct ShareSolarChartView<Location: AnyLocation>: View {
+	@AppStorage(Preferences.chartType) private var chartType
+	
 	@Environment(\.dismiss) var dismiss
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
+	
+	@State private var selectedChartType = ChartType.classic
 	
 	var solar: NTSolar
 	var location: Location
@@ -28,22 +32,31 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	
 	@ViewBuilder
 	var daylightChartView: some View {
-		DaylightChart(
-			solar: solar,
-			timeZone: location.timeZone,
-			appearance: chartAppearance, scrubbable: true,
-			markSize: chartMarkSize
-		)
-		.if(chartAppearance == .graphical) { content in
-			content
-				.background {
-				SkyGradient(ntSolar: solar)
-				}
+		switch selectedChartType {
+		case .classic:
+			DaylightChart(
+				solar: solar,
+				timeZone: location.timeZone,
+				appearance: chartAppearance, scrubbable: true,
+				markSize: chartMarkSize
+			)
+			.if(chartAppearance == .graphical) { content in
+				content
+					.background {
+						SkyGradient(ntSolar: solar)
+					}
+			}
+		case .circular:
+			CircularSolarChart(date: solar.date, location: location, appearanceOverride: chartAppearance)
+				.foregroundStyle(.black)
+				.padding()
+				.frame(maxWidth: .infinity)
 		}
+		
 	}
 	
 	var deps: [AnyHashable] {
-		[showLocationName, solar.date, location, chartAppearance]
+		[showLocationName, solar.date, location, chartAppearance, selectedChartType]
 	}
 	
 	private let igStoriesUrl: URL? = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice")
@@ -76,6 +89,9 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 				}
 			}
 			.navigationTitle("Share image")
+			.onAppear {
+				selectedChartType = chartType
+			}
 			.task(id: deps) {
 				self.chartRenderedAsImage = buildChartRenderedAsImage()
 			}
@@ -85,6 +101,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	@ViewBuilder
 	private var mainListContent: some View {
 		Group {
+			chartTypePicker
 			appearancePicker
 			chartPreview
 			locationToggle
@@ -102,6 +119,19 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 			}
 		} label: {
 			Text("Chart appearance")
+		}
+		#if !os(watchOS)
+		.pickerStyle(.segmented)
+		#endif
+	}
+	
+	private var chartTypePicker: some View {
+		Picker(selection: $selectedChartType) {
+			ForEach(ChartType.allCases, id: \.self) { appearance in
+				Text(appearance.title)
+			}
+		} label: {
+			Text("Chart type")
 		}
 		#if !os(watchOS)
 		.pickerStyle(.segmented)
