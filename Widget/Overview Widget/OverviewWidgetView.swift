@@ -41,13 +41,16 @@ struct OverviewWidgetView: SolsticeWidgetView {
 						.imageScale(.large)
 						.widgetLabel {
 							Text(solar.daylightDuration.localizedString)
-								.widgetAccentable()
 						}
+						.widgetAccentable()
 				#endif // end watchOS
 				#endif // end !macOS
 				default:
 					RectangularView(entry: entry)
 				}
+			} else if needsReconfiguration {
+				WidgetNeedsReconfigurationView()
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			} else if shouldShowPlaceholder {
 				RectangularView(entry: .placeholder)
 					.redacted(reason: .placeholder)
@@ -59,6 +62,7 @@ struct OverviewWidgetView: SolsticeWidgetView {
 		.containerBackground(for: .widget) {
 			Color.clear.background(.background)
 		}
+		.environment(\.timeZone, location?.timeZone ?? .autoupdatingCurrent)
 	}
 }
 

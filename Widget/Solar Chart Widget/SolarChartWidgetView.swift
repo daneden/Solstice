@@ -49,6 +49,8 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 						yScale: -1.0...1.5
 					)
 				}
+			} else if needsReconfiguration {
+				WidgetNeedsReconfigurationView()
 			} else if shouldShowPlaceholder {
 				SolarChartWidgetView(entry: .placeholder)
 					.redacted(reason: .placeholder)
@@ -57,6 +59,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.environment(\.timeZone, location?.timeZone ?? .autoupdatingCurrent)
 		.containerBackground(.background, for: .widget)
 	}
 }
