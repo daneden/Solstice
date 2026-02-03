@@ -11,7 +11,7 @@ import Suite
 import enum Accelerate.vDSP
 
 struct CircularSolarChart<Location: AnyLocation>: View {
-	@AppStorage(Preferences.detailViewChartAppearance) private var appearance
+	@AppStorage(Preferences.detailViewChartAppearance) private var storedAppearance
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
 	#if WIDGET_EXTENSION
@@ -22,6 +22,12 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	var date: Date?
 	
 	var location: Location
+	
+	var appearanceOverride: DaylightChart.Appearance?
+	
+	var appearance: DaylightChart.Appearance {
+		appearanceOverride ?? storedAppearance
+	}
 	
 	var timeZone: TimeZone { location.timeZone }
 	
