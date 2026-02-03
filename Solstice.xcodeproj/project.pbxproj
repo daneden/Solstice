@@ -274,10 +274,6 @@
 		71E3C41A2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */; };
 		71E3C41B2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */; };
 		71E8DC2D29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */; };
-		71E945762F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E945752F31F31A00B26D02 /* SolarDebuggingView.swift */; };
-		71E945772F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E945752F31F31A00B26D02 /* SolarDebuggingView.swift */; };
-		71E945782F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E945752F31F31A00B26D02 /* SolarDebuggingView.swift */; };
-		71E945792F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E945752F31F31A00B26D02 /* SolarDebuggingView.swift */; };
 		71E945802F31FDA600B26D02 /* NTSolar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9457F2F31FDA600B26D02 /* NTSolar.swift */; };
 		71E945812F31FDA600B26D02 /* NTSolar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9457F2F31FDA600B26D02 /* NTSolar.swift */; };
 		71E945822F31FDA600B26D02 /* NTSolar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9457F2F31FDA600B26D02 /* NTSolar.swift */; };
@@ -497,7 +493,6 @@
 		71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleWithSlice.swift; sourceTree = "<group>"; };
 		71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+backportGlassEffect.swift"; sourceTree = "<group>"; };
 		71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquinoxAndSolsticeInfoSheet.swift; sourceTree = "<group>"; };
-		71E945752F31F31A00B26D02 /* SolarDebuggingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarDebuggingView.swift; sourceTree = "<group>"; };
 		71E9457F2F31FDA600B26D02 /* NTSolar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTSolar.swift; sourceTree = "<group>"; };
 		71E9459D2F32095300B26D02 /* NTSolar++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NTSolar++.swift"; sourceTree = "<group>"; };
 		71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLabelStyle.swift; sourceTree = "<group>"; };
@@ -789,7 +784,6 @@
 				48E63C6609375907FE3E8C3C /* Secrets.swift */,
 				BE27E44FFAA0D1493AA14281 /* Secrets.swift.template */,
 				71E9457F2F31FDA600B26D02 /* NTSolar.swift */,
-				71E945752F31F31A00B26D02 /* SolarDebuggingView.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71908ACC2AC95A5500C7B610 /* StringBuilder.swift */,
 			);
@@ -1209,7 +1203,6 @@
 				7106C88929A277680007A7EC /* Persistence.swift in Sources */,
 				7195128429B73341009D282F /* SkyGradient.swift in Sources */,
 				71FBEE692E4B345700EC1EF0 /* Bundle++.swift in Sources */,
-				71E945792F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */,
 				7150EB5629DC675800CA8341 /* WidgetHeadingModifier.swift in Sources */,
 				71BD5E3B29A7778900E40C01 /* WidgetLocationHeadingView.swift in Sources */,
 				712433AD2D79090500709C20 /* NSImage+pngData.swift in Sources */,
@@ -1293,7 +1286,6 @@
 				712433942D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
 				7194653C2C2C1E09008408C0 /* OverviewWidgetView+AccessoryWidgetViews.swift in Sources */,
 				7194653E2C2C1E09008408C0 /* Globals.swift in Sources */,
-				71E945762F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */,
 				7194653F2C2C1E09008408C0 /* SolarChartWidget.swift in Sources */,
 				719465402C2C1E09008408C0 /* Date++.swift in Sources */,
 				71E945A32F32095300B26D02 /* NTSolar++.swift in Sources */,
@@ -1353,7 +1345,6 @@
 				71C105912E7C08DA00A76EBB /* AlignedIconLabelStyle.swift in Sources */,
 				7116B1EA2DDD07F70018A294 /* View+timeMachineOverlayModifier.swift in Sources */,
 				71E945A02F32095300B26D02 /* NTSolar++.swift in Sources */,
-				71E945782F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */,
 				71F641C3299FD39E00FE5AB5 /* View+CapsuleAppearance.swift in Sources */,
 				7132AC1929E6962D00523215 /* ConditionalGlobals.swift in Sources */,
 				711782D82E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,
@@ -1427,7 +1418,6 @@
 				71A2BDE729B747940071ACE9 /* Globals.swift in Sources */,
 				712433A82D78870600709C20 /* StackedButtonStyle.swift in Sources */,
 				719F927529ACD21300C06921 /* Persistence.swift in Sources */,
-				71E945772F31F31A00B26D02 /* SolarDebuggingView.swift in Sources */,
 				716BE0522C2E7E53004DDCBC /* LocationSearchService.swift in Sources */,
 				719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */,
 				712433A52D78867300709C20 /* StackedLabelStyle.swift in Sources */,

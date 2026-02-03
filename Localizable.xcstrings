@@ -392,17 +392,6 @@
         }
       }
     },
-    "ceeK/Solar" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ceeK/Solar"
-          }
-        }
-      }
-    },
     "Change how notifications behave when daily daylight begins to decrease. This can help with Seasonal Affective Disorder." : {
       "localizations" : {
         "it" : {
@@ -543,20 +532,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continua con la posizione"
-          }
-        }
-      }
-    },
-    "Coordinates" : {
-
-    },
-    "Countdown" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conto alla rovescia"
           }
         }
       }
@@ -1374,9 +1349,6 @@
         }
       }
     },
-    "nil" : {
-
-    },
     "No change" : {
       "localizations" : {
         "it" : {
@@ -1570,17 +1542,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apri Solstice per vedere come è cambiata la luce del giorno di oggi."
-          }
-        }
-      }
-    },
-    "Open Source Acknowledgements" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ringraziamenti Open Source"
           }
         }
       }
