@@ -44,8 +44,8 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					.font(.headline.weight(headingFontWeight))
 				#endif
 				
-				let sunrise = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
-				let sunset = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
+				let sunrise = solar.safeSunrise
+				let sunset = solar.safeSunset
 				
 				if sunrise < sunset {
 					Text(sunrise...sunset)
@@ -53,6 +53,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 				}
 			}
 			.contentTransition(.identity)
+			.environment(\.timeZone, location.timeZone)
 		}
 	}
 	
@@ -76,7 +77,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					Text(Duration.seconds(solar.daylightDuration).formatted(.units(allowed: [.hours, .minutes])))
 						.font(.headline)
 						.contentTransition(.numericText())
-					Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)...solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone))
+					Text(solar.safeSunrise...solar.safeSunset)
 						.font(.footnote)
 						.foregroundStyle(.secondary)
 						.contentTransition(.numericText())
@@ -87,6 +88,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		.animation(.default, value: location.subtitle)
 		.animation(.default, value: timeMachine.date)
 		.shadow(radius: 4, x: 0, y: 2)
+		.environment(\.timeZone, location.timeZone)
 		#else
 		HStack {
 			VStack(alignment: .leading, spacing: 2) {

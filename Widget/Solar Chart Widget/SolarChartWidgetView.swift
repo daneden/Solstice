@@ -18,7 +18,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 				ZStack(alignment: .topLeading) {
 					HStack {
 						Label {
-							Text(solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+							Text(solar.safeSunrise, style: .time)
 						} icon: {
 							Image(systemName: "sunrise")
 						}
@@ -27,7 +27,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 						Spacer()
 
 						Label {
-							Text(solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone), style: .time)
+							Text(solar.safeSunset, style: .time)
 						} icon: {
 							Image(systemName: "sunset")
 						}

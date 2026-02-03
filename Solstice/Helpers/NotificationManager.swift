@@ -25,21 +25,21 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) static var userPreferenceNotificationOffset
 	@AppStorage(Preferences.sadPreference) static var sadPreference
 	@AppStorage(Preferences.customNotificationLocationUUID) static var customNotificationLocationUUID
-	
+
 	static var backgroundTaskIdentifier = Constants.backgroundTaskIdentifier
-	
+
 	static func requestAuthorization() async -> Bool? {
 		return try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert])
 	}
-	
+
 	static func clearScheduledNotifications() async {
 		return UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 	}
-	
+
 	static func clearDeliveredNotifications() async {
 		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 	}
-	
+
 	/// Schedules notifications for the next 64 days
 	/// - Parameter location: Optional location to use. If nil, will attempt to fetch current location.
 	static func scheduleNotifications(location existingLocation: CLLocation? = nil) async {
@@ -166,7 +166,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			) ?? date
 		}
 	}
-	
+
 	// MARK: - Notification Content Building
 
 	/// Creates notification content from a given date. Can be used either for legitimate notifications or for
@@ -293,8 +293,10 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	// MARK: Body Fragments
 
 	private static func sunTimesFragment(solar: NTSolar, timeZone: TimeZone) -> String {
-		let sunriseTime = solar.safeSunrise.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
-		let sunsetTime = solar.safeSunset.withTimeZoneAdjustment(for: timeZone).formatted(.dateTime.hour().minute())
+		let formatStyle = Date.FormatStyle(timeZone: timeZone)
+
+		let sunriseTime = solar.safeSunrise.formatted(formatStyle.hour().minute())
+		let sunsetTime = solar.safeSunset.formatted(formatStyle.hour().minute())
 		let format = NSLocalizedString(
 			"notif-sunrise-sunset",
 			value: "The sun rises at %1$@ and sets at %2$@.",
@@ -353,7 +355,7 @@ extension NotificationManager {
 		let title: String
 		let body: String
 	}
-	
+
 	enum Context {
 		case preview, notification
 	}

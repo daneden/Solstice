@@ -55,7 +55,7 @@ struct CountdownWidgetView: SolsticeWidgetView {
 						}
 						
 						Label{
-							Text(nextSolarEvent.date.withTimeZoneAdjustment(for: timeZone), style: .time)
+							Text(nextSolarEvent.date, style: .time)
 						} icon: {
 							Image(systemName: nextSolarEvent.imageName)
 						}
