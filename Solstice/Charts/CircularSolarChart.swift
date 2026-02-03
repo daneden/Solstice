@@ -12,6 +12,7 @@ import enum Accelerate.vDSP
 
 struct CircularSolarChart<Location: AnyLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var storedAppearance
+	@Environment(\.labelsVisibility) private var labelsVisibility
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
 	#if WIDGET_EXTENSION
