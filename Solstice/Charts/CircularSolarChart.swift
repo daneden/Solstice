@@ -12,6 +12,8 @@ import enum Accelerate.vDSP
 
 struct CircularSolarChart<Location: AnyLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var appearance
+	
+	@Environment(\.labelsVisibility) private var labelsVisibility
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
 	#if WIDGET_EXTENSION
@@ -31,7 +33,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 	
 	var majorSunSize: Double {
-		max(16, max(size.width, size.height) * 0.075)
+		max(12, max(size.width, size.height) * 0.075)
 	}
 	
 	var minorSunSize: Double {
@@ -119,7 +121,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			.fill(foregroundStyle)
 			.frame(width: majorSunSize)
 			.frame(maxWidth: .infinity, alignment: .trailing)
-			.padding(.trailing, minorSunSize / 2)
 			.rotationEffect(angle(for: solar?.date ?? .now))
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
@@ -131,13 +132,12 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		.overlay {
 			Circle()
 				.fill(.clear)
-				.strokeBorder(foregroundStyle, lineWidth: 3)
+				.strokeBorder(foregroundStyle, lineWidth: 2)
 		}
-				.frame(width: majorSunSize)
-				.frame(maxWidth: .infinity, alignment: .trailing)
-				.padding(.trailing, minorSunSize / 2)
-				.rotationEffect(angle(for: solar?.date ?? .now))
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.frame(width: majorSunSize)
+		.frame(maxWidth: .infinity, alignment: .trailing)
+		.rotationEffect(angle(for: solar?.date ?? .now))
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 	
 	var safeSunriseSunsetShape: some Shape {
@@ -255,7 +255,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 					Circle()
 						.fill(.clear)
 						.stroke(.black, lineWidth: 1)
-						.padding()
+						.padding(majorSunSize / 2)
 
 					phaseMarkers
 				}
@@ -281,14 +281,14 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			Circle()
 				.frame(width: minorSunSize)
 				.frame(maxWidth: .infinity, alignment: .trailing)
-				.padding(.trailing)
+				.padding(.trailing, majorSunSize / 2)
 				.offset(x: minorSunSize / 2)
 				.rotationEffect(angle(for: sunrise))
 
 			Circle()
 				.frame(width: minorSunSize)
 				.frame(maxWidth: .infinity, alignment: .trailing)
-				.padding(.trailing)
+				.padding(.trailing, majorSunSize / 2)
 				.offset(x: minorSunSize / 2)
 				.rotationEffect(angle(for: sunset))
 		}
@@ -296,33 +296,35 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	@ViewBuilder
 	var labels: some View {
-		if let solar {
-			ChartLabel(text: Text(solar.safeSunrise, style: .time),
-								 imageName: "sunrise",
-								 angle: angle(for: solar.safeSunrise))
-			
-			ChartLabel(text: Text(solar.safeSunset, style: .time),
-								 imageName: "sunset",
-								 angle: angle(for: solar.safeSunset))
-		}
-		
-		if let duration = solar?.daylightDuration,
-			 let diff = solar?.compactDifferenceString {
-			VStack(spacing: 2) {
-				HStack(spacing: 2) {
-					if !isSmallWidget {
-						Image(systemName: "hourglass")
-					}
-					Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
-				}
+		if labelsVisibility != .hidden {
+			if let solar {
+				ChartLabel(text: Text(solar.safeSunrise, style: .time),
+									 imageName: "sunrise",
+									 angle: angle(for: solar.safeSunrise))
 				
-				Text(diff)
-					.textScale(.secondary)
-					.foregroundStyle(.secondary)
+				ChartLabel(text: Text(solar.safeSunset, style: .time),
+									 imageName: "sunset",
+									 angle: angle(for: solar.safeSunset))
 			}
-			.padding(4)
-			.padding(.horizontal, 4)
-			.backportGlassEffect(in: .rect(cornerRadius: 12, style: .continuous))
+			
+			if let duration = solar?.daylightDuration,
+				 let diff = solar?.compactDifferenceString {
+				VStack(spacing: 2) {
+					HStack(spacing: 2) {
+						if !isSmallWidget {
+							Image(systemName: "hourglass")
+						}
+						Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
+					}
+					
+					Text(diff)
+						.textScale(.secondary)
+						.foregroundStyle(.secondary)
+				}
+				.padding(4)
+				.padding(.horizontal, 4)
+				.backportGlassEffect(in: .rect(cornerRadius: 12, style: .continuous))
+			}
 		}
 	}
 	
@@ -344,7 +346,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				.if(widgetRenderingMode != .fullColor) {
 					$0.reverseMask {
 						labels
-							.if(isSmallWidget) { $0.font(.caption2).fontWidth(.condensed) }
 							.backgroundStyle(.black)
 					}
 				}
@@ -352,7 +353,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				
 				labels
 				#if WIDGET_EXTENSION
-					.if(isSmallWidget) { $0.font(.caption2).fontWidth(.condensed) }
 					.if(widgetRenderingMode != .fullColor) {
 						$0.backgroundStyle(.primary.quinary)
 					}
