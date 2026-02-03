@@ -8,6 +8,13 @@
 import Foundation
 
 extension Date {
+	func startOfDay(in timeZone: TimeZone) -> Date {
+		var calendar = Calendar.current
+		calendar.timeZone = timeZone
+		
+		return calendar.startOfDay(for: self)
+	}
+	
 	var startOfDay: Date {
 		calendar.startOfDay(for: self)
 	}
@@ -18,12 +25,6 @@ extension Date {
 	
 	var isToday: Bool {
 		calendar.isDateInToday(self)
-	}
-	
-	func withTimeZoneAdjustment(for timeZone: TimeZone?) -> Date {
-		guard let timeZone else { return self }
-		let tzOffset = timeZone.secondsFromGMT(for: self) - localTimeZone.secondsFromGMT(for: self)
-		return self.addingTimeInterval(TimeInterval(tzOffset))
 	}
 
 	var nextSolsticeMonth: Int {

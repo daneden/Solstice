@@ -282,14 +282,6 @@ struct DaylightChart: View {
 }
 
 extension DaylightChart {
-	var relativeEventTimeString: String {
-		if let selectedEvent,
-			 calendar.isDateInToday(selectedEvent.date) {
-			return " (\((selectedEvent.date..<solar.date.withTimeZoneAdjustment(for: timeZone)).formatted(.timeDuration))"
-		}
-		return ""
-	}
-	
 	var hours: Array<Date> {
 		stride(from: range.lowerBound, through: range.upperBound, by: 60 * 30).compactMap { $0 }
 	}

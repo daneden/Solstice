@@ -133,8 +133,8 @@ extension OverviewWidgetView {
 					
 					Group {
 						if let location,
-							 let begins = relevantSolar?.safeSunrise.withTimeZoneAdjustment(for: location.timeZone),
-							 let ends = relevantSolar?.safeSunset.withTimeZoneAdjustment(for: location.timeZone) {
+							 let begins = relevantSolar?.safeSunrise,
+							 let ends = relevantSolar?.safeSunset {
 							if let differenceString = relevantSolar?.compactDifferenceString {
 								Text(differenceString)
 									.lineLimit(4)
@@ -172,6 +172,7 @@ extension OverviewWidgetView {
 #endif
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+			.environment(\.timeZone, location?.timeZone ?? .autoupdatingCurrent)
 		}
 	}
 }
