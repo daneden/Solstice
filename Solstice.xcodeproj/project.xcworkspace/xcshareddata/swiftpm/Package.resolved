@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "solar",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ceeK/Solar",
-      "state" : {
-        "revision" : "c2b96f2d5fb7f835b91cefac5e83101f54643901",
-        "version" : "3.0.1"
-      }
-    },
-    {
       "identity" : "suite",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/Suite",

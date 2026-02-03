@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import Charts
 import TimeMachine
 
@@ -14,7 +13,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	var location: Location
 	
-	var kvPairs: KeyValuePairs<Solar.Phase, Color> = [
+	var kvPairs: KeyValuePairs<NTSolar.Phase, Color> = [
 		.astronomical: .indigo,
 		.nautical: .blue,
 		.civil: .teal,
@@ -45,7 +44,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	}
 
 	@ChartContentBuilder
-	private func solarBarMarks(for solar: Solar) -> some ChartContent {
+	private func solarBarMarks(for solar: NTSolar) -> some ChartContent {
 		astronomicalBarMark(for: solar)
 		nauticalBarMark(for: solar)
 		civilBarMark(for: solar)
@@ -53,7 +52,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	}
 
 	@ChartContentBuilder
-	private func astronomicalBarMark(for solar: Solar) -> some ChartContent {
+	private func astronomicalBarMark(for solar: NTSolar) -> some ChartContent {
 		if let astronomicalSunrise = solar.astronomicalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
 			 let astronomicalSunset = solar.astronomicalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 			let yStart: Double = max(0, solar.startOfDay.distance(to: astronomicalSunrise))
@@ -63,12 +62,12 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				yStart: .value("Astronomical Sunrise", yStart),
 				yEnd: .value("Astronomical Sunset", yEnd)
 			)
-			.foregroundStyle(by: .value("Phase", Solar.Phase.astronomical))
+			.foregroundStyle(by: .value("Phase", NTSolar.Phase.astronomical))
 		}
 	}
 
 	@ChartContentBuilder
-	private func nauticalBarMark(for solar: Solar) -> some ChartContent {
+	private func nauticalBarMark(for solar: NTSolar) -> some ChartContent {
 		if let nauticalSunrise = solar.nauticalSunrise?.withTimeZoneAdjustment(for: location.timeZone),
 			 let nauticalSunset = solar.nauticalSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 			let yStart: Double = max(0, solar.startOfDay.distance(to: nauticalSunrise))
@@ -78,12 +77,12 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				yStart: .value("Nautical Sunrise", yStart),
 				yEnd: .value("Nautical Sunset", yEnd)
 			)
-			.foregroundStyle(by: .value("Phase", Solar.Phase.nautical))
+			.foregroundStyle(by: .value("Phase", NTSolar.Phase.nautical))
 		}
 	}
 
 	@ChartContentBuilder
-	private func civilBarMark(for solar: Solar) -> some ChartContent {
+	private func civilBarMark(for solar: NTSolar) -> some ChartContent {
 		if let civilSunrise = solar.civilSunrise?.withTimeZoneAdjustment(for: location.timeZone),
 			 let civilSunset = solar.civilSunset?.withTimeZoneAdjustment(for: location.timeZone) {
 			let yStart: Double = max(0, solar.startOfDay.distance(to: civilSunrise))
@@ -93,11 +92,11 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 				yStart: .value("Civil Sunrise", yStart),
 				yEnd: .value("Civil Sunset", yEnd)
 			)
-			.foregroundStyle(by: .value("Phase", Solar.Phase.civil))
+			.foregroundStyle(by: .value("Phase", NTSolar.Phase.civil))
 		}
 	}
 
-	private func daylightBarMark(for solar: Solar) -> some ChartContent {
+	private func daylightBarMark(for solar: NTSolar) -> some ChartContent {
 		let sunrise: Date = solar.safeSunrise.withTimeZoneAdjustment(for: location.timeZone)
 		let sunset: Date = solar.safeSunset.withTimeZoneAdjustment(for: location.timeZone)
 		let yStart: Double = max(0, solar.startOfDay.distance(to: sunrise))
@@ -107,7 +106,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			yStart: .value("Sunrise", yStart),
 			yEnd: .value("Sunset", yEnd)
 		)
-		.foregroundStyle(by: .value("Phase", Solar.Phase.day))
+		.foregroundStyle(by: .value("Phase", NTSolar.Phase.day))
 	}
 
 	private var yAxisMarks: some AxisContent {
@@ -138,7 +137,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 }
 
 extension AnnualDaylightChart {
-	var monthlySolars: Array<Solar> {
+	var monthlySolars: Array<NTSolar> {
 		guard let year = calendar.dateInterval(of: .year, for: timeMachine.date) else {
 			return []
 		}
@@ -153,7 +152,7 @@ extension AnnualDaylightChart {
 		}
 		
 		return dates.map { date in
-			return Solar(for: date, coordinate: location.coordinate)
+			return NTSolar(for: date, coordinate: location.coordinate, timeZone: location.timeZone)
 		}.compactMap { $0 }
 	}
 }

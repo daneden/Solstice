@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 
 fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? .now
 
@@ -95,7 +94,7 @@ struct Preferences {
 		static let defaultDateComponents = DateComponents(timeZone: .autoupdatingCurrent, hour: 8, minute: 0)
 		
 		/// Which solar event notifications are sent relative to
-		static let relation: Value<Solar.Phase> = ("notificationRelation", .sunrise)
+		static let relation: Value<NTSolar.Phase> = ("notificationRelation", .sunrise)
 		
 		/// The offset in seconds between the notification and the chosen solar event
 		static let relativeOffset: Value<TimeInterval> = ("notificationRelativeOffset", 30 * 60)

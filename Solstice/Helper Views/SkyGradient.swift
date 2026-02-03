@@ -7,13 +7,27 @@
 
 import Foundation
 import SwiftUI
-import Solar
 import CoreLocation
 
-extension Solar: @unchecked @retroactive Sendable {}
+/*
+ Date construction snippet for reference:
+
+ let date = DateComponents(calendar: Calendar(identifier: .gregorian),
+                           timeZone: TimeZone(identifier: "America/New_York"),
+                           year: 2021, month: 12, day: 25, hour: 10, minute: 0).date
+*/
 
 struct SkyGradient: View, ShapeStyle {
-	var solar: Solar? = Solar(coordinate: .proxiedToTimeZone)
+	@Environment(\.timeZone) var timeZone
+	
+	var ntSolar: NTSolar? = nil
+
+	private var effectiveSolar: NTSolar? {
+		if let ntSolar {
+			return ntSolar
+		}
+		return NTSolar(for: .now, coordinate: .proxiedToTimeZone, timeZone: timeZone)
+	}
 	
 	static let dawn = [
 		Color(red: 0.388, green: 0.435, blue: 0.643),
@@ -51,7 +65,7 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var colors: [[Color]] {
-		let duration = solar?.daylightDuration ?? 43200
+		let duration = effectiveSolar?.daylightDuration ?? 43200
 		let daylightHours = Int((duration / (60 * 60)) / 2)
 		let amColors = [Self.night, Self.dawn, Self.morning]
 		let pmColors = [Self.afternoon, Self.evening, Self.night]
@@ -68,9 +82,10 @@ struct SkyGradient: View, ShapeStyle {
 	}
 	
 	var stops: [Color] {
-		let sunrise: Date = solar?.safeSunrise ?? .now.startOfDay
-		let sunset: Date = solar?.safeSunset ?? .now.endOfDay
-		let currentDate: Date = solar?.date ?? .now
+		// All Date values are interpreted as absolute instants in time and should be constructed for the local solar time of the location.
+		let sunrise: Date = effectiveSolar?.safeSunrise ?? .now.startOfDay
+		let sunset: Date = effectiveSolar?.safeSunset ?? .now.endOfDay
+		let currentDate: Date = effectiveSolar?.date ?? .now
 		let twilightDuration: TimeInterval = 60 * 180
 
 		let dayStart: Date = sunrise.addingTimeInterval(-twilightDuration)
@@ -100,21 +115,16 @@ struct SkyGradient: View, ShapeStyle {
 	}
 }
 
-extension Solar {
-	var view: some View {
-		SkyGradient(solar: self)
-	}
-}
-
 fileprivate struct PreviewContainer: View {
+	@Environment(\.timeZone) var timeZone
 	@State var date = Date.now
 	
-	var solars: [Solar] {
-		var result = [Solar?]()
+	var solars: [NTSolar] {
+		var result = [NTSolar?]()
 		
 		for i in stride(from: 0, to: 180, by: 15) {
 			let location = CLLocationCoordinate2D(latitude: Double(i) - 90, longitude: 0)
-			result.append(Solar(for: date, coordinate: location))
+			result.append(NTSolar(for: date, coordinate: location, timeZone: timeZone))
 		}
 		
 		return result.compactMap { $0 }
@@ -125,7 +135,7 @@ fileprivate struct PreviewContainer: View {
 			VStack(spacing: 0) {
 				ForEach(solars, id: \.coordinate.latitude) { solar in
 					ZStack {
-						SkyGradient(solar: solar)
+						SkyGradient(ntSolar: solar)
 						
 						HStack {
 							Text(solar.date, style: .time)

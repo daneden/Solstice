@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
-import Solar
 
 struct DaylightSummaryTitle: View {
-	var solar: Solar
-	var event: Solar.Event?
+	var solar: NTSolar
+	var event: NTSolar.Event?
 	var date: Date?
 	var timeZone = localTimeZone
 	
@@ -94,6 +93,6 @@ struct DaylightSummaryTitle: View {
 
 struct DaylightSummaryTitle_Previews: PreviewProvider {
     static var previews: some View {
-			DaylightSummaryTitle(solar: Solar(coordinate: TemporaryLocation.placeholderLondon.coordinate)!)
+			DaylightSummaryTitle(solar: NTSolar(for: .now, coordinate: TemporaryLocation.placeholderLondon.coordinate, timeZone: TemporaryLocation.placeholderLondon.timeZone)!)
     }
 }

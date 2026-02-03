@@ -393,6 +393,7 @@
       }
     },
     "ceeK/Solar" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -542,6 +543,20 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continua con la posizione"
+          }
+        }
+      }
+    },
+    "Coordinates" : {
+
+    },
+    "Countdown" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conto alla rovescia"
           }
         }
       }
@@ -1359,6 +1374,9 @@
         }
       }
     },
+    "nil" : {
+
+    },
     "No change" : {
       "localizations" : {
         "it" : {
@@ -1557,6 +1575,7 @@
       }
     },
     "Open Source Acknowledgements" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

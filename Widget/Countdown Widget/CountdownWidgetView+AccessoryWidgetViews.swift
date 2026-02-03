@@ -7,13 +7,12 @@
 
 #if !os(macOS)
 import SwiftUI
-import Solar
 import WidgetKit
 import Suite
 
 extension CountdownWidgetView {
 	struct AccessoryInlineView: View {
-		var nextEvent: Solar.Event
+		var nextEvent: NTSolar.Event
 		var body: some View {
 			HStack {
 				Image(systemName: nextEvent.imageName)
@@ -27,8 +26,8 @@ extension CountdownWidgetView {
 		
 		var entryDate: Date
 		
-		var previousEvent: Solar.Event
-		var nextEvent: Solar.Event
+		var previousEvent: NTSolar.Event
+		var nextEvent: NTSolar.Event
 		
 		@ViewBuilder
 		var currentValueLabel: some View {
@@ -65,7 +64,7 @@ extension CountdownWidgetView {
 	}
 	
 	struct AccessoryRectangularView: View {
-		var nextEvent: Solar.Event
+		var nextEvent: NTSolar.Event
 		
 		var body: some View {
 			HStack {
@@ -89,8 +88,8 @@ extension CountdownWidgetView {
 	}
 	
 	struct AccessoryCornerView: View {
-		var previousEvent: Solar.Event
-		var nextEvent: Solar.Event
+		var previousEvent: NTSolar.Event
+		var nextEvent: NTSolar.Event
 		
 		var body: some View {
 			Image(systemName: nextEvent.imageName)

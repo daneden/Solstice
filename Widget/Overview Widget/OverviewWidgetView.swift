@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WidgetKit
-import Solar
 
 struct OverviewWidgetView: SolsticeWidgetView {
 	@Environment(\.widgetRenderingMode) private var renderingMode

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import Suite
 import TimeMachine
 
@@ -14,7 +13,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	@Environment(\.dismiss) var dismiss
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	
-	var solar: Solar
+	var solar: NTSolar
 	var location: Location
 	
 	@State var chartAppearance: DaylightChart.Appearance = .graphical
@@ -38,7 +37,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					SkyGradient(solar: solar)
+				SkyGradient(ntSolar: solar)
 				}
 		}
 	}
@@ -153,7 +152,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 #if os(iOS)
 	@ViewBuilder
 	private var instagramShareButton: some View {
-		let solarGradient = SkyGradient(solar: solar)
+		let solarGradient = SkyGradient(ntSolar: solar)
 		if let igStoriesUrl,
 			 let imageData,
 			 let topColor = solarGradient.stops.first?.toHex(),
@@ -281,6 +280,6 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 }
 
 #Preview {
-	ShareSolarChartView(solar: .init(coordinate: TemporaryLocation.placeholderLondon.coordinate)!, location: TemporaryLocation.placeholderLondon)
+	ShareSolarChartView(solar: .init(for: .now, coordinate: TemporaryLocation.placeholderLondon.coordinate, timeZone: TemporaryLocation.placeholderLondon.timeZone)!, location: TemporaryLocation.placeholderLondon)
 		.withTimeMachine(.solsticeTimeMachine)
 }

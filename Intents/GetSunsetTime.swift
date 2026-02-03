@@ -8,7 +8,6 @@
 import Foundation
 import AppIntents
 import CoreLocation
-import Solar
 
 struct GetSunsetTime: AppIntent {
 	static var title: LocalizedStringResource = "Get Sunset Time"
@@ -29,7 +28,7 @@ struct GetSunsetTime: AppIntent {
 			throw $location.needsValueError("What location do you want to see the sunset for?")
 		}
 		
-		let solar = Solar(for: date, coordinate: coordinate)
+		let solar = NTSolar(for: date, coordinate: coordinate, timeZone: location.timeZone ?? .autoupdatingCurrent)
 		
 		return .result(
 			value: solar?.sunset,

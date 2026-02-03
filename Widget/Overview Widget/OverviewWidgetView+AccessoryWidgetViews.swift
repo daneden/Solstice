@@ -8,13 +8,12 @@
 #if !os(macOS)
 import SwiftUI
 import WidgetKit
-import Solar
 import Suite
 
 extension OverviewWidgetView {
 	struct AccessoryCircularView: View {
 		@Environment(\.widgetRenderingMode) var renderingMode
-		var solar: Solar
+		var solar: NTSolar
 		var location: SolsticeWidgetLocation
 		
 		var body: some View {
@@ -39,8 +38,8 @@ extension OverviewWidgetView {
 	struct AccessoryRectangularView: View {
 		var isAfterTodaySunset: Bool
 		var location: SolsticeWidgetLocation?
-		var relevantSolar: Solar?
-		var comparisonSolar: Solar?
+		var relevantSolar: NTSolar?
+		var comparisonSolar: NTSolar?
 		
 		var body: some View {
 			HStack {

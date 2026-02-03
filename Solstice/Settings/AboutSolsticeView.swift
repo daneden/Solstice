@@ -87,16 +87,6 @@ fileprivate struct FullStoryView: View {
 					}
 				}
 			}
-			
-			if let url = URL(string: "https://github.com/ceeK/Solar") {
-				Section {
-					Link(destination: url) {
-						Text("ceeK/Solar")
-					}
-				} header: {
-					Text("Open Source Acknowledgements")
-				}
-			}
 		}
 		.formStyle(.grouped)
 		.navigationTitle("About Solstice")

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WidgetKit
-import Solar
 
 struct SundialWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry

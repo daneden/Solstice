@@ -8,7 +8,6 @@
 import Foundation
 import AppIntents
 import CoreLocation
-import Solar
 
 struct ViewDaylight: AppIntent {
 	static var title: LocalizedStringResource = "View Daylight"
@@ -33,7 +32,7 @@ struct ViewDaylight: AppIntent {
 		formatter.unitsStyle = .full
 		formatter.allowedUnits = [.hour, .minute, .second]
 		
-		let solar = Solar(for: date, coordinate: coordinate)
+		let solar = NTSolar(for: date, coordinate: coordinate, timeZone: location.timeZone ?? .autoupdatingCurrent)
 		
 		let duration = (solar?.sunrise ?? .now).distance(to: solar?.sunset ?? .now)
 		

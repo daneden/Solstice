@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import TimeMachine
 
 struct ContentView: View {
@@ -48,7 +47,7 @@ struct ContentView: View {
 						LocationListRow(location: currentLocation)
 							.tag(currentLocation.id)
 							.listRowBackground(
-								Solar(for: timeMachine.date, coordinate: currentLocation.coordinate)?
+								NTSolar(for: timeMachine.date, coordinate: currentLocation.coordinate, timeZone: currentLocation.timeZone)?
 									.view
 									.clipShape(.rect(cornerRadius: 20, style: .continuous))
 							)
@@ -59,7 +58,7 @@ struct ContentView: View {
 							LocationListRow(location: item)
 								.tag(tag)
 								.listRowBackground(
-									Solar(for: timeMachine.date, coordinate: item.coordinate)?
+									NTSolar(for: timeMachine.date, coordinate: item.coordinate, timeZone: item.timeZone)?
 										.view
 										.clipShape(.rect(cornerRadius: 20, style: .continuous))
 								)
@@ -76,7 +75,7 @@ struct ContentView: View {
 			case currentLocation.id:
 				DetailView(location: currentLocation)
 					.containerBackground(for: .navigation) {
-						if let solar = Solar(for: timeMachine.date, coordinate: currentLocation.coordinate) {
+						if let solar = NTSolar(for: timeMachine.date, coordinate: currentLocation.coordinate, timeZone: currentLocation.timeZone) {
 							solar.view
 						}
 					}
@@ -85,7 +84,7 @@ struct ContentView: View {
 				if let item = items.first(where: { $0.uuid?.uuidString == id }) {
 					DetailView(location: item)
 						.containerBackground(for: .navigation) {
-							if let solar = Solar(for: timeMachine.date, coordinate: item.coordinate) {
+							if let solar = NTSolar(for: timeMachine.date, coordinate: item.coordinate, timeZone: item.timeZone) {
 								solar.view
 							}
 						}

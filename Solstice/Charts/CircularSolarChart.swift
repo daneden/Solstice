@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Solar
 import TimeMachine
 import Suite
 import enum Accelerate.vDSP
@@ -26,8 +25,8 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	
 	var timeZone: TimeZone { location.timeZone }
 	
-	var solar: Solar? {
-		Solar(for: date ?? timeMachine.date, coordinate: location.coordinate)
+	var solar: NTSolar? {
+		NTSolar(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 	
 	var majorSunSize: Double {
@@ -176,7 +175,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	private var phaseSlices: some View {
 		Group {
 			if let phases = solar?.phases {
-				let phaseKeys: [Solar.Phase] = Array(phases.keys)
+				let phaseKeys: [NTSolar.Phase] = Array(phases.keys)
 				ForEach(phaseKeys, id: \.self) { key in
 					phaseSlice(for: key, phases: phases)
 				}
@@ -186,7 +185,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	@ViewBuilder
-	private func phaseSlice(for key: Solar.Phase, phases: [Solar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
+	private func phaseSlice(for key: NTSolar.Phase, phases: [NTSolar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
 		if let (sunrise, sunset) = phases[key],
 			 let sunrise,
 			 let sunset {
@@ -258,7 +257,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@ViewBuilder
 	private var phaseMarkers: some View {
 		if let phases = solar?.phases {
-			let phaseKeys: [Solar.Phase] = Array(phases.keys)
+			let phaseKeys: [NTSolar.Phase] = Array(phases.keys)
 			ForEach(phaseKeys, id: \.self) { key in
 				phaseMarker(for: key, phases: phases)
 			}
@@ -266,7 +265,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	@ViewBuilder
-	private func phaseMarker(for key: Solar.Phase, phases: [Solar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
+	private func phaseMarker(for key: NTSolar.Phase, phases: [NTSolar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
 		if let (sunrise, sunset) = phases[key],
 			 let sunrise,
 			 let sunset {
