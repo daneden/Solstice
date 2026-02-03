@@ -16,6 +16,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 	#if WIDGET_EXTENSION
 	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
+	@Environment(\.widgetFamily) private var widgetFamily
 	#endif
 	
 	@State private var size = CGSize.zero
@@ -78,6 +79,14 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		calendar.timeZone = timeZone
 		
 		return calendar
+	}
+	
+	private var isSmallWidget: Bool {
+		#if WIDGET_EXTENSION
+		return widgetFamily == .systemSmall
+		#else
+		return false
+		#endif
 	}
 	
 	func angle(for date: Date) -> Angle {
@@ -301,7 +310,9 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			 let diff = solar?.compactDifferenceString {
 			VStack(spacing: 2) {
 				HStack(spacing: 2) {
-					Image(systemName: "hourglass")
+					if !isSmallWidget {
+						Image(systemName: "hourglass")
+					}
 					Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
 				}
 				
@@ -333,6 +344,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				.if(widgetRenderingMode != .fullColor) {
 					$0.reverseMask {
 						labels
+							.if(isSmallWidget) { $0.font(.caption2).fontWidth(.condensed) }
 							.backgroundStyle(.black)
 					}
 				}
@@ -340,6 +352,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				
 				labels
 				#if WIDGET_EXTENSION
+					.if(isSmallWidget) { $0.font(.caption2).fontWidth(.condensed) }
 					.if(widgetRenderingMode != .fullColor) {
 						$0.backgroundStyle(.primary.quinary)
 					}
@@ -355,13 +368,27 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 }
 
 fileprivate struct ChartLabel: View {
+	#if WIDGET_EXTENSION
+	@Environment(\.widgetFamily) private var widgetFamily
+	#endif
+	
 	var text: Text
 	var imageName: String
 	var angle: Angle
 	
+	private var isSmallWidget: Bool {
+		#if WIDGET_EXTENSION
+		return widgetFamily == .systemSmall
+		#else
+		return false
+		#endif
+	}
+	
 	var body: some View {
 		HStack(spacing: 2) {
-			Image(systemName: imageName)
+			if !isSmallWidget {
+				Image(systemName: imageName)
+			}
 			text
 		}
 		.padding(4)

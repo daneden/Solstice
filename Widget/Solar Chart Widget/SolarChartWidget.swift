@@ -30,7 +30,7 @@ struct SolarChartWidget: Widget {
 
 #if !os(watchOS)
 struct SundialWidget: Widget {
-	static var supportedFamilies: [WidgetFamily] = [.systemLarge]
+	static var supportedFamilies: [WidgetFamily] = [.systemLarge, .systemSmall]
 
 	var body: some WidgetConfiguration {
 		AppIntentConfiguration(
