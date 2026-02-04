@@ -26,21 +26,15 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 	private func cacheLocationToAppGroup(_ location: CLLocation?) {
 		guard let location else { return }
 
-		let cachedPlacemark: LocationAppGroupCache.CachedPlacemark? = if let placemark {
-			LocationAppGroupCache.CachedPlacemark(
-				title: placemark.locality,
-				subtitle: placemark.country,
-				timeZoneIdentifier: placemark.timeZone?.identifier
-			)
-		} else {
-			nil
-		}
-
-		LocationAppGroupCache.write(
+		let locationData = LocationData(
+			title: placemark?.locality,
+			subtitle: placemark?.country,
 			latitude: location.coordinate.latitude,
 			longitude: location.coordinate.longitude,
-			placemark: cachedPlacemark
+			timeZoneIdentifier: placemark?.timeZone?.identifier
 		)
+
+		LocationAppGroupCache.write(locationData)
 	}
 	
 	@ObservationIgnored private let locationManager = CLLocationManager()

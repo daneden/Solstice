@@ -114,20 +114,20 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 			return (nil, true, .notAuthorized)
 		}
 
-		let (currentLocation, placemark) = await SolsticeWidgetLocationManager.shared.getLocationWithPlacemark()
+		let (currentLocation, locationData) = await SolsticeWidgetLocationManager.shared.getLocationWithPlacemark()
 
 		guard let currentLocation else {
 			return (nil, true, .locationUpdateFailed)
 		}
 
-		guard let placemark, placemark.timeZoneIdentifier != nil else {
+		guard let locationData, locationData.timeZoneIdentifier != nil else {
 			return (nil, true, .reverseGeocodingFailed)
 		}
 
 		let widgetLocation = SolsticeWidgetLocation(
-			title: placemark.title,
-			subtitle: placemark.subtitle,
-			timeZoneIdentifier: placemark.timeZoneIdentifier,
+			title: locationData.title,
+			subtitle: locationData.subtitle,
+			timeZoneIdentifier: locationData.timeZoneIdentifier,
 			latitude: currentLocation.coordinate.latitude,
 			longitude: currentLocation.coordinate.longitude,
 			isRealLocation: true

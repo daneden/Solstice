@@ -27,19 +27,39 @@ let calendar =  Calendar.autoupdatingCurrent
 
 let localTimeZone = TimeZone.ReferenceType.local
 
+// MARK: - Unified Location Data
+/// A unified struct for encoding/decoding location data across all targets.
+/// Used for App Group cache, AppIntents entity IDs, and JSON serialization.
+struct LocationData: Codable, AnyLocation {
+	var title: String?
+	var subtitle: String?
+	var latitude: Double
+	var longitude: Double
+	var timeZoneIdentifier: String?
+	var uuid: UUID?
+
+	init(
+		title: String? = nil,
+		subtitle: String? = nil,
+		latitude: Double,
+		longitude: Double,
+		timeZoneIdentifier: String? = nil,
+		uuid: UUID? = nil
+	) {
+		self.title = title
+		self.subtitle = subtitle
+		self.latitude = latitude
+		self.longitude = longitude
+		self.timeZoneIdentifier = timeZoneIdentifier
+		self.uuid = uuid
+	}
+}
+
 // MARK: - Location App Group Cache
 enum LocationAppGroupCache {
-	struct CachedPlacemark {
-		var title: String?
-		var subtitle: String?
-		var timeZoneIdentifier: String?
-	}
-
 	struct CachedData {
-		var latitude: Double
-		var longitude: Double
+		var location: LocationData
 		var timestamp: Date
-		var placemark: CachedPlacemark?
 	}
 
 	private static var defaults: UserDefaults? {
@@ -55,35 +75,37 @@ enum LocationAppGroupCache {
 
 		guard latitude != 0, longitude != 0, timestamp > 0 else { return nil }
 
-		let placemark = CachedPlacemark(
-			title: defaults.string(forKey: "cachedPlacemarkTitle"),
-			subtitle: defaults.string(forKey: "cachedPlacemarkSubtitle"),
-			timeZoneIdentifier: defaults.string(forKey: "cachedPlacemarkTimeZone")
-		)
+		let title = defaults.string(forKey: "cachedPlacemarkTitle")
+		let subtitle = defaults.string(forKey: "cachedPlacemarkSubtitle")
+		let timeZoneIdentifier = defaults.string(forKey: "cachedPlacemarkTimeZone")
 
-		// Only include placemark if it has meaningful data
-		let hasPlacemarkData = placemark.title != nil || placemark.timeZoneIdentifier != nil
+		// Only create location data if we have meaningful placemark data
+		let hasPlacemarkData = title != nil || timeZoneIdentifier != nil
+		guard hasPlacemarkData else { return nil }
 
-		return CachedData(
+		let location = LocationData(
+			title: title,
+			subtitle: subtitle,
 			latitude: latitude,
 			longitude: longitude,
-			timestamp: Date(timeIntervalSince1970: timestamp),
-			placemark: hasPlacemarkData ? placemark : nil
+			timeZoneIdentifier: timeZoneIdentifier
+		)
+
+		return CachedData(
+			location: location,
+			timestamp: Date(timeIntervalSince1970: timestamp)
 		)
 	}
 
-	static func write(latitude: Double, longitude: Double, placemark: CachedPlacemark? = nil) {
+	static func write(_ location: LocationData) {
 		guard let defaults else { return }
 
-		defaults.set(latitude, forKey: "cachedLatitude")
-		defaults.set(longitude, forKey: "cachedLongitude")
+		defaults.set(location.latitude, forKey: "cachedLatitude")
+		defaults.set(location.longitude, forKey: "cachedLongitude")
 		defaults.set(Date().timeIntervalSince1970, forKey: "cachedLocationTimestamp")
-
-		if let placemark {
-			defaults.set(placemark.title, forKey: "cachedPlacemarkTitle")
-			defaults.set(placemark.subtitle, forKey: "cachedPlacemarkSubtitle")
-			defaults.set(placemark.timeZoneIdentifier, forKey: "cachedPlacemarkTimeZone")
-		}
+		defaults.set(location.title, forKey: "cachedPlacemarkTitle")
+		defaults.set(location.subtitle, forKey: "cachedPlacemarkSubtitle")
+		defaults.set(location.timeZoneIdentifier, forKey: "cachedPlacemarkTimeZone")
 	}
 }
 

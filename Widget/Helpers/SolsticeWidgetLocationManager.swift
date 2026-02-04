@@ -14,8 +14,8 @@ actor SolsticeWidgetLocationManager {
 	private var cacheTimestamp: Date?
 	private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
 
-	private var cachedPlacemark: LocationAppGroupCache.CachedPlacemark?
-	private var cachedPlacemarkLocation: CLLocation?
+	private var cachedLocationData: LocationData?
+	private var cachedLocationDataCoordinate: CLLocation?
 	private let geocoder = CLGeocoder()
 	private let significantDistanceChange: CLLocationDistance = 500
 	
@@ -37,13 +37,13 @@ actor SolsticeWidgetLocationManager {
 		}
 
 		// Second, check the shared App Group cache from the main app
-		if let (sharedLocation, sharedPlacemark) = getSharedAppGroupData() {
+		if let (sharedLocation, sharedLocationData) = getSharedAppGroupData() {
 			cachedLocation = sharedLocation
 			cacheTimestamp = Date()
-			// Also use the placemark if available and we don't have one cached
-			if let sharedPlacemark, cachedPlacemark == nil {
-				cachedPlacemark = sharedPlacemark
-				cachedPlacemarkLocation = sharedLocation
+			// Also use the location data if available and we don't have one cached
+			if let sharedLocationData, cachedLocationData == nil {
+				cachedLocationData = sharedLocationData
+				cachedLocationDataCoordinate = sharedLocation
 			}
 			return sharedLocation
 		}
@@ -61,15 +61,15 @@ actor SolsticeWidgetLocationManager {
 	}
 
 	/// Retrieves cached location and placemark from the shared App Group
-	private func getSharedAppGroupData() -> (location: CLLocation, placemark: LocationAppGroupCache.CachedPlacemark?)? {
+	private func getSharedAppGroupData() -> (location: CLLocation, locationData: LocationData?)? {
 		guard let cached = LocationAppGroupCache.read() else { return nil }
 
 		// Validate the cache is recent (within cache validity duration)
 		let cacheAge = Date().timeIntervalSince(cached.timestamp)
 		guard cacheAge < cacheValidityDuration else { return nil }
 
-		let location = CLLocation(latitude: cached.latitude, longitude: cached.longitude)
-		return (location, cached.placemark)
+		let location = CLLocation(latitude: cached.location.latitude, longitude: cached.location.longitude)
+		return (location, cached.location)
 	}
 
 	private func fetchLocationWithTimeout(seconds: TimeInterval) async throws -> CLLocation {
@@ -94,34 +94,36 @@ actor SolsticeWidgetLocationManager {
 		}
 	}
 
-	/// Returns location with cached placemark data, only re-geocoding if location moved significantly
-	func getLocationWithPlacemark() async -> (location: CLLocation?, placemark: LocationAppGroupCache.CachedPlacemark?) {
+	/// Returns location with cached location data, only re-geocoding if location moved significantly
+	func getLocationWithPlacemark() async -> (location: CLLocation?, locationData: LocationData?) {
 		guard let location = await getLocation() else {
 			return (nil, nil)
 		}
 
-		// Reuse cached placemark if location hasn't moved significantly
-		if let cached = cachedPlacemark,
-		   let placemarkLoc = cachedPlacemarkLocation,
-		   location.distance(from: placemarkLoc) < significantDistanceChange {
+		// Reuse cached location data if location hasn't moved significantly
+		if let cached = cachedLocationData,
+		   let cachedCoord = cachedLocationDataCoordinate,
+		   location.distance(from: cachedCoord) < significantDistanceChange {
 			return (location, cached)
 		}
 
 		// Need to geocode
 		do {
 			if let placemark = try await geocoder.reverseGeocodeLocation(location).first {
-				let cached = LocationAppGroupCache.CachedPlacemark(
+				let locationData = LocationData(
 					title: placemark.locality,
 					subtitle: placemark.country,
+					latitude: location.coordinate.latitude,
+					longitude: location.coordinate.longitude,
 					timeZoneIdentifier: placemark.timeZone?.identifier
 				)
-				cachedPlacemark = cached
-				cachedPlacemarkLocation = location
-				return (location, cached)
+				cachedLocationData = locationData
+				cachedLocationDataCoordinate = location
+				return (location, locationData)
 			}
 		} catch {
-			// Fallback to cached placemark if geocoding fails
-			return (location, cachedPlacemark)
+			// Fallback to cached location data if geocoding fails
+			return (location, cachedLocationData)
 		}
 
 		return (location, nil)
