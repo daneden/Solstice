@@ -114,16 +114,25 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 			return (nil, true, .notAuthorized)
 		}
 
-		guard let currentLocation = await SolsticeWidgetLocationManager.shared.getLocation() else {
+		let (currentLocation, placemark) = await SolsticeWidgetLocationManager.shared.getLocationWithPlacemark()
+
+		guard let currentLocation else {
 			return (nil, true, .locationUpdateFailed)
 		}
 
-		// Reverse geocode to get timezone for current location
-		guard let placemark = try? await geocoder.reverseGeocodeLocation(currentLocation).first else {
+		guard let placemark, placemark.timeZoneIdentifier != nil else {
 			return (nil, true, .reverseGeocodingFailed)
 		}
 
-		return (getLocation(for: placemark, isRealLocation: true), true, nil)
+		let widgetLocation = SolsticeWidgetLocation(
+			title: placemark.title,
+			subtitle: placemark.subtitle,
+			timeZoneIdentifier: placemark.timeZoneIdentifier,
+			latitude: currentLocation.coordinate.latitude,
+			longitude: currentLocation.coordinate.longitude,
+			isRealLocation: true
+		)
+		return (widgetLocation, true, nil)
 	}
 
 	func snapshot(for configuration: Intent, in context: Context) async -> SolsticeWidgetTimelineEntry {
