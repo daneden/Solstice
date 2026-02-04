@@ -59,20 +59,14 @@ enum LocationAppGroupCache {
 
 		guard latitude != 0, longitude != 0, timestamp > 0 else { return nil }
 
-		let title = defaults.string(forKey: "cachedPlacemarkTitle")
-		let subtitle = defaults.string(forKey: "cachedPlacemarkSubtitle")
-		let timeZoneIdentifier = defaults.string(forKey: "cachedPlacemarkTimeZone")
-
-		// Only create location data if we have meaningful placemark data
-		let hasPlacemarkData = title != nil || timeZoneIdentifier != nil
-		guard hasPlacemarkData else { return nil }
-
+		// Return location data even if placemark fields are nil
+		// Widget will trigger geocoding if timeZoneIdentifier is missing
 		let location = LocationData(
-			title: title,
-			subtitle: subtitle,
+			title: defaults.string(forKey: "cachedPlacemarkTitle"),
+			subtitle: defaults.string(forKey: "cachedPlacemarkSubtitle"),
 			latitude: latitude,
 			longitude: longitude,
-			timeZoneIdentifier: timeZoneIdentifier
+			timeZoneIdentifier: defaults.string(forKey: "cachedPlacemarkTimeZone")
 		)
 
 		return CachedData(
