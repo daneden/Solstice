@@ -37,22 +37,6 @@ struct LocationData: Codable, AnyLocation {
 	var longitude: Double
 	var timeZoneIdentifier: String?
 	var uuid: UUID?
-
-	init(
-		title: String? = nil,
-		subtitle: String? = nil,
-		latitude: Double,
-		longitude: Double,
-		timeZoneIdentifier: String? = nil,
-		uuid: UUID? = nil
-	) {
-		self.title = title
-		self.subtitle = subtitle
-		self.latitude = latitude
-		self.longitude = longitude
-		self.timeZoneIdentifier = timeZoneIdentifier
-		self.uuid = uuid
-	}
 }
 
 // MARK: - Location App Group Cache
