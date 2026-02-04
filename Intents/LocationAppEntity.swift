@@ -127,13 +127,13 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 		let encoded = String(id.dropFirst(6))
 		guard let decoded = encoded.removingPercentEncoding,
 			  let data = decoded.data(using: .utf8),
-			  let locationData = try? JSONDecoder().decode(SavedLocationEntityData.self, from: data) else {
+			  let locationData = try? JSONDecoder().decode(LocationData.self, from: data) else {
 			return nil
 		}
 
 		return LocationAppEntity(
 			id: id,
-			title: locationData.title,
+			title: locationData.title ?? "Unknown",
 			subtitle: locationData.subtitle,
 			latitude: locationData.latitude,
 			longitude: locationData.longitude,
@@ -255,7 +255,7 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 		longitude: Double,
 		timeZoneIdentifier: String?
 	) -> String {
-		let data = TemporaryLocationData(
+		let data = LocationData(
 			title: title,
 			subtitle: subtitle,
 			latitude: latitude,
@@ -278,13 +278,13 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 		let encoded = String(id.dropFirst(5))
 		guard let decoded = encoded.removingPercentEncoding,
 			  let data = decoded.data(using: .utf8),
-			  let locationData = try? JSONDecoder().decode(TemporaryLocationData.self, from: data) else {
+			  let locationData = try? JSONDecoder().decode(LocationData.self, from: data) else {
 			return nil
 		}
 
 		return LocationAppEntity(
 			id: id,
-			title: locationData.title,
+			title: locationData.title ?? "Unknown",
 			subtitle: locationData.subtitle,
 			latitude: locationData.latitude,
 			longitude: locationData.longitude,
@@ -292,15 +292,6 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 			savedLocationUUID: nil
 		)
 	}
-}
-
-/// Helper struct for encoding temporary location data
-private struct TemporaryLocationData: Codable {
-	let title: String
-	let subtitle: String?
-	let latitude: Double
-	let longitude: Double
-	let timeZoneIdentifier: String?
 }
 
 // MARK: - Convenience Initializers
@@ -313,13 +304,13 @@ extension LocationAppEntity {
 		let subtitle = savedLocation.subtitle
 
 		// Encode full location data in ID so entity can be resolved even if Core Data lookup fails
-		let data = SavedLocationEntityData(
-			uuid: savedLocation.uuid,
+		let data = LocationData(
 			title: title,
 			subtitle: subtitle,
 			latitude: savedLocation.latitude,
 			longitude: savedLocation.longitude,
-			timeZoneIdentifier: savedLocation.timeZoneIdentifier
+			timeZoneIdentifier: savedLocation.timeZoneIdentifier,
+			uuid: savedLocation.uuid
 		)
 
 		if let encoded = try? JSONEncoder().encode(data),
@@ -337,14 +328,4 @@ extension LocationAppEntity {
 		self.timeZoneIdentifier = savedLocation.timeZoneIdentifier
 		self.savedLocationUUID = savedLocation.uuid
 	}
-}
-
-/// Helper struct for encoding saved location data in entity ID
-private struct SavedLocationEntityData: Codable {
-	let uuid: UUID?
-	let title: String
-	let subtitle: String?
-	let latitude: Double
-	let longitude: Double
-	let timeZoneIdentifier: String?
 }
