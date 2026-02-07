@@ -267,8 +267,7 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 			}
 		
 		// Refresh after the last entry, or after 3 days if no entries
-		let lastEntryDate = entries.last?.date ?? currentDate
-		return Timeline(entries: entries, policy: .after(lastEntryDate))
+		return Timeline(entries: entries, policy: .atEnd)
 	}
 
 	func placeholder(in context: Context) -> SolsticeWidgetTimelineEntry {
