@@ -163,11 +163,8 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 			)
 		}
 		
-		#if os(watchOS)
-		let daysToGenerate = 1
-		#else
 		let daysToGenerate = 3
-		#endif
+		
 		var allKeyTimes: [Date] = [currentDate]
 		var allHourlyTimes: [Date] = []
 		var solarByDay: [Date: NTSolar] = [:]
