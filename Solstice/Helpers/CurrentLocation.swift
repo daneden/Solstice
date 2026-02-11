@@ -22,13 +22,19 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 		}
 	}
 
-	/// Caches the current location to the App Group for widget access
+	/// Caches the current location and placemark to the App Group for widget access
 	private func cacheLocationToAppGroup(_ location: CLLocation?) {
 		guard let location else { return }
-		let defaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
-		defaults?.set(location.coordinate.latitude, forKey: "cachedLatitude")
-		defaults?.set(location.coordinate.longitude, forKey: "cachedLongitude")
-		defaults?.set(Date().timeIntervalSince1970, forKey: "cachedLocationTimestamp")
+
+		let locationData = LocationData(
+			title: placemark?.locality,
+			subtitle: placemark?.country,
+			latitude: location.coordinate.latitude,
+			longitude: location.coordinate.longitude,
+			timeZoneIdentifier: placemark?.timeZone?.identifier
+		)
+
+		LocationAppGroupCache.write(locationData)
 	}
 	
 	@ObservationIgnored private let locationManager = CLLocationManager()
