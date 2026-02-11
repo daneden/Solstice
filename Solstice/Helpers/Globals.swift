@@ -104,6 +104,9 @@ enum Constants {
 	/// Prefix for notification request identifiers
 	static let notificationIdentifierPrefix = "me.daneden.Solstice.notification-"
 
+	/// File name for persistent widget debug logs in the App Group container
+	static let widgetLogFileName = "widget-debug-log.json"
+
 	/// URL scheme for deep links
 	static let urlScheme = "solstice"
 

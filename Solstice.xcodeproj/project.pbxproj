@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC793A6A4E0103F9E0228C9E /* WidgetLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD53E85C30048C514E9F74C /* WidgetLogger.swift */; };
+		C014D95BA5B1FBE6F33A97D2 /* WidgetLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD53E85C30048C514E9F74C /* WidgetLogger.swift */; };
+		9CE5796D65EEA7EAFC700A8E /* WidgetLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD53E85C30048C514E9F74C /* WidgetLogger.swift */; };
+		45FAFF07E9255D40C439AA6E /* WidgetDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F022B266827677A1C05DED /* WidgetDiagnosticsView.swift */; };
 		5D7F5F692BDAD92E1A42BBFD /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E63C6609375907FE3E8C3C /* Secrets.swift */; };
 		7106C86A29A276B40007A7EC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86929A276B30007A7EC /* WidgetKit.framework */; };
 		7106C86C29A276B40007A7EC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7106C86B29A276B40007A7EC /* SwiftUI.framework */; };
@@ -374,6 +378,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DFD53E85C30048C514E9F74C /* WidgetLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLogger.swift; sourceTree = "<group>"; };
+		38F022B266827677A1C05DED /* WidgetDiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDiagnosticsView.swift; sourceTree = "<group>"; };
 		13AEC2685232EF694BB4BB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		48E63C6609375907FE3E8C3C /* Secrets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		7106C86829A276B30007A7EC /* Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -843,6 +849,7 @@
 			children = (
 				71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */,
 				715489B32F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift */,
+				DFD53E85C30048C514E9F74C /* WidgetLogger.swift */,
 				719F558429DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift */,
 				715489B02F1FB8A500FD5CCE /* SolsticeWidgetView.swift */,
 				7150EB5529DC675800CA8341 /* WidgetHeadingModifier.swift */,
@@ -867,6 +874,7 @@
 				713F7FF529BE054400BEA156 /* Solstice.entitlements */,
 				71DB52AB29AB8BED00D62BB7 /* Info.plist */,
 				71DB52AD29ABD19B00D62BB7 /* ContentView.swift */,
+				38F022B266827677A1C05DED /* WidgetDiagnosticsView.swift */,
 				716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */,
 			);
 			path = watchOS;
@@ -1224,6 +1232,7 @@
 				715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
 				719F558529DB1E4000D7AE8E /* SolsticeWidgetTimelineProvider.swift in Sources */,
+				EC793A6A4E0103F9E0228C9E /* WidgetLogger.swift in Sources */,
 				7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */,
 				7193E92D29C0BAB300103D6B /* DaylightChart.swift in Sources */,
 				7106C88329A277550007A7EC /* Solstice.xcdatamodeld in Sources */,
@@ -1302,6 +1311,7 @@
 				7194654A2C2C1E09008408C0 /* View+CapsuleAppearance.swift in Sources */,
 				7194654C2C2C1E09008408C0 /* DaylightChart.swift in Sources */,
 				7194654D2C2C1E09008408C0 /* Solstice.xcdatamodeld in Sources */,
+				C014D95BA5B1FBE6F33A97D2 /* WidgetLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1409,6 +1419,8 @@
 				7195120129AFBBEC009D282F /* View+EllipticalEdgeMask.swift in Sources */,
 				711782DD2E4E0E030006CE5B /* LandingView.swift in Sources */,
 				719F928829ACD29100C06921 /* ContentView.swift in Sources */,
+				9CE5796D65EEA7EAFC700A8E /* WidgetLogger.swift in Sources */,
+				45FAFF07E9255D40C439AA6E /* WidgetDiagnosticsView.swift in Sources */,
 				713F7FFA29BE843700BEA156 /* AnnualOverview.swift in Sources */,
 				7132AC1A29E6962D00523215 /* ConditionalGlobals.swift in Sources */,
 				711782DA2E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,

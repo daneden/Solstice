@@ -10,6 +10,7 @@ import CoreLocation
 import CoreData
 import AppIntents
 import SwiftUI
+import OSLog
 
 struct SolsticeWidgetTimelineEntry: TimelineEntry {
 	let date: Date
@@ -148,13 +149,41 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 	}
 
 	func timeline(for configuration: SolsticeConfigurationIntent, in context: Context) async -> Timeline<SolsticeWidgetTimelineEntry> {
+		let configType = configuration.resolvedLocation.isCurrentLocation ? "currentLocation" : "savedLocation"
+		WidgetLogger.timeline.info("Timeline generation started — kind: \(self.widgetKind.rawValue), config: \(configType)")
+		WidgetLogStore.log(.timeline, "Timeline generation started", metadata: [
+			"widgetKind": widgetKind.rawValue,
+			"configType": configType,
+			"family": "\(context.family)"
+		])
+
 		let (widgetLocation, _, error) = await fetchWidgetLocation(for: configuration)
-		
+
+		if let error {
+			WidgetLogger.timeline.warning("Location fetch returned error: \(String(describing: error))")
+			WidgetLogStore.log(.error, "Location fetch error", metadata: [
+				"error": String(describing: error)
+			])
+		} else if let loc = widgetLocation {
+			WidgetLogger.timeline.info("Location resolved: \(loc.title ?? "nil", privacy: .public) (\(loc.latitude), \(loc.longitude))")
+			WidgetLogStore.log(.location, "Location resolved", metadata: [
+				"title": loc.title ?? "nil",
+				"lat": String(format: "%.4f", loc.latitude),
+				"lon": String(format: "%.4f", loc.longitude),
+				"isReal": "\(loc.isRealLocation)"
+			])
+		}
+
 		let currentDate = Date()
 		let calendar = Calendar.current
-		
+
 		guard let coordinate = widgetLocation?.coordinate,
 					let todaySolar = NTSolar(for: currentDate, coordinate: coordinate, timeZone: widgetLocation?.timeZone ?? .autoupdatingCurrent) else {
+			WidgetLogger.timeline.error("Timeline error fallback — no coordinate or solar data")
+			WidgetLogStore.log(.error, "Timeline error fallback: no coordinate or solar data", metadata: [
+				"hasLocation": "\(widgetLocation != nil)",
+				"error": error.map { String(describing: $0) } ?? "none"
+			])
 			return Timeline(
 				entries: [
 					SolsticeWidgetTimelineEntry(date: currentDate, location: widgetLocation, locationError: error)
@@ -264,6 +293,15 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 			}
 		
 		// Refresh after the last entry, or after 3 days if no entries
+		let firstDate = entries.first?.date ?? currentDate
+		let lastDate = entries.last?.date ?? currentDate
+		WidgetLogger.timeline.info("Timeline complete — \(entries.count) entries from \(firstDate) to \(lastDate), policy: atEnd")
+		WidgetLogStore.log(.timeline, "Timeline entries generated", metadata: [
+			"count": "\(entries.count)",
+			"firstDate": firstDate.formatted(.iso8601),
+			"lastDate": lastDate.formatted(.iso8601),
+			"refreshPolicy": "atEnd"
+		])
 		return Timeline(entries: entries, policy: .atEnd)
 	}
 
