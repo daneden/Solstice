@@ -26,12 +26,14 @@ struct SundialWidgetView: SolsticeWidgetView {
 	}
 	
 	@ViewBuilder
-	private var smallWidgetHeader: some View {
+	private var header: some View {
 		HStack {
-			Label("Solstice", image: .solstice)
-				.labelStyle(CompactLabelStyle())
-			
-			Spacer()
+			if !isSmallWidget {
+				Label("Solstice", image: .solstice)
+					.labelStyle(CompactLabelStyle())
+				
+				Spacer()
+			}
 			
 			if let title = location?.title {
 				Label {
@@ -59,51 +61,49 @@ struct SundialWidgetView: SolsticeWidgetView {
 				Text(sunrise...sunset)
 			}
 			
-			Spacer(minLength: 8)
+			Spacer()
 			
 			if let duration = solar?.daylightDuration {
 				Text(Duration.seconds(duration).formatted(.units(allowed: [.hours, .minutes], width: .narrow)))
 			}
 		}
 		.lineLimit(1)
-		.textScale(.secondary)
-	}
-	
-	@ViewBuilder
-	private var smallWidgetLabels: some View {
-		VStack {
-			smallWidgetHeader
-			
-			Spacer()
-			
-			smallWidgetFooter
-		}
-		.font(.caption2)
-		
-		.lineLimit(1)
 	}
 	
 	var body: some View {
 		Group {
 			if let location {
-				VStack {
-					smallWidgetHeader
-						.font(isSmallWidget ? .caption2 : .footnote)
-						.textScale(isSmallWidget ? .secondary : .default)
-						.readSize($headerSize)
-					
-					CircularSolarChart(date: entry.date, location: location)
-						.labelsVisibility(isSmallWidget ? .hidden : .automatic)
-					
-					if isSmallWidget {
-						smallWidgetFooter
-							.font(.caption2)
-					} else {
+				if isSmallWidget {
+					ZStack(alignment: .bottom) {
+						CircularSolarChart(date: entry.date, location: location)
+							.labelsVisibility(.hidden)
+							.mask(LinearGradient(
+								stops: [
+									.init(color: .black, location: 0.3),
+									.init(color: .clear, location: 0.85)
+								],
+								startPoint: .top,
+								endPoint: .bottom
+							))
+						
+						VStack(alignment: .leading, spacing: 4) {
+							header
+							smallWidgetFooter
+						}
+						.font(.caption)
+						.fontWeight(.medium)
+						.allowsTightening(true)
+					}
+				} else {
+					VStack {
+						header
+							.font(.footnote)
+							.readSize($headerSize)
+						
+						CircularSolarChart(date: entry.date, location: location)
+						
 						Color.clear.frame(height: headerSize.height)
 					}
-				}
-				.containerBackground(for: .widget) {
-					solar?.view.opacity(0.15)
 				}
 			} else if needsReconfiguration {
 				WidgetNeedsReconfigurationView()
@@ -115,6 +115,9 @@ struct SundialWidgetView: SolsticeWidgetView {
 				WidgetMissingLocationView()
 					.containerBackground(.background, for: .widget)
 			}
+		}
+		.containerBackground(for: .widget) {
+			solar?.view.opacity(0.15)
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
