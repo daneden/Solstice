@@ -37,22 +37,28 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 		let context = PersistenceController.shared.container.viewContext
 		let request = SavedLocation.fetchRequest()
 		request.sortDescriptors = [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)]
-		
+
 		let currentLocationRecommendation = AppIntentRecommendation(
 			intent: Intent(selectedLocation: .currentLocation),
-			description: String(localized: "Current Location")
+			description: Text("Current Location")
 		)
 
 		guard let savedLocations = try? context.fetch(request) else {
 			return [currentLocationRecommendation]
 		}
 
+		// Deduplicate by title to avoid duplicate descriptions in the complication picker
+		// (can happen with iCloud sync creating duplicate saved locations)
+		var seenTitles: Set<String> = ["Current Location"]
 		let savedLocationRecommendations = savedLocations.compactMap { savedLocation -> AppIntentRecommendation<Intent>? in
+			let title = savedLocation.title ?? "Location"
+			guard seenTitles.insert(title).inserted else { return nil }
+
 			let entity = LocationAppEntity(from: savedLocation)
 			let intent = Intent(selectedLocation: entity)
 			return AppIntentRecommendation(
 				intent: intent,
-				description: Text(savedLocation.title ?? "Location")
+				description: Text(title)
 			)
 		}
 
