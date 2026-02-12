@@ -18,6 +18,23 @@ struct WidgetDiagnosticsView: View {
 		timelineGenerations.last?.date
 	}
 
+	private var formattedLogText: String {
+		let formatter = ISO8601DateFormatter()
+		formatter.formatOptions = [.withFullDate, .withFullTime, .withSpaceBetweenDateAndTime]
+		return entries.reversed().map { entry in
+			let timestamp = formatter.string(from: entry.date)
+			let categoryLabel = switch entry.category {
+			case .timeline: "TL"
+			case .location: "LOC"
+			case .error: "ERR"
+			}
+			let meta = entry.metadata.map { dict in
+				dict.isEmpty ? "" : " | " + dict.map { "\($0.key)=\($0.value)" }.joined(separator: ", ")
+			} ?? ""
+			return "[\(timestamp)] [\(categoryLabel)] \(entry.message)\(meta)"
+		}.joined(separator: "\n")
+	}
+
 	private var averageEntryCount: Double? {
 		let counts = timelineGenerations.compactMap { entry in
 			entry.metadata?["count"].flatMap(Double.init)
@@ -70,6 +87,9 @@ struct WidgetDiagnosticsView: View {
 			}
 
 			Section {
+				if !entries.isEmpty {
+					ShareLink(item: formattedLogText, preview: SharePreview("Widget Logs"))
+				}
 				Button("Clear Logs", role: .destructive) {
 					WidgetLogStore.clearEntries()
 					entries = []
