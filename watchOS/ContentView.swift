@@ -69,6 +69,15 @@ struct ContentView: View {
 				}
 			}
 			.navigationTitle(Text(verbatim: "Solstice"))
+			.toolbar {
+				ToolbarItem(placement: .topBarTrailing) {
+					NavigationLink {
+						WidgetDiagnosticsView()
+					} label: {
+						Label("Widget Logs", systemImage: "list.bullet.rectangle")
+					}
+				}
+			}
 			.timeTravelToolbar()
 		} detail: {
 			switch selectedLocation {

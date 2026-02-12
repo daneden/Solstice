@@ -6,6 +6,7 @@
 //
 import Foundation
 import CoreLocation
+import OSLog
 
 actor SolsticeWidgetLocationManager {
 	static let shared = SolsticeWidgetLocationManager()
@@ -13,6 +14,7 @@ actor SolsticeWidgetLocationManager {
 	private var cachedLocation: CLLocation?
 	private var cacheTimestamp: Date?
 	private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
+	private let appGroupCacheValidityDuration: TimeInterval = 3600 // 60 minutes
 
 	private var cachedLocationData: LocationData?
 	private var cachedLocationDataCoordinate: CLLocation?
@@ -33,14 +35,16 @@ actor SolsticeWidgetLocationManager {
 		if let cachedLocation,
 		   let cacheTimestamp,
 		   Date().timeIntervalSince(cacheTimestamp) < cacheValidityDuration {
+			let age = Date().timeIntervalSince(cacheTimestamp)
+			WidgetLogger.location.debug("In-memory cache hit (age: \(String(format: "%.0f", age))s)")
 			return cachedLocation
 		}
 
 		// Second, check the shared App Group cache from the main app
 		if let (sharedLocation, sharedLocationData) = getSharedAppGroupData() {
+			WidgetLogger.location.debug("App Group cache hit (\(sharedLocation.coordinate.latitude), \(sharedLocation.coordinate.longitude))")
 			cachedLocation = sharedLocation
 			cacheTimestamp = Date()
-			// Also use the location data if available and we don't have one cached
 			if let sharedLocationData, cachedLocationData == nil {
 				cachedLocationData = sharedLocationData
 				cachedLocationDataCoordinate = sharedLocation
@@ -49,14 +53,25 @@ actor SolsticeWidgetLocationManager {
 		}
 
 		// Finally, fetch fresh location with timeout
+		WidgetLogger.location.info("No cache available, fetching fresh location…")
 		do {
 			let location = try await fetchLocationWithTimeout(seconds: 10)
+			WidgetLogger.location.info("Fresh location fetched: (\(location.coordinate.latitude), \(location.coordinate.longitude))")
+			WidgetLogStore.log(.location, "Fresh location fetched", metadata: [
+				"lat": String(format: "%.4f", location.coordinate.latitude),
+				"lon": String(format: "%.4f", location.coordinate.longitude)
+			])
 			cachedLocation = location
 			cacheTimestamp = Date()
 			return location
 		} catch {
-			// Fall back to cached location even if expired, or CLLocationManager's last known location
-			return cachedLocation ?? CLLocationManager().location
+			let fallback = cachedLocation ?? CLLocationManager().location
+			WidgetLogger.location.warning("Location fetch failed, using fallback: \(fallback != nil ? "available" : "nil")")
+			WidgetLogStore.log(.error, "Location fetch failed", metadata: [
+				"error": error.localizedDescription,
+				"hasFallback": "\(fallback != nil)"
+			])
+			return fallback
 		}
 	}
 
@@ -64,39 +79,55 @@ actor SolsticeWidgetLocationManager {
 	private func getSharedAppGroupData() -> (location: CLLocation, locationData: LocationData?)? {
 		guard let cached = LocationAppGroupCache.read() else { return nil }
 
-		// Validate the cache is recent (within cache validity duration)
+		// Use a longer validity window for the App Group cache since stale
+		// location data is much better than no data (which causes placeholder complications)
 		let cacheAge = Date().timeIntervalSince(cached.timestamp)
-		guard cacheAge < cacheValidityDuration else { return nil }
+		guard cacheAge < appGroupCacheValidityDuration else { return nil }
 
 		let location = CLLocation(latitude: cached.location.latitude, longitude: cached.location.longitude)
 		return (location, cached.location)
 	}
 
 	private func fetchLocationWithTimeout(seconds: TimeInterval) async throws -> CLLocation {
-		try await withThrowingTaskGroup(of: CLLocation.self) { group in
-			group.addTask {
-				for try await update in CLLocationUpdate.liveUpdates() {
-					if let location = update.location {
-						return location
+		let start = Date()
+		do {
+			let location = try await withThrowingTaskGroup(of: CLLocation.self) { group in
+				group.addTask {
+					for try await update in CLLocationUpdate.liveUpdates() {
+						if let location = update.location {
+							return location
+						}
 					}
+					throw CLError(.locationUnknown)
 				}
-				throw CLError(.locationUnknown)
-			}
 
-			group.addTask {
-				try await Task.sleep(for: .seconds(seconds))
-				throw CLError(.locationUnknown)
-			}
+				group.addTask {
+					try await Task.sleep(for: .seconds(seconds))
+					throw CLError(.locationUnknown)
+				}
 
-			let result = try await group.next()!
-			group.cancelAll()
-			return result
+				let result = try await group.next()!
+				group.cancelAll()
+				return result
+			}
+			let elapsed = Date().timeIntervalSince(start)
+			WidgetLogger.location.debug("Location fetched in \(String(format: "%.1f", elapsed))s")
+			return location
+		} catch {
+			let elapsed = Date().timeIntervalSince(start)
+			WidgetLogger.location.warning("Location fetch timed out after \(String(format: "%.1f", elapsed))s")
+			WidgetLogStore.log(.error, "Location fetch timeout", metadata: [
+				"elapsed": String(format: "%.1f", elapsed),
+				"timeout": "\(seconds)"
+			])
+			throw error
 		}
 	}
 
 	/// Returns location with cached location data, only re-geocoding if location moved significantly
 	func getLocationWithPlacemark() async -> (location: CLLocation?, locationData: LocationData?) {
 		guard let location = await getLocation() else {
+			WidgetLogger.location.warning("getLocationWithPlacemark: no location available")
 			return (nil, nil)
 		}
 
@@ -104,10 +135,13 @@ actor SolsticeWidgetLocationManager {
 		if let cached = cachedLocationData,
 		   let cachedCoord = cachedLocationDataCoordinate,
 		   location.distance(from: cachedCoord) < significantDistanceChange {
+			let distance = location.distance(from: cachedCoord)
+			WidgetLogger.location.debug("Reusing cached placemark (moved \(String(format: "%.0f", distance))m, threshold \(self.significantDistanceChange)m)")
 			return (location, cached)
 		}
 
 		// Need to geocode
+		WidgetLogger.location.debug("Re-geocoding location (moved significantly or no cache)")
 		do {
 			if let placemark = try await geocoder.reverseGeocodeLocation(location).first {
 				let locationData = LocationData(
@@ -117,12 +151,13 @@ actor SolsticeWidgetLocationManager {
 					longitude: location.coordinate.longitude,
 					timeZoneIdentifier: placemark.timeZone?.identifier
 				)
+				WidgetLogger.location.debug("Geocoded: \(placemark.locality ?? "nil", privacy: .public), tz: \(placemark.timeZone?.identifier ?? "nil")")
 				cachedLocationData = locationData
 				cachedLocationDataCoordinate = location
 				return (location, locationData)
 			}
 		} catch {
-			// Fallback to cached location data if geocoding fails
+			WidgetLogger.location.error("Geocoding failed: \(error.localizedDescription)")
 			return (location, cachedLocationData)
 		}
 

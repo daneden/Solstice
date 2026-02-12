@@ -372,6 +372,9 @@
         }
       }
     },
+    "Avg entries" : {
+
+    },
     "Calculate the sunrise time on a given date in a given location" : {
       "localizations" : {
         "it" : {
@@ -493,6 +496,9 @@
           }
         }
       }
+    },
+    "Clear Logs" : {
+
     },
     "Close" : {
       "localizations" : {
@@ -1096,6 +1102,9 @@
     "Label" : {
       "shouldTranslate" : false
     },
+    "Last generation" : {
+
+    },
     "Leave a review" : {
       "localizations" : {
         "it" : {
@@ -1399,6 +1408,9 @@
         }
       }
     },
+    "No log entries" : {
+
+    },
     "notif-daylight-duration" : {
       "comment" : "Notification fragment for length of daylight",
       "extractionState" : "extracted_with_value",
@@ -1575,6 +1587,9 @@
           }
         }
       }
+    },
+    "Recent Events" : {
+
     },
     "Remaining daylight" : {
       "localizations" : {
@@ -1915,6 +1930,9 @@
         }
       }
     },
+    "Summary" : {
+
+    },
     "Sundial" : {
       "localizations" : {
         "it" : {
@@ -2176,6 +2194,12 @@
         }
       }
     },
+    "Total generations" : {
+
+    },
+    "Total log entries" : {
+
+    },
     "Unknown" : {
       "localizations" : {
         "it" : {
@@ -2316,6 +2340,9 @@
           }
         }
       }
+    },
+    "Widget Logs" : {
+
     }
   },
   "version" : "1.1"
