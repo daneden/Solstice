@@ -13,6 +13,7 @@ actor SolsticeWidgetLocationManager {
 	private var cachedLocation: CLLocation?
 	private var cacheTimestamp: Date?
 	private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
+	private let appGroupCacheValidityDuration: TimeInterval = 3600 // 60 minutes
 
 	private var cachedLocationData: LocationData?
 	private var cachedLocationDataCoordinate: CLLocation?
@@ -64,9 +65,10 @@ actor SolsticeWidgetLocationManager {
 	private func getSharedAppGroupData() -> (location: CLLocation, locationData: LocationData?)? {
 		guard let cached = LocationAppGroupCache.read() else { return nil }
 
-		// Validate the cache is recent (within cache validity duration)
+		// Use a longer validity window for the App Group cache since stale
+		// location data is much better than no data (which causes placeholder complications)
 		let cacheAge = Date().timeIntervalSince(cached.timestamp)
-		guard cacheAge < cacheValidityDuration else { return nil }
+		guard cacheAge < appGroupCacheValidityDuration else { return nil }
 
 		let location = CLLocation(latitude: cached.location.latitude, longitude: cached.location.longitude)
 		return (location, cached.location)
