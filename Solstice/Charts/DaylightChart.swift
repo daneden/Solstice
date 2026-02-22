@@ -324,7 +324,12 @@ extension DaylightChart {
 	}
 	
 	func yValue(for date: Date) -> Double {
-		return sin(progressValue(for: date) * .pi * 2 - .pi / 2)
+		let raw = sin(progressValue(for: date) * .pi * 2 - .pi / 2)
+		// Shift the curve so sunrise/sunset land exactly on y=0 (the horizon).
+		// This makes the arc's amplitude above the horizon proportional to daylight
+		// duration rather than moving the horizon line up and down.
+		let sunriseOffset = sin(progressValue(for: solar.safeSunrise) * .pi * 2 - .pi / 2)
+		return raw - sunriseOffset
 	}
 	
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
