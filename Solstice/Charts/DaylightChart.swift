@@ -104,7 +104,13 @@ struct DaylightChart: View {
 			}
 		}
 		.chartBackground { proxy in
-			solarPathView(proxy: proxy)
+			ZStack {
+				if let solstices = solsticeNTSolars {
+					solsticeComparisonPath(proxy: proxy, solsticeSolar: solstices.shorter)
+					solsticeComparisonPath(proxy: proxy, solsticeSolar: solstices.longer)
+				}
+				solarPathView(proxy: proxy)
+			}
 		}
 	}
 
@@ -272,6 +278,24 @@ struct DaylightChart: View {
 		.fill(solarPathGradient)
 	}
 
+	private func solsticeComparisonPath(proxy: ChartProxy, solsticeSolar: NTSolar) -> some View {
+		let sunriseRef = todayEquivalentSunrise(for: solsticeSolar)
+		return Path { path in
+			if let firstPoint = hours.first,
+				 let x = proxy.position(forX: firstPoint),
+				 let y = proxy.position(forY: yValue(for: firstPoint, withSunriseAt: sunriseRef)) {
+				path.move(to: CGPoint(x: x, y: y))
+			}
+			hours.forEach { hour in
+				let x: CGFloat = proxy.position(forX: hour) ?? 0
+				let y: CGFloat = proxy.position(forY: yValue(for: hour, withSunriseAt: sunriseRef)) ?? 0
+				path.addLine(to: CGPoint(x: x, y: y))
+			}
+		}
+		.strokedPath(StrokeStyle(lineWidth: max(1, markSize * 0.5), lineCap: .round, lineJoin: .round, dash: [4, 4]))
+		.fill(.secondary.opacity(0.25))
+	}
+
 	private var solarPathGradient: LinearGradient {
 		LinearGradient(stops: [
 			Gradient.Stop(color: .secondary.opacity(0), location: 0),
@@ -323,6 +347,44 @@ extension DaylightChart {
 		return (date.distance(to: startOfDay) - culminationDelta) / dayLength
 	}
 	
+	/// NTSolar instances for the summer (longer) and winter (shorter) solstices of
+	/// the current year at this location. Correctly identifies which is which for
+	/// both hemispheres, and returns nil if either solstice can't be computed
+	/// (e.g. extreme polar coordinates).
+	var solsticeNTSolars: (longer: NTSolar, shorter: NTSolar)? {
+		var calendar = Calendar.current
+		calendar.timeZone = timeZone
+		let year = calendar.component(.year, from: solar.date)
+		guard
+			let june21 = calendar.date(from: DateComponents(year: year, month: 6, day: 21)),
+			let dec21 = calendar.date(from: DateComponents(year: year, month: 12, day: 21)),
+			let juneSolar = NTSolar(for: june21, coordinate: solar.coordinate, timeZone: timeZone),
+			let decSolar = NTSolar(for: dec21, coordinate: solar.coordinate, timeZone: timeZone)
+		else { return nil }
+		return juneSolar.daylightDuration >= decSolar.daylightDuration
+			? (longer: juneSolar, shorter: decSolar)
+			: (longer: decSolar, shorter: juneSolar)
+	}
+
+	/// Maps a solstice's sunrise time-of-day onto today's x-axis so the path can
+	/// be drawn against the same time range. Works correctly for polar day/night:
+	/// safeSunrise returns noon (polar night) or end-of-day (polar day), both of
+	/// which map through cleanly as a fraction of the 24-hour period.
+	func todayEquivalentSunrise(for solsticeSolar: NTSolar) -> Date {
+		var cal = Calendar.current
+		cal.timeZone = timeZone
+		let offset = cal.startOfDay(for: solsticeSolar.date).distance(to: solsticeSolar.safeSunrise)
+		return startOfDay.addingTimeInterval(offset)
+	}
+
+	/// y-value variant that uses an explicit sunrise reference date for amplitude,
+	/// used to draw solstice comparison paths with a different horizon offset.
+	func yValue(for date: Date, withSunriseAt sunrise: Date) -> Double {
+		let raw = sin(progressValue(for: date) * .pi * 2 - .pi / 2)
+		let sunriseOffset = sin(progressValue(for: sunrise) * .pi * 2 - .pi / 2)
+		return raw - sunriseOffset
+	}
+
 	func yValue(for date: Date) -> Double {
 		let raw = sin(progressValue(for: date) * .pi * 2 - .pi / 2)
 		// Shift the curve so sunrise/sunset land exactly on y=0 (the horizon).
