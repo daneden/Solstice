@@ -25,7 +25,7 @@ struct DaylightChart: View {
 	var hideXAxis = false
 	var scrubbable = false
 	var markSize: CGFloat = 6
-	var yScale = -1.5...1.5
+	var yScale: ClosedRange<Double>? = nil
 	
 	var plotDate: Date {
 		currentX ?? solar.date
@@ -86,7 +86,7 @@ struct DaylightChart: View {
 			}
 		}
 		.chartYAxis(.hidden)
-		.chartYScale(domain: yScale)
+		.chartYScale(domain: effectiveYScale)
 		.chartXAxis(hideXAxis ? .hidden : .automatic)
 		.chartXAxis {
 			if !hideXAxis {
@@ -136,7 +136,7 @@ struct DaylightChart: View {
 
 	@ViewBuilder
 	private func chartOverlayContent(proxy: ChartProxy, geo: GeometryProxy) -> some View {
-		let horizonY: CGFloat = proxy.position(forY: yValue(for: solar.safeSunrise)) ?? 0
+		let horizonY: CGFloat = proxy.position(forY: 0.0) ?? 0
 
 		Group {
 			horizonLine(width: geo.size.width, yOffset: horizonY)
@@ -279,16 +279,15 @@ struct DaylightChart: View {
 	}
 
 	private func solsticeComparisonPath(proxy: ChartProxy, solsticeSolar: NTSolar) -> some View {
-		let sunriseRef = todayEquivalentSunrise(for: solsticeSolar)
 		return Path { path in
 			if let firstPoint = hours.first,
 				 let x = proxy.position(forX: firstPoint),
-				 let y = proxy.position(forY: yValue(for: firstPoint, withSunriseAt: sunriseRef)) {
+				 let y = proxy.position(forY: yValue(for: firstPoint, solsticeSolar: solsticeSolar)) {
 				path.move(to: CGPoint(x: x, y: y))
 			}
 			hours.forEach { hour in
 				let x: CGFloat = proxy.position(forX: hour) ?? 0
-				let y: CGFloat = proxy.position(forY: yValue(for: hour, withSunriseAt: sunriseRef)) ?? 0
+				let y: CGFloat = proxy.position(forY: yValue(for: hour, solsticeSolar: solsticeSolar)) ?? 0
 				path.addLine(to: CGPoint(x: x, y: y))
 			}
 		}
@@ -309,19 +308,9 @@ extension DaylightChart {
 	var hours: Array<Date> {
 		stride(from: range.lowerBound, through: range.upperBound, by: 60 * 30).compactMap { $0 }
 	}
-	
+
 	var startOfDay: Date { range.lowerBound }
-	var endOfDay: Date { range.upperBound }
-	var dayLength: TimeInterval { .twentyFourHours }
-	
-	var noonish: Date { startOfDay.addingTimeInterval(TimeInterval.twentyFourHours / 2) }
-	
-	var culminationDelta: TimeInterval { solar.solarNoon?.distance(to: noonish) ?? 0 }
-	
-	var daylightProportion: Double {
-		solar.daylightDuration / dayLength
-	}
-	
+
 	func pointMarkColor(for eventPhase: NTSolar.Phase) -> HierarchicalShapeStyle {
 		switch eventPhase {
 		case .astronomical:
@@ -334,7 +323,7 @@ extension DaylightChart {
 			return .primary
 		}
 	}
-	
+
 	func resetSelectedEvent() {
 		selectedEvent = solar.events.filter {
 			$0.phase == .sunset || $0.phase == .sunrise
@@ -342,11 +331,7 @@ extension DaylightChart {
 			a.date.compare(.now) == .orderedDescending
 		}).first
 	}
-	
-	func progressValue(for date: Date) -> Double {
-		return (date.distance(to: startOfDay) - culminationDelta) / dayLength
-	}
-	
+
 	/// NTSolar instances for the summer (longer) and winter (shorter) solstices of
 	/// the current year at this location. Correctly identifies which is which for
 	/// both hemispheres, and returns nil if either solstice can't be computed
@@ -366,34 +351,36 @@ extension DaylightChart {
 			: (longer: decSolar, shorter: juneSolar)
 	}
 
-	/// Maps a solstice's sunrise time-of-day onto today's x-axis so the path can
-	/// be drawn against the same time range. Works correctly for polar day/night:
-	/// safeSunrise returns noon (polar night) or end-of-day (polar day), both of
-	/// which map through cleanly as a fraction of the 24-hour period.
-	func todayEquivalentSunrise(for solsticeSolar: NTSolar) -> Date {
+	/// The y-scale to use for the chart, sized to the summer solstice noon altitude
+	/// at this location so it stays stable across the year. Callers may override
+	/// via the `yScale` property.
+	private var effectiveYScale: ClosedRange<Double> {
+		if let yScale { return yScale }
+		guard let solstices = solsticeNTSolars,
+			  let summerNoon = solstices.longer.solarNoon else {
+			return -90.0...90.0
+		}
+		let maxAlt = min(90.0, max(15.0, solstices.longer.altitude(at: summerNoon)))
+		let padding = maxAlt * 0.3
+		return (-maxAlt - padding)...(maxAlt + padding)
+	}
+
+	/// The sun's actual altitude in degrees at `date` for the current solar.
+	/// 0° is the geometric horizon; positive = above, negative = below.
+	func yValue(for date: Date) -> Double {
+		solar.altitude(at: date)
+	}
+
+	/// The sun's altitude in degrees at `date`'s time-of-day, evaluated as if
+	/// that moment were on the solstice day. Used for comparison path rendering.
+	func yValue(for date: Date, solsticeSolar: NTSolar) -> Double {
 		var cal = Calendar.current
 		cal.timeZone = timeZone
-		let offset = cal.startOfDay(for: solsticeSolar.date).distance(to: solsticeSolar.safeSunrise)
-		return startOfDay.addingTimeInterval(offset)
+		let offset = startOfDay.distance(to: date)
+		let solsticeDate = cal.startOfDay(for: solsticeSolar.date).addingTimeInterval(offset)
+		return solsticeSolar.altitude(at: solsticeDate)
 	}
 
-	/// y-value variant that uses an explicit sunrise reference date for amplitude,
-	/// used to draw solstice comparison paths with a different horizon offset.
-	func yValue(for date: Date, withSunriseAt sunrise: Date) -> Double {
-		let raw = sin(progressValue(for: date) * .pi * 2 - .pi / 2)
-		let sunriseOffset = sin(progressValue(for: sunrise) * .pi * 2 - .pi / 2)
-		return raw - sunriseOffset
-	}
-
-	func yValue(for date: Date) -> Double {
-		let raw = sin(progressValue(for: date) * .pi * 2 - .pi / 2)
-		// Shift the curve so sunrise/sunset land exactly on y=0 (the horizon).
-		// This makes the arc's amplitude above the horizon proportional to daylight
-		// duration rather than moving the horizon line up and down.
-		let sunriseOffset = sin(progressValue(for: solar.safeSunrise) * .pi * 2 - .pi / 2)
-		return raw - sunriseOffset
-	}
-	
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
 		var start: Double = 0
 		

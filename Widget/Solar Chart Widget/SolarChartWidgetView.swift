@@ -44,8 +44,7 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 						timeZone: location.timeZone,
 						showEventTypes: false,
 						includesSummaryTitle: false,
-						markSize: 3,
-						yScale: -1.0...1.5
+						markSize: 3
 					)
 				}
 			} else if needsReconfiguration {
