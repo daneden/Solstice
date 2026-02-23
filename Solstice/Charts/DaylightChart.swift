@@ -292,7 +292,7 @@ struct DaylightChart: View {
 				path.addLine(to: CGPoint(x: x, y: y))
 			}
 		}
-		.strokedPath(StrokeStyle(lineWidth: max(1, markSize * 0.5), lineCap: .round, lineJoin: .round, dash: [4, 4]))
+		.strokedPath(StrokeStyle(lineWidth: max(1, markSize * 0.25), lineCap: .round, lineJoin: .round, dash: [8, 6]))
 		.fill(.secondary.opacity(0.25))
 	}
 
