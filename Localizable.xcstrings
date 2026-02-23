@@ -312,6 +312,9 @@
         }
       }
     },
+    "Altitude" : {
+
+    },
     "Appearance" : {
       "localizations" : {
         "it" : {
@@ -1732,6 +1735,9 @@
           }
         }
       }
+    },
+    "Series" : {
+
     },
     "Settings" : {
       "localizations" : {

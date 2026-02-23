@@ -81,10 +81,46 @@ struct DaylightChart: View {
 
 	private var chartContent: some View {
 		Chart {
+			if let solstices = solsticeNTSolars {
+				ForEach(hours, id: \.self) { hour in
+					LineMark(
+						x: .value("Time", hour),
+						y: .value("Altitude", yValue(for: hour, solsticeSolar: solstices.shorter)),
+						series: .value("Series", "shorter")
+					)
+					.interpolationMethod(.catmullRom)
+					.foregroundStyle(.secondary.opacity(0.25))
+					.lineStyle(StrokeStyle(lineWidth: max(1, markSize * 0.25), lineCap: .round, lineJoin: .round, dash: [8, 6]))
+				}
+
+				ForEach(hours, id: \.self) { hour in
+					LineMark(
+						x: .value("Time", hour),
+						y: .value("Altitude", yValue(for: hour, solsticeSolar: solstices.longer)),
+						series: .value("Series", "longer")
+					)
+					.interpolationMethod(.catmullRom)
+					.foregroundStyle(.secondary.opacity(0.25))
+					.lineStyle(StrokeStyle(lineWidth: max(1, markSize * 0.25), lineCap: .round, lineJoin: .round, dash: [8, 6]))
+				}
+			}
+
+			ForEach(hours, id: \.self) { hour in
+				LineMark(
+					x: .value("Time", hour),
+					y: .value("Altitude", yValue(for: hour)),
+					series: .value("Series", "today")
+				)
+				.interpolationMethod(.catmullRom)
+				.foregroundStyle(solarPathGradient)
+				.lineStyle(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
+			}
+
 			ForEach(filteredEvents, id: \.id) { solarEvent in
 				eventPointMark(for: solarEvent)
 			}
 		}
+		.chartLegend(.hidden)
 		.chartYAxis(.hidden)
 		.chartYScale(domain: effectiveYScale)
 		.chartXAxis(hideXAxis ? .hidden : .automatic)
@@ -103,15 +139,7 @@ struct DaylightChart: View {
 				chartOverlayContent(proxy: proxy, geo: geo)
 			}
 		}
-		.chartBackground { proxy in
-			ZStack {
-				if let solstices = solsticeNTSolars {
-					solsticeComparisonPath(proxy: proxy, solsticeSolar: solstices.shorter)
-					solsticeComparisonPath(proxy: proxy, solsticeSolar: solstices.longer)
-				}
-				solarPathView(proxy: proxy)
-			}
-		}
+		.animation(nil, value: solar.date)
 	}
 
 	private var filteredEvents: [NTSolar.Event] {
@@ -147,6 +175,7 @@ struct DaylightChart: View {
 				sunAboveHorizon(proxy: proxy, horizonY: horizonY)
 			}
 		}
+		.animation(nil, value: solar.date)
 
 		scrubHitArea(geo: geo, proxy: proxy)
 	}
@@ -252,47 +281,6 @@ struct DaylightChart: View {
 					}
 #endif
 			}
-	}
-
-	private func solarPathView(proxy: ChartProxy) -> some View {
-		Path { path in
-			if let firstPoint = hours.first,
-				 let x = proxy.position(forX: firstPoint),
-				 let y = proxy.position(forY: yValue(for: firstPoint)) {
-				path.move(to: CGPoint(x: x, y: y))
-			}
-
-			hours.forEach { hour in
-				let x: CGFloat = proxy.position(forX: hour) ?? 0
-				let y: CGFloat = proxy.position(forY: yValue(for: hour)) ?? 0
-				path.addLine(to: CGPoint(x: x, y: y))
-			}
-
-			if let lastPoint = hours.last,
-				 let x = proxy.position(forX: lastPoint),
-				 let y = proxy.position(forY: yValue(for: lastPoint)) {
-				path.move(to: CGPoint(x: x, y: y))
-			}
-		}
-		.strokedPath(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
-		.fill(solarPathGradient)
-	}
-
-	private func solsticeComparisonPath(proxy: ChartProxy, solsticeSolar: NTSolar) -> some View {
-		return Path { path in
-			if let firstPoint = hours.first,
-				 let x = proxy.position(forX: firstPoint),
-				 let y = proxy.position(forY: yValue(for: firstPoint, solsticeSolar: solsticeSolar)) {
-				path.move(to: CGPoint(x: x, y: y))
-			}
-			hours.forEach { hour in
-				let x: CGFloat = proxy.position(forX: hour) ?? 0
-				let y: CGFloat = proxy.position(forY: yValue(for: hour, solsticeSolar: solsticeSolar)) ?? 0
-				path.addLine(to: CGPoint(x: x, y: y))
-			}
-		}
-		.strokedPath(StrokeStyle(lineWidth: max(1, markSize * 0.25), lineCap: .round, lineJoin: .round, dash: [8, 6]))
-		.fill(.secondary.opacity(0.25))
 	}
 
 	private var solarPathGradient: LinearGradient {
