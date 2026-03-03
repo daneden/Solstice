@@ -12,21 +12,21 @@ import Suite
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
-	
+
 	@State private var selectedEvent: NTSolar.Event?
 	@State private var currentX: Date?
-	
+
 	var solar: NTSolar
 	var timeZone: TimeZone
 	var showEventTypes = true
-	
+
 	var appearance = Appearance.simple
 	var includesSummaryTitle = true
 	var hideXAxis = false
 	var scrubbable = false
 	var markSize: CGFloat = 6
 	var yScale: ClosedRange<Double>? = nil
-	
+
 	var plotDate: Date {
 		currentX ?? solar.date
 	}
@@ -81,35 +81,10 @@ struct DaylightChart: View {
 
 	private var chartContent: some View {
 		Chart {
-			if let solstices = solsticeNTSolars {
-				ForEach(hours, id: \.self) { hour in
-					LineMark(
-						x: .value("Time", hour),
-						y: .value("Altitude", yValue(for: hour, solsticeSolar: solstices.shorter)),
-						series: .value("Series", "shorter")
-					)
-					.interpolationMethod(.catmullRom)
-					.foregroundStyle(.secondary.opacity(0.25))
-					.lineStyle(StrokeStyle(lineWidth: max(1, markSize * 0.25), lineCap: .round, lineJoin: .round, dash: [8, 6]))
-				}
-
-				ForEach(hours, id: \.self) { hour in
-					LineMark(
-						x: .value("Time", hour),
-						y: .value("Altitude", yValue(for: hour, solsticeSolar: solstices.longer)),
-						series: .value("Series", "longer")
-					)
-					.interpolationMethod(.catmullRom)
-					.foregroundStyle(.secondary.opacity(0.25))
-					.lineStyle(StrokeStyle(lineWidth: max(1, markSize * 0.25), lineCap: .round, lineJoin: .round, dash: [8, 6]))
-				}
-			}
-
 			ForEach(hours, id: \.self) { hour in
 				LineMark(
 					x: .value("Time", hour),
-					y: .value("Altitude", yValue(for: hour)),
-					series: .value("Series", "today")
+					y: .value("Altitude", yValue(for: hour))
 				)
 				.interpolationMethod(.catmullRom)
 				.foregroundStyle(solarPathGradient)
@@ -320,53 +295,24 @@ extension DaylightChart {
 		}).first
 	}
 
-	/// NTSolar instances for the summer (longer) and winter (shorter) solstices of
-	/// the current year at this location. Correctly identifies which is which for
-	/// both hemispheres, and returns nil if either solstice can't be computed
-	/// (e.g. extreme polar coordinates).
-	var solsticeNTSolars: (longer: NTSolar, shorter: NTSolar)? {
-		var calendar = Calendar.current
-		calendar.timeZone = timeZone
-		let year = calendar.component(.year, from: solar.date)
-		guard
-			let june21 = calendar.date(from: DateComponents(year: year, month: 6, day: 21)),
-			let dec21 = calendar.date(from: DateComponents(year: year, month: 12, day: 21)),
-			let juneSolar = NTSolar(for: june21, coordinate: solar.coordinate, timeZone: timeZone),
-			let decSolar = NTSolar(for: dec21, coordinate: solar.coordinate, timeZone: timeZone)
-		else { return nil }
-		return juneSolar.daylightDuration >= decSolar.daylightDuration
-			? (longer: juneSolar, shorter: decSolar)
-			: (longer: decSolar, shorter: juneSolar)
-	}
-
-	/// The y-scale to use for the chart, sized to the summer solstice noon altitude
-	/// at this location so it stays stable across the year. Callers may override
-	/// via the `yScale` property.
+	/// The y-scale to use for the chart, fitted to the actual min/max altitudes
+	/// across all sampled hours with padding so the path never crowds the edges.
+	/// Callers may override via the `yScale` property.
 	private var effectiveYScale: ClosedRange<Double> {
 		if let yScale { return yScale }
-		guard let solstices = solsticeNTSolars,
-			  let summerNoon = solstices.longer.solarNoon else {
+		let altitudes = hours.map { yValue(for: $0) }
+		guard let minAlt = altitudes.min(), let maxAlt = altitudes.max() else {
 			return -90.0...90.0
 		}
-		let maxAlt = min(90.0, max(15.0, solstices.longer.altitude(at: summerNoon)))
-		let padding = maxAlt * 0.3
-		return (-maxAlt - padding)...(maxAlt + padding)
+		let span = maxAlt - minAlt
+		let padding = span * 0.1
+		return (minAlt - padding)...(maxAlt + padding)
 	}
 
 	/// The sun's actual altitude in degrees at `date` for the current solar.
 	/// 0° is the geometric horizon; positive = above, negative = below.
 	func yValue(for date: Date) -> Double {
 		solar.altitude(at: date)
-	}
-
-	/// The sun's altitude in degrees at `date`'s time-of-day, evaluated as if
-	/// that moment were on the solstice day. Used for comparison path rendering.
-	func yValue(for date: Date, solsticeSolar: NTSolar) -> Double {
-		var cal = Calendar.current
-		cal.timeZone = timeZone
-		let offset = startOfDay.distance(to: date)
-		let solsticeDate = cal.startOfDay(for: solsticeSolar.date).addingTimeInterval(offset)
-		return solsticeSolar.altitude(at: solsticeDate)
 	}
 
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
