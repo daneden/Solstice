@@ -8,13 +8,18 @@
 import SwiftUI
 import Charts
 import Suite
+import TimeMachine
 
 struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.timeMachine) private var timeMachine
 
 	@State private var selectedEvent: NTSolar.Event?
-	@State private var currentX: Date?
+	@State private var currentX: TimeInterval?
+	/// Tracks the sun marker's current position. Updated instantly during time travel
+	/// and animated along the solar path on reset.
+	@State private var sunDisplayOffset: TimeInterval = 0
 
 	var solar: NTSolar
 	var timeZone: TimeZone
@@ -27,10 +32,26 @@ struct DaylightChart: View {
 	var markSize: CGFloat = 6
 	var yScale: ClosedRange<Double>? = nil
 
+	/// The date to highlight — uses scrubbable position when dragging, otherwise the solar date.
 	var plotDate: Date {
-		currentX ?? solar.date
+		if let currentX {
+			return midnight.addingTimeInterval(currentX)
+		}
+		return solar.date
 	}
-	
+
+	/// Offset of `plotDate` from midnight, used for x-axis position lookups.
+	var plotOffset: TimeInterval {
+		plotDate.timeIntervalSince(midnight)
+	}
+
+	/// Midnight of `solar.date` in the chart's time zone.
+	var midnight: Date {
+		var calendar = Calendar.current
+		calendar.timeZone = timeZone
+		return calendar.startOfDay(for: solar.date)
+	}
+
 	var markForegroundColor: Color {
 		if appearance == .graphical {
 			return .white
@@ -38,7 +59,7 @@ struct DaylightChart: View {
 			return colorScheme == .dark ? .white : .black
 		}
 	}
-	
+
 	var markBackgroundColor: Color {
 		if appearance == .graphical {
 			return .black
@@ -46,20 +67,15 @@ struct DaylightChart: View {
 			return colorScheme == .dark ? .black : .white
 		}
 	}
-	
-	var range: ClosedRange<Date> {
-		var calendar = Calendar.current
-		calendar.timeZone = timeZone
-		
-		let startOfDay = calendar.startOfDay(for: solar.date)
-		let endOfDay = max(solar.safeSunset, calendar.date(byAdding: DateComponents(day: 1), to: startOfDay) ?? solar.date)
-		return startOfDay...endOfDay
-	}
-	
+
+	/// X-axis domain: always a full 24-hour day expressed as seconds from midnight.
+	/// Keeping this constant means only the y-axis animates when the date changes.
+	var range: ClosedRange<TimeInterval> { 0...86400 }
+
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
-				DaylightSummaryTitle(solar: solar, event: selectedEvent, date: currentX, timeZone: timeZone)
+				DaylightSummaryTitle(solar: solar, event: selectedEvent, date: currentX.map { midnight.addingTimeInterval($0) }, timeZone: timeZone)
 			}
 
 			chartContent
@@ -76,15 +92,15 @@ struct DaylightChart: View {
 				.environment(\.colorScheme, .dark)
 		}
 		.environment(\.timeZone, timeZone)
-		.preference(key: DaylightGradientTimePreferenceKey.self, value: currentX ?? solar.date)
+		.preference(key: DaylightGradientTimePreferenceKey.self, value: plotDate)
 	}
 
 	private var chartContent: some View {
 		Chart {
-			ForEach(hours, id: \.self) { hour in
+			ForEach(hours, id: \.self) { offset in
 				LineMark(
-					x: .value("Time", hour),
-					y: .value("Altitude", yValue(for: hour))
+					x: .value("Time", offset),
+					y: .value("Altitude", yValue(for: offset))
 				)
 				.interpolationMethod(.catmullRom)
 				.foregroundStyle(solarPathGradient)
@@ -101,11 +117,15 @@ struct DaylightChart: View {
 		.chartXAxis(hideXAxis ? .hidden : .automatic)
 		.chartXAxis {
 			if !hideXAxis {
-				AxisMarks(format: Date.FormatStyle(
-					date: .omitted,
-					time: .shortened,
-					timeZone: timeZone
-				))
+				AxisMarks(values: .stride(by: 6.0 * 3600.0)) { value in
+					AxisGridLine()
+					AxisTick()
+					AxisValueLabel {
+						if let offset = value.as(TimeInterval.self) {
+							Text(midnight.addingTimeInterval(offset), format: Date.FormatStyle(date: .omitted, time: .shortened, timeZone: timeZone))
+						}
+					}
+				}
 			}
 		}
 		.chartXScale(domain: range)
@@ -114,17 +134,39 @@ struct DaylightChart: View {
 				chartOverlayContent(proxy: proxy, geo: geo)
 			}
 		}
-		.animation(nil, value: solar.date)
+		.animation(timeMachine.isActive ? nil : .smooth(duration: 0.5), value: solar.date)
+		.onAppear {
+			sunDisplayOffset = plotOffset
+		}
+		.onChange(of: currentX) { _, _ in
+			sunDisplayOffset = currentX ?? plotOffset
+		}
+		.onChange(of: solar.date) { oldDate, _ in
+			if timeMachine.isActive {
+				sunDisplayOffset = plotOffset
+			} else {
+				// On reset: animate the sun along the new day's solar path from
+				// the old time position to the current time position.
+				var cal = Calendar.current
+				cal.timeZone = timeZone
+				let oldMidnight = cal.startOfDay(for: oldDate)
+				sunDisplayOffset = oldDate.timeIntervalSince(oldMidnight)
+				withAnimation(.smooth(duration: 0.5)) {
+					sunDisplayOffset = plotOffset
+				}
+			}
+		}
 	}
 
 	private var filteredEvents: [NTSolar.Event] {
-		solar.events.filter { range.contains($0.date) }
+		solar.events.filter { range.contains(eventOffset(for: $0.date)) }
 	}
 
 	private func eventPointMark(for solarEvent: NTSolar.Event) -> some ChartContent {
-		PointMark(
-			x: .value("Event Time", solarEvent.date),
-			y: .value("Event", yValue(for: solarEvent.date))
+		let offset = eventOffset(for: solarEvent.date)
+		return PointMark(
+			x: .value("Event Time", offset),
+			y: .value("Event", yValue(for: offset))
 		)
 		.foregroundStyle(pointMarkColor(for: solarEvent.phase))
 		.opacity(eventPointOpacity(for: solarEvent.phase))
@@ -141,16 +183,13 @@ struct DaylightChart: View {
 	private func chartOverlayContent(proxy: ChartProxy, geo: GeometryProxy) -> some View {
 		let horizonY: CGFloat = proxy.position(forY: 0.0) ?? 0
 
-		Group {
-			horizonLine(width: geo.size.width, yOffset: horizonY)
+		horizonLine(width: geo.size.width, yOffset: horizonY)
 
-			ZStack {
-				scrubIndicator(proxy: proxy, geoHeight: geo.size.height)
-				sunBelowHorizon(proxy: proxy, geo: geo, horizonY: horizonY)
-				sunAboveHorizon(proxy: proxy, horizonY: horizonY)
-			}
+		ZStack {
+			scrubIndicator(proxy: proxy, geoHeight: geo.size.height)
+			sunBelowHorizon(proxy: proxy, geo: geo, horizonY: horizonY)
+			sunAboveHorizon(proxy: proxy, horizonY: horizonY)
 		}
-		.animation(nil, value: solar.date)
 
 		scrubHitArea(geo: geo, proxy: proxy)
 	}
@@ -181,8 +220,8 @@ struct DaylightChart: View {
 	}
 
 	private func sunBelowHorizon(proxy: ChartProxy, geo: GeometryProxy, horizonY: CGFloat) -> some View {
-		let sunX: CGFloat = proxy.position(forX: plotDate) ?? 0
-		let sunY: CGFloat = proxy.position(forY: yValue(for: plotDate)) ?? 0
+		let sunX: CGFloat = proxy.position(forX: sunDisplayOffset) ?? 0
+		let sunY: CGFloat = proxy.position(forY: yValue(for: sunDisplayOffset)) ?? 0
 		let belowHorizonHeight: CGFloat = geo.size.height - horizonY
 
 		return ZStack {
@@ -214,8 +253,8 @@ struct DaylightChart: View {
 	}
 
 	private func sunAboveHorizon(proxy: ChartProxy, horizonY: CGFloat) -> some View {
-		let sunX: CGFloat = proxy.position(forX: plotDate) ?? 0
-		let sunY: CGFloat = proxy.position(forY: yValue(for: plotDate)) ?? 0
+		let sunX: CGFloat = proxy.position(forX: sunDisplayOffset) ?? 0
+		let sunY: CGFloat = proxy.position(forY: yValue(for: sunDisplayOffset)) ?? 0
 
 		return ZStack {
 			Circle()
@@ -268,11 +307,11 @@ struct DaylightChart: View {
 }
 
 extension DaylightChart {
-	var hours: Array<Date> {
-		stride(from: range.lowerBound, through: range.upperBound, by: 60 * 30).compactMap { $0 }
+	var hours: Array<TimeInterval> {
+		stride(from: range.lowerBound, through: range.upperBound, by: 60 * 30).map { $0 }
 	}
 
-	var startOfDay: Date { range.lowerBound }
+	var startOfDay: Date { midnight }
 
 	func pointMarkColor(for eventPhase: NTSolar.Phase) -> HierarchicalShapeStyle {
 		switch eventPhase {
@@ -309,26 +348,31 @@ extension DaylightChart {
 		return (minAlt - padding)...(maxAlt + padding)
 	}
 
-	/// The sun's actual altitude in degrees at `date` for the current solar.
+	/// The sun's actual altitude in degrees at the given offset (seconds from midnight).
 	/// 0° is the geometric horizon; positive = above, negative = below.
-	func yValue(for date: Date) -> Double {
-		solar.altitude(at: date)
+	func yValue(for offset: TimeInterval) -> Double {
+		solar.altitude(at: midnight.addingTimeInterval(offset))
+	}
+
+	/// Seconds from midnight of `solar.date` to the given event date.
+	func eventOffset(for date: Date) -> TimeInterval {
+		date.timeIntervalSince(midnight)
 	}
 
 	func scrub(to point: CGPoint, in geo: GeometryProxy, proxy: ChartProxy) {
 		var start: Double = 0
-		
+
 		if let plotFrame = proxy.plotFrame {
 			start = geo[plotFrame].origin.x
 		}
 
 		let xCurrent = point.x - start
-		
+
 		currentX = proxy.value(atX: xCurrent)
-		
+
 		if let currentX,
 			 let nearestEvent = solar.events.sorted(by: { lhs, rhs in
-				 abs(lhs.date.distance(to: currentX)) <= abs(rhs.date.distance(to: currentX))
+				 abs(eventOffset(for: lhs.date) - currentX) <= abs(eventOffset(for: rhs.date) - currentX)
 			 }).first {
 			selectedEvent = nearestEvent
 		}
@@ -339,7 +383,7 @@ extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {
 		case simple = "Simple",
 				 graphical = "Graphical"
-		
+
 		var description: LocalizedStringKey {
 			switch self {
 			case .simple:
@@ -348,7 +392,7 @@ extension DaylightChart {
 				return "Graphical"
 			}
 		}
-		
+
 		var tintColor: Color {
 			switch self {
 			case .simple: return .primary
@@ -366,7 +410,7 @@ extension DaylightChart {
 				timeZone: TimeZone.autoupdatingCurrent,
 				scrubbable: true
 			)
-			
+
 			DaylightChart(
 				solar: NTSolar(for: .now, coordinate: TemporaryLocation.placeholderLondon.coordinate, timeZone: TemporaryLocation.placeholderLondon.timeZone)!,
 				timeZone: TimeZone.autoupdatingCurrent,
