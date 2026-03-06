@@ -95,9 +95,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 					.background(Color("listRowBackgroundColor"))
 			)
 			#endif
-			#if !os(macOS)
-			.menuActionDismissBehavior(.disabled)
-			#endif
 			#endif
 			
 			Group {

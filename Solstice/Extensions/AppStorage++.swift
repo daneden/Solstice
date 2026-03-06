@@ -137,6 +137,7 @@ struct Preferences {
 	static let timeTravelAppearance: Value<TimeTravelAppearance> = ("timeTravelAppearance", .expanded)
 	
 	static let chartType: Value<ChartType> = ("chartType", .classic)
+	static let showSolsticesInChart: Value<Bool> = ("showSolsticesInChart", false)
 }
 
 enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable {

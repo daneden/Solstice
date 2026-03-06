@@ -9,7 +9,7 @@ import Foundation
 
 var chartHeight: CGFloat = {
 #if !os(watchOS)
-	300
+	360
 #else
 	200
 #endif
@@ -19,7 +19,7 @@ var chartMarkSize: Double = {
 #if os(watchOS)
 	4
 #else
-	8
+	6
 #endif
 }()
 
