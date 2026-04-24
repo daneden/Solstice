@@ -96,22 +96,6 @@ struct SolsticeShortcutsProvider: AppShortcutsProvider {
 				shortTitle: "Get sun position",
 				systemImageName: "location.north.line"
 			),
-			AppShortcut(
-				intent: GetNextAltitudeCrossing(),
-				phrases: [
-					"Next sun altitude crossing from \(.applicationName)",
-				],
-				shortTitle: "Next altitude crossing",
-				systemImageName: "arrow.up.right.circle"
-			),
-			AppShortcut(
-				intent: GetNextAzimuthCrossing(),
-				phrases: [
-					"Next sun azimuth crossing from \(.applicationName)",
-				],
-				shortTitle: "Next azimuth crossing",
-				systemImageName: "arrow.clockwise.circle"
-			),
 		]
 	}
 }

@@ -13,7 +13,7 @@ struct GetNextAltitudeCrossing: AppIntent {
 	static var title: LocalizedStringResource = "Get Next Sun Altitude Crossing"
 	static var description = IntentDescription("Returns the next time in the following 24 hours that the sun's altitude crosses a given value in a given direction (rising, falling, or either). Returns no value if no such crossing occurs.")
 
-	@Parameter(title: "Altitude", description: "The altitude in degrees for the sun to cross. Negative values are below the horizon.")
+	@Parameter(title: "Altitude")
 	var altitude: Measurement<UnitAngle>
 
 	@Parameter(title: "Direction", default: .either)

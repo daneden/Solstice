@@ -13,7 +13,7 @@ struct GetNextAzimuthCrossing: AppIntent {
 	static var title: LocalizedStringResource = "Get Next Sun Azimuth Crossing"
 	static var description = IntentDescription("Returns the next time in the following 24 hours that the sun's azimuth (compass bearing) crosses a given value in a given direction (clockwise, counterclockwise, or either). Returns no value if no such crossing occurs.")
 
-	@Parameter(title: "Azimuth", description: "The compass bearing in degrees for the sun's azimuth to cross.")
+	@Parameter(title: "Azimuth")
 	var azimuth: Measurement<UnitAngle>
 
 	@Parameter(title: "Direction", default: .either)

@@ -13,11 +13,11 @@ struct IsSunOnBearing: AppIntent {
 	static var title: LocalizedStringResource = "Is Sun Shining On Bearing"
 	static var description = IntentDescription("Returns true if the sun is above the horizon and its azimuth is within a given tolerance of a compass bearing. Useful for automations like \"is the sun shining on my east-facing wall?\".")
 
-	@Parameter(title: "Bearing", description: "Compass bearing of the surface in degrees (0 = North, 90 = East, 180 = South, 270 = West).")
+	@Parameter(title: "Bearing")
 	var bearing: Measurement<UnitAngle>
 
-	@Parameter(title: "Tolerance", description: "Half-width of the angular window around the bearing.", default: Measurement(value: 60, unit: UnitAngle.degrees))
-	var tolerance: Measurement<UnitAngle>
+	@Parameter(title: "Tolerance")
+	var tolerance: Measurement<UnitAngle>?
 
 	@Parameter(title: "Date")
 	var date: Date?
@@ -43,7 +43,7 @@ struct IsSunOnBearing: AppIntent {
 		}
 
 		let bearingDegrees = bearing.converted(to: .degrees).value
-		let toleranceDegrees = abs(tolerance.converted(to: .degrees).value)
+		let toleranceDegrees = abs((tolerance ?? Measurement(value: 60, unit: .degrees)).converted(to: .degrees).value)
 		let diff = signedAngularDifference(from: bearingDegrees, to: azimuth)
 		return .result(value: abs(diff) <= toleranceDegrees)
 	}
