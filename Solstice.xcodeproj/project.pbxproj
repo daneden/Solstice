@@ -184,6 +184,15 @@
 		7195128429B73341009D282F /* SkyGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7117008A29A52B04001BE478 /* SkyGradient.swift */; };
 		7195128A29B8855F009D282F /* View+EllipticalEdgeMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */; };
 		7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197DD7F29CA312200FEBE55 /* SolsticeShortcutsProvider.swift */; };
+		71BEEF112F4AA00100BEEFBE /* SunGeometryHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF012F4AA00100BEEFBE /* SunGeometryHelpers.swift */; };
+		71BEEF122F4AA00100BEEFBE /* GetSunAltitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF022F4AA00100BEEFBE /* GetSunAltitude.swift */; };
+		71BEEF132F4AA00100BEEFBE /* GetSunAzimuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF032F4AA00100BEEFBE /* GetSunAzimuth.swift */; };
+		71BEEF142F4AA00100BEEFBE /* IsSunUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF042F4AA00100BEEFBE /* IsSunUp.swift */; };
+		71BEEF152F4AA00100BEEFBE /* GetSolarNoon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF052F4AA00100BEEFBE /* GetSolarNoon.swift */; };
+		71BEEF162F4AA00100BEEFBE /* IsSunOnBearing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF062F4AA00100BEEFBE /* IsSunOnBearing.swift */; };
+		71BEEF172F4AA00100BEEFBE /* GetSunPositionAtTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF072F4AA00100BEEFBE /* GetSunPositionAtTime.swift */; };
+		71BEEF182F4AA00100BEEFBE /* GetNextAltitudeCrossing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF082F4AA00100BEEFBE /* GetNextAltitudeCrossing.swift */; };
+		71BEEF192F4AA00100BEEFBE /* GetNextAzimuthCrossing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEEF092F4AA00100BEEFBE /* GetNextAzimuthCrossing.swift */; };
 		7198468528E5895E00E866CE /* SolsticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468428E5895E00E866CE /* SolsticeApp.swift */; };
 		7198468728E5895E00E866CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468628E5895E00E866CE /* ContentView.swift */; };
 		7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7198468B28E5895F00E866CE /* Preview Assets.xcassets */; };
@@ -446,6 +455,15 @@
 		7195120229AFBD61009D282F /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
 		7195125729B48ECD009D282F /* TimeZone++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone++.swift"; sourceTree = "<group>"; };
 		7197DD7F29CA312200FEBE55 /* SolsticeShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeShortcutsProvider.swift; sourceTree = "<group>"; };
+		71BEEF012F4AA00100BEEFBE /* SunGeometryHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunGeometryHelpers.swift; sourceTree = "<group>"; };
+		71BEEF022F4AA00100BEEFBE /* GetSunAltitude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunAltitude.swift; sourceTree = "<group>"; };
+		71BEEF032F4AA00100BEEFBE /* GetSunAzimuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunAzimuth.swift; sourceTree = "<group>"; };
+		71BEEF042F4AA00100BEEFBE /* IsSunUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsSunUp.swift; sourceTree = "<group>"; };
+		71BEEF052F4AA00100BEEFBE /* GetSolarNoon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSolarNoon.swift; sourceTree = "<group>"; };
+		71BEEF062F4AA00100BEEFBE /* IsSunOnBearing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsSunOnBearing.swift; sourceTree = "<group>"; };
+		71BEEF072F4AA00100BEEFBE /* GetSunPositionAtTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSunPositionAtTime.swift; sourceTree = "<group>"; };
+		71BEEF082F4AA00100BEEFBE /* GetNextAltitudeCrossing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNextAltitudeCrossing.swift; sourceTree = "<group>"; };
+		71BEEF092F4AA00100BEEFBE /* GetNextAzimuthCrossing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNextAzimuthCrossing.swift; sourceTree = "<group>"; };
 		7198468128E5895E00E866CE /* Solstice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solstice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7198468428E5895E00E866CE /* SolsticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeApp.swift; sourceTree = "<group>"; };
 		7198468628E5895E00E866CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -664,11 +682,20 @@
 		719511F429AF5CA8009D282F /* Intents */ = {
 			isa = PBXGroup;
 			children = (
+				71BEEF082F4AA00100BEEFBE /* GetNextAltitudeCrossing.swift */,
+				71BEEF092F4AA00100BEEFBE /* GetNextAzimuthCrossing.swift */,
+				71BEEF052F4AA00100BEEFBE /* GetSolarNoon.swift */,
+				71BEEF022F4AA00100BEEFBE /* GetSunAltitude.swift */,
+				71BEEF032F4AA00100BEEFBE /* GetSunAzimuth.swift */,
+				71BEEF072F4AA00100BEEFBE /* GetSunPositionAtTime.swift */,
 				719511F529AF5CB4009D282F /* GetSunriseTime.swift */,
 				719511F729AF5CE1009D282F /* GetSunsetTime.swift */,
+				71BEEF062F4AA00100BEEFBE /* IsSunOnBearing.swift */,
+				71BEEF042F4AA00100BEEFBE /* IsSunUp.swift */,
 				718177662F2EA2EC007A2E9E /* LocationAppEntity.swift */,
 				7181775C2F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift */,
 				7197DD7F29CA312200FEBE55 /* SolsticeShortcutsProvider.swift */,
+				71BEEF012F4AA00100BEEFBE /* SunGeometryHelpers.swift */,
 				719511F929AF5CF7009D282F /* ViewDaylight.swift */,
 				719511FB29AF5D0E009D282F /* ViewRemainingDaylight.swift */,
 			);
@@ -1383,6 +1410,15 @@
 				71C718222E83361C006A6835 /* TimeTravelCompactView.swift in Sources */,
 				71E3C4192EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7197DD8029CA312200FEBE55 /* SolsticeShortcutsProvider.swift in Sources */,
+				71BEEF112F4AA00100BEEFBE /* SunGeometryHelpers.swift in Sources */,
+				71BEEF122F4AA00100BEEFBE /* GetSunAltitude.swift in Sources */,
+				71BEEF132F4AA00100BEEFBE /* GetSunAzimuth.swift in Sources */,
+				71BEEF142F4AA00100BEEFBE /* IsSunUp.swift in Sources */,
+				71BEEF152F4AA00100BEEFBE /* GetSolarNoon.swift in Sources */,
+				71BEEF162F4AA00100BEEFBE /* IsSunOnBearing.swift in Sources */,
+				71BEEF172F4AA00100BEEFBE /* GetSunPositionAtTime.swift in Sources */,
+				71BEEF182F4AA00100BEEFBE /* GetNextAltitudeCrossing.swift in Sources */,
+				71BEEF192F4AA00100BEEFBE /* GetNextAzimuthCrossing.swift in Sources */,
 				711DDC762EA7A1A400DFE99B /* GraphicalLocationListRow.swift in Sources */,
 				711782E42E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				71C105A72E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
@@ -1809,7 +1845,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.1.2;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1871,7 +1907,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.1.2;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

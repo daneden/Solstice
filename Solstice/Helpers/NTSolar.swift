@@ -688,31 +688,58 @@ extension NTSolar {
 	/// method), so results are consistent with the sunrise/sunset times already
 	/// computed by this struct.
 	func altitude(at date: Date) -> Double {
+		altitudeAndAzimuth(at: date).altitude
+	}
+
+	/// Returns the sun's azimuth in degrees at the given instant.
+	/// Measured clockwise from true north, in the range `0..<360`
+	/// (0 = North, 90 = East, 180 = South, 270 = West).
+	func azimuth(at date: Date) -> Double {
+		altitudeAndAzimuth(at: date).azimuth
+	}
+
+	/// Returns the sun's altitude and azimuth at the given instant.
+	///
+	/// - Altitude is in degrees; positive = above horizon, negative = below.
+	/// - Azimuth is in degrees, measured clockwise from true north (0..<360).
+	func altitudeAndAzimuth(at date: Date) -> (altitude: Double, azimuth: Double) {
 		var utcCal = Calendar(identifier: .gregorian)
 		utcCal.timeZone = TimeZone(secondsFromGMT: 0)!
 		let comps = utcCal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
 		guard let year = comps.year, let month = comps.month, let day = comps.day,
 			  let hour = comps.hour, let minute = comps.minute, let second = comps.second
-		else { return 0 }
+		else { return (0, 0) }
 
 		// UT as a decimal hour
 		let UT = Double(hour) + Double(minute) / 60.0 + Double(second) / 3600.0
 
-		// Days since J2000.0 at the exact instant (used for both sun position and sidereal time)
+		// Days since J2000.0 at the exact instant
 		let d = Double(NTSolar.days_since_2000_Jan_0(y: year, m: month, d: day)) + UT / 24.0
 
 		// Sun's equatorial coordinates at this instant
 		let (sRA, sdec, _) = NTSolar.sun_RA_dec(d: d)
 
-		// Local Mean Sidereal Time in degrees: GMST0(d) + UT_in_degrees + longitude
+		// Local Mean Sidereal Time in degrees
 		let LMST = NTSolar.revolution(x: NTSolar.GMST0(d: d) + UT * 15.0 + coordinate.longitude)
 
-		// Local Hour Angle: how far the sun has moved past the meridian
+		// Local Hour Angle (positive westward after the meridian)
 		let HA = LMST - sRA
 
-		// Standard altitude formula: sin(alt) = sin(lat)sin(dec) + cos(lat)cos(dec)cos(HA)
-		let sin_alt = NTSolar.sind(x: coordinate.latitude) * NTSolar.sind(x: sdec)
-			+ NTSolar.cosd(x: coordinate.latitude) * NTSolar.cosd(x: sdec) * NTSolar.cosd(x: HA)
-		return NTSolar.asind(x: sin_alt)
+		let lat = coordinate.latitude
+
+		// Altitude: sin(alt) = sin(lat)sin(dec) + cos(lat)cos(dec)cos(HA)
+		let sin_alt = NTSolar.sind(x: lat) * NTSolar.sind(x: sdec)
+			+ NTSolar.cosd(x: lat) * NTSolar.cosd(x: sdec) * NTSolar.cosd(x: HA)
+		let altitude = NTSolar.asind(x: sin_alt)
+
+		// Azimuth measured westward from south, then shifted by +180° to get
+		// the compass bearing from true north (clockwise).
+		let azFromSouth = NTSolar.atan2d(
+			y: NTSolar.sind(x: HA),
+			x: NTSolar.cosd(x: HA) * NTSolar.sind(x: lat) - NTSolar.tand(x: sdec) * NTSolar.cosd(x: lat)
+		)
+		let azimuth = NTSolar.revolution(x: azFromSouth + 180.0)
+
+		return (altitude, azimuth)
 	}
 }

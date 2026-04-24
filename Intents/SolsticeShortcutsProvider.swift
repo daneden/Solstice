@@ -45,6 +45,57 @@ struct SolsticeShortcutsProvider: AppShortcutsProvider {
 				shortTitle: "View remaining daylight",
 				systemImageName: "timer"
 			),
+			AppShortcut(
+				intent: GetSunAltitude(),
+				phrases: [
+					"Get sun altitude from \(.applicationName)",
+					"What's the sun's altitude in \(.applicationName)",
+				],
+				shortTitle: "Get sun altitude",
+				systemImageName: "arrow.up.forward"
+			),
+			AppShortcut(
+				intent: GetSunAzimuth(),
+				phrases: [
+					"Get sun azimuth from \(.applicationName)",
+					"What's the sun's azimuth in \(.applicationName)",
+				],
+				shortTitle: "Get sun azimuth",
+				systemImageName: "safari"
+			),
+			AppShortcut(
+				intent: IsSunUp(),
+				phrases: [
+					"Is the sun up in \(.applicationName)",
+				],
+				shortTitle: "Is sun up",
+				systemImageName: "sun.horizon"
+			),
+			AppShortcut(
+				intent: GetSolarNoon(),
+				phrases: [
+					"Get solar noon from \(.applicationName)",
+					"When is solar noon in \(.applicationName)",
+				],
+				shortTitle: "Get solar noon",
+				systemImageName: "sun.max.fill"
+			),
+			AppShortcut(
+				intent: IsSunOnBearing(),
+				phrases: [
+					"Is the sun shining on a bearing in \(.applicationName)",
+				],
+				shortTitle: "Is sun on bearing",
+				systemImageName: "sun.max.circle"
+			),
+			AppShortcut(
+				intent: GetSunPositionAtTime(),
+				phrases: [
+					"Get sun position from \(.applicationName)",
+				],
+				shortTitle: "Get sun position",
+				systemImageName: "location.north.line"
+			),
 		]
 	}
 }
