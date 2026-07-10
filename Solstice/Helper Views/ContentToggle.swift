@@ -1,26 +1,31 @@
 //
-//  ToggledContent.swift
+//  ContentToggle.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 15/09/2023.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 
 struct ContentToggle<Content: View>: View {
-	@State var showToggledContent = false
-	@ViewBuilder var content: (Bool) -> Content
-	
+	@State private var showToggledContent: Bool
+	let content: (Bool) -> Content
+
+	init(showToggledContent: Bool = false, @ViewBuilder content: @escaping (Bool) -> Content) {
+		_showToggledContent = State(initialValue: showToggledContent)
+		self.content = content
+	}
+
 	var body: some View {
 		HStack {
 			content(showToggledContent)
 				.transition(.blurReplace)
 		}
-			.animation(.default, value: showToggledContent)
-			.onTapGesture {
-				showToggledContent.toggle()
-			}
+		.animation(.default, value: showToggledContent)
+		.onTapGesture {
+			showToggledContent.toggle()
+		}
 	}
 }
 

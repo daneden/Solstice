@@ -5,25 +5,26 @@
 //  Created by Daniel Eden on 24/02/2023.
 //
 
-import SwiftUI
 import StoreKit
+import SwiftUI
 import YapKit
 
-fileprivate extension FeedbackConfig {
+private extension FeedbackConfig {
 	static let solstice = FeedbackConfig(apiKey: Secrets.yapKitAPIKey)
 }
 
 // MARK: In-App Purchase Product IDs
+
 let iapProductIDs = Set(Constants.IAPProducts.all)
 
 struct SupporterSettings: View {
 	private let appStoreReviewURL: URL? = URL(string: "https://apps.apple.com/app/id1547580907?action=write-review")
-	
-	@State var products: [Product] = []
-	@State var latestTransaction: StoreKit.Transaction?
-	@State var purchaseInProgress = false
-	@State var feedbackFormPresented = false
-	
+
+	@State private var products: [Product] = []
+	@State private var latestTransaction: StoreKit.Transaction?
+	@State private var purchaseInProgress = false
+	@State private var feedbackFormPresented = false
+
 	var body: some View {
 		if let appStoreReviewURL {
 			Link(destination: appStoreReviewURL) {
@@ -33,27 +34,27 @@ struct SupporterSettings: View {
 				await fetchProducts()
 			}
 		}
-		
+
 		Button("Submit feedback", systemImage: "exclamationmark.bubble") {
 			feedbackFormPresented = true
 		}
 		.sheet(isPresented: $feedbackFormPresented) {
 			FeedbackView(config: .solstice)
 		}
-		
+
 		if !products.isEmpty {
 			Section(header: Label("Leave a tip", systemImage: "heart")) {
 				if latestTransaction != nil {
 					Text("**Thank you so much for your support.** Feel free to leave another tip in the future if you’re feeling generous.")
 						.padding(.vertical, 4)
 				}
-				
-				ForEach(products.sorted { $0.price > $1.price }, id: \.id) { product in
+
+				ForEach(products, id: \.id) { product in
 					HStack {
 						Text(product.displayName)
-						
+
 						Spacer()
-						
+
 						Button {
 							Task {
 								self.latestTransaction = try await purchaseProduct(product)
@@ -63,7 +64,7 @@ struct SupporterSettings: View {
 						}
 						.buttonStyle(.bordered)
 						#if os(iOS)
-						.buttonBorderShape(.capsule)
+							.buttonBorderShape(.capsule)
 						#endif
 					}
 				}
@@ -72,10 +73,11 @@ struct SupporterSettings: View {
 			.disabled(purchaseInProgress)
 		}
 	}
-	
+
 	func fetchProducts() async {
 		do {
 			let products = try await Product.products(for: iapProductIDs)
+				.sorted { $0.price > $1.price }
 			withAnimation {
 				self.products = products
 			}
@@ -83,30 +85,30 @@ struct SupporterSettings: View {
 			print("Unable to fetch products")
 		}
 	}
-	
+
 	func purchaseProduct(_ product: Product) async throws -> StoreKit.Transaction {
 		purchaseInProgress = true
-		
+
 		#if os(visionOS)
-		guard let scene = UIApplication.shared.connectedScenes.first else {
-			throw PurchaseError.failed
-		}
-		let result = try await product.purchase(confirmIn: scene)
+			guard let scene = UIApplication.shared.connectedScenes.first else {
+				throw PurchaseError.failed
+			}
+			let result = try await product.purchase(confirmIn: scene)
 		#else
-		
-		let result = try await product.purchase()
+
+			let result = try await product.purchase()
 		#endif
-		
+
 		purchaseInProgress = false
-		
+
 		switch result {
 		case .pending:
 			throw PurchaseError.pending
-		case .success(let verification):
+		case let .success(verification):
 			switch verification {
-			case .verified(let transaction):
+			case let .verified(transaction):
 				await transaction.finish()
-				
+
 				return transaction
 			case .unverified:
 				throw PurchaseError.failed
@@ -125,7 +127,7 @@ enum PurchaseError: Error {
 }
 
 struct SupporterSettings_Previews: PreviewProvider {
-    static var previews: some View {
-        SupporterSettings()
-    }
+	static var previews: some View {
+		SupporterSettings()
+	}
 }

@@ -5,31 +5,37 @@
 //  Created by Daniel Eden on 04/03/2025.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 import TimeMachine
 
 struct ShareSolarChartView<Location: AnyLocation>: View {
 	@AppStorage(Preferences.chartType) private var chartType
-	
+
 	@Environment(\.dismiss) var dismiss
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
-	
+
 	@State private var selectedChartType = ChartType.classic
-	
-	var solar: NTSolar
-	var location: Location
-	
-	@State var chartAppearance: DaylightChart.Appearance = .graphical
-	@State var chartRenderedAsImage: Image?
-	@State var imageData: Data?
-	
-	@State var showLocationName = true
-	
+
+	let solar: NTSolar
+	let location: Location
+
+	@State private var chartAppearance: DaylightChart.Appearance
+	@State private var chartRenderedAsImage: Image?
+	@State private var imageData: Data?
+
+	@State private var showLocationName = true
+
+	init(solar: NTSolar, location: Location, chartAppearance: DaylightChart.Appearance = .graphical) {
+		self.solar = solar
+		self.location = location
+		_chartAppearance = State(initialValue: chartAppearance)
+	}
+
 	var animated: Bool {
 		chartRenderedAsImage != nil
 	}
-	
+
 	@ViewBuilder
 	var daylightChartView: some View {
 		switch selectedChartType {
@@ -52,29 +58,28 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 				.padding()
 				.frame(maxWidth: .infinity)
 		}
-		
 	}
-	
+
 	var deps: [AnyHashable] {
 		[showLocationName, solar.date, location, chartAppearance, selectedChartType]
 	}
-	
+
 	private let igStoriesUrl: URL? = URL(string: "instagram-stories://share?source_application=me.daneden.Solstice")
-	
+
 	private var displayIgShareButton: Bool {
 		guard let igStoriesUrl else { return false }
-		
+
 		if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
 			return true
 		}
-		
-#if os(iOS)
-		return UIApplication.shared.canOpenURL(igStoriesUrl)
-#else
-		return false
-#endif
+
+		#if os(iOS)
+			return UIApplication.shared.canOpenURL(igStoriesUrl)
+		#else
+			return false
+		#endif
 	}
-	
+
 	var body: some View {
 		NavigationStack {
 			List {
@@ -124,7 +129,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		.pickerStyle(.segmented)
 		#endif
 	}
-	
+
 	private var chartTypePicker: some View {
 		Picker(selection: $selectedChartType) {
 			ForEach(ChartType.allCases, id: \.self) { appearance in
@@ -165,60 +170,61 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		Section {
 			shareButtons
 				.foregroundStyle(.tint)
-				#if !os(watchOS)
+			#if !os(watchOS)
 				.listRowSeparator(.visible)
-				#endif
+			#endif
 		}
 	}
 
 	@ViewBuilder
 	private var shareButtons: some View {
-#if os(iOS)
-		instagramShareButton
-#endif
+		#if os(iOS)
+			instagramShareButton
+		#endif
 		standardShareLink
 	}
 
-#if os(iOS)
-	@ViewBuilder
-	private var instagramShareButton: some View {
-		let solarGradient = SkyGradient(ntSolar: solar)
-		if let igStoriesUrl,
-			 let imageData,
-			 let topColor = solarGradient.stops.first?.toHex(),
-			 let bottomColor = solarGradient.stops.last?.toHex(),
-			 displayIgShareButton {
-			Button {
-				let pasteboardItems: [[String: Any]] = [[
-					"com.instagram.sharedSticker.stickerImage": imageData,
-					"com.instagram.sharedSticker.backgroundTopColor": topColor,
-					"com.instagram.sharedSticker.backgroundBottomColor": bottomColor
-				]]
+	#if os(iOS)
+		@ViewBuilder
+		private var instagramShareButton: some View {
+			let solarGradient = SkyGradient(ntSolar: solar)
+			if let igStoriesUrl,
+			   let imageData,
+			   let topColor = solarGradient.stops.first?.toHex(),
+			   let bottomColor = solarGradient.stops.last?.toHex(),
+			   displayIgShareButton
+			{
+				Button {
+					let pasteboardItems: [[String: Any]] = [[
+						"com.instagram.sharedSticker.stickerImage": imageData,
+						"com.instagram.sharedSticker.backgroundTopColor": topColor,
+						"com.instagram.sharedSticker.backgroundBottomColor": bottomColor,
+					]]
 
-				UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
-				UIApplication.shared.open(igStoriesUrl)
-			} label: {
-				Label {
-					Text("Share to Instagram Story")
-				} icon: {
-					Image(.instagram)
+					UIPasteboard.general.setItems(pasteboardItems, options: [.expirationDate: Date().addingTimeInterval(60 * 5)])
+					UIApplication.shared.open(igStoriesUrl)
+				} label: {
+					Label {
+						Text("Share to Instagram Story")
+					} icon: {
+						Image(.instagram)
+					}
 				}
 			}
 		}
-	}
-#endif
+	#endif
 
 	@ViewBuilder
 	private var standardShareLink: some View {
 		if let chartRenderedAsImage {
-			let title: String = location.title ?? "Current Location"
+			let title: String = location.title ?? String(localized: "Current Location")
 			ShareLink(
 				item: chartRenderedAsImage,
 				preview: SharePreview("Daylight in \(title)", image: chartRenderedAsImage)
 			)
 		}
 	}
-	
+
 	func buildChartRenderedAsImage() -> Image? {
 		@ViewBuilder
 		var footer: some View {
@@ -234,14 +240,14 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 								}
 							}
 							.font(.headline)
-							
+
 							let duration = solar.daylightDuration.localizedString
 							Text("\(duration) of daylight")
 								.foregroundStyle(.secondary)
 						}
-						
+
 						Spacer()
-						
+
 						VStack(alignment: .trailing) {
 							Label("\(solar.safeSunrise, style: .time)", systemImage: "sunrise")
 							Label("\(solar.safeSunset, style: .time)", systemImage: "sunset")
@@ -253,8 +259,8 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 						let duration = solar.daylightDuration.localizedString
 						Text("\(duration) of daylight")
 							.font(.headline)
-						
-						Label("\(solar.safeSunrise...solar.safeSunset)", systemImage: "sun.max")
+
+						Label("\(solar.safeSunrise ... solar.safeSunset)", systemImage: "sun.max")
 							.foregroundStyle(.secondary)
 					}
 				}
@@ -265,47 +271,49 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 			HStack {
 				Label("Solstice", image: "solstice")
 					.font(.headline)
-				
+
 				Spacer()
-				
+
 				Text(Date(), style: .date)
 					.foregroundStyle(.secondary)
 			}
-				.scenePadding()
-			
+			.scenePadding()
+
 			daylightChartView
-			
+
 			footer
 				.scenePadding()
 		}
-			.background(in: .rect(cornerRadius: 20, style: .continuous))
-			.frame(width: 420, height: 525)
-		
+		.background(in: .rect(cornerRadius: 20, style: .continuous))
+		.frame(width: 420, height: 525)
+
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
 		imageRenderer.isOpaque = false
-		
-#if os(macOS)
-		guard let image = imageRenderer.nsImage,
-					let data = image.pngData(),
-					let nsImage = NSImage(data: data) else {
-			return nil
-		}
-		
-		imageData = data
-		
-		return Image(nsImage: nsImage)
-#else
-		guard let image = imageRenderer.uiImage,
-					let data = image.pngData(),
-					let uiImage = UIImage(data: data) else {
-			return nil
-		}
-		
-		imageData = data
-		
-		return Image(uiImage: uiImage)
-#endif
+
+		#if os(macOS)
+			guard let image = imageRenderer.nsImage,
+			      let data = image.pngData(),
+			      let nsImage = NSImage(data: data)
+			else {
+				return nil
+			}
+
+			imageData = data
+
+			return Image(nsImage: nsImage)
+		#else
+			guard let image = imageRenderer.uiImage,
+			      let data = image.pngData(),
+			      let uiImage = UIImage(data: data)
+			else {
+				return nil
+			}
+
+			imageData = data
+
+			return Image(uiImage: uiImage)
+		#endif
 	}
 }
 
