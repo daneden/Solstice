@@ -5,8 +5,8 @@
 //  Created by Daniel Eden on 17/02/2023.
 //
 
-import SwiftUI
 import Charts
+import SwiftUI
 import TimeMachine
 
 struct AnnualDaylightChart<Location: AnyLocation>: View {
@@ -17,7 +17,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 		.astronomical: .indigo,
 		.nautical: .blue,
 		.civil: .teal,
-		.day: .yellow
+		.day: .yellow,
 	]
 
 	var dayLength: Double = 60 * 60 * 24
@@ -28,7 +28,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			monthlyBarMarks
 		}
 		.chartForegroundStyleScale(kvPairs)
-		.chartYScale(domain: 0...dayLength)
+		.chartYScale(domain: 0 ... dayLength)
 		.chartYAxis { yAxisMarks }
 		.environment(\.timeZone, location.timeZone)
 	}
@@ -55,7 +55,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	@ChartContentBuilder
 	private func astronomicalBarMark(for solar: NTSolar) -> some ChartContent {
 		if let astronomicalSunrise = solar.astronomicalSunrise,
-			 let astronomicalSunset = solar.astronomicalSunset {
+		   let astronomicalSunset = solar.astronomicalSunset
+		{
 			let yStart: Double = max(0, solar.startOfDay.distance(to: astronomicalSunrise))
 			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: astronomicalSunset))
 			BarMark(
@@ -70,7 +71,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	@ChartContentBuilder
 	private func nauticalBarMark(for solar: NTSolar) -> some ChartContent {
 		if let nauticalSunrise = solar.nauticalSunrise,
-			 let nauticalSunset = solar.nauticalSunset {
+		   let nauticalSunset = solar.nauticalSunset
+		{
 			let yStart: Double = max(0, solar.startOfDay.distance(to: nauticalSunrise))
 			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: nauticalSunset))
 			BarMark(
@@ -85,7 +87,8 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	@ChartContentBuilder
 	private func civilBarMark(for solar: NTSolar) -> some ChartContent {
 		if let civilSunrise = solar.civilSunrise,
-			 let civilSunset = solar.civilSunset {
+		   let civilSunset = solar.civilSunset
+		{
 			let yStart: Double = max(0, solar.startOfDay.distance(to: civilSunrise))
 			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: civilSunset))
 			BarMark(
@@ -124,7 +127,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 
 	@ViewBuilder
 	private func yAxisLabel(for value: AxisValue) -> some View {
-		let startOfDay: Date = Date().startOfDay(in: location.timeZone)
+		let startOfDay = Date().startOfDay(in: location.timeZone)
 		if let doubleValue = value.as(Double.self) {
 			let date: Date = startOfDay.addingTimeInterval(doubleValue)
 			if doubleValue == 0 {
@@ -139,14 +142,14 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 }
 
 extension AnnualDaylightChart {
-	var monthlySolars: Array<NTSolar> {
+	var monthlySolars: [NTSolar] {
 		guard let year = calendar.dateInterval(of: .year, for: timeMachine.date) else {
 			return []
 		}
 
 		var lastDate = calendar.date(bySetting: .day, value: 21, of: year.start) ?? year.start
 		lastDate = calendar.date(bySetting: .hour, value: 12, of: lastDate) ?? lastDate
-		var dates: Array<Date> = []
+		var dates: [Date] = []
 
 		while lastDate < year.end {
 			dates.append(lastDate)
@@ -154,7 +157,7 @@ extension AnnualDaylightChart {
 		}
 
 		return dates.map { date in
-			return NTSolar(for: date, coordinate: location.coordinate, timeZone: location.timeZone)
+			NTSolar(for: date, coordinate: location.coordinate, timeZone: location.timeZone)
 		}.compactMap { $0 }
 	}
 }

@@ -20,6 +20,7 @@ struct WidgetMissingLocationView: View {
 }
 
 // MARK: - Needs Reconfiguration View
+
 /// Shown when a widget was configured with the old intent system and lost its custom location data during migration.
 struct WidgetNeedsReconfigurationView: View {
 	var body: some View {

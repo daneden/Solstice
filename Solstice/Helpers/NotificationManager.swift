@@ -5,13 +5,13 @@
 //  Created by Daniel Eden on 23/02/2023.
 //
 
-import Foundation
-import UserNotifications
-import CoreLocation
-import SwiftUI
 import CoreData
+import CoreLocation
+import Foundation
+import SwiftUI
+import UserNotifications
 #if os(iOS) && !WIDGET_EXTENSION
-import BackgroundTasks
+	import BackgroundTasks
 #endif
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
@@ -60,7 +60,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
 			if let latitude = objects?.first?.latitude,
 			   let longitude = objects?.first?.longitude,
-			   let objectTimeZone = objects?.first?.timeZone {
+			   let objectTimeZone = objects?.first?.timeZone
+			{
 				location = CLLocation(latitude: latitude, longitude: longitude)
 				timeZone = objectTimeZone
 			}
@@ -82,7 +83,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			return
 		}
 
-		for i in 0...63 {
+		for i in 0 ... 63 {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
 
 			guard let solar = NTSolar(for: date, coordinate: location.coordinate, timeZone: timeZone) else {
@@ -113,40 +114,40 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		}
 
 		#if os(iOS) && !WIDGET_EXTENSION
-		scheduleBackgroundTask()
+			scheduleBackgroundTask()
 		#endif
 	}
 
 	// MARK: Background Task Management
 
 	#if os(iOS) && !WIDGET_EXTENSION
-	/// Schedules the next background app refresh task
-	/// This should be called after scheduling notifications to ensure periodic refresh
-	static func scheduleBackgroundTask() {
-		let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
+		/// Schedules the next background app refresh task
+		/// This should be called after scheduling notifications to ensure periodic refresh
+		static func scheduleBackgroundTask() {
+			let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
 
-		// Schedule to run after at least 1 day to catch location changes sooner
-		request.earliestBeginDate = Date(timeIntervalSinceNow: 24 * 60 * 60)
+			// Schedule to run after at least 1 day to catch location changes sooner
+			request.earliestBeginDate = Date(timeIntervalSinceNow: 24 * 60 * 60)
 
-		do {
-			try BGTaskScheduler.shared.submit(request)
-			print("Background task scheduled successfully for notification refresh")
-		} catch let error as BGTaskScheduler.Error {
-			switch error.code {
-			case .unavailable:
-				// This is expected in the simulator or when the app is in the foreground
-				print("Background task scheduling unavailable (expected in simulator)")
-			case .tooManyPendingTaskRequests:
-				print("Too many pending background task requests")
-			case .notPermitted:
-				print("Background task not permitted - check Info.plist configuration")
-			default:
+			do {
+				try BGTaskScheduler.shared.submit(request)
+				print("Background task scheduled successfully for notification refresh")
+			} catch let error as BGTaskScheduler.Error {
+				switch error.code {
+				case .unavailable:
+					// This is expected in the simulator or when the app is in the foreground
+					print("Background task scheduling unavailable (expected in simulator)")
+				case .tooManyPendingTaskRequests:
+					print("Too many pending background task requests")
+				case .notPermitted:
+					print("Background task not permitted - check Info.plist configuration")
+				default:
+					print("Failed to schedule background task: \(error.localizedDescription)")
+				}
+			} catch {
 				print("Failed to schedule background task: \(error.localizedDescription)")
 			}
-		} catch {
-			print("Failed to schedule background task: \(error.localizedDescription)")
 		}
-	}
 	#endif
 
 	static func getNextNotificationDate(after date: Date, with solar: NTSolar? = nil) -> Date {
@@ -233,7 +234,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			(SolsticeCalculator.juneSolstice(year: year),
 			 NSLocalizedString("June Solstice Today", comment: "Notification title for June solstice")),
 			(SolsticeCalculator.decemberSolstice(year: year),
-			 NSLocalizedString("December Solstice Today", comment: "Notification title for December solstice"))
+			 NSLocalizedString("December Solstice Today", comment: "Notification title for December solstice")),
 		]
 
 		return solarEvents.first { calendar.isDate(date, inSameDayAs: $0.date) }?.title
@@ -244,11 +245,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		let hour = calendar.component(.hour, from: date)
 
 		switch hour {
-		case 0..<3, 18...23:
+		case 0 ..< 3, 18 ... 23:
 			return NSLocalizedString("Good Evening", comment: "Notification title for evening notification")
-		case 3..<12:
+		case 3 ..< 12:
 			return NSLocalizedString("Good Morning", comment: "Notification title for morning notification")
-		case 12..<18:
+		case 12 ..< 18:
 			return NSLocalizedString("Good Afternoon", comment: "Notification title for afternoon notification")
 		default:
 			return NSLocalizedString("Today's Daylight", comment: "Notification title fallback")

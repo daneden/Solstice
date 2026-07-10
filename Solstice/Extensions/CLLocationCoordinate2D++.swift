@@ -1,12 +1,12 @@
 //
-//  CLLocationCoordinate2D+RawRepresentable.swift
+//  CLLocationCoordinate2D++.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 05/04/2023.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 extension CLLocationCoordinate2D {
 	static var proxiedToTimeZone: CLLocationCoordinate2D {
@@ -19,11 +19,11 @@ extension CLLocationCoordinate2D {
 	var insideArcticCircle: Bool {
 		latitude > 66.34
 	}
-	
+
 	var insideAntarcticCircle: Bool {
 		latitude < -66.34
 	}
-	
+
 	var insidePolarCircle: Bool {
 		insideArcticCircle || insideAntarcticCircle
 	}

@@ -9,13 +9,13 @@ import SwiftUI
 
 struct SolarSystemMiniMap: View {
 	var event: AnnualSolarEvent
-	
+
 	var angle: Double {
 		event.sunAngle
 	}
-	
+
 	var size: Double = 44
-	
+
 	var body: some View {
 		HStack {
 			VStack(alignment: .trailing, spacing: 0) {
@@ -24,7 +24,7 @@ struct SolarSystemMiniMap: View {
 				Text(event.shortEventDescription)
 			}
 			.font(.caption)
-			
+
 			ZStack {
 				Circle()
 					.strokeBorder(.tertiary, lineWidth: 3)
@@ -35,7 +35,7 @@ struct SolarSystemMiniMap: View {
 							.offset(x: size / 20)
 					}
 					.rotationEffect(Angle(radians: angle) * -1)
-				
+
 				Circle()
 					.fill(.primary)
 					.frame(width: size / 4, height: size / 4)

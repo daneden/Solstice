@@ -10,24 +10,25 @@ import TimeMachine
 
 struct SolarExtremetiesOverview<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
-	
+
 	var location: Location
-	
+
 	var body: some View {
 		if let shortestDay,
-			 let longestDay {
+		   let longestDay
+		{
 			SolarExtremityView(solar: longestDay, extremity: .longest)
 			SolarExtremityView(solar: shortestDay, extremity: .shortest)
 		}
 	}
 }
 
-fileprivate struct SolarExtremityView: View {
+private struct SolarExtremityView: View {
 	@Environment(\.timeMachine) private var timeMachine
-	
+
 	enum Extremity {
 		case longest, shortest
-		
+
 		var title: LocalizedStringKey {
 			switch self {
 			case .longest:
@@ -36,7 +37,7 @@ fileprivate struct SolarExtremityView: View {
 				return "Shortest day"
 			}
 		}
-		
+
 		var imageName: String {
 			switch self {
 			case .longest:
@@ -46,10 +47,10 @@ fileprivate struct SolarExtremityView: View {
 			}
 		}
 	}
-	
-var solar: NTSolar
+
+	var solar: NTSolar
 	var extremity: Extremity
-	
+
 	var body: some View {
 		CompatibleDisclosureGroup {
 			Button("Time travel to date", systemImage: "clock.arrow.2.circlepath") {
@@ -57,9 +58,9 @@ var solar: NTSolar
 					timeMachine.date = solar.date
 				}
 			}
-			
+
 			let duration = Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2))
-			
+
 			Label {
 				AdaptiveStack {
 					Text(duration)
@@ -69,7 +70,7 @@ var solar: NTSolar
 			} icon: {
 				Image(systemName: "hourglass")
 			}
-			
+
 			if let sunrise = solar.sunrise {
 				Label {
 					AdaptiveStack {
@@ -81,7 +82,7 @@ var solar: NTSolar
 					Image(systemName: "sunrise")
 				}
 			}
-			
+
 			if let sunset = solar.sunset {
 				Label {
 					AdaptiveStack {
@@ -107,28 +108,28 @@ var solar: NTSolar
 	}
 }
 
-fileprivate struct CompatibleDisclosureGroup<Content: View, Label: View>: View {
+private struct CompatibleDisclosureGroup<Content: View, Label: View>: View {
 	@ViewBuilder var content: Content
 	@ViewBuilder var label: Label
-	
+
 	@State private var isOpen = false
-	
+
 	var body: some View {
 		#if os(watchOS)
-		Toggle(isOn: $isOpen) {
-			label
-		}
-		.toggleStyle(DisclosureGroupToggleStyle())
-		if isOpen {
-			content
-				.padding(.leading)
-		}
+			Toggle(isOn: $isOpen) {
+				label
+			}
+			.toggleStyle(DisclosureGroupToggleStyle())
+			if isOpen {
+				content
+					.padding(.leading)
+			}
 		#else
-		DisclosureGroup(isExpanded: $isOpen) {
-			content
-		} label: {
-			label
-		}
+			DisclosureGroup(isExpanded: $isOpen) {
+				content
+			} label: {
+				label
+			}
 		#endif
 	}
 }
@@ -156,33 +157,35 @@ extension CompatibleDisclosureGroup {
 }
 
 extension SolarExtremetiesOverview {
-var decemberSolsticeSolar: NTSolar? {
+	var decemberSolsticeSolar: NTSolar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 		return NTSolar(for: decemberSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var juneSolsticeSolar: NTSolar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
 		return NTSolar(for: juneSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var longestDay: NTSolar? {
 		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+		      let juneSolsticeSolar
+		else {
 			return nil
 		}
-		
+
 		return decemberSolsticeSolar.daylightDuration > juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
 	}
-	
+
 	var shortestDay: NTSolar? {
 		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+		      let juneSolsticeSolar
+		else {
 			return nil
 		}
-		
+
 		return decemberSolsticeSolar.daylightDuration < juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
 	}
 }

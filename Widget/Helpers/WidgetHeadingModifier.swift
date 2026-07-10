@@ -11,7 +11,7 @@ import WidgetKit
 struct WidgetHeadingModifier: ViewModifier {
 	@Environment(\.widgetFamily) var family
 	@Environment(\.dynamicTypeSize) var sizeCategory
-	
+
 	var displaySize: Font {
 		switch family {
 		case .systemSmall:
@@ -20,7 +20,7 @@ struct WidgetHeadingModifier: ViewModifier {
 			return .title3
 		}
 	}
-	
+
 	func body(content: Content) -> some View {
 		content
 			.font(displaySize)
@@ -31,6 +31,6 @@ struct WidgetHeadingModifier: ViewModifier {
 
 extension View {
 	func widgetHeading() -> some View {
-		self.modifier(WidgetHeadingModifier())
+		modifier(WidgetHeadingModifier())
 	}
 }

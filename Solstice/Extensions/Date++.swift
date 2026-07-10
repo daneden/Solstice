@@ -11,18 +11,18 @@ extension Date {
 	func startOfDay(in timeZone: TimeZone) -> Date {
 		var calendar = Calendar.current
 		calendar.timeZone = timeZone
-		
+
 		return calendar.startOfDay(for: self)
 	}
-	
+
 	var startOfDay: Date {
 		calendar.startOfDay(for: self)
 	}
-	
+
 	var endOfDay: Date {
 		calendar.date(bySettingHour: 23, minute: 59, second: 59, of: self) ?? self
 	}
-	
+
 	var isToday: Bool {
 		calendar.isDateInToday(self)
 	}
@@ -46,9 +46,9 @@ extension Date {
 /// Allows dates to be stored in AppStorage
 extension Date: @retroactive RawRepresentable {
 	public var rawValue: String {
-		self.timeIntervalSinceReferenceDate.description
+		timeIntervalSinceReferenceDate.description
 	}
-	
+
 	public init?(rawValue: String) {
 		self = Date(timeIntervalSinceReferenceDate: Double(rawValue) ?? 0.0)
 	}
@@ -57,19 +57,21 @@ extension Date: @retroactive RawRepresentable {
 extension DateComponents: @retroactive RawRepresentable {
 	public var rawValue: String {
 		guard let data = try? JSONEncoder().encode(self),
-					let string = String(data: data, encoding: .utf8) else {
+		      let string = String(data: data, encoding: .utf8)
+		else {
 			return "{}"
 		}
-		
+
 		return string
 	}
-	
+
 	public init?(rawValue: String) {
 		guard let data = rawValue.data(using: .utf8),
-					let decoded = try? JSONDecoder().decode(DateComponents.self, from: data) else {
+		      let decoded = try? JSONDecoder().decode(DateComponents.self, from: data)
+		else {
 			return nil
 		}
-		
+
 		self = decoded
 	}
 }

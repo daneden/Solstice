@@ -1,5 +1,5 @@
 //
-//  InformationSheetView.swift
+//  EquinoxAndSolsticeInfoSheet.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 22/03/2023.
@@ -14,7 +14,7 @@ struct EquinoxAndSolsticeInfoSheet: View {
 				Section {
 					EarthSceneKitView(height: min(geometry.size.width, 400))
 				}
-				
+
 				Section {
 					EquinoxAndSolsticeDescriptions()
 				} footer: {

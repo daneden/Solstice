@@ -8,14 +8,14 @@
 import SwiftUI
 
 #if os(macOS)
-extension NSImage {
-	func pngData() -> Data? {
-		guard let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-			return nil
+	extension NSImage {
+		func pngData() -> Data? {
+			guard let cgImage = cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+				return nil
+			}
+
+			let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
+			return bitmapRep.representation(using: .png, properties: [:])
 		}
-		
-		let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-		return bitmapRep.representation(using: .png, properties: [:])
 	}
-}
 #endif

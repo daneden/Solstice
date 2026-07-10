@@ -5,9 +5,9 @@
 //  Created by Daniel Eden on 21/02/2023.
 //
 
+import Suite
 import SwiftUI
 import WidgetKit
-import Suite
 
 struct CountdownWidgetView: SolsticeWidgetView {
 	@Environment(\.widgetFamily) var family
@@ -15,46 +15,47 @@ struct CountdownWidgetView: SolsticeWidgetView {
 	@Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground
 
 	var entry: SolsticeWidgetTimelineEntry
-	
+
 	var body: some View {
 		Group {
 			if let location,
-				 let nextSolarEvent,
-				 let previousSolarEvent {
+			   let nextSolarEvent,
+			   let previousSolarEvent
+			{
 				switch family {
-#if os(watchOS) || os(iOS)
-				case .accessoryCircular:
-					AccessoryCircularView(
-						entryDate: entry.date,
-						previousEvent: previousSolarEvent,
-						nextEvent: nextSolarEvent
-					)
-				case .accessoryInline:
-					AccessoryInlineView(nextEvent: nextSolarEvent)
-				case .accessoryRectangular:
-					AccessoryRectangularView(nextEvent: nextSolarEvent)
-#if os(watchOS)
-				case .accessoryCorner:
-					AccessoryCornerView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
-#endif // end watchOS
-#endif // end !macOS
+				#if os(watchOS) || os(iOS)
+					case .accessoryCircular:
+						AccessoryCircularView(
+							entryDate: entry.date,
+							previousEvent: previousSolarEvent,
+							nextEvent: nextSolarEvent
+						)
+					case .accessoryInline:
+						AccessoryInlineView(nextEvent: nextSolarEvent)
+					case .accessoryRectangular:
+						AccessoryRectangularView(nextEvent: nextSolarEvent)
+					#if os(watchOS)
+						case .accessoryCorner:
+							AccessoryCornerView(previousEvent: previousSolarEvent, nextEvent: nextSolarEvent)
+					#endif // end watchOS
+				#endif // end !macOS
 				default:
 					VStack(alignment: .leading, spacing: 4) {
 						WidgetLocationView(location: location)
-						
+
 						Spacer(minLength: 0)
-						
+
 						HStack {
 							nextEventText
 								.widgetHeading()
 								.minimumScaleFactor(0.8)
 								.lineLimit(3)
 								.contentTransition(.numericText())
-							
+
 							Spacer()
 						}
-						
-						Label{
+
+						Label {
 							Text(nextSolarEvent.date, style: .time)
 						} icon: {
 							Image(systemName: nextSolarEvent.imageName)
@@ -89,15 +90,15 @@ extension CountdownWidgetView {
 	var nextSolarEvent: NTSolar.Event? {
 		solar?.nextSolarEvent
 	}
-	
+
 	var previousSolarEvent: NTSolar.Event? {
 		solar?.previousSolarEvent
 	}
-	
+
 	var timeZone: TimeZone {
 		location?.timeZone ?? .autoupdatingCurrent
 	}
-	
+
 	var nextEventText: some View {
 		if let nextSolarEvent {
 			return Text("\(nextSolarEvent.description.localizedCapitalized) in \(Text(nextSolarEvent.date, style: .relative))")
@@ -105,7 +106,7 @@ extension CountdownWidgetView {
 			return Text("—")
 		}
 	}
-	
+
 	var currentEventImageName: String {
 		nextSolarEvent?.phase == .sunrise ? "moon.stars" : "sun.max"
 	}
@@ -114,13 +115,13 @@ extension CountdownWidgetView {
 struct CountdownWidgetPreview: PreviewProvider {
 	static var previews: some View {
 		#if !os(watchOS)
-		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
-			.previewContext(WidgetPreviewContext(family: .systemSmall))
+			CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+				.previewContext(WidgetPreviewContext(family: .systemSmall))
 		#endif
-		
+
 		#if os(watchOS) || os(iOS)
-		CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
-			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+			CountdownWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+				.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
 		#endif
 	}
 }

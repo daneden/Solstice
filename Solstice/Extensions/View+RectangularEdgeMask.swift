@@ -12,7 +12,7 @@ struct RectangularEdgeMaskModifier: ViewModifier {
 		Gradient.Stop(color: .clear, location: 0),
 		Gradient.Stop(color: .black, location: 0.2),
 		Gradient.Stop(color: .black, location: 0.8),
-		Gradient.Stop(color: .clear, location: 1.0)
+		Gradient.Stop(color: .clear, location: 1.0),
 	]
 	func body(content: Content) -> some View {
 		content
@@ -28,6 +28,6 @@ struct RectangularEdgeMaskModifier: ViewModifier {
 
 extension View {
 	func rectangularEdgeMask() -> some View {
-		self.modifier(RectangularEdgeMaskModifier())
+		modifier(RectangularEdgeMaskModifier())
 	}
 }

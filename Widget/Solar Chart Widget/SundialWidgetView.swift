@@ -5,36 +5,35 @@
 //  Created by Daniel Eden on 09/10/2025.
 //
 
+import Suite
 import SwiftUI
 import WidgetKit
-import Suite
 
 struct SundialWidgetView: SolsticeWidgetView {
 	@Environment(\.widgetFamily) private var widgetFamily
 	@Environment(\.widgetContentMargins) private var widgetContentMargins
-	
+
 	@State private var headerSize: CGSize = .zero
-	
+
 	var entry: SolsticeWidgetTimelineEntry
-	
+
 	var isSmallWidget: Bool {
 		if widgetFamily == .systemSmall {
 			return true
 		}
-		
+
 		return false
 	}
-	
-	@ViewBuilder
+
 	private var header: some View {
 		HStack {
 			if !isSmallWidget {
 				Label("Solstice", image: .solstice)
 					.labelStyle(CompactLabelStyle())
-				
+
 				Spacer()
 			}
-			
+
 			if let title = location?.title {
 				Label {
 					Text(title)
@@ -52,24 +51,24 @@ struct SundialWidgetView: SolsticeWidgetView {
 		.lineLimit(1)
 		.allowsTightening(true)
 	}
-	
-	@ViewBuilder
+
 	private var smallWidgetFooter: some View {
 		HStack {
 			if let sunrise = solar?.sunrise,
-				 let sunset = solar?.sunset {
-				Text(sunrise...sunset)
+			   let sunset = solar?.sunset
+			{
+				Text(sunrise ... sunset)
 			}
-			
+
 			Spacer()
-			
+
 			if let duration = solar?.daylightDuration {
 				Text(Duration.seconds(duration).formatted(.units(allowed: [.hours, .minutes], width: .narrow)))
 			}
 		}
 		.lineLimit(1)
 	}
-	
+
 	var body: some View {
 		Group {
 			if let location {
@@ -80,12 +79,12 @@ struct SundialWidgetView: SolsticeWidgetView {
 							.mask(LinearGradient(
 								stops: [
 									.init(color: .black, location: 0.3),
-									.init(color: .clear, location: 0.85)
+									.init(color: .clear, location: 0.85),
 								],
 								startPoint: .top,
 								endPoint: .bottom
 							))
-						
+
 						VStack(alignment: .leading, spacing: 4) {
 							header
 							smallWidgetFooter
@@ -99,9 +98,9 @@ struct SundialWidgetView: SolsticeWidgetView {
 						header
 							.font(.footnote)
 							.readSize($headerSize)
-						
+
 						CircularSolarChart(date: entry.date, location: location)
-						
+
 						Color.clear.frame(height: headerSize.height)
 					}
 				}
@@ -123,14 +122,14 @@ struct SundialWidgetView: SolsticeWidgetView {
 	}
 }
 
-fileprivate struct AdaptiveLabelContainer<Content: View>: View {
+private struct AdaptiveLabelContainer<Content: View>: View {
 	@Environment(\.widgetRenderingMode) private var renderingMode
-	
+
 	var padding: CGFloat = 4
-	
+
 	@ViewBuilder
 	var content: Content
-	
+
 	var body: some View {
 		content
 			.if(renderingMode == .fullColor) { content in
@@ -145,9 +144,9 @@ fileprivate struct AdaptiveLabelContainer<Content: View>: View {
 }
 
 #if !os(macOS)
-#Preview(as: .systemLarge) {
-	SundialWidget()
-} timeline: {
-	SolsticeWidgetTimelineEntry(date: .now, location: .proxiedToTimeZone)
-}
+	#Preview(as: .systemLarge) {
+		SundialWidget()
+	} timeline: {
+		SolsticeWidgetTimelineEntry(date: .now, location: .proxiedToTimeZone)
+	}
 #endif

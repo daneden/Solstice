@@ -8,7 +8,6 @@
 import XCTest
 
 final class SolsticeUITests: XCTestCase {
-
 	let app = XCUIApplication()
 
 	override func setUpWithError() throws {
@@ -18,12 +17,13 @@ final class SolsticeUITests: XCTestCase {
 
 	// MARK: - App Launch & Basic Structure
 
-	func testAppLaunches() throws {
+	func testAppLaunches() {
 		// Verify the app launches and displays its main content
 		XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
 	}
 
 	// MARK: - Accent Color Regression Test
+
 	//
 	// This test guards against the regression fixed in commit 8a6fe6f where
 	// the accent color broke when both scenePhase and backgroundTask modifiers
@@ -35,7 +35,7 @@ final class SolsticeUITests: XCTestCase {
 	// test results for visual review in Xcode Cloud. This enables reviewers to
 	// spot accent color regressions in CI screenshots.
 
-	func testAccentColorScreenshot() throws {
+	func testAccentColorScreenshot() {
 		// Wait for the app to fully render
 		let mainContent = app.windows.firstMatch
 		XCTAssertTrue(mainContent.waitForExistence(timeout: 10))
@@ -55,7 +55,7 @@ final class SolsticeUITests: XCTestCase {
 
 	// MARK: - Navigation Structure
 
-	func testMainViewHasContent() throws {
+	func testMainViewHasContent() {
 		// Verify that the app renders meaningful content after launch.
 		// This catches crashes or blank screens caused by modifier conflicts.
 		let mainWindow = app.windows.firstMatch

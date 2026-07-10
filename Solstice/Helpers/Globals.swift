@@ -8,26 +8,27 @@
 import Foundation
 
 var chartHeight: CGFloat = {
-#if !os(watchOS)
-	360
-#else
-	200
-#endif
+	#if !os(watchOS)
+		360
+	#else
+		200
+	#endif
 }()
 
 var chartMarkSize: Double = {
-#if os(watchOS)
-	4
-#else
-	6
-#endif
+	#if os(watchOS)
+		4
+	#else
+		6
+	#endif
 }()
 
-let calendar =  Calendar.autoupdatingCurrent
+let calendar = Calendar.autoupdatingCurrent
 
 let localTimeZone = TimeZone.ReferenceType.local
 
 // MARK: - Unified Location Data
+
 /// A unified struct for encoding/decoding location data across all targets.
 /// Used for App Group cache, AppIntents entity IDs, and JSON serialization.
 struct LocationData: Codable, AnyLocation {
@@ -40,6 +41,7 @@ struct LocationData: Codable, AnyLocation {
 }
 
 // MARK: - Location App Group Cache
+
 enum LocationAppGroupCache {
 	struct CachedData {
 		var location: LocationData
@@ -88,6 +90,7 @@ enum LocationAppGroupCache {
 }
 
 // MARK: - App Constants
+
 enum Constants {
 	/// App Group identifier for sharing data between app and extensions
 	static let appGroupIdentifier = "group.me.daneden.Solstice"

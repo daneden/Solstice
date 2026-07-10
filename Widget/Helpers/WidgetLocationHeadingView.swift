@@ -10,7 +10,7 @@ import WidgetKit
 
 struct WidgetLocationView: View {
 	var location: SolsticeWidgetLocation
-	
+
 	var locationName: Text {
 		guard let title = location.title else {
 			switch location.isRealLocation {
@@ -20,7 +20,7 @@ struct WidgetLocationView: View {
 				return Text("\(Image(.solstice)) Solstice")
 			}
 		}
-		
+
 		switch location.isRealLocation {
 		case true:
 			return Text("\(Text(title)) \(Image(systemName: "location"))", comment: "Widget heading for real location")
@@ -28,7 +28,7 @@ struct WidgetLocationView: View {
 			return Text("\(Image(.solstice)) \(Text(title))", comment: "Widget heading for custom location")
 		}
 	}
-	
+
 	var body: some View {
 		locationName
 			.font(.footnote.weight(.semibold))
@@ -45,9 +45,9 @@ struct WidgetLocationView_Previews: PreviewProvider {
 			WidgetLocationView(location: SolsticeWidgetLocation(latitude: 0, longitude: 0))
 		}
 		#if os(watchOS)
-			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
+		.previewContext(WidgetPreviewContext(family: .accessoryCircular))
 		#else
-			.previewContext(WidgetPreviewContext(family: .systemMedium))
+		.previewContext(WidgetPreviewContext(family: .systemMedium))
 		#endif
 	}
 }

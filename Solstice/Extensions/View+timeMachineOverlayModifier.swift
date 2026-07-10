@@ -5,8 +5,8 @@
 //  Created by Daniel Eden on 20/05/2025.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 import TimeMachine
 
 struct TimeMachineOverlayModifier: ViewModifier {
@@ -14,7 +14,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	@AppStorage(Preferences.timeTravelAppearance) private var timeMachineAppearance
 	@State private var size = CGSize.zero
-	
+
 	func body(content: Content) -> some View {
 		content
 			.task(id: timeMachineAppearance) {
@@ -37,17 +37,17 @@ struct TimeMachineOverlayModifier: ViewModifier {
 			}
 		#else
 			.modify { content in
-				if #available(iOS 26, macOS 26, *) {
-					content
-						.contentMargins(.bottom, size.height, for: .automatic)
-						.safeAreaBar(edge: .bottom) {
-							overlay
-								.readSize($size)
-						}
-				} else {
-					content
-						.backportSafeAreaBar {
-							overlay
+					if #available(iOS 26, macOS 26, *) {
+						content
+							.contentMargins(.bottom, size.height, for: .automatic)
+							.safeAreaBar(edge: .bottom) {
+								overlay
+									.readSize($size)
+							}
+					} else {
+						content
+							.backportSafeAreaBar {
+								overlay
 								#if os(iOS)
 								.background {
 									if #unavailable(iOS 26) {
@@ -61,13 +61,13 @@ struct TimeMachineOverlayModifier: ViewModifier {
 									}
 								}
 								#endif
-						}
+							}
+					}
 				}
-			}
-			.animation(.default, value: timeMachineAppearance)
+				.animation(.default, value: timeMachineAppearance)
 		#endif
 	}
-	
+
 	@ViewBuilder var overlay: some View {
 		if timeMachineAppearance != .hidden {
 			switch timeMachineAppearance {

@@ -8,13 +8,15 @@
 import SwiftUI
 
 // MARK: - Platform-specific Color Type
+
 #if canImport(UIKit)
-public typealias NativeColor = UIColor
+	public typealias NativeColor = UIColor
 #elseif canImport(AppKit)
-public typealias NativeColor = NSColor
+	public typealias NativeColor = NSColor
 #endif
 
 // MARK: - Color Mixing
+
 public extension NativeColor {
 	func mix(with target: NativeColor, amount: CGFloat) -> Self {
 		var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0, a1: CGFloat = 0
@@ -39,6 +41,7 @@ public extension Color {
 }
 
 // MARK: - Hex Conversion
+
 extension Color {
 	func toHex() -> String? {
 		let uic = NativeColor(self)

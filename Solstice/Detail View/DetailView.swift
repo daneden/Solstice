@@ -5,47 +5,47 @@
 //  Created by Daniel Eden on 29/09/2022.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 import TimeMachine
 
 struct DetailView<Location: ObservableLocation>: View {
 	static var userActivity: String {
 		Constants.viewLocationActivityType
 	}
-	
+
 	@Environment(\.managedObjectContext) var viewContext
 	@Environment(\.dismiss) var dismiss
-	
+
 	var location: Location
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	#if !os(watchOS)
-	@Environment(LocationSearchService.self) var locationSearchService
+		@Environment(LocationSearchService.self) var locationSearchService
 	#endif
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
-	
+
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
-	
+
 	var solar: NTSolar? {
 		NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var navBarTitleText: Text {
 		guard let title = location.title else {
 			return location is CurrentLocation ? Text("Current Location") : Text(verbatim: "Solstice")
 		}
-		
+
 		return Text(title)
 	}
-	
+
 	var body: some View {
 		Form {
 			if let solar {
 				DailyOverview(solar: solar, location: location)
 			}
-			
+
 			AnnualOverview(location: location)
 		}
 		.formStyle(.grouped)
@@ -55,15 +55,15 @@ struct DetailView<Location: ObservableLocation>: View {
 		}
 		.userActivity(Self.userActivity) { userActivity in
 			var navigationSelection: String? = nil
-			
+
 			if let location = location as? SavedLocation {
 				navigationSelection = location.uuid?.uuidString
 			} else if let location = location as? CurrentLocation {
 				navigationSelection = location.id
 			}
-			
+
 			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title ?? "location")"
-			
+
 			userActivity.targetContentIdentifier = navigationSelection
 			userActivity.isEligibleForSearch = true
 			userActivity.isEligibleForHandoff = false
@@ -86,25 +86,25 @@ struct DetailView<Location: ObservableLocation>: View {
 			}
 		}
 	}
-	
+
 	var toolbarItemPlacement: ToolbarItemPlacement {
 		#if os(macOS)
-		return .automatic
+			return .automatic
 		#else
-		return .topBarTrailing
+			return .topBarTrailing
 		#endif
 	}
-	
+
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
 		#if !os(macOS)
-		ToolbarItem(placement: .topBarTrailing) {
-			Button("Share...", systemImage: "square.and.arrow.up") {
-				showShareSheet.toggle()
+			ToolbarItem(placement: .topBarTrailing) {
+				Button("Share...", systemImage: "square.and.arrow.up") {
+					showShareSheet.toggle()
+				}
 			}
-		}
 		#endif
-		
+
 		if let location = location as? TemporaryLocation {
 			ToolbarItem(placement: .confirmationAction) {
 				Button {
@@ -120,17 +120,17 @@ struct DetailView<Location: ObservableLocation>: View {
 				}
 			}
 		}
-		
+
 		#if !os(watchOS)
-		if locationSearchService.location != nil {
-			ToolbarItem(placement: .cancellationAction) {
-				Button {
-					locationSearchService.location = nil
-				} label: {
-					Text("Close")
+			if locationSearchService.location != nil {
+				ToolbarItem(placement: .cancellationAction) {
+					Button {
+						locationSearchService.location = nil
+					} label: {
+						Text("Close")
+					}
 				}
 			}
-		}
 		#endif
 	}
 }

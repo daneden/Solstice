@@ -9,7 +9,7 @@ import CoreData
 
 class PersistenceController {
 	static let shared = PersistenceController()
-	
+
 	static var preview: PersistenceController = {
 		let result = PersistenceController(inMemory: true)
 		let viewContext = result.container.viewContext
@@ -32,28 +32,28 @@ class PersistenceController {
 		}
 		return result
 	}()
-	
+
 	let container: NSPersistentCloudKitContainer
-	
+
 	init(inMemory: Bool = false) {
 		container = NSPersistentCloudKitContainer(name: "Solstice")
-		
+
 		if inMemory {
 			container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
 		} else {
 			let fileUrl = NSPersistentContainer.defaultDirectoryURL().relativePath + "/Solstice.sqlite"
 			container.persistentStoreDescriptions.first?.url = URL(filePath: fileUrl)
 		}
-		
+
 		container.persistentStoreDescriptions.first?.cloudKitContainerOptions = .init(containerIdentifier: Constants.iCloudContainerIdentifier)
-		
+
 		container.viewContext.automaticallyMergesChangesFromParent = true
-		
-		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+
+		container.loadPersistentStores(completionHandler: { _, error in
 			if let error = error as NSError? {
 				// Replace this implementation with code to handle the error appropriately.
 				// fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				
+
 				/*
 				 Typical reasons for an error here include:
 				 * The parent directory does not exist, cannot be created, or disallows writing.
@@ -65,18 +65,18 @@ class PersistenceController {
 				fatalError("Unresolved error \(error), \(error.userInfo)")
 			}
 		})
-		
+
 		// Observe Core Data remote change notifications.
 		NotificationCenter.default.addObserver(self,
-																					 selector: #selector(storeRemoteChange(_:)),
-																					 name: .NSPersistentStoreRemoteChange,
-																					 object: container.persistentStoreCoordinator)
+		                                       selector: #selector(storeRemoteChange(_:)),
+		                                       name: .NSPersistentStoreRemoteChange,
+		                                       object: container.persistentStoreCoordinator)
 	}
-	
-	@objc func storeRemoteChange(_ notification: Notification) {
+
+	@objc func storeRemoteChange(_: Notification) {
 		deduplicateRecords()
 	}
-	
+
 	func deduplicateRecords() {
 		container.performBackgroundTask { context in
 			for entry in SavedLocation.defaultData {
@@ -85,13 +85,13 @@ class PersistenceController {
 					let request = SavedLocation.fetchRequest()
 					request.predicate = NSPredicate(format: "uuid == %@", uuidString)
 					let results = try context.fetch(request)
-					
+
 					for (index, result) in results.enumerated() {
 						if index != 0 {
 							context.delete(result)
 						}
 					}
-					
+
 					try context.save()
 				} catch {
 					print(error.localizedDescription)
@@ -101,10 +101,10 @@ class PersistenceController {
 	}
 }
 
-extension SavedLocation {
-	public override func awakeFromInsert() {
+public extension SavedLocation {
+	override func awakeFromInsert() {
 		super.awakeFromInsert()
-		
+
 		if uuid == nil {
 			uuid = UUID()
 		}

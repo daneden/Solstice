@@ -10,11 +10,12 @@ import WidgetKit
 
 struct SolarChartWidgetView: SolsticeWidgetView {
 	var entry: SolsticeWidgetTimelineEntry
-	
+
 	var body: some View {
 		Group {
 			if let solar,
-				 let location {
+			   let location
+			{
 				ZStack(alignment: .topLeading) {
 					HStack {
 						Label {
@@ -63,10 +64,10 @@ struct SolarChartWidgetView: SolsticeWidgetView {
 }
 
 #if os(watchOS) || os(iOS)
-struct SolarChartWidgetPreview: PreviewProvider {
-	static var previews: some View {
-		SolarChartWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
-			.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+	struct SolarChartWidgetPreview: PreviewProvider {
+		static var previews: some View {
+			SolarChartWidgetView(entry: SolsticeWidgetTimelineEntry(date: .now))
+				.previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+		}
 	}
-}
 #endif

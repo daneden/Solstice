@@ -9,9 +9,9 @@ import SwiftUI
 
 struct DaylightGradientTimePreferenceKey: PreferenceKey {
 	typealias Value = Date
-	
-	static let defaultValue: Date = Date()
-	
+
+	static let defaultValue: Date = .init()
+
 	static func reduce(value: inout Date, nextValue: () -> Date) {
 		value = nextValue()
 	}

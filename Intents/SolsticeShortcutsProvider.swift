@@ -5,8 +5,8 @@
 //  Created by Daniel Eden on 21/03/2023.
 //
 
-import Foundation
 import AppIntents
+import Foundation
 
 struct SolsticeShortcutsProvider: AppShortcutsProvider {
 	static var appShortcuts: [AppShortcut] {

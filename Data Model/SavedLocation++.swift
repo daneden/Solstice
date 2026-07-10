@@ -24,13 +24,13 @@ extension SavedLocation {
 
 extension SavedLocation {
 	static let nycUUIDString = "7AAA4D87-4402-4D0E-A35E-2D84641A71BE"
-	
+
 	static var defaultData: [SavedLocation.CodableRepresentation] {
 		guard let defaultDataUrl = Bundle.main.url(forResource: "defaultData", withExtension: "json") else {
 			print("No URL for defaultData.json")
 			return []
 		}
-		
+
 		do {
 			let defaultDataFileData = try Data(contentsOf: defaultDataUrl)
 			return try JSONDecoder().decode([SavedLocation.CodableRepresentation].self, from: defaultDataFileData)

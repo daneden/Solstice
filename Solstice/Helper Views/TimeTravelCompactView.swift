@@ -5,9 +5,9 @@
 //  Created by Dan Eden on 23/09/2025.
 //
 
+import Suite
 import SwiftUI
 import TimeMachine
-import Suite
 
 extension Shape where Self == RoundedRectangle {
 	static var panel: Self {
@@ -19,7 +19,7 @@ struct TimeTravelViewOverlaySizePreferenceKey: PreferenceKey {
 	static func reduce(value: inout Double, nextValue: () -> Double) {
 		value = nextValue()
 	}
-	
+
 	static var defaultValue = Double(0)
 }
 
@@ -28,17 +28,17 @@ struct _TimeTravelCompactView: View {
 	@AppStorage("isOffscreen") var isOffscreen = false
 	@State private var sheetContentSize = CGSize.zero
 	@State private var timeMachineViewSize = CGSize.zero
-	
+
 	var insetSize: Double {
 		isOffscreen ? 0 : sheetContentSize.height
 	}
-	
+
 	var body: some View {
 		HStack(spacing: 16) {
 			SolsticeTimeMachineView()
 				.scenePadding([.leading, .vertical])
 				.readSize($timeMachineViewSize)
-			
+
 			Button {
 				withAnimation {
 					isOffscreen.toggle()
@@ -59,19 +59,19 @@ struct _TimeTravelCompactView: View {
 		.clipShape(.panel)
 		.modify {
 			#if os(visionOS)
-			$0
-				.background(.regularMaterial, in: .panel)
-				.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
-				.transition(.blurReplace)
-			#else
-			if #available(iOS 26, watchOS 26, macOS 26, *) {
-				$0.glassEffect(.regular.interactive(), in: .panel)
-			} else {
 				$0
 					.background(.regularMaterial, in: .panel)
 					.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 					.transition(.blurReplace)
-			}
+			#else
+				if #available(iOS 26, watchOS 26, macOS 26, *) {
+					$0.glassEffect(.regular.interactive(), in: .panel)
+				} else {
+					$0
+						.background(.regularMaterial, in: .panel)
+						.shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+						.transition(.blurReplace)
+				}
 			#endif
 		}
 		.offset(x: isOffscreen ? -sheetContentSize.width + 44 : 0)
@@ -86,10 +86,10 @@ struct _TimeTravelCompactView: View {
 struct TimeTravelCompactView: View {
 	@Environment(\.timeMachine) private var timeMachine
 	@State private var isExpanded = false
-	
+
 	var body: some View {
 		@Bindable var timeMachine = timeMachine
-		
+
 		BackportGlassEffectContainer {
 			VStack {
 				HStack {
@@ -100,19 +100,19 @@ struct TimeTravelCompactView: View {
 								.padding(.horizontal, 4)
 								.modify {
 									#if os(visionOS)
-									$0.background(.regularMaterial, in: .capsule)
-									#else
-									if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
-										$0.glassEffect()
-									} else {
 										$0.background(.regularMaterial, in: .capsule)
-									}
+									#else
+										if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
+											$0.glassEffect()
+										} else {
+											$0.background(.regularMaterial, in: .capsule)
+										}
 									#endif
 								}
 								.font(.subheadline)
-							
+
 							Spacer()
-							
+
 							Button("Reset", systemImage: "arrow.counterclockwise") {
 								withAnimation {
 									timeMachine.reset()
@@ -125,7 +125,7 @@ struct TimeTravelCompactView: View {
 					} else {
 						Spacer()
 					}
-					
+
 					Button {
 						withAnimation { isExpanded.toggle() }
 					} label: {
@@ -142,20 +142,20 @@ struct TimeTravelCompactView: View {
 				}
 				.controlSize(.small)
 				.fontWeight(.medium)
-				
+
 				if isExpanded {
 					HStack {
 						Button("One week earlier", systemImage: "backward") {
 							withAnimation { timeMachine.offset -= 7 }
 						}
 						.buttonStyle(CompactViewButtonStyle())
-						
+
 						DatePicker(selection: $timeMachine.date.animation(), displayedComponents: .date) {
 							Text("Time travel to date")
 						}
 						.labelsHidden()
 						.frame(maxWidth: .infinity)
-						
+
 						Button("One week later", systemImage: "forward") {
 							withAnimation { timeMachine.offset += 7 }
 						}
@@ -166,13 +166,13 @@ struct TimeTravelCompactView: View {
 					.transition(.blurReplace.combined(with: .opacity))
 					.modify {
 						#if os(visionOS)
-						$0.background(.regularMaterial, in: .capsule)
-						#else
-						if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
-							$0.glassEffect()
-						} else {
 							$0.background(.regularMaterial, in: .capsule)
-						}
+						#else
+							if #available(iOS 26, macOS 26, watchOS 26, visionOS 26, *) {
+								$0.glassEffect()
+							} else {
+								$0.background(.regularMaterial, in: .capsule)
+							}
 						#endif
 					}
 				}
@@ -191,11 +191,11 @@ struct TimeTravelCompactView: View {
 
 struct TitleToggledLabelStyle: LabelStyle {
 	var titleVisible: Bool
-	
+
 	func makeBody(configuration: Configuration) -> some View {
 		HStack {
 			configuration.icon
-			
+
 			if titleVisible {
 				configuration.title
 					.transition(.blurReplace)
@@ -218,33 +218,31 @@ struct CompactViewButtonStyle: ButtonStyle {
 
 struct BackportGlassEffectContainer<Content: View>: View {
 	@ViewBuilder var content: Content
-	
+
 	var body: some View {
 		#if os(visionOS)
-		content
+			content
 		#else
-		if #available(iOS 26, macOS 26, watchOS 26, *) {
-			GlassEffectContainer {
+			if #available(iOS 26, macOS 26, watchOS 26, *) {
+				GlassEffectContainer {
+					content
+				}
+			} else {
 				content
 			}
-		} else {
-			content
-		}
 		#endif
 	}
 }
 
 #Preview {
 	NavigationStack {
-		List {
-			
-		}
-		.navigationTitle("Test")
-		.backportSafeAreaBar {
-			TimeTravelCompactView()
-				.scenePadding(.horizontal)
-				.frame(maxWidth: .infinity, alignment: .trailing)
-		}
+		List {}
+			.navigationTitle("Test")
+			.backportSafeAreaBar {
+				TimeTravelCompactView()
+					.scenePadding(.horizontal)
+					.frame(maxWidth: .infinity, alignment: .trailing)
+			}
 	}
 	.withTimeMachine(.solsticeTimeMachine)
 }

@@ -10,25 +10,25 @@ import SwiftUI
 struct AdaptiveStack<A: View, B: View>: View {
 	@ViewBuilder var content: () -> B
 	@ViewBuilder var label: () -> A
-	
-    var body: some View {
-			ViewThatFits {
-				HStack {
-					label()
-					
-					Spacer()
-					
-					content()
-						.foregroundStyle(.secondary)
-				}
-				
-				VStack(alignment: .leading) {
-					label()
-					content()
-						.foregroundStyle(.secondary)
-				}
+
+	var body: some View {
+		ViewThatFits {
+			HStack {
+				label()
+
+				Spacer()
+
+				content()
+					.foregroundStyle(.secondary)
 			}
-    }
+
+			VStack(alignment: .leading) {
+				label()
+				content()
+					.foregroundStyle(.secondary)
+			}
+		}
+	}
 }
 
 #Preview {

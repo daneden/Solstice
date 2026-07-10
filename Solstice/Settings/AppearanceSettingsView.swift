@@ -12,18 +12,18 @@ struct AppearanceSettingsView: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.listViewAppearance) private var listAppearance
 	@AppStorage(Preferences.chartType) private var chartType
-	
-    var body: some View {
-			Form {
-				timeTravelSection
-				#if os(iOS)
+
+	var body: some View {
+		Form {
+			timeTravelSection
+			#if os(iOS)
 				listAppearanceSection
-				#endif
-				chartAppearanceSection
-			}
-			.navigationTitle("Appearance")
-			.formStyle(.grouped)
-    }
+			#endif
+			chartAppearanceSection
+		}
+		.navigationTitle("Appearance")
+		.formStyle(.grouped)
+	}
 
 	private var timeTravelSection: some View {
 		Section("Time Travel") {
@@ -62,18 +62,18 @@ struct AppearanceSettingsView: View {
 	}
 
 	#if os(iOS)
-	private var listAppearanceSection: some View {
-		Section("List appearance") {
-			Picker(selection: $listAppearance.animation()) {
-				ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-					Text(appearance.description)
+		private var listAppearanceSection: some View {
+			Section("List appearance") {
+				Picker(selection: $listAppearance.animation()) {
+					ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+						Text(appearance.description)
+					}
+				} label: {
+					Text("List row style")
 				}
-			} label: {
-				Text("List row style")
+				.pickerStyle(.segmented)
 			}
-			.pickerStyle(.segmented)
 		}
-	}
 	#endif
 
 	private var chartAppearanceSection: some View {
@@ -94,7 +94,7 @@ struct AppearanceSettingsView: View {
 	}
 
 	private func chartTypeButton(for type: ChartType) -> some View {
-		let isActive: Bool = self.chartType == type
+		let isActive: Bool = chartType == type
 		return Button {
 			self.chartType = type
 		} label: {
@@ -130,5 +130,5 @@ struct AppearanceSettingsView: View {
 }
 
 #Preview {
-    AppearanceSettingsView()
+	AppearanceSettingsView()
 }

@@ -4,8 +4,8 @@
 //
 //  Created by Daniel Eden on 20/01/2026.
 //
-import Foundation
 import CoreLocation
+import Foundation
 
 actor SolsticeWidgetLocationManager {
 	static let shared = SolsticeWidgetLocationManager()
@@ -19,12 +19,12 @@ actor SolsticeWidgetLocationManager {
 	private var cachedLocationDataCoordinate: CLLocation?
 	private let geocoder = CLGeocoder()
 	private let significantDistanceChange: CLLocationDistance = 500
-	
+
 	static var isAuthorized: Bool {
 		#if os(watchOS)
-		[.authorizedAlways, .authorizedWhenInUse].contains(CLLocationManager().authorizationStatus)
+			[.authorizedAlways, .authorizedWhenInUse].contains(CLLocationManager().authorizationStatus)
 		#else
-		CLLocationManager().isAuthorizedForWidgetUpdates
+			CLLocationManager().isAuthorizedForWidgetUpdates
 		#endif
 	}
 
@@ -33,7 +33,8 @@ actor SolsticeWidgetLocationManager {
 		// First, check the in-memory cache
 		if let cachedLocation,
 		   let cacheTimestamp,
-		   Date().timeIntervalSince(cacheTimestamp) < cacheValidityDuration {
+		   Date().timeIntervalSince(cacheTimestamp) < cacheValidityDuration
+		{
 			return cachedLocation
 		}
 
@@ -105,7 +106,8 @@ actor SolsticeWidgetLocationManager {
 		// Reuse cached location data if location hasn't moved significantly
 		if let cached = cachedLocationData,
 		   let cachedCoord = cachedLocationDataCoordinate,
-		   location.distance(from: cachedCoord) < significantDistanceChange {
+		   location.distance(from: cachedCoord) < significantDistanceChange
+		{
 			return (location, cached)
 		}
 
