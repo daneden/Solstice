@@ -540,6 +540,7 @@
       }
     },
     "Current location" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

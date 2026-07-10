@@ -5,35 +5,36 @@
 //  Created by Daniel Eden on 24/02/2023.
 //
 
-import SwiftUI
 import CoreLocation
+import SwiftUI
 
-fileprivate typealias NotificationFragment = (label: String, value: Binding<Bool>)
+private typealias NotificationFragment = (label: String, value: Binding<Bool>)
 
 struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsEnabled) var notificationsEnabled
-	
+
 	@AppStorage(Preferences.customNotificationLocationUUID) var customNotificationLocationUUID
-	
+
 	@AppStorage(Preferences.NotificationSettings.scheduleType) var scheduleType
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) var notificationOffset
 	@AppStorage(Preferences.NotificationSettings.notificationDateComponents) var notificationDateComponents
-	
+
 	// Notification fragment settings
 	@AppStorage(Preferences.notificationsIncludeSunTimes) var notifsIncludeSunTimes
 	@AppStorage(Preferences.notificationsIncludeDaylightDuration) var notifsIncludeDaylightDuration
 	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) var notifsIncludeSolsticeCountdown
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
-	
+
 	@AppStorage(Preferences.sadPreference) var sadPreference
-	
+
 	@Environment(CurrentLocation.self) var currentLocation
-	
+
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
-		animation: .default)
+		animation: .default
+	)
 	private var items: FetchedResults<SavedLocation>
-	
+
 	fileprivate var notificationFragments: [NotificationFragment] {
 		[
 			(label: "Sunrise/sunset times", value: $notifsIncludeSunTimes),
@@ -42,7 +43,7 @@ struct NotificationSettings: View {
 			(label: "Time until next solstice", value: $notifsIncludeSolsticeCountdown),
 		]
 	}
-	
+
 	private var notificationTime: Binding<Date> {
 		Binding {
 			let hour = notificationDateComponents.hour ?? 0
@@ -52,7 +53,7 @@ struct NotificationSettings: View {
 			notificationDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .timeZone], from: $0)
 		}
 	}
-	
+
 	var body: some View {
 		Form {
 			enableSection
@@ -94,7 +95,7 @@ struct NotificationSettings: View {
 	@ViewBuilder
 	private var locationPickerContent: some View {
 		if currentLocation.isAuthorized {
-			Text("Current location")
+			Text("Current Location")
 				.tag(String?.none)
 		} else if customNotificationLocationUUID == nil {
 			Text("Select location")
@@ -196,9 +197,9 @@ struct NotificationPreview: View {
 	@AppStorage(Preferences.notificationsIncludeDaylightDuration) private var notifsIncludeDaylightDuration
 	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) private var notifsIncludeSolsticeCountdown
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) private var notifsIncludeDaylightChange
-	
+
 	@State var content: NotificationManager.NotificationContent?
-	
+
 	var body: some View {
 		VStack {
 			if let content {
@@ -207,7 +208,7 @@ struct NotificationPreview: View {
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.frame(width: 20, height: 20)
-					
+
 					VStack(alignment: .leading) {
 						Text(content.title).font(.footnote.bold())
 						Text(content.body).font(.footnote.leading(.tight))
@@ -215,7 +216,7 @@ struct NotificationPreview: View {
 							.lineLimit(4)
 					}
 					.contentTransition(.numericText())
-					
+
 					Spacer(minLength: 0)
 				}
 				.padding(.vertical, 8)
@@ -240,7 +241,6 @@ struct NotificationPreview: View {
 		}
 	}
 }
-
 
 struct NotificationSettings_Previews: PreviewProvider {
 	static var previews: some View {
