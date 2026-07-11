@@ -60,7 +60,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "719F924229ACD1CC00C06921"
             BuildableName = "Solstice watchOS Watch App.app"
-            BlueprintName = "Solstice watchOS Watch App"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -77,7 +76,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "719F924229ACD1CC00C06921"
             BuildableName = "Solstice watchOS Watch App.app"
-            BlueprintName = "Solstice watchOS Watch App"
             ReferencedContainer = "container:Solstice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
