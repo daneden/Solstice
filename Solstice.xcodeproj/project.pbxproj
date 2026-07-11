@@ -265,6 +265,11 @@
 		71CB96DE2DE9AC4700660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96DD2DE9AC4700660AA9 /* Suite */; };
 		71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D129CD862A00E30148 /* EarthNode.swift */; };
 		71DAB3D429CD865800E30148 /* EarthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DAB3D329CD865800E30148 /* EarthScene.swift */; };
+		71DC2FEA30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FE930012B2A00FDEBE0 /* InfoPlist.xcstrings */; };
+		71DC2FED30012B2A00FDEBE0 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FEB30012B2A00FDEBE0 /* AppShortcuts.xcstrings */; };
+		71DC2FEE30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FEC30012B2A00FDEBE0 /* InfoPlist.xcstrings */; };
+		71DC2FF030012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FEF30012B2A00FDEBE0 /* InfoPlist.xcstrings */; };
+		71DC2FF130012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FEF30012B2A00FDEBE0 /* InfoPlist.xcstrings */; };
 		71E3C4132EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
 		71E3C4142EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
 		71E3C4152EA12ABE0005C884 /* CircleWithSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */; };
@@ -491,6 +496,10 @@
 		71DAB3D329CD865800E30148 /* EarthScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthScene.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		71DC2FE930012B2A00FDEBE0 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		71DC2FEB30012B2A00FDEBE0 /* AppShortcuts.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = AppShortcuts.xcstrings; sourceTree = "<group>"; };
+		71DC2FEC30012B2A00FDEBE0 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		71DC2FEF30012B2A00FDEBE0 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		71E3C4122EA12ABE0005C884 /* CircleWithSlice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleWithSlice.swift; sourceTree = "<group>"; };
 		71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+backportGlassEffect.swift"; sourceTree = "<group>"; };
 		71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquinoxAndSolsticeInfoSheet.swift; sourceTree = "<group>"; };
@@ -576,6 +585,7 @@
 		7106C86D29A276B40007A7EC /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				71DC2FEF30012B2A00FDEBE0 /* InfoPlist.xcstrings */,
 				7195120229AFBD61009D282F /* WidgetExtension.entitlements */,
 				7106C87729A276B40007A7EC /* Info.plist */,
 				7106C87229A276B40007A7EC /* Widget.swift */,
@@ -592,6 +602,8 @@
 		711DDC7A2EA8173800DFE99B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				71DC2FEB30012B2A00FDEBE0 /* AppShortcuts.xcstrings */,
+				71DC2FEC30012B2A00FDEBE0 /* InfoPlist.xcstrings */,
 				718FC2EA2DFB6D6D00E1A437 /* AppIcon.icon */,
 				711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */,
 				71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */,
@@ -900,6 +912,7 @@
 		C1E71899E221752465BF183D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				71DC2FE930012B2A00FDEBE0 /* InfoPlist.xcstrings */,
 				13AEC2685232EF694BB4BB09 /* Foundation.framework */,
 			);
 			name = iOS;
@@ -1082,6 +1095,14 @@
 				en,
 				Base,
 				it,
+				de,
+				fr,
+				es,
+				ja,
+				ar,
+				nl,
+				"zh-Hans",
+				pl,
 			);
 			mainGroup = 7198467828E5895E00E866CE;
 			packageReferences = (
@@ -1107,6 +1128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71DC2FF130012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */,
 				71A029BB2C36928400E19819 /* defaultData.json in Resources */,
 				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
@@ -1133,6 +1155,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71DC2FF030012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */,
 				71A029BC2C36928400E19819 /* defaultData.json in Resources */,
 				719465552C2C1E09008408C0 /* Localizable.xcstrings in Resources */,
 				719465572C2C1E09008408C0 /* Assets.xcassets in Resources */,
@@ -1152,6 +1175,8 @@
 				71C635C82E9D9A8C003FA1AE /* Shared Assets.xcassets in Resources */,
 				718B136E29A9196C0001D4DC /* README.md in Resources */,
 				711A97BD29CDBCBC00333927 /* Earth Model Assets.xcassets in Resources */,
+				71DC2FED30012B2A00FDEBE0 /* AppShortcuts.xcstrings in Resources */,
+				71DC2FEE30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */,
 				71A029B92C36928400E19819 /* defaultData.json in Resources */,
 				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 			);
@@ -1162,6 +1187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A9A5512AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
+				71DC2FEA30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */,
 				718FC2EC2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711DDC772EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
 				71A029BA2C36928400E19819 /* defaultData.json in Resources */,
