@@ -67,6 +67,21 @@ extension NTSolar {
 		     sunset = "Sunset"
 
 		static let plottablePhases: [Phase] = [.astronomical, .nautical, .civil]
+
+		/// Localized display name for the phase. `rawValue` is the stable
+		/// `Plottable` identity and can't be localized directly, so this is
+		/// what the chart legend renders instead.
+		var localizedName: LocalizedStringResource {
+			switch self {
+			case .night: "Night"
+			case .astronomical: "Astronomical Twilight"
+			case .nautical: "Nautical Twilight"
+			case .civil: "Civil Twilight"
+			case .day: "Day"
+			case .sunrise: "Sunrise"
+			case .sunset: "Sunset"
+			}
+		}
 	}
 
 	var phases: [Phase: (sunrise: Date?, sunset: Date?)] {

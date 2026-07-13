@@ -23,14 +23,45 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	var dayLength: Double = 60 * 60 * 24
 
 	var body: some View {
-		Chart {
-			currentMonthIndicator
-			monthlyBarMarks
+		VStack(alignment: .leading, spacing: 8) {
+			Chart {
+				currentMonthIndicator
+				monthlyBarMarks
+			}
+			.chartForegroundStyleScale(kvPairs)
+			.chartYScale(domain: 0 ... dayLength)
+			.chartYAxis { yAxisMarks }
+			.chartLegend(.hidden)
+			.environment(\.timeZone, location.timeZone)
+
+			legend
 		}
-		.chartForegroundStyleScale(kvPairs)
-		.chartYScale(domain: 0 ... dayLength)
-		.chartYAxis { yAxisMarks }
-		.environment(\.timeZone, location.timeZone)
+	}
+
+	/// Swift Charts derives its default legend from the `Plottable` raw values
+	/// of `NTSolar.Phase`, which are never localized. We hide it and render our
+	/// own from `kvPairs` so the labels honour the String Catalog.
+	private var legend: some View {
+		LazyVGrid(
+			columns: [GridItem(.adaptive(minimum: 160), alignment: .leading)],
+			alignment: .leading,
+			spacing: 4
+		) {
+			ForEach(kvPairs.map { $0.key }, id: \.self) { phase in
+				HStack(spacing: 6) {
+					Circle()
+						.fill(color(for: phase))
+						.frame(width: 8, height: 8)
+					Text(phase.localizedName)
+						.font(.caption)
+						.foregroundStyle(.secondary)
+				}
+			}
+		}
+	}
+
+	private func color(for phase: NTSolar.Phase) -> Color {
+		kvPairs.first { $0.key == phase }?.value ?? .clear
 	}
 
 	private var currentMonthIndicator: some ChartContent {
