@@ -1,0 +1,76 @@
+{
+  "_note": "DRAFT marketing captions for App Store screenshots. AI-drafted translations — have a native speaker review before publishing. Keyed by locale, then by screen id (matching the capture attachment names).",
+  "screens": ["01-location-list", "02-detail-daily", "03-detail-annual", "04-time-travel", "05-notifications"],
+  "captions": {
+    "en": {
+      "01-location-list": "Track daylight everywhere that matters",
+      "02-detail-daily": "Today's sunrise, sunset, and daylight at a glance",
+      "03-detail-annual": "Watch the light change across the whole year",
+      "04-time-travel": "Travel to any date and see the daylight",
+      "05-notifications": "Gentle reminders as the light shifts"
+    },
+    "de": {
+      "01-location-list": "Behalte das Tageslicht überall im Blick",
+      "02-detail-daily": "Sonnenauf- und -untergang von heute auf einen Blick",
+      "03-detail-annual": "Sieh, wie sich das Licht übers Jahr verändert",
+      "04-time-travel": "Reise zu jedem Datum und sieh das Tageslicht",
+      "05-notifications": "Sanfte Erinnerungen, wenn sich das Licht ändert"
+    },
+    "fr": {
+      "01-location-list": "Suivez la lumière du jour partout",
+      "02-detail-daily": "Lever, coucher et durée du jour en un coup d'œil",
+      "03-detail-annual": "Observez la lumière changer tout au long de l'année",
+      "04-time-travel": "Voyagez à n'importe quelle date et voyez la lumière",
+      "05-notifications": "De doux rappels au fil de la lumière"
+    },
+    "es": {
+      "01-location-list": "Sigue la luz del día en todas partes",
+      "02-detail-daily": "Amanecer, atardecer y luz de hoy de un vistazo",
+      "03-detail-annual": "Observa cómo cambia la luz durante todo el año",
+      "04-time-travel": "Viaja a cualquier fecha y mira la luz del día",
+      "05-notifications": "Recordatorios suaves según cambia la luz"
+    },
+    "ja": {
+      "01-location-list": "大切な場所すべての日照を記録",
+      "02-detail-daily": "今日の日の出・日の入り・日照時間をひと目で",
+      "03-detail-annual": "一年を通した光の移ろいを見守る",
+      "04-time-travel": "どんな日付にも移動して日照を確認",
+      "05-notifications": "光の移り変わりをやさしくお知らせ"
+    },
+    "ar": {
+      "01-location-list": "تابع ضوء النهار في كل مكان يهمك",
+      "02-detail-daily": "شروق وغروب اليوم ومدة النهار بلمحة",
+      "03-detail-annual": "شاهد تغيّر الضوء على مدار العام",
+      "04-time-travel": "انتقل إلى أي تاريخ وشاهد ضوء النهار",
+      "05-notifications": "تذكيرات لطيفة مع تغيّر الضوء"
+    },
+    "nl": {
+      "01-location-list": "Volg het daglicht overal waar het telt",
+      "02-detail-daily": "Zonsopkomst, zonsondergang en daglicht in één oogopslag",
+      "03-detail-annual": "Zie het licht het hele jaar door veranderen",
+      "04-time-travel": "Reis naar elke datum en bekijk het daglicht",
+      "05-notifications": "Rustige herinneringen als het licht verschuift"
+    },
+    "zh-Hans": {
+      "01-location-list": "随时掌握每个地方的日照",
+      "02-detail-daily": "一眼看清今天的日出、日落与日照",
+      "03-detail-annual": "看光线如何贯穿全年变化",
+      "04-time-travel": "穿越到任意日期，查看日照",
+      "05-notifications": "光线变化时的温柔提醒"
+    },
+    "pl": {
+      "01-location-list": "Śledź światło dzienne wszędzie tam, gdzie ważne",
+      "02-detail-daily": "Dzisiejszy wschód, zachód i długość dnia w skrócie",
+      "03-detail-annual": "Zobacz, jak światło zmienia się przez cały rok",
+      "04-time-travel": "Przenieś się do dowolnej daty i zobacz światło dnia",
+      "05-notifications": "Delikatne przypomnienia, gdy zmienia się światło"
+    },
+    "it": {
+      "01-location-list": "Segui la luce del giorno ovunque conti",
+      "02-detail-daily": "Alba, tramonto e luce di oggi in un colpo d'occhio",
+      "03-detail-annual": "Osserva la luce cambiare per tutto l'anno",
+      "04-time-travel": "Viaggia in qualsiasi data e vedi la luce del giorno",
+      "05-notifications": "Promemoria delicati al variare della luce"
+    }
+  }
+}
