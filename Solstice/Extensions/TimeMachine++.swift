@@ -18,6 +18,15 @@ extension TimeMachine {
 		formatter.timeStyle = .none
 		formatter.dateStyle = .medium
 
-		return formatter.string(from: date)
+		let dateString = formatter.string(from: date)
+
+		// Mid-sentence, an absolute date reads better with a preposition ("on 14 Oct 2026");
+		// relative dates ("today"/"yesterday") must not be wrapped. Reuses the localizable
+		// "on %@" fragment, mirroring NTSolar.differenceString.
+		if context == .middleOfSentence, dateString.contains(/\d/) {
+			return String(format: NSLocalizedString("on %@", comment: "Sentence fragment placing a daylight comparison on an absolute date, e.g. 'on 13 Oct 2026'"), dateString)
+		}
+
+		return dateString
 	}
 }

@@ -221,7 +221,10 @@ extension NTSolar {
 		// and should be presented as "{yesterday/today/tomorrow}"
 		var baseDateString = formatter.string(from: date)
 		if baseDateString.contains(/\d/) {
-			baseDateString = NSLocalizedString("on \(baseDateString)", comment: "Sentence fragment for nominal date")
+			// Absolute date: wrap with a localizable "on {date}" fragment. The date must be a
+			// format argument, not part of the key — interpolating it into the key produces a
+			// unique untranslatable key per date, leaving the fragment stuck in English.
+			baseDateString = String(format: NSLocalizedString("on %@", comment: "Sentence fragment placing a daylight comparison on an absolute date, e.g. 'on 13 Oct 2026'"), baseDateString)
 		}
 
 		let comparatorDate = comparator?.date ?? date
