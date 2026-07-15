@@ -33,9 +33,29 @@ class PersistenceController {
 		return result
 	}()
 
+	/// In-memory store seeded with the sample locations, with CloudKit disabled.
+	/// Used for deterministic App Store screenshot capture — CloudKit on an
+	/// in-memory (`/dev/null`) store makes the seeding save fail intermittently
+	/// with "No eligible connection available".
+	static var screenshots: PersistenceController = {
+		let result = PersistenceController(inMemory: true, cloudKit: false)
+		let viewContext = result.container.viewContext
+		for entry in SavedLocation.defaultData {
+			let newItem = SavedLocation(context: viewContext)
+			newItem.title = entry.title
+			newItem.subtitle = entry.subtitle
+			newItem.latitude = entry.latitude
+			newItem.longitude = entry.longitude
+			newItem.timeZoneIdentifier = entry.timeZoneIdentifier
+			newItem.uuid = entry.uuid
+		}
+		try? viewContext.save()
+		return result
+	}()
+
 	let container: NSPersistentCloudKitContainer
 
-	init(inMemory: Bool = false) {
+	init(inMemory: Bool = false, cloudKit: Bool = true) {
 		container = NSPersistentCloudKitContainer(name: "Solstice")
 
 		if inMemory {
@@ -45,7 +65,18 @@ class PersistenceController {
 			container.persistentStoreDescriptions.first?.url = URL(filePath: fileUrl)
 		}
 
-		container.persistentStoreDescriptions.first?.cloudKitContainerOptions = .init(containerIdentifier: Constants.iCloudContainerIdentifier)
+		if cloudKit {
+			container.persistentStoreDescriptions.first?.cloudKitContainerOptions = .init(containerIdentifier: Constants.iCloudContainerIdentifier)
+		} else {
+			// NSPersistentCloudKitContainer pre-populates cloudKitContainerOptions from the
+			// model's CloudKit configuration, so mirroring spins up even here unless it's
+			// explicitly cleared. On a /dev/null in-memory store that makes the seeding save
+			// throw "No eligible connection available" — an Objective-C exception `try?` cannot
+			// catch, which aborts the process. Clearing it truly disables CloudKit.
+			container.persistentStoreDescriptions.first?.cloudKitContainerOptions = nil
+			// Load synchronously so the store is ready before the seeding save() runs.
+			container.persistentStoreDescriptions.first?.shouldAddStoreAsynchronously = false
+		}
 
 		container.viewContext.automaticallyMergesChangesFromParent = true
 

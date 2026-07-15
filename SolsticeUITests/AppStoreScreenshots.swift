@@ -34,7 +34,7 @@ final class AppStoreScreenshots: XCTestCase {
 		capture(app, named: "02-detail-daily")
 
 		// 03 — Detail view, annual overview (scroll down to the annual section)
-		app.scrollDown(untilHittable: app.match(A11y.annualChart))
+		app.scrollUp(toReveal: app.match(A11y.annualChart))
 		try await settle()
 		capture(app, named: "03-detail-annual")
 
@@ -97,6 +97,22 @@ private extension XCUIApplication {
 	func scrollDown(untilHittable element: XCUIElement, maxSwipes: Int = 8) {
 		var swipes = 0
 		while !element.isHittable, swipes < maxSwipes {
+			swipeUp()
+			swipes += 1
+		}
+	}
+
+	/// Swipes up until `element`'s top edge rises above the screen's vertical
+	/// midpoint, genuinely bringing it into view. A large element (e.g. the annual
+	/// chart) can report `isHittable == true` while only peeking from the bottom
+	/// edge, so `scrollDown(untilHittable:)` would stop without scrolling and
+	/// capture the same frame as the previous screen — this forces real movement.
+	func scrollUp(toReveal element: XCUIElement, maxSwipes: Int = 10) {
+		var swipes = 0
+		while swipes < maxSwipes {
+			if element.exists, element.isHittable, element.frame.minY < frame.midY {
+				return
+			}
 			swipeUp()
 			swipes += 1
 		}
