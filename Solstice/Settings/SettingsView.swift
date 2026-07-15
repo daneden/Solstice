@@ -65,6 +65,7 @@ struct SettingsView: View {
 					} label: {
 						Label("Notifications", systemImage: "bell.badge")
 					}
+					.accessibilityIdentifier(A11y.notificationsLink)
 				}
 
 				SupporterSettings()

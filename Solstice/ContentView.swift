@@ -26,6 +26,7 @@ struct ContentView: View {
 	#endif
 
 	@Environment(\.scenePhase) private var scenePhase
+	@Environment(\.timeMachine) private var timeMachine: TimeMachine
 	@Environment(CurrentLocation.self) var currentLocation
 	@Environment(LocationSearchService.self) var locationSearchService
 
@@ -94,6 +95,15 @@ struct ContentView: View {
 			}
 		#endif
 			.deduplicateLocationRecords()
+			.task {
+				guard ScreenshotLaunch.isCapturing else { return }
+				// Deterministic launch state: honor the forced selection, otherwise
+				// start on the list (ignore any stale SceneStorage selection).
+				selectedLocation = ScreenshotLaunch.forcedSelectedLocation
+				if let offset = ScreenshotLaunch.timeOffsetDays {
+					timeMachine.offset = Double(offset)
+				}
+			}
 			.task(id: scenePhase) {
 				switch scenePhase {
 				#if !os(watchOS)
@@ -173,6 +183,7 @@ struct ContentView: View {
 					Label("Settings", systemImage: "ellipsis")
 				}
 				.backportCircleSymbolVariant()
+				.accessibilityIdentifier(A11y.settingsButton)
 			}
 		#endif
 	}

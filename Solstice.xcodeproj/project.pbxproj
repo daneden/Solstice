@@ -50,6 +50,10 @@
 		7121DE0029C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0129C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
 		7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */; };
+		7123E75F30052CE20091C591 /* ScreenshotSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7123E75E30052CE20091C591 /* ScreenshotSupport.swift */; };
+		7123E76030052CE20091C591 /* ScreenshotSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7123E75E30052CE20091C591 /* ScreenshotSupport.swift */; };
+		7123E76130052CE20091C591 /* ScreenshotSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7123E75E30052CE20091C591 /* ScreenshotSupport.swift */; };
+		7123E76230052CE20091C591 /* ScreenshotSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7123E75E30052CE20091C591 /* ScreenshotSupport.swift */; };
 		712433932D77A4CE00709C20 /* EdgeInsets++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433922D77A4CE00709C20 /* EdgeInsets++.swift */; };
 		712433942D77A4CE00709C20 /* EdgeInsets++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433922D77A4CE00709C20 /* EdgeInsets++.swift */; };
 		712433952D77A4CE00709C20 /* EdgeInsets++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433922D77A4CE00709C20 /* EdgeInsets++.swift */; };
@@ -283,11 +287,9 @@
 		71E945812F31FDA600B26D02 /* NTSolar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9457F2F31FDA600B26D02 /* NTSolar.swift */; };
 		71E945822F31FDA600B26D02 /* NTSolar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9457F2F31FDA600B26D02 /* NTSolar.swift */; };
 		71E945832F31FDA600B26D02 /* NTSolar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9457F2F31FDA600B26D02 /* NTSolar.swift */; };
-		71E9459E2F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E9459F2F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E945A02F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E945A12F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
-		71E945A22F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E945A32F32095300B26D02 /* NTSolar++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E9459D2F32095300B26D02 /* NTSolar++.swift */; };
 		71E945C82F32506000B26D02 /* CircularSolarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC51C72E91B56D0025892F /* CircularSolarChart.swift */; };
 		71F2C3A12ABB282D00E69426 /* CompactLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F2C3A02ABB282D00E69426 /* CompactLabelStyle.swift */; };
@@ -403,6 +405,7 @@
 		711A97BC29CDBCBC00333927 /* Earth Model Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Earth Model Assets.xcassets"; sourceTree = "<group>"; };
 		711DDC742EA7A1A400DFE99B /* GraphicalLocationListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicalLocationListRow.swift; sourceTree = "<group>"; };
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
+		7123E75E30052CE20091C591 /* ScreenshotSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotSupport.swift; sourceTree = "<group>"; };
 		712433922D77A4CE00709C20 /* EdgeInsets++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets++.swift"; sourceTree = "<group>"; };
 		712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DaylightGradientTimePreferenceKey.swift"; sourceTree = "<group>"; };
 		7124339C2D77B06900709C20 /* ShareSolarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSolarChartView.swift; sourceTree = "<group>"; };
@@ -799,6 +802,7 @@
 				71E9457F2F31FDA600B26D02 /* NTSolar.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71908ACC2AC95A5500C7B610 /* StringBuilder.swift */,
+				7123E75E30052CE20091C591 /* ScreenshotSupport.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1224,6 +1228,7 @@
 				7132AC0F29E6922500523215 /* SolarChartWidgetView.swift in Sources */,
 				71908ACF2AC95A5500C7B610 /* StringBuilder.swift in Sources */,
 				7187147129DDDAD500EADF03 /* WidgetMissingLocationView.swift in Sources */,
+				7123E75F30052CE20091C591 /* ScreenshotSupport.swift in Sources */,
 				7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */,
 				7106C86F29A276B40007A7EC /* WidgetBundle.swift in Sources */,
 				7106C88129A277460007A7EC /* CurrentLocation.swift in Sources */,
@@ -1261,7 +1266,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71E9459E2F32095300B26D02 /* NTSolar++.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1269,7 +1273,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71E945A22F32095300B26D02 /* NTSolar++.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1302,6 +1305,7 @@
 				719465362C2C1E09008408C0 /* CurrentLocation.swift in Sources */,
 				719465372C2C1E09008408C0 /* Persistence.swift in Sources */,
 				719465382C2C1E09008408C0 /* SkyGradient.swift in Sources */,
+				7123E76030052CE20091C591 /* ScreenshotSupport.swift in Sources */,
 				71FBEE6C2E4B345700EC1EF0 /* Bundle++.swift in Sources */,
 				719465392C2C1E09008408C0 /* WidgetHeadingModifier.swift in Sources */,
 				7194653A2C2C1E09008408C0 /* WidgetLocationHeadingView.swift in Sources */,
@@ -1344,6 +1348,7 @@
 				710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
 				7124339B2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
 				7181776A2F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
+				7123E76130052CE20091C591 /* ScreenshotSupport.swift in Sources */,
 				71DAB3D229CD862A00E30148 /* EarthNode.swift in Sources */,
 				71789AA52C32DCC7002B8A33 /* View+MaterialListRowBackground.swift in Sources */,
 				7198468728E5895E00E866CE /* ContentView.swift in Sources */,
@@ -1456,6 +1461,7 @@
 				71C1058D2E7C07A900A76EBB /* AdaptiveStack.swift in Sources */,
 				716BE0512C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */,
 				7195125929B48ECD009D282F /* TimeZone++.swift in Sources */,
+				7123E76230052CE20091C591 /* ScreenshotSupport.swift in Sources */,
 				719F927929ACD21A00C06921 /* Date++.swift in Sources */,
 				719F927729ACD21A00C06921 /* View+CapsuleAppearance.swift in Sources */,
 				71F58A412E617E08007A5E45 /* ShareSolarChartView.swift in Sources */,

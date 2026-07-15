@@ -16,39 +16,54 @@ import Foundation
 
 /// Accessibility identifiers for elements captured in App Store screenshots.
 enum A11y {
-    static let settingsButton = "settings-button"
-    static let notificationsLink = "notifications-link"
-    static let detailScreen = "detail-screen"
-    static let annualChart = "annual-chart"
+	static let settingsButton = "settings-button"
+	static let notificationsLink = "notifications-link"
+	static let detailScreen = "detail-screen"
+	static let annualChart = "annual-chart"
 
-    /// Identifier for a saved-location row, keyed by the location's UUID string.
-    static func locationRow(_ uuid: String) -> String {
-        "location-row-\(uuid)"
-    }
+	/// Identifier for a saved-location row, keyed by the location's UUID string.
+	static func locationRow(_ uuid: String) -> String {
+		"location-row-\(uuid)"
+	}
 }
 
 /// Launch arguments/environment the app honors ONLY while capturing screenshots.
 /// Nothing here has any effect in a normal (non-capture) launch.
 enum ScreenshotLaunch {
-    /// Launch argument that switches the app into deterministic screenshot mode
-    /// (in-memory seeded store, no CloudKit dependency, no location permission).
-    static let flag = "-UITestScreenshots"
+	/// Launch argument that switches the app into deterministic screenshot mode
+	/// (in-memory seeded store, no CloudKit dependency, no location permission).
+	static let flag = "-UITestScreenshots"
 
-    /// Environment key: UUID string of the saved location to open on launch.
-    static let selectedLocationKey = "UITEST_SELECTED_LOCATION"
+	/// Environment key: UUID string of the saved location to open on launch.
+	static let selectedLocationKey = "UITEST_SELECTED_LOCATION"
 
-    /// Environment key: integer number of days to offset the Time Machine by.
-    static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
+	/// Environment key: integer number of days to offset the Time Machine by.
+	static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
 
-    static var isCapturing: Bool {
-        ProcessInfo.processInfo.arguments.contains(flag)
-    }
+	static var isCapturing: Bool {
+		ProcessInfo.processInfo.arguments.contains(flag)
+	}
 
-    static var forcedSelectedLocation: String? {
-        ProcessInfo.processInfo.environment[selectedLocationKey]
-    }
+	static var forcedSelectedLocation: String? {
+		ProcessInfo.processInfo.environment[selectedLocationKey]
+	}
 
-    static var timeOffsetDays: Int? {
-        ProcessInfo.processInfo.environment[timeOffsetDaysKey].flatMap(Int.init)
-    }
+	static var timeOffsetDays: Int? {
+		ProcessInfo.processInfo.environment[timeOffsetDaysKey].flatMap(Int.init)
+	}
+
+	/// Prepares deterministic defaults for screenshot capture. Call once at launch
+	/// before any view evaluates. No-op unless `-UITestScreenshots` is set.
+	static func prepareForCaptureIfNeeded() {
+		guard isCapturing else { return }
+		let defaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
+		// Skip the first-launch onboarding sheet so the app opens straight into content.
+		defaults?.set(true, forKey: Preferences.hasCompletedOnboarding.key)
+		// Show the notification settings in their enabled state for the screenshot.
+		defaults?.set(true, forKey: Preferences.notificationsEnabled.key)
+		// Show the Time Machine panel only on the time-travel launch (offset set);
+		// otherwise hide it so the daily/annual shots aren't cluttered.
+		let appearance: TimeTravelAppearance = timeOffsetDays != nil ? .expanded : .hidden
+		defaults?.set(appearance.rawValue, forKey: Preferences.timeTravelAppearance.key)
+	}
 }

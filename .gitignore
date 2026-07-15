@@ -96,3 +96,7 @@ iOSInjectionProject/
 
 # Secrets (API keys, etc.)
 Secrets.swift
+
+# Localized App Store screenshot pipeline (generated)
+.screenshots/
+Screenshots/output/

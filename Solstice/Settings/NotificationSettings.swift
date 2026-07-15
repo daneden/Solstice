@@ -27,6 +27,10 @@ struct NotificationSettings: View {
 
 	@AppStorage(Preferences.sadPreference) var sadPreference
 
+	/// Expanded by default only for screenshot capture, so the marketing shot shows
+	/// the notification-content options.
+	@State private var contentCustomizationExpanded = ScreenshotLaunch.isCapturing
+
 	@Environment(CurrentLocation.self) var currentLocation
 
 	@FetchRequest(
@@ -67,7 +71,9 @@ struct NotificationSettings: View {
 		Section {
 			Toggle("Enable notifications", isOn: $notificationsEnabled)
 				.task(id: notificationsEnabled) {
-					if notificationsEnabled == true {
+					// Skip the system permission prompt during screenshot capture so the
+					// toggle stays on and the settings render in their enabled state.
+					if notificationsEnabled == true, !ScreenshotLaunch.isCapturing {
 						notificationsEnabled = await NotificationManager.requestAuthorization() ?? false
 					}
 				}
@@ -161,7 +167,7 @@ struct NotificationSettings: View {
 	}
 
 	private var contentCustomizationGroup: some View {
-		DisclosureGroup {
+		DisclosureGroup(isExpanded: $contentCustomizationExpanded) {
 			ForEach(notificationFragments, id: \.label) { fragment in
 				Toggle(LocalizedStringKey(fragment.label), isOn: fragment.value)
 			}

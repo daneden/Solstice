@@ -102,6 +102,7 @@ struct DetailView<Location: ObservableLocation>: View {
 				Button("Share...", systemImage: "square.and.arrow.up") {
 					showShareSheet.toggle()
 				}
+				.accessibilityIdentifier(A11y.detailScreen)
 			}
 		#endif
 

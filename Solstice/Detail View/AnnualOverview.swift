@@ -61,6 +61,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					Image(systemName: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 						.contentTransition(.symbolEffect)
 				}
+				.accessibilityIdentifier(A11y.annualChart)
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {

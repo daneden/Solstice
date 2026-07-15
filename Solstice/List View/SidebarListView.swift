@@ -127,6 +127,7 @@ struct SidebarListView: View {
 				.matchedTransitionSource(id: tag, in: namespace)
 			#endif
 				.tag(tag)
+				.accessibilityIdentifier(A11y.locationRow(tag))
 		}
 	}
 

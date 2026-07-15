@@ -15,7 +15,13 @@ struct SolsticeApp: App {
 	@State private var currentLocation = CurrentLocation()
 	@State private var locationSearchService = LocationSearchService()
 
-	private let persistenceController = PersistenceController.shared
+	private let persistenceController = ScreenshotLaunch.isCapturing
+		? PersistenceController.screenshots
+		: PersistenceController.shared
+
+	init() {
+		ScreenshotLaunch.prepareForCaptureIfNeeded()
+	}
 
 	var body: some Scene {
 		WindowGroup {
