@@ -1,6 +1,6 @@
 # Stage 3 — Compose in Figma (runbook)
 
-This is the runbook for turning the raw `screenshots/<locale>/<screen>.png` files
+This is the runbook for turning the raw `Screenshots/output/<locale>/<screen>.png` files
 into finished App Store frames (device frame + background + localized caption)
 using the **official Figma MCP server**. It is written to be handed to an agent
 (or followed by hand) once the Figma MCP server is connected.
@@ -12,7 +12,7 @@ using the **official Figma MCP server**. It is written to be handed to an agent
 
 ## Inputs
 
-- `screenshots/<locale>/<screen>.png` — raw captures from Stages 1–2.
+- `Screenshots/output/<locale>/<screen>.png` — raw captures from Stages 1–2.
   Screens: `01-location-list`, `02-detail-daily`, `03-detail-annual`,
   `04-time-travel`, `05-notifications`.
 - `Screenshots/figma/captions.json` — localized caption copy (draft; review first).
@@ -34,7 +34,7 @@ shot@<locale>@<screen>
 ```
 
 e.g. `shot@de-DE@02-detail-daily`. The fill step matches
-`screenshots/<locale>/<screen>.png` to the node with the corresponding name, so the
+`Screenshots/output/<locale>/<screen>.png` to the node with the corresponding name, so the
 mapping is unambiguous. Use the same locale codes as the capture folders.
 
 ## Steps
@@ -54,7 +54,7 @@ mapping is unambiguous. Use the same locale codes as the capture folders.
 
 3. **Fill screenshots (`upload_assets`).** For every placeholder node, call
    `upload_assets` targeting that node's id with the matching
-   `screenshots/<locale>/<screen>.png`, setting it as the fill.
+   `Screenshots/output/<locale>/<screen>.png`, setting it as the fill.
 
 ## Constraints
 

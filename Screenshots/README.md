@@ -6,18 +6,13 @@ Store screenshots across every shipping language. Three independently-runnable s
 1. **Capture** — one XCUITest (`SolsticeUITests/AppStoreScreenshots.swift`) drives the app;
    the `Screenshots` test plan runs it once per locale.
 2. **Extract** — `Scripts/capture-screenshots.sh` pulls the PNGs out of the `.xcresult`
-   into `screenshots/<locale>/<screen>.png` (via `xcparse`).
+   into `Screenshots/output/<locale>/<screen>.png` (via `xcrun xcresulttool`).
 3. **Compose** — drop the raw shots into a Figma marketing template (device frame,
    background, localized caption). See `Screenshots/figma/compose-runbook.md`.
 
-Stages 1–2 use only native Xcode tooling plus `xcparse`. No third-party screenshot
-framework, no Ruby/gems.
-
-## One-time setup
-
-```bash
-brew install chargepoint/xcparse/xcparse
-```
+Stages 1–2 use only native Xcode tooling (`xcodebuild` + `xcresulttool`). No third-party
+screenshot framework, no Ruby/gems, no `xcparse` (it can't read the Xcode 26+ xcresult
+format — `xcresulttool export attachments` is used instead).
 
 ## Run it
 
@@ -29,15 +24,15 @@ Scripts/capture-screenshots.sh
 Scripts/capture-screenshots.sh en ja ar
 ```
 
-Output lands in `screenshots/<locale>/`:
+Output lands in `Screenshots/output/<locale>/`:
 
 ```
-screenshots/en/01-location-list.png
-screenshots/en/02-detail-daily.png
-screenshots/en/03-detail-annual.png
-screenshots/en/04-time-travel.png
-screenshots/en/05-notifications.png
-screenshots/de/...
+Screenshots/output/en/01-location-list.png
+Screenshots/output/en/02-detail-daily.png
+Screenshots/output/en/03-detail-annual.png
+Screenshots/output/en/04-time-travel.png
+Screenshots/output/en/05-notifications.png
+Screenshots/output/de/...
 ```
 
 Then follow `Screenshots/figma/compose-runbook.md` for Stage 3.
@@ -57,6 +52,8 @@ Then follow `Screenshots/figma/compose-runbook.md` for Stage 3.
 - **Deterministic state.** The test launches the app with `-UITestScreenshots`, which
   makes it use an in-memory Core Data store seeded from `Data Model/defaultData.json`
   (no CloudKit, no location-permission prompt). See `Solstice/Helpers/ScreenshotSupport.swift`.
+- **No onboarding sheet.** Capture mode marks onboarding complete so the app opens straight
+  into content (see `ScreenshotSupport.prepareForCaptureIfNeeded()`).
 - **Locale-independent navigation.** Every element is located by accessibility identifier
   (never localized text), so the same flow runs unchanged in all languages. Identifiers
   live in `ScreenshotSupport.swift` (canonical, app target) and are mirrored in
@@ -83,9 +80,9 @@ Then follow `Screenshots/figma/compose-runbook.md` for Stage 3.
 
 ## Devices
 
-Defaults to the 6.9" iPhone (`iPhone 16 Pro Max`); Apple downscales that set for smaller
-iPhones automatically. To also shoot the 13" iPad, uncomment the `DEVICE_NAME` line in the
-script (and run per device).
+Defaults to the 6.3" iPhone (`iPhone 17 Pro`) to match the device bezel in the Figma
+marketing template. Swap `DEVICE_NAME` to `iPhone 17 Pro Max` for the 6.9" App Store size,
+or uncomment the 13" iPad line to shoot iPad (run per device).
 
 ## Not included / caveats
 
