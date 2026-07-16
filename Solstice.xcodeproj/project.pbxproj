@@ -29,6 +29,10 @@
 		7107208F3009257E006AA79C /* MarketingWidgetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7107208D3009257E006AA79C /* MarketingWidgetRenderer.swift */; };
 		710720903009257E006AA79C /* MarketingWidgetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7107208D3009257E006AA79C /* MarketingWidgetRenderer.swift */; };
 		710720913009257E006AA79C /* MarketingWidgetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7107208D3009257E006AA79C /* MarketingWidgetRenderer.swift */; };
+		71072095300947BD006AA79C /* screenshot-localized-names.json in Resources */ = {isa = PBXBuildFile; fileRef = 71072094300947BD006AA79C /* screenshot-localized-names.json */; };
+		71072096300947BD006AA79C /* screenshot-localized-names.json in Resources */ = {isa = PBXBuildFile; fileRef = 71072094300947BD006AA79C /* screenshot-localized-names.json */; };
+		71072097300947BD006AA79C /* screenshot-localized-names.json in Resources */ = {isa = PBXBuildFile; fileRef = 71072094300947BD006AA79C /* screenshot-localized-names.json */; };
+		71072098300947BD006AA79C /* screenshot-localized-names.json in Resources */ = {isa = PBXBuildFile; fileRef = 71072094300947BD006AA79C /* screenshot-localized-names.json */; };
 		710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9B702AB4752D0093A9A6 /* ContentToggle.swift */; };
 		7116B1EA2DDD07F70018A294 /* View+timeMachineOverlayModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */; };
@@ -401,6 +405,7 @@
 		7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetView.swift; sourceTree = "<group>"; };
 		71072088300919ED006AA79C /* SeedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedState.swift; sourceTree = "<group>"; };
 		7107208D3009257E006AA79C /* MarketingWidgetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingWidgetRenderer.swift; sourceTree = "<group>"; };
+		71072094300947BD006AA79C /* screenshot-localized-names.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "screenshot-localized-names.json"; sourceTree = "<group>"; };
 		710D9B702AB4752D0093A9A6 /* ContentToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentToggle.swift; sourceTree = "<group>"; };
 		7116B1E72DDD07F70018A294 /* View+timeMachineOverlayModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+timeMachineOverlayModifier.swift"; sourceTree = "<group>"; };
 		7116B1EC2DDD12BA0018A294 /* TimeMachinePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMachinePanelView.swift; sourceTree = "<group>"; };
@@ -707,6 +712,7 @@
 				7198468D28E5895F00E866CE /* Persistence.swift */,
 				7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */,
 				71A029B32C368E1900E19819 /* SavedLocation++.swift */,
+				71072094300947BD006AA79C /* screenshot-localized-names.json */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -1148,6 +1154,7 @@
 				71A029BB2C36928400E19819 /* defaultData.json in Resources */,
 				71A9A5522AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 				7106C87629A276B40007A7EC /* Assets.xcassets in Resources */,
+				71072096300947BD006AA79C /* screenshot-localized-names.json in Resources */,
 				718FC2ED2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711DDC782EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
 			);
@@ -1175,6 +1182,7 @@
 				71A029BC2C36928400E19819 /* defaultData.json in Resources */,
 				719465552C2C1E09008408C0 /* Localizable.xcstrings in Resources */,
 				719465572C2C1E09008408C0 /* Assets.xcassets in Resources */,
+				71072097300947BD006AA79C /* screenshot-localized-names.json in Resources */,
 				718FC2EE2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711DDC792EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
 			);
@@ -1194,6 +1202,7 @@
 				71DC2FED30012B2A00FDEBE0 /* AppShortcuts.xcstrings in Resources */,
 				71DC2FEE30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */,
 				71A029B92C36928400E19819 /* defaultData.json in Resources */,
+				71072095300947BD006AA79C /* screenshot-localized-names.json in Resources */,
 				71A9A5502AB82D6200C3A38C /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1206,6 +1215,7 @@
 				71DC2FEA30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */,
 				718FC2EC2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				711DDC772EA8172200DFE99B /* Shared Assets.xcassets in Resources */,
+				71072098300947BD006AA79C /* screenshot-localized-names.json in Resources */,
 				71A029BA2C36928400E19819 /* defaultData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

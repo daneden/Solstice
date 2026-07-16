@@ -81,5 +81,34 @@ enum ScreenshotLaunch {
 		// otherwise hide it so the daily/annual shots aren't cluttered.
 		let appearance: TimeTravelAppearance = timeOffsetDays != nil ? .expanded : .hidden
 		defaults?.set(appearance.rawValue, forKey: Preferences.timeTravelAppearance.key)
+
+		seedLocalizedFixtureNames()
+	}
+
+	/// Pre-seeds the localized-name cache for the fixture locations from a frozen,
+	/// human-reviewed JSON, so localized names render deterministically with no live
+	/// geocoding during capture. Keyed by the same coordinate bucket the resolver uses,
+	/// for the current process locale (each test-plan configuration runs in its own).
+	private static func seedLocalizedFixtureNames() {
+		guard let url = Bundle.main.url(forResource: "screenshot-localized-names", withExtension: "json"),
+		      let data = try? Data(contentsOf: url),
+		      let byCoord = try? JSONDecoder().decode([String: [String: [String: String]]].self, from: data)
+		else { return }
+
+		// Map the process locale to the JSON's locale key (e.g. de_DE → "de", zh-Hans_CN → "zh-Hans").
+		let language = Locale.current.language
+		var localeKey = language.languageCode?.identifier ?? "en"
+		if let script = language.script?.identifier {
+			localeKey += "-\(script)"
+		}
+
+		for (coordKey, byLocale) in byCoord {
+			guard let entry = byLocale[localeKey] else { continue }
+			LocalizedNameCache.write(
+				key: "\(coordKey)|\(Locale.current.identifier)",
+				title: entry["title"],
+				subtitle: entry["subtitle"]
+			)
+		}
 	}
 }

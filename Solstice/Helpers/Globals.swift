@@ -217,6 +217,13 @@ final class LocationNameResolver {
 				if !hit.isStale { return }
 			}
 
+			#if DEBUG
+				// Fixtures are pre-seeded during capture; a geocode here means a cache
+				// miss slipped through (network-dependent, non-deterministic).
+				if ProcessInfo.processInfo.arguments.contains("-UITestScreenshots") {
+					print("⚠️ [screenshots] geocoding \(key) — not pre-seeded")
+				}
+			#endif
 			let clLocation = CLLocation(latitude: latitude, longitude: longitude)
 			guard let placemark = try? await CLGeocoder().reverseGeocodeLocation(clLocation).first else { return }
 			let title = placemark.locality
