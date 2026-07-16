@@ -97,8 +97,8 @@
       }
     },
     {
-      "skippedTests" : [
-        "SolsticeCalculatorTests"
+      "selectedTests" : [
+        "WidgetRenderTests\/testRenderMarketingWidgets()"
       ],
       "target" : {
         "containerPath" : "container:Solstice.xcodeproj",

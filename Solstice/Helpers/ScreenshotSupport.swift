@@ -95,12 +95,13 @@ enum ScreenshotLaunch {
 		      let byCoord = try? JSONDecoder().decode([String: [String: [String: String]]].self, from: data)
 		else { return }
 
-		// Map the process locale to the JSON's locale key (e.g. de_DE → "de", zh-Hans_CN → "zh-Hans").
-		let language = Locale.current.language
-		var localeKey = language.languageCode?.identifier ?? "en"
-		if let script = language.script?.identifier {
-			localeKey += "-\(script)"
-		}
+		// Map the process locale to a table key by language code. The table has one key
+		// per shipping language (only "zh-Hans" carries a script), so match the code
+		// exactly or by prefix — robust to how iOS/macOS resolve the script (iOS test-plan
+		// configs vary it, which previously left non-ja/ar locales unmatched → English).
+		let code = Locale.current.language.languageCode?.identifier ?? "en"
+		let available = byCoord.values.flatMap(\.keys)
+		guard let localeKey = available.first(where: { $0 == code || $0.hasPrefix("\(code)-") }) else { return }
 
 		for (coordKey, byLocale) in byCoord {
 			guard let entry = byLocale[localeKey] else { continue }
