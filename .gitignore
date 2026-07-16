@@ -100,3 +100,4 @@ Secrets.swift
 # Localized App Store screenshot pipeline (generated)
 .screenshots/
 Screenshots/output/
+Scripts/figma/source-hashes.json
