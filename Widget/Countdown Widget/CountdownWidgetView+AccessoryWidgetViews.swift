@@ -59,7 +59,7 @@
 			}
 
 			var nextEventText: some View {
-				Text("\(nextEvent.description.localizedCapitalized) in \(Text(nextEvent.date, style: .relative))")
+				Text("\(Text(nextEvent.label)) in \(Text(nextEvent.date, style: .relative))")
 			}
 		}
 

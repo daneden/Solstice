@@ -10,6 +10,9 @@
 # Usage:
 #   Scripts/capture-screenshots.sh                # all locales in the test plan
 #   Scripts/capture-screenshots.sh en ja ar       # a subset of locales
+#   WIDGETS_ONLY=1 Scripts/capture-screenshots.sh # re-render only the Frame-4
+#                                                  # widgets (skips the iOS UI
+#                                                  # tests; leaves iOS shots intact)
 #
 set -euo pipefail
 
@@ -72,6 +75,13 @@ for loc in "${LOCALES[@]}"; do
 	ONLY_CONFIGS+=(-only-test-configuration "$loc")
 done
 
+# WIDGETS_ONLY re-renders just the Frame-4 marketing widgets (WidgetRenderTests),
+# skipping the slow iOS UI test — used when only widget content changed.
+ONLY_TESTING=()
+if [ "${WIDGETS_ONLY:-0}" = "1" ]; then
+	ONLY_TESTING+=(-only-testing "SolsticeTests/WidgetRenderTests")
+fi
+
 echo "==> Running screenshot test plan"
 set -x
 xcodebuild test \
@@ -81,7 +91,8 @@ xcodebuild test \
 	-destination "id=$UDID" \
 	-derivedDataPath "$DERIVED_DIR" \
 	-resultBundlePath "$RESULT_BUNDLE" \
-	"${ONLY_CONFIGS[@]}"
+	"${ONLY_CONFIGS[@]}" \
+	"${ONLY_TESTING[@]}"
 set +x
 
 # ---- Stage 2: extract screenshots from the .xcresult -------------------------
@@ -103,7 +114,11 @@ echo "==> Normalizing into $OUT_DIR/<locale>/"
 for loc in "${LOCALES[@]}"; do
 	# Clear only what THIS run produces (iOS device shots + the Frame-4 widget
 	# renders); leave the macOS window shots (mac-01/02/03) from the other script.
-	rm -f "${OUT_DIR:?}/$loc"/[0-9][0-9]-*.png "${OUT_DIR:?}/$loc"/mac-04-widget-*.png
+	# In WIDGETS_ONLY mode, leave the iOS shots too — only the widgets re-render.
+	if [ "${WIDGETS_ONLY:-0}" != "1" ]; then
+		rm -f "${OUT_DIR:?}/$loc"/[0-9][0-9]-*.png
+	fi
+	rm -f "${OUT_DIR:?}/$loc"/mac-04-widget-*.png
 done
 mkdir -p "$OUT_DIR"
 

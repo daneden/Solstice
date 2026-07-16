@@ -225,13 +225,13 @@
 
 		private var nextEventText: Text {
 			guard let next = solar.nextSolarEvent else { return Text(verbatim: "—") }
-			// Interpolate a Text(_:format:) so the remaining duration localizes against
-			// the environment locale (the event name stays English, as in the real widget).
+			// Both the event name (a localized string resource) and the remaining
+			// duration localize against the environment locale, matching the real widget.
 			let remaining = Text(
 				Duration.seconds(max(0, next.date.timeIntervalSince(referenceDate))),
 				format: .units(allowed: [.hours, .minutes], width: .abbreviated)
 			)
-			return Text("\(next.description.localizedCapitalized) in \(remaining)")
+			return Text("\(Text(next.label)) in \(remaining)")
 		}
 	}
 #endif

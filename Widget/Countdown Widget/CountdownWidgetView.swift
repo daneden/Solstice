@@ -101,7 +101,7 @@ extension CountdownWidgetView {
 
 	var nextEventText: some View {
 		if let nextSolarEvent {
-			return Text("\(nextSolarEvent.description.localizedCapitalized) in \(Text(nextSolarEvent.date, style: .relative))")
+			return Text("\(Text(nextSolarEvent.label)) in \(Text(nextSolarEvent.date, style: .relative))")
 		} else {
 			return Text("—")
 		}
