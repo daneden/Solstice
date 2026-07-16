@@ -9,6 +9,9 @@ import CoreData
 import Suite
 import SwiftUI
 import TimeMachine
+#if canImport(AppKit)
+	import AppKit
+#endif
 
 struct ContentView: View {
 	@Namespace private var namespace
@@ -103,6 +106,18 @@ struct ContentView: View {
 				if let offset = ScreenshotLaunch.timeOffsetDays {
 					timeMachine.offset = Double(offset)
 				}
+				#if os(macOS)
+					// Force the app frontmost so its window is presented for capture.
+					NSApplication.shared.activate(ignoringOtherApps: true)
+					// For the settings marketing shot, open the dedicated capture window (the
+					// SwiftUI Settings scene can't be opened programmatically). DEBUG-only window.
+					#if DEBUG
+						if ScreenshotLaunch.macScreen == .settingsNotifications {
+							try? await Task.sleep(for: .milliseconds(400))
+							openWindow(id: "capture-settings")
+						}
+					#endif
+				#endif
 			}
 			.task(id: scenePhase) {
 				switch scenePhase {
@@ -111,7 +126,11 @@ struct ContentView: View {
 						await NotificationManager.scheduleNotifications(location: currentLocation.location)
 				#endif
 				case .active:
-					currentLocation.requestLocation()
+					// Skip the location-permission request during screenshot capture: on macOS
+					// its system dialog steals focus and hides the app window from the test runner.
+					if !ScreenshotLaunch.isCapturing {
+						currentLocation.requestLocation()
+					}
 				default:
 					return
 				}

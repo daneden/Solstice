@@ -41,50 +41,68 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 
 	var body: some View {
-		Form {
-			if let solar {
-				DailyOverview(solar: solar, location: location)
-			}
+		ScrollViewReader { proxy in
+			Form {
+				if let solar {
+					DailyOverview(solar: solar, location: location)
+				}
 
-			AnnualOverview(location: location)
-		}
-		.formStyle(.grouped)
-		.navigationTitle(navBarTitleText)
-		.toolbar {
-			toolbarItems
-		}
-		.userActivity(Self.userActivity) { userActivity in
-			var navigationSelection: String? = nil
-
-			if let location = location as? SavedLocation {
-				navigationSelection = location.uuid?.uuidString
-			} else if let location = location as? CurrentLocation {
-				navigationSelection = location.id
+				AnnualOverview(location: location)
+					.id(Self.annualAnchor)
 			}
+			.formStyle(.grouped)
+			#if os(macOS)
+				// The macOS toolbar has no Share button to carry the detail-screen identifier
+				// (that's iOS-only below), so tag the detail root for screenshot navigation.
+				.accessibilityIdentifier(A11y.detailScreen)
+				// For the macOS annual marketing shot, open scrolled to the annual chart.
+				.task {
+					guard ScreenshotLaunch.macScreen == .detailAnnual else { return }
+					try? await Task.sleep(for: .milliseconds(500))
+					proxy.scrollTo(Self.annualAnchor, anchor: .top)
+				}
+			#endif
+				.navigationTitle(navBarTitleText)
+				.toolbar {
+					toolbarItems
+				}
+				.userActivity(Self.userActivity) { userActivity in
+					var navigationSelection: String? = nil
 
-			userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title ?? "location")"
+					if let location = location as? SavedLocation {
+						navigationSelection = location.uuid?.uuidString
+					} else if let location = location as? CurrentLocation {
+						navigationSelection = location.id
+					}
 
-			userActivity.targetContentIdentifier = navigationSelection
-			userActivity.isEligibleForSearch = true
-			userActivity.isEligibleForHandoff = false
+					userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title ?? "location")"
+
+					userActivity.targetContentIdentifier = navigationSelection
+					userActivity.isEligibleForSearch = true
+					userActivity.isEligibleForHandoff = false
+				}
+			#if os(watchOS)
+				.modify {
+					if let solar {
+						$0.containerBackground(
+							SkyGradient(ntSolar: solar),
+							for: .navigation
+						)
+					} else {
+						$0
+					}
+				}
+			#endif
+				.sheet(isPresented: $showShareSheet) {
+					if let solar {
+						ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+					}
+				}
 		}
-		#if os(watchOS)
-		.modify {
-			if let solar {
-				$0.containerBackground(
-					SkyGradient(ntSolar: solar),
-					for: .navigation
-				)
-			} else {
-				$0
-			}
-		}
-		#endif
-		.sheet(isPresented: $showShareSheet) {
-			if let solar {
-				ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
-			}
-		}
+	}
+
+	static var annualAnchor: String {
+		"annual-overview"
 	}
 
 	var toolbarItemPlacement: ToolbarItemPlacement {

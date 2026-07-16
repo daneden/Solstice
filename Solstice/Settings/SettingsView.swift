@@ -19,6 +19,24 @@ struct SettingsView: View {
 	@AppStorage(Preferences.chartType) private var chartType
 
 	var body: some View {
+		#if os(macOS)
+			if ScreenshotLaunch.macScreen == .settingsNotifications {
+				// macOS marketing shot: show the Notifications pane directly in the Settings window.
+				NavigationStack {
+					NotificationSettings()
+						.formStyle(.grouped)
+				}
+				.frame(minWidth: 420, minHeight: 520)
+				.accessibilityIdentifier(A11y.settingsWindow)
+			} else {
+				standardSettings
+			}
+		#else
+			standardSettings
+		#endif
+	}
+
+	@ViewBuilder private var standardSettings: some View {
 		NavigationStack {
 			Form {
 				Section {
@@ -84,6 +102,8 @@ struct SettingsView: View {
 			.navigationTitle("Settings")
 			#endif
 			.formStyle(.grouped)
+			// Lets the macOS screenshot capture locate the Settings window.
+			.accessibilityIdentifier(A11y.settingsWindow)
 		}
 		#if !os(macOS)
 		.toolbar {

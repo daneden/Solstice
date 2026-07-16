@@ -15,6 +15,7 @@ enum A11y {
 	static let notificationsLink = "notifications-link"
 	static let detailScreen = "detail-screen"
 	static let annualChart = "annual-chart"
+	static let settingsWindow = "settings-window"
 
 	/// Identifier for a saved-location row, keyed by the location's UUID string.
 	static func locationRow(_ uuid: String) -> String {

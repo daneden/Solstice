@@ -20,6 +20,7 @@ enum A11y {
 	static let notificationsLink = "notifications-link"
 	static let detailScreen = "detail-screen"
 	static let annualChart = "annual-chart"
+	static let settingsWindow = "settings-window"
 
 	/// Identifier for a saved-location row, keyed by the location's UUID string.
 	static func locationRow(_ uuid: String) -> String {
@@ -40,6 +41,17 @@ enum ScreenshotLaunch {
 	/// Environment key: integer number of days to offset the Time Machine by.
 	static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
 
+	/// Environment key: which macOS screen to open directly into for window capture.
+	static let macScreenKey = "UITEST_MAC_SCREEN"
+
+	/// macOS capture opens the app straight into one of these states (the `open` +
+	/// screencapture pipeline can't drive the UI, so the app presents it on launch).
+	/// The default (no value) is the daily detail view.
+	enum MacScreen: String {
+		case detailAnnual = "detail-annual"
+		case settingsNotifications = "settings-notifications"
+	}
+
 	static var isCapturing: Bool {
 		ProcessInfo.processInfo.arguments.contains(flag)
 	}
@@ -50,6 +62,10 @@ enum ScreenshotLaunch {
 
 	static var timeOffsetDays: Int? {
 		ProcessInfo.processInfo.environment[timeOffsetDaysKey].flatMap(Int.init)
+	}
+
+	static var macScreen: MacScreen? {
+		ProcessInfo.processInfo.environment[macScreenKey].flatMap(MacScreen.init(rawValue:))
 	}
 
 	/// Prepares deterministic defaults for screenshot capture. Call once at launch
