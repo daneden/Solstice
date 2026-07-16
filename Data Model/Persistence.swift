@@ -108,6 +108,47 @@ class PersistenceController {
 		deduplicateRecords()
 	}
 
+	/// Waits until the first CloudKit import finishes (or `timeout` elapses) so the
+	/// seed gate decides against the account's true state rather than a store that's
+	/// only momentarily empty because sync hasn't landed yet. No-ops when CloudKit
+	/// mirroring is disabled or the store is in-memory (screenshots/preview), which
+	/// would otherwise stall those paths for the full timeout.
+	func awaitInitialImport(timeout: TimeInterval = 10) async {
+		let description = container.persistentStoreDescriptions.first
+		guard description?.cloudKitContainerOptions != nil,
+		      description?.url?.path != "/dev/null",
+		      // No iCloud account → no cross-device sync → no seeding race, and no import
+		      // event would ever fire (which would otherwise burn the full timeout).
+		      FileManager.default.ubiquityIdentityToken != nil
+		else { return }
+
+		let center = NotificationCenter.default
+		let resumeGuard = ResumeOnce()
+		var observer: NSObjectProtocol?
+
+		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+			observer = center.addObserver(
+				forName: NSPersistentCloudKitContainer.eventChangedNotification,
+				object: container,
+				queue: .main
+			) { notification in
+				guard let event = notification.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey]
+					as? NSPersistentCloudKitContainer.Event
+				else { return }
+				if event.type == .import, event.endDate != nil, resumeGuard.tryResume() {
+					continuation.resume()
+				}
+			}
+
+			Task {
+				try? await Task.sleep(for: .seconds(timeout))
+				if resumeGuard.tryResume() { continuation.resume() }
+			}
+		}
+
+		if let observer { center.removeObserver(observer) }
+	}
+
 	func deduplicateRecords() {
 		container.performBackgroundTask { context in
 			for entry in SavedLocation.defaultData {
@@ -129,6 +170,21 @@ class PersistenceController {
 				}
 			}
 		}
+	}
+}
+
+/// Ensures a continuation is resumed exactly once when two sources (the import
+/// notification and the timeout) can race to complete it.
+private final class ResumeOnce: @unchecked Sendable {
+	private let lock = NSLock()
+	private var resumed = false
+
+	func tryResume() -> Bool {
+		lock.lock()
+		defer { lock.unlock() }
+		if resumed { return false }
+		resumed = true
+		return true
 	}
 }
 
