@@ -57,6 +57,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 				if sunrise < sunset {
 					Text(sunrise ... sunset)
 						.foregroundStyle(.secondary)
+						.font(.subheadline)
 				}
 			}
 			.contentTransition(.identity)
