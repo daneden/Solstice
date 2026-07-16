@@ -48,16 +48,24 @@
 		/// lets the test attach them to the `.xcresult` (an iOS-Simulator test can't
 		/// write into the repo because of the app sandbox).
 		@MainActor
-		static func pngs() throws -> [(name: String, data: Data)] {
+		static func pngs(for localeID: String) throws -> [(name: String, data: Data)] {
 			guard let solar = NTSolar(for: date, coordinate: coordinate, timeZone: timeZone) else {
 				throw RenderError.noSolar
 			}
-			let overview = OverviewMarketingWidget(solar: solar, timeZone: timeZone)
-				.frame(width: largeSize.width, height: largeSize.height)
-				.clipShape(.rect(cornerRadius: 30, style: .continuous))
-			let countdown = CountdownMarketingWidget(solar: solar, timeZone: timeZone, referenceDate: date)
-				.frame(width: mediumSize.width, height: mediumSize.height)
-				.clipShape(.rect(cornerRadius: 30, style: .continuous))
+			let locale = Locale(identifier: localeID)
+			let layout: LayoutDirection = Locale.Language(identifier: localeID).characterDirection == .rightToLeft
+				? .rightToLeft : .leftToRight
+
+			func localized(_ view: some View, _ size: CGSize) -> some View {
+				view
+					.environment(\.locale, locale)
+					.environment(\.layoutDirection, layout)
+					.frame(width: size.width, height: size.height)
+					.clipShape(.rect(cornerRadius: 30, style: .continuous))
+			}
+
+			let overview = localized(OverviewMarketingWidget(solar: solar, timeZone: timeZone), largeSize)
+			let countdown = localized(CountdownMarketingWidget(solar: solar, timeZone: timeZone, referenceDate: date), mediumSize)
 			return try [
 				(name: "widget-overview", data: pngData(overview)),
 				(name: "widget-countdown", data: pngData(countdown)),
@@ -66,9 +74,9 @@
 
 		/// Writes the PNGs into `directory` — used when the caller can reach the FS.
 		@MainActor
-		static func render(to directory: URL) throws {
+		static func render(to directory: URL, localeID: String = "en") throws {
 			try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-			for png in try pngs() {
+			for png in try pngs(for: localeID) {
 				try png.data.write(to: directory.appendingPathComponent("\(png.name).png"))
 			}
 		}
@@ -125,7 +133,7 @@
 				// Bleed horizontally, but inset the top so the arc peak isn't crammed
 				// against the widget's top edge.
 				.padding(.horizontal, -20)
-				.padding(.top, 56)
+				.padding(.top, 32)
 
 				VStack(alignment: .leading, spacing: 4) {
 					MarketingLocationLabel()
@@ -136,12 +144,15 @@
 					Text("Daylight today")
 						.font(.footnote)
 
-					Text(solar.daylightDuration.localizedString)
+					// Text(_:format:) resolves against the environment locale (unlike the
+					// app's String-based `.localizedString`, which uses the process locale),
+					// so the units localize in the per-locale render.
+					Text(Duration.seconds(solar.daylightDuration), format: .units(allowed: [.hours, .minutes], width: .abbreviated))
 						.font(.title3).fontWeight(.semibold).fontDesign(.rounded)
 						.lineLimit(4)
 						.fixedSize(horizontal: false, vertical: true)
 
-					Text(solar.compactDifferenceString)
+					differenceText
 						.font(.footnote)
 						.foregroundStyle(.secondary)
 						.lineLimit(4)
@@ -160,6 +171,15 @@
 			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 			.environment(\.timeZone, timeZone)
 			.background(.background)
+		}
+
+		/// Mirrors `compactDifferenceString` but as a `Text(_:format:)` so the units
+		/// localize against the environment locale.
+		private var differenceText: Text {
+			guard let yesterday = solar.yesterday else { return Text(verbatim: "") }
+			let diff = solar.daylightDuration - yesterday.daylightDuration
+			let magnitude = Text(Duration.seconds(abs(diff)), format: .units(allowed: [.hours, .minutes], width: .abbreviated))
+			return (diff >= 0 ? Text(verbatim: "+") : Text(verbatim: "-")) + magnitude
 		}
 	}
 
@@ -202,8 +222,12 @@
 
 		private var nextEventText: Text {
 			guard let next = solar.nextSolarEvent else { return Text(verbatim: "—") }
-			let remaining = Duration.seconds(max(0, next.date.timeIntervalSince(referenceDate)))
-				.formatted(.units(allowed: [.hours, .minutes], width: .abbreviated))
+			// Interpolate a Text(_:format:) so the remaining duration localizes against
+			// the environment locale (the event name stays English, as in the real widget).
+			let remaining = Text(
+				Duration.seconds(max(0, next.date.timeIntervalSince(referenceDate))),
+				format: .units(allowed: [.hours, .minutes], width: .abbreviated)
+			)
 			return Text("\(next.description.localizedCapitalized) in \(remaining)")
 		}
 	}

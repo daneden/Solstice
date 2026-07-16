@@ -182,20 +182,12 @@ final class LocationNameResolver {
 	/// Keys with an in-flight resolve, so concurrent renders don't stack geocodes.
 	@ObservationIgnored private var working: Set<String> = []
 
-	/// Mirrors `ScreenshotLaunch.flag` without depending on it (this type is also
-	/// compiled into the widget/intents targets, which don't include ScreenshotSupport).
-	private static var isCapturingScreenshots: Bool {
-		ProcessInfo.processInfo.arguments.contains("-UITestScreenshots")
-	}
-
 	/// Localized display name for `location`, falling back to its stored values.
 	/// Non-mutating from the caller's perspective; kicks off an async geocode when
 	/// the cache is missing or stale.
 	func displayName(for location: some AnyLocation) -> (title: String?, subtitle: String?) {
 		// The current location is already reverse-geocoded live in the active locale.
-		// During screenshot capture, keep the curated fixture names (no async geocode
-		// that would make captures non-deterministic / network-dependent).
-		if location is CurrentLocation || Self.isCapturingScreenshots {
+		if location is CurrentLocation {
 			return (location.title, location.subtitle)
 		}
 
