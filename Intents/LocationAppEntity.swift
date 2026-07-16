@@ -306,7 +306,8 @@ extension LocationAppEntity {
 		let title = savedLocation.title ?? String(localized: "Unknown")
 		let subtitle = savedLocation.subtitle
 
-		// Encode full location data in ID so entity can be resolved even if Core Data lookup fails
+		// Encode the STORED values in the ID so entity resolution stays stable across
+		// locales (the ID is identity, not display).
 		let data = LocationData(
 			title: title,
 			subtitle: subtitle,
@@ -325,8 +326,10 @@ extension LocationAppEntity {
 			id = savedLocation.uuid?.uuidString ?? UUID().uuidString
 		}
 
-		self.title = title
-		self.subtitle = subtitle
+		// Display the localized name when cached (per-device, per-locale); stored fallback.
+		let resolved = LocalizedNameCache.cachedName(for: savedLocation)
+		self.title = resolved.title ?? title
+		self.subtitle = resolved.subtitle ?? subtitle
 		latitude = savedLocation.latitude
 		longitude = savedLocation.longitude
 		timeZoneIdentifier = savedLocation.timeZoneIdentifier

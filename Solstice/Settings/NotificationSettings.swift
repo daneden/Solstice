@@ -109,7 +109,7 @@ struct NotificationSettings: View {
 				.disabled(true)
 		}
 		ForEach(items) { location in
-			if let title = location.title {
+			if let title = LocalizedNameCache.cachedName(for: location).title {
 				Text(title)
 					.tag(location.uuid?.uuidString)
 			}

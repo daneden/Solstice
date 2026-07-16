@@ -16,6 +16,7 @@ struct DetailView<Location: ObservableLocation>: View {
 
 	@Environment(\.managedObjectContext) var viewContext
 	@Environment(\.dismiss) var dismiss
+	@Environment(LocationNameResolver.self) private var nameResolver: LocationNameResolver?
 
 	var location: Location
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
@@ -33,7 +34,8 @@ struct DetailView<Location: ObservableLocation>: View {
 	}
 
 	var navBarTitleText: Text {
-		guard let title = location.title else {
+		let resolvedTitle = nameResolver?.displayName(for: location).title ?? location.title
+		guard let title = resolvedTitle else {
 			return location is CurrentLocation ? Text("Current Location") : Text(verbatim: "Solstice")
 		}
 

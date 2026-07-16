@@ -217,7 +217,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 	@ViewBuilder
 	private var standardShareLink: some View {
 		if let chartRenderedAsImage {
-			let title: String = location.title ?? String(localized: "Current Location")
+			let title: String = LocalizedNameCache.cachedName(for: location).title ?? String(localized: "Current Location")
 			ShareLink(
 				item: chartRenderedAsImage,
 				preview: SharePreview("Daylight in \(title)", image: chartRenderedAsImage)
@@ -233,7 +233,7 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 					HStack {
 						VStack(alignment: .leading) {
 							Group {
-								if let title = location.title {
+								if let title = LocalizedNameCache.cachedName(for: location).title {
 									Text(title)
 								} else {
 									Text("Current Location")

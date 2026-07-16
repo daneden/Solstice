@@ -11,8 +11,16 @@ import WidgetKit
 struct WidgetLocationView: View {
 	var location: SolsticeWidgetLocation
 
+	/// Current location is already geocoded live into `title`; only saved/custom
+	/// locations benefit from the per-locale cache populated by the app.
+	private var displayTitle: String? {
+		guard !location.isRealLocation else { return location.title }
+		let cached = LocalizedNameCache.read(key: LocalizedNameCache.key(latitude: location.latitude, longitude: location.longitude))
+		return cached?.title ?? location.title
+	}
+
 	var locationName: Text {
-		guard let title = location.title else {
+		guard let title = displayTitle else {
 			switch location.isRealLocation {
 			case true:
 				return Text("Current Location \(Image(systemName: "location"))")

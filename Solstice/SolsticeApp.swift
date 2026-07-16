@@ -14,6 +14,7 @@ import TipKit
 struct SolsticeApp: App {
 	@State private var currentLocation = CurrentLocation()
 	@State private var locationSearchService = LocationSearchService()
+	@State private var nameResolver = LocationNameResolver()
 
 	private let persistenceController = ScreenshotLaunch.isCapturing
 		? PersistenceController.screenshots
@@ -41,6 +42,7 @@ struct SolsticeApp: App {
 				}
 				.migrateAppFeatures()
 				.environment(currentLocation)
+				.environment(nameResolver)
 				.environment(locationSearchService)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 			#if os(macOS)
@@ -76,6 +78,7 @@ struct SolsticeApp: App {
 			WindowGroup(id: "settings") {
 				SettingsView()
 					.environment(currentLocation)
+					.environment(nameResolver)
 			}
 			.defaultSize(width: 600, height: 600)
 
@@ -93,6 +96,7 @@ struct SolsticeApp: App {
 					.frame(maxWidth: 500)
 					.environment(\.managedObjectContext, persistenceController.container.viewContext)
 					.environment(currentLocation)
+					.environment(nameResolver)
 			}
 
 			Window("About solstices and equinoxes", id: "about-equinox-and-solstice") {
@@ -113,6 +117,7 @@ struct SolsticeApp: App {
 					.frame(width: 420, height: 520)
 					.environment(\.managedObjectContext, persistenceController.container.viewContext)
 					.environment(currentLocation)
+					.environment(nameResolver)
 				}
 				.defaultSize(width: 420, height: 520)
 				.windowResizability(.contentSize)

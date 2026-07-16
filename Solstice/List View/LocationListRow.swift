@@ -11,7 +11,14 @@ import TimeMachine
 
 struct LocationListRow<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine: TimeMachine
+	@Environment(LocationNameResolver.self) private var nameResolver: LocationNameResolver?
 	var location: Location
+
+	/// Localized display name via the resolver when available (falls back to the
+	/// stored values on targets/previews where the resolver isn't injected).
+	private var resolvedName: (title: String?, subtitle: String?) {
+		nameResolver?.displayName(for: location) ?? (location.title, location.subtitle)
+	}
 
 	@FocusState private var focused: Bool
 
@@ -28,10 +35,10 @@ struct LocationListRow<Location: ObservableLocation>: View {
 	}
 
 	private var subtitle: String? {
-		if location is CurrentLocation, location.title == nil {
+		if location is CurrentLocation, resolvedName.title == nil {
 			return "—"
 		} else {
-			return location.subtitle
+			return resolvedName.subtitle
 		}
 	}
 
@@ -84,8 +91,8 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					}
 				}
 			}
-			.animation(.default, value: location.title)
-			.animation(.default, value: location.subtitle)
+			.animation(.default, value: resolvedName.title)
+			.animation(.default, value: resolvedName.subtitle)
 			.animation(.default, value: timeMachine.date)
 			.shadow(radius: 4, x: 0, y: 2)
 			.environment(\.timeZone, location.timeZone)
@@ -117,7 +124,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 					.symbolVariant(.fill)
 			}
 
-			Text(location.title ?? String(localized: "Current Location"))
+			Text(resolvedName.title ?? String(localized: "Current Location"))
 				.contentTransition(.numericText())
 				.lineLimit(2)
 		}
@@ -130,6 +137,7 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		   !subtitle.isEmpty
 		{
 			Text(subtitle)
+				.font(.subheadline)
 				.foregroundStyle(.secondary)
 				.transition(.blurReplace)
 		}
