@@ -47,36 +47,39 @@
 		/// The rendered widget PNGs, named for their output files. Returning `Data`
 		/// lets the test attach them to the `.xcresult` (an iOS-Simulator test can't
 		/// write into the repo because of the app sandbox).
+		/// Renders in the CURRENT process locale — run under the `Screenshots` test plan,
+		/// each configuration's language drives both number/unit formatting and RTL, so no
+		/// `.environment(\.locale)`/`.layoutDirection` override is needed. Attachment names
+		/// carry no locale suffix; the extractor keys locale by the test-plan configuration.
 		@MainActor
-		static func pngs(for localeID: String) throws -> [(name: String, data: Data)] {
+		static func pngs() throws -> [(name: String, data: Data)] {
 			guard let solar = NTSolar(for: date, coordinate: coordinate, timeZone: timeZone) else {
 				throw RenderError.noSolar
 			}
-			let locale = Locale(identifier: localeID)
-			let layout: LayoutDirection = Locale.Language(identifier: localeID).characterDirection == .rightToLeft
+			// ImageRenderer renders in isolation and does NOT inherit the process
+			// layoutDirection (real windows do), so derive RTL from the current locale
+			// explicitly. The locale itself IS inherited, so Text still localizes.
+			let layout: LayoutDirection = Locale.current.language.characterDirection == .rightToLeft
 				? .rightToLeft : .leftToRight
-
-			func localized(_ view: some View, _ size: CGSize) -> some View {
+			func framed(_ view: some View, _ size: CGSize) -> some View {
 				view
-					.environment(\.locale, locale)
 					.environment(\.layoutDirection, layout)
 					.frame(width: size.width, height: size.height)
 					.clipShape(.rect(cornerRadius: 30, style: .continuous))
 			}
-
-			let overview = localized(OverviewMarketingWidget(solar: solar, timeZone: timeZone), largeSize)
-			let countdown = localized(CountdownMarketingWidget(solar: solar, timeZone: timeZone, referenceDate: date), mediumSize)
+			let overview = framed(OverviewMarketingWidget(solar: solar, timeZone: timeZone), largeSize)
+			let countdown = framed(CountdownMarketingWidget(solar: solar, timeZone: timeZone, referenceDate: date), mediumSize)
 			return try [
-				(name: "widget-overview", data: pngData(overview)),
-				(name: "widget-countdown", data: pngData(countdown)),
+				(name: "mac-04-widget-overview", data: pngData(overview)),
+				(name: "mac-04-widget-countdown", data: pngData(countdown)),
 			]
 		}
 
 		/// Writes the PNGs into `directory` — used when the caller can reach the FS.
 		@MainActor
-		static func render(to directory: URL, localeID: String = "en") throws {
+		static func render(to directory: URL) throws {
 			try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-			for png in try pngs(for: localeID) {
+			for png in try pngs() {
 				try png.data.write(to: directory.appendingPathComponent("\(png.name).png"))
 			}
 		}

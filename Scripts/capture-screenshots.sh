@@ -101,7 +101,9 @@ xcrun xcresulttool export attachments \
 
 echo "==> Normalizing into $OUT_DIR/<locale>/"
 for loc in "${LOCALES[@]}"; do
-	rm -rf "${OUT_DIR:?}/$loc"
+	# Clear only what THIS run produces (iOS device shots + the Frame-4 widget
+	# renders); leave the macOS window shots (mac-01/02/03) from the other script.
+	rm -f "${OUT_DIR:?}/$loc"/[0-9][0-9]-*.png "${OUT_DIR:?}/$loc"/mac-04-widget-*.png
 done
 mkdir -p "$OUT_DIR"
 
@@ -109,8 +111,9 @@ python3 - "$RAW_DIR" "$OUT_DIR" <<'PY'
 import json, os, re, shutil, sys
 raw, out = sys.argv[1], sys.argv[2]
 manifest = json.load(open(os.path.join(raw, "manifest.json")))
-# Our capture attachments are named "<screen>_0_<uuid>.png" (e.g. 02-detail-daily_0_....png).
-pat = re.compile(r"^(\d\d-[a-z0-9-]+)_0_.*\.png$")
+# Attachments are "<screen>_0_<uuid>.png": iOS shots ("02-detail-daily") and the
+# Frame-4 widget renders ("mac-04-widget-overview"). Locale = test-plan configuration.
+pat = re.compile(r"^((?:mac-)?\d\d-[a-z0-9-]+)_0_.*\.png$")
 count = 0
 for group in manifest:
     for a in group.get("attachments", []):

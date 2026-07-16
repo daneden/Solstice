@@ -95,6 +95,16 @@
         "identifier" : "71615FEA2F29F06F0082944D",
         "name" : "SolsticeUITests"
       }
+    },
+    {
+      "skippedTests" : [
+        "SolsticeCalculatorTests"
+      ],
+      "target" : {
+        "containerPath" : "container:Solstice.xcodeproj",
+        "identifier" : "71615FDB2F29F0610082944D",
+        "name" : "SolsticeTests"
+      }
     }
   ],
   "version" : 1
