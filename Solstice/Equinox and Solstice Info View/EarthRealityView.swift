@@ -38,6 +38,14 @@ struct EarthRealityView: View {
 					camera.components.set(PerspectiveCameraComponent())
 					camera.look(at: .zero, from: [0, 0, 0.25], relativeTo: nil)
 					content.add(camera)
+
+					// visionOS lights the globe with the system's environment IBL; the non-AR
+					// virtual scene has none, so the globe reads dark. Parent a gentle key light
+					// to the camera so it acts as a headlight — it always lifts the face the
+					// viewer is looking at, following the orbit control. Tune `intensity` to taste.
+					let keyLight = Entity()
+					keyLight.components.set(DirectionalLightComponent(color: .white, intensity: 12000))
+					camera.addChild(keyLight)
 				#endif
 			}
 			#if !os(visionOS)
@@ -45,6 +53,9 @@ struct EarthRealityView: View {
 			#endif
 			.aspectRatio(1, contentMode: .fit)
 			.frame(maxWidth: .infinity)
+			#if !os(visionOS)
+			.background { AtmosphereGlow() }
+			#endif
 
 			Picker(selection: $selection) {
 				ForEach(AnnualSolarEvent.allCases, id: \.self) { event in
@@ -63,6 +74,28 @@ struct EarthRealityView: View {
 		}
 		.onChange(of: selection) { _, newValue in
 			terminator.retarget(toDegrees: Float(newValue.terminatorAngleDegrees))
+		}
+	}
+}
+
+/// A soft blue halo drawn behind the globe. The sphere's silhouette is always a centered
+/// circle regardless of orbit, so a radial gradient sitting just past the globe's rim reads
+/// as an atmosphere. Rendered behind the (transparent-backed) RealityView. Tune the color,
+/// radii, and opacity to taste.
+private struct AtmosphereGlow: View {
+	var body: some View {
+		GeometryReader { proxy in
+			let side = min(proxy.size.width, proxy.size.height)
+			RadialGradient(
+				colors: [
+					Color(red: 0.36, green: 0.64, blue: 1.0).opacity(0.25),
+					Color(red: 0.36, green: 0.64, blue: 1.0).opacity(0),
+				],
+				center: .center,
+				startRadius: side * 0.34,
+				endRadius: side * 0.5
+			)
+			.blur(radius: side * 0.02)
 		}
 	}
 }
