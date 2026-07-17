@@ -877,13 +877,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		71A029B02C3050E300E19819 /* SceneKit Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "SceneKit Models";
-			sourceTree = "<group>";
-		};
 		71DB52AC29ABD17F00D62BB7 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -904,7 +897,6 @@
 				71E8DC2C29CB601800F3E1B4 /* EquinoxAndSolsticeInfoSheet.swift */,
 				71A029AA2C304FFA00E19819 /* EquinoxAndSolsticeInfoWindow.swift */,
 				71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */,
-				71A029B02C3050E300E19819 /* SceneKit Models */,
 			);
 			path = "Equinox and Solstice Info View";
 			sourceTree = "<group>";

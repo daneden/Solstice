@@ -13,7 +13,6 @@ import SwiftUI
 /// Earth shifts across the seasons. RealityKit gives visionOS true volumetric depth
 /// and lets iOS/macOS share the same scene and shader-driven day/night terminator.
 struct EarthRealityView: View {
-
 	@State private var selection: AnnualSolarEvent
 	@State private var terminator: TerminatorAnimator
 
@@ -57,11 +56,26 @@ struct EarthRealityView: View {
 			.pickerStyle(.segmented)
 		}
 		.overlay(alignment: .topTrailing) {
-			SolarSystemMiniMap(event: selection, rotation: .degrees(Double(terminator.currentAngle)))
+			// Isolate the per-frame `currentAngle` read to this child so the enclosing
+			// body — and the Picker in it — isn't rebuilt every frame during the sweep
+			// (which would swallow taps until the animation settled).
+			AnimatedMiniMap(event: selection, terminator: terminator)
 		}
 		.onChange(of: selection) { _, newValue in
 			terminator.retarget(toDegrees: Float(newValue.terminatorAngleDegrees))
 		}
+	}
+}
+
+/// Renders the mini-map from the animator's live angle. Kept as its own view so the
+/// frame-by-frame `currentAngle` updates only invalidate this small overlay, leaving the
+/// month Picker responsive to taps mid-animation.
+private struct AnimatedMiniMap: View {
+	let event: AnnualSolarEvent
+	let terminator: TerminatorAnimator
+
+	var body: some View {
+		SolarSystemMiniMap(event: event, rotation: .degrees(Double(terminator.currentAngle)))
 	}
 }
 
