@@ -15,8 +15,6 @@ struct StackedButtonStyle: ButtonStyle {
 }
 
 #Preview {
-	Button("Share", systemImage: "square.and.arrow.up") {
-		
-	}
-	.buttonStyle(StackedButtonStyle())
+	Button("Share", systemImage: "square.and.arrow.up") {}
+		.buttonStyle(StackedButtonStyle())
 }

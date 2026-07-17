@@ -7,23 +7,23 @@
 
 import SwiftUI
 
-fileprivate let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? .now
+private let defaultNotificationDate = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? .now
 
-fileprivate let store = UserDefaults(suiteName: Constants.appGroupIdentifier)
+private let store = UserDefaults(suiteName: Constants.appGroupIdentifier)
 
 extension AppStorage {
 	init(_ kv: AppStorageKVPair<Value>) where Value == String {
 		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
-	
+
 	init(_ kv: AppStorageKVPair<Value>) where Value == Bool {
 		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
-	
+
 	init(_ kv: AppStorageKVPair<Value>) where Value == TimeInterval {
 		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
-	
+
 	init(_ kv: AppStorageKVPair<Value>) where Value: RawRepresentable, Value.RawValue == String {
 		self.init(wrappedValue: kv.value, kv.key, store: store ?? .standard)
 	}
@@ -32,16 +32,16 @@ extension AppStorage {
 extension Optional: @retroactive RawRepresentable where Wrapped: Codable {
 	public var rawValue: String {
 		guard let data = try? JSONEncoder().encode(self),
-					let json = String(data: data, encoding: .utf8)
+		      let json = String(data: data, encoding: .utf8)
 		else {
 			return "{}"
 		}
 		return json
 	}
-	
+
 	public init?(rawValue: String) {
 		guard let data = rawValue.data(using: .utf8),
-					let value = try? JSONDecoder().decode(Self.self, from: data)
+		      let value = try? JSONDecoder().decode(Self.self, from: data)
 		else {
 			return nil
 		}
@@ -51,100 +51,106 @@ extension Optional: @retroactive RawRepresentable where Wrapped: Codable {
 
 typealias AppStorageKVPair<T> = (key: String, value: T)
 
-struct Preferences {
+enum Preferences {
 	typealias Value = AppStorageKVPair
-	
+
 	// MARK: Onboarding
+
 	static let hasCompletedOnboarding: Value = ("hasCompletedOnboarding", false)
-	
+
 	// MARK: Notifications
+
 	/// The user preference for whether notifications are enabled
 	static let notificationsEnabled: Value = ("notifsEnabled", false)
-	
+
 	/// The user preference for whether notifications include sunrise/sunset times
 	static let notificationsIncludeSunTimes: Value = ("notifsIncludeSunTimes", true)
-	
+
 	/// The user preference for whether notifications include the daylight duration
 	static let notificationsIncludeDaylightDuration: Value = ("notifsIncludeDaylightDuration", true)
-	
+
 	/// The user preference for whether notifications include the change in daylight compared to yesterday
 	static let notificationsIncludeDaylightChange: Value = ("notifsIncludeDaylightChange", true)
-	
+
 	/// The user preference for whether notifications include the time until the next solstice
 	static let notificationsIncludeSolsticeCountdown: Value = ("notifsIncludeSolsticeCountdown", false)
-	
+
 	/// The user preference for how notifications are altered during periods of lessening daylight
 	static let sadPreference: Value<SADPreference> = ("sadPreverence", .none)
-	
+
 	static let cachedLatitude: Value<Double> = ("cachedLatitude", 0)
 	static let cachedLongitude: Value<Double> = ("cachedLongitude", 0)
-	
+
 	static let customNotificationLocationUUID: Value<String?> = ("customNotificationLocationUUID", nil)
-	
+
 	// MARK: Scheduling
-	struct NotificationSettings {
+
+	enum NotificationSettings {
 		/// The type of notification schedule; either a specific time (specified in `notificationDate`) or relative to sunrise/sunset
 		static let scheduleType: Value<ScheduleType> = ("notificationScheduleType", .specificTime)
-		
+
 		/// The date/time for notification scheduling. Only the time will be used.
 		static let _notificationTime: Value<Date> = ("notifTime", defaultNotificationDate)
-		
+
 		/// The date components for notification scheduling.
 		static let notificationDateComponents: Value<DateComponents> = ("notifDateComponents", NotificationSettings.defaultDateComponents)
 		static let defaultDateComponents = DateComponents(timeZone: .autoupdatingCurrent, hour: 8, minute: 0)
-		
+
 		/// Which solar event notifications are sent relative to
 		static let relation: Value<NTSolar.Phase> = ("notificationRelation", .sunrise)
-		
+
 		/// The offset in seconds between the notification and the chosen solar event
 		static let relativeOffset: Value<TimeInterval> = ("notificationRelativeOffset", 30 * 60)
-		
+
 		/// The preset offsets for relative notification times
-		static let relativeOffsetDetents: Array<TimeInterval> = [
+		static let relativeOffsetDetents: [TimeInterval] = [
 			-4 * 60 * 60,
-			 -3 * 60 * 60,
-			 -2 * 60 * 60,
-			 -1 * 60 * 60,
-			 -45 * 60,
-			 -30 * 60,
-			 -15 * 60,
-			 0,
-			 15 * 60,
-			 30 * 60,
-			 45 * 60,
-			 60 * 60,
-			 2 * 60 * 60,
-			 3 * 60 * 60,
-			 4 * 60 * 60
+			-3 * 60 * 60,
+			-2 * 60 * 60,
+			-1 * 60 * 60,
+			-45 * 60,
+			-30 * 60,
+			-15 * 60,
+			0,
+			15 * 60,
+			30 * 60,
+			45 * 60,
+			60 * 60,
+			2 * 60 * 60,
+			3 * 60 * 60,
+			4 * 60 * 60,
 		]
 	}
-	
+
 	// MARK: Appearance
+
 	enum SortingFunction: String, Codable, RawRepresentable {
 		case timezone, daylightDuration
 	}
-	
+
 	static let detailViewChartAppearance: Value<DaylightChart.Appearance> = ("detailViewChartAppearance", chartAppearanceDefaultValue)
 	static let listViewAppearance: Value<DaylightChart.Appearance> = ("listViewAppearance", .graphical)
-	
+
 	#if !os(watchOS)
-	static let listViewSortDimension: Value<SortingFunction> = ("listViewOrderBy", .timezone)
+		static let listViewSortDimension: Value<SortingFunction> = ("listViewOrderBy", .timezone)
 	#endif
-	
+
 	static let listViewSortOrder: Value<SortOrder> = ("listViewSortOrder", .forward)
 	static let listViewShowComplication: Value<Bool> = ("listViewShowComplication", showComplicationDefaultValue)
-	
+
 	static let timeTravelAppearance: Value<TimeTravelAppearance> = ("timeTravelAppearance", .expanded)
-	
+
 	static let chartType: Value<ChartType> = ("chartType", .classic)
 	static let showSolsticesInChart: Value<Bool> = ("showSolsticesInChart", false)
 }
 
 enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable {
 	case expanded, compact, hidden
-	
-	var id: Self { self }
-	
+
+	var id: Self {
+		self
+	}
+
 	var title: LocalizedStringKey {
 		switch self {
 		case .expanded: return "Classic"
@@ -152,39 +158,41 @@ enum TimeTravelAppearance: String, CaseIterable, RawRepresentable, Identifiable 
 		case .hidden: return "Hidden"
 		}
 	}
-	
+
 	#if !os(watchOS)
-	var image: ImageResource {
-		switch self {
-		case .expanded:
-			return .timetravelClassic
-		case .compact:
-			return .timetravelCompact
-		case .hidden:
-			return .timetravelHidden
+		var image: ImageResource {
+			switch self {
+			case .expanded:
+				return .timetravelClassic
+			case .compact:
+				return .timetravelCompact
+			case .hidden:
+				return .timetravelHidden
+			}
 		}
-	}
 	#endif
 }
 
 enum ChartType: String, CaseIterable, RawRepresentable, Identifiable {
 	case classic, circular
-	
+
 	var title: LocalizedStringKey {
 		switch self {
 		case .classic: return "Classic"
 		case .circular: return "Circular"
 		}
 	}
-	
+
 	var icon: ImageResource {
 		switch self {
 		case .classic: return .solarchartLinear
 		case .circular: return .solarchartCircularFill
 		}
 	}
-	
-	var id: Self { self }
+
+	var id: Self {
+		self
+	}
 }
 
 extension Preferences {
@@ -192,7 +200,7 @@ extension Preferences {
 		case none = "No change"
 		case removeDifference = "Remove daylight gain/loss"
 		case suppressNotifications = "Suppress notifications altogether"
-		
+
 		var description: LocalizedStringKey {
 			switch self {
 			case .none:
@@ -209,7 +217,7 @@ extension Preferences {
 extension Preferences.NotificationSettings {
 	enum ScheduleType: String, RawRepresentable, CaseIterable {
 		case specificTime, sunset, sunrise
-		
+
 		var description: LocalizedStringKey {
 			switch self {
 			case .specificTime:
@@ -226,31 +234,31 @@ extension Preferences.NotificationSettings {
 extension SortOrder: @retroactive RawRepresentable {
 	public init?(rawValue: String) {
 		guard let data = rawValue.data(using: .utf8),
-					let result = try? JSONDecoder().decode(SortOrder.self, from: data)
+		      let result = try? JSONDecoder().decode(SortOrder.self, from: data)
 		else {
 			return nil
 		}
 		self = result
 	}
-	
+
 	public var rawValue: String {
 		guard let data = try? JSONEncoder().encode(self),
-					let result = String(data: data, encoding: .utf8)
+		      let result = String(data: data, encoding: .utf8)
 		else {
 			return ""
 		}
 		return result
 	}
-	
+
 	public typealias RawValue = String
 }
 
-fileprivate var showComplicationDefaultValue: Bool {
+private var showComplicationDefaultValue: Bool {
 	#if os(macOS)
-	true
+		true
 	#else
-	false
+		false
 	#endif
 }
 
-fileprivate var chartAppearanceDefaultValue: DaylightChart.Appearance = .graphical
+private var chartAppearanceDefaultValue: DaylightChart.Appearance = .graphical

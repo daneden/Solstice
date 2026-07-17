@@ -5,10 +5,10 @@
 //  Created by Daniel Eden on 14/08/2025.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 
-internal enum BackportGlassButtonStyle {
+enum BackportGlassButtonStyle {
 	case regular, prominent
 }
 
@@ -17,26 +17,26 @@ extension View {
 	func glassButtonStyle(_ style: BackportGlassButtonStyle = .regular) -> some View {
 		switch style {
 		case .prominent:
-			self.modify { content in
+			modify { content in
 				if #available(iOS 26, macOS 26, watchOS 26, *) {
 					#if !os(visionOS)
-					content.buttonStyle(.glassProminent)
+						content.buttonStyle(.glassProminent)
 					#else
-					content.buttonStyle(.borderedProminent)
+						content.buttonStyle(.borderedProminent)
 					#endif
 				} else {
 					content.buttonStyle(.borderedProminent)
 				}
 			}
 		case .regular:
-			self.modify { content in
+			modify { content in
 				if #available(iOS 26, macOS 26, watchOS 26, *) {
 					#if !os(visionOS)
-					content.buttonStyle(.glass)
+						content.buttonStyle(.glass)
 					#else
-					content
-						.buttonStyle(.bordered)
-						.backgroundStyle(.regularMaterial)
+						content
+							.buttonStyle(.bordered)
+							.backgroundStyle(.regularMaterial)
 					#endif
 				} else {
 					content
@@ -67,7 +67,7 @@ struct MaterialButtonStyle: ButtonStyle {
 			return 16
 		}
 	}
-	
+
 	var font: Font {
 		switch controlSize {
 		case .mini:
@@ -84,7 +84,7 @@ struct MaterialButtonStyle: ButtonStyle {
 			return .body
 		}
 	}
-	
+
 	func makeBody(configuration: Configuration) -> some View {
 		configuration.label
 			.font(font)

@@ -10,9 +10,17 @@ import WidgetKit
 
 struct WidgetLocationView: View {
 	var location: SolsticeWidgetLocation
-	
+
+	/// Current location is already geocoded live into `title`; only saved/custom
+	/// locations benefit from the per-locale cache populated by the app.
+	private var displayTitle: String? {
+		guard !location.isRealLocation else { return location.title }
+		let cached = LocalizedNameCache.read(key: LocalizedNameCache.key(latitude: location.latitude, longitude: location.longitude))
+		return cached?.title ?? location.title
+	}
+
 	var locationName: Text {
-		guard let title = location.title else {
+		guard let title = displayTitle else {
 			switch location.isRealLocation {
 			case true:
 				return Text("Current Location \(Image(systemName: "location"))")
@@ -20,7 +28,7 @@ struct WidgetLocationView: View {
 				return Text("\(Image(.solstice)) Solstice")
 			}
 		}
-		
+
 		switch location.isRealLocation {
 		case true:
 			return Text("\(Text(title)) \(Image(systemName: "location"))", comment: "Widget heading for real location")
@@ -28,7 +36,7 @@ struct WidgetLocationView: View {
 			return Text("\(Image(.solstice)) \(Text(title))", comment: "Widget heading for custom location")
 		}
 	}
-	
+
 	var body: some View {
 		locationName
 			.font(.footnote.weight(.semibold))
@@ -45,9 +53,9 @@ struct WidgetLocationView_Previews: PreviewProvider {
 			WidgetLocationView(location: SolsticeWidgetLocation(latitude: 0, longitude: 0))
 		}
 		#if os(watchOS)
-			.previewContext(WidgetPreviewContext(family: .accessoryCircular))
+		.previewContext(WidgetPreviewContext(family: .accessoryCircular))
 		#else
-			.previewContext(WidgetPreviewContext(family: .systemMedium))
+		.previewContext(WidgetPreviewContext(family: .systemMedium))
 		#endif
 	}
 }

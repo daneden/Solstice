@@ -10,9 +10,9 @@ import Foundation
 extension TimeZone {
 	func differenceFromLocalTime(for date: Date) -> TimeInterval {
 		let currentOffset = localTimeZone.secondsFromGMT(for: date) * -1
-		return TimeInterval(self.secondsFromGMT(for: date) + currentOffset)
+		return TimeInterval(secondsFromGMT(for: date) + currentOffset)
 	}
-	
+
 	func differenceStringFromLocalTime(for date: Date) -> String {
 		let difference = differenceFromLocalTime(for: date)
 		let prefix = difference >= 0 ? "+" : ""

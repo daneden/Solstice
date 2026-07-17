@@ -5,8 +5,8 @@
 //  Created by Daniel Eden on 19/02/2023.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 struct SolsticeWidgetLocation: AnyLocation {
 	var title: String?
@@ -16,19 +16,19 @@ struct SolsticeWidgetLocation: AnyLocation {
 	var longitude: Double
 	var isRealLocation = false
 	var locationUUID: UUID?
-	
+
 	static let defaultLocation = SolsticeWidgetLocation(title: "London",
-																											subtitle: "United Kingdom",
-																											timeZoneIdentifier: "Europe/London",
-																											latitude: 51.5072,
-																											longitude: -0.1276)
-	
+	                                                    subtitle: "United Kingdom",
+	                                                    timeZoneIdentifier: "Europe/London",
+	                                                    latitude: 51.5072,
+	                                                    longitude: -0.1276)
+
 	static let proxiedToTimeZone = SolsticeWidgetLocation(title: "Your location",
-																												timeZoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
-																												latitude: CLLocationCoordinate2D.proxiedToTimeZone.latitude,
-																												longitude: CLLocationCoordinate2D.proxiedToTimeZone.longitude,
-																												isRealLocation: true)
-	
+	                                                      timeZoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
+	                                                      latitude: CLLocationCoordinate2D.proxiedToTimeZone.latitude,
+	                                                      longitude: CLLocationCoordinate2D.proxiedToTimeZone.longitude,
+	                                                      isRealLocation: true)
+
 	var url: URL? {
 		switch isRealLocation {
 		case true: return URL(string: "solstice://location/currentLocation")

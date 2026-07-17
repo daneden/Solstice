@@ -10,17 +10,14 @@ import SwiftUI
 struct AsyncButton<Label: View>: View {
 	let action: () async -> Void
 	let label: Label
-	
-	@State var isRunning = false
-	
-	init(
-		action: @escaping () async -> Void,
-		@ViewBuilder label: () -> Label
-	) {
+
+	@State private var isRunning = false
+
+	init(action: @escaping () async -> Void, @ViewBuilder label: () -> Label) {
 		self.action = action
 		self.label = label()
 	}
-	
+
 	var body: some View {
 		Button {
 			isRunning = true
@@ -28,7 +25,7 @@ struct AsyncButton<Label: View>: View {
 				await action()
 				isRunning = false
 			}
-		}	label: {
+		} label: {
 			label
 				.if(isRunning) { content in
 					content

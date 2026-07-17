@@ -1,0 +1,422 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Get sunrise time from ${applicationName}" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "الحصول على وقت الشروق من ${applicationName}",
+              "الحصول على وقت الشروق في ${applicationName}",
+              "عرض وقت الشروق من ${applicationName}"
+            ]
+          }
+        },
+        "de" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Sonnenaufgangszeit von ${applicationName} abrufen",
+              "Sonnenaufgangszeit in ${applicationName} abrufen",
+              "Sonnenaufgang mit ${applicationName} anzeigen"
+            ]
+          }
+        },
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "Get sunrise time from ${applicationName}",
+              "Get sunrise time in ${applicationName}"
+            ]
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Consultar la hora del amanecer en ${applicationName}",
+              "Obtener la hora del amanecer con ${applicationName}",
+              "Ver la hora del amanecer en ${applicationName}"
+            ]
+          }
+        },
+        "fr" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Obtenir l’heure du lever du soleil dans ${applicationName}",
+              "Consulter l’heure du lever du soleil dans ${applicationName}",
+              "Voir l’heure du lever du soleil dans ${applicationName}"
+            ]
+          }
+        },
+        "it" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Ottieni l’ora dell’alba da ${applicationName}",
+              "Ottieni l’ora dell’alba in ${applicationName}",
+              "Consulta l’ora dell’alba in ${applicationName}",
+              "Mostra l’ora dell’alba in ${applicationName}"
+            ]
+          }
+        },
+        "ja" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "${applicationName}で日の出の時刻を取得",
+              "${applicationName}で日の出の時刻を確認",
+              "${applicationName}で日の出の時刻を調べる"
+            ]
+          }
+        },
+        "nl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Zonsopkomsttijd ophalen uit ${applicationName}",
+              "Zonsopkomsttijd bekijken in ${applicationName}",
+              "Zonsopkomsttijd opvragen in ${applicationName}"
+            ]
+          }
+        },
+        "pl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Sprawdź godzinę wschodu słońca w ${applicationName}",
+              "Pokaż godzinę wschodu słońca w ${applicationName}",
+              "Pobierz godzinę wschodu słońca z ${applicationName}"
+            ]
+          }
+        },
+        "zh-Hans" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "从${applicationName}获取日出时间",
+              "在${applicationName}中查看日出时间",
+              "用${applicationName}查询日出时间"
+            ]
+          }
+        }
+      }
+    },
+    "Get sunset time from ${applicationName}" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "الحصول على وقت الغروب من ${applicationName}",
+              "الحصول على وقت الغروب في ${applicationName}",
+              "عرض وقت الغروب من ${applicationName}"
+            ]
+          }
+        },
+        "de" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Sonnenuntergangszeit von ${applicationName} abrufen",
+              "Sonnenuntergangszeit in ${applicationName} abrufen",
+              "Sonnenuntergang mit ${applicationName} anzeigen"
+            ]
+          }
+        },
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "Get sunset time from ${applicationName}",
+              "Get sunset time in ${applicationName}"
+            ]
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Consultar la hora de la puesta de sol en ${applicationName}",
+              "Obtener la hora de la puesta de sol con ${applicationName}",
+              "Ver la hora del ocaso en ${applicationName}"
+            ]
+          }
+        },
+        "fr" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Obtenir l’heure du coucher du soleil dans ${applicationName}",
+              "Consulter l’heure du coucher du soleil dans ${applicationName}",
+              "Voir l’heure du coucher du soleil dans ${applicationName}"
+            ]
+          }
+        },
+        "it" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Ottieni l’ora del tramonto da ${applicationName}",
+              "Ottieni l’ora del tramonto in ${applicationName}",
+              "Consulta l’ora del tramonto in ${applicationName}",
+              "Mostra l’ora del tramonto in ${applicationName}"
+            ]
+          }
+        },
+        "ja" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "${applicationName}で日の入りの時刻を取得",
+              "${applicationName}で日の入りの時刻を確認",
+              "${applicationName}で日の入りの時刻を調べる"
+            ]
+          }
+        },
+        "nl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Zonsondergangstijd ophalen uit ${applicationName}",
+              "Zonsondergangstijd bekijken in ${applicationName}",
+              "Zonsondergangstijd opvragen in ${applicationName}"
+            ]
+          }
+        },
+        "pl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Sprawdź godzinę zachodu słońca w ${applicationName}",
+              "Pokaż godzinę zachodu słońca w ${applicationName}",
+              "Pobierz godzinę zachodu słońca z ${applicationName}"
+            ]
+          }
+        },
+        "zh-Hans" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "从${applicationName}获取日落时间",
+              "在${applicationName}中查看日落时间",
+              "用${applicationName}查询日落时间"
+            ]
+          }
+        }
+      }
+    },
+    "View daylight for a location in ${applicationName}" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "عرض ضوء النهار لموقع في ${applicationName}",
+              "إظهار ضوء النهار لموقع في ${applicationName}",
+              "الاطلاع على ضوء النهار لموقع في ${applicationName}"
+            ]
+          }
+        },
+        "de" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Tageslicht für einen Ort in ${applicationName} anzeigen",
+              "Tageslicht für einen Ort in ${applicationName} ansehen",
+              "Tageslicht eines Orts mit ${applicationName} anzeigen"
+            ]
+          }
+        },
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "View daylight for a location in ${applicationName}"
+            ]
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Ver la luz natural de una ubicación en ${applicationName}",
+              "Consultar la luz natural de un lugar en ${applicationName}",
+              "Mostrar la luz natural de una ubicación en ${applicationName}"
+            ]
+          }
+        },
+        "fr" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Afficher la lumière du jour pour un lieu dans ${applicationName}",
+              "Consulter la lumière du jour pour un lieu dans ${applicationName}",
+              "Voir la lumière du jour pour un lieu dans ${applicationName}"
+            ]
+          }
+        },
+        "it" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Visualizza la luce del giorno per una posizione in ${applicationName}",
+              "Mostra la luce del giorno per una posizione in ${applicationName}",
+              "Consulta la luce del giorno per una posizione in ${applicationName}"
+            ]
+          }
+        },
+        "ja" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "${applicationName}で場所の日照時間を表示",
+              "${applicationName}で場所の日照時間を確認",
+              "${applicationName}で場所の日照時間を見る"
+            ]
+          }
+        },
+        "nl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Bekijk daglicht voor een locatie in ${applicationName}",
+              "Toon daglicht voor een locatie in ${applicationName}",
+              "Daglicht voor een locatie bekijken in ${applicationName}"
+            ]
+          }
+        },
+        "pl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Wyświetl światło dzienne dla lokalizacji w ${applicationName}",
+              "Pokaż światło dzienne dla lokalizacji w ${applicationName}",
+              "Zobacz światło dzienne dla lokalizacji w ${applicationName}"
+            ]
+          }
+        },
+        "zh-Hans" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "在${applicationName}中查看某个地点的日照",
+              "在${applicationName}中显示某个地点的日照",
+              "用${applicationName}查看地点的日照"
+            ]
+          }
+        }
+      }
+    },
+    "View remaining daylight for a location in ${applicationName}" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "عرض ضوء النهار المتبقي لموقع في ${applicationName}",
+              "إظهار ضوء النهار المتبقي لموقع في ${applicationName}",
+              "الاطلاع على ضوء النهار المتبقي لموقع في ${applicationName}"
+            ]
+          }
+        },
+        "de" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Verbleibendes Tageslicht für einen Ort in ${applicationName} anzeigen",
+              "Verbleibendes Tageslicht für einen Ort in ${applicationName} ansehen",
+              "Restliches Tageslicht eines Orts mit ${applicationName} anzeigen"
+            ]
+          }
+        },
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "View remaining daylight for a location in ${applicationName}"
+            ]
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Ver la luz natural restante de una ubicación en ${applicationName}",
+              "Consultar la luz natural restante de un lugar en ${applicationName}",
+              "Mostrar la luz natural restante de una ubicación en ${applicationName}"
+            ]
+          }
+        },
+        "fr" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Afficher la lumière du jour restante pour un lieu dans ${applicationName}",
+              "Consulter la lumière du jour restante pour un lieu dans ${applicationName}",
+              "Voir la lumière du jour restante pour un lieu dans ${applicationName}"
+            ]
+          }
+        },
+        "it" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Visualizza la luce del giorno rimanente per una posizione in ${applicationName}",
+              "Mostra la luce del giorno rimanente per una posizione in ${applicationName}",
+              "Consulta la luce del giorno rimanente per una posizione in ${applicationName}"
+            ]
+          }
+        },
+        "ja" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "${applicationName}で場所の残りの日照時間を表示",
+              "${applicationName}で場所の残りの日照時間を確認",
+              "${applicationName}で場所の残りの日照時間を見る"
+            ]
+          }
+        },
+        "nl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Bekijk resterend daglicht voor een locatie in ${applicationName}",
+              "Toon resterend daglicht voor een locatie in ${applicationName}",
+              "Resterend daglicht voor een locatie bekijken in ${applicationName}"
+            ]
+          }
+        },
+        "pl" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "Wyświetl pozostałe światło dzienne dla lokalizacji w ${applicationName}",
+              "Pokaż pozostałe światło dzienne dla lokalizacji w ${applicationName}",
+              "Zobacz pozostałe światło dzienne dla lokalizacji w ${applicationName}"
+            ]
+          }
+        },
+        "zh-Hans" : {
+          "stringSet" : {
+            "state" : "machine_translated",
+            "values" : [
+              "在${applicationName}中查看某个地点的剩余日照",
+              "在${applicationName}中显示某个地点的剩余日照",
+              "用${applicationName}查看地点还剩多少日照"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.3"
+}

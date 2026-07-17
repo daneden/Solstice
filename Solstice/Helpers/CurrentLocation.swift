@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 class CurrentLocation: NSObject, CLLocationManagerDelegate {
 	private(set) var placemark: CLPlacemark?
-	
+
 	private(set) var location: CLLocation? {
 		didSet {
 			Task {
@@ -36,21 +36,21 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 
 		LocationAppGroupCache.write(locationData)
 	}
-	
+
 	@ObservationIgnored private let locationManager = CLLocationManager()
 	@ObservationIgnored private let geocoder = CLGeocoder()
-	
+
 	override init() {
 		super.init()
 
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
 	}
-	
+
 	func requestAccess() {
 		locationManager.requestWhenInUseAuthorization()
 	}
-	
+
 	func requestLocation() {
 		guard isAuthorized else { return }
 		Task {
@@ -61,11 +61,11 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 			}
 		}
 	}
-	
+
 	func requestLocationFromLiveUpdates() async throws {
 		let updates = CLLocationUpdate.liveUpdates()
 		for try await update in updates {
-			self.location = update.location
+			location = update.location
 		}
 	}
 
@@ -83,29 +83,30 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 }
 
 // MARK: Location update request methods and handlers
+
 extension CurrentLocation {
 	@MainActor func processLocation(_ location: CLLocation?) async {
 		guard let location else { return }
-		
+
 		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
 		if let firstResult = reverseGeocoded?.first {
 			placemark = firstResult
 		}
 	}
-	
+
 	var authorizationStatus: CLAuthorizationStatus {
 		locationManager.authorizationStatus
 	}
-	
+
 	var isAuthorized: Bool {
 		switch authorizationStatus {
 		case .authorizedAlways, .authorizedWhenInUse: return true
 		default: return false
 		}
 	}
-	
-	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-		if location == nil && isAuthorized {
+
+	func locationManagerDidChangeAuthorization(_: CLLocationManager) {
+		if location == nil, isAuthorized {
 			Task {
 				do {
 					try await requestLocationFromLiveUpdates()
@@ -119,30 +120,47 @@ extension CurrentLocation {
 
 extension CurrentLocation {
 	// MARK: Fallback location request code
+
 	func legacyRequestLocation() {
 		locationManager.startUpdatingLocation()
 	}
-	
+
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		guard let location = locations.last else { return }
 		self.location = location
 		manager.stopUpdatingLocation()
 	}
-	
-	func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
+
+	func locationManager(_: CLLocationManager, didFailWithError error: any Error) {
 		print("Error with location manager delegate: \(error.localizedDescription)")
 	}
 }
 
 extension CurrentLocation: ObservableLocation {
-	var title: String? { placemark?.locality }
-	var subtitle: String? { placemark?.country }
-	var timeZoneIdentifier: String? { placemark?.timeZone?.identifier }
-	var latitude: Double { location?.coordinate.latitude ?? 0 }
-	var longitude: Double { location?.coordinate.longitude ?? 0 }
+	var title: String? {
+		placemark?.locality
+	}
+
+	var subtitle: String? {
+		placemark?.country
+	}
+
+	var timeZoneIdentifier: String? {
+		placemark?.timeZone?.identifier
+	}
+
+	var latitude: Double {
+		location?.coordinate.latitude ?? 0
+	}
+
+	var longitude: Double {
+		location?.coordinate.longitude ?? 0
+	}
 }
 
 extension CurrentLocation: Identifiable {
 	static let identifier = "currentLocation"
-	var id: String { CurrentLocation.identifier }
+	var id: String {
+		CurrentLocation.identifier
+	}
 }

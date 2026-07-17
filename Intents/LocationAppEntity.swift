@@ -5,10 +5,10 @@
 //  Created by Daniel Eden on 31/01/2026.
 //
 
-import Foundation
 import AppIntents
-import CoreLocation
 import CoreData
+import CoreLocation
+import Foundation
 import MapKit
 
 /// An AppEntity representing a location for widget configuration.
@@ -126,14 +126,15 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 
 		let encoded = String(id.dropFirst(6))
 		guard let decoded = encoded.removingPercentEncoding,
-			  let data = decoded.data(using: .utf8),
-			  let locationData = try? JSONDecoder().decode(LocationData.self, from: data) else {
+		      let data = decoded.data(using: .utf8),
+		      let locationData = try? JSONDecoder().decode(LocationData.self, from: data)
+		else {
 			return nil
 		}
 
 		return LocationAppEntity(
 			id: id,
-			title: locationData.title ?? "Unknown",
+			title: locationData.title ?? String(localized: "Unknown"),
 			subtitle: locationData.subtitle,
 			latitude: locationData.latitude,
 			longitude: locationData.longitude,
@@ -202,13 +203,13 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 
 				let entity = LocationAppEntity(
 					id: encodeTemporaryEntity(
-						title: item.name ?? item.placemark.locality ?? "Unknown",
+						title: item.name ?? item.placemark.locality ?? String(localized: "Unknown"),
 						subtitle: item.placemark.country,
 						latitude: location.coordinate.latitude,
 						longitude: location.coordinate.longitude,
 						timeZoneIdentifier: timeZoneIdentifier
 					),
-					title: item.name ?? item.placemark.locality ?? "Unknown",
+					title: item.name ?? item.placemark.locality ?? String(localized: "Unknown"),
 					subtitle: [item.placemark.locality, item.placemark.administrativeArea, item.placemark.country]
 						.compactMap { $0 }
 						.filter { $0 != item.name }
@@ -264,7 +265,8 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 		)
 
 		guard let encoded = try? JSONEncoder().encode(data),
-			  let string = String(data: encoded, encoding: .utf8) else {
+		      let string = String(data: encoded, encoding: .utf8)
+		else {
 			return "temp:\(latitude),\(longitude)"
 		}
 
@@ -277,14 +279,15 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 
 		let encoded = String(id.dropFirst(5))
 		guard let decoded = encoded.removingPercentEncoding,
-			  let data = decoded.data(using: .utf8),
-			  let locationData = try? JSONDecoder().decode(LocationData.self, from: data) else {
+		      let data = decoded.data(using: .utf8),
+		      let locationData = try? JSONDecoder().decode(LocationData.self, from: data)
+		else {
 			return nil
 		}
 
 		return LocationAppEntity(
 			id: id,
-			title: locationData.title ?? "Unknown",
+			title: locationData.title ?? String(localized: "Unknown"),
 			subtitle: locationData.subtitle,
 			latitude: locationData.latitude,
 			longitude: locationData.longitude,
@@ -300,10 +303,11 @@ extension LocationAppEntity {
 	/// Initialize from a SavedLocation Core Data object
 	/// Encodes the full location data in the ID for resilient entity resolution
 	init(from savedLocation: SavedLocation) {
-		let title = savedLocation.title ?? "Unknown"
+		let title = savedLocation.title ?? String(localized: "Unknown")
 		let subtitle = savedLocation.subtitle
 
-		// Encode full location data in ID so entity can be resolved even if Core Data lookup fails
+		// Encode the STORED values in the ID so entity resolution stays stable across
+		// locales (the ID is identity, not display).
 		let data = LocationData(
 			title: title,
 			subtitle: subtitle,
@@ -314,18 +318,21 @@ extension LocationAppEntity {
 		)
 
 		if let encoded = try? JSONEncoder().encode(data),
-		   let jsonString = String(data: encoded, encoding: .utf8) {
-			self.id = "saved:" + jsonString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+		   let jsonString = String(data: encoded, encoding: .utf8)
+		{
+			id = "saved:" + jsonString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
 		} else {
 			// Fallback to UUID if encoding fails
-			self.id = savedLocation.uuid?.uuidString ?? UUID().uuidString
+			id = savedLocation.uuid?.uuidString ?? UUID().uuidString
 		}
 
-		self.title = title
-		self.subtitle = subtitle
-		self.latitude = savedLocation.latitude
-		self.longitude = savedLocation.longitude
-		self.timeZoneIdentifier = savedLocation.timeZoneIdentifier
-		self.savedLocationUUID = savedLocation.uuid
+		// Display the localized name when cached (per-device, per-locale); stored fallback.
+		let resolved = LocalizedNameCache.cachedName(for: savedLocation)
+		self.title = resolved.title ?? title
+		self.subtitle = resolved.subtitle ?? subtitle
+		latitude = savedLocation.latitude
+		longitude = savedLocation.longitude
+		timeZoneIdentifier = savedLocation.timeZoneIdentifier
+		savedLocationUUID = savedLocation.uuid
 	}
 }

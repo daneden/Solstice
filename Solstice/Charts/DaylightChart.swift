@@ -5,9 +5,9 @@
 //  Created by Daniel Eden on 12/02/2023.
 //
 
-import SwiftUI
 import Charts
 import Suite
+import SwiftUI
 import TimeMachine
 
 struct DaylightChart: View {
@@ -70,7 +70,9 @@ struct DaylightChart: View {
 
 	/// X-axis domain: always a full 24-hour day expressed as seconds from midnight.
 	/// Keeping this constant means only the y-axis animates when the date changes.
-	var range: ClosedRange<TimeInterval> { 0...86400 }
+	var range: ClosedRange<TimeInterval> {
+		0 ... 86400
+	}
 
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -274,26 +276,26 @@ struct DaylightChart: View {
 			.contentShape(Rectangle())
 			.if(scrubbable) { view in
 				view
-#if os(iOS)
-					.gesture(DragGesture()
-						.onChanged { value in
-							scrub(to: value.location, in: geo, proxy: proxy)
-						}
-						.onEnded { _ in
-							selectedEvent = nil
-							currentX = nil
-						})
-#elseif os(macOS)
+				#if os(iOS)
+				.gesture(DragGesture()
+					.onChanged { value in
+						scrub(to: value.location, in: geo, proxy: proxy)
+					}
+					.onEnded { _ in
+						selectedEvent = nil
+						currentX = nil
+					})
+				#elseif os(macOS)
 					.onContinuousHover { value in
 						switch value {
-						case .active(let point):
+						case let .active(point):
 							scrub(to: point, in: geo, proxy: proxy)
 						case .ended:
 							selectedEvent = nil
 							currentX = nil
 						}
 					}
-#endif
+				#endif
 			}
 	}
 
@@ -307,11 +309,13 @@ struct DaylightChart: View {
 }
 
 extension DaylightChart {
-	var hours: Array<TimeInterval> {
+	var hours: [TimeInterval] {
 		stride(from: range.lowerBound, through: range.upperBound, by: 60 * 30).map { $0 }
 	}
 
-	var startOfDay: Date { midnight }
+	var startOfDay: Date {
+		midnight
+	}
 
 	func pointMarkColor(for eventPhase: NTSolar.Phase) -> HierarchicalShapeStyle {
 		switch eventPhase {
@@ -329,7 +333,7 @@ extension DaylightChart {
 	func resetSelectedEvent() {
 		selectedEvent = solar.events.filter {
 			$0.phase == .sunset || $0.phase == .sunrise
-		}.sorted(by: { a, b in
+		}.sorted(by: { a, _ in
 			a.date.compare(.now) == .orderedDescending
 		}).first
 	}
@@ -341,11 +345,11 @@ extension DaylightChart {
 		if let yScale { return yScale }
 		let altitudes = hours.map { yValue(for: $0) }
 		guard let minAlt = altitudes.min(), let maxAlt = altitudes.max() else {
-			return -90.0...90.0
+			return -90.0 ... 90.0
 		}
 		let span = maxAlt - minAlt
 		let padding = span * 0.1
-		return (minAlt - padding)...(maxAlt + padding)
+		return (minAlt - padding) ... (maxAlt + padding)
 	}
 
 	/// The sun's actual altitude in degrees at the given offset (seconds from midnight).
@@ -371,9 +375,10 @@ extension DaylightChart {
 		currentX = proxy.value(atX: xCurrent)
 
 		if let currentX,
-			 let nearestEvent = solar.events.sorted(by: { lhs, rhs in
-				 abs(eventOffset(for: lhs.date) - currentX) <= abs(eventOffset(for: rhs.date) - currentX)
-			 }).first {
+		   let nearestEvent = solar.events.sorted(by: { lhs, rhs in
+		   	abs(eventOffset(for: lhs.date) - currentX) <= abs(eventOffset(for: rhs.date) - currentX)
+		   }).first
+		{
 			selectedEvent = nearestEvent
 		}
 	}
@@ -382,7 +387,7 @@ extension DaylightChart {
 extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {
 		case simple = "Simple",
-				 graphical = "Graphical"
+		     graphical = "Graphical"
 
 		var description: LocalizedStringKey {
 			switch self {

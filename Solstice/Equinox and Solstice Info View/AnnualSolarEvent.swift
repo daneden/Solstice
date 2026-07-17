@@ -9,7 +9,7 @@ import SwiftUI
 
 enum AnnualSolarEvent: CaseIterable, Codable, Hashable {
 	case marchEquinox, juneSolstice, septemberEquinox, decemberSolstice
-	
+
 	var description: LocalizedStringKey {
 		switch self {
 		case .marchEquinox:
@@ -22,7 +22,7 @@ enum AnnualSolarEvent: CaseIterable, Codable, Hashable {
 			return "December solstice"
 		}
 	}
-	
+
 	var shortMonthDescription: LocalizedStringKey {
 		switch self {
 		case .marchEquinox:
@@ -35,7 +35,7 @@ enum AnnualSolarEvent: CaseIterable, Codable, Hashable {
 			return "December"
 		}
 	}
-	
+
 	var shortEventDescription: LocalizedStringKey {
 		switch self {
 		case .marchEquinox, .septemberEquinox:
@@ -44,7 +44,7 @@ enum AnnualSolarEvent: CaseIterable, Codable, Hashable {
 			return "Solstice"
 		}
 	}
-	
+
 	var sunAngle: Double {
 		switch self {
 		case .marchEquinox:

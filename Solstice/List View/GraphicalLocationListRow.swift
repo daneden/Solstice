@@ -11,11 +11,11 @@ import TimeMachine
 struct GraphicalLocationListRow<Location: ObservableLocation>: View {
 	@Environment(\.timeMachine) private var timeMachine
 	var location: Location
-	
+
 	var solar: NTSolar? {
 		NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var body: some View {
 		LocationListRow(location: location, headingFontWeight: .semibold)
 			.foregroundStyle(.white)

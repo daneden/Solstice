@@ -5,11 +5,11 @@
 //  Created by Daniel Eden on 12/03/2023.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 import TimeMachine
 
-fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
+private var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 	let formatter = RelativeDateTimeFormatter()
 	formatter.unitsStyle = .full
 	formatter.dateTimeStyle = .named
@@ -18,22 +18,30 @@ fileprivate var solsticeAndEquinoxFormatter: RelativeDateTimeFormatter {
 
 struct AnnualOverview<Location: AnyLocation>: View {
 	#if !os(watchOS)
-	@Environment(\.openWindow) var openWindow
+		@Environment(\.openWindow) var openWindow
 	#endif
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
-	
+
 	@State private var isInformationSheetPresented = false
-	
+
 	var location: Location
-	
+
 	var nextGreaterThanPrevious: Bool {
 		timeMachine.date.nextSolsticeIncreasesLight(at: location.latitude)
 	}
-	
-	var date: Date { timeMachine.date }
-	var nextSolstice: Date { timeMachine.date.nextSolstice }
-	var nextEquinox: Date { timeMachine.date.nextEquinox }
-	
+
+	var date: Date {
+		timeMachine.date
+	}
+
+	var nextSolstice: Date {
+		timeMachine.date.nextSolstice
+	}
+
+	var nextEquinox: Date {
+		timeMachine.date.nextEquinox
+	}
+
 	var body: some View {
 		Section {
 			Group {
@@ -53,6 +61,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					Image(systemName: nextGreaterThanPrevious ? "sun.max" : "sun.min")
 						.contentTransition(.symbolEffect)
 				}
+				.accessibilityIdentifier(A11y.annualChart)
 				.swipeActions(edge: .leading) {
 					Button {
 						withAnimation {
@@ -62,7 +71,7 @@ struct AnnualOverview<Location: AnyLocation>: View {
 						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 					}
 				}
-				
+
 				Label {
 					AdaptiveStack {
 						ContentToggle { showContent in
@@ -89,67 +98,68 @@ struct AnnualOverview<Location: AnyLocation>: View {
 					.backgroundStyle(.tint)
 				}
 			}
-			
+
 			AnnualDaylightChart(location: location)
 				.frame(height: chartHeight)
-			
+
 			if let shortestDay,
-				 let longestDay {
-					Label {
-						let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-						
-						AdaptiveStack {
-							ContentToggle { showContent in
-								if showContent {
-									Text("\(duration) of daylight")
-								} else {
-									Text(longestDay.date, style: .date)
-								}
+			   let longestDay
+			{
+				Label {
+					let duration = Duration.seconds(longestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+
+					AdaptiveStack {
+						ContentToggle { showContent in
+							if showContent {
+								Text("\(duration) of daylight")
+							} else {
+								Text(longestDay.date, style: .date)
 							}
-						} label: {
-							Text("Longest day")
 						}
-					} icon: {
-						Image(systemName: "sun.max")
+					} label: {
+						Text("Longest day")
 					}
-					.swipeActions(edge: .leading) {
-						Button {
-							withAnimation {
-								timeMachine.date = longestDay.date
+				} icon: {
+					Image(systemName: "sun.max")
+				}
+				.swipeActions(edge: .leading) {
+					Button {
+						withAnimation {
+							timeMachine.date = longestDay.date
+						}
+					} label: {
+						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
+					}
+				}
+
+				Label {
+					let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
+
+					AdaptiveStack {
+						ContentToggle { showContent in
+							if showContent {
+								Text("\(duration) of daylight")
+							} else {
+								Text(shortestDay.date, style: .date)
 							}
-						} label: {
-							Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 						}
+					} label: {
+						Text("Shortest day")
 					}
-					
-					Label {
-						let duration = Duration.seconds(shortestDay.daylightDuration).formatted(.units(maximumUnitCount: 2))
-						
-						AdaptiveStack {
-							ContentToggle { showContent in
-								if showContent {
-									Text("\(duration) of daylight")
-								} else {
-									Text(shortestDay.date, style: .date)
-								}
-							}
-						} label: {
-							Text("Shortest day")
+				} icon: {
+					Image(systemName: "sun.min")
+				}
+				.swipeActions(edge: .leading) {
+					Button {
+						withAnimation {
+							timeMachine.date = shortestDay.date
 						}
-					} icon: {
-						Image(systemName: "sun.min")
+					} label: {
+						Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
 					}
-					.swipeActions(edge: .leading) {
-						Button {
-							withAnimation {
-								timeMachine.date = shortestDay.date
-							}
-						} label: {
-							Label("Jump to date", systemImage: "clock.arrow.2.circlepath")
-						}
-					}
+				}
 			}
-			
+
 			if let daylightSavingsChange = location.timeZone.nextDaylightSavingTimeTransition(after: timeMachine.date) {
 				Label {
 					AdaptiveStack {
@@ -172,40 +182,42 @@ struct AnnualOverview<Location: AnyLocation>: View {
 }
 
 extension AnnualOverview {
-var decemberSolsticeSolar: NTSolar? {
+	var decemberSolsticeSolar: NTSolar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 		return NTSolar(for: decemberSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var juneSolsticeSolar: NTSolar? {
 		let year = calendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
 		return NTSolar(for: juneSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var longestDay: NTSolar? {
 		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+		      let juneSolsticeSolar
+		else {
 			return nil
 		}
-		
+
 		return decemberSolsticeSolar.daylightDuration > juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
 	}
-	
+
 	var shortestDay: NTSolar? {
 		guard let decemberSolsticeSolar,
-					let juneSolsticeSolar else {
+		      let juneSolsticeSolar
+		else {
 			return nil
 		}
-		
+
 		return decemberSolsticeSolar.daylightDuration < juneSolsticeSolar.daylightDuration ? decemberSolsticeSolar : juneSolsticeSolar
 	}
 }
 
 #Preview {
 	Form {
-		TimeMachineView() { Text("Time Machine") }
+		TimeMachineView { Text("Time Machine") }
 		AnnualOverview(location: TemporaryLocation.placeholderLondon)
 	}
 	.withTimeMachine(.solsticeTimeMachine)

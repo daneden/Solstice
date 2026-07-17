@@ -5,24 +5,40 @@
 //  Created by Daniel Eden on 03/02/2026.
 //
 
-import Foundation
-import SwiftUI
 import Charts
 import CoreLocation
+import Foundation
+import SwiftUI
 
 // MARK: - Solar Event Types
+
 extension NTSolar {
 	struct Event: Hashable, Identifiable {
-		var id: Int { hashValue }
-		let label: String
-		var date: Date
+		var id: Int {
+			hashValue
+		}
+
+		let label: LocalizedStringResource
+		let date: Date
 		let phase: Phase
 
-		init?(label: String, date: Date?, phase: Phase) {
+		init?(label: LocalizedStringResource, date: Date?, phase: Phase) {
 			guard let date else { return nil }
 			self.label = label
 			self.date = date
 			self.phase = phase
+		}
+
+		/// An event is identified by its date and phase; `label` is derived from
+		/// those, so it's excluded from equality/hashing (which also avoids
+		/// relying on `LocalizedStringResource`'s conformances).
+		static func == (lhs: Event, rhs: Event) -> Bool {
+			lhs.date == rhs.date && lhs.phase == rhs.phase
+		}
+
+		func hash(into hasher: inout Hasher) {
+			hasher.combine(date)
+			hasher.combine(phase)
 		}
 
 		var imageName: String {
@@ -43,14 +59,29 @@ extension NTSolar {
 
 	enum Phase: String, Plottable, CaseIterable {
 		case night = "Night",
-				 astronomical = "Astronomical Twilight",
-				 nautical = "Nautical Twilight",
-				 civil = "Civil Twilight",
-				 day = "Day",
-				 sunrise = "Sunrise",
-				 sunset = "Sunset"
+		     astronomical = "Astronomical Twilight",
+		     nautical = "Nautical Twilight",
+		     civil = "Civil Twilight",
+		     day = "Day",
+		     sunrise = "Sunrise",
+		     sunset = "Sunset"
 
 		static let plottablePhases: [Phase] = [.astronomical, .nautical, .civil]
+
+		/// Localized display name for the phase. `rawValue` is the stable
+		/// `Plottable` identity and can't be localized directly, so this is
+		/// what the chart legend renders instead.
+		var localizedName: LocalizedStringResource {
+			switch self {
+			case .night: "Night"
+			case .astronomical: "Astronomical Twilight"
+			case .nautical: "Nautical Twilight"
+			case .civil: "Civil Twilight"
+			case .day: "Day"
+			case .sunrise: "Sunrise"
+			case .sunset: "Sunset"
+			}
+		}
 	}
 
 	var phases: [Phase: (sunrise: Date?, sunset: Date?)] {
@@ -58,12 +89,13 @@ extension NTSolar {
 			.astronomical: (astronomicalSunrise, astronomicalSunset),
 			.nautical: (nauticalSunrise, nauticalSunset),
 			.civil: (civilSunrise, civilSunset),
-			.day: (safeSunrise, safeSunset)
+			.day: (safeSunrise, safeSunset),
 		]
 	}
 }
 
 // MARK: - Day Boundaries
+
 extension NTSolar {
 	var startOfDay: Date {
 		calendar.startOfDay(for: date)
@@ -83,6 +115,7 @@ extension NTSolar {
 }
 
 // MARK: - Safe Sunrise/Sunset
+
 extension NTSolar {
 	var fallbackSunrise: Date? {
 		sunrise ?? civilSunrise ?? nauticalSunrise ?? astronomicalSunrise
@@ -132,7 +165,7 @@ extension NTSolar {
 		let month = calendar.component(.month, from: date)
 
 		switch month {
-		case 1...3, 10...12:
+		case 1 ... 3, 10 ... 12:
 			return coordinate.insideArcticCircle ? 0 : TimeInterval.twentyFourHours
 		default:
 			return coordinate.insideArcticCircle ? TimeInterval.twentyFourHours : 0
@@ -141,6 +174,7 @@ extension NTSolar {
 }
 
 // MARK: - Related Days
+
 extension NTSolar {
 	var yesterday: NTSolar? {
 		let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: date) ?? date.addingTimeInterval(60 * 60 * 24 - 1)
@@ -157,9 +191,10 @@ extension NTSolar {
 }
 
 // MARK: - Difference Strings
+
 extension NTSolar {
 	var compactDifferenceString: LocalizedStringKey {
-		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: self.coordinate, timeZone: timeZone, calendar: calendar)
+		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: coordinate, timeZone: timeZone, calendar: calendar)
 		let difference = daylightDuration - (comparator?.daylightDuration ?? 0)
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
@@ -174,7 +209,7 @@ extension NTSolar {
 		formatter.dateStyle = .medium
 		formatter.formattingContext = .middleOfSentence
 
-		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: self.coordinate, timeZone: timeZone, calendar: calendar)
+		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: coordinate, timeZone: timeZone, calendar: calendar)
 		let difference = daylightDuration - (comparator?.daylightDuration ?? 0)
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
@@ -186,18 +221,22 @@ extension NTSolar {
 		// and should be presented as "{yesterday/today/tomorrow}"
 		var baseDateString = formatter.string(from: date)
 		if baseDateString.contains(/\d/) {
-			baseDateString = NSLocalizedString("on \(baseDateString)", comment: "Sentence fragment for nominal date")
+			// Absolute date: wrap with a localizable "on {date}" fragment. The date must be a
+			// format argument, not part of the key — interpolating it into the key produces a
+			// unique untranslatable key per date, leaving the fragment stuck in English.
+			baseDateString = String(format: NSLocalizedString("on %@", comment: "Sentence fragment placing a daylight comparison on an absolute date, e.g. 'on 13 Oct 2026'"), baseDateString)
 		}
 
-		let comparatorDate = comparator?.date ?? self.date
+		let comparatorDate = comparator?.date ?? date
 
 		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))")
 	}
 }
 
 // MARK: - Events
+
 extension NTSolar {
-	var events: Array<Event> {
+	var events: [Event] {
 		[
 			Event(label: "Astronomical Sunrise", date: astronomicalSunrise, phase: .astronomical),
 			Event(label: "Nautical Sunrise", date: nauticalSunrise, phase: .nautical),
@@ -209,10 +248,10 @@ extension NTSolar {
 			Event(label: "Nautical Sunset", date: nauticalSunset, phase: .nautical),
 			Event(label: "Astronomical Sunset", date: astronomicalSunset, phase: .astronomical),
 		]
-			.compactMap { $0 }
-			.sorted { a, b in
-				a.date.compare(b.date) == .orderedAscending
-			}
+		.compactMap { $0 }
+		.sorted { a, b in
+			a.date.compare(b.date) == .orderedAscending
+		}
 	}
 
 	var nextSolarEvent: Event? {
@@ -238,6 +277,7 @@ extension NTSolar {
 }
 
 // MARK: - View Helpers
+
 extension NTSolar {
 	var view: some View {
 		SkyGradient(ntSolar: self)

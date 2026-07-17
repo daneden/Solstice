@@ -5,8 +5,8 @@
 //  Created by Daniel Eden on 12/03/2023.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 import TimeMachine
 
 struct DailyOverview<Location: AnyLocation>: View {
@@ -14,41 +14,42 @@ struct DailyOverview<Location: AnyLocation>: View {
 
 	var solar: NTSolar
 	var location: Location
-	
+
 	@State private var gradientSolar: NTSolar?
-	
+
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
-	
+
 	var solarDateIsInToday: Bool {
 		var calendar = Calendar.autoupdatingCurrent
 		calendar.timeZone = location.timeZone
 		return calendar.isDate(solar.date, inSameDayAs: Date())
 	}
-	
+
 	var differenceFromPreviousSolstice: TimeInterval? {
 		guard let solar = NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone),
-					let previousSolsticeSolar = NTSolar(for: solar.date.previousSolstice, coordinate: location.coordinate, timeZone: location.timeZone) else {
+		      let previousSolsticeSolar = NTSolar(for: solar.date.previousSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
+		else {
 			return nil
 		}
-		
+
 		return previousSolsticeSolar.daylightDuration - solar.daylightDuration
 	}
-	
+
 	var nextGreaterThanPrevious: Bool {
 		timeMachine.date.nextSolsticeIncreasesLight(at: location.latitude)
 	}
-	
+
 	var body: some View {
 		Section {
 			VStack {
 				switch chartType {
 				#if !os(watchOS)
-				case .circular:
-					CircularSolarChart(location: location)
-						.padding()
-						.frame(maxHeight: chartHeight)
-						.frame(maxWidth: .infinity)
+					case .circular:
+						CircularSolarChart(location: location)
+							.padding()
+							.frame(maxHeight: chartHeight)
+							.frame(maxWidth: .infinity)
 				#endif
 				default:
 					daylightChartView
@@ -58,9 +59,9 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 			.listRowInsets(.zero)
 			#if os(watchOS)
-			.listRowBackground(Color.clear)
+				.listRowBackground(Color.clear)
 			#else
-			.contextMenu {
+				.contextMenu {
 					Picker(selection: $chartType.animation()) {
 						ForEach(ChartType.allCases) { chartType in
 							Label(chartType.title, image: chartType.icon)
@@ -72,7 +73,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 						Text("Chart type")
 					}
 					.pickerStyle(.menu)
-					
+
 					Picker(selection: $chartAppearance.animation()) {
 						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
 							Label(appearance.description, systemImage: "circle.fill")
@@ -82,21 +83,21 @@ struct DailyOverview<Location: AnyLocation>: View {
 						Text("Chart theme")
 					}
 					.pickerStyle(.menu)
-			}
-			.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
-			.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
-			#if !os(visionOS)
-			.listRowBackground(
-				solar.view
-					.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
-					.mask {
-						LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-					}
-					.background(Color("listRowBackgroundColor"))
-			)
+				}
+				.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
+				.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
+				#if !os(visionOS)
+					.listRowBackground(
+						solar.view
+							.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
+							.mask {
+								LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+							}
+							.background(Color("listRowBackgroundColor"))
+					)
+				#endif
 			#endif
-			#endif
-			
+
 			Group {
 				Label {
 					AdaptiveStack {
@@ -107,11 +108,11 @@ struct DailyOverview<Location: AnyLocation>: View {
 				} icon: {
 					Image(systemName: "hourglass")
 				}
-				
-				if solarDateIsInToday && (solar.safeSunrise...solar.safeSunset).contains(solar.date) {
+
+				if solarDateIsInToday && (solar.safeSunrise ... solar.safeSunset).contains(solar.date) {
 					Label {
 						AdaptiveStack {
-							Text(timerInterval: solar.safeSunrise...solar.safeSunset)
+							Text(timerInterval: solar.safeSunrise ... solar.safeSunset)
 								.monospacedDigit()
 						} label: {
 							Text("Remaining daylight")
@@ -120,7 +121,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 						Image(systemName: "timer")
 					}
 				}
-				
+
 				Label {
 					AdaptiveStack {
 						if let sunrise = solar.sunrise {
@@ -134,7 +135,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				} icon: {
 					Image(systemName: "sunrise")
 				}
-				
+
 				Label {
 					AdaptiveStack {
 						if let solarNoon = solar.solarNoon {
@@ -148,7 +149,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 				} icon: {
 					Image(systemName: "sun.max")
 				}
-				
+
 				Label {
 					AdaptiveStack {
 						if let sunset = solar.sunset {
@@ -167,7 +168,8 @@ struct DailyOverview<Location: AnyLocation>: View {
 			.materialListRowBackground()
 		} header: {
 			if location.timeZoneIdentifier != localTimeZone.identifier,
-				 !(location is CurrentLocation) {
+			   !(location is CurrentLocation)
+			{
 				HStack {
 					Text("Local time")
 					Spacer()
@@ -177,8 +179,11 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 		} footer: {
 			if let differenceFromPreviousSolstice {
+				let moreOrLess = nextGreaterThanPrevious
+					? String(localized: "more", comment: "More daylight middle of sentence")
+					: String(localized: "less", comment: "Less daylight middle of sentence")
 				Label {
-					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(nextGreaterThanPrevious ? "more" : "less") daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
+					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(moreOrLess) daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
 				} icon: {
 					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
 						.contentTransition(.symbolEffect)
@@ -209,7 +214,7 @@ extension DailyOverview {
 		}
 		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
 			self.gradientSolar = NTSolar(for: date, coordinate: solar.coordinate, timeZone: location.timeZone)
-			}
+		}
 		#endif
 		#if os(macOS)
 		.padding(-12)

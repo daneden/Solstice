@@ -5,9 +5,9 @@
 //  Created by Daniel Eden on 28/02/2023.
 //
 
-import Foundation
-import CoreLocation
 import CoreData
+import CoreLocation
+import Foundation
 
 protocol AnyLocation: Hashable {
 	var title: String? { get }
@@ -17,33 +17,36 @@ protocol AnyLocation: Hashable {
 	var longitude: Double { get }
 }
 
-protocol ObservableLocation: AnyLocation, AnyObject { }
+protocol ObservableLocation: AnyLocation, AnyObject {}
 
 extension AnyLocation {
 	var timeZone: TimeZone {
 		guard let timeZoneIdentifier,
-					let timeZone = TimeZone(identifier: timeZoneIdentifier) else {
+		      let timeZone = TimeZone(identifier: timeZoneIdentifier)
+		else {
 			return .autoupdatingCurrent
 		}
-		
+
 		return timeZone
 	}
-	
+
 	var coordinate: CLLocationCoordinate2D {
 		CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 	}
 }
 
-extension SavedLocation: ObservableLocation { }
+extension SavedLocation: ObservableLocation {}
 
-@Observable
-class TemporaryLocation: ObservableLocation {
-	var title: String?
-	var subtitle: String?
-	var timeZoneIdentifier: String?
-	var latitude: Double = 0.0
-	var longitude: Double = 0.0
-	
+/// An immutable, in-memory location used before a search result is saved.
+/// Its values are fixed at construction, so it needs no observation or actor
+/// isolation and composes with the nonisolated `AnyLocation` protocol.
+final class TemporaryLocation: ObservableLocation {
+	let title: String?
+	let subtitle: String?
+	let timeZoneIdentifier: String?
+	let latitude: Double
+	let longitude: Double
+
 	init(title: String?, subtitle: String?, timeZoneIdentifier: String?, latitude: Double, longitude: Double) {
 		self.title = title
 		self.subtitle = subtitle
@@ -51,7 +54,7 @@ class TemporaryLocation: ObservableLocation {
 		self.latitude = latitude
 		self.longitude = longitude
 	}
-	
+
 	func saveLocation(to context: NSManagedObjectContext) throws -> UUID? {
 		let savedLocation = SavedLocation(context: context)
 		savedLocation.title = title
@@ -69,19 +72,18 @@ extension TemporaryLocation: Hashable, Equatable {
 	static func == (lhs: TemporaryLocation, rhs: TemporaryLocation) -> Bool {
 		lhs.hashValue == rhs.hashValue
 	}
-	
+
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(latitude)
 		hasher.combine(longitude)
 	}
 }
 
-
 extension TemporaryLocation {
 	static var placeholderLondon: TemporaryLocation {
 		return TemporaryLocation(title: "London", subtitle: "England", timeZoneIdentifier: "GMT", latitude: 51.5072, longitude: -0.1276)
 	}
-	
+
 	static var placeholderGreenland: TemporaryLocation {
 		return TemporaryLocation(title: "Greenland", subtitle: nil, timeZoneIdentifier: "WGT", latitude: 74.7277, longitude: -41.3450)
 	}

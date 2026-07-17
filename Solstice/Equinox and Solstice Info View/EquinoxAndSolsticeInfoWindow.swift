@@ -8,23 +8,23 @@
 import SwiftUI
 
 struct EquinoxAndSolsticeInfoWindow: View {
-    var body: some View {
-			HStack {
-				ScrollView {
-					VStack(alignment: .leading, spacing: 20) {
-						Text("About solstices and equinoxes")
-							.font(.largeTitle.weight(.semibold))
-						EquinoxAndSolsticeDescriptions()
-					}
-					.padding()
+	var body: some View {
+		HStack {
+			ScrollView {
+				VStack(alignment: .leading, spacing: 20) {
+					Text("About solstices and equinoxes")
+						.font(.largeTitle.weight(.semibold))
+					EquinoxAndSolsticeDescriptions()
 				}
-				
-				EarthRealityView()	
+				.padding()
 			}
-			.scenePadding()
-    }
+
+			EarthRealityView()
+		}
+		.scenePadding()
+	}
 }
 
 #Preview {
-    EquinoxAndSolsticeInfoWindow()
+	EquinoxAndSolsticeInfoWindow()
 }

@@ -30,5 +30,5 @@ struct CompactLabelStyle: LabelStyle {
 	} icon: {
 		Image(systemName: "sparkles")
 	}
-		.labelStyle(CompactLabelStyle())
+	.labelStyle(CompactLabelStyle())
 }

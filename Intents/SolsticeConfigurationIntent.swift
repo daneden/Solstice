@@ -1,13 +1,13 @@
 //
-//  Configuration.swift
+//  SolsticeConfigurationIntent.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 31/01/2026.
 //
 
-import Foundation
 import AppIntents
 import CoreLocation
+import Foundation
 
 struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, CustomIntentMigratedAppIntent {
 	static let intentClassName = "ConfigurationIntent"
@@ -22,6 +22,7 @@ struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, Custom
 	var selectedLocation: LocationAppEntity?
 
 	// MARK: - Legacy Parameters (for migration from old ConfigurationIntent)
+
 	// These match the old ConfigurationIntent parameter names and types exactly
 	// so the system can automatically migrate existing widget configurations.
 
@@ -49,10 +50,11 @@ struct SolsticeConfigurationIntent: AppIntent, WidgetConfigurationIntent, Custom
 		case .customLocation:
 			// Custom location - convert CLPlacemark to LocationAppEntity
 			if let placemark = location,
-			   let coordinate = placemark.location?.coordinate {
+			   let coordinate = placemark.location?.coordinate
+			{
 				return LocationAppEntity(
 					id: "migrated:\(coordinate.latitude),\(coordinate.longitude)",
-					title: placemark.locality ?? placemark.name ?? "Custom Location",
+					title: placemark.locality ?? placemark.name ?? String(localized: "Custom Location"),
 					subtitle: placemark.country,
 					latitude: coordinate.latitude,
 					longitude: coordinate.longitude,
@@ -114,19 +116,21 @@ enum LocationTypeAppEnum: Int, AppEnum {
 	static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
 		.unknown: "Unknown",
 		.currentLocation: "Current Location",
-		.customLocation: "Custom Location"
+		.customLocation: "Custom Location",
 	]
 }
 
 // MARK: - Intent Dialogs
 
-fileprivate extension IntentDialog {
+private extension IntentDialog {
 	static var locationParameterPrompt: Self {
 		"Which location do you want to see daylight information for?"
 	}
+
 	static func locationParameterDisambiguationIntro(count: Int, location: LocationAppEntity) -> Self {
 		"There are \(count) options matching '\(location.title)'."
 	}
+
 	static func locationParameterConfirmation(location: LocationAppEntity) -> Self {
 		"Just to confirm, you wanted '\(location.title)'?"
 	}

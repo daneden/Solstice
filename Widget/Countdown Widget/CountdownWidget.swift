@@ -5,19 +5,18 @@
 //  Created by Daniel Eden on 03/04/2023.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct CountdownWidget: Widget {
-#if os(iOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular, .accessoryCircular]
-#elseif os(macOS) || os(visionOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
-#elseif os(watchOS)
-	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
-#endif
+	#if os(iOS)
+		static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular, .accessoryCircular]
+	#elseif os(macOS) || os(visionOS)
+		static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium]
+	#elseif os(watchOS)
+		static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
+	#endif
 
-	@ViewBuilder
 	private func widgetContent(for timelineEntry: SolsticeWidgetTimelineEntry) -> some View {
 		CountdownWidgetView(entry: timelineEntry)
 			.containerBackground(for: .widget) {

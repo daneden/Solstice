@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AboutSolsticeView: View {
 	@Environment(\.colorScheme) private var colorScheme
-	
+
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8) {
 			HStack(alignment: .firstTextBaseline) {
@@ -19,11 +19,12 @@ struct AboutSolsticeView: View {
 					Text("Solstice")
 				}
 				.fontWeight(.medium)
-				
+
 				Spacer()
-				
+
 				if let buildVersionNumber = Bundle.main.buildVersionNumber,
-					 let appVersionNumber = Bundle.main.releaseVersionNumber {
+				   let appVersionNumber = Bundle.main.releaseVersionNumber
+				{
 					Text("v\(appVersionNumber), #\(buildVersionNumber)")
 						.font(.caption)
 						.foregroundStyle(.secondary)
@@ -31,13 +32,13 @@ struct AboutSolsticeView: View {
 				}
 			}
 			.font(.title2)
-			
+
 			Group {
 				Text("Solstice is an app made by [Dan Eden](https://daneden.me), a designer and developer based in Manchester, England.")
 				Text("Dan is prone to Seasonal Affective Disorder (SAD), a mood disorder often associated with the reduction in total daily sunlight hours during the darker months of the year. Solstice was created to help everyone look forward to brighter days.")
-				
+
 				Divider()
-				
+
 				NavigationLink(destination: FullStoryView()) {
 					Text("Read more")
 						.fontWeight(.medium)
@@ -48,19 +49,18 @@ struct AboutSolsticeView: View {
 			.font(.subheadline)
 			.foregroundStyle(.secondary)
 		}
-#if os(iOS)
+		#if os(iOS)
 		.blendMode(colorScheme == .light ? .plusDarker : .plusLighter)
 		.listRowBackground(Color.clear.background(Color.accentColor.quinary))
-#endif
+		#endif
 	}
 }
 
-fileprivate struct FullStoryView: View {
+private struct FullStoryView: View {
 	var aboutString: String {
 		if let filepath = Bundle.main.path(forResource: "README", ofType: "md") {
 			do {
-				let contents = try String(contentsOfFile: filepath, encoding: .utf8)
-				return contents
+				return try String(contentsOfFile: filepath, encoding: .utf8)
 			} catch {
 				print("Markdown file README.md could not be parsed")
 				return "App info"
@@ -70,13 +70,13 @@ fileprivate struct FullStoryView: View {
 			return "App info"
 		}
 	}
-	
+
 	var markdownLines: [AttributedString] {
 		aboutString.split(whereSeparator: \.isNewline).suffix(from: 1).map { line in
 			(try? AttributedString(markdown: String(line))) ?? AttributedString()
 		}
 	}
-	
+
 	var body: some View {
 		Form {
 			Section {

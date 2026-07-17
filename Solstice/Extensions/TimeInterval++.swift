@@ -11,10 +11,10 @@ extension TimeInterval {
 	var localizedString: String {
 		Duration.seconds(abs(self)).formatted(.units(maximumUnitCount: 2))
 	}
-	
+
 	var abbreviatedHourString: String {
 		Duration.seconds(self).formatted(.units(allowed: [.hours]))
 	}
-	
+
 	static let twentyFourHours: TimeInterval = 60 * 60 * 24
 }

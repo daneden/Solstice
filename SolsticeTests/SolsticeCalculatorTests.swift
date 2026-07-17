@@ -5,18 +5,19 @@
 //  Created with Swift Testing framework
 //
 
-import Testing
 import Foundation
 @testable import Solstice
+import Testing
 
 struct SolsticeCalculatorTests {
 	// MARK: - Known astronomical dates for validation
+
 	// Reference values from the US Naval Observatory / timeanddate.com
 
 	@Test("June solstice 2024 falls on June 20")
-	func juneSolstice2024() {
+	func juneSolstice2024() throws {
 		let solstice = SolsticeCalculator.juneSolstice(year: 2024)
-		let components = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: solstice)
+		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: solstice)
 
 		#expect(components.month == 6)
 		#expect(components.day == 20)
@@ -24,9 +25,9 @@ struct SolsticeCalculatorTests {
 	}
 
 	@Test("December solstice 2024 falls on December 21")
-	func decemberSolstice2024() {
+	func decemberSolstice2024() throws {
 		let solstice = SolsticeCalculator.decemberSolstice(year: 2024)
-		let components = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: solstice)
+		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: solstice)
 
 		#expect(components.month == 12)
 		#expect(components.day == 21)
@@ -34,9 +35,9 @@ struct SolsticeCalculatorTests {
 	}
 
 	@Test("March equinox 2024 falls on March 20")
-	func marchEquinox2024() {
+	func marchEquinox2024() throws {
 		let equinox = SolsticeCalculator.marchEquinox(year: 2024)
-		let components = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: equinox)
+		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: equinox)
 
 		#expect(components.month == 3)
 		#expect(components.day == 20)
@@ -44,9 +45,9 @@ struct SolsticeCalculatorTests {
 	}
 
 	@Test("September equinox 2024 falls on September 22")
-	func septemberEquinox2024() {
+	func septemberEquinox2024() throws {
 		let equinox = SolsticeCalculator.septemberEquinox(year: 2024)
-		let components = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: equinox)
+		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: equinox)
 
 		#expect(components.month == 9)
 		#expect(components.day == 22)
@@ -56,32 +57,32 @@ struct SolsticeCalculatorTests {
 	// MARK: - Cross-year consistency
 
 	@Test("Solstices and equinoxes are calculated for multiple years", arguments: [2020, 2021, 2022, 2023, 2024, 2025, 2026])
-	func eventsReturnValidDates(year: Int) {
+	func eventsReturnValidDates(year: Int) throws {
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
 		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
 
-		let juneSolsticeComponents = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: juneSolstice)
-		let decemberSolsticeComponents = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: decemberSolstice)
-		let marchEquinoxComponents = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: marchEquinox)
-		let septemberEquinoxComponents = Calendar.current.dateComponents(in: TimeZone(identifier: "UTC")!, from: septemberEquinox)
+		let juneSolsticeComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: juneSolstice)
+		let decemberSolsticeComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: decemberSolstice)
+		let marchEquinoxComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: marchEquinox)
+		let septemberEquinoxComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: septemberEquinox)
 
 		// June solstice should be in June (day 20 or 21)
 		#expect(juneSolsticeComponents.month == 6)
-		#expect((20...21).contains(juneSolsticeComponents.day!))
+		#expect(try (20 ... 21).contains(#require(juneSolsticeComponents.day)))
 
 		// December solstice should be in December (day 21 or 22)
 		#expect(decemberSolsticeComponents.month == 12)
-		#expect((21...22).contains(decemberSolsticeComponents.day!))
+		#expect(try (21 ... 22).contains(#require(decemberSolsticeComponents.day)))
 
 		// March equinox should be in March (day 19-21)
 		#expect(marchEquinoxComponents.month == 3)
-		#expect((19...21).contains(marchEquinoxComponents.day!))
+		#expect(try (19 ... 21).contains(#require(marchEquinoxComponents.day)))
 
 		// September equinox should be in September (day 22-23)
 		#expect(septemberEquinoxComponents.month == 9)
-		#expect((22...23).contains(septemberEquinoxComponents.day!))
+		#expect(try (22 ... 23).contains(#require(septemberEquinoxComponents.day)))
 	}
 
 	// MARK: - Ordering
@@ -106,7 +107,7 @@ struct SolsticeCalculatorTests {
 		let date = Date()
 		let solstices = date.recentSolstices
 
-		for i in 1..<solstices.count {
+		for i in 1 ..< solstices.count {
 			#expect(solstices[i - 1] <= solstices[i])
 		}
 	}
@@ -116,7 +117,7 @@ struct SolsticeCalculatorTests {
 		let date = Date()
 		let equinoxes = date.recentEquinoxes
 
-		for i in 1..<equinoxes.count {
+		for i in 1 ..< equinoxes.count {
 			#expect(equinoxes[i - 1] <= equinoxes[i])
 		}
 	}

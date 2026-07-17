@@ -6,105 +6,109 @@
 //
 
 #if !os(macOS)
-import SwiftUI
-import WidgetKit
-import Suite
+	import Suite
+	import SwiftUI
+	import WidgetKit
 
-extension CountdownWidgetView {
-	struct AccessoryInlineView: View {
-		var nextEvent: NTSolar.Event
-		var body: some View {
-			HStack {
-				Image(systemName: nextEvent.imageName)
-				Text("\(nextEvent.date, style: .time), \(nextEvent.date, style: .relative)")
-			}
-		}
-	}
-	
-	struct AccessoryCircularView: View {
-		@Environment(\.widgetRenderingMode) var widgetRenderingMode
-		
-		var entryDate: Date
-		
-		var previousEvent: NTSolar.Event
-		var nextEvent: NTSolar.Event
-		
-		@ViewBuilder
-		var currentValueLabel: some View {
-			let duration = entryDate.distance(to: nextEvent.date)
-			if duration >= 60 * 60 {
-				Text(Duration.seconds(duration).formatted(.units(width: .narrow, maximumUnitCount: 1)))
-			} else {
-				Text(nextEvent.date, style: .timer)
-					.monospacedDigit()
-			}
-		}
-		
-		var body: some View {
-			ZStack {
-				ProgressView(timerInterval: previousEvent.date...nextEvent.date) {
-					nextEventText
-				} currentValueLabel: {
-					VStack {
-						Image(systemName: nextEvent.imageName)
-						currentValueLabel
-					}
-					.font(.caption)
+	extension CountdownWidgetView {
+		struct AccessoryInlineView: View {
+			var nextEvent: NTSolar.Event
+			var body: some View {
+				HStack {
+					Image(systemName: nextEvent.imageName)
+					Text("\(nextEvent.date, style: .time), \(nextEvent.date, style: .relative)")
 				}
-				.progressViewStyle(.circular)
-				.tint(.accent)
-				.widgetAccentable()
 			}
-			.widgetLabel { nextEventText }
 		}
-		
-		var nextEventText: some View {
-			Text("\(nextEvent.description.localizedCapitalized) in \(Text(nextEvent.date, style: .relative))")
+
+		struct AccessoryCircularView: View {
+			@Environment(\.widgetRenderingMode) var widgetRenderingMode
+
+			var entryDate: Date
+
+			var previousEvent: NTSolar.Event
+			var nextEvent: NTSolar.Event
+
+			@ViewBuilder
+			var currentValueLabel: some View {
+				let duration = entryDate.distance(to: nextEvent.date)
+				if duration >= 60 * 60 {
+					Text(Duration.seconds(duration).formatted(.units(width: .narrow, maximumUnitCount: 1)))
+				} else {
+					Text(nextEvent.date, style: .timer)
+						.monospacedDigit()
+				}
+			}
+
+			var body: some View {
+				ZStack {
+					ProgressView(timerInterval: previousEvent.date ... nextEvent.date) {
+						nextEventText
+					} currentValueLabel: {
+						VStack {
+							Image(systemName: nextEvent.imageName)
+							currentValueLabel
+						}
+						.font(.caption)
+					}
+					.progressViewStyle(.circular)
+					.tint(.accent)
+					.widgetAccentable()
+				}
+				.widgetLabel { nextEventText }
+			}
+
+			var nextEventText: some View {
+				Text("\(Text(nextEvent.label)) in \(Text(nextEvent.date, style: .relative))")
+			}
 		}
-	}
-	
-	struct AccessoryRectangularView: View {
-		var nextEvent: NTSolar.Event
-		
-		var body: some View {
-			HStack {
-				VStack(alignment: .leading) {
-					Text("\(Image(systemName: nextEvent.imageName)) \(nextEvent.label)")
+
+		struct AccessoryRectangularView: View {
+			var nextEvent: NTSolar.Event
+
+			var body: some View {
+				HStack {
+					VStack(alignment: .leading) {
+						Label {
+							Text(nextEvent.label)
+						} icon: {
+							Image(systemName: nextEvent.imageName)
+						}
 						.font(.headline)
 						.widgetAccentable()
 						.imageScale(.small)
 						.transition(.move(edge: .bottom))
-					Text(nextEvent.date, style: .relative)
-						.contentTransition(.numericText())
-					Text(nextEvent.date, style: .time)
-						.foregroundColor(.secondary)
-						.contentTransition(.numericText())
+						Text(nextEvent.date, style: .relative)
+							.contentTransition(.numericText())
+						Text(nextEvent.date, style: .time)
+							.foregroundStyle(.secondary)
+							.contentTransition(.numericText())
+					}
+
+					Spacer(minLength: 0)
 				}
-				
-				Spacer(minLength: 0)
+				.animation(.default, value: nextEvent)
 			}
-			.animation(.default, value: nextEvent)
+		}
+
+		struct AccessoryCornerView: View {
+			var previousEvent: NTSolar.Event
+			var nextEvent: NTSolar.Event
+
+			var body: some View {
+				Image(systemName: nextEvent.imageName)
+					.font(.title.bold())
+					.imageScale(.large)
+					.symbolRenderingMode(.hierarchical)
+					.symbolVariant(.fill)
+					.widgetLabel {
+						let time = Text(nextEvent.date, style: .time)
+						let countdown = Text(nextEvent.date, style: .relative)
+
+						Text("\(time), \(countdown.textScale(.secondary))")
+					}
+					.widgetAccentable()
+			}
 		}
 	}
-	
-	struct AccessoryCornerView: View {
-		var previousEvent: NTSolar.Event
-		var nextEvent: NTSolar.Event
-		
-		var body: some View {
-			Image(systemName: nextEvent.imageName)
-				.font(.title.bold())
-				.imageScale(.large)
-				.symbolRenderingMode(.hierarchical)
-				.symbolVariant(.fill)
-				.widgetLabel {
-					let time = Text(nextEvent.date, style: .time)
-					let countdown = Text(nextEvent.date, style: .relative)
-					
-					Text("\(time), \(countdown.textScale(.secondary))")
-				}
-				.widgetAccentable()
-		}
-	}
-}
 #endif

@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 19/03/2023.
 //
 
+import CoreData
 import SwiftUI
 import TimeMachine
 
@@ -13,42 +14,68 @@ struct SidebarListView: View {
 	@Environment(CurrentLocation.self) var currentLocation
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 	@Environment(LocationSearchService.self) var locationSearchService
-	
+
 	@Environment(\.managedObjectContext) private var viewContext
-	
+
 	@FetchRequest(
 		sortDescriptors: [NSSortDescriptor(keyPath: \SavedLocation.title, ascending: true)],
-		animation: .default)
+		animation: .default
+	)
 	private var items: FetchedResults<SavedLocation>
-		
+
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
-	
+
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
 	@AppStorage(Preferences.listViewShowComplication) private var showComplication
-	
+
+	@State private var sortedItems: [SavedLocation] = []
+
 	let namespace: Namespace.ID
-	
+
 	var body: some View {
 		listContent
 			.animation(.default, value: currentLocation.isAuthorized)
 			.animation(.default, value: items.count)
 			.overlay { emptyStateOverlay }
-			#if os(iOS)
+		#if os(iOS)
 			.listRowSpacing(appearance == .graphical ? 8 : 0)
-			#endif
+		#endif
 			.navigationTitle("Locations")
 			.navigationSplitViewColumnWidth(ideal: 300)
-			#if os(macOS)
+		#if os(macOS)
 			.searchable(text: Bindable(locationSearchService).queryFragment,
-									placement: .automatic,
-									prompt: "Search locations")
-			#else
-			.searchable(text: Bindable(locationSearchService).queryFragment,
-									placement: .navigationBarDrawer,
-									prompt: "Search locations")
-			#endif
+			            placement: .automatic,
+			            prompt: "Search locations")
+		#else
+				.searchable(text: Bindable(locationSearchService).queryFragment,
+				            placement: .navigationBarDrawer,
+				            prompt: "Search locations")
+		#endif
 			.searchSuggestions { searchSuggestionsList }
+			.onChange(of: sortSignature, initial: true) {
+				recomputeSortedItems()
+			}
+	}
+
+	/// The daylight-duration sort constructs an `NTSolar` per comparison, so
+	/// re-running it on every body evaluation is expensive. Recompute only when
+	/// an input that actually affects the order changes; `timeMachine.date` only
+	/// matters for the daylight-duration dimension.
+	private var sortSignature: SortSignature {
+		SortSignature(
+			ids: items.map(\.objectID),
+			dimension: itemSortDimension,
+			order: itemSortOrder,
+			date: itemSortDimension == .daylightDuration ? timeMachine.date : nil
+		)
+	}
+
+	private struct SortSignature: Equatable {
+		let ids: [NSManagedObjectID]
+		let dimension: Preferences.SortingFunction
+		let order: SortOrder
+		let date: Date?
 	}
 
 	private var listContent: some View {
@@ -71,12 +98,12 @@ struct SidebarListView: View {
 	}
 
 	#if os(iOS)
-	private var currentLocationDragItem: NSItemProvider {
-		let userActivity = NSUserActivity(activityType: DetailView<CurrentLocation>.userActivity)
-		userActivity.title = "See daylight for current location"
-		userActivity.targetContentIdentifier = currentLocation.id
-		return NSItemProvider(object: userActivity)
-	}
+		private var currentLocationDragItem: NSItemProvider {
+			let userActivity = NSUserActivity(activityType: DetailView<CurrentLocation>.userActivity)
+			userActivity.title = "See daylight for current location"
+			userActivity.targetContentIdentifier = currentLocation.id
+			return NSItemProvider(object: userActivity)
+		}
 	#endif
 
 	private var savedLocationsList: some View {
@@ -95,11 +122,12 @@ struct SidebarListView: View {
 				} preview: {
 					savedLocationPreview(for: item)
 				}
-				#if os(iOS)
+			#if os(iOS)
 				.onDrag { savedLocationDragItem(for: item) }
 				.matchedTransitionSource(id: tag, in: namespace)
-				#endif
+			#endif
 				.tag(tag)
+				.accessibilityIdentifier(A11y.locationRow(tag))
 		}
 	}
 
@@ -123,13 +151,13 @@ struct SidebarListView: View {
 	}
 
 	#if os(iOS)
-	private func savedLocationDragItem(for item: SavedLocation) -> NSItemProvider {
-		let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
-		let title: String = item.title ?? "location"
-		userActivity.title = "See daylight for \(title)"
-		userActivity.targetContentIdentifier = item.uuid?.uuidString
-		return NSItemProvider(object: userActivity)
-	}
+		private func savedLocationDragItem(for item: SavedLocation) -> NSItemProvider {
+			let userActivity = NSUserActivity(activityType: DetailView<SavedLocation>.userActivity)
+			let title: String = item.title ?? "location"
+			userActivity.title = "See daylight for \(title)"
+			userActivity.targetContentIdentifier = item.uuid?.uuidString
+			return NSItemProvider(object: userActivity)
+		}
 	#endif
 
 	@ViewBuilder
@@ -155,8 +183,8 @@ struct SidebarListView: View {
 }
 
 extension SidebarListView {
-	private var sortedItems: [SavedLocation] {
-		items.sorted { lhs, rhs in
+	private func recomputeSortedItems() {
+		sortedItems = items.sorted { lhs, rhs in
 			switch itemSortDimension {
 			case .timezone:
 				switch itemSortOrder {
@@ -167,10 +195,11 @@ extension SidebarListView {
 				}
 			case .daylightDuration:
 				guard let lhsSolar = NTSolar(for: timeMachine.date, coordinate: lhs.coordinate, timeZone: lhs.timeZone),
-							let rhsSolar = NTSolar(for: timeMachine.date, coordinate: rhs.coordinate, timeZone: rhs.timeZone) else {
+				      let rhsSolar = NTSolar(for: timeMachine.date, coordinate: rhs.coordinate, timeZone: rhs.timeZone)
+				else {
 					return true
 				}
-				
+
 				switch itemSortOrder {
 				case .forward:
 					return lhsSolar.daylightDuration < rhsSolar.daylightDuration
@@ -180,11 +209,11 @@ extension SidebarListView {
 			}
 		}
 	}
-	
+
 	private func deleteItems(offsets: IndexSet) {
 		withAnimation {
 			offsets.map { sortedItems[$0] }.forEach(viewContext.delete)
-			
+
 			do {
 				try viewContext.save()
 			} catch {
@@ -192,11 +221,11 @@ extension SidebarListView {
 			}
 		}
 	}
-	
+
 	private func deleteItem(_ item: SavedLocation) {
 		withAnimation {
 			viewContext.delete(item)
-			
+
 			do {
 				try viewContext.save()
 			} catch {
@@ -207,28 +236,28 @@ extension SidebarListView {
 }
 
 struct SidebarListView_Previews: PreviewProvider {
-	@Namespace static private var namespace
+	@Namespace private static var namespace
 	static var previews: some View {
 		NavigationStack {
 			SidebarListView(namespace: namespace)
 		}
-			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.withTimeMachine(.solsticeTimeMachine)
-			.environment(CurrentLocation())
-			.environment(LocationSearchService())
+		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+		.withTimeMachine(.solsticeTimeMachine)
+		.environment(CurrentLocation())
+		.environment(LocationSearchService())
 	}
 }
 
-fileprivate extension SidebarListView {
+private extension SidebarListView {
 	struct ListRow<Location: ObservableLocation>: View {
 		@AppStorage(Preferences.listViewAppearance) private var appearance
 		var location: Location
-		
+
 		var body: some View {
 			switch appearance {
 			#if os(iOS)
-			case .graphical:
-				GraphicalLocationListRow(location: location)
+				case .graphical:
+					GraphicalLocationListRow(location: location)
 			#endif
 			default:
 				LocationListRow(location: location)

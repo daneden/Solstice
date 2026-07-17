@@ -5,16 +5,16 @@
 //  Created by Daniel Eden on 03/04/2023.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct OverviewWidget: Widget {
 	#if os(iOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular, .accessoryCircular]
+		static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryRectangular, .accessoryCircular]
 	#elseif os(macOS) || os(visionOS)
-	static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+		static var supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
 	#elseif os(watchOS)
-	static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
+		static var supportedFamilies: [WidgetFamily] = [.accessoryInline, .accessoryCircular, .accessoryRectangular, .accessoryCorner]
 	#endif
 
 	var body: some WidgetConfiguration {
@@ -33,7 +33,7 @@ struct OverviewWidget: Widget {
 }
 
 #if os(iOS)
-#Preview(as: .systemMedium,
-				 widget: { OverviewWidget() },
-				 timeline: SolsticeWidgetTimelineEntry.previewTimeline)
+	#Preview(as: .systemMedium,
+	         widget: { OverviewWidget() },
+	         timeline: SolsticeWidgetTimelineEntry.previewTimeline)
 #endif

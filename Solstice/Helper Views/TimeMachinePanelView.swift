@@ -1,12 +1,12 @@
 //
-//  TimeMachineOverlayView.swift
+//  TimeMachinePanelView.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 20/05/2025.
 //
 
-import SwiftUI
 import Suite
+import SwiftUI
 import TimeMachine
 
 struct SolsticeTimeMachineView: View {
@@ -27,7 +27,7 @@ struct SolsticeTimeMachineView: View {
 
 struct TimeMachinePanelView: View {
 	@Environment(\.colorScheme) private var colorScheme
-	
+
 	var body: some View {
 		VStack {
 			SolsticeTimeMachineView()
@@ -38,9 +38,9 @@ struct TimeMachinePanelView: View {
 		.padding()
 		.clipShape(.panel)
 		#if os(visionOS)
-		.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
+			.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
 		#else
-		.modify { content in
+			.modify { content in
 				if #available(iOS 26, macOS 26, *) {
 					content
 						.glassEffect(in: .panel)
@@ -50,8 +50,8 @@ struct TimeMachinePanelView: View {
 						.background(.regularMaterial.shadow(.drop(color: .black.opacity(0.2), radius: 8, y: 4)), in: .panel)
 				}
 			}
-		.scenePadding(.horizontal)
-		.scenePadding(.top)
+			.scenePadding(.horizontal)
+			.scenePadding(.top)
 		#endif
 		#if os(macOS)
 		.scenePadding(.bottom)
@@ -59,16 +59,15 @@ struct TimeMachinePanelView: View {
 	}
 }
 
-fileprivate enum TimeMachineDraggableBarAlignment: Int {
+private enum TimeMachineDraggableBarAlignment: Int {
 	case leading, trailing
 }
 
 struct TimeMachineDraggableOverlayView: View {
 	@Environment(\.colorScheme) private var colorScheme
-	
-	@AppStorage("timeMachineDraggableBarAlignment") fileprivate
-	var alignment: TimeMachineDraggableBarAlignment = .trailing
-	
+
+	@AppStorage("timeMachineDraggableBarAlignment") fileprivate var alignment: TimeMachineDraggableBarAlignment = .trailing
+
 	private var resolvedAlignment: Alignment {
 		switch alignment {
 		case .leading:
@@ -77,20 +76,22 @@ struct TimeMachineDraggableOverlayView: View {
 			return .trailing
 		}
 	}
-	
+
 	@State private var measureScreenWidthTaskID = UUID()
 	@State private var targetAlignment: TimeMachineDraggableBarAlignment = .trailing
 	@State private var offset: CGSize = .zero
 	@State private var screenSize: CGSize = .zero
-	
-	var screenWidth: Double { screenSize.width }
-	
+
+	var screenWidth: Double {
+		screenSize.width
+	}
+
 	private var barWidth: Double = 393
-	
+
 	private var threshold: Double {
 		(screenWidth / 2) - (barWidth / 2)
 	}
-	
+
 	var body: some View {
 		ZStack(alignment: resolvedAlignment) {
 			TimeMachinePanelView()
@@ -98,7 +99,7 @@ struct TimeMachineDraggableOverlayView: View {
 				.gesture(DragGesture()
 					.onChanged { value in
 						offset = value.translation
-						
+
 						switch alignment {
 						case .leading:
 							if offset.width >= threshold {
@@ -120,19 +121,16 @@ struct TimeMachineDraggableOverlayView: View {
 							if value.predictedEndTranslation.width >= threshold {
 								targetAlignment = .trailing
 							}
-							break
 						case .trailing:
 							if value.predictedEndTranslation.width * -1.0 >= threshold {
 								targetAlignment = .leading
 							}
-							break
 						}
-						
+
 						offset = .zero
-						
+
 						alignment = targetAlignment
-					}
-				)
+					})
 				.frame(maxWidth: barWidth)
 		}
 		.frame(maxWidth: .infinity, alignment: resolvedAlignment)
@@ -151,36 +149,36 @@ struct TimeMachineDraggableOverlayView: View {
 		}
 		.animation(.snappy, value: offset)
 		.animation(.smooth, value: alignment)
-#if os(iOS)
-		.onRotate { _ in
-			measureScreenWidthTaskID = UUID()
-		}
-#endif
-		.task {
-			targetAlignment = alignment
-		}
+		#if os(iOS)
+			.onRotate { _ in
+				measureScreenWidthTaskID = UUID()
+			}
+		#endif
+			.task {
+				targetAlignment = alignment
+			}
 	}
 }
 
-fileprivate struct CornerAnchorView: View {
+private struct CornerAnchorView: View {
 	var corner: TimeMachineDraggableBarAlignment
 	var isActive = false
-	
+
 	var size: Double {
 		#if os(macOS)
-		isActive ? 32 : 24
+			isActive ? 32 : 24
 		#else
-		isActive ? 72 : 64
+			isActive ? 72 : 64
 		#endif
 	}
-	
+
 	var body: some View {
 		Image(corner == .trailing ? .curveBottomTrailing : .curveBottomLeading)
 			.resizable()
 			.frame(width: size, height: size)
 			.foregroundStyle(isActive ? AnyShapeStyle(.primary) : AnyShapeStyle(.tertiary))
-			#if os(macOS)
+		#if os(macOS)
 			.padding(12)
-			#endif
+		#endif
 	}
 }

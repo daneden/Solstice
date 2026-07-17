@@ -8,9 +8,9 @@
 import SwiftUI
 import TimeMachine
 
-struct TimeTravelToolbar: ViewModifier{
+struct TimeTravelToolbar: ViewModifier {
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
-	
+
 	func body(content: Content) -> some View {
 		content
 			.toolbar {
@@ -21,7 +21,7 @@ struct TimeTravelToolbar: ViewModifier{
 								timeMachine.offset -= 7
 							}
 						}
-						
+
 						if timeMachine.isActive {
 							Button {
 								withAnimation {
@@ -34,7 +34,7 @@ struct TimeTravelToolbar: ViewModifier{
 						} else {
 							Spacer()
 						}
-						
+
 						Button("Time travel 1 week later", systemImage: "forward") {
 							withAnimation {
 								timeMachine.offset += 7

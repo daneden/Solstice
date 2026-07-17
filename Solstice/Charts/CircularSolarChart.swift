@@ -5,10 +5,10 @@
 //  Created by Daniel Eden on 04/10/2025.
 //
 
+import enum Accelerate.vDSP
+import Suite
 import SwiftUI
 import TimeMachine
-import Suite
-import enum Accelerate.vDSP
 
 struct CircularSolarChart<Location: AnyLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var storedAppearance
@@ -16,111 +16,113 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
 	#if WIDGET_EXTENSION
-	@Environment(\.widgetRenderingMode) private var widgetRenderingMode
-	@Environment(\.widgetFamily) private var widgetFamily
+		@Environment(\.widgetRenderingMode) private var widgetRenderingMode
+		@Environment(\.widgetFamily) private var widgetFamily
 	#endif
-	
+
 	@State private var size = CGSize.zero
 	var date: Date?
-	
+
 	var location: Location
-	
+
 	var appearanceOverride: DaylightChart.Appearance?
-	
+
 	var appearance: DaylightChart.Appearance {
 		appearanceOverride ?? storedAppearance
 	}
-	
-	var timeZone: TimeZone { location.timeZone }
-	
+
+	var timeZone: TimeZone {
+		location.timeZone
+	}
+
 	var solar: NTSolar? {
 		NTSolar(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
-	
+
 	var majorSunSize: Double {
 		max(12, max(size.width, size.height) * 0.075)
 	}
-	
+
 	var minorSunSize: Double {
 		max(4, majorSunSize / 3)
 	}
-	
+
 	var foregroundStyle: AnyShapeStyle {
 		#if WIDGET_EXTENSION
-		if widgetRenderingMode == .fullColor {
+			if widgetRenderingMode == .fullColor {
+				switch appearance {
+				case .graphical: return AnyShapeStyle(.white)
+				case .simple: return AnyShapeStyle(.primary)
+				}
+			} else {
+				return AnyShapeStyle(.primary)
+			}
+		#else
 			switch appearance {
 			case .graphical: return AnyShapeStyle(.white)
 			case .simple: return AnyShapeStyle(.primary)
 			}
-		} else {
-			return AnyShapeStyle(.primary)
-		}
-		#else
-		switch appearance {
-		case .graphical: return AnyShapeStyle(.white)
-		case .simple: return AnyShapeStyle(.primary)
-		}
 		#endif
 	}
-	
+
 	var blendMode: BlendMode {
 		#if WIDGET_EXTENSION
-		if widgetRenderingMode == .fullColor {
+			if widgetRenderingMode == .fullColor {
+				switch appearance {
+				case .graphical: return .plusLighter
+				case .simple: return .normal
+				}
+			} else {
+				return .normal
+			}
+		#else
 			switch appearance {
 			case .graphical: return .plusLighter
 			case .simple: return .normal
 			}
-		} else {
-			return .normal
-		}
-		#else
-		switch appearance {
-		case .graphical: return .plusLighter
-		case .simple: return .normal
-		}
 		#endif
 	}
-	
+
 	private var calendar: Calendar {
 		var calendar = Calendar.current
 		calendar.timeZone = timeZone
-		
+
 		return calendar
 	}
-	
+
 	private var isSmallWidget: Bool {
 		#if WIDGET_EXTENSION
-		return widgetFamily == .systemSmall
+			return widgetFamily == .systemSmall
 		#else
-		return false
+			return false
 		#endif
 	}
-	
+
 	func angle(for date: Date) -> Angle {
 		Helpers.angle(for: date, timeZone: timeZone)
 	}
-	
+
 	@ViewBuilder
 	var background: some View {
 		#if WIDGET_EXTENSION
-		if widgetRenderingMode == .fullColor {
+			if widgetRenderingMode == .fullColor {
+				if appearance == .graphical {
+					solar?.view
+				} else {
+					Rectangle().fill(.regularMaterial)
+				}
+			} else {
+				Rectangle().fill(.primary.quinary)
+			}
+		#else
 			if appearance == .graphical {
 				solar?.view
 			} else {
 				Rectangle().fill(.regularMaterial)
 			}
-		} else {
-			Rectangle().fill(.primary.quinary)
-		}
-		#else
-		if appearance == .graphical {
-			solar?.view
-		} else {
-			Rectangle().fill(.regularMaterial)
-		}
 		#endif
 	}
-	
+
 	var aboveHorizonSun: some View {
 		Circle()
 			.fill(foregroundStyle)
@@ -129,7 +131,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			.rotationEffect(angle(for: solar?.date ?? .now))
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
-	
+
 	var belowHorizonSun: some View {
 		background.mask {
 			Circle()
@@ -144,11 +146,11 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		.rotationEffect(angle(for: solar?.date ?? .now))
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
-	
+
 	var safeSunriseSunsetShape: some Shape {
 		CircleWithSlice(startAngle: angle(for: solar?.sunrise ?? .now).degrees, endAngle: angle(for: solar?.sunset ?? .now).degrees)
 	}
-	
+
 	var sundial: some View {
 		ZStack {
 			sundialBackground
@@ -201,8 +203,9 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@ViewBuilder
 	private func phaseSlice(for key: NTSolar.Phase, phases: [NTSolar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
 		if let (sunrise, sunset) = phases[key],
-			 let sunrise,
-			 let sunset {
+		   let sunrise,
+		   let sunset
+		{
 			CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
 				.fill(.black.opacity(0.06))
 				.blendMode(.plusDarker)
@@ -215,7 +218,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		let lineMaskGradient = LinearGradient(
 			stops: [
 				Gradient.Stop(color: .clear, location: 0.499),
-				Gradient.Stop(color: .black, location: 0.5)
+				Gradient.Stop(color: .black, location: 0.5),
 			],
 			startPoint: .leading,
 			endPoint: .trailing
@@ -281,8 +284,9 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@ViewBuilder
 	private func phaseMarker(for key: NTSolar.Phase, phases: [NTSolar.Phase: (sunrise: Date?, sunset: Date?)]) -> some View {
 		if let (sunrise, sunset) = phases[key],
-			 let sunrise,
-			 let sunset {
+		   let sunrise,
+		   let sunset
+		{
 			Circle()
 				.frame(width: minorSunSize)
 				.frame(maxWidth: .infinity, alignment: .trailing)
@@ -298,22 +302,23 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				.rotationEffect(angle(for: sunset))
 		}
 	}
-	
+
 	@ViewBuilder
 	var labels: some View {
 		if labelsVisibility != .hidden {
 			if let solar {
 				ChartLabel(text: Text(solar.safeSunrise, style: .time),
-									 imageName: "sunrise",
-									 angle: angle(for: solar.safeSunrise))
-				
+				           imageName: "sunrise",
+				           angle: angle(for: solar.safeSunrise))
+
 				ChartLabel(text: Text(solar.safeSunset, style: .time),
-									 imageName: "sunset",
-									 angle: angle(for: solar.safeSunset))
+				           imageName: "sunset",
+				           angle: angle(for: solar.safeSunset))
 			}
-			
+
 			if let duration = solar?.daylightDuration,
-				 let diff = solar?.compactDifferenceString {
+			   let diff = solar?.compactDifferenceString
+			{
 				VStack(spacing: 2) {
 					HStack(spacing: 2) {
 						if !isSmallWidget {
@@ -321,7 +326,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 						}
 						Text(Duration.seconds(duration).formatted(.units(width: .narrow)))
 					}
-					
+
 					Text(diff)
 						.textScale(.secondary)
 						.foregroundStyle(.secondary)
@@ -332,63 +337,63 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			}
 		}
 	}
-	
+
 	var body: some View {
+		ZStack {
 			ZStack {
-				ZStack {
-					sundial
-					
-					ForEach(0...23, id: \.self) { i in
-						RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
-							.fill(foregroundStyle.opacity(0.3))
-							.blendMode(blendMode)
-							.frame(width: Double(i).remainder(dividingBy: 6) == 0 ? majorSunSize / 1.5 : minorSunSize, height: 2)
-							.frame(maxWidth: size.width * 0.9, alignment: .trailing)
-							.rotationEffect(Angle(degrees: (360 / 24) * Double(i)))
-					}
+				sundial
+
+				ForEach(0 ... 23, id: \.self) { i in
+					RoundedRectangle(cornerRadius: majorSunSize, style: .continuous)
+						.fill(foregroundStyle.opacity(0.3))
+						.blendMode(blendMode)
+						.frame(width: Double(i).remainder(dividingBy: 6) == 0 ? majorSunSize / 1.5 : minorSunSize, height: 2)
+						.frame(maxWidth: size.width * 0.9, alignment: .trailing)
+						.rotationEffect(Angle(degrees: (360 / 24) * Double(i)))
 				}
-				#if WIDGET_EXTENSION
-				.if(widgetRenderingMode != .fullColor) {
+			}
+			#if WIDGET_EXTENSION
+			.if(widgetRenderingMode != .fullColor) {
 					$0.reverseMask {
 						labels
 							.backgroundStyle(.black)
 					}
 				}
-				#endif
-				
-				labels
-				#if WIDGET_EXTENSION
-					.if(widgetRenderingMode != .fullColor) {
-						$0.backgroundStyle(.primary.quinary)
-					}
-				#endif
-			}
-			.environment(\.timeZone, timeZone)
-			.font(.footnote)
-			.fontWeight(.medium)
-			.monospacedDigit()
-			.frame(maxWidth: .infinity)
-			.aspectRatio(1, contentMode: .fit)
+			#endif
+
+			labels
+			#if WIDGET_EXTENSION
+				.if(widgetRenderingMode != .fullColor) {
+					$0.backgroundStyle(.primary.quinary)
+				}
+			#endif
+		}
+		.environment(\.timeZone, timeZone)
+		.font(.footnote)
+		.fontWeight(.medium)
+		.monospacedDigit()
+		.frame(maxWidth: .infinity)
+		.aspectRatio(1, contentMode: .fit)
 	}
 }
 
-fileprivate struct ChartLabel: View {
+private struct ChartLabel: View {
 	#if WIDGET_EXTENSION
-	@Environment(\.widgetFamily) private var widgetFamily
+		@Environment(\.widgetFamily) private var widgetFamily
 	#endif
-	
+
 	var text: Text
 	var imageName: String
 	var angle: Angle
-	
+
 	private var isSmallWidget: Bool {
 		#if WIDGET_EXTENSION
-		return widgetFamily == .systemSmall
+			return widgetFamily == .systemSmall
 		#else
-		return false
+			return false
 		#endif
 	}
-	
+
 	var body: some View {
 		HStack(spacing: 2) {
 			if !isSmallWidget {
@@ -406,19 +411,19 @@ fileprivate struct ChartLabel: View {
 	}
 }
 
-fileprivate struct Helpers {
+private enum Helpers {
 	static func angle(for date: Date, timeZone: TimeZone = .current) -> Angle {
 		var calendar = Calendar.current
 		calendar.timeZone = timeZone
 		let components = calendar.dateComponents([.hour, .minute, .second], from: date)
-		
+
 		let hours = Double(components.hour ?? 0)
 		let minutes = Double(components.minute ?? 0)
 		let seconds = Double(components.second ?? 0)
-		
+
 		let totalSeconds = hours * 3600 + minutes * 60 + seconds
 		let fractionOfDay = totalSeconds / 86400 // 24 * 60 * 60
-		
+
 		let degrees = fractionOfDay * 360
 		return .degrees(degrees + 90) // shift so midnight is at bottom
 	}

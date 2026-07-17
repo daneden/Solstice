@@ -10,25 +10,25 @@ import SpriteKit
 
 class EarthScene: SCNScene {
 	var lightAnchorNode: SCNNode?
-	
-	public override init() {
+
+	override init() {
 		super.init()
 		build()
 	}
-	
-	public required init?(coder aDecoder: NSCoder) {
+
+	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		build()
 	}
-	
+
 	func build() {
 		let earthNode = EarthNode()
 		let tiltNode = SCNNode()
-		
+
 		tiltNode.eulerAngles = SCNVector3(-23.4 * (.pi / 180.0), .pi / 2, 0)
 		tiltNode.addChildNode(earthNode)
-		self.rootNode.addChildNode(tiltNode)
-		
+		rootNode.addChildNode(tiltNode)
+
 		// Create a strong light
 		let light = SCNLight()
 		light.type = .omni
@@ -38,15 +38,15 @@ class EarthScene: SCNScene {
 		light.shadowSampleCount = 16
 		light.shadowBias = 2
 		light.shadowRadius = 10
-		
+
 		let lightNode = SCNNode()
-		
+
 		lightNode.light = light
 		lightNode.position = SCNVector3(-100, 2, 0)
-		
-		self.lightAnchorNode = SCNNode()
-		self.lightAnchorNode?.addChildNode(lightNode)
-		
-		self.rootNode.addChildNode(self.lightAnchorNode!)
+
+		lightAnchorNode = SCNNode()
+		lightAnchorNode?.addChildNode(lightNode)
+
+		rootNode.addChildNode(lightAnchorNode!)
 	}
 }

@@ -5,14 +5,14 @@
 //  Created by Daniel Eden on 14/08/2025.
 //
 
-import SwiftUI
 import CoreData
 import CoreLocation
+import SwiftUI
 
 struct DeduplicateLocationRecordsModifier: ViewModifier {
 	@Environment(\.managedObjectContext) private var context
 	@FetchRequest(sortDescriptors: []) private var locations: FetchedResults<SavedLocation>
-	
+
 	func body(content: Content) -> some View {
 		content
 			.task(id: locations.count) {
@@ -27,7 +27,7 @@ struct DeduplicateLocationRecordsModifier: ViewModifier {
 						}
 					}
 				}
-				
+
 				// Phase 2: Deduplicate by name and proximity (within 1km)
 				var kept: [(title: String?, coordinate: CLLocationCoordinate2D)] = []
 				for location in locations where !context.deletedObjects.contains(location) {
@@ -43,7 +43,7 @@ struct DeduplicateLocationRecordsModifier: ViewModifier {
 						kept.append((title, coord))
 					}
 				}
-				
+
 				if context.hasChanges {
 					do {
 						try context.save()
@@ -57,6 +57,6 @@ struct DeduplicateLocationRecordsModifier: ViewModifier {
 
 extension View {
 	func deduplicateLocationRecords() -> some View {
-		self.modifier(DeduplicateLocationRecordsModifier())
+		modifier(DeduplicateLocationRecordsModifier())
 	}
 }

@@ -5,8 +5,8 @@
 //  Created by Daniel Eden on 19/02/2023.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct SolsticeWidgets: WidgetBundle {
@@ -14,11 +14,11 @@ struct SolsticeWidgets: WidgetBundle {
 		OverviewWidget()
 		CountdownWidget()
 		#if !os(watchOS)
-		SundialWidget()
+			SundialWidget()
 		#endif
-		
+
 		#if os(watchOS) || os(iOS)
-		SolarChartWidget()
+			SolarChartWidget()
 		#endif
 	}
 }
