@@ -27,6 +27,7 @@ struct SolarSystemMiniMap: View {
 					.fontWeight(.semibold)
 				Text(event.shortEventDescription)
 			}
+			.contentTransition(.numericText())
 			.font(.caption)
 
 			ZStack {
@@ -47,7 +48,6 @@ struct SolarSystemMiniMap: View {
 			.frame(width: size, height: size)
 			.foregroundStyle(.secondary)
 		}
-		.padding()
 		.foregroundStyle(.secondary)
 	}
 }

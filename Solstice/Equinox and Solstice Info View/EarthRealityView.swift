@@ -13,24 +13,17 @@ import SwiftUI
 /// Earth shifts across the seasons. RealityKit gives visionOS true volumetric depth
 /// and lets iOS/macOS share the same scene and shader-driven day/night terminator.
 struct EarthRealityView: View {
-	/// When non-nil the globe is given this height; otherwise it expands to fill the
-	/// available space (used by the roomy visionOS window).
-	var height: CGFloat?
 
 	@State private var selection: AnnualSolarEvent
 	@State private var terminator: TerminatorAnimator
 
-	init(selection: AnnualSolarEvent = .juneSolstice, height: CGFloat? = nil) {
-		self.height = height
+	init(selection: AnnualSolarEvent = .juneSolstice) {
 		_selection = State(initialValue: selection)
 		_terminator = State(initialValue: TerminatorAnimator(angleDegrees: Float(selection.terminatorAngleDegrees)))
 	}
 
 	var body: some View {
 		VStack(spacing: 16) {
-			SolarSystemMiniMap(event: selection, rotation: .degrees(Double(terminator.currentAngle)))
-				.frame(maxWidth: .infinity, alignment: .trailing)
-
 			RealityView { content in
 				if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle),
 				   let earth = scene.findEntity(named: "Earth")
@@ -44,14 +37,15 @@ struct EarthRealityView: View {
 					// the ~0.1m globe in the non-AR virtual scene.
 					let camera = Entity()
 					camera.components.set(PerspectiveCameraComponent())
-					camera.look(at: .zero, from: [0, 0, 0.3], relativeTo: nil)
+					camera.look(at: .zero, from: [0, 0, 0.25], relativeTo: nil)
 					content.add(camera)
 				#endif
 			}
 			#if !os(visionOS)
 			.realityViewCameraControls(.orbit)
 			#endif
-			.frame(maxWidth: .infinity, minHeight: 200, idealHeight: height ?? 400, maxHeight: height ?? .infinity)
+			.aspectRatio(1, contentMode: .fit)
+			.frame(maxWidth: .infinity)
 
 			Picker(selection: $selection) {
 				ForEach(AnnualSolarEvent.allCases, id: \.self) { event in
@@ -61,6 +55,9 @@ struct EarthRealityView: View {
 				Text("Month:")
 			}
 			.pickerStyle(.segmented)
+		}
+		.overlay(alignment: .topTrailing) {
+			SolarSystemMiniMap(event: selection, rotation: .degrees(Double(terminator.currentAngle)))
 		}
 		.onChange(of: selection) { _, newValue in
 			terminator.retarget(toDegrees: Float(newValue.terminatorAngleDegrees))
