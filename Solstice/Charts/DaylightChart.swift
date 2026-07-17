@@ -136,6 +136,14 @@ struct DaylightChart: View {
 				chartOverlayContent(proxy: proxy, geo: geo)
 			}
 		}
+		// Plot the chart left-to-right in every locale. The sun marker, scrub
+		// indicator, and drag hit-testing are positioned manually via
+		// `ChartProxy.position(forX:)` in an LTR coordinate space, but SwiftUI
+		// Charts auto-mirrors the line, points, and axis under RTL locales. That
+		// mismatch left the sun detached from the path (e.g. in Arabic). Pinning
+		// the plot to LTR keeps the native marks and the overlay in one coordinate
+		// system; the summary title and surrounding UI still follow the locale.
+		.environment(\.layoutDirection, .leftToRight)
 		.animation(timeMachine.isActive ? nil : .smooth(duration: 0.5), value: solar.date)
 		.onAppear {
 			sunDisplayOffset = plotOffset
