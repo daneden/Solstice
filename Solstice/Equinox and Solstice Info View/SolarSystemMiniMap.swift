@@ -10,11 +10,15 @@ import SwiftUI
 struct SolarSystemMiniMap: View {
 	var event: AnnualSolarEvent
 
-	var angle: Double {
-		event.sunAngle
-	}
+	/// Explicit indicator rotation, so callers can drive it from an animated value.
+	/// Falls back to the event's own angle for standalone use (e.g. previews).
+	var rotation: Angle?
 
 	var size: Double = 44
+
+	private var indicatorRotation: Angle {
+		rotation ?? Angle(radians: event.sunAngle) * -1
+	}
 
 	var body: some View {
 		HStack {
@@ -34,7 +38,7 @@ struct SolarSystemMiniMap: View {
 							.frame(width: size / 6, height: size / 6)
 							.offset(x: size / 20)
 					}
-					.rotationEffect(Angle(radians: angle) * -1)
+					.rotationEffect(indicatorRotation)
 
 				Circle()
 					.fill(.primary)
