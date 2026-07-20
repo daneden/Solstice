@@ -9,21 +9,19 @@ import SwiftUI
 
 struct EquinoxAndSolsticeInfoSheet: View {
 	var body: some View {
-		GeometryReader { geometry in
-			Form {
-				Section {
-					EarthSceneKitView(height: min(geometry.size.width, 400))
-				}
-
-				Section {
-					EquinoxAndSolsticeDescriptions()
-				} footer: {
-					Text("Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)")
-				}
+		Form {
+			Section {
+				EarthRealityView()
 			}
-			.formStyle(.grouped)
-			.navigationTitle("Equinox and Solstice")
+
+			Section {
+				EquinoxAndSolsticeDescriptions()
+			} footer: {
+				Text("Imagery Source: [NASA Visible Earth Catalog](https://visibleearth.nasa.gov/collection/1484/blue-marble)")
+			}
 		}
+		.formStyle(.grouped)
+		.navigationTitle("Equinox and Solstice")
 	}
 }
 
