@@ -18,22 +18,84 @@ struct SettingsView: View {
 	@AppStorage(Preferences.timeTravelAppearance) private var timeTravelAppearance
 	@AppStorage(Preferences.chartType) private var chartType
 
+	#if os(macOS)
+		private enum SettingsPane: Hashable {
+			case general, appearance, notifications
+		}
+
+		@State private var selectedPane: SettingsPane = ScreenshotLaunch.macScreen == .settingsNotifications
+			? .notifications
+			: .general
+	#endif
+
 	var body: some View {
 		#if os(macOS)
-			if ScreenshotLaunch.macScreen == .settingsNotifications {
-				// macOS marketing shot: show the Notifications pane directly in the Settings window.
-				NavigationStack {
-					NotificationSettings()
-						.formStyle(.grouped)
-				}
-				.frame(minWidth: 420, minHeight: 520)
-				.accessibilityIdentifier(A11y.settingsWindow)
-			} else {
-				standardSettings
-			}
+			tabbedSettings
 		#else
 			standardSettings
 		#endif
+	}
+
+	#if os(macOS)
+		/// The Settings scene forces a System Settings-style window whose toolbar
+		/// renders navigation back buttons below the title, so macOS uses the
+		/// HIG-idiomatic pane switcher instead of push navigation.
+		private var tabbedSettings: some View {
+			TabView(selection: $selectedPane) {
+				Tab("About", systemImage: "info.circle", value: .general) {
+					Form {
+						Section {
+							AboutSolsticeView()
+						}
+
+						locationSection
+
+						SupporterSettings()
+					}
+					.formStyle(.grouped)
+				}
+
+				Tab("Appearance", systemImage: "paintpalette", value: .appearance) {
+					AppearanceSettingsView()
+				}
+
+				Tab("Notifications", systemImage: "bell.badge", value: .notifications) {
+					NotificationSettings()
+				}
+			}
+			// Lets the macOS screenshot capture locate the Settings window.
+			.accessibilityIdentifier(A11y.settingsWindow)
+		}
+	#endif
+
+	@ViewBuilder private var locationSection: some View {
+		if !currentLocation.isAuthorized {
+			Section {
+				Button("Enable location services", systemImage: "location") {
+					#if os(macOS)
+						// On macOS, open System Settings directly since requestWhenInUseAuthorization
+						// doesn't reliably trigger the authorization prompt
+						if let url = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_LocationServices") {
+							NSWorkspace.shared.open(url)
+						}
+					#else
+						switch currentLocation.authorizationStatus {
+						case .notDetermined:
+							currentLocation.requestAccess()
+						case .restricted, .denied:
+							if let url = URL(string: UIApplication.openSettingsURLString) {
+								openURL(url)
+							}
+						default: return
+						}
+					#endif
+				}
+			} header: {
+				Text("Location")
+			} footer: {
+				Text("Enable location services to see the daylight duration in your current location")
+			}
+		}
 	}
 
 	@ViewBuilder private var standardSettings: some View {
@@ -43,33 +105,7 @@ struct SettingsView: View {
 					AboutSolsticeView()
 				}
 
-				if !currentLocation.isAuthorized {
-					Section {
-						Button("Enable location services", systemImage: "location") {
-							#if os(macOS)
-								// On macOS, open System Settings directly since requestWhenInUseAuthorization
-								// doesn't reliably trigger the authorization prompt
-								if let url = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_LocationServices") {
-									NSWorkspace.shared.open(url)
-								}
-							#else
-								switch currentLocation.authorizationStatus {
-								case .notDetermined:
-									currentLocation.requestAccess()
-								case .restricted, .denied:
-									if let url = URL(string: UIApplication.openSettingsURLString) {
-										openURL(url)
-									}
-								default: return
-								}
-							#endif
-						}
-					} header: {
-						Text("Location")
-					} footer: {
-						Text("Enable location services to see the daylight duration in your current location")
-					}
-				}
+				locationSection
 
 				Section {
 					NavigationLink {
@@ -102,7 +138,6 @@ struct SettingsView: View {
 			.navigationTitle("Settings")
 			#endif
 			.formStyle(.grouped)
-			// Lets the macOS screenshot capture locate the Settings window.
 			.accessibilityIdentifier(A11y.settingsWindow)
 		}
 		#if !os(macOS)
