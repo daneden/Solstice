@@ -14,7 +14,7 @@ struct SolarSystemMiniMap: View {
 	/// Falls back to the event's own angle for standalone use (e.g. previews).
 	var rotation: Angle?
 
-	var size: Double = 44
+	var size: Double = 48
 
 	private var indicatorRotation: Angle {
 		rotation ?? Angle(radians: event.sunAngle) * -1
@@ -32,18 +32,24 @@ struct SolarSystemMiniMap: View {
 
 			ZStack {
 				Circle()
-					.strokeBorder(.tertiary, lineWidth: 3)
+					.strokeBorder(.tertiary, lineWidth: 2)
+					.padding(-1)
 					.overlay(alignment: .trailing) {
-						Circle()
-							.fill(.primary)
-							.frame(width: size / 6, height: size / 6)
-							.offset(x: size / 20)
+						Image(systemName: "circle.lefthalf.filled.inverse")
+							.resizable()
+							.frame(width: size / 4, height: size / 4)
+							.background {
+								Circle()
+									.fill(.background)
+									.padding(-1)
+							}
+							.offset(x: size * 0.1)
 					}
 					.rotationEffect(indicatorRotation)
 
-				Circle()
-					.fill(.primary)
-					.frame(width: size / 4, height: size / 4)
+				Image(systemName: "sun.max.fill")
+					.resizable()
+					.frame(width: size / 2.5, height: size / 2.5)
 			}
 			.frame(width: size, height: size)
 			.foregroundStyle(.secondary)
