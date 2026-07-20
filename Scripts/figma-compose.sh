@@ -5,9 +5,14 @@
 #
 # Prereq: screenshots captured into Screenshots/output/<locale>/ (see
 # capture-screenshots.sh for iOS shots + widgets, capture-screenshots-macos.sh for
-# macOS window shots). The Figma templates are componentized (Stage A): each locale
-# section is component instances, so this only sets image fills — captions and all
-# shared design come from the master components.
+# macOS window shots, capture-screenshots-watchos.sh for Apple Watch shots). The
+# Figma templates are componentized (Stage A): each locale section is component
+# instances, so this only sets image fills — captions and all shared design come
+# from the master components. watchOS sections hold raw 422×514 shots (no
+# bezel/caption); their instances are named after the source file.
+#
+# Partial runs are fine: compose.js skips any platform (ios/macos/watchos) that has
+# no keys in SOURCE_HASHES, so you can upload+compose one platform at a time.
 #
 # This is a RUNBOOK, not a fully self-contained script: the upload and the Figma
 # mutation go through the Figma MCP server (use_figma / upload_assets), which an agent

@@ -99,6 +99,15 @@ struct ContentView: View {
 		}
 		.resolveDeepLink(sortedItems)
 		.withTimeMachine(.solsticeTimeMachine)
+		.task {
+			guard ScreenshotLaunch.isCapturing else { return }
+			// Deterministic launch state: honor the forced selection, otherwise
+			// start on the list (ignore any stale SceneStorage selection).
+			selectedLocation = ScreenshotLaunch.forcedSelectedLocation
+			if let offset = ScreenshotLaunch.timeOffsetDays {
+				timeMachine.offset = Double(offset)
+			}
+		}
 	}
 
 	var placeholderView: some View {
