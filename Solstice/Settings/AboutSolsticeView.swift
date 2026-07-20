@@ -10,6 +10,10 @@ import SwiftUI
 struct AboutSolsticeView: View {
 	@Environment(\.colorScheme) private var colorScheme
 
+	#if os(macOS)
+		@State private var fullStoryPresented = false
+	#endif
+
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8) {
 			HStack(alignment: .firstTextBaseline) {
@@ -39,12 +43,38 @@ struct AboutSolsticeView: View {
 
 				Divider()
 
-				NavigationLink(destination: FullStoryView()) {
-					Text("Read more")
-						.fontWeight(.medium)
-						.foregroundStyle(.tint)
-				}
-				.padding(.vertical, 4)
+				// The macOS settings window has no navigation stack to push into,
+				// so the full story is presented as a sheet there instead.
+				#if os(macOS)
+					Button {
+						fullStoryPresented = true
+					} label: {
+						readMoreLabel
+					}
+					.buttonStyle(.plain)
+					.padding(.vertical, 4)
+					.sheet(isPresented: $fullStoryPresented) {
+						FullStoryView()
+							.safeAreaInset(edge: .bottom) {
+								HStack {
+									Spacer()
+
+									Button("Done") {
+										fullStoryPresented = false
+									}
+									.keyboardShortcut(.defaultAction)
+								}
+								.padding()
+								.background(.bar)
+							}
+							.frame(minWidth: 480, minHeight: 440)
+					}
+				#else
+					NavigationLink(destination: FullStoryView()) {
+						readMoreLabel
+					}
+					.padding(.vertical, 4)
+				#endif
 			}
 			.font(.subheadline)
 			.foregroundStyle(.secondary)
@@ -53,6 +83,12 @@ struct AboutSolsticeView: View {
 		.blendMode(colorScheme == .light ? .plusDarker : .plusLighter)
 		.listRowBackground(Color.clear.background(Color.accentColor.quinary))
 		#endif
+	}
+
+	private var readMoreLabel: some View {
+		Text("Read more")
+			.fontWeight(.medium)
+			.foregroundStyle(.tint)
 	}
 }
 
