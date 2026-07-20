@@ -92,7 +92,7 @@ xcodebuild test \
 	-derivedDataPath "$DERIVED_DIR" \
 	-resultBundlePath "$RESULT_BUNDLE" \
 	"${ONLY_CONFIGS[@]}" \
-	"${ONLY_TESTING[@]}"
+	${ONLY_TESTING[@]+"${ONLY_TESTING[@]}"}
 set +x
 
 # ---- Stage 2: extract screenshots from the .xcresult -------------------------
