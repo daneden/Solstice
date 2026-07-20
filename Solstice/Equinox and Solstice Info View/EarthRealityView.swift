@@ -15,6 +15,7 @@ import SwiftUI
 struct EarthRealityView: View {
 	@State private var selection: AnnualSolarEvent
 	@State private var terminator: TerminatorAnimator
+	@State private var sceneIsReady = false
 
 	init(selection: AnnualSolarEvent = .juneSolstice) {
 		_selection = State(initialValue: selection)
@@ -29,6 +30,9 @@ struct EarthRealityView: View {
 				{
 					content.add(scene)
 					terminator.attach(to: earth, content: content)
+					withAnimation(.easeIn(duration: 0.6)) {
+						sceneIsReady = true
+					}
 				}
 
 				#if !os(visionOS)
@@ -47,6 +51,9 @@ struct EarthRealityView: View {
 					keyLight.components.set(DirectionalLightComponent(color: .white, intensity: 12000))
 					camera.addChild(keyLight)
 				#endif
+			} placeholder: {
+				ProgressView()
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
 			}
 			#if !os(visionOS)
 			.realityViewCameraControls(.orbit)
@@ -54,7 +61,12 @@ struct EarthRealityView: View {
 			.aspectRatio(1, contentMode: .fit)
 			.frame(maxWidth: .infinity)
 			#if !os(visionOS)
-			.background { AtmosphereGlow() }
+			.background {
+				// The glow only makes sense framing the globe, so fade it in once the
+				// scene has actually loaded rather than haloing the loading indicator.
+				AtmosphereGlow()
+					.opacity(sceneIsReady ? 1 : 0)
+			}
 			#endif
 
 			Picker(selection: $selection) {
