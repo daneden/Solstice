@@ -118,6 +118,17 @@ struct ContentView: View {
 						}
 					#endif
 				#endif
+				#if os(visionOS)
+					// For the solstice-info marketing shot, present the "About solstices and
+					// equinoxes" window and dismiss the main one so it's captured alone.
+					// The main window stays open behind — dismissing it leaves the info
+					// window permanently dimmed (unfocused), and its glass backdrop is
+					// what gives the front window its solid, readable look.
+					if ScreenshotLaunch.visionScreen == .solsticeInfo {
+						try? await Task.sleep(for: .milliseconds(400))
+						openWindow(value: AnnualSolarEvent.juneSolstice)
+					}
+				#endif
 			}
 			.task(id: scenePhase) {
 				switch scenePhase {

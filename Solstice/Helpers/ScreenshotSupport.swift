@@ -58,6 +58,15 @@ enum ScreenshotLaunch {
 		case settingsNotifications = "settings-notifications"
 	}
 
+	/// Environment key: which visionOS scene to present for window capture (the
+	/// simctl-driven pipeline can't drive the UI, so the app presents it on launch).
+	static let visionScreenKey = "UITEST_VISION_SCREEN"
+
+	/// visionOS capture states beyond the default main window.
+	enum VisionScreen: String {
+		case solsticeInfo = "solstice-info"
+	}
+
 	static var isCapturing: Bool {
 		ProcessInfo.processInfo.arguments.contains(flag)
 	}
@@ -72,6 +81,10 @@ enum ScreenshotLaunch {
 
 	static var macScreen: MacScreen? {
 		ProcessInfo.processInfo.environment[macScreenKey].flatMap(MacScreen.init(rawValue:))
+	}
+
+	static var visionScreen: VisionScreen? {
+		ProcessInfo.processInfo.environment[visionScreenKey].flatMap(VisionScreen.init(rawValue:))
 	}
 
 	/// Color scheme to force during capture, or nil for the system appearance
