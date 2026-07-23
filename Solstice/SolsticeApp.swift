@@ -45,6 +45,9 @@ struct SolsticeApp: App {
 				.environment(nameResolver)
 				.environment(locationSearchService)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
+				// Forced appearance for dark-mode marketing shots; nil (any normal
+				// launch) leaves the system appearance in charge.
+				.preferredColorScheme(ScreenshotLaunch.forcedColorScheme)
 			#if os(macOS)
 				// Deterministic, compact window size for marketing captures; nil leaves
 				// normal launches free to size/resize as usual.

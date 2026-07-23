@@ -13,6 +13,9 @@
 #   WIDGETS_ONLY=1 Scripts/capture-screenshots.sh # re-render only the Frame-4
 #                                                  # widgets (skips the iOS UI
 #                                                  # tests; leaves iOS shots intact)
+#   IPAD=1 Scripts/capture-screenshots.sh         # iPad marketing shots (ipad-*.png)
+#                                                  # on the 13" iPad simulator; leaves
+#                                                  # the iPhone shots + widgets intact
 #
 set -euo pipefail
 
@@ -29,11 +32,16 @@ RESULTS_DIR="$PWD/.screenshots/results"
 OUT_DIR="$PWD/Screenshots/output"
 
 # iPhone 17 Pro (6.3") — matches the device bezel in the Figma marketing
-# template. Swap to "iPhone 17 Pro Max" for the 6.9" App Store size, or add the
-# 13" iPad line if the app ships an iPad build.
+# template. Swap to "iPhone 17 Pro Max" for the 6.9" App Store size.
 DEVICE_NAME="iPhone 17 Pro"
 # DEVICE_NAME="iPhone 17 Pro Max"
-# DEVICE_NAME="iPad Pro 13-inch (M4)"
+
+# IPAD=1 captures the iPad marketing shots instead (portrait, to match the Figma
+# template's portrait device bezel; the 2732×2048 marketing canvas is composed in
+# Figma). Runs only the iPad UI test — iPhone shots and widget renders are untouched.
+if [ "${IPAD:-0}" = "1" ]; then
+	DEVICE_NAME="iPad Pro 13-inch (M5)"
+fi
 
 # All locales present in Screenshots.xctestplan. Override via CLI args.
 ALL_LOCALES=(en de fr es ja ar nl zh-Hans pl it)
@@ -46,8 +54,10 @@ echo "==> Locales: ${LOCALES[*]}"
 echo "==> Device:  $DEVICE_NAME"
 
 # Resolve (and boot) the target simulator so we can pin a clean status bar.
-UDID=$(xcrun simctl list devices available | awk -F '[()]' -v name="$DEVICE_NAME" '
-	$0 ~ name" \\(" { print $2; exit }')
+# Fixed-string match, because device names can themselves contain parentheses
+# (e.g. "iPad Pro 13-inch (M4)"); the UDID is the first 36-char hex token after.
+UDID=$(xcrun simctl list devices available | grep -F "$DEVICE_NAME (" | head -1 \
+	| grep -Eo '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -1)
 if [ -z "${UDID:-}" ]; then
 	echo "error: simulator '$DEVICE_NAME' not found (see: xcrun simctl list devices available)" >&2
 	exit 1
@@ -77,9 +87,13 @@ done
 
 # WIDGETS_ONLY re-renders just the Frame-4 marketing widgets (WidgetRenderTests),
 # skipping the slow iOS UI test — used when only widget content changed.
+# IPAD runs just the iPad marketing flow (the test also idiom-guards itself, but
+# narrowing here skips the pointless widget re-render on the iPad simulator).
 ONLY_TESTING=()
 if [ "${WIDGETS_ONLY:-0}" = "1" ]; then
 	ONLY_TESTING+=(-only-testing "SolsticeTests/WidgetRenderTests")
+elif [ "${IPAD:-0}" = "1" ]; then
+	ONLY_TESTING+=(-only-testing "SolsticeUITests/AppStoreScreenshots/testCaptureIPadAppStoreScreenshots")
 fi
 
 echo "==> Running screenshot test plan"
@@ -113,8 +127,13 @@ xcrun xcresulttool export attachments \
 echo "==> Normalizing into $OUT_DIR/<locale>/"
 for loc in "${LOCALES[@]}"; do
 	# Clear only what THIS run produces (iOS device shots + the Frame-4 widget
-	# renders); leave the macOS window shots (mac-01/02/03) from the other script.
-	# In WIDGETS_ONLY mode, leave the iOS shots too — only the widgets re-render.
+	# renders, or the iPad shots in IPAD mode); leave the macOS window shots
+	# (mac-01/02/03) from the other script. In WIDGETS_ONLY mode, leave the iOS
+	# shots too — only the widgets re-render.
+	if [ "${IPAD:-0}" = "1" ]; then
+		rm -f "${OUT_DIR:?}/$loc"/ipad-*.png
+		continue
+	fi
 	if [ "${WIDGETS_ONLY:-0}" != "1" ]; then
 		rm -f "${OUT_DIR:?}/$loc"/[0-9][0-9]-*.png
 	fi
@@ -126,9 +145,10 @@ python3 - "$RAW_DIR" "$OUT_DIR" <<'PY'
 import json, os, re, shutil, sys
 raw, out = sys.argv[1], sys.argv[2]
 manifest = json.load(open(os.path.join(raw, "manifest.json")))
-# Attachments are "<screen>_0_<uuid>.png": iOS shots ("02-detail-daily") and the
-# Frame-4 widget renders ("mac-04-widget-overview"). Locale = test-plan configuration.
-pat = re.compile(r"^((?:mac-)?\d\d-[a-z0-9-]+)_0_.*\.png$")
+# Attachments are "<screen>_0_<uuid>.png": iOS shots ("02-detail-daily"), the
+# Frame-4 widget renders ("mac-04-widget-overview") and the iPad shots
+# ("ipad-01-overview"). Locale = test-plan configuration.
+pat = re.compile(r"^((?:mac-|ipad-)?\d\d-[a-z0-9-]+)_0_.*\.png$")
 count = 0
 for group in manifest:
     for a in group.get("attachments", []):

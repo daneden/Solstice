@@ -13,6 +13,7 @@
 //  backs out to the list and into settings.
 //
 
+import UIKit
 import XCTest
 
 final class AppStoreScreenshots: XCTestCase {
@@ -22,6 +23,7 @@ final class AppStoreScreenshots: XCTestCase {
 
 	@MainActor
 	func testCaptureAppStoreScreenshots() async throws {
+		try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .phone, "iPhone marketing flow")
 		let app = XCUIApplication()
 		app.launchArguments = [ScreenshotLaunch.flag]
 		app.launchEnvironment[ScreenshotLaunch.selectedLocationKey] = ScreenshotFixtures.selectedLocationUUID
@@ -70,6 +72,53 @@ final class AppStoreScreenshots: XCTestCase {
 		capture(app, named: "04-time-travel")
 	}
 
+	/// iPad marketing flow — matches the Figma "iPadOS Screenshot" template variants:
+	/// a light portrait overview (sidebar + detail) and a dark portrait shot of the
+	/// notification settings sheet. Portrait, because the template's device bezel is
+	/// portrait (the marketing canvas itself is landscape).
+	@MainActor
+	func testCaptureIPadAppStoreScreenshots() async throws {
+		try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .pad, "iPad marketing flow")
+
+		XCUIDevice.shared.orientation = .portrait
+
+		let app = XCUIApplication()
+		app.launchArguments = [ScreenshotLaunch.flag]
+		app.launchEnvironment[ScreenshotLaunch.selectedLocationKey] = ScreenshotFixtures.selectedLocationUUID
+		app.launch()
+
+		// ipad-01 — Overview: split view with the sidebar and the forced selection's
+		// detail both visible.
+		let detail = app.match(A11y.detailScreen)
+		XCTAssertTrue(detail.waitForExistence(timeout: 30), "Detail view never appeared")
+		var settingsButton = app.buttons[A11y.settingsButton]
+		if !settingsButton.isHittable {
+			// The sidebar collapsed (e.g. a stale column-visibility state); reveal it.
+			app.buttons["ToggleSidebar"].firstMatch.tap()
+			XCTAssertTrue(settingsButton.waitForExistence(timeout: 15), "Sidebar never appeared")
+		}
+		try await settle()
+		capture(app, named: "ipad-01-overview")
+
+		// ipad-02 — Notification settings sheet, dark appearance. Relaunch with the
+		// scheme forced in-process (UITEST_APPEARANCE): flipping the simulator's
+		// appearance mid-test via XCUIDevice doesn't reach the running app.
+		app.terminate()
+		app.launchEnvironment[ScreenshotLaunch.appearanceKey] = "dark"
+		app.launch()
+		XCTAssertTrue(app.match(A11y.detailScreen).waitForExistence(timeout: 30), "Detail view never reappeared")
+		settingsButton = app.buttons[A11y.settingsButton]
+		XCTAssertTrue(settingsButton.waitForExistence(timeout: 15), "Settings button never appeared")
+		settingsButton.tap()
+		try await settle()
+		let notificationsLink = app.match(A11y.notificationsLink)
+		app.scrollDown(untilHittable: notificationsLink)
+		XCTAssertTrue(notificationsLink.waitForExistence(timeout: 15), "Notifications link never appeared")
+		notificationsLink.tap()
+		try await settle()
+		capture(app, named: "ipad-02-notifications")
+	}
+
 	// MARK: - Helpers
 
 	@MainActor
@@ -107,13 +156,18 @@ private extension XCUIApplication {
 	/// chart) can report `isHittable == true` while only peeking from the bottom
 	/// edge, so `scrollDown(untilHittable:)` would stop without scrolling and
 	/// capture the same frame as the previous screen — this forces real movement.
+	/// Drags from the lower quarter of the screen rather than `swipeUp()`, whose
+	/// mid-screen start lands on the daily chart and gets consumed by the chart's
+	/// scrubbing gesture instead of scrolling.
 	func scrollUp(toReveal element: XCUIElement, maxSwipes: Int = 10) {
 		var swipes = 0
 		while swipes < maxSwipes {
 			if element.exists, element.isHittable, element.frame.minY < frame.midY {
 				return
 			}
-			swipeUp()
+			let start = coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+			let end = coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.35))
+			start.press(forDuration: 0.05, thenDragTo: end)
 			swipes += 1
 		}
 	}

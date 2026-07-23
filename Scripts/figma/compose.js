@@ -22,6 +22,7 @@ const SOURCE_HASHES = {
 
 const SECTIONS = {
   ios:     { en:"10:94", de:"30:94", fr:"30:134", es:"30:174", ja:"18:94", ar:"27:94", nl:"30:214", "zh-Hans":"30:334", pl:"30:254", it:"30:294" },
+  ipados:  { en:"199:464", de:"199:509", fr:"199:554", es:"199:599", ja:"199:644", ar:"199:693", nl:"199:738", "zh-Hans":"199:783", pl:"199:828", it:"199:873" },
   macos:   { en:"65:94", de:"67:94", fr:"67:112", es:"67:130", ja:"67:148", ar:"67:166", nl:"67:184", "zh-Hans":"67:202", pl:"67:220", it:"67:238" },
   watchos: { en:"157:439", de:"157:446", fr:"157:453", es:"157:460", ja:"157:467", ar:"157:478", nl:"157:485", "zh-Hans":"157:492", pl:"157:499", it:"157:506" },
 };
@@ -30,6 +31,7 @@ const SECTIONS = {
 // so a partial capture (e.g. watch-only) doesn't report every other slot missing.
 const HAVE = {
   ios:     Object.keys(SOURCE_HASHES).some(k => /\/\d\d-/.test(k)),
+  ipados:  Object.keys(SOURCE_HASHES).some(k => k.includes("/ipad-")),
   macos:   Object.keys(SOURCE_HASHES).some(k => k.includes("/mac-")),
   watchos: Object.keys(SOURCE_HASHES).some(k => k.includes("/watch-")),
 };
@@ -54,6 +56,11 @@ const IOS_FRAMES = ["02-detail-daily", "03-detail-annual", "04-time-travel", "01
 // "watchOS Screenshot" instance PER FILE, named exactly after the source file, so
 // slots are matched by instance name (robust to reordering).
 const WATCH_FILES = ["watch-01-location-list", "watch-02-detail", "watch-03-time-travel"];
+
+// iPadOS: same instance-named-after-file convention as watchOS. Portrait
+// 2064×2752 captures fill the portrait device bezel inside each landscape
+// marketing frame (placeholder aspect 0.7501 vs capture 0.75 — FILL crops ~0.1%).
+const IPAD_FILES = ["ipad-01-overview", "ipad-02-notifications"];
 
 function hashFor(locale, file) {
   if (!file) return null;
@@ -99,6 +106,16 @@ if (HAVE.ios) for (const loc of Object.keys(SECTIONS.ios)) {
     if (setImage(slot, hash, "FIT")) report.set++;
     else report.missing.push(`ios/${loc}/frame${i + 1}/${file}`);
   });
+}
+
+if (HAVE.ipados) for (const loc of Object.keys(SECTIONS.ipados)) {
+  const kids = figma.getNodeById(SECTIONS.ipados[loc]).children;
+  for (const file of IPAD_FILES) {
+    const inst = kids.find(c => c.type === "INSTANCE" && c.name === file);
+    const slot = inst && inst.findOne(n => n.name === "Screenshot (REPLACE ME)");
+    if (setImage(slot, hashFor(loc, file), "FILL")) report.set++;
+    else report.missing.push(`ipados/${loc}/${file}`);
+  }
 }
 
 if (HAVE.watchos) for (const loc of Object.keys(SECTIONS.watchos)) {

@@ -13,6 +13,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Accessibility identifiers for elements captured in App Store screenshots.
 enum A11y {
@@ -41,6 +42,11 @@ enum ScreenshotLaunch {
 	/// Environment key: integer number of days to offset the Time Machine by.
 	static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
 
+	/// Environment key: force "dark" or "light" appearance for the capture launch.
+	/// The simulator-level `XCUIDevice.shared.appearance` doesn't reliably reach a
+	/// running app, so the dark marketing shots force the scheme in-process instead.
+	static let appearanceKey = "UITEST_APPEARANCE"
+
 	/// Environment key: which macOS screen to open directly into for window capture.
 	static let macScreenKey = "UITEST_MAC_SCREEN"
 
@@ -66,6 +72,17 @@ enum ScreenshotLaunch {
 
 	static var macScreen: MacScreen? {
 		ProcessInfo.processInfo.environment[macScreenKey].flatMap(MacScreen.init(rawValue:))
+	}
+
+	/// Color scheme to force during capture, or nil for the system appearance
+	/// (always nil outside screenshot mode, so this never affects normal launches).
+	static var forcedColorScheme: ColorScheme? {
+		guard isCapturing else { return nil }
+		switch ProcessInfo.processInfo.environment[appearanceKey] {
+		case "dark": return .dark
+		case "light": return .light
+		default: return nil
+		}
 	}
 
 	/// Prepares deterministic defaults for screenshot capture. Call once at launch

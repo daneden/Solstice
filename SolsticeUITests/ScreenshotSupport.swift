@@ -28,6 +28,7 @@ enum ScreenshotLaunch {
 	static let flag = "-UITestScreenshots"
 	static let selectedLocationKey = "UITEST_SELECTED_LOCATION"
 	static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
+	static let appearanceKey = "UITEST_APPEARANCE"
 }
 
 /// The demo location the capture test opens. Its UUID is pre-seeded in

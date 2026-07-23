@@ -4,8 +4,9 @@
 # the Figma marketing file, deterministically, via the Figma MCP tools.
 #
 # Prereq: screenshots captured into Screenshots/output/<locale>/ (see
-# capture-screenshots.sh for iOS shots + widgets, capture-screenshots-macos.sh for
-# macOS window shots, capture-screenshots-watchos.sh for Apple Watch shots). The
+# capture-screenshots.sh for iOS shots + widgets — and, with IPAD=1, the iPad
+# shots — capture-screenshots-macos.sh for macOS window shots,
+# capture-screenshots-watchos.sh for Apple Watch shots). The
 # Figma templates are componentized (Stage A): each locale section is component
 # instances, so this only sets image fills — captions and all shared design come
 # from the master components. watchOS sections hold raw 422×514 shots (no
@@ -33,9 +34,9 @@
 # ── Phase 2: compose ──────────────────────────────────────────────────────────
 # Paste Scripts/figma/compose.js into the `use_figma` tool with the SOURCE_HASHES
 # object at the top filled from Phase 1, then run it. It fills every locale section's
-# instance slots (macOS windows + widgets, iOS device screenshots) idempotently and
-# returns { set, missing }. `missing` must be empty; a non-empty `missing` means a
-# hash key or a slot rule didn't match.
+# instance slots (macOS windows + widgets, iOS + iPadOS device screenshots)
+# idempotently and returns { set, missing }. `missing` must be empty; a non-empty
+# `missing` means a hash key or a slot rule didn't match.
 #
 # ── Verify ────────────────────────────────────────────────────────────────────
 # get_screenshot each locale section (e.g. macOS en 65:94, iOS ar 27:94) and confirm.
