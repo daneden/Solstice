@@ -253,6 +253,10 @@ private extension SidebarListView {
 		@AppStorage(Preferences.listViewAppearance) private var appearance
 		var location: Location
 
+		/// Drives the hover highlight, focus halo, and selection platter so the
+		/// shapes can't drift apart.
+		private let rowCornerRadius: CGFloat = 16
+
 		var body: some View {
 			switch appearance {
 			#if os(iOS)
@@ -261,6 +265,22 @@ private extension SidebarListView {
 			#endif
 			default:
 				LocationListRow(location: location)
+				#if os(visionOS)
+					// The hover effect only covers the view it's attached to, so the
+					// row padding has to live inside this view (with the default row
+					// insets zeroed out) for the highlight to fill the whole row.
+					// The selection platter stays system-drawn: rendering it from
+					// SwiftUI selection state slows navigation, so only its corner
+					// radius is adjusted, directly on the cell.
+					.padding(.vertical, 12)
+					.padding(.horizontal, 16)
+					.contentShape(.hoverEffect, .rect(cornerRadius: rowCornerRadius, style: .continuous))
+					.hoverEffect(.highlight)
+					.background { FocusHaloShape(cornerRadius: rowCornerRadius) }
+					.background { ListRowPlatterRadius(cornerRadius: rowCornerRadius) }
+					.listRowInsets(.zero)
+					.listRowHoverEffectDisabled()
+				#endif
 			}
 		}
 	}

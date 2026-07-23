@@ -21,6 +21,10 @@
 		7106C88729A2775C0007A7EC /* View+CapsuleAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */; };
 		7106C88929A277680007A7EC /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7198468D28E5895F00E866CE /* Persistence.swift */; };
 		7106C88D29A27D0A0007A7EC /* OverviewWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */; };
+		7106F670301267D500C39F64 /* FocusHaloShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106F66F301267D500C39F64 /* FocusHaloShape.swift */; };
+		7106F671301267D500C39F64 /* FocusHaloShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106F66F301267D500C39F64 /* FocusHaloShape.swift */; };
+		7106F67330126B4200C39F64 /* ListRowPlatterRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106F67230126B4200C39F64 /* ListRowPlatterRadius.swift */; };
+		7106F67430126B4200C39F64 /* ListRowPlatterRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106F67230126B4200C39F64 /* ListRowPlatterRadius.swift */; };
 		71072089300919ED006AA79C /* SeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71072088300919ED006AA79C /* SeedState.swift */; };
 		7107208A300919ED006AA79C /* SeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71072088300919ED006AA79C /* SeedState.swift */; };
 		7107208B300919ED006AA79C /* SeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71072088300919ED006AA79C /* SeedState.swift */; };
@@ -399,6 +403,8 @@
 		7106C87529A276B40007A7EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7106C87729A276B40007A7EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7106C88C29A27D0A0007A7EC /* OverviewWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWidgetView.swift; sourceTree = "<group>"; };
+		7106F66F301267D500C39F64 /* FocusHaloShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusHaloShape.swift; sourceTree = "<group>"; };
+		7106F67230126B4200C39F64 /* ListRowPlatterRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowPlatterRadius.swift; sourceTree = "<group>"; };
 		71072088300919ED006AA79C /* SeedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedState.swift; sourceTree = "<group>"; };
 		7107208D3009257E006AA79C /* MarketingWidgetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingWidgetRenderer.swift; sourceTree = "<group>"; };
 		71072094300947BD006AA79C /* screenshot-localized-names.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "screenshot-localized-names.json"; sourceTree = "<group>"; };
@@ -724,6 +730,8 @@
 				7116B1EC2DDD12BA0018A294 /* TimeMachinePanelView.swift */,
 				71C718202E83361C006A6835 /* TimeTravelCompactView.swift */,
 				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
+				7106F66F301267D500C39F64 /* FocusHaloShape.swift */,
+				7106F67230126B4200C39F64 /* ListRowPlatterRadius.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -1362,6 +1370,7 @@
 				713F7FFF29BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				71BD5E4029A785FE00E40C01 /* NotificationManager.swift in Sources */,
 				719846B028EEE48900E866CE /* CurrentLocation.swift in Sources */,
+				7106F670301267D500C39F64 /* FocusHaloShape.swift in Sources */,
 				71A2BDE629B747940071ACE9 /* Globals.swift in Sources */,
 				719511FC29AF5D0E009D282F /* ViewRemainingDaylight.swift in Sources */,
 				71BC51CD2E944C190025892F /* AppearanceSettingsView.swift in Sources */,
@@ -1390,6 +1399,7 @@
 				711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
 				7116B1EE2DDD12BA0018A294 /* TimeMachinePanelView.swift in Sources */,
 				718177622F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift in Sources */,
+				7106F67330126B4200C39F64 /* ListRowPlatterRadius.swift in Sources */,
 				7188714329DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				717F8BBC29A908E30015ECCB /* SettingsView.swift in Sources */,
 				714A944629C7318D00C67A4A /* SidebarListView.swift in Sources */,
@@ -1449,6 +1459,7 @@
 				711782DA2E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,
 				711782E72E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
 				710D9B722AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
+				7106F67430126B4200C39F64 /* ListRowPlatterRadius.swift in Sources */,
 				710720903009257E006AA79C /* MarketingWidgetRenderer.swift in Sources */,
 				719F927B29ACD21A00C06921 /* TimeInterval++.swift in Sources */,
 				719F926D29ACD21300C06921 /* LocationListRow.swift in Sources */,
@@ -1459,6 +1470,7 @@
 				719F927429ACD21300C06921 /* SolsticeApp.swift in Sources */,
 				712433A52D78867300709C20 /* StackedLabelStyle.swift in Sources */,
 				719F927029ACD21300C06921 /* DetailView.swift in Sources */,
+				7106F671301267D500C39F64 /* FocusHaloShape.swift in Sources */,
 				71E945832F31FDA600B26D02 /* NTSolar.swift in Sources */,
 				716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */,
 				719F928729ACD28500C06921 /* Solstice.xcdatamodeld in Sources */,
