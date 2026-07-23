@@ -67,6 +67,7 @@ struct LandingView: View {
 			.animateIn(active: animate, delay: 1.1)
 		}
 		.scenePadding(.horizontal)
+		.scenePadding(.bottom)
 		#if os(iOS)
 			.background {
 				VariableBlurView(direction: .blurredBottomClearTop)
@@ -148,6 +149,7 @@ struct LandingView: View {
 private struct WithOnboardingViewModifier: ViewModifier {
 	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
 	@Environment(CurrentLocation.self) private var currentLocation
+	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
 	@State private var shouldPresentOnboarding = false
 
@@ -163,7 +165,7 @@ private struct WithOnboardingViewModifier: ViewModifier {
 					.onPreferenceChange(SizePreferenceKey.self, perform: { size in
 						sheetSize = size
 					})
-					.presentationDetents([.height(sheetSize)])
+					.presentationDetents(horizontalSizeClass == .regular ? [.large] : [.height(sheetSize)])
 					.interactiveDismissDisabled()
 			}
 	}
