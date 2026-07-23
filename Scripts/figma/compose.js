@@ -25,6 +25,7 @@ const SECTIONS = {
   ipados:  { en:"199:464", de:"199:509", fr:"199:554", es:"199:599", ja:"199:644", ar:"199:693", nl:"199:738", "zh-Hans":"199:783", pl:"199:828", it:"199:873" },
   macos:   { en:"65:94", de:"67:94", fr:"67:112", es:"67:130", ja:"67:148", ar:"67:166", nl:"67:184", "zh-Hans":"67:202", pl:"67:220", it:"67:238" },
   watchos: { en:"157:439", de:"157:446", fr:"157:453", es:"157:460", ja:"157:467", ar:"157:478", nl:"157:485", "zh-Hans":"157:492", pl:"157:499", it:"157:506" },
+  visionos:{ en:"203:902", de:"203:909", fr:"203:916", es:"203:923", ja:"203:930", ar:"203:941", nl:"203:948", "zh-Hans":"203:955", pl:"203:962", it:"203:969" },
 };
 
 // A platform is composed only when SOURCE_HASHES holds at least one of its files,
@@ -34,6 +35,7 @@ const HAVE = {
   ipados:  Object.keys(SOURCE_HASHES).some(k => k.includes("/ipad-")),
   macos:   Object.keys(SOURCE_HASHES).some(k => k.includes("/mac-")),
   watchos: Object.keys(SOURCE_HASHES).some(k => k.includes("/watch-")),
+  visionos:Object.keys(SOURCE_HASHES).some(k => k.includes("/vision-")),
 };
 
 // Per-frame slot → source file (filename without extension, under Screenshots/output/<locale>/).
@@ -61,6 +63,10 @@ const WATCH_FILES = ["watch-01-location-list", "watch-02-detail", "watch-03-time
 // 2064×2752 captures fill the portrait device bezel inside each landscape
 // marketing frame (placeholder aspect 0.7501 vs capture 0.75 — FILL crops ~0.1%).
 const IPAD_FILES = ["ipad-01-overview", "ipad-02-notifications"];
+
+// visionOS: raw 3840×2160 sim shots in 1920×1080 frames (2x export = store size);
+// no bezel/caption, instance-named-after-file like watchOS.
+const VISION_FILES = ["vision-01-app", "vision-02-solstice-info", "vision-03-time-travel"];
 
 function hashFor(locale, file) {
   if (!file) return null;
@@ -115,6 +121,16 @@ if (HAVE.ipados) for (const loc of Object.keys(SECTIONS.ipados)) {
     const slot = inst && inst.findOne(n => n.name === "Screenshot (REPLACE ME)");
     if (setImage(slot, hashFor(loc, file), "FILL")) report.set++;
     else report.missing.push(`ipados/${loc}/${file}`);
+  }
+}
+
+if (HAVE.visionos) for (const loc of Object.keys(SECTIONS.visionos)) {
+  const kids = figma.getNodeById(SECTIONS.visionos[loc]).children;
+  for (const file of VISION_FILES) {
+    const inst = kids.find(c => c.type === "INSTANCE" && c.name === file);
+    const slot = inst && inst.findOne(n => n.name === "Screenshot (REPLACE ME)");
+    if (setImage(slot, hashFor(loc, file), "FILL")) report.set++;
+    else report.missing.push(`visionos/${loc}/${file}`);
   }
 }
 
