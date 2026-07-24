@@ -42,9 +42,6 @@ struct SkyModel {
 	/// Multiplier applied before tone-mapping. The main lever for overall brightness.
 	var exposure = 3.0
 
-	/// Deep-blue night colours [zenith, horizon] the physical sky blends down to for legibility.
-	var nightFloor = SkyGradient.night
-
 	var viewSamples = 16
 	var lightSamples = 8
 
@@ -142,7 +139,6 @@ struct SkyModel {
 	///   - sunX: Sun's horizontal position as a fraction of the day (0…1), matching the daylight chart.
 	func mesh(sunAltitudeDeg: Double, sunX: Double) -> (gradient: MeshGradient, stops: [Color]) {
 		let w = meshWidth, h = meshHeight
-		let blend = nightBlend(sunAltitudeDeg: sunAltitudeDeg)
 
 		var points = [SIMD2<Float>]()
 		var colors = [Color]()
@@ -157,12 +153,12 @@ struct SkyModel {
 			for col in 0 ..< w {
 				let colX = Double(col) / Double(w - 1)
 				let relativeAzimuth = (colX - sunX) * azimuthSpanDeg
-				let physical = color(sunAltitudeDeg: sunAltitudeDeg,
-				                     viewElevationDeg: elevation,
-				                     relativeAzimuthDeg: relativeAzimuth)
-				let blended = physical.mix(with: floorColor(elevationFraction: elevationFraction), by: CGFloat(blend))
+				// Below the horizon the physical sky darkens to black — no artificial night floor.
+				let vertexColor = color(sunAltitudeDeg: sunAltitudeDeg,
+				                        viewElevationDeg: elevation,
+				                        relativeAzimuthDeg: relativeAzimuth)
 				points.append(SIMD2<Float>(Float(colX), Float(rowY)))
-				colors.append(blended)
+				colors.append(vertexColor)
 			}
 		}
 
@@ -183,34 +179,19 @@ struct SkyModel {
 		max(0, 1 - abs(height - 25000) / 15000)
 	}
 
-	/// How much the physical sky has faded to the night floor (0 = physical, 1 = floor).
-	/// Fades in across civil-to-astronomical twilight.
-	private func nightBlend(sunAltitudeDeg: Double) -> Double {
-		1 - smoothstep(-18, -6, sunAltitudeDeg)
-	}
-
-	private func floorColor(elevationFraction: Double) -> Color {
-		guard nightFloor.count >= 2 else { return nightFloor.first ?? .black }
-		return nightFloor[1].mix(with: nightFloor[0], by: CGFloat(elevationFraction))
-	}
-
+	/// Luminance-based Reinhard: compresses brightness while preserving chroma, so the daytime
+	/// sky stays saturated blue instead of desaturating toward grey the way per-channel Reinhard does.
 	private func tonemap(_ radiance: SIMD3<Double>) -> Color {
-		func channel(_ value: Double) -> Double {
-			let exposed = value * exposure
-			let mapped = exposed / (1 + exposed) // Reinhard
-			return encodeSRGB(mapped)
-		}
-		return Color(.sRGB, red: channel(radiance.x), green: channel(radiance.y), blue: channel(radiance.z))
+		let exposed = radiance * exposure
+		let luminance = 0.2126 * exposed.x + 0.7152 * exposed.y + 0.0722 * exposed.z
+		let scale = luminance > 0 ? 1 / (1 + luminance) : 0
+		let mapped = exposed * scale
+		return Color(.sRGB, red: encodeSRGB(mapped.x), green: encodeSRGB(mapped.y), blue: encodeSRGB(mapped.z))
 	}
 
 	private func encodeSRGB(_ value: Double) -> Double {
 		let c = min(max(value, 0), 1)
 		return c <= 0.0031308 ? c * 12.92 : 1.055 * pow(c, 1 / 2.4) - 0.055
-	}
-
-	private func smoothstep(_ edge0: Double, _ edge1: Double, _ x: Double) -> Double {
-		let t = min(max((x - edge0) / (edge1 - edge0), 0), 1)
-		return t * t * (3 - 2 * t)
 	}
 
 	/// Far intersection distance of a ray with a sphere centred at the origin, if any.
@@ -247,12 +228,6 @@ struct SkyGradient: View, ShapeStyle {
 		}
 		return NTSolar(for: .now, coordinate: .proxiedToTimeZone, timeZone: timeZone)
 	}
-
-	/// Deep-blue night floor [zenith, horizon]. The physical sky settles onto these for legibility.
-	static let night = [
-		Color(red: 0.007, green: 0.03, blue: 0.17),
-		Color(red: 0.234, green: 0.446, blue: 0.58),
-	]
 
 	private var skyMesh: (gradient: MeshGradient, stops: [Color]) {
 		let solar = effectiveSolar
