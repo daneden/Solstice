@@ -29,7 +29,6 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 	typealias Intent = SolsticeConfigurationIntent
 
 	let widgetKind: SolsticeWidgetKind
-	private let geocoder = CLGeocoder()
 
 	func recommendations() -> [AppIntentRecommendation<Intent>] {
 		// Provide recommendations based on saved locations
@@ -108,8 +107,8 @@ struct SolsticeTimelineProvider: AppIntentTimelineProvider {
 			// For legacy migrations, the timezone might be missing - fetch it if needed
 			if configuration.needsTimezoneResolution || widgetLocation.timeZoneIdentifier == nil {
 				let location = CLLocation(latitude: locationEntity.latitude, longitude: locationEntity.longitude)
-				if let placemark = try? await geocoder.reverseGeocodeLocation(location).first {
-					widgetLocation.timeZoneIdentifier = placemark.timeZone?.identifier
+				if let place = await ReverseGeocoder.reverseGeocode(location) {
+					widgetLocation.timeZoneIdentifier = place.timeZone?.identifier
 				}
 			}
 

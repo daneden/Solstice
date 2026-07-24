@@ -10,6 +10,10 @@ import Suite
 import SwiftUI
 import TimeMachine
 
+#if WIDGET_EXTENSION
+	import WidgetKit
+#endif
+
 struct CircularSolarChart<Location: AnyLocation>: View {
 	@AppStorage(Preferences.detailViewChartAppearance) private var storedAppearance
 	@Environment(\.labelsVisibility) private var labelsVisibility

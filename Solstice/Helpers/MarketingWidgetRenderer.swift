@@ -182,7 +182,8 @@
 			guard let yesterday = solar.yesterday else { return Text(verbatim: "") }
 			let diff = solar.daylightDuration - yesterday.daylightDuration
 			let magnitude = Text(Duration.seconds(abs(diff)), format: .units(allowed: [.hours, .minutes], width: .abbreviated))
-			return (diff >= 0 ? Text(verbatim: "+") : Text(verbatim: "-")) + magnitude
+			let sign = diff >= 0 ? "+" : "-"
+			return Text("\(sign)\(magnitude)")
 		}
 	}
 

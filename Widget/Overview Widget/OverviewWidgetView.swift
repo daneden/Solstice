@@ -135,7 +135,7 @@ extension OverviewWidgetView {
 						}
 
 						Group {
-							if let location,
+							if location != nil,
 							   let begins = relevantSolar?.safeSunrise,
 							   let ends = relevantSolar?.safeSunset
 							{

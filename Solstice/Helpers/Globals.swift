@@ -9,6 +9,10 @@ import CoreLocation
 import Foundation
 import Observation
 
+#if os(visionOS)
+	import MapKit
+#endif
+
 var chartHeight: CGFloat = {
 	#if !os(watchOS)
 		360
@@ -164,6 +168,42 @@ enum LocalizedNameCache {
 	}
 }
 
+// MARK: - Reverse Geocoding
+
+/// The subset of reverse-geocoding results the app uses, decoupled from
+/// `CLPlacemark` so each platform can source it from a non-deprecated API.
+struct ReverseGeocodedPlace {
+	var city: String?
+	var country: String?
+	var timeZone: TimeZone?
+}
+
+enum ReverseGeocoder {
+	/// Reverse geocodes via MapKit on visionOS, where `CLGeocoder` is deprecated
+	/// (deployment target 26+). The other platforms' deployment targets predate
+	/// `MKReverseGeocodingRequest`, so they stay on `CLGeocoder`.
+	static func reverseGeocode(_ location: CLLocation) async -> ReverseGeocodedPlace? {
+		#if os(visionOS)
+			guard let request = MKReverseGeocodingRequest(location: location),
+			      let mapItem = try? await request.mapItems.first
+			else { return nil }
+			return ReverseGeocodedPlace(
+				city: mapItem.addressRepresentations?.cityName,
+				country: mapItem.addressRepresentations?.regionName,
+				timeZone: mapItem.timeZone
+			)
+		#else
+			guard let placemark = try? await CLGeocoder().reverseGeocodeLocation(location).first
+			else { return nil }
+			return ReverseGeocodedPlace(
+				city: placemark.locality,
+				country: placemark.country,
+				timeZone: placemark.timeZone
+			)
+		#endif
+	}
+}
+
 // MARK: - Location Name Resolver
 
 /// Reactively resolves localized display names for saved locations. Views read
@@ -225,9 +265,9 @@ final class LocationNameResolver {
 				}
 			#endif
 			let clLocation = CLLocation(latitude: latitude, longitude: longitude)
-			guard let placemark = try? await CLGeocoder().reverseGeocodeLocation(clLocation).first else { return }
-			let title = placemark.locality
-			let subtitle = placemark.country
+			guard let place = await ReverseGeocoder.reverseGeocode(clLocation) else { return }
+			let title = place.city
+			let subtitle = place.country
 			guard title != nil || subtitle != nil else { return }
 
 			LocalizedNameCache.write(key: key, title: title, subtitle: subtitle)

@@ -80,8 +80,6 @@ struct LocationAppEntity: AppEntity {
 // MARK: - Entity Query
 
 struct LocationEntityQuery: EntityQuery, EntityStringQuery {
-	private static let geocoder = CLGeocoder()
-
 	/// Provides the default result when no selection is made
 	func defaultResult() async -> LocationAppEntity? {
 		.currentLocation
@@ -192,25 +190,37 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 			let response = try await search.start()
 
 			for item in response.mapItems.prefix(5) {
-				guard let location = item.placemark.location else { continue }
+				#if os(visionOS)
+					let location = item.location
+					let city = item.addressRepresentations?.cityName
+					let country = item.addressRepresentations?.regionName
+					let subtitleParts = [city, country]
+					let itemTimeZone = item.timeZone
+				#else
+					guard let location = item.placemark.location else { continue }
+					let city = item.placemark.locality
+					let country = item.placemark.country
+					let subtitleParts = [city, item.placemark.administrativeArea, country]
+					let itemTimeZone = item.placemark.timeZone
+				#endif
 
 				let timeZoneIdentifier: String?
-				if let timeZone = item.placemark.timeZone {
-					timeZoneIdentifier = timeZone.identifier
+				if let itemTimeZone {
+					timeZoneIdentifier = itemTimeZone.identifier
 				} else {
 					timeZoneIdentifier = await fetchTimezone(for: location)
 				}
 
 				let entity = LocationAppEntity(
 					id: encodeTemporaryEntity(
-						title: item.name ?? item.placemark.locality ?? String(localized: "Unknown"),
-						subtitle: item.placemark.country,
+						title: item.name ?? city ?? String(localized: "Unknown"),
+						subtitle: country,
 						latitude: location.coordinate.latitude,
 						longitude: location.coordinate.longitude,
 						timeZoneIdentifier: timeZoneIdentifier
 					),
-					title: item.name ?? item.placemark.locality ?? String(localized: "Unknown"),
-					subtitle: [item.placemark.locality, item.placemark.administrativeArea, item.placemark.country]
+					title: item.name ?? city ?? String(localized: "Unknown"),
+					subtitle: subtitleParts
 						.compactMap { $0 }
 						.filter { $0 != item.name }
 						.joined(separator: ", "),
@@ -238,12 +248,7 @@ struct LocationEntityQuery: EntityQuery, EntityStringQuery {
 
 	/// Fetch timezone for a location via reverse geocoding
 	private func fetchTimezone(for location: CLLocation) async -> String? {
-		do {
-			let placemarks = try await Self.geocoder.reverseGeocodeLocation(location)
-			return placemarks.first?.timeZone?.identifier
-		} catch {
-			return nil
-		}
+		await ReverseGeocoder.reverseGeocode(location)?.timeZone?.identifier
 	}
 
 	// MARK: - Temporary Entity Encoding

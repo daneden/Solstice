@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 02/10/2022.
 //
 
+import CoreData
 import MapKit
 import SwiftUI
 
@@ -60,11 +61,18 @@ struct LocationSearchResultRow: View {
 		let searchRequest = MKLocalSearch.Request(completion: completion)
 		let searchResult = try await MKLocalSearch(request: searchRequest).start()
 		if let item = searchResult.mapItems.first {
-			let coords = item.placemark.coordinate
-
-			guard let location = item.placemark.location else {
-				return nil
-			}
+			#if os(visionOS)
+				let location = item.location
+				let country = item.addressRepresentations?.regionName
+				let itemTimeZone = item.timeZone
+			#else
+				guard let location = item.placemark.location else {
+					return nil
+				}
+				let country = item.placemark.country
+				let itemTimeZone = item.placemark.timeZone
+			#endif
+			let coords = location.coordinate
 
 			if let savedLocation = items.first(where: { savedLocation in
 				// Avoid duplicate items by filtering locations less than 5km from the specified location
@@ -76,14 +84,19 @@ struct LocationSearchResultRow: View {
 				return savedLocation
 			}
 
-			let reverseGeocoding = try await CLGeocoder().reverseGeocodeLocation(location)
+			let timeZoneIdentifier: String?
+			if let itemTimeZone {
+				timeZoneIdentifier = itemTimeZone.identifier
+			} else {
+				timeZoneIdentifier = await ReverseGeocoder.reverseGeocode(location)?.timeZone?.identifier
+			}
 			searchService.queryFragment = ""
 			isAddingItem = false
 
 			return TemporaryLocation(
 				title: completion.title,
-				subtitle: completion.subtitle.isEmpty ? item.placemark.country : completion.subtitle,
-				timeZoneIdentifier: item.placemark.timeZone?.identifier ?? reverseGeocoding.first?.timeZone?.identifier,
+				subtitle: completion.subtitle.isEmpty ? country : completion.subtitle,
+				timeZoneIdentifier: timeZoneIdentifier,
 				latitude: coords.latitude,
 				longitude: coords.longitude
 			)

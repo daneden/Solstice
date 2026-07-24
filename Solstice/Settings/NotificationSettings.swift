@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 24/02/2023.
 //
 
+import CoreData
 import CoreLocation
 import SwiftUI
 

@@ -17,7 +17,6 @@ actor SolsticeWidgetLocationManager {
 
 	private var cachedLocationData: LocationData?
 	private var cachedLocationDataCoordinate: CLLocation?
-	private let geocoder = CLGeocoder()
 	private let significantDistanceChange: CLLocationDistance = 500
 
 	static var isAuthorized: Bool {
@@ -112,24 +111,20 @@ actor SolsticeWidgetLocationManager {
 		}
 
 		// Need to geocode
-		do {
-			if let placemark = try await geocoder.reverseGeocodeLocation(location).first {
-				let locationData = LocationData(
-					title: placemark.locality,
-					subtitle: placemark.country,
-					latitude: location.coordinate.latitude,
-					longitude: location.coordinate.longitude,
-					timeZoneIdentifier: placemark.timeZone?.identifier
-				)
-				cachedLocationData = locationData
-				cachedLocationDataCoordinate = location
-				return (location, locationData)
-			}
-		} catch {
-			// Fallback to cached location data if geocoding fails
-			return (location, cachedLocationData)
+		if let place = await ReverseGeocoder.reverseGeocode(location) {
+			let locationData = LocationData(
+				title: place.city,
+				subtitle: place.country,
+				latitude: location.coordinate.latitude,
+				longitude: location.coordinate.longitude,
+				timeZoneIdentifier: place.timeZone?.identifier
+			)
+			cachedLocationData = locationData
+			cachedLocationDataCoordinate = location
+			return (location, locationData)
 		}
 
-		return (location, nil)
+		// Fallback to cached location data if geocoding fails
+		return (location, cachedLocationData)
 	}
 }

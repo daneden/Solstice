@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+#if WIDGET_EXTENSION
+	import WidgetKit
+#endif
+
 struct BackportGlassEffectViewModifier<S: Shape>: ViewModifier {
 	#if WIDGET_EXTENSION
 		@Environment(\.widgetRenderingMode) private var widgetRenderingMode

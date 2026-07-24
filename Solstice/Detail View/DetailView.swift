@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 29/09/2022.
 //
 
+import CoreData
 import Suite
 import SwiftUI
 import TimeMachine

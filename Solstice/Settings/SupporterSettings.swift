@@ -57,7 +57,11 @@ struct SupporterSettings: View {
 
 						Button {
 							Task {
-								self.latestTransaction = try await purchaseProduct(product)
+								do {
+									self.latestTransaction = try await purchaseProduct(product)
+								} catch {
+									// Cancelled or failed purchases leave the previous transaction state intact
+								}
 							}
 						} label: {
 							Text(product.displayPrice)

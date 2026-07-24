@@ -10,7 +10,7 @@ import SwiftUI
 
 @Observable
 class CurrentLocation: NSObject, CLLocationManagerDelegate {
-	private(set) var placemark: CLPlacemark?
+	private(set) var place: ReverseGeocodedPlace?
 
 	private(set) var location: CLLocation? {
 		didSet {
@@ -22,23 +22,22 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 		}
 	}
 
-	/// Caches the current location and placemark to the App Group for widget access
+	/// Caches the current location and reverse-geocoded place to the App Group for widget access
 	private func cacheLocationToAppGroup(_ location: CLLocation?) {
 		guard let location else { return }
 
 		let locationData = LocationData(
-			title: placemark?.locality,
-			subtitle: placemark?.country,
+			title: place?.city,
+			subtitle: place?.country,
 			latitude: location.coordinate.latitude,
 			longitude: location.coordinate.longitude,
-			timeZoneIdentifier: placemark?.timeZone?.identifier
+			timeZoneIdentifier: place?.timeZone?.identifier
 		)
 
 		LocationAppGroupCache.write(locationData)
 	}
 
 	@ObservationIgnored private let locationManager = CLLocationManager()
-	@ObservationIgnored private let geocoder = CLGeocoder()
 
 	override init() {
 		super.init()
@@ -88,9 +87,8 @@ extension CurrentLocation {
 	@MainActor func processLocation(_ location: CLLocation?) async {
 		guard let location else { return }
 
-		let reverseGeocoded = try? await geocoder.reverseGeocodeLocation(location)
-		if let firstResult = reverseGeocoded?.first {
-			placemark = firstResult
+		if let reverseGeocoded = await ReverseGeocoder.reverseGeocode(location) {
+			place = reverseGeocoded
 		}
 	}
 
@@ -138,15 +136,15 @@ extension CurrentLocation {
 
 extension CurrentLocation: ObservableLocation {
 	var title: String? {
-		placemark?.locality
+		place?.city
 	}
 
 	var subtitle: String? {
-		placemark?.country
+		place?.country
 	}
 
 	var timeZoneIdentifier: String? {
-		placemark?.timeZone?.identifier
+		place?.timeZone?.identifier
 	}
 
 	var latitude: Double {
