@@ -202,6 +202,21 @@ struct DaylightChart: View {
 		}
 
 		scrubHitArea(geo: geo, proxy: proxy)
+
+		// Report the sun marker's position so a SkyGradient background can anchor its glow to it.
+		Color.clear
+			.preference(key: SkySunAnchorPreferenceKey.self, value: sunAnchorPoint(proxy: proxy, geo: geo))
+	}
+
+	/// The sun marker's position expressed in the shared `skyGradient` coordinate space.
+	private func sunAnchorPoint(proxy: ChartProxy, geo: GeometryProxy) -> CGPoint? {
+		guard let sunX = proxy.position(forX: sunDisplayOffset),
+		      let sunY = proxy.position(forY: yValue(for: sunDisplayOffset))
+		else {
+			return nil
+		}
+		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
+		return CGPoint(x: frame.minX + sunX, y: frame.minY + sunY)
 	}
 
 	private func horizonLine(width: CGFloat, yOffset: CGFloat) -> some View {

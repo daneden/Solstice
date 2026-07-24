@@ -102,12 +102,28 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		Helpers.angle(for: date, timeZone: timeZone)
 	}
 
+	/// The sun's position on the dial, as a `UnitPoint` in the gradient's bounds, so the sky glow
+	/// tracks the sun dot around the ring. Midnight sits at the bottom, noon at the top.
+	private var sunAnchor: UnitPoint? {
+		guard let solar else { return nil }
+		let theta = angle(for: solar.date).radians
+		let radius = 0.4
+		return UnitPoint(x: 0.5 + radius * cos(theta), y: 0.5 + radius * sin(theta))
+	}
+
+	@ViewBuilder
+	private var graphicalBackground: some View {
+		if let solar {
+			SkyGradient(ntSolar: solar, sunAnchor: sunAnchor)
+		}
+	}
+
 	@ViewBuilder
 	var background: some View {
 		#if WIDGET_EXTENSION
 			if widgetRenderingMode == .fullColor {
 				if appearance == .graphical {
-					solar?.view
+					graphicalBackground
 				} else {
 					Rectangle().fill(.regularMaterial)
 				}
@@ -116,7 +132,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			}
 		#else
 			if appearance == .graphical {
-				solar?.view
+				graphicalBackground
 			} else {
 				Rectangle().fill(.regularMaterial)
 			}

@@ -16,6 +16,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var location: Location
 
 	@State private var gradientSolar: NTSolar?
+	@State private var sunAnchorPoint: CGPoint?
 
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
@@ -209,16 +210,32 @@ extension DailyOverview {
 		.if(chartAppearance == .graphical) { content in
 			content
 				.background {
-					SkyGradient(ntSolar: gradientSolar ?? solar)
+					GeometryReader { geo in
+						SkyGradient(ntSolar: gradientSolar ?? solar, sunAnchor: normalizedSunAnchor(in: geo))
+					}
 				}
+				.coordinateSpace(.named(SkyGradient.coordinateSpaceName))
 		}
 		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
 			self.gradientSolar = NTSolar(for: date, coordinate: solar.coordinate, timeZone: location.timeZone)
+		}
+		.onPreferenceChange(SkySunAnchorPreferenceKey.self) { point in
+			self.sunAnchorPoint = point
 		}
 		#endif
 		#if os(macOS)
 		.padding(-12)
 		#endif
+	}
+
+	/// Converts the chart's reported sun position (in the shared coordinate space) into a
+	/// `UnitPoint` within the gradient background's own bounds.
+	private func normalizedSunAnchor(in geo: GeometryProxy) -> UnitPoint? {
+		guard let sunAnchorPoint else { return nil }
+		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
+		guard frame.width > 0, frame.height > 0 else { return nil }
+		return UnitPoint(x: (sunAnchorPoint.x - frame.minX) / frame.width,
+		                 y: (sunAnchorPoint.y - frame.minY) / frame.height)
 	}
 }
 

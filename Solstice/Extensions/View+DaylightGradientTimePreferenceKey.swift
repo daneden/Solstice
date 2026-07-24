@@ -16,3 +16,15 @@ struct DaylightGradientTimePreferenceKey: PreferenceKey {
 		value = nextValue()
 	}
 }
+
+/// The sun marker's position, in the `skyGradient` named coordinate space, published up from a chart
+/// so the `SkyGradient` background can anchor its glow to it. See `SkyGradient.coordinateSpaceName`.
+struct SkySunAnchorPreferenceKey: PreferenceKey {
+	typealias Value = CGPoint?
+
+	static let defaultValue: CGPoint? = nil
+
+	static func reduce(value: inout CGPoint?, nextValue: () -> CGPoint?) {
+		value = nextValue() ?? value
+	}
+}

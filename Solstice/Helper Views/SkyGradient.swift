@@ -45,36 +45,41 @@ struct SkyModel {
 	var viewSamples = 16
 	var lightSamples = 8
 
-	/// Mesh dimensions. More columns tighten the sun glow; more rows sharpen the horizon band.
-	var meshWidth = 7
-	var meshHeight = 5
+	/// Mesh dimensions. A denser grid renders the 2-D sun glow more smoothly.
+	var meshWidth = 9
+	var meshHeight = 7
 	/// Highest view elevation sampled (top of the rendered strip), in degrees.
 	var maxElevationDeg = 60.0
-	/// Horizontal degrees of azimuth spanned across the full width of the gradient.
-	var azimuthSpanDeg = 180.0
+	/// Degrees of scattering angle per unit of normalised distance from the sun anchor.
+	/// Higher values shrink the glow; lower values spread it across the gradient.
+	var glowAngularScaleDeg = 120.0
 
 	static let standard = SkyModel()
 
 	// MARK: Radiance
 
 	/// Linear (pre-tone-map) RGB radiance for a view direction, given the sun's altitude.
+	///
+	/// The atmosphere is spherically symmetric, so the ray-march path lengths depend only on the
+	/// view elevation and the sun altitude — the view's azimuth only ever entered through the phase
+	/// functions. Supplying `scatterCosTheta` directly lets the mesh place the glow anywhere (e.g. at
+	/// a chart's sun marker) without pretending the sky is a literal dome.
 	/// - Parameters:
 	///   - sunAltitudeDeg: Sun altitude above the horizon, in degrees (negative below).
 	///   - viewElevationDeg: View elevation above the horizon, in degrees.
-	///   - relativeAzimuthDeg: View azimuth relative to the sun, in degrees (0 = toward the sun).
-	func radiance(sunAltitudeDeg: Double, viewElevationDeg: Double, relativeAzimuthDeg: Double) -> SIMD3<Double> {
+	///   - scatterCosTheta: Cosine of the angle between the view ray and the sun (1 = straight at it).
+	func radiance(sunAltitudeDeg: Double, viewElevationDeg: Double, scatterCosTheta: Double) -> SIMD3<Double> {
 		let sa = sunAltitudeDeg * .pi / 180
 		let ve = viewElevationDeg * .pi / 180
-		let raz = relativeAzimuthDeg * .pi / 180
 
-		// Sun's horizontal azimuth is +x, up is +y.
+		// Up is +y; both rays live in the x-y plane since only their path lengths matter here.
 		let sun = SIMD3<Double>(cos(sa), sin(sa), 0)
-		let view = SIMD3<Double>(cos(ve) * cos(raz), sin(ve), cos(ve) * sin(raz))
+		let view = SIMD3<Double>(cos(ve), sin(ve), 0)
 		let origin = SIMD3<Double>(0, planetRadius, 0)
 
 		guard let tMax = raySphereFar(origin, view, atmosphereRadius) else { return .zero }
 
-		let cosTheta = simd_dot(view, sun)
+		let cosTheta = min(max(scatterCosTheta, -1), 1)
 		let phaseR = 3.0 / (16.0 * .pi) * (1 + cosTheta * cosTheta)
 		let g = mieG
 		let hgDenom = pow(max(1e-4, 1 + g * g - 2 * g * cosTheta), 1.5)
@@ -125,19 +130,23 @@ struct SkyModel {
 	}
 
 	/// Tone-mapped, gamma-encoded sky colour for a view direction.
-	func color(sunAltitudeDeg: Double, viewElevationDeg: Double, relativeAzimuthDeg: Double) -> Color {
+	func color(sunAltitudeDeg: Double, viewElevationDeg: Double, scatterCosTheta: Double) -> Color {
 		tonemap(radiance(sunAltitudeDeg: sunAltitudeDeg,
 		                 viewElevationDeg: viewElevationDeg,
-		                 relativeAzimuthDeg: relativeAzimuthDeg))
+		                 scatterCosTheta: scatterCosTheta))
 	}
 
 	// MARK: Mesh
 
 	/// Builds the sky as a `MeshGradient`, plus the vertical colour ramp used by `SkyGradient.stops`.
+	///
+	/// The warm sun glow is centred on `sunAnchor` so it can be aligned with the sun marker each chart
+	/// draws. A vertex's scattering angle grows with its normalised distance from the anchor, so the
+	/// forward-Mie glow peaks exactly at the anchor and falls off around it.
 	/// - Parameters:
 	///   - sunAltitudeDeg: Sun altitude above the horizon, in degrees.
-	///   - sunX: Sun's horizontal position as a fraction of the day (0…1), matching the daylight chart.
-	func mesh(sunAltitudeDeg: Double, sunX: Double) -> (gradient: MeshGradient, stops: [Color]) {
+	///   - sunAnchor: The sun's position in the gradient's own bounds (0…1, y-down).
+	func mesh(sunAltitudeDeg: Double, sunAnchor: UnitPoint) -> (gradient: MeshGradient, stops: [Color]) {
 		let w = meshWidth, h = meshHeight
 
 		var points = [SIMD2<Float>]()
@@ -152,11 +161,12 @@ struct SkyModel {
 			let elevation = maxElevationDeg * elevationFraction * elevationFraction
 			for col in 0 ..< w {
 				let colX = Double(col) / Double(w - 1)
-				let relativeAzimuth = (colX - sunX) * azimuthSpanDeg
+				let distance = hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y))
+				let scatterAngle = distance * glowAngularScaleDeg * .pi / 180
 				// Below the horizon the physical sky darkens to black — no artificial night floor.
 				let vertexColor = color(sunAltitudeDeg: sunAltitudeDeg,
 				                        viewElevationDeg: elevation,
-				                        relativeAzimuthDeg: relativeAzimuth)
+				                        scatterCosTheta: cos(scatterAngle))
 				points.append(SIMD2<Float>(Float(colX), Float(rowY)))
 				colors.append(vertexColor)
 			}
@@ -166,7 +176,7 @@ struct SkyModel {
 		                            smoothsColors: true, colorSpace: .perceptual)
 
 		// Vertical ramp of the column farthest from the sun (first = zenith, last = horizon).
-		let farColumn = sunX < 0.5 ? w - 1 : 0
+		let farColumn = sunAnchor.x < 0.5 ? w - 1 : 0
 		let stops = (0 ..< h).map { colors[$0 * w + farColumn] }
 
 		return (gradient, stops)
@@ -218,9 +228,17 @@ struct SkyModel {
 // MARK: - SkyGradient
 
 struct SkyGradient: View, ShapeStyle {
+	/// Named coordinate space shared between a chart and its `SkyGradient` background so the sun
+	/// marker's position can be reported via `SkySunAnchorPreferenceKey` and normalised consistently.
+	static let coordinateSpaceName = "skyGradient"
+
 	@Environment(\.timeZone) var timeZone
 
 	var ntSolar: NTSolar? = nil
+
+	/// Where the sun sits in this gradient's own bounds (0…1, y-down). Callers with chart geometry
+	/// supply the sun marker's position; when `nil` the glow falls back to a time + altitude default.
+	var sunAnchor: UnitPoint? = nil
 
 	private var effectiveSolar: NTSolar? {
 		if let ntSolar {
@@ -233,11 +251,18 @@ struct SkyGradient: View, ShapeStyle {
 		let solar = effectiveSolar
 		let date = solar?.date ?? .now
 		let sunAltitude = solar?.altitude(at: date) ?? 0
-		let sunX: Double = {
+		return SkyModel.standard.mesh(sunAltitudeDeg: sunAltitude, sunAnchor: sunAnchor ?? defaultAnchor(for: solar, at: date, altitude: sunAltitude))
+	}
+
+	/// A sensible glow position for surfaces with no chart geometry: horizontally at the sun's
+	/// time of day, vertically higher as the sun climbs.
+	private func defaultAnchor(for solar: NTSolar?, at date: Date, altitude: Double) -> UnitPoint {
+		let x: Double = {
 			guard let solar else { return 0.5 }
 			return min(max(date.timeIntervalSince(solar.startOfDay) / .twentyFourHours, 0), 1)
 		}()
-		return SkyModel.standard.mesh(sunAltitudeDeg: sunAltitude, sunX: sunX)
+		let y = 1 - min(max(altitude / SkyModel.standard.maxElevationDeg, 0), 1)
+		return UnitPoint(x: x, y: y)
 	}
 
 	/// The vertical colour ramp; `first` is the sky/zenith, `last` the horizon.
@@ -306,7 +331,7 @@ private struct AltitudeSweepPreview: View {
 		VStack(spacing: 0) {
 			ForEach(Array(altitudes), id: \.self) { altitude in
 				ZStack {
-					SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunX: 0.5).gradient
+					SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunAnchor: .center).gradient
 					Text("\(Int(altitude))°")
 						.font(.headline.monospacedDigit())
 						.foregroundStyle(.white)
@@ -317,21 +342,24 @@ private struct AltitudeSweepPreview: View {
 	}
 }
 
-/// Interactive tuning surface for the model's sun altitude and horizontal position.
+/// Interactive tuning surface for the model's sun altitude and the 2-D glow anchor.
 private struct SkyModelSliderPreview: View {
 	@State private var altitude = 8.0
-	@State private var sunX = 0.5
+	@State private var anchorX = 0.5
+	@State private var anchorY = 0.5
 
 	var body: some View {
 		VStack {
-			SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunX: sunX).gradient
+			SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunAnchor: UnitPoint(x: anchorX, y: anchorY)).gradient
 				.ignoresSafeArea()
 				.overlay(alignment: .bottom) {
 					VStack(alignment: .leading) {
 						Text("Altitude \(altitude, format: .number.precision(.fractionLength(1)))°")
 						Slider(value: $altitude, in: -20 ... 90)
-						Text("Sun X \(sunX, format: .number.precision(.fractionLength(2)))")
-						Slider(value: $sunX, in: 0 ... 1)
+						Text("Anchor X \(anchorX, format: .number.precision(.fractionLength(2)))")
+						Slider(value: $anchorX, in: 0 ... 1)
+						Text("Anchor Y \(anchorY, format: .number.precision(.fractionLength(2)))")
+						Slider(value: $anchorY, in: 0 ... 1)
 					}
 					.padding()
 					.background(.thinMaterial, in: .rect(cornerRadius: 12))
