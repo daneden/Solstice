@@ -111,7 +111,6 @@
 		716260C92E6E245A00C42756 /* TimeTravelToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716260C82E6E245A00C42756 /* TimeTravelToolbar.swift */; };
 		71691B892C2E816A00E4ED96 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 71691B882C2E816A00E4ED96 /* RealityKitContent */; };
 		71691B8B2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71691B8A2C2E81DD00E4ED96 /* SolarSystemMiniMap.swift */; };
-		71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */ = {isa = PBXBuildFile; fileRef = 71691B9E2C2E827200E4ED96 /* RealityKitContent */; };
 		716BE0502C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716BE04F2C2E752F004DDCBC /* DeepLinkResolver.swift */; };
 		716BE0512C2E752F004DDCBC /* DeepLinkResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716BE04F2C2E752F004DDCBC /* DeepLinkResolver.swift */; };
 		716BE0522C2E7E53004DDCBC /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719846A728E991FA00E866CE /* LocationSearchService.swift */; };
@@ -1181,7 +1180,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7198469928E5898500E866CE /* StoreKitConfiguration.storekit in Resources */,
-				71691BA02C2E827300E4ED96 /* RealityKitContent in Resources */,
 				718FC2EB2DFB6D6D00E1A437 /* AppIcon.icon in Resources */,
 				7198468C28E5895F00E866CE /* Preview Assets.xcassets in Resources */,
 				71C635C82E9D9A8C003FA1AE /* Shared Assets.xcassets in Resources */,
