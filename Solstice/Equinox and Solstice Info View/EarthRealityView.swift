@@ -61,12 +61,12 @@ struct EarthRealityView: View {
 			.aspectRatio(1, contentMode: .fit)
 			.frame(maxWidth: .infinity)
 			#if !os(visionOS)
-			.background {
-				// The glow only makes sense framing the globe, so fade it in once the
-				// scene has actually loaded rather than haloing the loading indicator.
-				AtmosphereGlow()
-					.opacity(sceneIsReady ? 1 : 0)
-			}
+				.background {
+					// The glow only makes sense framing the globe, so fade it in once the
+					// scene has actually loaded rather than haloing the loading indicator.
+					AtmosphereGlow()
+						.opacity(sceneIsReady ? 1 : 0)
+				}
 			#endif
 
 			Picker(selection: $selection) {
