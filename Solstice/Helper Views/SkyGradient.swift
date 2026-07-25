@@ -26,8 +26,9 @@ import SwiftUI
 struct SkyModel {
 	/// Rayleigh scattering coefficient per RGB wavelength (1/m).
 	var rayleigh = SIMD3<Double>(5.8e-6, 13.5e-6, 33.1e-6)
-	/// Mie scattering coefficient (1/m).
-	var mie = 21e-6
+	/// Mie scattering coefficient (1/m). Lower keeps the daytime sky bluer and the horizon cleaner
+	/// (less neutral aerosol haze).
+	var mie = 13e-6
 	/// Henyey–Greenstein asymmetry: how tightly the Mie glow hugs the sun (0…1).
 	var mieG = 0.76
 	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues and purples.
@@ -41,6 +42,9 @@ struct SkyModel {
 	var sunIntensity = 22.0
 	/// Multiplier applied before tone-mapping. The main lever for overall brightness.
 	var exposure = 3.0
+	/// Faint skylight floor added before tone-mapping so night settles into a deep navy rather than
+	/// pure black, and the day→night ramp stays smooth instead of popping to black.
+	var ambientRadiance = SIMD3<Double>(0.0015, 0.003, 0.008)
 
 	var viewSamples = 16
 	var lightSamples = 8
@@ -48,8 +52,11 @@ struct SkyModel {
 	/// Mesh dimensions. A denser grid renders the 2-D sun glow more smoothly.
 	var meshWidth = 9
 	var meshHeight = 7
-	/// Highest view elevation sampled (top of the rendered strip), in degrees.
-	var maxElevationDeg = 60.0
+	/// View elevations sampled at the bottom and top of the rendered strip, in degrees. Keeping the
+	/// bottom above the horizon avoids the muddy long-path haze and gives a calmer, more even ramp;
+	/// the dramatic below-horizon darkening is applied by the chart, which knows the horizon line.
+	var minElevationDeg = 6.0
+	var maxElevationDeg = 45.0
 	/// Degrees of scattering angle per unit of normalised distance from the sun anchor.
 	/// Higher values shrink the glow; lower values spread it across the gradient.
 	var glowAngularScaleDeg = 120.0
@@ -129,11 +136,12 @@ struct SkyModel {
 		return (inRayleigh + inMie) * sunIntensity
 	}
 
-	/// Tone-mapped, gamma-encoded sky colour for a view direction.
+	/// Tone-mapped, gamma-encoded sky colour for a view direction, including the ambient skylight floor.
 	func color(sunAltitudeDeg: Double, viewElevationDeg: Double, scatterCosTheta: Double) -> Color {
-		tonemap(radiance(sunAltitudeDeg: sunAltitudeDeg,
-		                 viewElevationDeg: viewElevationDeg,
-		                 scatterCosTheta: scatterCosTheta))
+		let scattered = radiance(sunAltitudeDeg: sunAltitudeDeg,
+		                         viewElevationDeg: viewElevationDeg,
+		                         scatterCosTheta: scatterCosTheta)
+		return tonemap(scattered + ambientRadiance)
 	}
 
 	// MARK: Mesh
@@ -157,8 +165,8 @@ struct SkyModel {
 		for row in 0 ..< h {
 			let rowY = Double(row) / Double(h - 1)
 			let elevationFraction = 1 - rowY
-			// Bias sampling toward the horizon, where colour varies most.
-			let elevation = maxElevationDeg * elevationFraction * elevationFraction
+			// Even ramp between the horizon-ish bottom and the higher top.
+			let elevation = minElevationDeg + (maxElevationDeg - minElevationDeg) * elevationFraction
 			for col in 0 ..< w {
 				let colX = Double(col) / Double(w - 1)
 				let distance = hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y))

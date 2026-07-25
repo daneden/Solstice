@@ -44,14 +44,15 @@ struct SkyModelTests {
 		#expect(redToBlue(3) > redToBlue(30))
 	}
 
-	@Test("The glow brightens toward the sun (higher scattering cosine)")
+	@Test("The glow peaks looking straight at the sun")
 	func glowPeaksTowardTheSun() {
 		func brightness(_ cosTheta: Double) -> Double {
 			luminance(model.radiance(sunAltitudeDeg: 20, viewElevationDeg: 20, scatterCosTheta: cosTheta))
 		}
-		// Forward Mie scattering: brightest looking straight at the sun, dimmest facing away.
+		// The forward-Mie lobe makes looking at the sun the brightest direction. (Rayleigh alone is
+		// symmetric, so side-scatter is not necessarily dimmer than back-scatter — don't assert that.)
 		#expect(brightness(1) > brightness(0))
-		#expect(brightness(0) > brightness(-1))
+		#expect(brightness(1) > brightness(-1))
 	}
 
 	@Test("Physical sky goes dark once the sun is well below the horizon")

@@ -263,13 +263,14 @@ struct DaylightChart: View {
 				.blendMode(.normal)
 		}
 		.background {
-			Rectangle()
-				.fill(.clear)
-				.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
-				.mask {
-					LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-				}
-				.blendMode(.overlay)
+			// Deepen the sky toward night below the horizon: a gentle dip right under the horizon
+			// line, ramping to black at the bottom, so twilight is barely visible below the horizon.
+			LinearGradient(
+				colors: isLuminanceReduced ? [.white, .white] : [Color(white: 0.55), .black],
+				startPoint: .top,
+				endPoint: .bottom
+			)
+			.blendMode(.multiply)
 		}
 		.mask(alignment: .bottom) {
 			Rectangle()
