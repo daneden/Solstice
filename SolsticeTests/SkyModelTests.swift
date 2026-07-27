@@ -5,6 +5,7 @@
 //  Exercises the physics-based sky model behind SkyGradient.
 //
 
+import CoreLocation
 import Foundation
 @testable import Solstice
 import SwiftUI
@@ -70,6 +71,52 @@ struct SkyModelTests {
 		for color in mesh.stops.map({ $0.resolve(in: env) }) {
 			#expect(color.red.isFinite && color.green.isFinite && color.blue.isFinite)
 		}
+	}
+
+	private func resolvedLuminance(_ color: Color) -> Double {
+		let resolved = color.resolve(in: EnvironmentValues())
+		return 0.2126 * Double(resolved.red) + 0.7152 * Double(resolved.green) + 0.0722 * Double(resolved.blue)
+	}
+
+	@Test("Ground band below the horizon is darker than the sky above it, and fades with depth")
+	func groundBandDarkerThanHorizonSky() {
+		let mesh = model.mesh(sunAltitudeDeg: 30, sunAnchor: UnitPoint(x: 0.5, y: 0.3), horizonFraction: 0.6)
+		#expect(mesh.stops.count == model.meshHeight)
+
+		// Rows: [0 ..< meshHeight - 2] sky (top → horizon), then two ground rows.
+		let horizonSky = resolvedLuminance(mesh.stops[model.meshHeight - 3])
+		let groundTop = resolvedLuminance(mesh.stops[model.meshHeight - 2])
+		let groundBottom = resolvedLuminance(mesh.stops[model.meshHeight - 1])
+
+		#expect(groundTop < horizonSky)
+		#expect(groundBottom < groundTop)
+
+		let env = EnvironmentValues()
+		for color in mesh.stops.map({ $0.resolve(in: env) }) {
+			#expect(color.red.isFinite && color.green.isFinite && color.blue.isFinite)
+		}
+	}
+
+	@Test("Dial stops are brighter at noon than at midnight, and the ring closes seamlessly")
+	func dialStopsDayNightContrast() throws {
+		let timeZone = try #require(TimeZone(identifier: "Europe/London"))
+		let date = try #require(DateComponents(calendar: Calendar(identifier: .gregorian),
+		                                       timeZone: timeZone,
+		                                       year: 2026, month: 6, day: 21, hour: 12).date)
+		let coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.1)
+		let solar = try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
+
+		let stops = SkyModel.standard.dialStops(for: solar)
+		#expect(stops.first?.location == 0)
+		#expect(stops.last?.location == 1)
+
+		func luminance(nearest location: Double) -> Double {
+			let stop = stops.min { abs($0.location - location) < abs($1.location - location) }!
+			return resolvedLuminance(stop.color)
+		}
+
+		#expect(luminance(nearest: 0.5) > luminance(nearest: 0))
+		#expect(luminance(nearest: 1) == luminance(nearest: 0))
 	}
 
 	@Test("Radiance stays finite and non-negative across every angle")

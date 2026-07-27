@@ -53,13 +53,25 @@ struct SkyModel {
 	var meshWidth = 9
 	var meshHeight = 7
 	/// View elevations sampled at the bottom and top of the rendered strip, in degrees. Keeping the
-	/// bottom above the horizon avoids the muddy long-path haze and gives a calmer, more even ramp;
-	/// the dramatic below-horizon darkening is applied by the chart, which knows the horizon line.
+	/// bottom above the horizon avoids the muddy long-path haze and gives a calmer, more even ramp.
 	var minElevationDeg = 6.0
 	var maxElevationDeg = 45.0
 	/// Degrees of scattering angle per unit of normalised distance from the sun anchor.
 	/// Higher values shrink the glow; lower values spread it across the gradient.
 	var glowAngularScaleDeg = 120.0
+
+	/// Below a horizon there is no sky to march — only ground. The ground band renders as the sky
+	/// just above the horizon reflected darkly, so twilight's warm band carries into it. This is the
+	/// fraction of that light reflected right at the horizon; it fades further with depth.
+	var groundReflectance = 0.3
+	/// View elevation sampled for the ground's illumination.
+	var groundSourceElevationDeg = 2.5
+
+	/// The dial ring (circular chart) samples the sky at this view elevation…
+	var dialViewElevationDeg = 12.0
+	/// …looking this far from the sun (as a cosine, ~30°), so sunrise and sunset arcs glow warmly
+	/// without the full aureole washing out the daytime blue.
+	var dialScatterCosTheta = 0.87
 
 	static let standard = SkyModel()
 
@@ -154,27 +166,33 @@ struct SkyModel {
 	/// - Parameters:
 	///   - sunAltitudeDeg: Sun altitude above the horizon, in degrees.
 	///   - sunAnchor: The sun's position in the gradient's own bounds (0…1, y-down).
-	func mesh(sunAltitudeDeg: Double, sunAnchor: UnitPoint) -> (gradient: MeshGradient, stops: [Color]) {
-		let w = meshWidth, h = meshHeight
+	///   - horizonFraction: The horizon line's vertical position in the gradient's bounds (0…1,
+	///     y-down). When set, rows below it render as ground instead of sky, with two rows placed
+	///     tight under the line so the horizon reads as a defined edge across the full width.
+	func mesh(sunAltitudeDeg: Double, sunAnchor: UnitPoint, horizonFraction: Double? = nil) -> (gradient: MeshGradient, stops: [Color]) {
+		let rows = rowLayout(horizonFraction: horizonFraction)
+		let w = meshWidth, h = rows.count
 
 		var points = [SIMD2<Float>]()
 		var colors = [Color]()
 		points.reserveCapacity(w * h)
 		colors.reserveCapacity(w * h)
 
-		for row in 0 ..< h {
-			let rowY = Double(row) / Double(h - 1)
-			let elevationFraction = 1 - rowY
-			// Even ramp between the horizon-ish bottom and the higher top.
-			let elevation = minElevationDeg + (maxElevationDeg - minElevationDeg) * elevationFraction
+		for (rowY, content) in rows {
 			for col in 0 ..< w {
 				let colX = Double(col) / Double(w - 1)
 				let distance = hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y))
-				let scatterAngle = distance * glowAngularScaleDeg * .pi / 180
-				// Below the horizon the physical sky darkens to black — no artificial night floor.
-				let vertexColor = color(sunAltitudeDeg: sunAltitudeDeg,
-				                        viewElevationDeg: elevation,
-				                        scatterCosTheta: cos(scatterAngle))
+				let scatterCosTheta = cos(distance * glowAngularScaleDeg * .pi / 180)
+				let vertexColor: Color = switch content {
+				case let .sky(elevationDeg):
+					color(sunAltitudeDeg: sunAltitudeDeg,
+					      viewElevationDeg: elevationDeg,
+					      scatterCosTheta: scatterCosTheta)
+				case let .ground(reflectance):
+					groundColor(sunAltitudeDeg: sunAltitudeDeg,
+					            scatterCosTheta: scatterCosTheta,
+					            reflectance: reflectance)
+				}
 				points.append(SIMD2<Float>(Float(colX), Float(rowY)))
 				colors.append(vertexColor)
 			}
@@ -183,11 +201,78 @@ struct SkyModel {
 		let gradient = MeshGradient(width: w, height: h, points: points, colors: colors,
 		                            smoothsColors: true, colorSpace: .perceptual)
 
-		// Vertical ramp of the column farthest from the sun (first = zenith, last = horizon).
+		// Vertical ramp of the column farthest from the sun (first = zenith, last = horizon/ground).
 		let farColumn = sunAnchor.x < 0.5 ? w - 1 : 0
 		let stops = (0 ..< h).map { colors[$0 * w + farColumn] }
 
 		return (gradient, stops)
+	}
+
+	private enum RowContent {
+		case sky(elevationDeg: Double)
+		case ground(reflectance: Double)
+	}
+
+	/// Vertical mesh layout: each row's y position and what it samples. Without a horizon the strip
+	/// is all sky; with one, the sky compresses above it and the remainder renders as ground.
+	private func rowLayout(horizonFraction: Double?) -> [(y: Double, content: RowContent)] {
+		// A horizon at (or beyond) the bottom edge leaves no room for a ground band — all sky.
+		guard let horizonFraction, horizonFraction < 0.92 else {
+			return (0 ..< meshHeight).map { row in
+				let y = Double(row) / Double(meshHeight - 1)
+				return (y, .sky(elevationDeg: minElevationDeg + (maxElevationDeg - minElevationDeg) * (1 - y)))
+			}
+		}
+
+		let hf = max(horizonFraction, 0.08)
+		let skyRows = meshHeight - 2
+		var rows: [(y: Double, content: RowContent)] = (0 ..< skyRows).map { row in
+			let fraction = Double(row) / Double(skyRows - 1)
+			return (y: hf * fraction,
+			        content: .sky(elevationDeg: maxElevationDeg + (minElevationDeg - maxElevationDeg) * fraction))
+		}
+		// A row tight under the horizon gives it a defined edge; the bottom row fades the ground out.
+		rows.append((y: hf + 0.02, content: .ground(reflectance: groundReflectance)))
+		rows.append((y: 1, content: .ground(reflectance: groundReflectance * 0.4)))
+		return rows
+	}
+
+	/// Ground: the sky just above the horizon, reflected darkly. Twilight's warm horizon band carries
+	/// into it, and the shared ambient floor keeps it no darker than the night sky — so chart content
+	/// drawn over it stays legible.
+	private func groundColor(sunAltitudeDeg: Double, scatterCosTheta: Double, reflectance: Double) -> Color {
+		let source = radiance(sunAltitudeDeg: sunAltitudeDeg,
+		                      viewElevationDeg: groundSourceElevationDeg,
+		                      scatterCosTheta: scatterCosTheta)
+		return tonemap(source * reflectance + ambientRadiance)
+	}
+
+	// MARK: Dial
+
+	/// Sky colours around a 24-hour dial, for circular charts: each angle is coloured by the sky at
+	/// that time of day, so day, each twilight band, and night appear as arcs in their true positions.
+	/// Stop locations are fractions of a day from midnight; align them using the chart's midnight angle.
+	func dialStops(for solar: NTSolar, sampleCount: Int = 48) -> [Gradient.Stop] {
+		// Coarser march than the mesh: the dial evaluates many directions, and colour varies smoothly
+		// enough with altitude that the difference is invisible after tone-mapping.
+		var coarse = self
+		coarse.viewSamples = 8
+		coarse.lightSamples = 4
+
+		let start = solar.startOfDay
+		var stops = (0 ..< sampleCount).map { i in
+			let fraction = Double(i) / Double(sampleCount)
+			let date = start.addingTimeInterval(fraction * .twentyFourHours)
+			let color = coarse.color(sunAltitudeDeg: solar.altitude(at: date),
+			                         viewElevationDeg: dialViewElevationDeg,
+			                         scatterCosTheta: dialScatterCosTheta)
+			return Gradient.Stop(color: color, location: fraction)
+		}
+		// Close the ring seamlessly.
+		if let first = stops.first {
+			stops.append(Gradient.Stop(color: first.color, location: 1))
+		}
+		return stops
 	}
 
 	// MARK: Helpers
@@ -237,7 +322,7 @@ struct SkyModel {
 
 struct SkyGradient: View, ShapeStyle {
 	/// Named coordinate space shared between a chart and its `SkyGradient` background so the sun
-	/// marker's position can be reported via `SkySunAnchorPreferenceKey` and normalised consistently.
+	/// marker's geometry can be reported via `SkyChartGeometryPreferenceKey` and normalised consistently.
 	static let coordinateSpaceName = "skyGradient"
 
 	@Environment(\.timeZone) var timeZone
@@ -247,6 +332,11 @@ struct SkyGradient: View, ShapeStyle {
 	/// Where the sun sits in this gradient's own bounds (0…1, y-down). Callers with chart geometry
 	/// supply the sun marker's position; when `nil` the glow falls back to a time + altitude default.
 	var sunAnchor: UnitPoint? = nil
+
+	/// The horizon line's vertical position in this gradient's own bounds (0…1, y-down). When set,
+	/// the mesh renders ground below it; when `nil` (ambient surfaces like the watch container
+	/// background or widgets) the gradient is all sky.
+	var horizonFraction: Double? = nil
 
 	private var effectiveSolar: NTSolar? {
 		if let ntSolar {
@@ -259,7 +349,9 @@ struct SkyGradient: View, ShapeStyle {
 		let solar = effectiveSolar
 		let date = solar?.date ?? .now
 		let sunAltitude = solar?.altitude(at: date) ?? 0
-		return SkyModel.standard.mesh(sunAltitudeDeg: sunAltitude, sunAnchor: sunAnchor ?? defaultAnchor(for: solar, at: date, altitude: sunAltitude))
+		return SkyModel.standard.mesh(sunAltitudeDeg: sunAltitude,
+		                              sunAnchor: sunAnchor ?? defaultAnchor(for: solar, at: date, altitude: sunAltitude),
+		                              horizonFraction: horizonFraction)
 	}
 
 	/// A sensible glow position for surfaces with no chart geometry: horizontally at the sun's
@@ -340,7 +432,7 @@ private struct AltitudeSweepPreview: View {
 			ForEach(Array(altitudes), id: \.self) { altitude in
 				ZStack {
 					SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunAnchor: .center).gradient
-					Text("\(Int(altitude))°")
+					Text(verbatim: "\(Int(altitude))°")
 						.font(.headline.monospacedDigit())
 						.foregroundStyle(.white)
 						.shadow(radius: 2)
@@ -362,11 +454,11 @@ private struct SkyModelSliderPreview: View {
 				.ignoresSafeArea()
 				.overlay(alignment: .bottom) {
 					VStack(alignment: .leading) {
-						Text("Altitude \(altitude, format: .number.precision(.fractionLength(1)))°")
+						Text(verbatim: "Altitude \(altitude.formatted(.number.precision(.fractionLength(1))))°")
 						Slider(value: $altitude, in: -20 ... 90)
-						Text("Anchor X \(anchorX, format: .number.precision(.fractionLength(2)))")
+						Text(verbatim: "Anchor X \(anchorX.formatted(.number.precision(.fractionLength(2))))")
 						Slider(value: $anchorX, in: 0 ... 1)
-						Text("Anchor Y \(anchorY, format: .number.precision(.fractionLength(2)))")
+						Text(verbatim: "Anchor Y \(anchorY.formatted(.number.precision(.fractionLength(2))))")
 						Slider(value: $anchorY, in: 0 ... 1)
 					}
 					.padding()

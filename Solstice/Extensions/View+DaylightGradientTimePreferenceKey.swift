@@ -17,14 +17,18 @@ struct DaylightGradientTimePreferenceKey: PreferenceKey {
 	}
 }
 
-/// The sun marker's position, in the `skyGradient` named coordinate space, published up from a chart
-/// so the `SkyGradient` background can anchor its glow to it. See `SkyGradient.coordinateSpaceName`.
-struct SkySunAnchorPreferenceKey: PreferenceKey {
-	typealias Value = CGPoint?
+/// Geometry a chart publishes so its `SkyGradient` background can align with it: the sun marker's
+/// position (glow anchor) and the horizon line's y (sky/ground boundary), both in the `skyGradient`
+/// named coordinate space. See `SkyGradient.coordinateSpaceName`.
+struct SkyChartGeometry: Equatable {
+	var sunPoint: CGPoint?
+	var horizonY: CGFloat?
+}
 
-	static let defaultValue: CGPoint? = nil
+struct SkyChartGeometryPreferenceKey: PreferenceKey {
+	static let defaultValue: SkyChartGeometry? = nil
 
-	static func reduce(value: inout CGPoint?, nextValue: () -> CGPoint?) {
+	static func reduce(value: inout SkyChartGeometry?, nextValue: () -> SkyChartGeometry?) {
 		value = nextValue() ?? value
 	}
 }

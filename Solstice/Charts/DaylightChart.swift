@@ -203,20 +203,28 @@ struct DaylightChart: View {
 
 		scrubHitArea(geo: geo, proxy: proxy)
 
-		// Report the sun marker's position so a SkyGradient background can anchor its glow to it.
+		// Report the sun marker and horizon line so a SkyGradient background can align with them.
 		Color.clear
-			.preference(key: SkySunAnchorPreferenceKey.self, value: sunAnchorPoint(proxy: proxy, geo: geo))
+			.preference(key: SkyChartGeometryPreferenceKey.self, value: skyGeometry(proxy: proxy, geo: geo))
 	}
 
-	/// The sun marker's position expressed in the shared `skyGradient` coordinate space.
-	private func sunAnchorPoint(proxy: ChartProxy, geo: GeometryProxy) -> CGPoint? {
-		guard let sunX = proxy.position(forX: sunDisplayOffset),
-		      let sunY = proxy.position(forY: yValue(for: sunDisplayOffset))
-		else {
-			return nil
-		}
+	/// The sun marker's position and the horizon line's y, expressed in the shared `skyGradient`
+	/// coordinate space.
+	private func skyGeometry(proxy: ChartProxy, geo: GeometryProxy) -> SkyChartGeometry {
 		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
-		return CGPoint(x: frame.minX + sunX, y: frame.minY + sunY)
+		var geometry = SkyChartGeometry()
+
+		if let sunX = proxy.position(forX: sunDisplayOffset),
+		   let sunY = proxy.position(forY: yValue(for: sunDisplayOffset))
+		{
+			geometry.sunPoint = CGPoint(x: frame.minX + sunX, y: frame.minY + sunY)
+		}
+
+		if let horizonY = proxy.position(forY: 0.0) {
+			geometry.horizonY = frame.minY + horizonY
+		}
+
+		return geometry
 	}
 
 	private func horizonLine(width: CGFloat, yOffset: CGFloat) -> some View {
@@ -263,14 +271,19 @@ struct DaylightChart: View {
 				.blendMode(.normal)
 		}
 		.background {
-			// Deepen the sky toward night below the horizon: a gentle dip right under the horizon
-			// line, ramping to black at the bottom, so twilight is barely visible below the horizon.
-			LinearGradient(
-				colors: isLuminanceReduced ? [.white, .white] : [Color(white: 0.55), .black],
-				startPoint: .top,
-				endPoint: .bottom
-			)
-			.blendMode(.multiply)
+			// In simple appearance the chart sits on a plain background, so a subtle veil marks the
+			// below-horizon region. In graphical appearance the SkyGradient mesh renders the ground
+			// itself (see SkyModel.mesh(horizonFraction:)) — anything painted here would darken the
+			// chart's own marks and stop short of the background's edges.
+			if appearance == .simple {
+				Rectangle()
+					.fill(.clear)
+					.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
+					.mask {
+						LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+					}
+					.blendMode(.overlay)
+			}
 		}
 		.mask(alignment: .bottom) {
 			Rectangle()

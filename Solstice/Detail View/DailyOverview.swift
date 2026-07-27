@@ -16,7 +16,7 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var location: Location
 
 	@State private var gradientSolar: NTSolar?
-	@State private var sunAnchorPoint: CGPoint?
+	@State private var skyChartGeometry: SkyChartGeometry?
 
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
@@ -211,7 +211,9 @@ extension DailyOverview {
 			content
 				.background {
 					GeometryReader { geo in
-						SkyGradient(ntSolar: gradientSolar ?? solar, sunAnchor: normalizedSunAnchor(in: geo))
+						SkyGradient(ntSolar: gradientSolar ?? solar,
+						            sunAnchor: normalizedSunAnchor(in: geo),
+						            horizonFraction: normalizedHorizonFraction(in: geo))
 					}
 				}
 				.coordinateSpace(.named(SkyGradient.coordinateSpaceName))
@@ -219,8 +221,8 @@ extension DailyOverview {
 		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
 			self.gradientSolar = NTSolar(for: date, coordinate: solar.coordinate, timeZone: location.timeZone)
 		}
-		.onPreferenceChange(SkySunAnchorPreferenceKey.self) { point in
-			self.sunAnchorPoint = point
+		.onPreferenceChange(SkyChartGeometryPreferenceKey.self) { geometry in
+			self.skyChartGeometry = geometry
 		}
 		#endif
 		#if os(macOS)
@@ -231,11 +233,20 @@ extension DailyOverview {
 	/// Converts the chart's reported sun position (in the shared coordinate space) into a
 	/// `UnitPoint` within the gradient background's own bounds.
 	private func normalizedSunAnchor(in geo: GeometryProxy) -> UnitPoint? {
-		guard let sunAnchorPoint else { return nil }
+		guard let sunPoint = skyChartGeometry?.sunPoint else { return nil }
 		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
 		guard frame.width > 0, frame.height > 0 else { return nil }
-		return UnitPoint(x: (sunAnchorPoint.x - frame.minX) / frame.width,
-		                 y: (sunAnchorPoint.y - frame.minY) / frame.height)
+		return UnitPoint(x: (sunPoint.x - frame.minX) / frame.width,
+		                 y: (sunPoint.y - frame.minY) / frame.height)
+	}
+
+	/// Converts the chart's reported horizon line (in the shared coordinate space) into a fraction
+	/// of the gradient background's own height, so the mesh renders ground below it.
+	private func normalizedHorizonFraction(in geo: GeometryProxy) -> Double? {
+		guard let horizonY = skyChartGeometry?.horizonY else { return nil }
+		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
+		guard frame.height > 0 else { return nil }
+		return (horizonY - frame.minY) / frame.height
 	}
 }
 
