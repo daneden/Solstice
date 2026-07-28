@@ -172,18 +172,36 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	var belowHorizonSun: some View {
-		background.mask {
-			Circle()
+		Circle()
+			.fill(belowHorizonSunFill)
+			.overlay {
+				Circle()
+					.fill(.clear)
+					.strokeBorder(foregroundStyle, lineWidth: 2)
+			}
+			.frame(width: majorSunSize)
+			.frame(maxWidth: .infinity, alignment: .trailing)
+			.rotationEffect(angle(for: solar?.date ?? .now))
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+	}
+
+	/// The "empty" below-horizon sun should read as a hole showing the background through it. The
+	/// background can't literally be sampled at the marker's position, but on the graphical sky the
+	/// static ring's colour at the sun's angle is, by construction, the sky at the current moment —
+	/// so evaluating the model directly gives a matching fill. Other modes use their flat background.
+	private var belowHorizonSunFill: AnyShapeStyle {
+		if showsGraphicalSky, let solar {
+			let model = SkyModel.standard
+			return AnyShapeStyle(model.color(sunAltitudeDeg: solar.altitude(at: solar.date),
+			                                 viewElevationDeg: model.dialViewElevationDeg,
+			                                 scatterCosTheta: model.dialScatterCosTheta))
 		}
-		.overlay {
-			Circle()
-				.fill(.clear)
-				.strokeBorder(foregroundStyle, lineWidth: 2)
-		}
-		.frame(width: majorSunSize)
-		.frame(maxWidth: .infinity, alignment: .trailing)
-		.rotationEffect(angle(for: solar?.date ?? .now))
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		#if WIDGET_EXTENSION
+			if widgetRenderingMode != .fullColor {
+				return AnyShapeStyle(.primary.quinary)
+			}
+		#endif
+		return AnyShapeStyle(.regularMaterial)
 	}
 
 	var safeSunriseSunsetShape: some Shape {
@@ -472,5 +490,12 @@ private enum Helpers {
 
 #Preview {
 	CircularSolarChart(location: TemporaryLocation.placeholderLondon)
+		.padding()
+}
+
+#Preview("Half a day away") {
+	// Whatever the current time, this shows the opposite side of the day — handy for checking the
+	// below-horizon sun marker and the twilight arcs at night.
+	CircularSolarChart(date: .now.addingTimeInterval(.twentyFourHours / 2), location: TemporaryLocation.placeholderLondon)
 		.padding()
 }

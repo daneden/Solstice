@@ -119,6 +119,13 @@ struct SkyModelTests {
 		#expect(luminance(nearest: 1) == luminance(nearest: 0))
 	}
 
+	@Test("High-sun horizon stays blue rather than yellow-green")
+	func highSunHorizonStaysBlue() {
+		// Single scattering alone goes green here; the multiple-scattering fill keeps it blue.
+		let rgb = model.radiance(sunAltitudeDeg: 60, viewElevationDeg: model.minElevationDeg, scatterCosTheta: 0.3)
+		#expect(rgb.z > rgb.y)
+	}
+
 	@Test("Radiance stays finite and non-negative across every angle")
 	func radianceNeverNaN() {
 		for sunAltitude in stride(from: -90.0, through: 90, by: 7.5) {

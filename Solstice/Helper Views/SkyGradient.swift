@@ -25,14 +25,20 @@ import SwiftUI
 /// tuning is a matter of changing `standard`'s values rather than the algorithm.
 struct SkyModel {
 	/// Rayleigh scattering coefficient per RGB wavelength (1/m).
-	var rayleigh = SIMD3<Double>(5.8e-6, 13.5e-6, 33.1e-6)
+	var rayleigh = SIMD3<Double>(3.8e-6, 11.5e-6, 38.1e-6)
 	/// Mie scattering coefficient (1/m). Lower keeps the daytime sky bluer and the horizon cleaner
 	/// (less neutral aerosol haze).
-	var mie = 13e-6
+	var mie = 8e-6
 	/// Henyey–Greenstein asymmetry: how tightly the Mie glow hugs the sun (0…1).
-	var mieG = 0.76
+	var mieG = 0.8
 	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues and purples.
 	var ozone = SIMD3<Double>(0.650e-6, 1.881e-6, 0.085e-6)
+	/// Single scattering alone leaves long near-horizon paths yellow-green under a high sun: blue is
+	/// scattered out of the ray faster than in, and with no second bounce nothing replaces it. This
+	/// approximates multiple scattering with an isotropic, sky-tinted fill wherever the view path is
+	/// optically thick, fading with sun altitude so twilight and night keep their single-scatter
+	/// colours. Higher = paler, bluer horizon at midday.
+	var multipleScattering = 0.02
 
 	var rayleighScaleHeight = 8000.0
 	var mieScaleHeight = 1200.0
@@ -65,6 +71,10 @@ struct SkyModel {
 	/// fraction of that light reflected right at the horizon (in display-linear space, after
 	/// tone-mapping); it fades further with depth.
 	var groundReflectance = 0.12
+	/// Extra scattering angle added to ground vertices, pushing the reflected glow out of the tight
+	/// forward-Mie lobe: the ground keeps a hint of warmth under the sun instead of mirroring the
+	/// full aureole below the horizon.
+	var groundGlowAngularOffsetDeg = 30.0
 	/// View elevation sampled for the ground's illumination.
 	var groundSourceElevationDeg = 2.5
 
@@ -74,9 +84,10 @@ struct SkyModel {
 
 	/// The dial ring (circular chart) samples the sky at this view elevation…
 	var dialViewElevationDeg = 12.0
-	/// …looking this far from the sun (as a cosine, ~30°), so sunrise and sunset arcs glow warmly
-	/// without the full aureole washing out the daytime blue.
-	var dialScatterCosTheta = 0.87
+	/// …looking this far from the sun (as a cosine, ~60°). Only the night and twilight arcs of the
+	/// ring stay visible beneath the dynamic day wedge, so this is deliberately wide: the twilight
+	/// arcs keep their transmittance-driven colour without showing the sun's aureole itself.
+	var dialScatterCosTheta = 0.5
 
 	static let standard = SkyModel()
 
@@ -150,7 +161,16 @@ struct SkyModel {
 
 		let inRayleigh = rayleigh * sumR * phaseR
 		let inMie = sumM * (mie * phaseM)
-		return (inRayleigh + inMie) * sunIntensity
+
+		// Multiple-scattering fill: strongest where the view path has extinguished the single-
+		// scattered light (1 - transmittance), tinted like the scattering medium itself so it
+		// reads as pale blue rather than the yellow-green the extinguished path leaves behind.
+		let tauView = rayleigh * odR + SIMD3<Double>(repeating: mieExt * odM) + ozone * odO
+		let pathOpacity = SIMD3<Double>(1 - exp(-tauView.x), 1 - exp(-tauView.y), 1 - exp(-tauView.z))
+		let skyTint = rayleigh / simd_reduce_max(rayleigh)
+		let inMultiple = multipleScattering * max(0, sin(sa)) * pathOpacity * skyTint
+
+		return (inRayleigh + inMie + inMultiple) * sunIntensity
 	}
 
 	/// Tone-mapped, gamma-encoded sky colour for a view direction, including the ambient skylight floor.
@@ -189,10 +209,16 @@ struct SkyModel {
 			case let .sky(elevationDeg): elevationDeg
 			case .ground: groundSourceElevationDeg
 			}
+			// Ground vertices widen their scattering angle so the reflected glow falls outside the
+			// tight forward-Mie lobe — only a hint of the aureole survives below the horizon.
+			let groundOffset: Double = switch content {
+			case .sky: 0
+			case .ground: groundGlowAngularOffsetDeg * .pi / 180
+			}
 			for col in 0 ..< w {
 				let colX = Double(col) / Double(w - 1)
 				let scatterCosTheta: Double = if let sunAnchor {
-					cos(hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y)) * glowAngularScaleDeg * .pi / 180)
+					cos(min(.pi, hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y)) * glowAngularScaleDeg * .pi / 180 + groundOffset))
 				} else {
 					ambientScatterCosTheta(sunAltitudeDeg: sunAltitudeDeg, viewElevationDeg: elevationDeg)
 				}
