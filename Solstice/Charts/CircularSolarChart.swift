@@ -114,29 +114,19 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	@ViewBuilder
 	private var graphicalBackground: some View {
 		if let solar {
-			// Each angle of the dial is coloured by the sky at that time of day, so day, each
-			// twilight band, and night appear as arcs in their true positions around the ring.
-			// The gradient starts at 90° because the dial places midnight at the bottom.
-			AngularGradient(stops: SkyModel.standard.dialStops(for: solar), center: .center, angle: .degrees(90))
-				.overlay {
-					// A soft glow at the current sun position. Its colour is the sky at the sun
-					// itself, so it brightens by day, warms at sunset, and fades out at night.
-					if let sunAnchor {
-						let altitude = solar.altitude(at: solar.date)
-						RadialGradient(
-							colors: [
-								SkyModel.standard.color(sunAltitudeDeg: altitude,
-								                        viewElevationDeg: max(altitude, SkyModel.standard.groundSourceElevationDeg),
-								                        scatterCosTheta: 1),
-								.clear,
-							],
-							center: sunAnchor,
-							startRadius: 0,
-							endRadius: max(44, max(size.width, size.height) * 0.4)
-						)
-						.blendMode(.plusLighter)
+			ZStack {
+				// Static ring: each angle coloured by the sky at that time of day, so night and the
+				// twilight bands appear as arcs in their true positions around the dial. The
+				// gradient starts at 90° because the dial places midnight at the bottom.
+				AngularGradient(stops: SkyModel.standard.dialStops(for: solar), center: .center, angle: .degrees(90))
+
+				// Dynamic day wedge: the sunrise→sunset slice always shows the sky as it looks
+				// right now, with the glow anchored to the sun dot.
+				SkyGradient(ntSolar: solar, sunAnchor: sunAnchor)
+					.reverseMask {
+						safeSunriseSunsetShape
 					}
-				}
+			}
 		}
 	}
 

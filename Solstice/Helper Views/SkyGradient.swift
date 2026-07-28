@@ -62,10 +62,15 @@ struct SkyModel {
 
 	/// Below a horizon there is no sky to march — only ground. The ground band renders as the sky
 	/// just above the horizon reflected darkly, so twilight's warm band carries into it. This is the
-	/// fraction of that light reflected right at the horizon; it fades further with depth.
-	var groundReflectance = 0.3
+	/// fraction of that light reflected right at the horizon (in display-linear space, after
+	/// tone-mapping); it fades further with depth.
+	var groundReflectance = 0.12
 	/// View elevation sampled for the ground's illumination.
 	var groundSourceElevationDeg = 2.5
+
+	/// Sun-relative azimuth assumed on ambient surfaces (no `sunAnchor`): far enough from the sun
+	/// that no bright spot forms anywhere, close enough that sunsets still warm the sky.
+	var ambientSunDeltaAzimuthDeg = 60.0
 
 	/// The dial ring (circular chart) samples the sky at this view elevation…
 	var dialViewElevationDeg = 12.0
@@ -165,11 +170,12 @@ struct SkyModel {
 	/// forward-Mie glow peaks exactly at the anchor and falls off around it.
 	/// - Parameters:
 	///   - sunAltitudeDeg: Sun altitude above the horizon, in degrees.
-	///   - sunAnchor: The sun's position in the gradient's own bounds (0…1, y-down).
+	///   - sunAnchor: The sun's position in the gradient's own bounds (0…1, y-down), or `nil` for
+	///     ambient surfaces, which render elevation-driven colour with no anchored glow.
 	///   - horizonFraction: The horizon line's vertical position in the gradient's bounds (0…1,
-	///     y-down). When set, rows below it render as ground instead of sky, with two rows placed
-	///     tight under the line so the horizon reads as a defined edge across the full width.
-	func mesh(sunAltitudeDeg: Double, sunAnchor: UnitPoint, horizonFraction: Double? = nil) -> (gradient: MeshGradient, stops: [Color]) {
+	///     y-down). When set, rows below it render as ground instead of sky, with a row placed
+	///     tight under the line so the horizon reads as a crisp edge across the full width.
+	func mesh(sunAltitudeDeg: Double, sunAnchor: UnitPoint?, horizonFraction: Double? = nil) -> (gradient: MeshGradient, stops: [Color]) {
 		let rows = rowLayout(horizonFraction: horizonFraction)
 		let w = meshWidth, h = rows.count
 
@@ -179,12 +185,19 @@ struct SkyModel {
 		colors.reserveCapacity(w * h)
 
 		for (rowY, content) in rows {
+			let elevationDeg: Double = switch content {
+			case let .sky(elevationDeg): elevationDeg
+			case .ground: groundSourceElevationDeg
+			}
 			for col in 0 ..< w {
 				let colX = Double(col) / Double(w - 1)
-				let distance = hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y))
-				let scatterCosTheta = cos(distance * glowAngularScaleDeg * .pi / 180)
+				let scatterCosTheta: Double = if let sunAnchor {
+					cos(hypot(colX - Double(sunAnchor.x), rowY - Double(sunAnchor.y)) * glowAngularScaleDeg * .pi / 180)
+				} else {
+					ambientScatterCosTheta(sunAltitudeDeg: sunAltitudeDeg, viewElevationDeg: elevationDeg)
+				}
 				let vertexColor: Color = switch content {
-				case let .sky(elevationDeg):
+				case .sky:
 					color(sunAltitudeDeg: sunAltitudeDeg,
 					      viewElevationDeg: elevationDeg,
 					      scatterCosTheta: scatterCosTheta)
@@ -202,8 +215,8 @@ struct SkyModel {
 		                            smoothsColors: true, colorSpace: .perceptual)
 
 		// Vertical ramp of the column farthest from the sun (first = zenith, last = horizon/ground).
-		let farColumn = sunAnchor.x < 0.5 ? w - 1 : 0
-		let stops = (0 ..< h).map { colors[$0 * w + farColumn] }
+		let farColumn: Int = (sunAnchor?.x ?? 1) < 0.5 ? w - 1 : 0
+		let stops: [Color] = (0 ..< h).map { row in colors[row * w + farColumn] }
 
 		return (gradient, stops)
 	}
@@ -231,20 +244,34 @@ struct SkyModel {
 			return (y: hf * fraction,
 			        content: .sky(elevationDeg: maxElevationDeg + (minElevationDeg - maxElevationDeg) * fraction))
 		}
-		// A row tight under the horizon gives it a defined edge; the bottom row fades the ground out.
-		rows.append((y: hf + 0.02, content: .ground(reflectance: groundReflectance)))
+		// The first ground row sits almost on top of the last sky row, so the sky→ground transition
+		// spans a fraction of a point and the horizon reads as a crisp edge exactly on the chart's
+		// horizon line; the bottom row fades the ground out.
+		rows.append((y: hf + 0.004, content: .ground(reflectance: groundReflectance)))
 		rows.append((y: 1, content: .ground(reflectance: groundReflectance * 0.4)))
 		return rows
 	}
 
-	/// Ground: the sky just above the horizon, reflected darkly. Twilight's warm horizon band carries
-	/// into it, and the shared ambient floor keeps it no darker than the night sky — so chart content
-	/// drawn over it stays legible.
+	/// Scattering cosine for ambient surfaces: the true angular distance to a sun offset by a fixed
+	/// azimuth, so colour varies with elevation only and the glow never anchors to a point.
+	private func ambientScatterCosTheta(sunAltitudeDeg: Double, viewElevationDeg: Double) -> Double {
+		let sa = sunAltitudeDeg * .pi / 180
+		let ve = viewElevationDeg * .pi / 180
+		let deltaAzimuth = ambientSunDeltaAzimuthDeg * .pi / 180
+		return sin(ve) * sin(sa) + cos(ve) * cos(sa) * cos(deltaAzimuth)
+	}
+
+	/// Ground: the sky just above the horizon, reflected darkly. The reflection happens in
+	/// display-linear space — scene-linear reflectance would be mostly undone by the
+	/// luminance-compressing tone-map, leaving the daytime ground too bright. Twilight's warm band
+	/// still carries into it, and the ambient floor keeps the ground no darker than the night sky,
+	/// so chart content drawn over it stays legible.
 	private func groundColor(sunAltitudeDeg: Double, scatterCosTheta: Double, reflectance: Double) -> Color {
-		let source = radiance(sunAltitudeDeg: sunAltitudeDeg,
-		                      viewElevationDeg: groundSourceElevationDeg,
-		                      scatterCosTheta: scatterCosTheta)
-		return tonemap(source * reflectance + ambientRadiance)
+		let sky = tonemapLinear(radiance(sunAltitudeDeg: sunAltitudeDeg,
+		                                 viewElevationDeg: groundSourceElevationDeg,
+		                                 scatterCosTheta: scatterCosTheta) + ambientRadiance)
+		let nightFloor = ambientRadiance * exposure
+		return encode(sky * reflectance + nightFloor)
 	}
 
 	// MARK: Dial
@@ -284,12 +311,19 @@ struct SkyModel {
 
 	/// Luminance-based Reinhard: compresses brightness while preserving chroma, so the daytime
 	/// sky stays saturated blue instead of desaturating toward grey the way per-channel Reinhard does.
-	private func tonemap(_ radiance: SIMD3<Double>) -> Color {
+	private func tonemapLinear(_ radiance: SIMD3<Double>) -> SIMD3<Double> {
 		let exposed = radiance * exposure
 		let luminance = 0.2126 * exposed.x + 0.7152 * exposed.y + 0.0722 * exposed.z
 		let scale = luminance > 0 ? 1 / (1 + luminance) : 0
-		let mapped = exposed * scale
-		return Color(.sRGB, red: encodeSRGB(mapped.x), green: encodeSRGB(mapped.y), blue: encodeSRGB(mapped.z))
+		return exposed * scale
+	}
+
+	private func tonemap(_ radiance: SIMD3<Double>) -> Color {
+		encode(tonemapLinear(radiance))
+	}
+
+	private func encode(_ mapped: SIMD3<Double>) -> Color {
+		Color(.sRGB, red: encodeSRGB(mapped.x), green: encodeSRGB(mapped.y), blue: encodeSRGB(mapped.z))
 	}
 
 	private func encodeSRGB(_ value: Double) -> Double {
@@ -330,7 +364,8 @@ struct SkyGradient: View, ShapeStyle {
 	var ntSolar: NTSolar? = nil
 
 	/// Where the sun sits in this gradient's own bounds (0…1, y-down). Callers with chart geometry
-	/// supply the sun marker's position; when `nil` the glow falls back to a time + altitude default.
+	/// supply the sun marker's position; when `nil` (ambient surfaces like the watch container
+	/// background or list rows) the sky has no anchored glow at all — only the altitude-driven ramp.
 	var sunAnchor: UnitPoint? = nil
 
 	/// The horizon line's vertical position in this gradient's own bounds (0…1, y-down). When set,
@@ -350,19 +385,8 @@ struct SkyGradient: View, ShapeStyle {
 		let date = solar?.date ?? .now
 		let sunAltitude = solar?.altitude(at: date) ?? 0
 		return SkyModel.standard.mesh(sunAltitudeDeg: sunAltitude,
-		                              sunAnchor: sunAnchor ?? defaultAnchor(for: solar, at: date, altitude: sunAltitude),
+		                              sunAnchor: sunAnchor,
 		                              horizonFraction: horizonFraction)
-	}
-
-	/// A sensible glow position for surfaces with no chart geometry: horizontally at the sun's
-	/// time of day, vertically higher as the sun climbs.
-	private func defaultAnchor(for solar: NTSolar?, at date: Date, altitude: Double) -> UnitPoint {
-		let x: Double = {
-			guard let solar else { return 0.5 }
-			return min(max(date.timeIntervalSince(solar.startOfDay) / .twentyFourHours, 0), 1)
-		}()
-		let y = 1 - min(max(altitude / SkyModel.standard.maxElevationDeg, 0), 1)
-		return UnitPoint(x: x, y: y)
 	}
 
 	/// The vertical colour ramp; `first` is the sky/zenith, `last` the horizon.
@@ -371,7 +395,7 @@ struct SkyGradient: View, ShapeStyle {
 		skyMesh.stops
 	}
 
-	var body: MeshGradient {
+	var body: some View {
 		skyMesh.gradient
 	}
 }
@@ -431,7 +455,7 @@ private struct AltitudeSweepPreview: View {
 		VStack(spacing: 0) {
 			ForEach(Array(altitudes), id: \.self) { altitude in
 				ZStack {
-					SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunAnchor: .center).gradient
+					SkyModel.standard.mesh(sunAltitudeDeg: altitude, sunAnchor: .center, horizonFraction: 0.72).gradient
 					Text(verbatim: "\(Int(altitude))°")
 						.font(.headline.monospacedDigit())
 						.foregroundStyle(.white)
