@@ -89,7 +89,16 @@ struct SkyModel {
 	/// arcs keep their transmittance-driven colour without showing the sun's aureole itself.
 	var dialScatterCosTheta = 0.5
 
-	static let standard = SkyModel()
+	static let standard: SkyModel = {
+		var model = SkyModel()
+		#if os(watchOS)
+			// The dial ring proved the coarse march indistinguishable after tone-mapping
+			// (see `dialStops`); watch-class CPUs get the same discount everywhere.
+			model.viewSamples = 8
+			model.lightSamples = 4
+		#endif
+		return model
+	}()
 
 	// MARK: Radiance
 
@@ -378,6 +387,93 @@ struct SkyModel {
 	}
 }
 
+// MARK: - Render memoization
+
+/// Sky rendering is pure but not free — each mesh is dozens of ray marches — and SwiftUI
+/// re-evaluates the consuming bodies every frame during scrubbing, time travel, and list
+/// scrolling while the inputs barely move. Memoizing keeps unchanged frames at the cost of a
+/// dictionary lookup. Lock-guarded rather than actor-isolated because bodies aren't guaranteed
+/// a single thread across targets.
+final class SkyRenderCache<Key: Hashable, Value>: @unchecked Sendable {
+	private var store = [Key: Value]()
+	private let lock = NSLock()
+	private let capacity: Int
+
+	init(capacity: Int) {
+		self.capacity = capacity
+	}
+
+	func value(for key: Key, compute: () -> Value) -> Value {
+		lock.lock()
+		if let cached = store[key] {
+			lock.unlock()
+			return cached
+		}
+		lock.unlock()
+
+		// Computed outside the lock: a rare duplicate computation beats serialising renders.
+		let value = compute()
+
+		lock.lock()
+		if store.count >= capacity {
+			store.removeAll(keepingCapacity: true)
+		}
+		store[key] = value
+		lock.unlock()
+		return value
+	}
+}
+
+private struct SkyMeshKey: Hashable {
+	let altitude: Int
+	let anchorX: Int?
+	let anchorY: Int?
+	let horizon: Int?
+}
+
+private let meshCache = SkyRenderCache<SkyMeshKey, (gradient: MeshGradient, stops: [Color])>(capacity: 64)
+
+private struct SkyDialKey: Hashable {
+	let startOfDay: Date
+	let latitude: Int
+	let longitude: Int
+}
+
+private let dialCache = SkyRenderCache<SkyDialKey, [Gradient.Stop]>(capacity: 16)
+
+extension SkyModel {
+	/// Memoized `mesh`. Inputs quantise below what the soft mesh can show — 0.1° of sun altitude,
+	/// 1/128 of the view for the glow anchor, 1/256 for the horizon — and the mesh renders from
+	/// the quantised values, so hits and misses agree exactly.
+	func cachedMesh(sunAltitudeDeg: Double, sunAnchor: UnitPoint?, horizonFraction: Double?) -> (gradient: MeshGradient, stops: [Color]) {
+		let key = SkyMeshKey(altitude: Int((sunAltitudeDeg * 10).rounded()),
+		                     anchorX: sunAnchor.map { Int(($0.x * 128).rounded()) },
+		                     anchorY: sunAnchor.map { Int(($0.y * 128).rounded()) },
+		                     horizon: horizonFraction.map { Int(($0 * 256).rounded()) })
+		return meshCache.value(for: key) {
+			let anchor: UnitPoint? = if let x = key.anchorX, let y = key.anchorY {
+				UnitPoint(x: Double(x) / 128, y: Double(y) / 128)
+			} else {
+				nil
+			}
+			return mesh(sunAltitudeDeg: Double(key.altitude) / 10,
+			            sunAnchor: anchor,
+			            horizonFraction: key.horizon.map { Double($0) / 256 })
+		}
+	}
+
+	/// Memoized `dialStops`: the ring depends only on the day and place, but the dial re-evaluates
+	/// its body every frame during time travel.
+	func cachedDialStops(for solar: NTSolar) -> [Gradient.Stop] {
+		let key = SkyDialKey(startOfDay: solar.startOfDay,
+		                     latitude: Int((solar.coordinate.latitude * 1e4).rounded()),
+		                     longitude: Int((solar.coordinate.longitude * 1e4).rounded()))
+		return dialCache.value(for: key) {
+			dialStops(for: solar)
+		}
+	}
+}
+
 // MARK: - SkyGradient
 
 struct SkyGradient: View, ShapeStyle {
@@ -410,9 +506,9 @@ struct SkyGradient: View, ShapeStyle {
 		let solar = effectiveSolar
 		let date = solar?.date ?? .now
 		let sunAltitude = solar?.altitude(at: date) ?? 0
-		return SkyModel.standard.mesh(sunAltitudeDeg: sunAltitude,
-		                              sunAnchor: sunAnchor,
-		                              horizonFraction: horizonFraction)
+		return SkyModel.standard.cachedMesh(sunAltitudeDeg: sunAltitude,
+		                                    sunAnchor: sunAnchor,
+		                                    horizonFraction: horizonFraction)
 	}
 
 	/// The vertical colour ramp; `first` is the sky/zenith, `last` the horizon.

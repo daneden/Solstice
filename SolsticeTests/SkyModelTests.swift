@@ -119,6 +119,24 @@ struct SkyModelTests {
 		#expect(luminance(nearest: 1) == luminance(nearest: 0))
 	}
 
+	@Test("Cached mesh matches a direct render of the quantised inputs")
+	func cachedMeshMatchesDirectRender() {
+		let cached = model.cachedMesh(sunAltitudeDeg: 17.03,
+		                              sunAnchor: UnitPoint(x: 0.31, y: 0.52),
+		                              horizonFraction: 0.61)
+		let direct = model.mesh(sunAltitudeDeg: (17.03 * 10).rounded() / 10,
+		                        sunAnchor: UnitPoint(x: (0.31 * 128).rounded() / 128,
+		                                             y: (0.52 * 128).rounded() / 128),
+		                        horizonFraction: (0.61 * 256).rounded() / 256)
+		#expect(cached.stops == direct.stops)
+
+		// A second call must return the identical memoized result.
+		let secondHit = model.cachedMesh(sunAltitudeDeg: 17.03,
+		                                 sunAnchor: UnitPoint(x: 0.31, y: 0.52),
+		                                 horizonFraction: 0.61)
+		#expect(secondHit.stops == cached.stops)
+	}
+
 	@Test("High-sun horizon stays blue rather than yellow-green")
 	func highSunHorizonStaysBlue() {
 		// Single scattering alone goes green here; the multiple-scattering fill keeps it blue.

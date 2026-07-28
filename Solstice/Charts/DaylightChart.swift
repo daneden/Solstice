@@ -99,10 +99,12 @@ struct DaylightChart: View {
 
 	private var chartContent: some View {
 		Chart {
-			ForEach(hours, id: \.self) { offset in
+			let hours = hours
+			let altitudes = sampledAltitudes
+			ForEach(hours.indices, id: \.self) { index in
 				LineMark(
-					x: .value("Time", offset),
-					y: .value("Altitude", yValue(for: offset))
+					x: .value("Time", hours[index]),
+					y: .value("Altitude", altitudes[index])
 				)
 				.interpolationMethod(.catmullRom)
 				.foregroundStyle(solarPathGradient)
@@ -238,7 +240,7 @@ struct DaylightChart: View {
 	private func scrubIndicator(proxy: ChartProxy, geoHeight: CGFloat) -> some View {
 		if let currentX {
 			let xPos: CGFloat = proxy.position(forX: currentX) ?? 0
-			Rectangle()
+			RoundedRectangle(cornerRadius: 8)
 				.fill(markForegroundColor)
 				.frame(width: 2, height: geoHeight)
 				.position(x: xPos, y: geoHeight / 2)
@@ -380,7 +382,7 @@ extension DaylightChart {
 	/// Callers may override via the `yScale` property.
 	private var effectiveYScale: ClosedRange<Double> {
 		if let yScale { return yScale }
-		let altitudes = hours.map { yValue(for: $0) }
+		let altitudes = sampledAltitudes
 		guard let minAlt = altitudes.min(), let maxAlt = altitudes.max() else {
 			return -90.0 ... 90.0
 		}
@@ -393,6 +395,17 @@ extension DaylightChart {
 	/// 0° is the geometric horizon; positive = above, negative = below.
 	func yValue(for offset: TimeInterval) -> Double {
 		solar.altitude(at: midnight.addingTimeInterval(offset))
+	}
+
+	/// Altitude for every sampled hour. Memoized because the body re-evaluates every frame during
+	/// scrubbing and time travel while the sampled day and place rarely change.
+	private var sampledAltitudes: [Double] {
+		let key = AltitudeSamplesKey(midnight: midnight,
+		                             latitude: Int((solar.coordinate.latitude * 1e4).rounded()),
+		                             longitude: Int((solar.coordinate.longitude * 1e4).rounded()))
+		return altitudeSamplesCache.value(for: key) {
+			hours.map { yValue(for: $0) }
+		}
 	}
 
 	/// Seconds from midnight of `solar.date` to the given event date.
@@ -420,6 +433,14 @@ extension DaylightChart {
 		}
 	}
 }
+
+private struct AltitudeSamplesKey: Hashable {
+	let midnight: Date
+	let latitude: Int
+	let longitude: Int
+}
+
+private let altitudeSamplesCache = SkyRenderCache<AltitudeSamplesKey, [Double]>(capacity: 16)
 
 extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {

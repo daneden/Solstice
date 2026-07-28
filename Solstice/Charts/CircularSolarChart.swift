@@ -118,7 +118,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 				// Static ring: each angle coloured by the sky at that time of day, so night and the
 				// twilight bands appear as arcs in their true positions around the dial. The
 				// gradient starts at 90° because the dial places midnight at the bottom.
-				AngularGradient(stops: SkyModel.standard.dialStops(for: solar), center: .center, angle: .degrees(90))
+				AngularGradient(stops: SkyModel.standard.cachedDialStops(for: solar), center: .center, angle: .degrees(90))
 
 				// Dynamic day wedge: the sunrise→sunset slice always shows the sky as it looks
 				// right now, with the glow anchored to the sun dot.
