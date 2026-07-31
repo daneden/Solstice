@@ -462,24 +462,63 @@ struct SkyModel {
 			return Gradient.Stop(color: stopColor(altitudeDeg: solar.altitude(at: date)), location: fraction)
 		}
 
-		// Crisp wedge edges: a pair of near-coincident stops at each twilight boundary, coloured
-		// for the band on each side. Which side is the darker band depends on whether the sun is
-		// rising or setting there.
-		let boundaries: [(date: Date?, thresholdDeg: Double)] = [
-			(solar.sunrise, 0), (solar.sunset, 0),
-			(solar.civilSunrise, -6), (solar.civilSunset, -6),
-			(solar.nauticalSunrise, -12), (solar.nauticalSunset, -12),
-			(solar.astronomicalSunrise, -18), (solar.astronomicalSunset, -18),
+		// Crisp wedge edges: a near-coincident pair of stops pins each twilight boundary. Pairs
+		// sit on NTSolar's event dates whenever those exist, so the colour edges land exactly on
+		// the dial's phase lines and markers, which draw from the same dates. Where a named event
+		// doesn't exist (extreme latitudes/seasons), the crossing is bisected from the altitude
+		// curve instead — otherwise the band flip would smear across a whole sample interval.
+		var boundaries: [(fraction: Double, thresholdDeg: Double, rising: Bool)] = []
+		let events: [(date: Date?, thresholdDeg: Double, rising: Bool)] = [
+			(solar.sunrise, 0, true), (solar.sunset, 0, false),
+			(solar.civilSunrise, -6, true), (solar.civilSunset, -6, false),
+			(solar.nauticalSunrise, -12, true), (solar.nauticalSunset, -12, false),
+			(solar.astronomicalSunrise, -18, true), (solar.astronomicalSunset, -18, false),
 		]
-		for (date, thresholdDeg) in boundaries {
-			guard let date else { continue }
+		for event in events {
+			guard let date = event.date else { continue }
 			let fraction = date.timeIntervalSince(start) / .twentyFourHours
 			guard fraction > 0, fraction < 1 else { continue }
-			let rising = solar.altitude(at: date.addingTimeInterval(600)) > solar.altitude(at: date.addingTimeInterval(-600))
-			let earlier = stopColor(altitudeDeg: thresholdDeg + (rising ? -0.5 : 0.5))
-			let later = stopColor(altitudeDeg: thresholdDeg + (rising ? 0.5 : -0.5))
-			stops.append(Gradient.Stop(color: earlier, location: fraction - 0.0001))
-			stops.append(Gradient.Stop(color: later, location: fraction + 0.0001))
+			boundaries.append((fraction, event.thresholdDeg, event.rising))
+		}
+
+		let sampleSpacing = 1.0 / Double(sampleCount)
+		let thresholds: [Double] = [0, -6, -12, -18]
+		for sample in 0 ..< sampleCount {
+			let f0 = Double(sample) * sampleSpacing
+			let f1 = f0 + sampleSpacing
+			let a0 = solar.altitude(at: start.addingTimeInterval(f0 * .twentyFourHours))
+			let a1 = solar.altitude(at: start.addingTimeInterval(f1 * .twentyFourHours))
+			for threshold in thresholds where (a0 - threshold) * (a1 - threshold) < 0 {
+				let alreadyPinned = boundaries.contains {
+					$0.thresholdDeg == threshold && abs($0.fraction - (f0 + f1) / 2) <= sampleSpacing
+				}
+				guard !alreadyPinned else { continue }
+				var low = f0, high = f1
+				for _ in 0 ..< 20 {
+					let mid = (low + high) / 2
+					let altitude = solar.altitude(at: start.addingTimeInterval(mid * .twentyFourHours))
+					if (altitude - threshold) * (a0 - threshold) > 0 {
+						low = mid
+					} else {
+						high = mid
+					}
+				}
+				boundaries.append(((low + high) / 2, threshold, a1 > a0))
+			}
+		}
+
+		// An event date and the altitude crossing can differ by a minute or two (refraction,
+		// solver differences); a uniform sample landing in that sliver would repaint the old band
+		// past the pinned edge. Drop samples that crowd a boundary — the pair defines the edge.
+		stops.removeAll { stop in
+			boundaries.contains { abs($0.fraction - stop.location) < sampleSpacing / 2 }
+		}
+
+		for boundary in boundaries {
+			let earlier = stopColor(altitudeDeg: boundary.thresholdDeg + (boundary.rising ? -0.5 : 0.5))
+			let later = stopColor(altitudeDeg: boundary.thresholdDeg + (boundary.rising ? 0.5 : -0.5))
+			stops.append(Gradient.Stop(color: earlier, location: max(0, boundary.fraction - 0.0001)))
+			stops.append(Gradient.Stop(color: later, location: min(1, boundary.fraction + 0.0001)))
 		}
 
 		stops.sort { $0.location < $1.location }

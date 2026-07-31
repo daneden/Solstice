@@ -157,10 +157,11 @@ struct SkyModelTests {
 			date.timeIntervalSince(start) / .twentyFourHours
 		}
 
-		// Every stop strictly inside the evening civil-twilight band must share one colour.
+		// Every stop strictly inside the evening civil-twilight band must share one colour. The
+		// filter admits the boundary pairs' inner stops (±0.0001), which carry the band's colour.
 		let bandStart = try fraction(#require(solar.sunset))
 		let bandEnd = try fraction(#require(solar.civilSunset))
-		let band = stops.filter { $0.location > bandStart + 0.0002 && $0.location < bandEnd - 0.0002 }
+		let band = stops.filter { $0.location > bandStart + 0.00005 && $0.location < bandEnd - 0.00005 }
 		#expect(band.count >= 1)
 		for stop in band {
 			#expect(stop.color == band[0].color)
