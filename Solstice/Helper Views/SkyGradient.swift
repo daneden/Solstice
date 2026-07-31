@@ -662,9 +662,10 @@ struct SkyView: View {
 					               startRadius: 0,
 					               endRadius: max(geo.size.width, geo.size.height))
 						// At sunrise/sunset the aureole stretches along the horizon rather than
-						// staying circular — but only on surfaces that *have* a horizon; the dial's
-						// day wedge and ambient skies keep the round glow.
-						.scaleEffect(x: horizonFraction == nil ? 1 : SkyModel.standard.glowStretch(sunAltitudeDeg: sunAltitudeDeg),
+						// staying circular. The dial's day wedge gets the same treatment: its sun
+						// sits near the dial's left/right edge at those times, where the wedge
+						// boundary runs close to horizontal too.
+						.scaleEffect(x: SkyModel.standard.glowStretch(sunAltitudeDeg: sunAltitudeDeg),
 						             anchor: sunAnchor)
 				}
 				.mask { glowMask }
