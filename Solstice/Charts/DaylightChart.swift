@@ -153,8 +153,16 @@ struct DaylightChart: View {
 		.onAppear {
 			sunDisplayOffset = plotOffset
 		}
-		.onChange(of: currentX) { _, _ in
-			sunDisplayOffset = currentX ?? plotOffset
+		.onChange(of: currentX) { _, newValue in
+			if let newValue {
+				// Live scrub: the sun sticks to the finger.
+				sunDisplayOffset = newValue
+			} else {
+				// Scrub released: glide home along the solar curve (see AlongSolarPath).
+				withAnimation(.smooth(duration: 0.6)) {
+					sunDisplayOffset = plotOffset
+				}
+			}
 		}
 		.onChange(of: solar.date) { oldDate, _ in
 			if timeMachine.isActive {
@@ -209,29 +217,54 @@ struct DaylightChart: View {
 		scrubHitArea(geo: geo, proxy: proxy)
 
 		// Report the sun marker and horizon line so a SkyGradient background can align with them.
+		// Wrapped in AlongSolarPath so the glow (and its colours) glide with the marker whenever
+		// the offset animates, instead of jumping to the destination.
 		if tracksSkyGeometry {
-			Color.clear
-				.preference(key: SkyChartGeometryPreferenceKey.self, value: skyGeometry(proxy: proxy, geo: geo))
+			AlongSolarPath(offset: sunDisplayOffset) { offset in
+				Color.clear
+					.preference(key: SkyChartGeometryPreferenceKey.self,
+					            value: skyGeometry(offset: offset, proxy: proxy, geo: geo))
+			}
 		}
 	}
 
-	/// The sun marker's position and the horizon line's y, expressed in the shared `skyGradient`
-	/// coordinate space.
-	private func skyGeometry(proxy: ChartProxy, geo: GeometryProxy) -> SkyChartGeometry {
-		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
-		var geometry = SkyChartGeometry(date: plotDate)
+	/// The sun's position at `offset` in the chart's own coordinates.
+	private func sunPosition(for offset: TimeInterval, proxy: ChartProxy) -> CGPoint {
+		CGPoint(x: proxy.position(forX: offset) ?? 0,
+		        y: proxy.position(forY: yValue(for: offset)) ?? 0)
+	}
 
-		if let sunX = proxy.position(forX: sunDisplayOffset),
-		   let sunY = proxy.position(forY: yValue(for: sunDisplayOffset))
-		{
-			geometry.sunPoint = CGPoint(x: frame.minX + sunX, y: frame.minY + sunY)
-		}
+	/// The plotted moment, sun position, and horizon line for `offset`, expressed in the shared
+	/// `skyGradient` coordinate space.
+	private func skyGeometry(offset: TimeInterval, proxy: ChartProxy, geo: GeometryProxy) -> SkyChartGeometry {
+		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
+		var geometry = SkyChartGeometry(date: midnight.addingTimeInterval(offset))
+
+		let position = sunPosition(for: offset, proxy: proxy)
+		geometry.sunPoint = CGPoint(x: frame.minX + position.x, y: frame.minY + position.y)
 
 		if let horizonY = proxy.position(forY: 0.0) {
 			geometry.horizonY = frame.minY + horizonY
 		}
 
 		return geometry
+	}
+
+	/// Renders content derived from the sun's time offset, animating *along the solar curve*: the
+	/// offset itself is the animatable data, so every animation frame re-derives geometry from the
+	/// curve instead of interpolating positions in a straight line across it.
+	private struct AlongSolarPath<Content: View>: View, Animatable {
+		var offset: TimeInterval
+		@ViewBuilder var content: (TimeInterval) -> Content
+
+		var animatableData: TimeInterval {
+			get { offset }
+			set { offset = newValue }
+		}
+
+		var body: some View {
+			content(offset)
+		}
 	}
 
 	private func horizonLine(width: CGFloat, yOffset: CGFloat) -> some View {
@@ -241,30 +274,33 @@ struct DaylightChart: View {
 			.offset(y: yOffset)
 	}
 
-	@ViewBuilder
 	private func scrubIndicator(proxy: ChartProxy, geoHeight: CGFloat) -> some View {
-		if let currentX {
-			let xPos: CGFloat = proxy.position(forX: currentX) ?? 0
-			RoundedRectangle(cornerRadius: 8)
-				.fill(markForegroundColor)
-				.frame(width: 2, height: geoHeight)
-				.position(x: xPos, y: geoHeight / 2)
-				.overlay {
-					Rectangle()
-						.stroke(style: StrokeStyle(lineWidth: 1))
-						.fill(.background)
-						.frame(width: 2, height: geoHeight)
-						.position(x: xPos, y: geoHeight / 2)
-				}
+		Group {
+			if let currentX {
+				let xPos: CGFloat = proxy.position(forX: currentX) ?? 0
+				RoundedRectangle(cornerRadius: 8)
+					.fill(markForegroundColor)
+					.frame(width: 2, height: geoHeight)
+					.position(x: xPos, y: geoHeight / 2)
+					.overlay {
+						Rectangle()
+							.stroke(style: StrokeStyle(lineWidth: 1))
+							.fill(.background)
+							.frame(width: 2, height: geoHeight)
+							.position(x: xPos, y: geoHeight / 2)
+					}
+					.transition(.opacity)
+			}
 		}
+		// Keyed to presence, not value: appearing and disappearing fade, while the per-tick
+		// position updates during the scrub stay glued to the finger.
+		.animation(.easeInOut(duration: 0.2), value: currentX == nil)
 	}
 
 	private func sunBelowHorizon(proxy: ChartProxy, geo: GeometryProxy, horizonY: CGFloat) -> some View {
-		let sunX: CGFloat = proxy.position(forX: sunDisplayOffset) ?? 0
-		let sunY: CGFloat = proxy.position(forY: yValue(for: sunDisplayOffset)) ?? 0
 		let belowHorizonHeight: CGFloat = geo.size.height - horizonY
 
-		return ZStack {
+		return AlongSolarPath(offset: sunDisplayOffset) { offset in
 			Circle()
 				.fill(markBackgroundColor)
 				.overlay {
@@ -273,7 +309,7 @@ struct DaylightChart: View {
 						.fill(markForegroundColor)
 				}
 				.frame(width: markSize * 2.5, height: markSize * 2.5)
-				.position(x: sunX, y: sunY)
+				.position(sunPosition(for: offset, proxy: proxy))
 				.shadow(color: .secondary.opacity(0.5), radius: 2)
 				.blendMode(.normal)
 		}
@@ -299,14 +335,11 @@ struct DaylightChart: View {
 	}
 
 	private func sunAboveHorizon(proxy: ChartProxy, horizonY: CGFloat) -> some View {
-		let sunX: CGFloat = proxy.position(forX: sunDisplayOffset) ?? 0
-		let sunY: CGFloat = proxy.position(forY: yValue(for: sunDisplayOffset)) ?? 0
-
-		return ZStack {
+		AlongSolarPath(offset: sunDisplayOffset) { offset in
 			Circle()
 				.fill(markForegroundColor)
 				.frame(width: markSize * 2.5, height: markSize * 2.5)
-				.position(x: sunX, y: sunY)
+				.position(sunPosition(for: offset, proxy: proxy))
 				.shadow(color: .secondary.opacity(0.5), radius: 3)
 		}
 		.mask(alignment: .top) {
