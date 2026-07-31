@@ -103,11 +103,13 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	/// The sun's position on the dial, as a `UnitPoint` in the gradient's bounds, so the sky glow
-	/// tracks the sun dot around the ring. Midnight sits at the bottom, noon at the top.
+	/// tracks the sun dot around the ring. Midnight sits at the bottom, noon at the top. The
+	/// radius mirrors `sundialCenter`'s layout — a frame ⅔ of the dial with the dot's centre
+	/// inset half a sun from its edge — so the glow lands exactly on the dot.
 	private var sunAnchor: UnitPoint? {
-		guard let solar else { return nil }
+		guard let solar, size.width > 0 else { return nil }
 		let theta = angle(for: solar.date).radians
-		let radius = 0.4
+		let radius = (size.width / 3 - majorSunSize / 2) / size.width
 		return UnitPoint(x: 0.5 + radius * cos(theta), y: 0.5 + radius * sin(theta))
 	}
 

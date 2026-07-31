@@ -64,7 +64,7 @@ struct SkyModelTests {
 
 	@Test("Mesh is well formed with finite colours")
 	func meshWellFormed() {
-		let mesh = model.mesh(sunAltitudeDeg: 20, sunAnchor: UnitPoint(x: 0.3, y: 0.4))
+		let mesh = model.mesh(sunAltitudeDeg: 20)
 		#expect(mesh.stops.count == model.meshHeight)
 
 		let env = EnvironmentValues()
@@ -80,7 +80,7 @@ struct SkyModelTests {
 
 	@Test("Ground band below the horizon is darker than the sky above it, and fades with depth")
 	func groundBandDarkerThanHorizonSky() {
-		let mesh = model.mesh(sunAltitudeDeg: 30, sunAnchor: UnitPoint(x: 0.5, y: 0.3), horizonFraction: 0.6)
+		let mesh = model.mesh(sunAltitudeDeg: 30, horizonFraction: 0.6)
 		#expect(mesh.stops.count == model.meshHeight)
 
 		// Rows: [0 ..< meshHeight - 2] sky (top → horizon), then two ground rows.
@@ -121,20 +121,77 @@ struct SkyModelTests {
 
 	@Test("Cached mesh matches a direct render of the quantised inputs")
 	func cachedMeshMatchesDirectRender() {
-		let cached = model.cachedMesh(sunAltitudeDeg: 17.03,
-		                              sunAnchor: UnitPoint(x: 0.31, y: 0.52),
-		                              horizonFraction: 0.61)
+		let cached = model.cachedMesh(sunAltitudeDeg: 17.03, horizonFraction: 0.61)
 		let direct = model.mesh(sunAltitudeDeg: (17.03 * 10).rounded() / 10,
-		                        sunAnchor: UnitPoint(x: (0.31 * 128).rounded() / 128,
-		                                             y: (0.52 * 128).rounded() / 128),
 		                        horizonFraction: (0.61 * 256).rounded() / 256)
 		#expect(cached.stops == direct.stops)
 
 		// A second call must return the identical memoized result.
-		let secondHit = model.cachedMesh(sunAltitudeDeg: 17.03,
-		                                 sunAnchor: UnitPoint(x: 0.31, y: 0.52),
-		                                 horizonFraction: 0.61)
+		let secondHit = model.cachedMesh(sunAltitudeDeg: 17.03, horizonFraction: 0.61)
 		#expect(secondHit.stops == cached.stops)
+	}
+
+	@Test("Glow stops peak at the centre and fade to nothing")
+	func glowStopsFadeOutward() {
+		let stops = SkyModel.standard.glowStops(sunAltitudeDeg: 20)
+		#expect(stops.first?.location == 0)
+		#expect(stops.last?.location == 1)
+
+		let luminances = stops.map { resolvedLuminance($0.color) }
+		let first = luminances[0], mid = luminances[luminances.count / 2], last = luminances[luminances.count - 1]
+		#expect(first > mid)
+		#expect(mid >= last)
+		// The outermost stop is (near) black, so the additive layer vanishes at its edge.
+		#expect(last < 0.02)
+	}
+
+	@Test("Below-horizon dial segments are solid per twilight band")
+	func dialTwilightSegmentsAreSolid() throws {
+		let timeZone = try #require(TimeZone(identifier: "Europe/London"))
+		let date = try #require(DateComponents(calendar: Calendar(identifier: .gregorian),
+		                                       timeZone: timeZone,
+		                                       year: 2026, month: 6, day: 21, hour: 12).date)
+		let coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.1)
+		let solar = try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
+
+		let stops = SkyModel.standard.dialStops(for: solar)
+		let start = solar.startOfDay
+		func fraction(_ date: Date) -> Double {
+			date.timeIntervalSince(start) / .twentyFourHours
+		}
+
+		// Every stop strictly inside the evening civil-twilight band must share one colour.
+		let bandStart = try fraction(#require(solar.sunset))
+		let bandEnd = try fraction(#require(solar.civilSunset))
+		let band = stops.filter { $0.location > bandStart + 0.0002 && $0.location < bandEnd - 0.0002 }
+		#expect(band.count >= 1)
+		for stop in band {
+			#expect(stop.color == band[0].color)
+		}
+
+		// And it must be a saturated blue, not grey: blue well above red.
+		let civil = try #require(band.first).color.resolve(in: EnvironmentValues())
+		#expect(civil.blue > civil.red * 2)
+	}
+
+	@Test("Below-horizon wedges brighten with the current daylight")
+	func dialWedgesBrightenWithDaylight() throws {
+		let timeZone = try #require(TimeZone(identifier: "Europe/London"))
+		let coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.1)
+
+		func ring(hour: Int) throws -> [Gradient.Stop] {
+			let date = try #require(DateComponents(calendar: Calendar(identifier: .gregorian),
+			                                       timeZone: timeZone,
+			                                       year: 2026, month: 6, day: 21, hour: hour).date)
+			let solar = try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
+			return SkyModel.standard.dialStops(for: solar)
+		}
+
+		// The first stop sits at the midnight angle, inside the night wedge: it should be lifted
+		// while the sun is high and settle back to the deep floor at night.
+		let duringDay = try #require(try ring(hour: 13).first)
+		let duringNight = try #require(try ring(hour: 0).first)
+		#expect(resolvedLuminance(duringDay.color) > resolvedLuminance(duringNight.color))
 	}
 
 	@Test("High-sun horizon stays blue rather than yellow-green")
