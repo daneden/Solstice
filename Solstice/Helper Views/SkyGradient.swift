@@ -74,6 +74,28 @@ struct SkyModel {
 	/// Fraction of the sun's glow that shows through below the horizon — the ground keeps a hint
 	/// of the aureole rather than mirroring it.
 	var groundGlowTransmission = 0.2
+
+	/// Sunrise/sunset drama. All three ramp in as the sun approaches the horizon, at full
+	/// strength when it touches it and gone once |altitude| exceeds `glowDramaFalloffDeg`:
+	/// the glow gets brighter (`glowHorizonGain`), more saturated (`glowHorizonSaturation`),
+	/// and — on surfaces with a horizon line — stretches into an ellipse hugging it
+	/// (`glowHorizonStretch`, the horizontal scale at altitude 0).
+	var glowDramaFalloffDeg = 15.0
+	var glowHorizonGain = 0.4
+	var glowHorizonSaturation = 0.5
+	var glowHorizonStretch = 1.5
+
+	/// 0 far from the horizon → 1 as the sun touches it, from either side.
+	func horizonCloseness(sunAltitudeDeg: Double) -> Double {
+		max(0, 1 - abs(sunAltitudeDeg) / glowDramaFalloffDeg)
+	}
+
+	/// Horizontal scale for the glow layer: circular when the sun is high, stretched along the
+	/// horizon at sunrise/sunset.
+	func glowStretch(sunAltitudeDeg: Double) -> Double {
+		1 + (glowHorizonStretch - 1) * horizonCloseness(sunAltitudeDeg: sunAltitudeDeg)
+	}
+
 	/// View elevation sampled for the ground's illumination.
 	var groundSourceElevationDeg = 2.5
 	/// The ground reflects the whole sky dome, not just the horizon band. Blending the (bluer)
@@ -281,6 +303,13 @@ struct SkyModel {
 
 		let base = encoded(scatterCosTheta: ambientScatterCosTheta(sunAltitudeDeg: sunAltitudeDeg,
 		                                                           viewElevationDeg: elevationDeg))
+
+		// Sunrise/sunset drama: brighten and saturate the aureole as the sun nears the horizon —
+		// the physics alone underplays it after tone-mapping.
+		let closeness = horizonCloseness(sunAltitudeDeg: sunAltitudeDeg)
+		let gain = 1 + glowHorizonGain * closeness
+		let saturation = 1 + glowHorizonSaturation * closeness
+
 		return (0 ..< stopCount).map { i in
 			// Quadratic spacing clusters stops in the tight forward lobe near the centre.
 			let t = Double(i) / Double(stopCount - 1)
@@ -290,10 +319,15 @@ struct SkyModel {
 			// gamma-space difference against the ambient base: base + glow reconstructs the
 			// sun-facing sky exactly where they meet.
 			let lit = encoded(scatterCosTheta: cos(min(.pi, angle)))
+			let glow = SIMD3<Double>(max(0, lit.x - base.x),
+			                         max(0, lit.y - base.y),
+			                         max(0, lit.z - base.z))
+			let luminance = 0.2126 * glow.x + 0.7152 * glow.y + 0.0722 * glow.z
+			let dramatic = (SIMD3<Double>(repeating: luminance) + (glow - SIMD3<Double>(repeating: luminance)) * saturation) * gain
 			return Gradient.Stop(color: Color(.sRGB,
-			                                  red: max(0, lit.x - base.x),
-			                                  green: max(0, lit.y - base.y),
-			                                  blue: max(0, lit.z - base.z)),
+			                                  red: min(1, max(0, dramatic.x)),
+			                                  green: min(1, max(0, dramatic.y)),
+			                                  blue: min(1, max(0, dramatic.z))),
 			                     location: location)
 		}
 	}
@@ -627,6 +661,11 @@ struct SkyView: View {
 					               center: sunAnchor,
 					               startRadius: 0,
 					               endRadius: max(geo.size.width, geo.size.height))
+						// At sunrise/sunset the aureole stretches along the horizon rather than
+						// staying circular — but only on surfaces that *have* a horizon; the dial's
+						// day wedge and ambient skies keep the round glow.
+						.scaleEffect(x: horizonFraction == nil ? 1 : SkyModel.standard.glowStretch(sunAltitudeDeg: sunAltitudeDeg),
+						             anchor: sunAnchor)
 				}
 				.mask { glowMask }
 				// Blend applied last: inside the mask's compositing group there is no backdrop,
@@ -636,6 +675,9 @@ struct SkyView: View {
 			}
 		}
 		.compositingGroup()
+		// The stretched glow extends past the view horizontally; don't let it bleed into
+		// neighbouring content.
+		.clipped()
 	}
 
 	/// Only a hint of the aureole survives below the horizon.
