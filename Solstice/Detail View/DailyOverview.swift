@@ -15,8 +15,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solar: NTSolar
 	var location: Location
 
-	@State private var gradientSolar: NTSolar?
-
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
 
@@ -219,10 +217,7 @@ extension DailyOverview {
 		#endif
 		#if !os(watchOS)
 		.if(chartAppearance == .graphical) { content in
-			content.skyChartBackground(solar: gradientSolar ?? solar)
-		}
-		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
-			self.gradientSolar = NTSolar(for: date, coordinate: solar.coordinate, timeZone: location.timeZone)
+			content.skyChartBackground(solar: solar)
 		}
 		#endif
 		#if os(macOS)

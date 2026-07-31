@@ -98,7 +98,6 @@ struct DaylightChart: View {
 				.environment(\.colorScheme, .dark)
 		}
 		.environment(\.timeZone, timeZone)
-		.preference(key: DaylightGradientTimePreferenceKey.self, value: plotDate)
 	}
 
 	private var chartContent: some View {
@@ -220,7 +219,7 @@ struct DaylightChart: View {
 	/// coordinate space.
 	private func skyGeometry(proxy: ChartProxy, geo: GeometryProxy) -> SkyChartGeometry {
 		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
-		var geometry = SkyChartGeometry()
+		var geometry = SkyChartGeometry(date: plotDate)
 
 		if let sunX = proxy.position(forX: sunDisplayOffset),
 		   let sunY = proxy.position(forY: yValue(for: sunDisplayOffset))

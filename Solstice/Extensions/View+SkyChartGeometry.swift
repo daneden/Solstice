@@ -1,5 +1,5 @@
 //
-//  View+DaylightGradientTimePreferenceKey.swift
+//  View+SkyChartGeometry.swift
 //  Solstice
 //
 //  Created by Daniel Eden on 04/03/2025.
@@ -7,20 +7,12 @@
 
 import SwiftUI
 
-struct DaylightGradientTimePreferenceKey: PreferenceKey {
-	typealias Value = Date
-
-	static let defaultValue: Date = .init()
-
-	static func reduce(value: inout Date, nextValue: () -> Date) {
-		value = nextValue()
-	}
-}
-
-/// Geometry a chart publishes so its `SkyGradient` background can align with it: the sun marker's
-/// position (glow anchor) and the horizon line's y (sky/ground boundary), both in the `skyGradient`
-/// named coordinate space. See `SkyGradient.coordinateSpaceName`.
+/// Geometry a chart publishes so its `SkyGradient` background can align with it: the plotted
+/// moment (the scrubbed time, when scrubbing), the sun marker's position (glow anchor), and the
+/// horizon line's y (sky/ground boundary) — points in the `skyGradient` named coordinate space.
+/// See `SkyGradient.coordinateSpaceName`.
 struct SkyChartGeometry: Equatable {
+	var date: Date?
 	var sunPoint: CGPoint?
 	var horizonY: CGFloat?
 }
@@ -45,7 +37,7 @@ extension View {
 		backgroundPreferenceValue(SkyChartGeometryPreferenceKey.self) { geometry in
 			GeometryReader { geo in
 				let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
-				SkyGradient(ntSolar: solar,
+				SkyGradient(ntSolar: skySolar(for: geometry?.date, basedOn: solar),
 				            sunAnchor: normalizedAnchor(geometry?.sunPoint, in: frame),
 				            horizonFraction: normalizedHorizon(geometry?.horizonY, in: frame))
 			}
@@ -65,4 +57,11 @@ private func normalizedAnchor(_ point: CGPoint?, in frame: CGRect) -> UnitPoint?
 private func normalizedHorizon(_ y: CGFloat?, in frame: CGRect) -> Double? {
 	guard let y, frame.height > 0 else { return nil }
 	return (y - frame.minY) / frame.height
+}
+
+/// The sky follows the *plotted* moment — while scrubbing, that's the scrubbed time rather than
+/// the chart's own date.
+private func skySolar(for date: Date?, basedOn solar: NTSolar?) -> NTSolar? {
+	guard let solar, let date, date != solar.date else { return solar }
+	return NTSolar(for: date, coordinate: solar.coordinate, timeZone: solar.timeZone)
 }
