@@ -31,6 +31,10 @@ struct DaylightChart: View {
 	var scrubbable = false
 	var markSize: CGFloat = 6
 	var yScale: ClosedRange<Double>? = nil
+	/// Whether to publish `SkyChartGeometryPreferenceKey` for a `SkyGradient` background. Only the
+	/// container that defines the `skyGradient` coordinate space should opt in — resolving the
+	/// named space in a hierarchy that lacks it logs a runtime warning on every evaluation.
+	var tracksSkyGeometry = false
 
 	/// The date to highlight — uses scrubbable position when dragging, otherwise the solar date.
 	var plotDate: Date {
@@ -206,8 +210,10 @@ struct DaylightChart: View {
 		scrubHitArea(geo: geo, proxy: proxy)
 
 		// Report the sun marker and horizon line so a SkyGradient background can align with them.
-		Color.clear
-			.preference(key: SkyChartGeometryPreferenceKey.self, value: skyGeometry(proxy: proxy, geo: geo))
+		if tracksSkyGeometry {
+			Color.clear
+				.preference(key: SkyChartGeometryPreferenceKey.self, value: skyGeometry(proxy: proxy, geo: geo))
+		}
 	}
 
 	/// The sun marker's position and the horizon line's y, expressed in the shared `skyGradient`

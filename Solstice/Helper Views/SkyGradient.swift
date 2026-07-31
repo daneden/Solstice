@@ -257,13 +257,18 @@ struct SkyModel {
 	/// looking `r · glowAngularScaleDeg` away from the sun, *minus* the ambient base the glow is
 	/// layered over with `.plusLighter` — so mesh + glow ≈ the fully sun-anchored sky, but with
 	/// per-pixel smoothness and a continuously movable centre.
-	func glowStops(sunAltitudeDeg: Double, stopCount: Int = 12) -> [Gradient.Stop] {
-		// Coarser march, like the dial: the glow is the difference of two similar skies, so fine
-		// sampling washes out of the result anyway.
+	/// This model with a coarser ray march, for callers that evaluate many directions (the dial
+	/// ring, the glow stops): colour varies smoothly enough with angle that the difference is
+	/// invisible after tone-mapping.
+	private var coarseMarch: SkyModel {
 		var coarse = self
 		coarse.viewSamples = 8
 		coarse.lightSamples = 4
+		return coarse
+	}
 
+	func glowStops(sunAltitudeDeg: Double, stopCount: Int = 12) -> [Gradient.Stop] {
+		let coarse = coarseMarch
 		let elevationDeg = max(sunAltitudeDeg, groundSourceElevationDeg)
 
 		func encoded(scatterCosTheta: Double) -> SIMD3<Double> {
@@ -300,16 +305,30 @@ struct SkyModel {
 
 	/// Vertical mesh layout: each row's y position and what it samples. Without a horizon the strip
 	/// is all sky; with one, the sky compresses above it and the remainder renders as ground.
+	/// Where a horizon can meaningfully split the view: below the range the ground would swallow
+	/// the sky, above it the band falls off the bottom edge. Chart geometry arrives unclamped —
+	/// during polar day/night the fitted y-scale extrapolates the horizon outside the view
+	/// entirely — so both the mesh and the glow mask normalise through `visibleHorizon` and always
+	/// agree about where, and whether, the horizon is.
+	static let horizonRange = 0.08 ... 0.92
+	/// Height of the sky→ground transition, as a fraction of the view: the first ground row (and
+	/// the glow mask's cut) sit this far below the horizon, so the edge reads crisp.
+	static let horizonEdgeWidth = 0.004
+
+	func visibleHorizon(_ fraction: Double?) -> Double? {
+		guard let fraction, fraction < Self.horizonRange.upperBound else { return nil }
+		return max(fraction, Self.horizonRange.lowerBound)
+	}
+
 	private func rowLayout(horizonFraction: Double?) -> [(y: Double, content: RowContent)] {
-		// A horizon at (or beyond) the bottom edge leaves no room for a ground band — all sky.
-		guard let horizonFraction, horizonFraction < 0.92 else {
+		// No visible horizon: all sky.
+		guard let hf = visibleHorizon(horizonFraction) else {
 			return (0 ..< meshHeight).map { row in
 				let y = Double(row) / Double(meshHeight - 1)
 				return (y, .sky(elevationDeg: minElevationDeg + (maxElevationDeg - minElevationDeg) * (1 - y)))
 			}
 		}
 
-		let hf = max(horizonFraction, 0.08)
 		let skyRows = meshHeight - 2
 		var rows: [(y: Double, content: RowContent)] = (0 ..< skyRows).map { row in
 			let fraction = Double(row) / Double(skyRows - 1)
@@ -319,7 +338,7 @@ struct SkyModel {
 		// The first ground row sits almost on top of the last sky row, so the sky→ground transition
 		// spans a fraction of a point and the horizon reads as a crisp edge exactly on the chart's
 		// horizon line; the bottom row fades the ground out.
-		rows.append((y: hf + 0.004, content: .ground(reflectance: groundReflectance)))
+		rows.append((y: hf + Self.horizonEdgeWidth, content: .ground(reflectance: groundReflectance)))
 		rows.append((y: 1, content: .ground(reflectance: groundReflectance * 0.4)))
 		return rows
 	}
@@ -372,11 +391,7 @@ struct SkyModel {
 	/// steps darker toward night — the Watch solar dial look. Stop locations are fractions of a day
 	/// from midnight; align them using the chart's midnight angle.
 	func dialStops(for solar: NTSolar, sampleCount: Int = 48) -> [Gradient.Stop] {
-		// Coarser march than the mesh: the dial evaluates many directions, and colour varies smoothly
-		// enough with altitude that the difference is invisible after tone-mapping.
-		var coarse = self
-		coarse.viewSamples = 8
-		coarse.lightSamples = 4
+		let coarse = coarseMarch
 
 		// The wedges brighten with the daylight at the *current* moment, not the wedge's own time.
 		let daylight = daylightFactor(sunAltitudeDeg: solar.altitude(at: solar.date))
@@ -499,6 +514,11 @@ struct SkyModel {
 /// scrolling while the inputs barely move. Memoizing keeps unchanged frames at the cost of a
 /// dictionary lookup. Lock-guarded rather than actor-isolated because bodies aren't guaranteed
 /// a single thread across targets.
+/// Xcode Previews hot-swap code into a persistent host process, so memoized colours would outlive
+/// edits to the model's constants and show stale skies while tuning. Previews render uncached
+/// instead. Stored once: this guards every cache access on the render path.
+private let skyCachesBypassedForPreviews = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+
 final class SkyRenderCache<Key: Hashable, Value>: @unchecked Sendable {
 	private var store = [Key: Value]()
 	private let lock = NSLock()
@@ -508,15 +528,8 @@ final class SkyRenderCache<Key: Hashable, Value>: @unchecked Sendable {
 		self.capacity = capacity
 	}
 
-	/// Xcode Previews hot-swap code into a persistent host process, so memoized colours would
-	/// outlive edits to the model's constants and show stale skies while tuning. Previews render
-	/// uncached instead.
-	private static var isRunningForPreviews: Bool {
-		ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-	}
-
 	func value(for key: Key, compute: () -> Value) -> Value {
-		guard !Self.isRunningForPreviews else { return compute() }
+		guard !skyCachesBypassedForPreviews else { return compute() }
 
 		lock.lock()
 		if let cached = store[key] {
@@ -628,11 +641,13 @@ struct SkyView: View {
 	/// Only a hint of the aureole survives below the horizon.
 	@ViewBuilder
 	private var glowMask: some View {
-		if let horizonFraction {
+		// Normalised through the same rule as the mesh, so the mask never dims below a horizon
+		// the mesh doesn't draw.
+		if let horizon = SkyModel.standard.visibleHorizon(horizonFraction) {
 			LinearGradient(stops: [
 				.init(color: .white, location: 0),
-				.init(color: .white, location: horizonFraction),
-				.init(color: .white.opacity(SkyModel.standard.groundGlowTransmission), location: horizonFraction + 0.004),
+				.init(color: .white, location: horizon),
+				.init(color: .white.opacity(SkyModel.standard.groundGlowTransmission), location: horizon + SkyModel.horizonEdgeWidth),
 			], startPoint: .top, endPoint: .bottom)
 		} else {
 			Color.white

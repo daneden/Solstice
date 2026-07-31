@@ -97,16 +97,19 @@ struct SkyModelTests {
 		}
 	}
 
-	@Test("Dial stops are brighter at noon than at midnight, and the ring closes seamlessly")
-	func dialStopsDayNightContrast() throws {
+	/// London on the 2026 June solstice at the given hour — the shared fixture for dial tests.
+	private func londonSolar(hour: Int) throws -> NTSolar {
 		let timeZone = try #require(TimeZone(identifier: "Europe/London"))
 		let date = try #require(DateComponents(calendar: Calendar(identifier: .gregorian),
 		                                       timeZone: timeZone,
-		                                       year: 2026, month: 6, day: 21, hour: 12).date)
+		                                       year: 2026, month: 6, day: 21, hour: hour).date)
 		let coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.1)
-		let solar = try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
+		return try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
+	}
 
-		let stops = SkyModel.standard.dialStops(for: solar)
+	@Test("Dial stops are brighter at noon than at midnight, and the ring closes seamlessly")
+	func dialStopsDayNightContrast() throws {
+		let stops = try SkyModel.standard.dialStops(for: londonSolar(hour: 12))
 		#expect(stops.first?.location == 0)
 		#expect(stops.last?.location == 1)
 
@@ -147,13 +150,7 @@ struct SkyModelTests {
 
 	@Test("Below-horizon dial segments are solid per twilight band")
 	func dialTwilightSegmentsAreSolid() throws {
-		let timeZone = try #require(TimeZone(identifier: "Europe/London"))
-		let date = try #require(DateComponents(calendar: Calendar(identifier: .gregorian),
-		                                       timeZone: timeZone,
-		                                       year: 2026, month: 6, day: 21, hour: 12).date)
-		let coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.1)
-		let solar = try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
-
+		let solar = try londonSolar(hour: 12)
 		let stops = SkyModel.standard.dialStops(for: solar)
 		let start = solar.startOfDay
 		func fraction(_ date: Date) -> Double {
@@ -176,21 +173,10 @@ struct SkyModelTests {
 
 	@Test("Below-horizon wedges brighten with the current daylight")
 	func dialWedgesBrightenWithDaylight() throws {
-		let timeZone = try #require(TimeZone(identifier: "Europe/London"))
-		let coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.1)
-
-		func ring(hour: Int) throws -> [Gradient.Stop] {
-			let date = try #require(DateComponents(calendar: Calendar(identifier: .gregorian),
-			                                       timeZone: timeZone,
-			                                       year: 2026, month: 6, day: 21, hour: hour).date)
-			let solar = try #require(NTSolar(for: date, coordinate: coordinate, timeZone: timeZone))
-			return SkyModel.standard.dialStops(for: solar)
-		}
-
 		// The first stop sits at the midnight angle, inside the night wedge: it should be lifted
 		// while the sun is high and settle back to the deep floor at night.
-		let duringDay = try #require(try ring(hour: 13).first)
-		let duringNight = try #require(try ring(hour: 0).first)
+		let duringDay = try #require(SkyModel.standard.dialStops(for: londonSolar(hour: 13)).first)
+		let duringNight = try #require(SkyModel.standard.dialStops(for: londonSolar(hour: 0)).first)
 		#expect(resolvedLuminance(duringDay.color) > resolvedLuminance(duringNight.color))
 	}
 

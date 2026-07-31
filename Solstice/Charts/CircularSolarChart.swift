@@ -35,8 +35,17 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		location.timeZone
 	}
 
+	/// Memoized: a single body evaluation reads this ~20 times (anchor, background, wedges, phase
+	/// slices, labels…), and each `NTSolar` construction solves the full set of solar events.
 	var solar: NTSolar? {
-		NTSolar(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+		let date = date ?? timeMachine.date
+		let key = SolarKey(date: date,
+		                   latitude: Int((location.coordinate.latitude * 1e4).rounded()),
+		                   longitude: Int((location.coordinate.longitude * 1e4).rounded()),
+		                   timeZone: location.timeZone.identifier)
+		return solarCache.value(for: key) {
+			NTSolar(for: date, coordinate: location.coordinate, timeZone: location.timeZone)
+		}
 	}
 
 	var majorSunSize: Double {
@@ -437,6 +446,15 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		.aspectRatio(1, contentMode: .fit)
 	}
 }
+
+private struct SolarKey: Hashable {
+	let date: Date
+	let latitude: Int
+	let longitude: Int
+	let timeZone: String
+}
+
+private let solarCache = SkyRenderCache<SolarKey, NTSolar?>(capacity: 8)
 
 private struct ChartLabel: View {
 	#if WIDGET_EXTENSION

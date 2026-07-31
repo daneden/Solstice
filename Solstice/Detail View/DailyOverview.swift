@@ -195,13 +195,25 @@ struct DailyOverview<Location: AnyLocation>: View {
 }
 
 extension DailyOverview {
+	/// Whether the chart gets the sky background and coordinate space (and so should publish its
+	/// geometry): graphical appearance on platforms where the background block below compiles.
+	private var isGraphicalWithSkyBackground: Bool {
+		#if os(watchOS)
+			return false
+		#else
+			return chartAppearance == .graphical
+		#endif
+	}
+
 	@ViewBuilder
 	var daylightChartView: some View {
 		DaylightChart(
 			solar: solar,
 			timeZone: location.timeZone,
 			appearance: chartAppearance, scrubbable: true,
-			markSize: chartMarkSize
+			markSize: chartMarkSize,
+			// Must mirror the condition that attaches the coordinate space below.
+			tracksSkyGeometry: isGraphicalWithSkyBackground
 		)
 		#if os(macOS)
 		.padding(12)
