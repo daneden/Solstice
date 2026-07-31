@@ -44,13 +44,11 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 				solar: solar,
 				timeZone: location.timeZone,
 				appearance: chartAppearance, scrubbable: true,
-				markSize: chartMarkSize
+				markSize: chartMarkSize,
+				tracksSkyGeometry: chartAppearance == .graphical
 			)
 			.if(chartAppearance == .graphical) { content in
-				content
-					.background {
-						SkyGradient(ntSolar: solar)
-					}
+				content.skyChartBackground(solar: solar)
 			}
 		case .circular:
 			CircularSolarChart(date: solar.date, location: location, appearanceOverride: chartAppearance)
