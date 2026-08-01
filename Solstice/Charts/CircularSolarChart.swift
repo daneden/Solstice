@@ -20,7 +20,10 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		@Environment(\.widgetFamily) private var widgetFamily
 	#endif
 
-	@State private var size = CGSize.zero
+	/// The dial's square edge length, measured synchronously in `body` — not lifecycle-captured
+	/// state, so size-derived elements (ticks, sun ring, glow anchor) are correct even in
+	/// single-pass render trees like the share card's `ImageRenderer`, where onAppear never runs.
+	private var size = CGSize.zero
 	var date: Date?
 
 	var location: Location
@@ -230,16 +233,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	private var sundialBackground: some View {
 		background.mask {
 			Circle()
-				.overlay {
-					GeometryReader { g in
-						Color.clear.task(id: g.size) {
-							size = g.size
-						}
-						.onAppear {
-							size = g.size
-						}
-					}
-				}
 		}
 		.overlay {
 			sundialBorderOverlay
@@ -409,6 +402,21 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	var body: some View {
+		GeometryReader { geo in
+			let chart = {
+				var chart = self
+				let side = min(geo.size.width, geo.size.height)
+				chart.size = CGSize(width: side, height: side)
+				return chart
+			}()
+			chart.dialContent
+				.frame(width: geo.size.width, height: geo.size.height)
+		}
+		.frame(maxWidth: .infinity)
+		.aspectRatio(1, contentMode: .fit)
+	}
+
+	private var dialContent: some View {
 		ZStack {
 			ZStack {
 				sundial
@@ -442,8 +450,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		.font(.footnote)
 		.fontWeight(.medium)
 		.monospacedDigit()
-		.frame(maxWidth: .infinity)
-		.aspectRatio(1, contentMode: .fit)
 	}
 }
 

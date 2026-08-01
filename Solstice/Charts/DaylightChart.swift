@@ -17,9 +17,15 @@ struct DaylightChart: View {
 
 	@State private var selectedEvent: NTSolar.Event?
 	@State private var currentX: TimeInterval?
-	/// Tracks the sun marker's current position. Updated instantly during time travel
-	/// and animated along the solar path on reset.
-	@State private var sunDisplayOffset: TimeInterval = 0
+	/// Overrides the sun marker's position while it animates (live scrubs, glide-home, time
+	/// travel resets). `nil` means "at the plotted time" — which also keeps static render trees
+	/// correct (the share card's ImageRenderer never runs onAppear, so no lifecycle seeding).
+	@State private var sunOffsetOverride: TimeInterval?
+
+	/// The sun marker's current position along the day.
+	private var sunDisplayOffset: TimeInterval {
+		sunOffsetOverride ?? plotOffset
+	}
 
 	var solar: NTSolar
 	var timeZone: TimeZone
@@ -150,32 +156,29 @@ struct DaylightChart: View {
 		// system; the summary title and surrounding UI still follow the locale.
 		.environment(\.layoutDirection, .leftToRight)
 		.animation(timeMachine.isActive ? nil : .smooth(duration: 0.5), value: solar.date)
-		.onAppear {
-			sunDisplayOffset = plotOffset
-		}
 		.onChange(of: currentX) { _, newValue in
 			if let newValue {
 				// Live scrub: the sun sticks to the finger.
-				sunDisplayOffset = newValue
+				sunOffsetOverride = newValue
 			} else {
 				// Scrub released: glide home along the solar curve (see AlongSolarPath).
 				withAnimation(.smooth(duration: 0.6)) {
-					sunDisplayOffset = plotOffset
+					sunOffsetOverride = plotOffset
 				}
 			}
 		}
 		.onChange(of: solar.date) { oldDate, _ in
 			if timeMachine.isActive {
-				sunDisplayOffset = plotOffset
+				sunOffsetOverride = plotOffset
 			} else {
 				// On reset: animate the sun along the new day's solar path from
 				// the old time position to the current time position.
 				var cal = Calendar.current
 				cal.timeZone = timeZone
 				let oldMidnight = cal.startOfDay(for: oldDate)
-				sunDisplayOffset = oldDate.timeIntervalSince(oldMidnight)
+				sunOffsetOverride = oldDate.timeIntervalSince(oldMidnight)
 				withAnimation(.smooth(duration: 0.5)) {
-					sunDisplayOffset = plotOffset
+					sunOffsetOverride = plotOffset
 				}
 			}
 		}

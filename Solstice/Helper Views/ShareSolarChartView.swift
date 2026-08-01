@@ -284,6 +284,9 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		}
 		.background(in: .rect(cornerRadius: 20, style: .continuous))
 		.frame(width: 420, height: 525)
+		// The renderer's tree is detached from the app hierarchy, so it inherits no environment;
+		// without this, charts fall back to the TimeMachine.default singleton.
+		.environment(\.timeMachine, timeMachine)
 
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3
