@@ -33,6 +33,12 @@ struct DetailView<Location: ObservableLocation>: View {
 		NTSolar(for: timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 
+	/// Whether the sun is above the horizon at this location at the displayed (time-machine) date.
+	private var sunIsUp: Bool {
+		guard let solar else { return false }
+		return solar.altitude(at: solar.date) > 0
+	}
+
 	var navBarTitleText: Text {
 		let resolvedTitle = nameResolver?.displayName(for: location).title ?? location.title
 		guard let title = resolvedTitle else {
@@ -64,42 +70,51 @@ struct DetailView<Location: ObservableLocation>: View {
 					proxy.scrollTo(Self.annualAnchor, anchor: .top)
 				}
 			#endif
-				.navigationTitle(navBarTitleText)
-				.toolbar {
-					toolbarItems
-				}
-				.userActivity(Self.userActivity) { userActivity in
-					var navigationSelection: String? = nil
-
-					if let location = location as? SavedLocation {
-						navigationSelection = location.uuid?.uuidString
-					} else if let location = location as? CurrentLocation {
-						navigationSelection = location.id
-					}
-
-					userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title ?? "location")"
-
-					userActivity.targetContentIdentifier = navigationSelection
-					userActivity.isEligibleForSearch = true
-					userActivity.isEligibleForHandoff = false
-				}
 			#if os(watchOS)
-				.modify {
-					if let solar {
-						$0.containerBackground(
-							SkyGradient(ntSolar: solar),
-							for: .navigation
-						)
-					} else {
-						$0
-					}
-				}
+			// The default tint-coloured title is low contrast against the daytime sky in the
+			// container background; while the sun is up here, use a sun yellow instead.
+			.navigationTitle {
+				navBarTitleText
+					.foregroundStyle(sunIsUp ? AnyShapeStyle(Color.yellow) : AnyShapeStyle(.tint))
+			}
+			#else
+			.navigationTitle(navBarTitleText)
 			#endif
-				.sheet(isPresented: $showShareSheet) {
-					if let solar {
-						ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
-					}
+			.toolbar {
+				toolbarItems
+			}
+			.userActivity(Self.userActivity) { userActivity in
+				var navigationSelection: String? = nil
+
+				if let location = location as? SavedLocation {
+					navigationSelection = location.uuid?.uuidString
+				} else if let location = location as? CurrentLocation {
+					navigationSelection = location.id
 				}
+
+				userActivity.title = "See daylight for \(location is CurrentLocation ? "current location" : location.title ?? "location")"
+
+				userActivity.targetContentIdentifier = navigationSelection
+				userActivity.isEligibleForSearch = true
+				userActivity.isEligibleForHandoff = false
+			}
+			#if os(watchOS)
+			.modify {
+				if let solar {
+					$0.containerBackground(
+						SkyGradient(ntSolar: solar),
+						for: .navigation
+					)
+				} else {
+					$0
+				}
+			}
+			#endif
+			.sheet(isPresented: $showShareSheet) {
+				if let solar {
+					ShareSolarChartView(solar: solar, location: location, chartAppearance: chartAppearance)
+				}
+			}
 		}
 	}
 
