@@ -30,6 +30,14 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 
 	var appearanceOverride: DaylightChart.Appearance?
 
+	/// Explicit because the private `size` property demotes the synthesized memberwise
+	/// initializer to private, making the view unconstructible from other files.
+	init(date: Date? = nil, location: Location, appearanceOverride: DaylightChart.Appearance? = nil) {
+		self.date = date
+		self.location = location
+		self.appearanceOverride = appearanceOverride
+	}
+
 	var appearance: DaylightChart.Appearance {
 		appearanceOverride ?? storedAppearance
 	}
