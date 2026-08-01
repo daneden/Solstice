@@ -137,6 +137,10 @@ struct ContentView: View {
 						await NotificationManager.scheduleNotifications(location: currentLocation.location)
 				#endif
 				case .active:
+					// A suspended app misses the TimeMachine's minutely reference-date ticks;
+					// waking after hours would otherwise show the pre-sleep sky and sun position
+					// until the next tick lands.
+					timeMachine.updateReferenceDate()
 					// Skip the location-permission request during screenshot capture: on macOS
 					// its system dialog steals focus and hides the app window from the test runner.
 					if !ScreenshotLaunch.isCapturing {

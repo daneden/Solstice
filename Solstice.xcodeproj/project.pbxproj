@@ -73,10 +73,10 @@
 		712433942D77A4CE00709C20 /* EdgeInsets++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433922D77A4CE00709C20 /* EdgeInsets++.swift */; };
 		712433952D77A4CE00709C20 /* EdgeInsets++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433922D77A4CE00709C20 /* EdgeInsets++.swift */; };
 		712433962D77A4CE00709C20 /* EdgeInsets++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433922D77A4CE00709C20 /* EdgeInsets++.swift */; };
-		712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
-		712433992D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
-		7124339A2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
-		7124339B2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */; };
+		712433982D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+SkyChartGeometry.swift */; };
+		712433992D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+SkyChartGeometry.swift */; };
+		7124339A2D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+SkyChartGeometry.swift */; };
+		7124339B2D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433972D77A92000709C20 /* View+SkyChartGeometry.swift */; };
 		7124339E2D77B07500709C20 /* ShareSolarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7124339C2D77B06900709C20 /* ShareSolarChartView.swift */; };
 		712433A52D78867300709C20 /* StackedLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433A42D78867300709C20 /* StackedLabelStyle.swift */; };
 		712433A62D78867300709C20 /* StackedLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712433A42D78867300709C20 /* StackedLabelStyle.swift */; };
@@ -422,7 +422,7 @@
 		7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Debugging.swift"; sourceTree = "<group>"; };
 		7123E75E30052CE20091C591 /* ScreenshotSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotSupport.swift; sourceTree = "<group>"; };
 		712433922D77A4CE00709C20 /* EdgeInsets++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets++.swift"; sourceTree = "<group>"; };
-		712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DaylightGradientTimePreferenceKey.swift"; sourceTree = "<group>"; };
+		712433972D77A92000709C20 /* View+SkyChartGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SkyChartGeometry.swift"; sourceTree = "<group>"; };
 		7124339C2D77B06900709C20 /* ShareSolarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSolarChartView.swift; sourceTree = "<group>"; };
 		712433A42D78867300709C20 /* StackedLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedLabelStyle.swift; sourceTree = "<group>"; };
 		712433A72D78870600709C20 /* StackedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedButtonStyle.swift; sourceTree = "<group>"; };
@@ -839,7 +839,7 @@
 				7195125729B48ECD009D282F /* TimeZone++.swift */,
 				71E3C4172EA12B030005C884 /* View+backportGlassEffect.swift */,
 				71F641C2299FD39E00FE5AB5 /* View+CapsuleAppearance.swift */,
-				712433972D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift */,
+				712433972D77A92000709C20 /* View+SkyChartGeometry.swift */,
 				7121DDFF29C22E7D0031EEE7 /* View+Debugging.swift */,
 				7195120029AFBBEC009D282F /* View+EllipticalEdgeMask.swift */,
 				711782E32E4E77AF0006CE5B /* View+glassButtonStyle.swift */,
@@ -1259,7 +1259,7 @@
 				71C105A62E7D311B00A76EBB /* TimeMachine++.swift in Sources */,
 				7188714529DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				7150CC5A29AB7B3000E6B90C /* NotificationManager.swift in Sources */,
-				7124339A2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
+				7124339A2D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */,
 				713F800129BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				715489B12F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
 				7106C87329A276B40007A7EC /* Widget.swift in Sources */,
@@ -1334,7 +1334,7 @@
 				719465422C2C1E09008408C0 /* View+RectangularEdgeMask.swift in Sources */,
 				715489B42F201D8400FD5CCE /* SolsticeWidgetLocationManager.swift in Sources */,
 				719465442C2C1E09008408C0 /* NotificationManager.swift in Sources */,
-				712433982D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
+				712433982D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */,
 				715489B22F1FB8A500FD5CCE /* SolsticeWidgetView.swift in Sources */,
 				7107208E3009257E006AA79C /* MarketingWidgetRenderer.swift in Sources */,
 				719465472C2C1E09008408C0 /* DaylightSummaryTitle.swift in Sources */,
@@ -1356,7 +1356,7 @@
 				71E3C4132EA12ABE0005C884 /* CircleWithSlice.swift in Sources */,
 				7198468E28E5895F00E866CE /* Persistence.swift in Sources */,
 				710D9B712AB4752D0093A9A6 /* ContentToggle.swift in Sources */,
-				7124339B2D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
+				7124339B2D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */,
 				7181776A2F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
 				7123E76130052CE20091C591 /* ScreenshotSupport.swift in Sources */,
 				71789AA52C32DCC7002B8A33 /* View+MaterialListRowBackground.swift in Sources */,
@@ -1495,7 +1495,7 @@
 				719F927D29ACD22100C06921 /* CurrentLocation.swift in Sources */,
 				718177642F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift in Sources */,
 				71FBEE6B2E4B345700EC1EF0 /* Bundle++.swift in Sources */,
-				712433992D77A92000709C20 /* View+DaylightGradientTimePreferenceKey.swift in Sources */,
+				712433992D77A92000709C20 /* View+SkyChartGeometry.swift in Sources */,
 				713F800029BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
 				711782E92E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
 				719F927A29ACD21A00C06921 /* AppStorage++.swift in Sources */,

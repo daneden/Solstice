@@ -25,6 +25,8 @@ struct GraphicalLocationListRow<Location: ObservableLocation>: View {
 			.padding()
 			.background {
 				solar?.view
+					// Darken slightly so the plusLighter row text stays legible over bright skies.
+					.overlay { Color.black.opacity(0.18) }
 					.clipShape(.rect(cornerRadius: 20, style: .continuous))
 			}
 		#if os(iOS)

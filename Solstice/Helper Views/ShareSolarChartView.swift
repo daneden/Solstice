@@ -44,13 +44,11 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 				solar: solar,
 				timeZone: location.timeZone,
 				appearance: chartAppearance, scrubbable: true,
-				markSize: chartMarkSize
+				markSize: chartMarkSize,
+				tracksSkyGeometry: chartAppearance == .graphical
 			)
 			.if(chartAppearance == .graphical) { content in
-				content
-					.background {
-						SkyGradient(ntSolar: solar)
-					}
+				content.skyChartBackground(solar: solar)
 			}
 		case .circular:
 			CircularSolarChart(date: solar.date, location: location, appearanceOverride: chartAppearance)
@@ -286,6 +284,9 @@ struct ShareSolarChartView<Location: AnyLocation>: View {
 		}
 		.background(in: .rect(cornerRadius: 20, style: .continuous))
 		.frame(width: 420, height: 525)
+		// The renderer's tree is detached from the app hierarchy, so it inherits no environment;
+		// without this, charts fall back to the TimeMachine.default singleton.
+		.environment(\.timeMachine, timeMachine)
 
 		let imageRenderer = ImageRenderer(content: view)
 		imageRenderer.scale = 3

@@ -20,12 +20,23 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		@Environment(\.widgetFamily) private var widgetFamily
 	#endif
 
-	@State private var size = CGSize.zero
+	/// The dial's square edge length, measured synchronously in `body` — not lifecycle-captured
+	/// state, so size-derived elements (ticks, sun ring, glow anchor) are correct even in
+	/// single-pass render trees like the share card's `ImageRenderer`, where onAppear never runs.
+	private var size = CGSize.zero
 	var date: Date?
 
 	var location: Location
 
 	var appearanceOverride: DaylightChart.Appearance?
+
+	/// Explicit because the private `size` property demotes the synthesized memberwise
+	/// initializer to private, making the view unconstructible from other files.
+	init(date: Date? = nil, location: Location, appearanceOverride: DaylightChart.Appearance? = nil) {
+		self.date = date
+		self.location = location
+		self.appearanceOverride = appearanceOverride
+	}
 
 	var appearance: DaylightChart.Appearance {
 		appearanceOverride ?? storedAppearance
@@ -35,8 +46,17 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		location.timeZone
 	}
 
+	/// Memoized: a single body evaluation reads this ~20 times (anchor, background, wedges, phase
+	/// slices, labels…), and each `NTSolar` construction solves the full set of solar events.
 	var solar: NTSolar? {
-		NTSolar(for: date ?? timeMachine.date, coordinate: location.coordinate, timeZone: location.timeZone)
+		let date = date ?? timeMachine.date
+		let key = SolarKey(date: date,
+		                   latitude: Int((location.coordinate.latitude * 1e4).rounded()),
+		                   longitude: Int((location.coordinate.longitude * 1e4).rounded()),
+		                   timeZone: location.timeZone.identifier)
+		return solarCache.value(for: key) {
+			NTSolar(for: date, coordinate: location.coordinate, timeZone: location.timeZone)
+		}
 	}
 
 	var majorSunSize: Double {
@@ -102,12 +122,53 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		Helpers.angle(for: date, timeZone: timeZone)
 	}
 
+	/// The sun's position on the dial, as a `UnitPoint` in the gradient's bounds, so the sky glow
+	/// tracks the sun dot around the ring. Midnight sits at the bottom, noon at the top. The
+	/// radius mirrors `sundialCenter`'s layout — a frame ⅔ of the dial with the dot's centre
+	/// inset half a sun from its edge — so the glow lands exactly on the dot.
+	private var sunAnchor: UnitPoint? {
+		guard let solar, size.width > 0 else { return nil }
+		let theta = angle(for: solar.date).radians
+		let radius = (size.width / 3 - majorSunSize / 2) / size.width
+		return UnitPoint(x: 0.5 + radius * cos(theta), y: 0.5 + radius * sin(theta))
+	}
+
+	@ViewBuilder
+	private var graphicalBackground: some View {
+		if let solar {
+			ZStack {
+				// Static ring: each angle coloured by the sky at that time of day, so night and the
+				// twilight bands appear as arcs in their true positions around the dial. The
+				// gradient starts at 90° because the dial places midnight at the bottom.
+				AngularGradient(stops: SkyModel.standard.cachedDialStops(for: solar), center: .center, angle: .degrees(90))
+
+				// Dynamic day wedge: the sunrise→sunset slice always shows the sky as it looks
+				// right now, with the glow anchored to the sun dot.
+				SkyGradient(ntSolar: solar, sunAnchor: sunAnchor)
+					.reverseMask {
+						safeSunriseSunsetShape
+					}
+			}
+		}
+	}
+
+	/// Whether the dial sits on the graphical sky background — in which case the angular sky
+	/// already renders the day, twilight, and night arcs, and the flat phase darkening would
+	/// only muddy them.
+	private var showsGraphicalSky: Bool {
+		#if WIDGET_EXTENSION
+			return widgetRenderingMode == .fullColor && appearance == .graphical
+		#else
+			return appearance == .graphical
+		#endif
+	}
+
 	@ViewBuilder
 	var background: some View {
 		#if WIDGET_EXTENSION
 			if widgetRenderingMode == .fullColor {
 				if appearance == .graphical {
-					solar?.view
+					graphicalBackground
 				} else {
 					Rectangle().fill(.regularMaterial)
 				}
@@ -116,7 +177,7 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 			}
 		#else
 			if appearance == .graphical {
-				solar?.view
+				graphicalBackground
 			} else {
 				Rectangle().fill(.regularMaterial)
 			}
@@ -133,18 +194,36 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	var belowHorizonSun: some View {
-		background.mask {
-			Circle()
+		Circle()
+			.fill(belowHorizonSunFill)
+			.overlay {
+				Circle()
+					.fill(.clear)
+					.strokeBorder(foregroundStyle, lineWidth: 2)
+			}
+			.frame(width: majorSunSize)
+			.frame(maxWidth: .infinity, alignment: .trailing)
+			.rotationEffect(angle(for: solar?.date ?? .now))
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+	}
+
+	/// The "empty" below-horizon sun should read as a hole showing the background through it. The
+	/// background can't literally be sampled at the marker's position, but on the graphical sky the
+	/// static ring's colour at the sun's angle is, by construction, the sky at the current moment —
+	/// so evaluating the model directly gives a matching fill. Other modes use their flat background.
+	private var belowHorizonSunFill: AnyShapeStyle {
+		if showsGraphicalSky, let solar {
+			let model = SkyModel.standard
+			return AnyShapeStyle(model.color(sunAltitudeDeg: solar.altitude(at: solar.date),
+			                                 viewElevationDeg: model.dialViewElevationDeg,
+			                                 scatterCosTheta: model.dialScatterCosTheta))
 		}
-		.overlay {
-			Circle()
-				.fill(.clear)
-				.strokeBorder(foregroundStyle, lineWidth: 2)
-		}
-		.frame(width: majorSunSize)
-		.frame(maxWidth: .infinity, alignment: .trailing)
-		.rotationEffect(angle(for: solar?.date ?? .now))
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		#if WIDGET_EXTENSION
+			if widgetRenderingMode != .fullColor {
+				return AnyShapeStyle(.primary.quinary)
+			}
+		#endif
+		return AnyShapeStyle(.regularMaterial)
 	}
 
 	var safeSunriseSunsetShape: some Shape {
@@ -162,16 +241,6 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	private var sundialBackground: some View {
 		background.mask {
 			Circle()
-				.overlay {
-					GeometryReader { g in
-						Color.clear.task(id: g.size) {
-							size = g.size
-						}
-						.onAppear {
-							size = g.size
-						}
-					}
-				}
 		}
 		.overlay {
 			sundialBorderOverlay
@@ -206,9 +275,11 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		   let sunrise,
 		   let sunset
 		{
-			CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
-				.fill(.black.opacity(0.06))
-				.blendMode(.plusDarker)
+			if !showsGraphicalSky {
+				CircleWithSlice(startAngle: angle(for: sunrise).degrees, endAngle: angle(for: sunset).degrees)
+					.fill(.black.opacity(0.06))
+					.blendMode(.plusDarker)
+			}
 
 			phaseLines(sunrise: sunrise, sunset: sunset)
 		}
@@ -339,6 +410,21 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 	}
 
 	var body: some View {
+		GeometryReader { geo in
+			let chart = {
+				var chart = self
+				let side = min(geo.size.width, geo.size.height)
+				chart.size = CGSize(width: side, height: side)
+				return chart
+			}()
+			chart.dialContent
+				.frame(width: geo.size.width, height: geo.size.height)
+		}
+		.frame(maxWidth: .infinity)
+		.aspectRatio(1, contentMode: .fit)
+	}
+
+	private var dialContent: some View {
 		ZStack {
 			ZStack {
 				sundial
@@ -372,10 +458,17 @@ struct CircularSolarChart<Location: AnyLocation>: View {
 		.font(.footnote)
 		.fontWeight(.medium)
 		.monospacedDigit()
-		.frame(maxWidth: .infinity)
-		.aspectRatio(1, contentMode: .fit)
 	}
 }
+
+private struct SolarKey: Hashable {
+	let date: Date
+	let latitude: Int
+	let longitude: Int
+	let timeZone: String
+}
+
+private let solarCache = SkyRenderCache<SolarKey, NTSolar?>(capacity: 8)
 
 private struct ChartLabel: View {
 	#if WIDGET_EXTENSION
@@ -431,5 +524,12 @@ private enum Helpers {
 
 #Preview {
 	CircularSolarChart(location: TemporaryLocation.placeholderLondon)
+		.padding()
+}
+
+#Preview("Half a day away") {
+	// Whatever the current time, this shows the opposite side of the day — handy for checking the
+	// below-horizon sun marker and the twilight arcs at night.
+	CircularSolarChart(date: .now.addingTimeInterval(.twentyFourHours / 2), location: TemporaryLocation.placeholderLondon)
 		.padding()
 }

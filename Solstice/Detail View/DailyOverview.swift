@@ -15,8 +15,6 @@ struct DailyOverview<Location: AnyLocation>: View {
 	var solar: NTSolar
 	var location: Location
 
-	@State private var gradientSolar: NTSolar?
-
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
 
@@ -194,26 +192,32 @@ struct DailyOverview<Location: AnyLocation>: View {
 }
 
 extension DailyOverview {
+	/// Whether the chart gets the sky background and coordinate space (and so should publish its
+	/// geometry): graphical appearance on platforms where the background block below compiles.
+	private var isGraphicalWithSkyBackground: Bool {
+		#if os(watchOS)
+			return false
+		#else
+			return chartAppearance == .graphical
+		#endif
+	}
+
 	@ViewBuilder
 	var daylightChartView: some View {
 		DaylightChart(
 			solar: solar,
 			timeZone: location.timeZone,
 			appearance: chartAppearance, scrubbable: true,
-			markSize: chartMarkSize
+			markSize: chartMarkSize,
+			// Must mirror the condition that attaches the coordinate space below.
+			tracksSkyGeometry: isGraphicalWithSkyBackground
 		)
 		#if os(macOS)
 		.padding(12)
 		#endif
 		#if !os(watchOS)
 		.if(chartAppearance == .graphical) { content in
-			content
-				.background {
-					SkyGradient(ntSolar: gradientSolar ?? solar)
-				}
-		}
-		.onPreferenceChange(DaylightGradientTimePreferenceKey.self) { date in
-			self.gradientSolar = NTSolar(for: date, coordinate: solar.coordinate, timeZone: location.timeZone)
+			content.skyChartBackground(solar: solar)
 		}
 		#endif
 		#if os(macOS)

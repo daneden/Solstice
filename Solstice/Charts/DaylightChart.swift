@@ -17,9 +17,15 @@ struct DaylightChart: View {
 
 	@State private var selectedEvent: NTSolar.Event?
 	@State private var currentX: TimeInterval?
-	/// Tracks the sun marker's current position. Updated instantly during time travel
-	/// and animated along the solar path on reset.
-	@State private var sunDisplayOffset: TimeInterval = 0
+	/// Overrides the sun marker's position while it animates (live scrubs, glide-home, time
+	/// travel resets). `nil` means "at the plotted time" — which also keeps static render trees
+	/// correct (the share card's ImageRenderer never runs onAppear, so no lifecycle seeding).
+	@State private var sunOffsetOverride: TimeInterval?
+
+	/// The sun marker's current position along the day.
+	private var sunDisplayOffset: TimeInterval {
+		sunOffsetOverride ?? plotOffset
+	}
 
 	var solar: NTSolar
 	var timeZone: TimeZone
@@ -31,6 +37,10 @@ struct DaylightChart: View {
 	var scrubbable = false
 	var markSize: CGFloat = 6
 	var yScale: ClosedRange<Double>? = nil
+	/// Whether to publish `SkyChartGeometryPreferenceKey` for a `SkyGradient` background. Only the
+	/// container that defines the `skyGradient` coordinate space should opt in — resolving the
+	/// named space in a hierarchy that lacks it logs a runtime warning on every evaluation.
+	var tracksSkyGeometry = false
 
 	/// The date to highlight — uses scrubbable position when dragging, otherwise the solar date.
 	var plotDate: Date {
@@ -94,15 +104,16 @@ struct DaylightChart: View {
 				.environment(\.colorScheme, .dark)
 		}
 		.environment(\.timeZone, timeZone)
-		.preference(key: DaylightGradientTimePreferenceKey.self, value: plotDate)
 	}
 
 	private var chartContent: some View {
 		Chart {
-			ForEach(hours, id: \.self) { offset in
+			let hours = hours
+			let altitudes = sampledAltitudes
+			ForEach(hours.indices, id: \.self) { index in
 				LineMark(
-					x: .value("Time", offset),
-					y: .value("Altitude", yValue(for: offset))
+					x: .value("Time", hours[index]),
+					y: .value("Altitude", altitudes[index])
 				)
 				.interpolationMethod(.catmullRom)
 				.foregroundStyle(solarPathGradient)
@@ -145,24 +156,29 @@ struct DaylightChart: View {
 		// system; the summary title and surrounding UI still follow the locale.
 		.environment(\.layoutDirection, .leftToRight)
 		.animation(timeMachine.isActive ? nil : .smooth(duration: 0.5), value: solar.date)
-		.onAppear {
-			sunDisplayOffset = plotOffset
-		}
-		.onChange(of: currentX) { _, _ in
-			sunDisplayOffset = currentX ?? plotOffset
+		.onChange(of: currentX) { _, newValue in
+			if let newValue {
+				// Live scrub: the sun sticks to the finger.
+				sunOffsetOverride = newValue
+			} else {
+				// Scrub released: glide home along the solar curve (see AlongSolarPath).
+				withAnimation(.smooth(duration: 0.6)) {
+					sunOffsetOverride = plotOffset
+				}
+			}
 		}
 		.onChange(of: solar.date) { oldDate, _ in
 			if timeMachine.isActive {
-				sunDisplayOffset = plotOffset
+				sunOffsetOverride = plotOffset
 			} else {
 				// On reset: animate the sun along the new day's solar path from
 				// the old time position to the current time position.
 				var cal = Calendar.current
 				cal.timeZone = timeZone
 				let oldMidnight = cal.startOfDay(for: oldDate)
-				sunDisplayOffset = oldDate.timeIntervalSince(oldMidnight)
+				sunOffsetOverride = oldDate.timeIntervalSince(oldMidnight)
 				withAnimation(.smooth(duration: 0.5)) {
-					sunDisplayOffset = plotOffset
+					sunOffsetOverride = plotOffset
 				}
 			}
 		}
@@ -202,6 +218,56 @@ struct DaylightChart: View {
 		}
 
 		scrubHitArea(geo: geo, proxy: proxy)
+
+		// Report the sun marker and horizon line so a SkyGradient background can align with them.
+		// Wrapped in AlongSolarPath so the glow (and its colours) glide with the marker whenever
+		// the offset animates, instead of jumping to the destination.
+		if tracksSkyGeometry {
+			AlongSolarPath(offset: sunDisplayOffset) { offset in
+				Color.clear
+					.preference(key: SkyChartGeometryPreferenceKey.self,
+					            value: skyGeometry(offset: offset, proxy: proxy, geo: geo))
+			}
+		}
+	}
+
+	/// The sun's position at `offset` in the chart's own coordinates.
+	private func sunPosition(for offset: TimeInterval, proxy: ChartProxy) -> CGPoint {
+		CGPoint(x: proxy.position(forX: offset) ?? 0,
+		        y: proxy.position(forY: yValue(for: offset)) ?? 0)
+	}
+
+	/// The plotted moment, sun position, and horizon line for `offset`, expressed in the shared
+	/// `skyGradient` coordinate space.
+	private func skyGeometry(offset: TimeInterval, proxy: ChartProxy, geo: GeometryProxy) -> SkyChartGeometry {
+		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
+		var geometry = SkyChartGeometry(date: midnight.addingTimeInterval(offset))
+
+		let position = sunPosition(for: offset, proxy: proxy)
+		geometry.sunPoint = CGPoint(x: frame.minX + position.x, y: frame.minY + position.y)
+
+		if let horizonY = proxy.position(forY: 0.0) {
+			geometry.horizonY = frame.minY + horizonY
+		}
+
+		return geometry
+	}
+
+	/// Renders content derived from the sun's time offset, animating *along the solar curve*: the
+	/// offset itself is the animatable data, so every animation frame re-derives geometry from the
+	/// curve instead of interpolating positions in a straight line across it.
+	private struct AlongSolarPath<Content: View>: View, Animatable {
+		var offset: TimeInterval
+		@ViewBuilder var content: (TimeInterval) -> Content
+
+		var animatableData: TimeInterval {
+			get { offset }
+			set { offset = newValue }
+		}
+
+		var body: some View {
+			content(offset)
+		}
 	}
 
 	private func horizonLine(width: CGFloat, yOffset: CGFloat) -> some View {
@@ -211,30 +277,33 @@ struct DaylightChart: View {
 			.offset(y: yOffset)
 	}
 
-	@ViewBuilder
 	private func scrubIndicator(proxy: ChartProxy, geoHeight: CGFloat) -> some View {
-		if let currentX {
-			let xPos: CGFloat = proxy.position(forX: currentX) ?? 0
-			Rectangle()
-				.fill(markForegroundColor)
-				.frame(width: 2, height: geoHeight)
-				.position(x: xPos, y: geoHeight / 2)
-				.overlay {
-					Rectangle()
-						.stroke(style: StrokeStyle(lineWidth: 1))
-						.fill(.background)
-						.frame(width: 2, height: geoHeight)
-						.position(x: xPos, y: geoHeight / 2)
-				}
+		Group {
+			if let currentX {
+				let xPos: CGFloat = proxy.position(forX: currentX) ?? 0
+				RoundedRectangle(cornerRadius: 8)
+					.fill(markForegroundColor)
+					.frame(width: 2, height: geoHeight)
+					.position(x: xPos, y: geoHeight / 2)
+					.overlay {
+						Rectangle()
+							.stroke(style: StrokeStyle(lineWidth: 1))
+							.fill(.background)
+							.frame(width: 2, height: geoHeight)
+							.position(x: xPos, y: geoHeight / 2)
+					}
+					.transition(.opacity)
+			}
 		}
+		// Keyed to presence, not value: appearing and disappearing fade, while the per-tick
+		// position updates during the scrub stay glued to the finger.
+		.animation(.easeInOut(duration: 0.2), value: currentX == nil)
 	}
 
 	private func sunBelowHorizon(proxy: ChartProxy, geo: GeometryProxy, horizonY: CGFloat) -> some View {
-		let sunX: CGFloat = proxy.position(forX: sunDisplayOffset) ?? 0
-		let sunY: CGFloat = proxy.position(forY: yValue(for: sunDisplayOffset)) ?? 0
 		let belowHorizonHeight: CGFloat = geo.size.height - horizonY
 
-		return ZStack {
+		return AlongSolarPath(offset: sunDisplayOffset) { offset in
 			Circle()
 				.fill(markBackgroundColor)
 				.overlay {
@@ -243,18 +312,24 @@ struct DaylightChart: View {
 						.fill(markForegroundColor)
 				}
 				.frame(width: markSize * 2.5, height: markSize * 2.5)
-				.position(x: sunX, y: sunY)
+				.position(sunPosition(for: offset, proxy: proxy))
 				.shadow(color: .secondary.opacity(0.5), radius: 2)
 				.blendMode(.normal)
 		}
 		.background {
-			Rectangle()
-				.fill(.clear)
-				.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
-				.mask {
-					LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-				}
-				.blendMode(.overlay)
+			// In simple appearance the chart sits on a plain background, so a subtle veil marks the
+			// below-horizon region. In graphical appearance the SkyGradient mesh renders the ground
+			// itself (see SkyModel.mesh(horizonFraction:)) — anything painted here would darken the
+			// chart's own marks and stop short of the background's edges.
+			if appearance == .simple {
+				Rectangle()
+					.fill(.clear)
+					.background(.background.opacity(isLuminanceReduced ? 0 : 0.3))
+					.mask {
+						LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+					}
+					.blendMode(.overlay)
+			}
 		}
 		.mask(alignment: .bottom) {
 			Rectangle()
@@ -263,14 +338,11 @@ struct DaylightChart: View {
 	}
 
 	private func sunAboveHorizon(proxy: ChartProxy, horizonY: CGFloat) -> some View {
-		let sunX: CGFloat = proxy.position(forX: sunDisplayOffset) ?? 0
-		let sunY: CGFloat = proxy.position(forY: yValue(for: sunDisplayOffset)) ?? 0
-
-		return ZStack {
+		AlongSolarPath(offset: sunDisplayOffset) { offset in
 			Circle()
 				.fill(markForegroundColor)
 				.frame(width: markSize * 2.5, height: markSize * 2.5)
-				.position(x: sunX, y: sunY)
+				.position(sunPosition(for: offset, proxy: proxy))
 				.shadow(color: .secondary.opacity(0.5), radius: 3)
 		}
 		.mask(alignment: .top) {
@@ -351,7 +423,7 @@ extension DaylightChart {
 	/// Callers may override via the `yScale` property.
 	private var effectiveYScale: ClosedRange<Double> {
 		if let yScale { return yScale }
-		let altitudes = hours.map { yValue(for: $0) }
+		let altitudes = sampledAltitudes
 		guard let minAlt = altitudes.min(), let maxAlt = altitudes.max() else {
 			return -90.0 ... 90.0
 		}
@@ -364,6 +436,17 @@ extension DaylightChart {
 	/// 0° is the geometric horizon; positive = above, negative = below.
 	func yValue(for offset: TimeInterval) -> Double {
 		solar.altitude(at: midnight.addingTimeInterval(offset))
+	}
+
+	/// Altitude for every sampled hour. Memoized because the body re-evaluates every frame during
+	/// scrubbing and time travel while the sampled day and place rarely change.
+	private var sampledAltitudes: [Double] {
+		let key = AltitudeSamplesKey(midnight: midnight,
+		                             latitude: Int((solar.coordinate.latitude * 1e4).rounded()),
+		                             longitude: Int((solar.coordinate.longitude * 1e4).rounded()))
+		return altitudeSamplesCache.value(for: key) {
+			hours.map { yValue(for: $0) }
+		}
 	}
 
 	/// Seconds from midnight of `solar.date` to the given event date.
@@ -391,6 +474,14 @@ extension DaylightChart {
 		}
 	}
 }
+
+private struct AltitudeSamplesKey: Hashable {
+	let midnight: Date
+	let latitude: Int
+	let longitude: Int
+}
+
+private let altitudeSamplesCache = SkyRenderCache<AltitudeSamplesKey, [Double]>(capacity: 16)
 
 extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {

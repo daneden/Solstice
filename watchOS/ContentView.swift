@@ -97,6 +97,13 @@ struct ContentView: View {
 				placeholderView
 			}
 		}
+		.task(id: scenePhase) {
+			// A suspended app misses the TimeMachine's minutely reference-date ticks; waking
+			// after hours would otherwise show the pre-sleep sky until the next tick lands.
+			if scenePhase == .active {
+				timeMachine.updateReferenceDate()
+			}
+		}
 		.resolveDeepLink(sortedItems)
 		.withTimeMachine(.solsticeTimeMachine)
 		.task {
