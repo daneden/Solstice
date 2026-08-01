@@ -703,19 +703,18 @@ struct NTSolar {
 }
 
 extension NTSolar {
-	/// Returns the sun's altitude above the horizon in degrees at the given instant.
-	/// Positive values are above the horizon, negative values are below.
+	/// The sun's position at a given instant: altitude above the horizon and local hour angle,
+	/// both in degrees. Shared by `altitude(at:)` and `hourAngle(at:)` so they never diverge.
 	///
-	/// Uses the same astronomical algorithms as the rest of NTSolar (Schlyter's
-	/// method), so results are consistent with the sunrise/sunset times already
-	/// computed by this struct.
-	func altitude(at date: Date) -> Double {
+	/// Uses the same astronomical algorithms as the rest of NTSolar (Schlyter's method), so
+	/// results are consistent with the sunrise/sunset times already computed by this struct.
+	func solarPosition(at date: Date) -> (altitude: Double, hourAngle: Double) {
 		var utcCal = Calendar(identifier: .gregorian)
 		utcCal.timeZone = TimeZone(secondsFromGMT: 0)!
 		let comps = utcCal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
 		guard let year = comps.year, let month = comps.month, let day = comps.day,
 		      let hour = comps.hour, let minute = comps.minute, let second = comps.second
-		else { return 0 }
+		else { return (0, 0) }
 
 		// UT as a decimal hour
 		let UT = Double(hour) + Double(minute) / 60.0 + Double(second) / 3600.0
@@ -729,12 +728,32 @@ extension NTSolar {
 		// Local Mean Sidereal Time in degrees: GMST0(d) + UT_in_degrees + longitude
 		let LMST = NTSolar.revolution(x: NTSolar.GMST0(d: d) + UT * 15.0 + coordinate.longitude)
 
-		// Local Hour Angle: how far the sun has moved past the meridian
-		let HA = LMST - sRA
+		// Local Hour Angle: how far the sun has moved past the meridian, reduced to ±180° so its
+		// sign is meaningful — negative before local solar noon (sun east, ascending), positive after.
+		let HA = NTSolar.rev180(x: LMST - sRA)
 
 		// Standard altitude formula: sin(alt) = sin(lat)sin(dec) + cos(lat)cos(dec)cos(HA)
 		let sin_alt = NTSolar.sind(x: coordinate.latitude) * NTSolar.sind(x: sdec)
 			+ NTSolar.cosd(x: coordinate.latitude) * NTSolar.cosd(x: sdec) * NTSolar.cosd(x: HA)
-		return NTSolar.asind(x: sin_alt)
+		return (NTSolar.asind(x: sin_alt), HA)
+	}
+
+	/// Returns the sun's altitude above the horizon in degrees at the given instant.
+	/// Positive values are above the horizon, negative values are below.
+	func altitude(at date: Date) -> Double {
+		solarPosition(at: date).altitude
+	}
+
+	/// Local hour angle in degrees, reduced to ±180°: how far the sun sits from the local meridian.
+	/// Negative before local solar noon (sun to the east), positive after (sun to the west).
+	func hourAngle(at date: Date) -> Double {
+		solarPosition(at: date).hourAngle
+	}
+
+	/// Whether the sun is climbing toward its local noon (morning) rather than descending toward
+	/// night (afternoon). Derived from the hour angle's sign, so it stays defined even during polar
+	/// day/night when there is no sunrise or sunset event to compare against.
+	func isAscending(at date: Date) -> Bool {
+		hourAngle(at: date) < 0
 	}
 }

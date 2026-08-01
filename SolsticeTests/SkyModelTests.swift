@@ -202,4 +202,93 @@ struct SkyModelTests {
 			}
 		}
 	}
+
+	// MARK: - Turbidity, sunrise/sunset asymmetry, per-location variation
+
+	/// Warm-to-cool ratio of a near-horizon sky looking straight at the sun.
+	private func redToBlue(_ model: SkyModel) -> Double {
+		let rgb = model.radiance(sunAltitudeDeg: 1, viewElevationDeg: 2, scatterCosTheta: 1)
+		return rgb.x / max(rgb.z, 1e-12)
+	}
+
+	private func blueShare(_ model: SkyModel) -> Double {
+		let rgb = model.radiance(sunAltitudeDeg: 1, viewElevationDeg: 2, scatterCosTheta: 1)
+		return rgb.z / max(rgb.x + rgb.y + rgb.z, 1e-12)
+	}
+
+	@Test("Neutral turbidity reproduces the standard model exactly")
+	func neutralTurbidityIsIdentity() {
+		let neutral = model.adjusted(turbidity: 1.0)
+		for sunAltitude in [-10.0, 1, 20, 60] {
+			for cosTheta in [-1.0, 0, 0.5, 1] {
+				let base = model.radiance(sunAltitudeDeg: sunAltitude, viewElevationDeg: 10, scatterCosTheta: cosTheta)
+				let same = neutral.radiance(sunAltitudeDeg: sunAltitude, viewElevationDeg: 10, scatterCosTheta: cosTheta)
+				#expect(base == same)
+			}
+		}
+		// The default-argument cached path must stay neutral too, so existing renders are unchanged.
+		#expect(model.cachedMesh(sunAltitudeDeg: 12, horizonFraction: nil).stops
+			== model.cachedMesh(sunAltitudeDeg: 12, horizonFraction: nil, turbidity: 1.0).stops)
+	}
+
+	@Test("A setting sun is warmer than a rising sun at the same altitude and place")
+	func sunsetWarmerThanSunrise() {
+		let latitude = 40.0
+		let morning = model.adjusted(turbidity: SkyModel.turbidity(latitude: latitude, ascending: true))
+		let evening = model.adjusted(turbidity: SkyModel.turbidity(latitude: latitude, ascending: false))
+
+		// The whole point: they are no longer identical.
+		let morningRGB = morning.radiance(sunAltitudeDeg: 1, viewElevationDeg: 2, scatterCosTheta: 1)
+		let eveningRGB = evening.radiance(sunAltitudeDeg: 1, viewElevationDeg: 2, scatterCosTheta: 1)
+		#expect(morningRGB != eveningRGB)
+
+		// Evening reads oranger, morning cooler/pinker.
+		#expect(redToBlue(evening) > redToBlue(morning))
+		#expect(blueShare(morning) > blueShare(evening))
+	}
+
+	@Test("Turbidity varies with latitude")
+	func turbidityVariesWithLatitude() {
+		let tropics = SkyModel.turbidity(latitude: 0, ascending: false)
+		let temperate = SkyModel.turbidity(latitude: 60, ascending: false)
+		#expect(tropics != temperate)
+		// Hazier tropics ⇒ warmer near-horizon sky than the crisper high-latitude sky.
+		#expect(redToBlue(model.adjusted(turbidity: tropics)) > redToBlue(model.adjusted(turbidity: temperate)))
+	}
+
+	@Test("Hour angle reveals morning versus afternoon")
+	func hourAngleTracksTimeOfDay() throws {
+		let morning = try londonSolar(hour: 8)
+		let afternoon = try londonSolar(hour: 16)
+		#expect(morning.hourAngle(at: morning.date) < 0)
+		#expect(morning.isAscending(at: morning.date))
+		#expect(afternoon.hourAngle(at: afternoon.date) > 0)
+		#expect(!afternoon.isAscending(at: afternoon.date))
+	}
+
+	@Test("Turbidity is clamped so the sky never turns garish")
+	func turbidityClamps() {
+		#expect(model.adjusted(turbidity: 0.2).mie == model.mie * 0.80)
+		#expect(model.adjusted(turbidity: 5.0).mie == model.mie * 1.25)
+		for turbidity in [0.2, 5.0] {
+			let clamped = model.adjusted(turbidity: turbidity)
+			for cosTheta in stride(from: -1.0, through: 1, by: 0.5) {
+				let rgb = clamped.radiance(sunAltitudeDeg: 1, viewElevationDeg: 2, scatterCosTheta: cosTheta)
+				#expect(rgb.x.isFinite && rgb.y.isFinite && rgb.z.isFinite)
+				#expect(rgb.x >= 0 && rgb.y >= 0 && rgb.z >= 0)
+			}
+		}
+	}
+
+	@Test("Cached mesh honours turbidity: same quantised value hits, different values differ")
+	func cachedMeshHonoursTurbidity() {
+		// 1.16 quantises to itself (1.16 × 50 = 58), so the cache renders from exactly this value.
+		let cached = model.cachedMesh(sunAltitudeDeg: 2, horizonFraction: nil, turbidity: 1.16)
+		let direct = model.adjusted(turbidity: 1.16).mesh(sunAltitudeDeg: 2, horizonFraction: nil)
+		#expect(cached.stops == direct.stops)
+
+		// Distinct turbidity must not collide in the cache.
+		let neutral = model.cachedMesh(sunAltitudeDeg: 2, horizonFraction: nil, turbidity: 1.0)
+		#expect(neutral.stops != cached.stops)
+	}
 }

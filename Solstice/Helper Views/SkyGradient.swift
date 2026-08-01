@@ -136,6 +136,45 @@ struct SkyModel {
 		return model
 	}()
 
+	// MARK: Turbidity
+
+	/// A copy tuned for atmospheric turbidity — how much aerosol (dust, haze) loads the air.
+	///
+	/// `1.0` reproduces `self` exactly. Above 1 is hazier and warmer (a dusty evening); below 1 is
+	/// cleaner and cooler (settled morning air). This is what makes a sunset read oranger than a
+	/// sunrise at the same altitude, since the geometry alone is symmetric.
+	///
+	/// Only the Mie (aerosol) terms and ozone move, and gently:
+	/// - `mie` scales the warm forward in-scatter. Raising it adds a glow that arrives *reddened*,
+	///   because the near-horizon light it scatters has already lost its blue along the long path —
+	///   so more aerosol reads orange at the horizon, not merely grey. (`mieExt` is derived from
+	///   `mie` inside `radiance`, so haze and glow stay coupled.)
+	/// - `mieG` tightens the warm lobe slightly on the hazy side.
+	/// - `ozone` lifts a touch on the clean side, letting the twilight pink/violet show through.
+	///
+	/// Clamped so the sky never turns garish however extreme the derived turbidity.
+	func adjusted(turbidity: Double) -> SkyModel {
+		let t = min(max(turbidity, 0.80), 1.25)
+		guard t != 1 else { return self }
+		var model = self
+		model.mie = mie * t
+		model.mieG = min(0.86, mieG + 0.03 * (t - 1))
+		model.ozone = ozone * (1 + 0.25 * (1 - t))
+		return model
+	}
+
+	/// Atmospheric turbidity for a place and time of day, from the only signals available cheaply:
+	/// latitude and whether the sun is rising or setting. No new data sources.
+	///
+	/// - A climate term makes the warm, humid tropics hazier and the cool poles crisper.
+	/// - A diurnal term makes mornings cleaner (overnight settling) and evenings hazier (a day of
+	///   convection lifting dust) — the everyday reason dawn skews pink and dusk skews orange.
+	static func turbidity(latitude: Double, ascending: Bool) -> Double {
+		let climate = 1.0 + 0.08 * cos(latitude * .pi / 180)
+		let diurnal = ascending ? -0.12 : 0.12
+		return climate + diurnal
+	}
+
 	// MARK: Radiance
 
 	/// Linear (pre-tone-map) RGB radiance for a view direction, given the sun's altitude.
@@ -425,16 +464,25 @@ struct SkyModel {
 	/// steps darker toward night — the Watch solar dial look. Stop locations are fractions of a day
 	/// from midnight; align them using the chart's midnight angle.
 	func dialStops(for solar: NTSolar, sampleCount: Int = 48) -> [Gradient.Stop] {
-		let coarse = coarseMarch
+		// The morning arc is rendered from cleaner (cooler, pinker) air and the evening arc from
+		// hazier (warmer, oranger) air, so the ring carries the sunrise/sunset asymmetry too. Both
+		// are the same coarse march with only their turbidity differing.
+		let lat = solar.coordinate.latitude
+		let ascCoarse = adjusted(turbidity: SkyModel.turbidity(latitude: lat, ascending: true)).coarseMarch
+		let descCoarse = adjusted(turbidity: SkyModel.turbidity(latitude: lat, ascending: false)).coarseMarch
 
 		// The wedges brighten with the daylight at the *current* moment, not the wedge's own time.
 		let daylight = daylightFactor(sunAltitudeDeg: solar.altitude(at: solar.date))
 
-		/// Colour for one dial angle; depends only on the sun's altitude at that time.
-		func stopColor(altitudeDeg: Double) -> Color {
+		/// Colour for one dial angle; depends on the sun's altitude at that time and, above the
+		/// horizon, on whether it is rising (cooler) or setting (warmer).
+		func stopColor(altitudeDeg: Double, ascending: Bool) -> Color {
+			let coarse = ascending ? ascCoarse : descCoarse
+
 			// Below the horizon the ring is stylised: solid, saturated sky-blue wedges stepping
 			// darker toward night, lifted by the current daylight. Marched twilight reads grey
-			// here (its reddened transmittance desaturates the blues), so the wedges don't use it.
+			// here (its reddened transmittance desaturates the blues), so the wedges don't use it —
+			// and being turbidity-invariant, they read identically on the morning and evening sides.
 			let bandLuminance: Double = switch altitudeDeg {
 			case (-6)...: dialBandLuminances.x // civil twilight
 			case (-12)...: dialBandLuminances.y // nautical twilight
@@ -459,7 +507,9 @@ struct SkyModel {
 		var stops = (0 ..< sampleCount).map { i in
 			let fraction = Double(i) / Double(sampleCount)
 			let date = start.addingTimeInterval(fraction * .twentyFourHours)
-			return Gradient.Stop(color: stopColor(altitudeDeg: solar.altitude(at: date)), location: fraction)
+			return Gradient.Stop(color: stopColor(altitudeDeg: solar.altitude(at: date),
+			                                       ascending: solar.isAscending(at: date)),
+			                     location: fraction)
 		}
 
 		// Crisp wedge edges: a near-coincident pair of stops pins each twilight boundary. Pairs
@@ -515,8 +565,10 @@ struct SkyModel {
 		}
 
 		for boundary in boundaries {
-			let earlier = stopColor(altitudeDeg: boundary.thresholdDeg + (boundary.rising ? -0.5 : 0.5))
-			let later = stopColor(altitudeDeg: boundary.thresholdDeg + (boundary.rising ? 0.5 : -0.5))
+			let earlier = stopColor(altitudeDeg: boundary.thresholdDeg + (boundary.rising ? -0.5 : 0.5),
+			                        ascending: boundary.rising)
+			let later = stopColor(altitudeDeg: boundary.thresholdDeg + (boundary.rising ? 0.5 : -0.5),
+			                      ascending: boundary.rising)
 			stops.append(Gradient.Stop(color: earlier, location: max(0, boundary.fraction - 0.0001)))
 			stops.append(Gradient.Stop(color: later, location: min(1, boundary.fraction + 0.0001)))
 		}
@@ -627,10 +679,19 @@ final class SkyRenderCache<Key: Hashable, Value>: @unchecked Sendable {
 private struct SkyMeshKey: Hashable {
 	let altitude: Int
 	let horizon: Int?
+	/// Quantised turbidity (× 50, so ~0.02 steps). Locations and morning/evening produce only a
+	/// handful of buckets, and a single-location scrub holds turbidity fixed, so scrubbing stays
+	/// a permanent cache hit — only the analytic glow layer moves.
+	let turbidity: Int
 }
 
-private let meshCache = SkyRenderCache<SkyMeshKey, (gradient: MeshGradient, stops: [Color])>(capacity: 64)
-private let glowCache = SkyRenderCache<Int, [Gradient.Stop]>(capacity: 64)
+private struct SkyGlowKey: Hashable {
+	let altitude: Int
+	let turbidity: Int
+}
+
+private let meshCache = SkyRenderCache<SkyMeshKey, (gradient: MeshGradient, stops: [Color])>(capacity: 128)
+private let glowCache = SkyRenderCache<SkyGlowKey, [Gradient.Stop]>(capacity: 128)
 
 private struct SkyDialKey: Hashable {
 	let startOfDay: Date
@@ -648,20 +709,24 @@ extension SkyModel {
 	/// for the horizon — and the mesh renders from the quantised values, so hits and misses agree
 	/// exactly. The glow anchor isn't an input at all: during a scrub the base sky is a permanent
 	/// cache hit while only the analytic glow layer moves.
-	func cachedMesh(sunAltitudeDeg: Double, horizonFraction: Double?) -> (gradient: MeshGradient, stops: [Color]) {
+	func cachedMesh(sunAltitudeDeg: Double, horizonFraction: Double?, turbidity: Double = 1.0) -> (gradient: MeshGradient, stops: [Color]) {
 		let key = SkyMeshKey(altitude: Int((sunAltitudeDeg * 10).rounded()),
-		                     horizon: horizonFraction.map { Int(($0 * 256).rounded()) })
+		                     horizon: horizonFraction.map { Int(($0 * 256).rounded()) },
+		                     turbidity: Int((turbidity * 50).rounded()))
 		return meshCache.value(for: key) {
-			mesh(sunAltitudeDeg: Double(key.altitude) / 10,
-			     horizonFraction: key.horizon.map { Double($0) / 256 })
+			adjusted(turbidity: Double(key.turbidity) / 50)
+				.mesh(sunAltitudeDeg: Double(key.altitude) / 10,
+				      horizonFraction: key.horizon.map { Double($0) / 256 })
 		}
 	}
 
-	/// Memoized `glowStops`, quantised to 0.1° of sun altitude.
-	func cachedGlowStops(sunAltitudeDeg: Double) -> [Gradient.Stop] {
-		let key = Int((sunAltitudeDeg * 10).rounded())
+	/// Memoized `glowStops`, quantised to 0.1° of sun altitude and ~0.02 of turbidity.
+	func cachedGlowStops(sunAltitudeDeg: Double, turbidity: Double = 1.0) -> [Gradient.Stop] {
+		let key = SkyGlowKey(altitude: Int((sunAltitudeDeg * 10).rounded()),
+		                     turbidity: Int((turbidity * 50).rounded()))
 		return glowCache.value(for: key) {
-			glowStops(sunAltitudeDeg: Double(key) / 10)
+			adjusted(turbidity: Double(key.turbidity) / 50)
+				.glowStops(sunAltitudeDeg: Double(key.altitude) / 10)
 		}
 	}
 
@@ -689,14 +754,17 @@ struct SkyView: View {
 	var sunAltitudeDeg: Double
 	var sunAnchor: UnitPoint? = nil
 	var horizonFraction: Double? = nil
+	/// Atmospheric turbidity for this sky. `1.0` is the neutral model; `SkyGradient` derives a
+	/// per-location, morning/evening value. The tuning previews leave it neutral.
+	var turbidity: Double = 1.0
 
 	var body: some View {
 		ZStack {
-			SkyModel.standard.cachedMesh(sunAltitudeDeg: sunAltitudeDeg, horizonFraction: horizonFraction).gradient
+			SkyModel.standard.cachedMesh(sunAltitudeDeg: sunAltitudeDeg, horizonFraction: horizonFraction, turbidity: turbidity).gradient
 
 			if let sunAnchor {
 				GeometryReader { geo in
-					RadialGradient(stops: SkyModel.standard.cachedGlowStops(sunAltitudeDeg: sunAltitudeDeg),
+					RadialGradient(stops: SkyModel.standard.cachedGlowStops(sunAltitudeDeg: sunAltitudeDeg, turbidity: turbidity),
 					               center: sunAnchor,
 					               startRadius: 0,
 					               endRadius: max(geo.size.width, geo.size.height))
@@ -771,14 +839,24 @@ struct SkyGradient: View, ShapeStyle {
 		return solar?.altitude(at: date) ?? 0
 	}
 
+	/// Atmospheric turbidity for this location and time of day: what makes a sunset read oranger
+	/// than a sunrise and varies the sky by latitude. Ambient surfaces with no real location
+	/// (widgets, the landing view) fall back through `effectiveSolar` to `.proxiedToTimeZone`
+	/// (latitude 0), so they get the tropical baseline plus the morning/evening term.
+	private var turbidity: Double {
+		guard let solar = effectiveSolar else { return 1.0 }
+		return SkyModel.turbidity(latitude: solar.coordinate.latitude,
+		                          ascending: solar.isAscending(at: solar.date))
+	}
+
 	/// The vertical colour ramp; `first` is the sky/zenith, `last` the horizon.
 	/// Consumed by `ShareSolarChartView` for the Instagram story background colours.
 	var stops: [Color] {
-		SkyModel.standard.cachedMesh(sunAltitudeDeg: sunAltitudeDeg, horizonFraction: horizonFraction).stops
+		SkyModel.standard.cachedMesh(sunAltitudeDeg: sunAltitudeDeg, horizonFraction: horizonFraction, turbidity: turbidity).stops
 	}
 
 	var body: some View {
-		SkyView(sunAltitudeDeg: sunAltitudeDeg, sunAnchor: sunAnchor, horizonFraction: horizonFraction)
+		SkyView(sunAltitudeDeg: sunAltitudeDeg, sunAnchor: sunAnchor, horizonFraction: horizonFraction, turbidity: turbidity)
 	}
 }
 
