@@ -17,6 +17,10 @@ struct EarthRealityView: View {
 	@State private var terminator: TerminatorAnimator
 	@State private var sceneIsReady = false
 
+	#if !os(visionOS)
+		@State private var yawController = CameraYawController()
+	#endif
+
 	init(selection: AnnualSolarEvent = .juneSolstice) {
 		_selection = State(initialValue: selection)
 		_terminator = State(initialValue: TerminatorAnimator(angleDegrees: Float(selection.terminatorAngleDegrees)))
@@ -38,25 +42,59 @@ struct EarthRealityView: View {
 				#if !os(visionOS)
 					// visionOS is the camera (the wearer); other platforms need one to frame
 					// the ~0.1m globe in the non-AR virtual scene.
+					// A narrow field of view (vs. the 60° default) acts like a longer lens,
+					// flattening the globe's apparent curvature; the camera sits further back
+					// to keep it framed at the same size.
 					let camera = Entity()
-					camera.components.set(PerspectiveCameraComponent())
-					camera.look(at: .zero, from: [0, 0, 0.25], relativeTo: nil)
-					content.add(camera)
+					camera.components.set(PerspectiveCameraComponent(fieldOfViewInDegrees: 30))
+					camera.look(at: .zero, from: [0, 0, 0.5], relativeTo: nil)
+					yawController.rig.addChild(camera)
+					content.add(yawController.rig)
+					yawController.attach(to: content)
 
-					// visionOS lights the globe with the system's environment IBL; the non-AR
-					// virtual scene has none, so the globe reads dark. Parent a gentle key light
-					// to the camera so it acts as a headlight — it always lifts the face the
-					// viewer is looking at, following the orbit control. Tune `intensity` to taste.
-					let keyLight = Entity()
-					keyLight.components.set(DirectionalLightComponent(color: .white, intensity: 12000))
-					camera.addChild(keyLight)
+					// visionOS lights the globe with the wearer's environment IBL; the non-AR
+					// virtual scene has none, so the globe reads dark. ImageBasedLightComponent
+					// is inert in this scene (intensityExponent had no effect at any value), so
+					// approximate even lighting with directional lights, which do work here:
+					// a headlight plus four side lights overlap into near-flat coverage of the
+					// visible hemisphere. The cluster is parented to the camera, so the small
+					// residual variation is locked to the screen and never sweeps across the
+					// geography while the globe spins. A light shines along its -Z axis; the
+					// tilts swing that axis toward each edge of the view.
+					let lightTilts: [(angle: Float, axis: SIMD3<Float>)] = [
+						(0, [0, 1, 0]),          // headlight, straight down the view axis
+						(.pi / 2, [0, 1, 0]),    // lights the right limb
+						(-.pi / 2, [0, 1, 0]),   // lights the left limb
+						(.pi / 2, [1, 0, 0]),    // lights the bottom limb
+						(-.pi / 2, [1, 0, 0]),   // lights the top limb
+					]
+					for tilt in lightTilts {
+						let light = Entity()
+						light.components.set(DirectionalLightComponent(color: .white, intensity: 6000))
+						light.orientation = simd_quatf(angle: tilt.angle, axis: tilt.axis)
+						camera.addChild(light)
+					}
 				#endif
 			} placeholder: {
 				ProgressView()
 					.frame(maxWidth: .infinity, maxHeight: .infinity)
 			}
 			#if !os(visionOS)
-			.realityViewCameraControls(.orbit)
+			// The built-in orbit control also tilts vertically and zooms; the globe only
+			// needs a horizontal spin, so a plain horizontal drag yaws the camera rig
+			// instead. Dragging right spins the globe right (content follows the finger).
+			.gesture(
+				DragGesture()
+					.onChanged { value in
+						yawController.drag(byPoints: Float(value.translation.width))
+					}
+					.onEnded { value in
+						yawController.endDrag(
+							atPoints: Float(value.translation.width),
+							pointsPerSecond: Float(value.velocity.width)
+						)
+					}
+			)
 			#endif
 			.aspectRatio(1, contentMode: .fit)
 			.frame(maxWidth: .infinity)
@@ -89,6 +127,70 @@ struct EarthRealityView: View {
 		}
 	}
 }
+
+#if !os(visionOS)
+	/// Spins the camera rig from the horizontal drag and carries flick momentum after
+	/// the finger lifts. SwiftUI has no per-frame hook for a free-spinning entity, so —
+	/// like `TerminatorAnimator` — the momentum integrates on the render loop via a
+	/// `SceneEvents.Update` subscription, decaying exponentially like a scroll view.
+	@MainActor
+	private final class CameraYawController {
+		/// Parent of the camera. Yawing this around the world Y axis orbits the camera
+		/// horizontally while it keeps looking at the globe.
+		let rig = Entity()
+
+		/// Maps drag distance to yaw: ~0.5° per point spins the globe half a turn
+		/// across a typical view width.
+		private let radiansPerPoint: Float = 0.009
+
+		/// Fraction of angular velocity shed per second. 2 matches the feel of
+		/// `UIScrollView`'s normal deceleration rate (0.998 per millisecond).
+		private let decayPerSecond: Float = 2
+
+		/// Below this speed (radians per second) the spin is imperceptible; stop it
+		/// so the render-loop step returns to its idle early-out.
+		private let restSpeed: Float = 0.02
+
+		private var committedYaw: Float = 0
+		private var yaw: Float = 0
+		private var angularVelocity: Float = 0
+		private var subscription: EventSubscription?
+
+		func attach(to content: some RealityViewContentProtocol) {
+			subscription = content.subscribe(to: SceneEvents.Update.self) { [weak self] event in
+				self?.step(deltaTime: Float(event.deltaTime))
+			}
+		}
+
+		/// The drag is negated so content follows the finger: dragging right moves the
+		/// camera left around the globe, which reads as the globe spinning right.
+		func drag(byPoints points: Float) {
+			angularVelocity = 0
+			setYaw(committedYaw - points * radiansPerPoint)
+		}
+
+		func endDrag(atPoints points: Float, pointsPerSecond: Float) {
+			committedYaw -= points * radiansPerPoint
+			setYaw(committedYaw)
+			angularVelocity = -pointsPerSecond * radiansPerPoint
+		}
+
+		private func step(deltaTime: Float) {
+			guard angularVelocity != 0 else { return }
+			setYaw(yaw + angularVelocity * deltaTime)
+			committedYaw = yaw
+			angularVelocity *= exp(-decayPerSecond * deltaTime)
+			if abs(angularVelocity) < restSpeed {
+				angularVelocity = 0
+			}
+		}
+
+		private func setYaw(_ newYaw: Float) {
+			yaw = newYaw
+			rig.orientation = simd_quatf(angle: newYaw, axis: [0, 1, 0])
+		}
+	}
+#endif
 
 /// A soft blue halo drawn behind the globe. The sphere's silhouette is always a centered
 /// circle regardless of orbit, so a radial gradient sitting just past the globe's rim reads
