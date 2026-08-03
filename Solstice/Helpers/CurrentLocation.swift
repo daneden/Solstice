@@ -12,6 +12,12 @@ import SwiftUI
 class CurrentLocation: NSObject, CLLocationManagerDelegate {
 	private(set) var place: ReverseGeocodedPlace?
 
+	/// Mirrors `CLLocationManager.authorizationStatus`, which isn't observable:
+	/// reading it straight off the manager registers no dependency, so views
+	/// gating on it (like the sidebar's current-location row) never refresh when
+	/// access is granted in System Settings.
+	private(set) var authorizationStatus: CLAuthorizationStatus = .notDetermined
+
 	private(set) var location: CLLocation? {
 		didSet {
 			Task {
@@ -39,32 +45,47 @@ class CurrentLocation: NSObject, CLLocationManagerDelegate {
 
 	@ObservationIgnored private let locationManager = CLLocationManager()
 
+	@ObservationIgnored private var liveUpdatesTask: Task<Void, Never>?
+
 	override init() {
 		super.init()
 
+		authorizationStatus = locationManager.authorizationStatus
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyReduced
 	}
 
 	func requestAccess() {
-		locationManager.requestWhenInUseAuthorization()
+		#if os(macOS)
+			// requestWhenInUseAuthorization() often no-ops on macOS. Iterating a
+			// CLLocationUpdate stream is what makes the system present the prompt.
+			startLiveUpdates()
+		#else
+			locationManager.requestWhenInUseAuthorization()
+		#endif
 	}
 
 	func requestLocation() {
 		guard isAuthorized else { return }
-		Task {
+		startLiveUpdates()
+	}
+
+	/// Starts the long-lived location updates stream, at most once. Callers can
+	/// invoke this freely (every scene activation does); without the guard each
+	/// call would leak another never-ending stream iteration.
+	private func startLiveUpdates() {
+		guard liveUpdatesTask == nil else { return }
+		liveUpdatesTask = Task {
 			do {
-				try await requestLocationFromLiveUpdates()
+				for try await update in CLLocationUpdate.liveUpdates() {
+					if let updatedLocation = update.location {
+						location = updatedLocation
+					}
+				}
 			} catch {
 				print("Error requesting location: \(error.localizedDescription)")
 			}
-		}
-	}
-
-	func requestLocationFromLiveUpdates() async throws {
-		let updates = CLLocationUpdate.liveUpdates()
-		for try await update in updates {
-			location = update.location
+			liveUpdatesTask = nil
 		}
 	}
 
@@ -92,10 +113,6 @@ extension CurrentLocation {
 		}
 	}
 
-	var authorizationStatus: CLAuthorizationStatus {
-		locationManager.authorizationStatus
-	}
-
 	var isAuthorized: Bool {
 		switch authorizationStatus {
 		case .authorizedAlways, .authorizedWhenInUse: return true
@@ -103,15 +120,10 @@ extension CurrentLocation {
 		}
 	}
 
-	func locationManagerDidChangeAuthorization(_: CLLocationManager) {
-		if location == nil, isAuthorized {
-			Task {
-				do {
-					try await requestLocationFromLiveUpdates()
-				} catch {
-					requestLocation()
-				}
-			}
+	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+		authorizationStatus = manager.authorizationStatus
+		if isAuthorized {
+			startLiveUpdates()
 		}
 	}
 }

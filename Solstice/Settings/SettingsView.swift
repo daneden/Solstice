@@ -72,23 +72,21 @@ struct SettingsView: View {
 		if !currentLocation.isAuthorized {
 			Section {
 				Button("Enable location services", systemImage: "location") {
-					#if os(macOS)
-						// On macOS, open System Settings directly since requestWhenInUseAuthorization
-						// doesn't reliably trigger the authorization prompt
-						if let url = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_LocationServices") {
-							NSWorkspace.shared.open(url)
-						}
-					#else
-						switch currentLocation.authorizationStatus {
-						case .notDetermined:
-							currentLocation.requestAccess()
-						case .restricted, .denied:
+					switch currentLocation.authorizationStatus {
+					case .notDetermined:
+						currentLocation.requestAccess()
+					case .restricted, .denied:
+						#if os(macOS)
+							if let url = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_LocationServices") {
+								NSWorkspace.shared.open(url)
+							}
+						#else
 							if let url = URL(string: UIApplication.openSettingsURLString) {
 								openURL(url)
 							}
-						default: return
-						}
-					#endif
+						#endif
+					default: return
+					}
 				}
 			} header: {
 				Text("Location")
