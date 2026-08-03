@@ -28,7 +28,7 @@ struct SolsticeApp: App {
 		WindowGroup {
 			ContentView()
 				.withAppOnboarding()
-				.withTimeMachine(.solsticeTimeMachine)
+				.withSolsticeTimeMachine()
 				.task {
 					for await result in Transaction.updates {
 						switch result {

@@ -103,7 +103,16 @@ struct ContentView: View {
 				// Deterministic launch state: honor the forced selection, otherwise
 				// start on the list (ignore any stale SceneStorage selection).
 				selectedLocation = ScreenshotLaunch.forcedSelectedLocation
-				if let offset = ScreenshotLaunch.timeOffsetDays {
+				if let display = ScreenshotLaunch.displayDate {
+					// Pin the displayed instant exactly: referenceDate + offset must land on
+					// `display`, so derive the reference by walking the offset back. Without
+					// the pin, time-of-day tracks the wall clock and a long multi-locale run
+					// drifts the sun's position between the first and last locale.
+					let offsetDays = ScreenshotLaunch.timeOffsetDays ?? 0
+					let reference = Calendar.current.date(byAdding: .day, value: -offsetDays, to: display) ?? display
+					timeMachine.updateReferenceDate(to: reference)
+					timeMachine.offset = Double(offsetDays)
+				} else if let offset = ScreenshotLaunch.timeOffsetDays {
 					timeMachine.offset = Double(offset)
 				}
 				#if os(macOS)
@@ -139,8 +148,10 @@ struct ContentView: View {
 				case .active:
 					// A suspended app misses the TimeMachine's minutely reference-date ticks;
 					// waking after hours would otherwise show the pre-sleep sky and sun position
-					// until the next tick lands.
-					timeMachine.updateReferenceDate()
+					// until the next tick lands. Never while a capture has pinned the clock.
+					if ScreenshotLaunch.displayDate == nil {
+						timeMachine.updateReferenceDate()
+					}
 					// Skip the location-permission request during screenshot capture: on macOS
 					// its system dialog steals focus and hides the app window from the test runner.
 					if !ScreenshotLaunch.isCapturing {

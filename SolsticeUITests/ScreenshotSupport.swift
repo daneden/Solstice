@@ -28,6 +28,7 @@ enum ScreenshotLaunch {
 	static let flag = "-UITestScreenshots"
 	static let selectedLocationKey = "UITEST_SELECTED_LOCATION"
 	static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
+	static let displayEpochKey = "UITEST_DISPLAY_EPOCH"
 	static let appearanceKey = "UITEST_APPEARANCE"
 }
 
@@ -36,7 +37,46 @@ enum ScreenshotLaunch {
 enum ScreenshotFixtures {
 	static let selectedLocationUUID = "7AAA4D87-4402-4D0E-A35E-2D84641A71BE"
 
-	/// Days into the future for the time-travel screenshot (~3 months ahead so the
-	/// daylight figures visibly differ from "today").
-	static let timeTravelOffsetDays = 92
+	/// All display instants are expressed in the demo location's timezone so
+	/// what the shots show is anchored to New York, not to the machine running
+	/// the captures. Explicitly Gregorian: the test process runs once per locale
+	/// configuration, and ar/ja configurations default to non-Gregorian calendars.
+	private static var newYorkCalendar: Calendar {
+		var calendar = Calendar(identifier: .gregorian)
+		calendar.timeZone = TimeZone(identifier: "America/New_York") ?? .current
+		return calendar
+	}
+
+	/// The next October 26 — chosen for New York's autumn sunset palette.
+	private static var timeTravelDay: Date {
+		newYorkCalendar.nextDate(
+			after: .now,
+			matching: DateComponents(month: 10, day: 26),
+			matchingPolicy: .nextTime
+		) ?? .now
+	}
+
+	/// The exact instant the daily/annual/list/notification shots display:
+	/// today at 2:00 PM in New York. Pinned so every locale in a run shows the
+	/// same local time and sun position — a full 10-locale run takes long enough
+	/// that the sun visibly moves (and can set) between the first and last locale.
+	static var dailyDisplayDate: Date {
+		newYorkCalendar.date(bySettingHour: 14, minute: 0, second: 0, of: .now) ?? .now
+	}
+
+	/// The exact instant the time-travel shot displays: sunset in New York on
+	/// the next October 26 (18:01:46 EDT in 2026; drifts under a minute between
+	/// years), putting the sun half above / half below the chart's horizon.
+	static var timeTravelDisplayDate: Date {
+		newYorkCalendar.date(bySettingHour: 18, minute: 1, second: 46, of: timeTravelDay) ?? timeTravelDay
+	}
+
+	/// Whole days between today and the time-travel date, keeping the Time
+	/// Machine panel's offset engaged and the "compared to today" baseline real.
+	static var timeTravelOffsetDays: Int {
+		let calendar = newYorkCalendar
+		let today = calendar.startOfDay(for: .now)
+		let target = calendar.startOfDay(for: timeTravelDay)
+		return calendar.dateComponents([.day], from: today, to: target).day ?? 92
+	}
 }

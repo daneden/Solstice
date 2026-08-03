@@ -110,8 +110,17 @@ struct DailyOverview<Location: AnyLocation>: View {
 				if solarDateIsInToday && (solar.safeSunrise ... solar.safeSunset).contains(solar.date) {
 					Label {
 						AdaptiveStack {
-							Text(timerInterval: solar.safeSunrise ... solar.safeSunset)
-								.monospacedDigit()
+							if let pinned = ScreenshotLaunch.displayDate {
+								// Text(timerInterval:) counts down against the real system clock,
+								// which a pinned capture must not leak; show the same remaining
+								// duration measured from the pinned instant instead.
+								Text(Duration.seconds(max(0, solar.safeSunset.timeIntervalSince(pinned)))
+									.formatted(.time(pattern: .hourMinuteSecond)))
+									.monospacedDigit()
+							} else {
+								Text(timerInterval: solar.safeSunrise ... solar.safeSunset)
+									.monospacedDigit()
+							}
 						} label: {
 							Text("Remaining daylight")
 						}

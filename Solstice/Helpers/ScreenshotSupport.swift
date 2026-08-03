@@ -14,6 +14,7 @@
 
 import Foundation
 import SwiftUI
+import TimeMachine
 
 /// Accessibility identifiers for elements captured in App Store screenshots.
 enum A11y {
@@ -41,6 +42,14 @@ enum ScreenshotLaunch {
 
 	/// Environment key: integer number of days to offset the Time Machine by.
 	static let timeOffsetDaysKey = "UITEST_TIME_OFFSET_DAYS"
+
+	/// Environment key: epoch seconds of the exact instant the UI should display.
+	/// Pins the TimeMachine's clock for the whole launch — without it, time-of-day
+	/// tracks the wall clock, and a long multi-locale capture run drifts the sun's
+	/// position between the first and last locale. Combine with
+	/// `UITEST_TIME_OFFSET_DAYS` to keep the Time Machine panel engaged while the
+	/// displayed date and time stay exact.
+	static let displayEpochKey = "UITEST_DISPLAY_EPOCH"
 
 	/// Environment key: force "dark" or "light" appearance for the capture launch.
 	/// The simulator-level `XCUIDevice.shared.appearance` doesn't reliably reach a
@@ -79,6 +88,12 @@ enum ScreenshotLaunch {
 		ProcessInfo.processInfo.environment[timeOffsetDaysKey].flatMap(Int.init)
 	}
 
+	static var displayDate: Date? {
+		ProcessInfo.processInfo.environment[displayEpochKey]
+			.flatMap(TimeInterval.init)
+			.map(Date.init(timeIntervalSince1970:))
+	}
+
 	static var macScreen: MacScreen? {
 		ProcessInfo.processInfo.environment[macScreenKey].flatMap(MacScreen.init(rawValue:))
 	}
@@ -111,6 +126,10 @@ enum ScreenshotLaunch {
 		// otherwise hide it so the daily/annual shots aren't cluttered.
 		let appearance: TimeTravelAppearance = timeOffsetDays != nil ? .expanded : .hidden
 		defaults?.set(appearance.rawValue, forKey: Preferences.timeTravelAppearance.key)
+		// Pin the daily chart to the classic design: @AppStorage reads the app-group
+		// suite, so whatever chart the simulator last used would otherwise leak into
+		// the marketing shots.
+		defaults?.set(ChartType.classic.rawValue, forKey: Preferences.chartType.key)
 
 		seedLocalizedFixtureNames()
 	}
@@ -140,6 +159,21 @@ enum ScreenshotLaunch {
 				title: entry["title"],
 				subtitle: entry["subtitle"]
 			)
+		}
+	}
+}
+
+extension View {
+	/// Injects the shared TimeMachine. When a capture pins the displayed instant
+	/// (`UITEST_DISPLAY_EPOCH`), the environment is set directly — skipping
+	/// `withTimeMachine`'s minutely reference-date ticker, which would overwrite
+	/// the pinned clock within a minute of launch.
+	@ViewBuilder
+	func withSolsticeTimeMachine() -> some View {
+		if ScreenshotLaunch.displayDate != nil {
+			environment(\.timeMachine, .solsticeTimeMachine)
+		} else {
+			withTimeMachine(.solsticeTimeMachine)
 		}
 	}
 }

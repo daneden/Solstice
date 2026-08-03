@@ -27,6 +27,7 @@ final class AppStoreScreenshots: XCTestCase {
 		let app = XCUIApplication()
 		app.launchArguments = [ScreenshotLaunch.flag]
 		app.launchEnvironment[ScreenshotLaunch.selectedLocationKey] = ScreenshotFixtures.selectedLocationUUID
+		app.launchEnvironment[ScreenshotLaunch.displayEpochKey] = String(ScreenshotFixtures.dailyDisplayDate.timeIntervalSince1970)
 		app.launch()
 
 		// 02 — Detail view, daily overview (opens directly to the forced selection)
@@ -62,9 +63,11 @@ final class AppStoreScreenshots: XCTestCase {
 		capture(app, named: "05-notifications")
 
 		// 04 — Time-travelled detail view: relaunch with a Time Machine offset so the
-		// app opens straight into a detail view a few months ahead.
+		// app opens straight into a detail view a few months ahead, pinned to New
+		// York's sunset moment on the target date.
 		app.terminate()
 		app.launchEnvironment[ScreenshotLaunch.timeOffsetDaysKey] = String(ScreenshotFixtures.timeTravelOffsetDays)
+		app.launchEnvironment[ScreenshotLaunch.displayEpochKey] = String(ScreenshotFixtures.timeTravelDisplayDate.timeIntervalSince1970)
 		app.launch()
 		let travelledDetail = app.match(A11y.detailScreen)
 		XCTAssertTrue(travelledDetail.waitForExistence(timeout: 30), "Travelled detail view never appeared")
@@ -85,6 +88,7 @@ final class AppStoreScreenshots: XCTestCase {
 		let app = XCUIApplication()
 		app.launchArguments = [ScreenshotLaunch.flag]
 		app.launchEnvironment[ScreenshotLaunch.selectedLocationKey] = ScreenshotFixtures.selectedLocationUUID
+		app.launchEnvironment[ScreenshotLaunch.displayEpochKey] = String(ScreenshotFixtures.dailyDisplayDate.timeIntervalSince1970)
 		app.launch()
 
 		// ipad-01 — Overview: split view with the sidebar and the forced selection's
