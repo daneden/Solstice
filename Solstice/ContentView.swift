@@ -36,6 +36,14 @@ struct ContentView: View {
 	@State private var settingsViewOpen = false
 	@State private var sidebarVisibility = NavigationSplitViewVisibility.doubleColumn
 
+	#if os(iOS)
+		/// The zoom transition needs a rendered `matchedTransitionSource` row. When the
+		/// app cold-launches with a restored selection, the sidebar list has never been
+		/// built, and attaching the zoom transition then leaves the interactive pop
+		/// gesture inert. Enable it only once the list has been on screen.
+		@State private var zoomTransitionSourceExists = false
+	#endif
+
 	@FetchRequest(sortDescriptors: []) private var locations: FetchedResults<SavedLocation>
 
 	var body: some View {
@@ -66,7 +74,19 @@ struct ContentView: View {
 				}
 			}
 			#if os(iOS)
-			.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
+			.modify { content in
+				if zoomTransitionSourceExists {
+					content
+						.navigationTransition(.zoom(sourceID: selectedLocation ?? "", in: namespace))
+				} else {
+					content
+				}
+			}
+			.onChange(of: selectedLocation, initial: true) { _, newValue in
+				if newValue == nil {
+					zoomTransitionSourceExists = true
+				}
+			}
 			#endif
 		}
 		.navigationSplitViewStyle(.balanced)
