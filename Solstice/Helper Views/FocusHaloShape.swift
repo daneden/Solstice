@@ -27,7 +27,16 @@
 		}
 
 		final class HaloShapingView: UIView {
-			var cornerRadius: CGFloat = 0
+			var cornerRadius: CGFloat = 0 {
+				didSet {
+					guard cornerRadius != oldValue else { return }
+					appliedHaloRect = .null
+					if let cell = enclosingCell { applyHaloIfNeeded(to: cell) }
+				}
+			}
+
+			private weak var hookedCell: UICollectionViewCell?
+			private weak var appliedCell: UICollectionViewCell?
 			private var appliedHaloRect: CGRect = .null
 
 			convenience init(cornerRadius: CGFloat) {
@@ -38,12 +47,36 @@
 
 			override func layoutSubviews() {
 				super.layoutSubviews()
-				guard bounds.width > 0, bounds.height > 0, let cell = enclosingCell else { return }
+				guard let cell = enclosingCell else { return }
+				hookConfigurationUpdates(on: cell)
+				applyHaloIfNeeded(to: cell)
+			}
+
+			/// The row content can move within the cell without this view laying
+			/// out again (position-only changes don't call `layoutSubviews`), which
+			/// left the halo at a stale offset — seen on the current-location row,
+			/// which is inserted late and settles after the first layout pass.
+			/// Focus and selection are configuration states, so recomputing here
+			/// refreshes the rect with settled geometry right when the halo shows.
+			private func hookConfigurationUpdates(on cell: UICollectionViewCell) {
+				guard cell !== hookedCell else { return }
+				hookedCell = cell
+				let inherited = cell.configurationUpdateHandler
+				cell.configurationUpdateHandler = { [weak self] cell, state in
+					inherited?(cell, state)
+					guard let self, self.enclosingCell === cell else { return }
+					self.applyHaloIfNeeded(to: cell)
+				}
+			}
+
+			private func applyHaloIfNeeded(to cell: UICollectionViewCell) {
+				guard bounds.width > 0, bounds.height > 0 else { return }
 				let haloRect = cell.convert(bounds, from: self)
 				// Reassigning the effect invalidates layout, so only assign when
 				// the geometry actually changes to avoid a layout/focus loop.
-				guard haloRect != appliedHaloRect else { return }
+				guard haloRect != appliedHaloRect || cell !== appliedCell else { return }
 				appliedHaloRect = haloRect
+				appliedCell = cell
 				cell.focusEffect = UIFocusHaloEffect(
 					roundedRect: haloRect,
 					cornerRadius: cornerRadius,
