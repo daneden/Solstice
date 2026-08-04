@@ -280,6 +280,8 @@
 		71CB96DA2DE9AC3E00660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96D92DE9AC3E00660AA9 /* Suite */; };
 		71CB96DC2DE9AC4300660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96DB2DE9AC4300660AA9 /* Suite */; };
 		71CB96DE2DE9AC4700660AA9 /* Suite in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB96DD2DE9AC4700660AA9 /* Suite */; };
+		71CCE79A3022311F00E2782D /* TimeTravelOrnamentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CCE7993022311F00E2782D /* TimeTravelOrnamentView.swift */; };
+		71CCE79B3022311F00E2782D /* TimeTravelOrnamentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CCE7993022311F00E2782D /* TimeTravelOrnamentView.swift */; };
 		71DC2FEA30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FE930012B2A00FDEBE0 /* InfoPlist.xcstrings */; };
 		71DC2FED30012B2A00FDEBE0 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FEB30012B2A00FDEBE0 /* AppShortcuts.xcstrings */; };
 		71DC2FEE30012B2A00FDEBE0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 71DC2FEC30012B2A00FDEBE0 /* InfoPlist.xcstrings */; };
@@ -509,6 +511,7 @@
 		71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Shared Assets.xcassets"; sourceTree = "<group>"; };
 		71C718202E83361C006A6835 /* TimeTravelCompactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelCompactView.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
+		71CCE7993022311F00E2782D /* TimeTravelOrnamentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelOrnamentView.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71DB52AD29ABD19B00D62BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71DC2FE930012B2A00FDEBE0 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -731,6 +734,7 @@
 				7116B1F42DDDE2130018A294 /* VariableBlurView.swift */,
 				7106F66F301267D500C39F64 /* FocusHaloShape.swift */,
 				7106F67230126B4200C39F64 /* ListRowPlatterRadius.swift */,
+				71CCE7993022311F00E2782D /* TimeTravelOrnamentView.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -1409,6 +1413,7 @@
 				719846AA28E992A200E866CE /* LocationSearchResultRow.swift in Sources */,
 				71A029B42C368E1900E19819 /* SavedLocation++.swift in Sources */,
 				718B136C29A918680001D4DC /* SupporterSettings.swift in Sources */,
+				71CCE79B3022311F00E2782D /* TimeTravelOrnamentView.swift in Sources */,
 				7107208C300919ED006AA79C /* SeedState.swift in Sources */,
 				71908ACD2AC95A5500C7B610 /* StringBuilder.swift in Sources */,
 				712433932D77A4CE00709C20 /* EdgeInsets++.swift in Sources */,
@@ -1485,6 +1490,7 @@
 				7193E92729C0BA0B00103D6B /* DaylightChart.swift in Sources */,
 				71C4D80A2EA9856800EEB023 /* SolarExtremetiesOverview.swift in Sources */,
 				71072089300919ED006AA79C /* SeedState.swift in Sources */,
+				71CCE79A3022311F00E2782D /* TimeTravelOrnamentView.swift in Sources */,
 				7188714429DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				71E945C82F32506000B26D02 /* CircularSolarChart.swift in Sources */,
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,

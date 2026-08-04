@@ -3373,6 +3373,64 @@
         }
       }
     },
+    "Date picker" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "منتقي التاريخ"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Datumsauswahl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Selector de fecha"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Sélecteur de date"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Selettore della data"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "日付ピッカー"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Datumkiezer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Selektor daty"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "日期选择器"
+          }
+        }
+      }
+    },
     "Day" : {
       "localizations" : {
         "ar" : {
@@ -8667,6 +8725,64 @@
         }
       }
     },
+    "Offset" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "الإزاحة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Versatz"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Desfase"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Décalage"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Scostamento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "オフセット"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Verschuiving"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Przesunięcie"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "偏移量"
+          }
+        }
+      }
+    },
     "on %@" : {
       "comment" : "Sentence fragment placing a daylight comparison on an absolute date, e.g. 'on 13 Oct 2026'",
       "localizations" : {
@@ -9255,6 +9371,64 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "重置"
+          }
+        }
+      }
+    },
+    "Reset to the current date" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "إعادة التعيين إلى التاريخ الحالي"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Auf das aktuelle Datum zurücksetzen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Restablecer la fecha actual"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Réinitialiser à la date actuelle"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Ripristina la data attuale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "現在の日付にリセット"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Herstel naar de huidige datum"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Resetuj do bieżącej daty"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "重置为当前日期"
           }
         }
       }
@@ -12191,6 +12365,64 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "时间旅行至1周后"
+          }
+        }
+      }
+    },
+    "Time Travel slider" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "شريط تمرير السفر عبر الزمن"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Zeitreise-Regler"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Regulador de viaje en el tiempo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Curseur du voyage dans le temps"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Cursore del viaggio nel tempo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "タイムトラベルのスライダ"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Schuifknop voor tijdreizen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Suwak podróży w czasie"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "时间旅行滑块"
           }
         }
       }

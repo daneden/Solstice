@@ -27,13 +27,27 @@ struct AppearanceSettingsView: View {
 
 	private var timeTravelSection: some View {
 		Section("Time Travel") {
-			HStack {
-				ForEach(TimeTravelAppearance.allCases) { appearance in
-					timeTravelButton(for: appearance)
+			#if os(visionOS)
+				Toggle("Show time travel", isOn: showTimeTravelBinding)
+			#else
+				HStack {
+					ForEach(TimeTravelAppearance.allCases) { appearance in
+						timeTravelButton(for: appearance)
+					}
 				}
-			}
+			#endif
 		}
 	}
+
+	#if os(visionOS)
+		private var showTimeTravelBinding: Binding<Bool> {
+			Binding {
+				timeTravelAppearance != .hidden
+			} set: { isOn in
+				timeTravelAppearance = isOn ? .expanded : .hidden
+			}
+		}
+	#endif
 
 	private func timeTravelButton(for appearance: TimeTravelAppearance) -> some View {
 		let isActive: Bool = timeTravelAppearance == appearance

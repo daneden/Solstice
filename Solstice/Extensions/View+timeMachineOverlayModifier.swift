@@ -23,16 +23,10 @@ struct TimeMachineOverlayModifier: ViewModifier {
 				}
 			}
 		#if os(visionOS)
-			.ornament(attachmentAnchor: .scene(.bottomTrailing), contentAlignment: .trailing) {
+			.ornament(attachmentAnchor: .scene(.bottom), contentAlignment: .center) {
 				if timeMachineAppearance != .hidden {
-					switch timeMachineAppearance {
-					case .compact:
-						TimeTravelCompactView()
-							.transition(.blurReplace)
-					default:
-						TimeMachinePanelView()
-							.transition(.blurReplace)
-					}
+					TimeTravelOrnamentView()
+						.transition(.blurReplace)
 				}
 			}
 		#else
