@@ -38,7 +38,7 @@ struct TimeMachinePanelView: View {
 		.padding()
 		.clipShape(.panel)
 		#if os(visionOS)
-			.glassBackgroundEffect(in: .rect(cornerRadius: 16, style: .continuous))
+			.glassBackgroundEffect(in: .rect(cornerRadius: 32, style: .continuous))
 		#else
 			.modify { content in
 				if #available(iOS 26, macOS 26, *) {
@@ -57,6 +57,12 @@ struct TimeMachinePanelView: View {
 		.scenePadding(.bottom)
 		#endif
 	}
+}
+
+#Preview {
+	TimeMachinePanelView()
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.withTimeMachine(.solsticeTimeMachine)
 }
 
 private enum TimeMachineDraggableBarAlignment: Int {

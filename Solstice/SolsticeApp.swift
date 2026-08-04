@@ -75,6 +75,8 @@ struct SolsticeApp: App {
 		#endif
 		#if os(visionOS)
 		.defaultSize(width: 900, height: 720)
+		#elseif os(macOS)
+		.defaultSize(width: 800, height: 600)
 		#endif
 
 		#if os(visionOS)

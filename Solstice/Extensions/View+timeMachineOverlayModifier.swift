@@ -34,10 +34,17 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					if #available(iOS 26, macOS 26, *) {
 						content
 							.contentMargins(.bottom, size.height, for: .automatic)
+						#if os(macOS)
+							.safeAreaInset(edge: .bottom) {
+								overlay
+									.readSize($size)
+							}
+						#else
 							.safeAreaBar(edge: .bottom) {
 								overlay
 									.readSize($size)
 							}
+						#endif
 					} else {
 						content
 							.backportSafeAreaBar {
@@ -76,6 +83,7 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					}
 					.transition(.blurReplace)
 			default:
+				#if os(iOS)
 				switch horizontalSizeClass {
 				case .regular:
 					TimeMachineDraggableOverlayView()
@@ -83,6 +91,9 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					TimeMachinePanelView()
 						.transition(.blurReplace)
 				}
+				#else
+				TimeTravelOrnamentView()
+				#endif
 			}
 		}
 	}

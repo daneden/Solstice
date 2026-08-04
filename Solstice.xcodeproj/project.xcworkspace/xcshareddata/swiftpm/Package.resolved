@@ -1,4 +1,5 @@
 {
+  "originHash" : "d25df49963fba992f5603d9bb3a599d552113d8d7407cfb2f0a883c24522572e",
   "pins" : [
     {
       "identity" : "suite",
@@ -14,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/TimeMachine",
       "state" : {
-        "revision" : "aa5ecbd7eeaf733143184f706c7b170ed547bb4d",
-        "version" : "1.0.0"
+        "revision" : "fe299cb0db3a2fc8d39529db7dc937b9b6f505a0",
+        "version" : "1.1.3"
       }
     },
     {
@@ -28,5 +29,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

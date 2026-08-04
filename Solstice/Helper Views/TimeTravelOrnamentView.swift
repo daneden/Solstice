@@ -5,9 +5,8 @@
 //  Created by Daniel Eden on 04/08/2026.
 //
 
-#if os(visionOS)
-	import SwiftUI
-	import TimeMachine
+import SwiftUI
+import TimeMachine
 
 	struct TimeTravelOrnamentView: View {
 		@Environment(\.timeMachine) private var timeMachine
@@ -33,19 +32,37 @@
 					.transition(.blurReplace)
 				} else {
 					Group {
-						Slider(value: $timeMachine.offset, in: timeMachine.range, neutralValue: 0) {
-							Text("Offset")
-						} minimumValueLabel: {
-							Text("-6mo")
-								.textScale(.secondary)
-								.fixedSize()
-						} maximumValueLabel: {
-							Text("+6mo")
-								.textScale(.secondary)
-								.fixedSize()
+						Group {
+							if #available(visionOS 2, macOS 26, *) {
+								Slider(value: $timeMachine.offset, in: timeMachine.range, neutralValue: 0) {
+									Text("Offset")
+								} minimumValueLabel: {
+									Text("-6mo")
+										.textScale(.secondary)
+										.fixedSize()
+								} maximumValueLabel: {
+									Text("+6mo")
+										.textScale(.secondary)
+										.fixedSize()
+								}
+							} else {
+								Slider(value: $timeMachine.offset, in: timeMachine.range) {
+									Text("Offset")
+								} minimumValueLabel: {
+									Text("-6mo")
+										.fixedSize()
+								} maximumValueLabel: {
+									Text("+6mo")
+										.fixedSize()
+								}
+							}
 						}
 						.labelsHidden()
+						#if os(macOS)
+						.frame(width: 160)
+						#else
 						.frame(width: 280)
+						#endif
 
 						Button("Choose date", systemImage: "calendar") {
 							withAnimation {
@@ -70,9 +87,19 @@
 			.labelStyle(.iconOnly)
 			.buttonStyle(.borderless)
 			.buttonBorderShape(.circle)
+			#if os(visionOS)
 			.padding(16)
 			.glassBackgroundEffect(in: .capsule)
+			#else
+			.padding(8)
+			.backportGlassEffect(in: .capsule)
+			#endif
 			.animation(.default, value: timeMachine.interfaceState.datePickerVisible)
+			#if os(macOS)
+			.fixedSize(horizontal: false, vertical: true)
+			.frame(maxWidth: .infinity, alignment: .trailing)
+			.scenePadding()
+			#endif
 		}
 	}
 
@@ -88,4 +115,3 @@
 		return TimeTravelOrnamentView()
 			.withTimeMachine(timeMachine)
 	}
-#endif
