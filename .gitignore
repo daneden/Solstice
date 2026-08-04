@@ -99,5 +99,9 @@ Secrets.swift
 
 # Localized App Store screenshot pipeline (generated)
 .screenshots/
+Screenshots/appstore/
 Screenshots/output/
 Scripts/figma/*-hashes.json
+
+# App Store Connect upload reports (generated)
+.asc/
