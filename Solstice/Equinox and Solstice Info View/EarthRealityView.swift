@@ -116,7 +116,7 @@ struct EarthRealityView: View {
 			}
 			.pickerStyle(.segmented)
 		}
-		.overlay(alignment: .topTrailing) {
+		.background(alignment: .topTrailing) {
 			// Isolate the per-frame `currentAngle` read to this child so the enclosing
 			// body — and the Picker in it — isn't rebuilt every frame during the sweep
 			// (which would swallow taps until the animation settled).
