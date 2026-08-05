@@ -214,7 +214,7 @@ struct NotificationPreview: View {
 					Image(.notificationPreviewAppIcon)
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.frame(width: 20, height: 20)
+						.frame(width: 40, height: 40)
 
 					VStack(alignment: .leading) {
 						Text(content.title).font(.footnote.bold())
