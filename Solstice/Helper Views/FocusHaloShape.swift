@@ -30,14 +30,14 @@
 			var cornerRadius: CGFloat = 0 {
 				didSet {
 					guard cornerRadius != oldValue else { return }
-					appliedHaloRect = .null
+					appliedBounds = .null
 					if let cell = enclosingCell { applyHaloIfNeeded(to: cell) }
 				}
 			}
 
 			private weak var hookedCell: UICollectionViewCell?
 			private weak var appliedCell: UICollectionViewCell?
-			private var appliedHaloRect: CGRect = .null
+			private var appliedBounds: CGRect = .null
 
 			convenience init(cornerRadius: CGFloat) {
 				self.init(frame: .zero)
@@ -52,12 +52,10 @@
 				applyHaloIfNeeded(to: cell)
 			}
 
-			/// The row content can move within the cell without this view laying
-			/// out again (position-only changes don't call `layoutSubviews`), which
-			/// left the halo at a stale offset — seen on the current-location row,
-			/// which is inserted late and settles after the first layout pass.
-			/// Focus and selection are configuration states, so recomputing here
-			/// refreshes the rect with settled geometry right when the halo shows.
+			/// The list rebuilds a reused cell's focus effect when it's
+			/// reconfigured, so — following the `ListRowPlatterRadius` pattern —
+			/// chain the cell's `configurationUpdateHandler` to reinstall the halo
+			/// after the system rebuilds the cell for a new row.
 			private func hookConfigurationUpdates(on cell: UICollectionViewCell) {
 				guard cell !== hookedCell else { return }
 				hookedCell = cell
@@ -69,19 +67,30 @@
 				}
 			}
 
+			/// Anchors the halo to this view via `referenceView` instead of
+			/// freezing a rect converted into cell coordinates. UIKit then resolves
+			/// the halo geometry from this view live, so the ring stays aligned even
+			/// when the row content moves within the cell after the effect is
+			/// installed — the case the current-location row hit on first launch,
+			/// where it's inserted late (after authorization resolves) and settles
+			/// with a position-only move that never lays this view out again. The
+			/// frozen rect was captured before that settle and left the ring
+			/// offset until an unrelated focus change recomputed it.
 			private func applyHaloIfNeeded(to cell: UICollectionViewCell) {
 				guard bounds.width > 0, bounds.height > 0 else { return }
-				let haloRect = cell.convert(bounds, from: self)
-				// Reassigning the effect invalidates layout, so only assign when
-				// the geometry actually changes to avoid a layout/focus loop.
-				guard haloRect != appliedHaloRect || cell !== appliedCell else { return }
-				appliedHaloRect = haloRect
+				// Reassigning the effect invalidates layout, so only assign when the
+				// size or target cell changes to avoid a layout/focus loop; the
+				// reference view tracks position changes without reassignment.
+				guard bounds != appliedBounds || cell !== appliedCell else { return }
+				appliedBounds = bounds
 				appliedCell = cell
-				cell.focusEffect = UIFocusHaloEffect(
-					roundedRect: haloRect,
+				let effect = UIFocusHaloEffect(
+					roundedRect: bounds,
 					cornerRadius: cornerRadius,
 					curve: .continuous
 				)
+				effect.referenceView = self
+				cell.focusEffect = effect
 			}
 
 			private var enclosingCell: UICollectionViewCell? {
