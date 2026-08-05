@@ -57,6 +57,16 @@ cat > "$WINID_SWIFT" <<'SWIFT'
 import CoreGraphics
 import Foundation
 let list = (CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]]) ?? []
+// With --all, dump every on-screen window instead: the failure path uses it to
+// show what *was* present when the Solstice window was not.
+if CommandLine.arguments.contains("--all") {
+	for w in list {
+		let owner = w[kCGWindowOwnerName as String] as? String ?? "?"
+		let layer = w[kCGWindowLayer as String] as? Int ?? -1
+		print("\(owner) layer=\(layer)")
+	}
+	exit(0)
+}
 for w in list {  // front-to-back order; first match is frontmost
 	guard (w[kCGWindowOwnerName as String] as? String) == "Solstice" else { continue }
 	guard (w[kCGWindowLayer as String] as? Int) == 0 else { continue }
@@ -93,19 +103,24 @@ shoot() {
 	env UITEST_SELECTED_LOCATION="$SELECTED_LOCATION" UITEST_DISPLAY_EPOCH="$DAILY_EPOCH" $screenEnv \
 		open -n "$APP" --args -UITestScreenshots $langArg
 
-	# Non-English relaunches to apply the locale and comes up window-less. Let the
-	# relaunch settle, then send a reopen event (dock-icon-click equivalent); combined
-	# with the app's .defaultLaunchBehavior(.presented) this presents the main window.
-	if [ -n "$langArg" ]; then
-		sleep 6
-		open "$APP"
-		sleep 2   # allow the window (and, for settings, the overlay window) to present
-	fi
+	# Let the launch settle, then send a reopen event (dock-icon-click equivalent);
+	# combined with the app's .defaultLaunchBehavior(.presented) this presents the
+	# main window.
+	#
+	# Every locale gets this, English included. Non-English needs it because
+	# applying -AppleLanguages relaunches the app window-less, but English needs it
+	# too: without the nudge the settings window's presentation is a race that
+	# English alone was losing. On a full 10-locale run, en/mac-03 was the only one
+	# of 30 shots to miss — the other nine locales, which already got the reopen,
+	# all passed.
+	sleep 6
+	open "$APP"
+	sleep 2   # allow the window (and, for settings, the overlay window) to present
 
 	# Poll for the app's window (launch / settings-window can be slow). The ceiling
 	# is generous because it costs nothing when things go well — the loop breaks on
-	# the first sighting — and the old one proved marginal on a cold CI runner,
-	# where the settings shot found its window on one run and timed out on the next.
+	# the first sighting. It is headroom, not a fix: raising it did not stop the
+	# settings shot missing, because the window was never coming.
 	local wid="" i=0
 	while [ "$i" -lt 45 ]; do
 		sleep 1
@@ -124,9 +139,7 @@ shoot() {
 		# guesswork against a 20-minute CI cycle.
 		if pgrep -f "$BIN_MATCH" > /dev/null; then
 			echo "     process is alive but presented no layer-0 window; on-screen windows:"
-			swift -e 'import CoreGraphics
-			let l = (CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]]) ?? []
-			for w in l { print("       \(w[kCGWindowOwnerName as String] as? String ?? "?") layer=\(w[kCGWindowLayer as String] as? Int ?? -1)") }' 2>&1 | head -20
+			"$WINID_BIN" --all 2>&1 | sed 's/^/       /' | head -20
 		else
 			echo "     process is NOT running — it failed to launch or crashed"
 			local crash
