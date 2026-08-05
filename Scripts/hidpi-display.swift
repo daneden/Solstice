@@ -47,9 +47,9 @@ if let current = CGDisplayCopyDisplayMode(display) {
 
 let hiDPI = modes.filter(isHiDPI)
 print("hidpi: \(modes.count) modes total, \(hiDPI.count) HiDPI")
-for m in hiDPI.sorted(by: { $0.pixelWidth < $1.pixelWidth }) {
+for m in modes.sorted(by: { $0.pixelWidth * $0.pixelHeight < $1.pixelWidth * $1.pixelHeight }) {
 	let fits = m.width >= requiredPointWidth && m.height >= requiredPointHeight
-	print("hidpi:   \(describe(m))\(fits ? "  [fits the window]" : "  [too small]")")
+	print("hidpi:   \(describe(m))\(isHiDPI(m) ? " HiDPI" : "")\(fits ? "  [fits the window]" : "")")
 }
 
 let eligible = hiDPI
@@ -58,9 +58,22 @@ let eligible = hiDPI
 
 guard CommandLine.arguments.contains("--set") else { exit(0) }
 
-guard let best = eligible.last else {
-	print("hidpi: no HiDPI mode leaves room for a \(requiredPointWidth)x\(requiredPointHeight) pt window — leaving the display alone")
+/// Second-best option when no HiDPI mode exists, which is the case on GitHub's
+/// macOS runners (1024x768, 1x, zero HiDPI modes). The window is sized to the
+/// screen — 912x764 on a 1024x768 display — so a larger 1x mode still buys real
+/// pixels, just without the 2x density.
+let target: CGDisplayMode? = eligible.last ?? modes
+	.filter { !isHiDPI($0) }
+	.sorted { $0.pixelWidth * $0.pixelHeight < $1.pixelWidth * $1.pixelHeight }
+	.last
+
+guard let best = target else {
+	print("hidpi: no usable mode found — leaving the display alone")
 	exit(0)
+}
+
+if !isHiDPI(best) {
+	print("hidpi: no HiDPI mode leaves room for a \(requiredPointWidth)x\(requiredPointHeight) pt window; using the largest 1x mode instead")
 }
 
 let result = CGDisplaySetDisplayMode(display, best, nil)
