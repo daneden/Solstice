@@ -15,6 +15,10 @@ on:
         description: 'Set to "true" to re-render only widgets (sets WIDGETS_ONLY=1).'
         required: false
         default: 'false'
+      platforms:
+        description: 'Comma-separated platforms to capture, no spaces (ios,macos,watchos,visionos). Leave empty for all.'
+        required: false
+        default: ''
 
 jobs:
   # One job per platform, run concurrently. Sequentially the run costs the sum of
@@ -28,6 +32,9 @@ jobs:
     name: Capture ${{ matrix.label }}
     runs-on: macos-26
     timeout-minutes: 180
+    # Re-shooting one platform should not drag the others along — a redundant
+    # visionOS pass costs two hours of runner time. Unselected legs still start a
+    # runner and skip every step, which is a few seconds each.
     strategy:
       fail-fast: false
       matrix:
@@ -112,7 +119,7 @@ jobs:
       # by name at run time, so pinning a device or an OS version here only adds a
       # way for the build to fail on a runner image that ships different runtimes.
       - name: Build macOS app
-        if: matrix.platform == 'macos'
+        if: ${{ matrix.platform == 'macos' && (inputs.platforms == '' || contains(format(',{0},', inputs.platforms), format(',{0},', matrix.platform))) }}
         run: |
           set -euo pipefail
           # shellcheck disable=SC2086  # both are flag lists, not single arguments
@@ -122,7 +129,7 @@ jobs:
             $XCODEBUILD_EXTRA_ARGS $AD_HOC_SIGNING
 
       - name: Build watchOS app
-        if: matrix.platform == 'watchos'
+        if: ${{ matrix.platform == 'watchos' && (inputs.platforms == '' || contains(format(',{0},', inputs.platforms), format(',{0},', matrix.platform))) }}
         run: |
           set -euo pipefail
           # shellcheck disable=SC2086
@@ -132,7 +139,7 @@ jobs:
             $XCODEBUILD_EXTRA_ARGS
 
       - name: Build visionOS app
-        if: matrix.platform == 'visionos'
+        if: ${{ matrix.platform == 'visionos' && (inputs.platforms == '' || contains(format(',{0},', inputs.platforms), format(',{0},', matrix.platform))) }}
         run: |
           set -euo pipefail
           # shellcheck disable=SC2086
@@ -147,6 +154,7 @@ jobs:
       # the raw input into the command line. Deliberately unquoted below — the
       # scripts take one locale per argument, and an empty value means "all".
       - name: Capture ${{ matrix.label }}
+        if: ${{ (inputs.platforms == '' || contains(format(',{0},', inputs.platforms), format(',{0},', matrix.platform))) }}
         env:
           LOCALES: ${{ inputs.locales }}
           IPAD: ${{ inputs.ipad == 'true' && '1' || '0' }}
@@ -170,7 +178,7 @@ jobs:
       # Per-platform artifacts, merged into a single "screenshots" artifact below
       # so consumers still see the one bundle they saw when this was a single job.
       - name: Upload screenshots
-        if: always()
+        if: ${{ always() && (inputs.platforms == '' || contains(format(',{0},', inputs.platforms), format(',{0},', matrix.platform))) }}
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-${{ matrix.platform }}
@@ -180,7 +188,7 @@ jobs:
       # Only the iOS path produces one — it is the only platform driven by
       # `xcodebuild test` rather than a simctl/open script.
       - name: Upload xcresult bundle
-        if: always() && matrix.platform == 'ios'
+        if: ${{ always() && matrix.platform == 'ios' && (inputs.platforms == '' || contains(format(',{0},', inputs.platforms), format(',{0},', matrix.platform))) }}
         uses: actions/upload-artifact@v4
         with:
           name: xcresult
