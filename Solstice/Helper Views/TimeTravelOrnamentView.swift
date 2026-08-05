@@ -14,7 +14,7 @@ import TimeMachine
 		var body: some View {
 			@Bindable var timeMachine = timeMachine
 
-			HStack(spacing: 16) {
+			HStack {
 				if timeMachine.interfaceState.datePickerVisible {
 					Group {
 						Button("Time Travel", systemImage: "clock.arrow.trianglehead.2.counterclockwise.rotate.90") {
@@ -85,7 +85,6 @@ import TimeMachine
 				.help("Reset to the current date")
 			}
 			.labelStyle(.iconOnly)
-			.buttonStyle(.borderless)
 			.buttonBorderShape(.circle)
 			#if os(visionOS)
 			.padding(16)
