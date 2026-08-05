@@ -21,7 +21,7 @@ on:
 jobs:
   capture-all-platforms:
     name: Build & capture screenshots (iOS / iPad / macOS / watchOS / visionOS)
-    runs-on: macos-14
+    runs-on: macos-26
     timeout-minutes: 240
 
     steps:
