@@ -1,0 +1,138 @@
+name: Capture localized screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      locales:
+        description: 'Space-separated list of locales to capture (e.g. "en ja ar"). Leave empty to run all locales in the test plan.'
+        required: false
+        default: ''
+      ipad:
+        description: 'Set to "true" to capture iPad shots (sets IPAD=1).'
+        required: false
+        default: 'false'
+      widgets_only:
+        description: 'Set to "true" to re-render only widgets (sets WIDGETS_ONLY=1).'
+        required: false
+        default: 'false'
+  push:
+    branches: [ main ]
+
+jobs:
+  capture-all-platforms:
+    name: Build & capture screenshots (iOS / iPad / macOS / watchOS / visionOS)
+    runs-on: macos-14
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show environment
+        run: |
+          xcodebuild -version
+          xcrun --version
+          sw_vers
+
+      - name: Make scripts executable
+        run: chmod +x Scripts/*.sh
+
+      # ---- Optional pre-build for iOS (not strictly required, xcodebuild test will build) ----
+      - name: (Optional) Build iOS product for simulator
+        run: |
+          set -euo pipefail
+          echo "Building iOS product (Screenshots scheme) for simulator (cached in .screenshots/DerivedData)"
+          xcodebuild build -project Solstice.xcodeproj -scheme Screenshots \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -derivedDataPath .screenshots/DerivedData -quiet || true
+
+      # ---- Pre-build for macOS (required by macOS capture script) ----
+      - name: Build macOS app for screenshots
+        run: |
+          set -euo pipefail
+          echo "Building macOS app for screenshot capture (DerivedData-mac)"
+          xcodebuild build -project Solstice.xcodeproj -scheme Screenshots \
+            -destination 'platform=macOS' \
+            -derivedDataPath .screenshots/DerivedData-mac
+
+      # ---- Pre-build for watchOS simulator (required by watchOS capture script) ----
+      - name: Build watchOS app for simulator
+        run: |
+          set -euo pipefail
+          echo "Building watchOS Watch App for simulator (DerivedData-watchos)"
+          # The example scheme name used in repository docs: "Solstice watchOS Watch App"
+          xcodebuild build -project Solstice.xcodeproj -scheme "Solstice watchOS Watch App" \
+            -destination "platform=watchOS Simulator,name=Apple Watch Ultra 3 (49mm)" \
+            -derivedDataPath .screenshots/DerivedData-watchos
+
+      # ---- Pre-build for visionOS simulator (required by visionOS capture script) ----
+      - name: Build visionOS app for simulator
+        run: |
+          set -euo pipefail
+          echo "Building visionOS app for simulator (DerivedData-visionos)"
+          # Use an OS version available on the runner; adjust OS=27.0 if not present
+          xcodebuild build -project Solstice.xcodeproj -scheme Solstice \
+            -destination "platform=visionOS Simulator,name=Apple Vision Pro,OS=27.0" \
+            -derivedDataPath .screenshots/DerivedData-visionos
+
+      # ---- Run iOS/iPad/widgets capture script (uses test plan & xcresulttool) ----
+      - name: Run iOS / iPad / Widgets capture
+        env:
+          IPAD: ${{ github.event.inputs.ipad }}
+          WIDGETS_ONLY: ${{ github.event.inputs.widgets_only }}
+        run: |
+          set -euo pipefail
+          echo "=== Running iOS capture script ==="
+          # locales input may be an empty string — pass through as-is; script handles no args => all locales
+          ./Scripts/capture-screenshots.sh ${{ github.event.inputs.locales }}
+
+      # ---- Run macOS capture script (window captures) ----
+      - name: Run macOS capture script
+        run: |
+          set -euo pipefail
+          echo "=== Running macOS capture script ==="
+          ./Scripts/capture-screenshots-macos.sh ${{ github.event.inputs.locales }}
+
+      # ---- Run watchOS capture script ----
+      - name: Run watchOS capture script
+        run: |
+          set -euo pipefail
+          echo "=== Running watchOS capture script ==="
+          ./Scripts/capture-screenshots-watchos.sh ${{ github.event.inputs.locales }}
+
+      # ---- Run visionOS capture script ----
+      - name: Run visionOS capture script
+        run: |
+          set -euo pipefail
+          echo "=== Running visionOS capture script ==="
+          ./Scripts/capture-screenshots-visionos.sh ${{ github.event.inputs.locales }}
+
+      - name: List captured screenshots
+        run: |
+          echo "=== Screenshots output ==="
+          ls -la Screenshots/output || true
+          find Screenshots/output -type f -name '*.png' -print || true
+
+      - name: Upload screenshots artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: Screenshots/output
+
+      - name: Upload xcresult bundle (raw test results)
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult
+          path: .screenshots/results
+
+      - name: Upload mac/watch/vision DerivedData for debugging (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deriveddata-debug
+          path: |
+            .screenshots/DerivedData-mac
+            .screenshots/DerivedData-watchos
+            .screenshots/DerivedData-visionos
