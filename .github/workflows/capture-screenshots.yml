@@ -17,10 +17,29 @@ on:
         default: 'false'
 
 jobs:
-  capture-all-platforms:
-    name: Build & capture screenshots (iOS / iPad / macOS / watchOS / visionOS)
+  # One job per platform, run concurrently. Sequentially the run costs the sum of
+  # all four platforms; this way it costs the slowest one, which is visionOS by a
+  # wide margin (simulator boot alone is ~5.5 min, and the first launch another
+  # ~6). Roughly the same total runner minutes, a fraction of the wall clock.
+  #
+  # fail-fast is off deliberately: a platform that cannot capture should not take
+  # the other three down with it, on a job this long.
+  capture:
+    name: Capture ${{ matrix.label }}
     runs-on: macos-26
-    timeout-minutes: 240
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: ios
+            label: iOS / iPad / widgets
+          - platform: macos
+            label: macOS
+          - platform: watchos
+            label: watchOS
+          - platform: visionos
+            label: visionOS
 
     # Nothing built here is distributed: the simulator targets never verify a
     # signature, and the Mac app only has to launch on this runner. Ad-hoc
@@ -39,18 +58,27 @@ jobs:
         CODE_SIGN_IDENTITY=-
         PROVISIONING_PROFILE_SPECIFIER=
         CODE_SIGN_ENTITLEMENTS=
+      # Keeps package checkouts in a fixed, cacheable directory instead of
+      # burying them in a per-platform DerivedData tree.
+      XCODEBUILD_EXTRA_ARGS: -clonedSourcePackagesDirPath .spm
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Show environment
         run: |
           xcodebuild -version
-          xcrun --version
           sw_vers
+
+      # Checkouts only. Caching the built products would save more, but a stale
+      # DerivedData cache fails as a compile error that reads like a code bug.
+      - name: Cache Swift package checkouts
+        uses: actions/cache@v4
+        with:
+          path: .spm
+          key: spm-${{ runner.os }}-${{ hashFiles('Solstice.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: spm-${{ runner.os }}-
 
       - name: Make scripts executable
         run: chmod +x Scripts/*.sh
@@ -79,120 +107,97 @@ jobs:
           }
           EOF
 
-      # ---- Pre-build for macOS (required by macOS capture script) ----
-      - name: Build macOS app for screenshots
-        run: |
-          set -euo pipefail
-          echo "Building macOS app for screenshot capture (DerivedData-mac)"
-          # shellcheck disable=SC2086  # AD_HOC_SIGNING is a list of build settings
-          xcodebuild build -project Solstice.xcodeproj -scheme Screenshots \
-            -destination 'platform=macOS' \
-            -derivedDataPath .screenshots/DerivedData-mac \
-            $AD_HOC_SIGNING
-
-      # ---- Pre-build for watchOS simulator (required by watchOS capture script) ----
+      # ---- Pre-builds. iOS has none: `xcodebuild test` builds what it needs. ----
       # Generic simulator destinations: the capture scripts pick their own device
       # by name at run time, so pinning a device or an OS version here only adds a
       # way for the build to fail on a runner image that ships different runtimes.
-      - name: Build watchOS app for simulator
+      - name: Build macOS app
+        if: matrix.platform == 'macos'
         run: |
           set -euo pipefail
-          echo "Building watchOS Watch App for simulator (DerivedData-watchos)"
+          # shellcheck disable=SC2086  # both are flag lists, not single arguments
+          xcodebuild build -project Solstice.xcodeproj -scheme Screenshots \
+            -destination 'platform=macOS' \
+            -derivedDataPath .screenshots/DerivedData-mac \
+            $XCODEBUILD_EXTRA_ARGS $AD_HOC_SIGNING
+
+      - name: Build watchOS app
+        if: matrix.platform == 'watchos'
+        run: |
+          set -euo pipefail
+          # shellcheck disable=SC2086
           xcodebuild build -project Solstice.xcodeproj -scheme "Solstice watchOS Watch App" \
             -destination "generic/platform=watchOS Simulator" \
-            -derivedDataPath .screenshots/DerivedData-watchos
+            -derivedDataPath .screenshots/DerivedData-watchos \
+            $XCODEBUILD_EXTRA_ARGS
 
-      # ---- Pre-build for visionOS simulator (required by visionOS capture script) ----
-      - name: Build visionOS app for simulator
+      - name: Build visionOS app
+        if: matrix.platform == 'visionos'
         run: |
           set -euo pipefail
-          echo "Building visionOS app for simulator (DerivedData-visionos)"
+          # shellcheck disable=SC2086
           xcodebuild build -project Solstice.xcodeproj -scheme Solstice \
             -destination "generic/platform=visionOS Simulator" \
-            -derivedDataPath .screenshots/DerivedData-visionos
+            -derivedDataPath .screenshots/DerivedData-visionos \
+            $XCODEBUILD_EXTRA_ARGS
 
-      # ---- Run iOS/iPad/widgets capture script (uses test plan & xcresulttool) ----
-      #
-      # Every capture step carries `if: !cancelled()` so each platform reports its
-      # own outcome. Without it the first script to exit non-zero skips the rest,
-      # and one missing shot costs three platforms of output on a job that takes
-      # hours to reach this point. The job still fails if any of them failed.
-      #
+      # ---- Capture. ----
       # The locales input reaches the scripts through the environment, never
       # through ${{ }} interpolation into the shell: interpolation would splice
       # the raw input into the command line. Deliberately unquoted below — the
       # scripts take one locale per argument, and an empty value means "all".
-      - name: Run iOS / iPad / Widgets capture
-        if: '!cancelled()'
+      - name: Capture ${{ matrix.label }}
         env:
           LOCALES: ${{ inputs.locales }}
           IPAD: ${{ inputs.ipad == 'true' && '1' || '0' }}
           WIDGETS_ONLY: ${{ inputs.widgets_only == 'true' && '1' || '0' }}
+          PLATFORM: ${{ matrix.platform }}
         run: |
           set -euo pipefail
-          echo "=== Running iOS capture script ==="
+          case "$PLATFORM" in
+            ios) script=Scripts/capture-screenshots.sh ;;
+            *)   script="Scripts/capture-screenshots-$PLATFORM.sh" ;;
+          esac
+          echo "=== $script ==="
           # shellcheck disable=SC2086
-          ./Scripts/capture-screenshots.sh $LOCALES
+          "./$script" $LOCALES
 
-      # ---- Run macOS capture script (window captures) ----
-      - name: Run macOS capture script
-        if: '!cancelled()'
-        env:
-          LOCALES: ${{ inputs.locales }}
-        run: |
-          set -euo pipefail
-          echo "=== Running macOS capture script ==="
-          # shellcheck disable=SC2086
-          ./Scripts/capture-screenshots-macos.sh $LOCALES
-
-      # ---- Run watchOS capture script ----
-      - name: Run watchOS capture script
-        if: '!cancelled()'
-        env:
-          LOCALES: ${{ inputs.locales }}
-        run: |
-          set -euo pipefail
-          echo "=== Running watchOS capture script ==="
-          # shellcheck disable=SC2086
-          ./Scripts/capture-screenshots-watchos.sh $LOCALES
-
-      # ---- Run visionOS capture script ----
-      - name: Run visionOS capture script
-        if: '!cancelled()'
-        env:
-          LOCALES: ${{ inputs.locales }}
-        run: |
-          set -euo pipefail
-          echo "=== Running visionOS capture script ==="
-          # shellcheck disable=SC2086
-          ./Scripts/capture-screenshots-visionos.sh $LOCALES
-
-      # Both run even on failure. The capture scripts write each shot as they go,
-      # so a run that dies on the last platform still has usable output from the
-      # earlier ones — discarding it would mean re-running the whole job.
       - name: List captured screenshots
         if: always()
         run: |
-          echo "=== Screenshots output ==="
-          ls -la Screenshots/output || true
           find Screenshots/output -type f -name '*.png' -print || true
 
-      - name: Upload screenshots artifact
+      # Per-platform artifacts, merged into a single "screenshots" artifact below
+      # so consumers still see the one bundle they saw when this was a single job.
+      - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots
+          name: screenshots-${{ matrix.platform }}
           path: Screenshots/output
           if-no-files-found: warn
 
-      # Uploaded even on failure: the bundle holds the test log and the
-      # attachments captured before the run stopped, which is what a failed run
-      # needs. The DerivedData trees are not uploaded — several GB of build
-      # products that say nothing the job log doesn't.
-      - name: Upload xcresult bundle (raw test results)
-        if: always()
+      # Only the iOS path produces one — it is the only platform driven by
+      # `xcodebuild test` rather than a simctl/open script.
+      - name: Upload xcresult bundle
+        if: always() && matrix.platform == 'ios'
         uses: actions/upload-artifact@v4
         with:
           name: xcresult
           path: .screenshots/results
           if-no-files-found: warn
+
+  merge-screenshots:
+    name: Merge screenshot artifacts
+    needs: capture
+    if: always()
+    runs-on: ubuntu-latest
+    # A platform that captured nothing leaves no artifact to merge. That failure
+    # is already reported by its own job; do not double-report it here.
+    continue-on-error: true
+    steps:
+      - uses: actions/upload-artifact/merge@v4
+        with:
+          name: screenshots
+          pattern: screenshots-*
+          delete-merged: true

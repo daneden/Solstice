@@ -96,8 +96,12 @@ elif [ "${IPAD:-0}" = "1" ]; then
 	ONLY_TESTING+=(-only-testing "SolsticeUITests/AppStoreScreenshots/testCaptureIPadAppStoreScreenshots")
 fi
 
+# Extra xcodebuild flags for callers that need them — CI passes
+# -clonedSourcePackagesDirPath to keep package checkouts somewhere cacheable.
+# Deliberately unquoted: it is a flag list, not one argument.
 echo "==> Running screenshot test plan"
 set -x
+# shellcheck disable=SC2086
 xcodebuild test \
 	-project "$PROJECT" \
 	-scheme "$SCHEME" \
@@ -105,6 +109,7 @@ xcodebuild test \
 	-destination "id=$UDID" \
 	-derivedDataPath "$DERIVED_DIR" \
 	-resultBundlePath "$RESULT_BUNDLE" \
+	${XCODEBUILD_EXTRA_ARGS:-} \
 	"${ONLY_CONFIGS[@]}" \
 	${ONLY_TESTING[@]+"${ONLY_TESTING[@]}"}
 set +x
