@@ -122,10 +122,8 @@ enum ScreenshotLaunch {
 		defaults?.set(true, forKey: Preferences.hasCompletedOnboarding.key)
 		// Show the notification settings in their enabled state for the screenshot.
 		defaults?.set(true, forKey: Preferences.notificationsEnabled.key)
-		// Show the Time Machine panel only on the time-travel launch (offset set);
-		// otherwise hide it so the daily/annual shots aren't cluttered.
-		let appearance: TimeTravelAppearance = timeOffsetDays != nil ? .expanded : .hidden
-		defaults?.set(appearance.rawValue, forKey: Preferences.timeTravelAppearance.key)
+		// Always show Time Travel UI
+		defaults?.set(TimeTravelAppearance.expanded.rawValue, forKey: Preferences.timeTravelAppearance.key)
 		// Pin the daily chart to the classic design: @AppStorage reads the app-group
 		// suite, so whatever chart the simulator last used would otherwise leak into
 		// the marketing shots.
