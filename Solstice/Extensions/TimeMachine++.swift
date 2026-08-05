@@ -18,7 +18,9 @@ extension TimeMachine {
 		formatter.timeStyle = .none
 		formatter.dateStyle = .medium
 
-		let dateString = formatter.string(from: date)
+		// Anchor relative wording to the TimeMachine's reference date (== the wall
+		// clock in normal use) so a pinned capture clock still reads "today".
+		let dateString = formatter.string(from: date, relativeTo: referenceDate, calendar: .current)
 
 		// Mid-sentence, an absolute date reads better with a preposition ("on 14 Oct 2026");
 		// relative dates ("today"/"yesterday") must not be wrapped. Reuses the localizable

@@ -30,7 +30,16 @@ APP="${APP:-$PWD/.screenshots/DerivedData-visionos/Build/Products/Debug-xrsimula
 BUNDLE_ID="me.daneden.Solstice"
 OUT="$PWD/Screenshots/output"
 SELECTED_LOCATION="7AAA4D87-4402-4D0E-A35E-2D84641A71BE"   # New York (ScreenshotFixtures)
-TIME_OFFSET_DAYS="92"                                       # mirrors ScreenshotFixtures.timeTravelOffsetDays
+
+# Pinned display instants — mirrors ScreenshotFixtures (SolsticeUITests/ScreenshotSupport.swift;
+# keep in sync). Daily shots: June 1 12:41 PM New York, sun high, Time
+# Machine visibly inactive. Time travel: October 26 sunset in New York, reached via
+# the day offset so the app's "today" stays June 1. Without the pin, shots track
+# the wall clock — a run at 4:30 AM New York time captures a pre-sunrise sky.
+YEAR="$(TZ=America/New_York date +%Y)"
+DAILY_EPOCH="$(TZ=America/New_York date -j -f "%Y-%m-%d %H:%M:%S" "$YEAR-06-01 12:41:00" +%s)"
+TRAVEL_EPOCH="$(TZ=America/New_York date -j -f "%Y-%m-%d %H:%M:%S" "$YEAR-10-26 18:01:46" +%s)"
+TIME_OFFSET_DAYS=$(( (TRAVEL_EPOCH - DAILY_EPOCH + 43200) / 86400 ))
 
 if [ ! -d "$APP" ]; then
 	echo "error: app not found at $APP — build it for the visionOS simulator first (see header)" >&2
@@ -101,9 +110,9 @@ xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID"
 xcrun simctl install "$UDID" "$APP"
 
-# shoot <locale> <visionScreen-or-empty> <timeOffset-or-empty> <settle-secs> <outName>
+# shoot <locale> <visionScreen-or-empty> <timeOffset-or-empty> <displayEpoch> <settle-secs> <outName>
 shoot() {
-	local loc="$1" screen="$2" offset="$3" settle="$4" name="$5"
+	local loc="$1" screen="$2" offset="$3" epoch="$4" settle="$5" name="$6"
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 	sleep 1
 
@@ -119,6 +128,7 @@ shoot() {
 	local envArgs=("SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$SELECTED_LOCATION")
 	[ -n "$screen" ] && envArgs+=("SIMCTL_CHILD_UITEST_VISION_SCREEN=$screen")
 	[ -n "$offset" ] && envArgs+=("SIMCTL_CHILD_UITEST_TIME_OFFSET_DAYS=$offset")
+	[ -n "$epoch" ] && envArgs+=("SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$epoch")
 
 	env "${envArgs[@]}" \
 		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" > /dev/null
@@ -142,9 +152,9 @@ shoot() {
 # window additionally hosts the RealityKit globe, which needs load + lighting.
 for loc in "${LOCALES[@]}"; do
 	echo "== $loc =="
-	shoot "$loc" ""              ""                  20 "vision-01-app"
-	shoot "$loc" "solstice-info" ""                  25 "vision-02-solstice-info"
-	shoot "$loc" ""              "$TIME_OFFSET_DAYS" 20 "vision-03-time-travel"
+	shoot "$loc" ""              ""                  "$DAILY_EPOCH"  20 "vision-01-app"
+	shoot "$loc" "solstice-info" ""                  "$DAILY_EPOCH"  25 "vision-02-solstice-info"
+	shoot "$loc" ""              "$TIME_OFFSET_DAYS" "$TRAVEL_EPOCH" 20 "vision-03-time-travel"
 done
 
 echo "==> Done. Vision Pro shots in $OUT/<locale>/vision-*.png (3840×2160)"

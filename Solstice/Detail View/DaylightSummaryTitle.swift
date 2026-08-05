@@ -12,6 +12,10 @@ struct DaylightSummaryTitle: View {
 	var event: NTSolar.Event?
 	var date: Date?
 	var timeZone = localTimeZone
+	/// The instant treated as "now" for relative wording in the daylight summary
+	/// ("today", "yesterday"). Pass the TimeMachine's reference date so a pinned
+	/// capture clock reads as the current day.
+	var referenceDate: Date = .now
 
 	var summaryFont: Font {
 		#if os(watchOS)
@@ -36,7 +40,7 @@ struct DaylightSummaryTitle: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			HStack {
-				Text(solar.differenceString)
+				Text(solar.differenceString(relativeTo: referenceDate))
 					.contentTransition(.numericText())
 					.font(summaryFont)
 					.fontWeight(.semibold)

@@ -28,7 +28,16 @@ APP="${APP:-$PWD/.screenshots/DerivedData-watchos/Build/Products/Debug-watchsimu
 BUNDLE_ID="me.daneden.Solstice.watchkitapp"
 OUT="$PWD/Screenshots/output"
 SELECTED_LOCATION="7AAA4D87-4402-4D0E-A35E-2D84641A71BE"   # New York (ScreenshotFixtures)
-TIME_OFFSET_DAYS="92"                                       # mirrors ScreenshotFixtures.timeTravelOffsetDays
+
+# Pinned display instants — mirrors ScreenshotFixtures (SolsticeUITests/ScreenshotSupport.swift;
+# keep in sync). Daily shots: June 1 12:41 PM New York, sun high, Time
+# Machine visibly inactive. Time travel: October 26 sunset in New York, reached via
+# the day offset so the app's "today" stays June 1. Without the pin, shots track
+# the wall clock — a run at 4:30 AM New York time captures a pre-sunrise sky.
+YEAR="$(TZ=America/New_York date +%Y)"
+DAILY_EPOCH="$(TZ=America/New_York date -j -f "%Y-%m-%d %H:%M:%S" "$YEAR-06-01 12:41:00" +%s)"
+TRAVEL_EPOCH="$(TZ=America/New_York date -j -f "%Y-%m-%d %H:%M:%S" "$YEAR-10-26 18:01:46" +%s)"
+TIME_OFFSET_DAYS=$(( (TRAVEL_EPOCH - DAILY_EPOCH + 43200) / 86400 ))
 
 if [ ! -d "$APP" ]; then
 	echo "error: app not found at $APP — build it for the watchOS simulator first (see header)" >&2
@@ -87,9 +96,9 @@ xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID"
 xcrun simctl install "$UDID" "$APP"
 
-# shoot <locale> <selectedLocation-or-empty> <timeOffset-or-empty> <outName>
+# shoot <locale> <selectedLocation-or-empty> <timeOffset-or-empty> <displayEpoch> <outName>
 shoot() {
-	local loc="$1" selected="$2" offset="$3" name="$4"
+	local loc="$1" selected="$2" offset="$3" epoch="$4" name="$5"
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 	sleep 1
 
@@ -105,6 +114,7 @@ shoot() {
 	local envArgs=()
 	[ -n "$selected" ] && envArgs+=("SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$selected")
 	[ -n "$offset" ] && envArgs+=("SIMCTL_CHILD_UITEST_TIME_OFFSET_DAYS=$offset")
+	[ -n "$epoch" ] && envArgs+=("SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$epoch")
 
 	env "${envArgs[@]+"${envArgs[@]}"}" \
 		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" > /dev/null
@@ -125,9 +135,9 @@ shoot() {
 
 for loc in "${LOCALES[@]}"; do
 	echo "== $loc =="
-	shoot "$loc" ""                   ""                  "watch-01-location-list"
-	shoot "$loc" "$SELECTED_LOCATION" ""                  "watch-02-detail"
-	shoot "$loc" "$SELECTED_LOCATION" "$TIME_OFFSET_DAYS" "watch-03-time-travel"
+	shoot "$loc" ""                   ""                  "$DAILY_EPOCH"  "watch-01-location-list"
+	shoot "$loc" "$SELECTED_LOCATION" ""                  "$DAILY_EPOCH"  "watch-02-detail"
+	shoot "$loc" "$SELECTED_LOCATION" "$TIME_OFFSET_DAYS" "$TRAVEL_EPOCH" "watch-03-time-travel"
 done
 
 echo "==> Done. Watch shots in $OUT/<locale>/watch-*.png (422×514, Ultra 3)"

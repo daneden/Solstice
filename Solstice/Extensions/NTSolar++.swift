@@ -203,13 +203,20 @@ extension NTSolar {
 		return LocalizedStringKey("\(moreOrLess)\(differenceString)")
 	}
 
-	var differenceString: LocalizedStringKey {
+	/// Summarizes the day's daylight against a comparison day: "today" compares
+	/// with yesterday, any other day compares with the reference day itself.
+	/// `referenceDate` is the instant the app treats as "now" — the wall clock in
+	/// normal use, the pinned clock during screenshot capture — and relative
+	/// wording ("today", "yesterday") follows it rather than the machine's clock.
+	func differenceString(relativeTo referenceDate: Date = .now) -> LocalizedStringKey {
 		let formatter = DateFormatter()
 		formatter.doesRelativeDateFormatting = true
 		formatter.dateStyle = .medium
 		formatter.formattingContext = .middleOfSentence
 
-		let comparator = date.isToday ? yesterday : NTSolar(for: Date(), coordinate: coordinate, timeZone: timeZone, calendar: calendar)
+		let comparator = calendar.isDate(date, inSameDayAs: referenceDate)
+			? yesterday
+			: NTSolar(for: referenceDate, coordinate: coordinate, timeZone: timeZone, calendar: calendar)
 		let difference = daylightDuration - (comparator?.daylightDuration ?? 0)
 		let differenceString = Duration.seconds(abs(difference)).formatted(.units(maximumUnitCount: 2))
 
@@ -219,7 +226,7 @@ extension NTSolar {
 		// If it does, this means it's presented as an absolute date, and should
 		// be rendered as "on {date}"; if not, it's presented as a relative date,
 		// and should be presented as "{yesterday/today/tomorrow}"
-		var baseDateString = formatter.string(from: date)
+		var baseDateString = formatter.string(from: date, relativeTo: referenceDate, calendar: calendar)
 		if baseDateString.contains(/\d/) {
 			// Absolute date: wrap with a localizable "on {date}" fragment. The date must be a
 			// format argument, not part of the key — interpolating it into the key produces a
@@ -229,7 +236,27 @@ extension NTSolar {
 
 		let comparatorDate = comparator?.date ?? date
 
-		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate))")
+		return LocalizedStringKey("\(differenceString) \(moreOrLess) daylight \(baseDateString) compared to \(formatter.string(from: comparatorDate, relativeTo: referenceDate, calendar: calendar))")
+	}
+}
+
+extension DateFormatter {
+	/// Like `string(from:)`, but relative wording ("today", "yesterday") is decided
+	/// against `reference` instead of the machine's clock. `doesRelativeDateFormatting`
+	/// only compares to the actual current date, so with a pinned capture clock the
+	/// pinned "today" would render as an absolute date. Dates within a day of the
+	/// reference map onto the real clock to harvest the localized relative word;
+	/// anything further away formats as-is (it renders absolutely either way).
+	func string(from date: Date, relativeTo reference: Date, calendar: Calendar) -> String {
+		let delta = calendar.dateComponents(
+			[.day],
+			from: calendar.startOfDay(for: reference),
+			to: calendar.startOfDay(for: date)
+		).day ?? 0
+		guard abs(delta) <= 1, let anchored = calendar.date(byAdding: .day, value: delta, to: .now) else {
+			return string(from: date)
+		}
+		return string(from: anchored)
 	}
 }
 

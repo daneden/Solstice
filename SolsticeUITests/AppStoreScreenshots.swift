@@ -37,7 +37,12 @@ final class AppStoreScreenshots: XCTestCase {
 		capture(app, named: "02-detail-daily")
 
 		// 03 — Detail view, annual overview (scroll down to the annual section)
-		app.scrollUp(toReveal: app.match(A11y.annualChart))
+		let annualChart = app.match(A11y.annualChart)
+		app.scrollUp(toReveal: annualChart)
+		// Fail loudly if the scroll never moved: a consumed drag otherwise captures
+		// 03 as a byte-identical copy of 02 and the run still "passes".
+		XCTAssertTrue(annualChart.exists && annualChart.frame.minY < app.frame.midY,
+		              "Annual chart never scrolled into view — 03 would duplicate 02")
 		try await settle()
 		capture(app, named: "03-detail-annual")
 
@@ -160,16 +165,18 @@ private extension XCUIApplication {
 	/// chart) can report `isHittable == true` while only peeking from the bottom
 	/// edge, so `scrollDown(untilHittable:)` would stop without scrolling and
 	/// capture the same frame as the previous screen — this forces real movement.
-	/// Drags from the lower quarter of the screen rather than `swipeUp()`, whose
-	/// mid-screen start lands on the daily chart and gets consumed by the chart's
-	/// scrubbing gesture instead of scrolling.
+	/// The drag start must thread a needle: `swipeUp()`'s mid-screen start lands
+	/// on the daily chart and gets consumed by its scrubbing gesture, while the
+	/// bottom ~15–18% (locale-dependent) is covered by the always-visible Time
+	/// Travel overlay, which swallows drags without scrolling. dy 0.75 sits on
+	/// the detail list rows in every locale.
 	func scrollUp(toReveal element: XCUIElement, maxSwipes: Int = 10) {
 		var swipes = 0
 		while swipes < maxSwipes {
 			if element.exists, element.isHittable, element.frame.minY < frame.midY {
 				return
 			}
-			let start = coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+			let start = coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
 			let end = coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.35))
 			start.press(forDuration: 0.05, thenDragTo: end)
 			swipes += 1

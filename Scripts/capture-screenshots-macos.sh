@@ -25,6 +25,13 @@ BIN_MATCH="Debug/Solstice.app/Contents/MacOS/Solstice"
 OUT="$PWD/Screenshots/output"
 SELECTED_LOCATION="7AAA4D87-4402-4D0E-A35E-2D84641A71BE"   # New York (ScreenshotFixtures)
 
+# Pinned display instant — mirrors ScreenshotFixtures.dailyDisplayDate
+# (SolsticeUITests/ScreenshotSupport.swift; keep in sync): June 1
+# 12:41 PM New York, sun high. Without the pin, shots track the wall clock — a
+# run at 4:30 AM New York time captures a pre-sunrise sky.
+YEAR="$(TZ=America/New_York date +%Y)"
+DAILY_EPOCH="$(TZ=America/New_York date -j -f "%Y-%m-%d %H:%M:%S" "$YEAR-06-01 12:41:00" +%s)"
+
 if [ ! -d "$APP" ]; then
 	echo "error: app not found at $APP — build it for macOS first (see header)" >&2
 	exit 1
@@ -71,7 +78,7 @@ shoot() {
 	local langArg=""
 	[ "$loc" != "en" ] && langArg="-AppleLanguages ($loc)"
 	# shellcheck disable=SC2086
-	env UITEST_SELECTED_LOCATION="$SELECTED_LOCATION" $screenEnv \
+	env UITEST_SELECTED_LOCATION="$SELECTED_LOCATION" UITEST_DISPLAY_EPOCH="$DAILY_EPOCH" $screenEnv \
 		open -n "$APP" --args -UITestScreenshots $langArg
 
 	# Non-English relaunches to apply the locale and comes up window-less. Let the

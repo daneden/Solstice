@@ -87,7 +87,7 @@ struct DaylightChart: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			if includesSummaryTitle {
-				DaylightSummaryTitle(solar: solar, event: selectedEvent, date: currentX.map { midnight.addingTimeInterval($0) }, timeZone: timeZone)
+				DaylightSummaryTitle(solar: solar, event: selectedEvent, date: currentX.map { midnight.addingTimeInterval($0) }, timeZone: timeZone, referenceDate: timeMachine.referenceDate)
 			}
 
 			chartContent
