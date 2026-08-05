@@ -33,7 +33,7 @@ import TimeMachine
 				} else {
 					Group {
 						Group {
-							if #available(visionOS 2, macOS 26, *) {
+							if #available(iOS 26, visionOS 2, macOS 26, watchOS 26, *) {
 								Slider(value: $timeMachine.offset, in: timeMachine.range, neutralValue: 0) {
 									Text("Offset")
 								} minimumValueLabel: {
