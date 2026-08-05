@@ -24,21 +24,23 @@ import SwiftUI
 /// surface (main app, widgets, watchOS) with no Metal. All constants are stored, so
 /// tuning is a matter of changing `standard`'s values rather than the algorithm.
 struct SkyModel {
-	/// Rayleigh scattering coefficient per RGB wavelength (1/m).
-	var rayleigh = SIMD3<Double>(3.8e-6, 11.5e-6, 38.1e-6)
+	/// Rayleigh scattering coefficient per RGB wavelength (1/m). Green sits above the physical
+	/// ~11.5e-6: the extra green in-scatter keeps the zenith royal blue instead of lilac under
+	/// the strong ozone, and the extra green extinction keeps low-sun horizons pink.
+	var rayleigh = SIMD3<Double>(3.8e-6, 13e-6, 38.1e-6)
 	/// Mie scattering coefficient (1/m). Lower keeps the daytime sky bluer and the horizon cleaner
 	/// (less neutral aerosol haze).
-	var mie = 8e-6
+	var mie = 6e-6
 	/// Henyey–Greenstein asymmetry: how tightly the Mie glow hugs the sun (0…1).
 	var mieG = 0.8
 	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues and purples.
-	var ozone = SIMD3<Double>(0.650e-6, 1.881e-6, 0.085e-6)
+	var ozone = SIMD3<Double>(0.850e-6, 4e-6, 0.085e-6)
 	/// Single scattering alone leaves long near-horizon paths yellow-green under a high sun: blue is
 	/// scattered out of the ray faster than in, and with no second bounce nothing replaces it. This
 	/// approximates multiple scattering with an isotropic, sky-tinted fill wherever the view path is
 	/// optically thick, fading with sun altitude so twilight and night keep their single-scatter
 	/// colours. Higher = paler, bluer horizon at midday.
-	var multipleScattering = 0.02
+	var multipleScattering = 0.015
 
 	var rayleighScaleHeight = 8000.0
 	var mieScaleHeight = 1200.0
@@ -47,10 +49,18 @@ struct SkyModel {
 
 	var sunIntensity = 22.0
 	/// Multiplier applied before tone-mapping. The main lever for overall brightness.
-	var exposure = 3.0
+	var exposure = 2.4
 	/// Faint skylight floor added before tone-mapping so night settles into a deep navy rather than
 	/// pure black, and the day→night ramp stays smooth instead of popping to black.
 	var ambientRadiance = SIMD3<Double>(0.0015, 0.003, 0.008)
+
+	/// Deep-noon grade, applied after tone-mapping (see `tonemapLinear`). The Reinhard map
+	/// rebounds against pre-map cuts — lower exposure means less compression — so exposure
+	/// barely moves the noon zenith. Darkening and saturating after the map is the lever that
+	/// actually deepens the midday blue toward royal. Both ramp with `daylightFactor`, so
+	/// twilight and sunset colours pass through ungraded.
+	var dayDepthDarkening = 0.18
+	var dayDepthSaturation = 1.3
 
 	var viewSamples = 16
 	var lightSamples = 8
@@ -61,7 +71,7 @@ struct SkyModel {
 	/// View elevations sampled at the bottom and top of the rendered strip, in degrees. Keeping the
 	/// bottom above the horizon avoids the muddy long-path haze and gives a calmer, more even ramp.
 	var minElevationDeg = 6.0
-	var maxElevationDeg = 45.0
+	var maxElevationDeg = 60.0
 	/// Degrees of scattering angle per unit of normalised distance from the sun anchor.
 	/// Higher values shrink the glow; lower values spread it across the gradient.
 	var glowAngularScaleDeg = 120.0
@@ -222,7 +232,7 @@ struct SkyModel {
 		let scattered = radiance(sunAltitudeDeg: sunAltitudeDeg,
 		                         viewElevationDeg: viewElevationDeg,
 		                         scatterCosTheta: scatterCosTheta)
-		return tonemap(scattered + ambientRadiance)
+		return tonemap(scattered + ambientRadiance, sunAltitudeDeg: sunAltitudeDeg)
 	}
 
 	// MARK: Mesh
@@ -297,7 +307,8 @@ struct SkyModel {
 			let mapped = coarse.tonemapLinear(coarse.radiance(sunAltitudeDeg: sunAltitudeDeg,
 			                                                  viewElevationDeg: elevationDeg,
 			                                                  scatterCosTheta: scatterCosTheta)
-					+ ambientRadiance)
+					+ ambientRadiance,
+				sunAltitudeDeg: sunAltitudeDeg)
 			return SIMD3<Double>(encodeSRGB(mapped.x), encodeSRGB(mapped.y), encodeSRGB(mapped.z))
 		}
 
@@ -399,7 +410,7 @@ struct SkyModel {
 		                         viewElevationDeg: groundDomeElevationDeg,
 		                         scatterCosTheta: scatterCosTheta)
 		let reflected = horizonBand + (upperDome - horizonBand) * groundDomeWeight
-		let sky = tonemapLinear(reflected + ambientRadiance)
+		let sky = tonemapLinear(reflected + ambientRadiance, sunAltitudeDeg: sunAltitudeDeg)
 		let nightFloor = ambientRadiance * exposure
 		// Ambient daylight still reaches below the horizon: lift toward light blue while the sun
 		// is high, settling back to the navy floor as it sets.
@@ -452,7 +463,7 @@ struct SkyModel {
 				                  scatterCosTheta: dialScatterCosTheta)
 				: .zero
 			let blended = wedge + (sky - wedge) * sunUpFraction
-			return coarse.tonemap(blended + coarse.ambientRadiance)
+			return coarse.tonemap(blended + coarse.ambientRadiance, sunAltitudeDeg: altitudeDeg)
 		}
 
 		let start = solar.startOfDay
@@ -539,15 +550,27 @@ struct SkyModel {
 
 	/// Luminance-based Reinhard: compresses brightness while preserving chroma, so the daytime
 	/// sky stays saturated blue instead of desaturating toward grey the way per-channel Reinhard does.
-	private func tonemapLinear(_ radiance: SIMD3<Double>) -> SIMD3<Double> {
+	private func tonemapLinear(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double) -> SIMD3<Double> {
 		let exposed = radiance * exposure
 		let luminance = 0.2126 * exposed.x + 0.7152 * exposed.y + 0.0722 * exposed.z
 		let scale = luminance > 0 ? 1 / (1 + luminance) : 0
-		return exposed * scale
+		var mapped = exposed * scale
+
+		// The deep-noon grade lives here, after the map, where the Reinhard can't rebound
+		// against it (see `dayDepthDarkening`).
+		let depth = daylightFactor(sunAltitudeDeg: sunAltitudeDeg)
+		if depth > 0 {
+			let mappedLuminance = 0.2126 * mapped.x + 0.7152 * mapped.y + 0.0722 * mapped.z
+			let saturation = 1 + (dayDepthSaturation - 1) * depth
+			let darkening = 1 - dayDepthDarkening * depth
+			let chroma = mapped - SIMD3<Double>(repeating: mappedLuminance)
+			mapped = simd_max((SIMD3<Double>(repeating: mappedLuminance) + chroma * saturation) * darkening, .zero)
+		}
+		return mapped
 	}
 
-	private func tonemap(_ radiance: SIMD3<Double>) -> Color {
-		encode(tonemapLinear(radiance))
+	private func tonemap(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double) -> Color {
+		encode(tonemapLinear(radiance, sunAltitudeDeg: sunAltitudeDeg))
 	}
 
 	private func encode(_ mapped: SIMD3<Double>) -> Color {
