@@ -59,9 +59,13 @@ let eligible = hiDPI
 guard CommandLine.arguments.contains("--set") else { exit(0) }
 
 /// Second-best option when no HiDPI mode exists, which is the case on GitHub's
-/// macOS runners (1024x768, 1x, zero HiDPI modes). The window is sized to the
-/// screen — 912x764 on a 1024x768 display — so a larger 1x mode still buys real
-/// pixels, just without the 2x density.
+/// macOS runners: 1024x768 at 1x, twelve modes, none HiDPI.
+///
+/// A larger 1x mode does not raise the capture resolution — the Solstice window
+/// opens at a fixed 912x764 pt whether the display is 1024x768 or 1920x1080. It
+/// is still worth setting, because the default 1024x768 is small enough to
+/// squeeze the window: the annual shot came out 868x720 there and 912x764 with
+/// room to breathe. Consistent window geometry across shots, not more pixels.
 let target: CGDisplayMode? = eligible.last ?? modes
 	.filter { !isHiDPI($0) }
 	.sorted { $0.pixelWidth * $0.pixelHeight < $1.pixelWidth * $1.pixelHeight }

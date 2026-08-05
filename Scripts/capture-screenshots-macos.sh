@@ -38,8 +38,10 @@ if [ ! -d "$APP" ]; then
 fi
 
 # `screencapture` records at the display's backing scale, so a 1x CI runner
-# produces window art with a quarter of the pixels a Retina Mac gives. Opt-in
-# only — never reconfigure a real person's display out from under them.
+# produces window art with a quarter of the pixels a Retina Mac gives. GitHub's
+# runners offer no HiDPI mode, so this cannot be recovered — what it does buy is
+# a display roomy enough not to squeeze the window. Opt-in only: never
+# reconfigure a real person's display out from under them.
 if [ "${SCREENSHOT_FORCE_HIDPI:-0}" = "1" ]; then
 	swift "$(dirname "$0")/hidpi-display.swift" --set || true
 else
