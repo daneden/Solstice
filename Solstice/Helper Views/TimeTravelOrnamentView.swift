@@ -8,109 +8,109 @@
 import SwiftUI
 import TimeMachine
 
-	struct TimeTravelOrnamentView: View {
-		@Environment(\.timeMachine) private var timeMachine
+struct TimeTravelOrnamentView: View {
+	@Environment(\.timeMachine) private var timeMachine
 
-		var body: some View {
-			@Bindable var timeMachine = timeMachine
+	var body: some View {
+		@Bindable var timeMachine = timeMachine
 
-			HStack {
-				if timeMachine.interfaceState.datePickerVisible {
-					Group {
-						Button("Time Travel", systemImage: "clock.arrow.trianglehead.2.counterclockwise.rotate.90") {
-							withAnimation {
-								timeMachine.interfaceState.datePickerVisible = false
-							}
+		HStack {
+			if timeMachine.interfaceState.datePickerVisible {
+				Group {
+					Button("Time Travel", systemImage: "clock.arrow.trianglehead.2.counterclockwise.rotate.90") {
+						withAnimation {
+							timeMachine.interfaceState.datePickerVisible = false
 						}
-						.help("Time Travel slider")
-
-						DatePicker(selection: $timeMachine.date.animation(), displayedComponents: .date) {
-							Text("Choose date")
-						}
-						.labelsHidden()
 					}
-					.transition(.blurReplace)
-				} else {
+					.help("Time Travel slider")
+
+					DatePicker(selection: $timeMachine.date.animation(), displayedComponents: .date) {
+						Text("Choose date")
+					}
+					.labelsHidden()
+				}
+				.transition(.blurReplace)
+			} else {
+				Group {
 					Group {
-						Group {
-							if #available(iOS 26, visionOS 2, macOS 26, watchOS 26, *) {
-								Slider(value: $timeMachine.offset, in: timeMachine.range, neutralValue: 0) {
-									Text("Offset")
-								} minimumValueLabel: {
-									Text("-6mo")
-										.textScale(.secondary)
-										.fixedSize()
-								} maximumValueLabel: {
-									Text("+6mo")
-										.textScale(.secondary)
-										.fixedSize()
-								}
-							} else {
-								Slider(value: $timeMachine.offset, in: timeMachine.range) {
-									Text("Offset")
-								} minimumValueLabel: {
-									Text("-6mo")
-										.fixedSize()
-								} maximumValueLabel: {
-									Text("+6mo")
-										.fixedSize()
-								}
+						if #available(iOS 26, visionOS 2, macOS 26, watchOS 26, *) {
+							Slider(value: $timeMachine.offset, in: timeMachine.range, neutralValue: 0) {
+								Text("Offset")
+							} minimumValueLabel: {
+								Text("-6mo")
+									.textScale(.secondary)
+									.fixedSize()
+							} maximumValueLabel: {
+								Text("+6mo")
+									.textScale(.secondary)
+									.fixedSize()
+							}
+						} else {
+							Slider(value: $timeMachine.offset, in: timeMachine.range) {
+								Text("Offset")
+							} minimumValueLabel: {
+								Text("-6mo")
+									.fixedSize()
+							} maximumValueLabel: {
+								Text("+6mo")
+									.fixedSize()
 							}
 						}
-						.labelsHidden()
-						#if os(macOS)
+					}
+					.labelsHidden()
+					#if os(macOS)
 						.frame(width: 160)
-						#else
+					#else
 						.frame(width: 280)
-						#endif
+					#endif
 
-						Button("Choose date", systemImage: "calendar") {
-							withAnimation {
-								timeMachine.interfaceState.datePickerVisible = true
-							}
+					Button("Choose date", systemImage: "calendar") {
+						withAnimation {
+							timeMachine.interfaceState.datePickerVisible = true
 						}
-						.help("Date picker")
 					}
-					.transition(.blurReplace)
+					.help("Date picker")
 				}
-
-				Divider()
-
-				Button("Reset", systemImage: "arrow.counterclockwise") {
-					withAnimation {
-						timeMachine.reset()
-					}
-				}
-				.disabled(!timeMachine.isActive)
-				.help("Reset to the current date")
+				.transition(.blurReplace)
 			}
-			.labelStyle(.iconOnly)
-			.buttonBorderShape(.circle)
-			#if os(visionOS)
+
+			Divider()
+
+			Button("Reset", systemImage: "arrow.counterclockwise") {
+				withAnimation {
+					timeMachine.reset()
+				}
+			}
+			.disabled(!timeMachine.isActive)
+			.help("Reset to the current date")
+		}
+		.labelStyle(.iconOnly)
+		.buttonBorderShape(.circle)
+		#if os(visionOS)
 			.padding(16)
 			.glassBackgroundEffect(in: .capsule)
-			#else
+		#else
 			.padding(8)
 			.backportGlassEffect(in: .capsule)
-			#endif
+		#endif
 			.animation(.default, value: timeMachine.interfaceState.datePickerVisible)
-			#if os(macOS)
+		#if os(macOS)
 			.fixedSize(horizontal: false, vertical: true)
 			.frame(maxWidth: .infinity, alignment: .trailing)
 			.scenePadding()
-			#endif
-		}
+		#endif
 	}
+}
 
-	#Preview("Slider") {
-		TimeTravelOrnamentView()
-			.withTimeMachine(.solsticeTimeMachine)
-	}
+#Preview("Slider") {
+	TimeTravelOrnamentView()
+		.withTimeMachine(.solsticeTimeMachine)
+}
 
-	#Preview("Date picker") {
-		let timeMachine = TimeMachine.solsticeTimeMachine
-		timeMachine.interfaceState.datePickerVisible = true
+#Preview("Date picker") {
+	let timeMachine = TimeMachine.solsticeTimeMachine
+	timeMachine.interfaceState.datePickerVisible = true
 
-		return TimeTravelOrnamentView()
-			.withTimeMachine(timeMachine)
-	}
+	return TimeTravelOrnamentView()
+		.withTimeMachine(timeMachine)
+}

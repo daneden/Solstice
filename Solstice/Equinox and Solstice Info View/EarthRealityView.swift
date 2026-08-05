@@ -62,11 +62,11 @@ struct EarthRealityView: View {
 					// geography while the globe spins. A light shines along its -Z axis; the
 					// tilts swing that axis toward each edge of the view.
 					let lightTilts: [(angle: Float, axis: SIMD3<Float>)] = [
-						(0, [0, 1, 0]),          // headlight, straight down the view axis
-						(.pi / 2, [0, 1, 0]),    // lights the right limb
-						(-.pi / 2, [0, 1, 0]),   // lights the left limb
-						(.pi / 2, [1, 0, 0]),    // lights the bottom limb
-						(-.pi / 2, [1, 0, 0]),   // lights the top limb
+						(0, [0, 1, 0]), // headlight, straight down the view axis
+						(.pi / 2, [0, 1, 0]), // lights the right limb
+						(-.pi / 2, [0, 1, 0]), // lights the left limb
+						(.pi / 2, [1, 0, 0]), // lights the bottom limb
+						(-.pi / 2, [1, 0, 0]), // lights the top limb
 					]
 					for tilt in lightTilts {
 						let light = Entity()

@@ -110,6 +110,10 @@ xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID"
 xcrun simctl install "$UDID" "$APP"
 
+# A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
+# reads a green log, so count the misses and exit non-zero at the end.
+FAILURES=0
+
 # shoot <locale> <visionScreen-or-empty> <timeOffset-or-empty> <displayEpoch> <settle-secs> <outName>
 shoot() {
 	local loc="$1" screen="$2" offset="$3" epoch="$4" settle="$5" name="$6"
@@ -143,6 +147,7 @@ shoot() {
 		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
 	else
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
+		FAILURES=$((FAILURES + 1))
 	fi
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 }
@@ -156,5 +161,10 @@ for loc in "${LOCALES[@]}"; do
 	shoot "$loc" "solstice-info" ""                  "$DAILY_EPOCH"  25 "vision-02-solstice-info"
 	shoot "$loc" ""              "$TIME_OFFSET_DAYS" "$TRAVEL_EPOCH" 20 "vision-03-time-travel"
 done
+
+if [ "$FAILURES" -gt 0 ]; then
+	echo "==> $FAILURES Vision Pro shot(s) failed — see the ✗ lines above" >&2
+	exit 1
+fi
 
 echo "==> Done. Vision Pro shots in $OUT/<locale>/vision-*.png (3840×2160)"

@@ -24,15 +24,21 @@ jobs:
 
     # Nothing built here is distributed: the simulator targets never verify a
     # signature, and the Mac app only has to launch on this runner. Ad-hoc
-    # signing keeps the job free of certificates and profiles entirely. The
-    # entitlements that need a profile (iCloud, APNs, app groups) go inert, which
-    # the capture path already tolerates — it runs on an in-memory store with
-    # CloudKit disabled, and every app-group read is nil-guarded.
+    # signing keeps the job free of certificates and profiles entirely.
+    #
+    # The entitlements have to go with them. Solstice claims restricted ones
+    # (iCloud, APNs, associated domains, app groups) that only a provisioning
+    # profile can authorize; ad-hoc signed, AMFI refuses to spawn the process at
+    # all — "Launchd job spawn failed" — and every macOS window capture comes
+    # back empty. Dropping them is safe for capture: the app is not sandboxed,
+    # screenshot mode runs on an in-memory store with CloudKit disabled, and
+    # every app-group read is nil-guarded.
     env:
       AD_HOC_SIGNING: >-
         CODE_SIGN_STYLE=Manual
         CODE_SIGN_IDENTITY=-
         PROVISIONING_PROFILE_SPECIFIER=
+        CODE_SIGN_ENTITLEMENTS=
 
     steps:
       - name: Checkout

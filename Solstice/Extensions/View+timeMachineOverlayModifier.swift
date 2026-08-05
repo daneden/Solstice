@@ -41,9 +41,9 @@ struct TimeMachineOverlayModifier: ViewModifier {
 							}
 						#else
 							.safeAreaBar(edge: .bottom) {
-								overlay
-									.readSize($size)
-							}
+									overlay
+										.readSize($size)
+								}
 						#endif
 					} else {
 						content
@@ -84,15 +84,15 @@ struct TimeMachineOverlayModifier: ViewModifier {
 					.transition(.blurReplace)
 			default:
 				#if os(iOS)
-				switch horizontalSizeClass {
-				case .regular:
-					TimeMachineDraggableOverlayView()
-				default:
-					TimeMachinePanelView()
-						.transition(.blurReplace)
-				}
+					switch horizontalSizeClass {
+					case .regular:
+						TimeMachineDraggableOverlayView()
+					default:
+						TimeMachinePanelView()
+							.transition(.blurReplace)
+					}
 				#else
-				TimeTravelOrnamentView()
+					TimeTravelOrnamentView()
 				#endif
 			}
 		}

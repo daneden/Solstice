@@ -96,6 +96,10 @@ xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID"
 xcrun simctl install "$UDID" "$APP"
 
+# A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
+# reads a green log, so count the misses and exit non-zero at the end.
+FAILURES=0
+
 # shoot <locale> <selectedLocation-or-empty> <timeOffset-or-empty> <displayEpoch> <outName>
 shoot() {
 	local loc="$1" selected="$2" offset="$3" epoch="$4" name="$5"
@@ -129,6 +133,7 @@ shoot() {
 		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
 	else
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
+		FAILURES=$((FAILURES + 1))
 	fi
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 }
@@ -139,5 +144,10 @@ for loc in "${LOCALES[@]}"; do
 	shoot "$loc" "$SELECTED_LOCATION" ""                  "$DAILY_EPOCH"  "watch-02-detail"
 	shoot "$loc" "$SELECTED_LOCATION" "$TIME_OFFSET_DAYS" "$TRAVEL_EPOCH" "watch-03-time-travel"
 done
+
+if [ "$FAILURES" -gt 0 ]; then
+	echo "==> $FAILURES watch shot(s) failed — see the ✗ lines above" >&2
+	exit 1
+fi
 
 echo "==> Done. Watch shots in $OUT/<locale>/watch-*.png (422×514, Ultra 3)"

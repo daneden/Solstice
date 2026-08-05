@@ -67,6 +67,10 @@ SWIFT
 kill_app() { pkill -9 -f "$BIN_MATCH" 2>/dev/null || true; }
 trap 'kill_app; rm -f "$WINID_SWIFT"' EXIT
 
+# A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
+# reads a green log, so count the misses and exit non-zero at the end.
+FAILURES=0
+
 # shoot <locale> <screenEnv> <outName>
 shoot() {
 	local loc="$1" screenEnv="$2" name="$3"
@@ -103,6 +107,7 @@ shoot() {
 	local dest="$OUT/$loc/$name.png"
 	if [ -z "$wid" ]; then
 		echo "  ✗ $loc/$name — no window found after 20s (swift: $(head -1 /tmp/solstice-winid.err 2>/dev/null))"
+		FAILURES=$((FAILURES + 1))
 		kill_app; return
 	fi
 	rm -f "$dest"
@@ -113,6 +118,7 @@ shoot() {
 	else
 		echo "  ✗ $loc/$name — window $wid found but screencapture wrote nothing (rc=$rc)."
 		echo "     → Grant your terminal Screen Recording permission (System Settings › Privacy & Security)."
+		FAILURES=$((FAILURES + 1))
 	fi
 	kill_app
 }
@@ -123,5 +129,10 @@ for loc in "${LOCALES[@]}"; do
 	shoot "$loc" "UITEST_MAC_SCREEN=detail-annual"          "mac-02-detail-annual"
 	shoot "$loc" "UITEST_MAC_SCREEN=settings-notifications" "mac-03-settings-notifications"
 done
+
+if [ "$FAILURES" -gt 0 ]; then
+	echo "==> $FAILURES macOS shot(s) failed — see the ✗ lines above" >&2
+	exit 1
+fi
 
 echo "==> Done. macOS shots in $OUT/<locale>/mac-*.png"
