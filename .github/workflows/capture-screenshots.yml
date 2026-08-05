@@ -160,6 +160,10 @@ jobs:
           IPAD: ${{ inputs.ipad == 'true' && '1' || '0' }}
           WIDGETS_ONLY: ${{ inputs.widgets_only == 'true' && '1' || '0' }}
           PLATFORM: ${{ matrix.platform }}
+          # The runner's virtual display is 1x, which would halve the linear
+          # resolution of every macOS window capture. Ignored by the other
+          # platforms, whose simulator captures are device-native regardless.
+          SCREENSHOT_FORCE_HIDPI: '1'
         run: |
           set -euo pipefail
           case "$PLATFORM" in

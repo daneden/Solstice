@@ -37,6 +37,15 @@ if [ ! -d "$APP" ]; then
 	exit 1
 fi
 
+# `screencapture` records at the display's backing scale, so a 1x CI runner
+# produces window art with a quarter of the pixels a Retina Mac gives. Opt-in
+# only — never reconfigure a real person's display out from under them.
+if [ "${SCREENSHOT_FORCE_HIDPI:-0}" = "1" ]; then
+	swift "$(dirname "$0")/hidpi-display.swift" --set || true
+else
+	swift "$(dirname "$0")/hidpi-display.swift" || true
+fi
+
 # AppleLocale per shipping locale (mirrors Screenshots.xctestplan). The BCP-47
 # language code is the locale name itself. macOS ships bash 3.2 (no associative
 # arrays), so map with a case.
