@@ -1,66 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "-" : {
-      "comment" : "Less daylight middle of sentence",
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "-"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "-"
-          }
-        }
-      }
-    },
     "-6mo" : {
       "localizations" : {
         "ar" : {
@@ -1156,126 +1096,6 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "%1$@%2$@"
-          }
-        }
-      }
-    },
-    "%lld" : {
-      "comment" : "Number of days in the past or future for Time Travel on Apple Watch",
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "%lld"
-          }
-        }
-      }
-    },
-    "+" : {
-      "comment" : "More daylight middle of sentence",
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "+"
           }
         }
       }
@@ -2908,65 +2728,6 @@
         }
       }
     },
-    "Current location" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "الموقع الحالي"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Aktueller Ort"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Ubicación actual"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Lieu actuel"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posizione attuale"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "現在地"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Huidige locatie"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Bieżąca lokalizacja"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "当前位置"
-          }
-        }
-      }
-    },
     "Current Location" : {
       "localizations" : {
         "ar" : {
@@ -3606,7 +3367,7 @@
       }
     },
     "Daylight gain/loss" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -6575,65 +6336,6 @@
         }
       }
     },
-    "Loading..." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "يجري التحميل…"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Laden …"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Cargando..."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Chargement..."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Caricamento..."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "読み込み中…"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Laden..."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Wczytywanie..."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "加载中…"
-          }
-        }
-      }
-    },
     "Local time" : {
       "localizations" : {
         "ar" : {
@@ -8430,8 +8132,8 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "%1$lld giorni al %2$@."
+                  "state" : "machine_translated",
+                  "value" : "%1$lld giorno al %2$@."
                 }
               },
               "other" : {
@@ -8442,7 +8144,7 @@
               },
               "zero" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "machine_translated",
                   "value" : "%1$lld giorni al %2$@."
                 }
               }
@@ -10420,65 +10122,6 @@
         }
       }
     },
-    "Show daylight for ${location}" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "إظهار ضوء النهار لموقع ${location}"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Tageslicht für ${location} anzeigen"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Mostrar la luz natural de ${location}"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Afficher la lumière du jour pour ${location}"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra la luce del giorno per ${location}"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "${location}の日照時間を表示"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Daglicht tonen voor ${location}"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Pokaż światło dzienne dla ${location}"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "显示${location}的日照"
-          }
-        }
-      }
-    },
     "Show daylight for ${selectedLocation}" : {
       "localizations" : {
         "ar" : {
@@ -10651,65 +10294,6 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "显示时间旅行"
-          }
-        }
-      }
-    },
-    "Simple" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "بسيط"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Einfach"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Sencillo"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Simple"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Semplice"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "シンプル"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Eenvoudig"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Prosty"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "简约"
           }
         }
       }
@@ -11411,7 +10995,7 @@
       }
     },
     "Sunrise/sunset times" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -12020,20 +11604,20 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Ci sono %1$lld opzioni che corrispondono a ‘%2$@’"
+                  "state" : "machine_translated",
+                  "value" : "C’è %1$lld opzione che corrisponde a “%2$@”."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Ci sono %1$lld opzioni che corrispondono a ‘%2$@’"
+                  "state" : "machine_translated",
+                  "value" : "Ci sono %1$lld opzioni che corrispondono a “%2$@”."
                 }
               },
               "zero" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Ci sono %1$lld opzioni che corrispondono a ‘%2$@’"
+                  "state" : "machine_translated",
+                  "value" : "Non ci sono opzioni che corrispondono a “%2$@”."
                 }
               }
             }
@@ -12488,7 +12072,7 @@
       }
     },
     "Time until next solstice" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -13078,65 +12662,6 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "查看日照"
-          }
-        }
-      }
-    },
-    "View Earth at:" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "عرض الأرض عند:"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Erde anzeigen bei:"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Ver la Tierra en:"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Afficher la Terre à :"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visualizza la Terra a:"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "地球を表示する時期:"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Aarde bekijken op:"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Wyświetl Ziemię w:"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "查看地球于："
           }
         }
       }
