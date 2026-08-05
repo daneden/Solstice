@@ -94,9 +94,12 @@ shoot() {
 		sleep 2   # allow the window (and, for settings, the overlay window) to present
 	fi
 
-	# Poll up to ~20s for the app's window (launch / settings-window can be slow).
+	# Poll for the app's window (launch / settings-window can be slow). The ceiling
+	# is generous because it costs nothing when things go well — the loop breaks on
+	# the first sighting — and 20s proved marginal on a cold CI runner, where the
+	# settings shot found its window on one run and timed out on the next.
 	local wid="" i=0
-	while [ "$i" -lt 20 ]; do
+	while [ "$i" -lt 45 ]; do
 		sleep 1
 		wid=$(swift "$WINID_SWIFT" 2>/tmp/solstice-winid.err)
 		[ -n "$wid" ] && break
