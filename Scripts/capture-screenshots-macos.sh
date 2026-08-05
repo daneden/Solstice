@@ -65,7 +65,15 @@ for w in list {  // front-to-back order; first match is frontmost
 SWIFT
 
 kill_app() { pkill -9 -f "$BIN_MATCH" 2>/dev/null || true; }
-trap 'kill_app; rm -f "$WINID_SWIFT"' EXIT
+
+# Compile the helper once. `swift file.swift` recompiles on every invocation —
+# tens of seconds per call against a fraction of a second of actual work, and
+# this one runs on every iteration of the window poll below, so the poll's
+# "seconds" were never seconds.
+WINID_BIN="${WINID_SWIFT%.swift}"
+swiftc -O "$WINID_SWIFT" -o "$WINID_BIN"
+
+trap 'kill_app; rm -f "$WINID_SWIFT" "$WINID_BIN"' EXIT
 
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.
@@ -96,12 +104,12 @@ shoot() {
 
 	# Poll for the app's window (launch / settings-window can be slow). The ceiling
 	# is generous because it costs nothing when things go well — the loop breaks on
-	# the first sighting — and 20s proved marginal on a cold CI runner, where the
-	# settings shot found its window on one run and timed out on the next.
+	# the first sighting — and the old one proved marginal on a cold CI runner,
+	# where the settings shot found its window on one run and timed out on the next.
 	local wid="" i=0
 	while [ "$i" -lt 45 ]; do
 		sleep 1
-		wid=$(swift "$WINID_SWIFT" 2>/tmp/solstice-winid.err)
+		wid=$("$WINID_BIN" 2>/tmp/solstice-winid.err)
 		[ -n "$wid" ] && break
 		i=$((i + 1))
 	done
@@ -109,7 +117,7 @@ shoot() {
 	mkdir -p "$OUT/$loc"
 	local dest="$OUT/$loc/$name.png"
 	if [ -z "$wid" ]; then
-		echo "  ✗ $loc/$name — no window found after 20s (swift: $(head -1 /tmp/solstice-winid.err 2>/dev/null))"
+		echo "  ✗ $loc/$name — no window found after 45s (swift: $(head -1 /tmp/solstice-winid.err 2>/dev/null))"
 		# A window that never appears has two very different causes: the process
 		# died, or it is alive and simply never presented. Say which, and hand over
 		# the crash log when there is one — otherwise the next debugging round is

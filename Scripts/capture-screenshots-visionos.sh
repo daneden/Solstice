@@ -91,7 +91,14 @@ for path in CommandLine.arguments.dropFirst() {
 	guard CGImageDestinationFinalize(dest) else { exit(1) }
 }
 SWIFT
-trap 'rm -f "$FILL_CROP_SWIFT"' EXIT
+
+# Compile the helper once. `swift file.swift` recompiles on every invocation,
+# which dominated the runtime here — tens of seconds per call against a fraction
+# of a second of actual work, paid once per screenshot.
+FILL_CROP_BIN="${FILL_CROP_SWIFT%.swift}"
+swiftc -O "$FILL_CROP_SWIFT" -o "$FILL_CROP_BIN"
+
+trap 'rm -f "$FILL_CROP_SWIFT" "$FILL_CROP_BIN"' EXIT
 
 # Two Vision Pro sims can coexist (one per runtime); take the newest runtime —
 # `simctl list` orders runtime sections ascending. Override via DEVICE_UDID.
@@ -143,7 +150,7 @@ shoot() {
 	rm -f "$dest"
 	xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
 	if [ -s "$dest" ]; then
-		swift "$FILL_CROP_SWIFT" "$dest"
+		"$FILL_CROP_BIN" "$dest"
 		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
 	else
 		echo "  ✗ $loc/$name — screenshot wrote nothing"

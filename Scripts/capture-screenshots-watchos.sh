@@ -83,7 +83,14 @@ for path in CommandLine.arguments.dropFirst() {
 	guard CGImageDestinationFinalize(dest) else { exit(1) }
 }
 SWIFT
-trap 'rm -f "$STRIP_ALPHA_SWIFT"' EXIT
+
+# Compile the helper once. `swift file.swift` recompiles on every invocation,
+# which dominated the runtime here — tens of seconds per call against a fraction
+# of a second of actual work, paid once per screenshot.
+STRIP_ALPHA_BIN="${STRIP_ALPHA_SWIFT%.swift}"
+swiftc -O "$STRIP_ALPHA_SWIFT" -o "$STRIP_ALPHA_BIN"
+
+trap 'rm -f "$STRIP_ALPHA_SWIFT" "$STRIP_ALPHA_BIN"' EXIT
 
 UDID=$(xcrun simctl list devices available | grep -F "$DEVICE_NAME (" | head -1 | grep -oE '[0-9A-F-]{36}')
 if [ -z "$UDID" ]; then
@@ -129,7 +136,7 @@ shoot() {
 	rm -f "$dest"
 	xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
 	if [ -s "$dest" ]; then
-		swift "$STRIP_ALPHA_SWIFT" "$dest"
+		"$STRIP_ALPHA_BIN" "$dest"
 		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
 	else
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
