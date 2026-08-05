@@ -107,6 +107,26 @@ shoot() {
 	local dest="$OUT/$loc/$name.png"
 	if [ -z "$wid" ]; then
 		echo "  ✗ $loc/$name — no window found after 20s (swift: $(head -1 /tmp/solstice-winid.err 2>/dev/null))"
+		# A window that never appears has two very different causes: the process
+		# died, or it is alive and simply never presented. Say which, and hand over
+		# the crash log when there is one — otherwise the next debugging round is
+		# guesswork against a 20-minute CI cycle.
+		if pgrep -f "$BIN_MATCH" > /dev/null; then
+			echo "     process is alive but presented no layer-0 window; on-screen windows:"
+			swift -e 'import CoreGraphics
+			let l = (CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]]) ?? []
+			for w in l { print("       \(w[kCGWindowOwnerName as String] as? String ?? "?") layer=\(w[kCGWindowLayer as String] as? Int ?? -1)") }' 2>&1 | head -20
+		else
+			echo "     process is NOT running — it failed to launch or crashed"
+			local crash
+			crash=$(ls -t "$HOME/Library/Logs/DiagnosticReports/Solstice"*.ips 2>/dev/null | head -1)
+			if [ -n "$crash" ]; then
+				echo "     crash report $crash:"
+				grep -aE '"termination"|"exception"|Namespace|Code Signing|signal' "$crash" 2>/dev/null | head -10 | sed 's/^/       /'
+			else
+				echo "     no crash report found in ~/Library/Logs/DiagnosticReports"
+			fi
+		fi
 		FAILURES=$((FAILURES + 1))
 		kill_app; return
 	fi

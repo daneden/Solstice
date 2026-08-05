@@ -112,11 +112,18 @@ jobs:
             -derivedDataPath .screenshots/DerivedData-visionos
 
       # ---- Run iOS/iPad/widgets capture script (uses test plan & xcresulttool) ----
+      #
+      # Every capture step carries `if: !cancelled()` so each platform reports its
+      # own outcome. Without it the first script to exit non-zero skips the rest,
+      # and one missing shot costs three platforms of output on a job that takes
+      # hours to reach this point. The job still fails if any of them failed.
+      #
       # The locales input reaches the scripts through the environment, never
       # through ${{ }} interpolation into the shell: interpolation would splice
       # the raw input into the command line. Deliberately unquoted below — the
       # scripts take one locale per argument, and an empty value means "all".
       - name: Run iOS / iPad / Widgets capture
+        if: '!cancelled()'
         env:
           LOCALES: ${{ inputs.locales }}
           IPAD: ${{ inputs.ipad == 'true' && '1' || '0' }}
@@ -129,6 +136,7 @@ jobs:
 
       # ---- Run macOS capture script (window captures) ----
       - name: Run macOS capture script
+        if: '!cancelled()'
         env:
           LOCALES: ${{ inputs.locales }}
         run: |
@@ -139,6 +147,7 @@ jobs:
 
       # ---- Run watchOS capture script ----
       - name: Run watchOS capture script
+        if: '!cancelled()'
         env:
           LOCALES: ${{ inputs.locales }}
         run: |
@@ -149,6 +158,7 @@ jobs:
 
       # ---- Run visionOS capture script ----
       - name: Run visionOS capture script
+        if: '!cancelled()'
         env:
           LOCALES: ${{ inputs.locales }}
         run: |
