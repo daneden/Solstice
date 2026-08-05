@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daneden/TimeMachine",
       "state" : {
-        "revision" : "ac3bf0f6aab01e2189d323c8804de4d229de2f6d",
-        "version" : "1.1.4"
+        "revision" : "ee3fd3aa938aa64a2873a8e7e982b7d9a9680477",
+        "version" : "1.2.0"
       }
     },
     {
