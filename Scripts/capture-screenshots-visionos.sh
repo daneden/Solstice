@@ -120,12 +120,28 @@ xcrun simctl install "$UDID" "$APP"
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.
 FAILURES=0
+# Carried across shots so each one can prove it differs from the last.
+LAST_SUM=""
+LAST_PID=""
 
 # shoot <locale> <visionScreen-or-empty> <timeOffset-or-empty> <displayEpoch> <settle-secs> <outName>
 shoot() {
 	local loc="$1" screen="$2" offset="$3" epoch="$4" settle="$5" name="$6"
+
+	# Wait for the process to actually be gone before relaunching. `simctl launch`
+	# returns a PID immediately, and against a still-running instance it surfaces
+	# that one without applying the new arguments — which is how a shot ends up
+	# with the previous window *and* the previous locale.
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
-	sleep 1
+	local gone=0 t=0
+	while [ "$t" -lt 15 ]; do
+		if ! xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID"; then
+			gone=1; break
+		fi
+		sleep 1
+		t=$((t + 1))
+	done
+	[ "$gone" = "1" ] || echo "     warning: $BUNDLE_ID still listed after 15s; relaunch may not apply"
 
 	# Locale comes from per-process launch arguments (same mechanism as the
 	# watchOS capture); SwiftUI derives layout direction (ar → RTL) from the language.
@@ -141,8 +157,16 @@ shoot() {
 	[ -n "$offset" ] && envArgs+=("SIMCTL_CHILD_UITEST_TIME_OFFSET_DAYS=$offset")
 	[ -n "$epoch" ] && envArgs+=("SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$epoch")
 
-	env "${envArgs[@]}" \
-		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" > /dev/null
+	# `simctl launch` prints "<bundle id>: <pid>" — keep it, so a PID that did not
+	# change tells us the relaunch was a no-op rather than a fresh process.
+	local launchOut
+	launchOut=$(env "${envArgs[@]}" \
+		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" 2>&1)
+	local pid="${launchOut##*: }"
+	if [ -n "$LAST_PID" ] && [ "$pid" = "$LAST_PID" ]; then
+		echo "     warning: pid $pid unchanged from the previous shot — the app did not restart"
+	fi
+	LAST_PID="$pid"
 	sleep "$settle"
 
 	mkdir -p "$OUT/$loc"
@@ -151,7 +175,20 @@ shoot() {
 	xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
 	if [ -s "$dest" ]; then
 		"$FILL_CROP_BIN" "$dest"
-		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
+		# A shot byte-identical to the previous one means the app never changed
+		# state — the relaunch was swallowed and this frame belongs to the shot
+		# before it. Silently, that ships one locale's screenshot under another
+		# language, which is exactly what happened before this check existed.
+		local sum
+		sum="$(md5 -q "$dest")"
+		if [ -n "$LAST_SUM" ] && [ "$sum" = "$LAST_SUM" ]; then
+			echo "  ✗ $loc/$name — identical to the previous shot; the app did not change state"
+			rm -f "$dest"
+			FAILURES=$((FAILURES + 1))
+		else
+			LAST_SUM="$sum"
+			echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
+		fi
 	else
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
 		FAILURES=$((FAILURES + 1))
