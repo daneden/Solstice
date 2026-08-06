@@ -44,7 +44,22 @@ let solarCalendar: Calendar = {
 	return calendar
 }()
 
-let localTimeZone = TimeZone.ReferenceType.local
+/// The viewer's own time zone — what "3 hours behind you" is measured against.
+///
+/// Pinned to UTC while capturing screenshots. The offset shown next to a
+/// location's local time is relative to this, so without pinning it the same
+/// screen reads "-4 hr" captured on a UTC CI runner and "-5 hrs" captured on a
+/// Mac in BST. Everything else about a capture is already pinned — clock,
+/// location, locale, chart type — and this is the last thing that let the
+/// machine leak into the output.
+let localTimeZone: TimeZone = {
+	#if DEBUG
+		if ScreenshotLaunch.isCapturing {
+			return TimeZone(secondsFromGMT: 0) ?? .gmt
+		}
+	#endif
+	return .autoupdatingCurrent
+}()
 
 // MARK: - Unified Location Data
 
