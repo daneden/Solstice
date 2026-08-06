@@ -122,8 +122,6 @@ enum ScreenshotLaunch {
 	static func prepareForCaptureIfNeeded() {
 		guard isCapturing else { return }
 		let defaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
-		// Skip the first-launch onboarding sheet so the app opens straight into content.
-		defaults?.set(true, forKey: Preferences.hasCompletedOnboarding.key)
 		// Show the notification settings in their enabled state for the screenshot.
 		defaults?.set(true, forKey: Preferences.notificationsEnabled.key)
 		// Always show Time Travel UI

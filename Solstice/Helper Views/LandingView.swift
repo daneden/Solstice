@@ -30,7 +30,6 @@ struct LandingView: View {
 	@Environment(\.dynamicTypeSize) private var dynamicTypeSize
 	@Environment(\.dismiss) private var dismiss
 	@Environment(CurrentLocation.self) private var currentLocation
-	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
 	@State private var animate = false
 
 	@State private var contentSize: CGSize = .init(width: 0, height: 200)
@@ -135,9 +134,6 @@ struct LandingView: View {
 				bottomButtons
 			}
 		}
-		.onDisappear {
-			hasCompletedOnboarding = true
-		}
 		.preference(key: SizePreferenceKey.self, value: contentSize.height + bottomButtonSize.height)
 	}
 }
@@ -147,7 +143,6 @@ struct LandingView: View {
 }
 
 private struct WithOnboardingViewModifier: ViewModifier {
-	@AppStorage(Preferences.hasCompletedOnboarding) private var hasCompletedOnboarding
 	@Environment(CurrentLocation.self) private var currentLocation
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -157,8 +152,15 @@ private struct WithOnboardingViewModifier: ViewModifier {
 
 	func body(content: Content) -> some View {
 		content
-			.task {
-				shouldPresentOnboarding = !currentLocation.isAuthorized && !hasCompletedOnboarding
+			// The authorization status is the only durable record of whether the user
+			// has answered; a local "seen the welcome" flag isn't. Builds before Aug
+			// 2026 couldn't present the macOS prompt, so they set that flag against a
+			// decision that was never made and permanently suppressed the sheet — an
+			// App Group value that outlives even deleting the app on macOS. Reading
+			// the status recovers those installs and can't drift from the system.
+			.onChange(of: currentLocation.authorizationStatus, initial: true) { _, status in
+				guard !ScreenshotLaunch.isCapturing else { return }
+				shouldPresentOnboarding = status == .notDetermined
 			}
 			.sheet(isPresented: $shouldPresentOnboarding) {
 				LandingView()
@@ -166,7 +168,6 @@ private struct WithOnboardingViewModifier: ViewModifier {
 						sheetSize = size
 					})
 					.presentationDetents(horizontalSizeClass == .regular ? [.large] : [.height(sheetSize)])
-					.interactiveDismissDisabled()
 			}
 	}
 }

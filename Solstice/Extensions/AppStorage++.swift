@@ -54,10 +54,6 @@ typealias AppStorageKVPair<T> = (key: String, value: T)
 enum Preferences {
 	typealias Value = AppStorageKVPair
 
-	// MARK: Onboarding
-
-	static let hasCompletedOnboarding: Value = ("hasCompletedOnboarding", false)
-
 	// MARK: Notifications
 
 	/// The user preference for whether notifications are enabled
