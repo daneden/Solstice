@@ -171,27 +171,38 @@ shoot() {
 
 	mkdir -p "$OUT/$loc"
 	local dest="$OUT/$loc/$name.png"
-	rm -f "$dest"
-	xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
-	if [ -s "$dest" ]; then
-		"$FILL_CROP_BIN" "$dest"
-		# A shot byte-identical to the previous one means the app never changed
-		# state — the relaunch was swallowed and this frame belongs to the shot
-		# before it. Silently, that ships one locale's screenshot under another
-		# language, which is exactly what happened before this check existed.
-		local sum
+
+	# The settle above is a floor, not a guarantee: the app relaunches with a new
+	# pid, but the simulator can still be presenting the previous app's last frame
+	# when the sleep expires. So don't trust the clock — keep re-grabbing until the
+	# frame differs from the one before it. An identical frame is proof the new
+	# state hasn't rendered yet; accepting it ships one locale's screenshot under
+	# another language, which is what happened before this loop existed.
+	local sum="" attempt=0
+	while [ "$attempt" -lt 8 ]; do
+		rm -f "$dest"
+		xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
+		[ -s "$dest" ] || break
 		sum="$(md5 -q "$dest")"
-		if [ -n "$LAST_SUM" ] && [ "$sum" = "$LAST_SUM" ]; then
-			echo "  ✗ $loc/$name — identical to the previous shot; the app did not change state"
-			rm -f "$dest"
-			FAILURES=$((FAILURES + 1))
-		else
-			LAST_SUM="$sum"
-			echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
-		fi
-	else
+		[ -z "$LAST_SUM" ] && break
+		[ "$sum" != "$LAST_SUM" ] && break
+		sleep 5
+		attempt=$((attempt + 1))
+	done
+
+	if [ ! -s "$dest" ]; then
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
 		FAILURES=$((FAILURES + 1))
+	elif [ -n "$LAST_SUM" ] && [ "$sum" = "$LAST_SUM" ]; then
+		echo "  ✗ $loc/$name — still identical to the previous shot after $((attempt * 5))s; the app never changed state"
+		rm -f "$dest"
+		FAILURES=$((FAILURES + 1))
+	else
+		LAST_SUM="$sum"   # compare raw captures: the crop below rewrites the file
+		"$FILL_CROP_BIN" "$dest"
+		local extra=""
+		[ "$attempt" -gt 0 ] && extra=" (+$((attempt * 5))s waiting for the new frame)"
+		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))$extra"
 	fi
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 }
