@@ -41,6 +41,12 @@ extension View {
 				            sunAnchor: normalizedAnchor(geometry?.sunPoint, in: frame),
 				            horizonFraction: normalizedHorizon(geometry?.horizonY, in: frame))
 			}
+			// Match the chart, which pins itself to LTR for the same reason (see
+			// DaylightChart). The anchor arrives as a fraction measured in that LTR
+			// space, but a gradient's unit points are mirrored under an RTL layout
+			// direction — so in Arabic the sun marker sat at sunset on the right
+			// while its glow burned on the left.
+			.environment(\.layoutDirection, .leftToRight)
 		}
 		.coordinateSpace(.named(SkyGradient.coordinateSpaceName))
 	}
