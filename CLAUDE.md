@@ -33,8 +33,11 @@ xcodebuild test -scheme Solstice -destination 'platform=iOS Simulator,name=iPhon
 ```
 
 ### Test Targets
-- **SolsticeTests**: Unit tests using Swift Testing (`@Test` macro). Covers `SolsticeCalculator` solar event date calculations.
-- **SolsticeUITests**: UI tests using XCUITest. Includes screenshot capture for accent color visual regression detection.
+- **SolsticeTests**: Unit tests, mixed Swift Testing (`@Test`) and XCTest. Covers
+  `SolsticeCalculator` solar event dates, the sky model, calendar framing (a non-Gregorian
+  region default must not reach the solar maths), marketing widget rendering, and the
+  locale boundary the screenshot pipeline relies on.
+- **SolsticeUITests**: XCUITest. Drives the App Store screenshot capture for iPhone and iPad.
 
 ## Architecture
 
@@ -67,10 +70,16 @@ xcodebuild test -scheme Solstice -destination 'platform=iOS Simulator,name=iPhon
 - `ObservableLocation`: `AnyLocation & AnyObject` for class-based locations
 
 ### Dependencies (SPM)
-- **Solar**: Sunrise/sunset calculations
 - **Suite**: Shared UI components
 - **TimeMachine**: Debug time travel functionality
+- **YapKit**: In-app feedback form
 - **RealityKitContent**: visionOS 3D content
+
+Solar calculations are **not** a dependency. `Solstice/Helpers/NTSolar.swift` is
+vendored public-domain source (Neil Tiffin, 2019, from `stjarnhimlen.se/comp/sunriset.c`)
+with the app's own extensions in `Solstice/Extensions/NTSolar++.swift`. It replaced
+the `Solar` package in Feb 2026; an earlier attempt to migrate to SunKit instead was
+abandoned, so neither of those names should reappear.
 
 ## Platform Conditionals
 
