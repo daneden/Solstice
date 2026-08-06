@@ -115,6 +115,12 @@ xcrun simctl shutdown "$UDID" 2>/dev/null || true
 sleep 2
 xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID"
+# Uninstall first. visionOS restores a scene's window placement across launches
+# from state kept in the app container, which surviving installs carry forward —
+# an earlier session that left the solstice-info window open put that window in
+# front of all 30 shots of a later run, every one of them still byte-unique
+# because the main window behind it kept changing.
+xcrun simctl uninstall "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 xcrun simctl install "$UDID" "$APP"
 
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody

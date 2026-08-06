@@ -33,6 +33,10 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			.chartYAxis { yAxisMarks }
 			.chartLegend(.hidden)
 			.environment(\.timeZone, location.timeZone)
+			// The marks are binned with `chartCalendar`; the axis labels are generated from
+			// the environment. They have to be the same calendar or the labels name months
+			// the bars do not belong to.
+			.environment(\.calendar, chartCalendar)
 
 			legend
 		}
@@ -65,7 +69,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 	}
 
 	private var currentMonthIndicator: some ChartContent {
-		BarMark(x: .value("Current month", timeMachine.date, unit: .month))
+		BarMark(x: .value("Current month", timeMachine.date, unit: .month, calendar: chartCalendar))
 			.foregroundStyle(.quaternary)
 	}
 
@@ -91,7 +95,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			let yStart: Double = max(0, solar.startOfDay.distance(to: astronomicalSunrise))
 			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: astronomicalSunset))
 			BarMark(
-				x: .value("Astronomical Twilight", solar.date, unit: .month),
+				x: .value("Astronomical Twilight", solar.date, unit: .month, calendar: chartCalendar),
 				yStart: .value("Astronomical Sunrise", yStart),
 				yEnd: .value("Astronomical Sunset", yEnd)
 			)
@@ -107,7 +111,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			let yStart: Double = max(0, solar.startOfDay.distance(to: nauticalSunrise))
 			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: nauticalSunset))
 			BarMark(
-				x: .value("Nautical Twilight", solar.date, unit: .month),
+				x: .value("Nautical Twilight", solar.date, unit: .month, calendar: chartCalendar),
 				yStart: .value("Nautical Sunrise", yStart),
 				yEnd: .value("Nautical Sunset", yEnd)
 			)
@@ -123,7 +127,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 			let yStart: Double = max(0, solar.startOfDay.distance(to: civilSunrise))
 			let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: civilSunset))
 			BarMark(
-				x: .value("Civil Twilight", solar.date, unit: .month),
+				x: .value("Civil Twilight", solar.date, unit: .month, calendar: chartCalendar),
 				yStart: .value("Civil Sunrise", yStart),
 				yEnd: .value("Civil Sunset", yEnd)
 			)
@@ -137,7 +141,7 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 		let yStart: Double = max(0, solar.startOfDay.distance(to: sunrise))
 		let yEnd: Double = min(dayLength, solar.startOfDay.distance(to: sunset))
 		return BarMark(
-			x: .value("Daylight", solar.date, unit: .month),
+			x: .value("Daylight", solar.date, unit: .month, calendar: chartCalendar),
 			yStart: .value("Sunrise", yStart),
 			yEnd: .value("Sunset", yEnd)
 		)
@@ -173,23 +177,16 @@ struct AnnualDaylightChart<Location: AnyLocation>: View {
 }
 
 extension AnnualDaylightChart {
+	/// The chart spans one seasonal cycle, so it needs a calendar whose year is a season.
+	/// See `Calendar.seasonalEquivalent`.
+	var chartCalendar: Calendar {
+		calendar.seasonalEquivalent
+	}
+
 	var monthlySolars: [NTSolar] {
-		guard let year = calendar.dateInterval(of: .year, for: timeMachine.date) else {
-			return []
-		}
-
-		var lastDate = calendar.date(bySetting: .day, value: 21, of: year.start) ?? year.start
-		lastDate = calendar.date(bySetting: .hour, value: 12, of: lastDate) ?? lastDate
-		var dates: [Date] = []
-
-		while lastDate < year.end {
-			dates.append(lastDate)
-			lastDate = calendar.date(byAdding: .month, value: 1, to: lastDate) ?? lastDate.addingTimeInterval(60 * 60 * 24 * 7 * 4)
-		}
-
-		return dates.map { date in
+		chartCalendar.monthlySampleDates(inYearContaining: timeMachine.date).compactMap { date in
 			NTSolar(for: date, coordinate: location.coordinate, timeZone: location.timeZone)
-		}.compactMap { $0 }
+		}
 	}
 }
 

@@ -29,7 +29,20 @@ var chartMarkSize: Double = {
 	#endif
 }()
 
+/// The user's calendar. Correct for day-level arithmetic and for anything the user reads.
+/// Every operation the app performs with it — `startOfDay`, day offsets, `isDateInToday` —
+/// resolves to the same instant under any calendar, because all of them run midnight to
+/// midnight in the local time zone.
 let calendar = Calendar.autoupdatingCurrent
+
+/// Solar-event arithmetic. `SolsticeCalculator` evaluates a polynomial over a proleptic
+/// Gregorian year, so it cannot accept a year number from another calendar: a Hijri (1447),
+/// Persian (1405) or Buddhist (2569) year lands centuries from the intended date.
+let solarCalendar: Calendar = {
+	var calendar = Calendar(identifier: .gregorian)
+	calendar.locale = .autoupdatingCurrent
+	return calendar
+}()
 
 let localTimeZone = TimeZone.ReferenceType.local
 

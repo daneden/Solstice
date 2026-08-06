@@ -10,14 +10,28 @@ import Foundation
 import Testing
 
 struct SolsticeCalculatorTests {
+	/// The calculator returns an instant on the proleptic Gregorian year it was handed, so
+	/// the assertions have to read it back in that calendar. Reading it back through
+	/// `Calendar.current` would fail on a runner whose region defaults to a non-Gregorian
+	/// calendar, even though the calculator itself is correct.
+	private static let utcGregorian: Calendar = {
+		var calendar = Calendar(identifier: .gregorian)
+		calendar.timeZone = TimeZone(identifier: "UTC") ?? .gmt
+		return calendar
+	}()
+
+	private func components(of date: Date) -> DateComponents {
+		Self.utcGregorian.dateComponents([.year, .month, .day], from: date)
+	}
+
 	// MARK: - Known astronomical dates for validation
 
 	// Reference values from the US Naval Observatory / timeanddate.com
 
 	@Test("June solstice 2024 falls on June 20")
-	func juneSolstice2024() throws {
+	func juneSolstice2024() {
 		let solstice = SolsticeCalculator.juneSolstice(year: 2024)
-		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: solstice)
+		let components = components(of: solstice)
 
 		#expect(components.month == 6)
 		#expect(components.day == 20)
@@ -25,9 +39,9 @@ struct SolsticeCalculatorTests {
 	}
 
 	@Test("December solstice 2024 falls on December 21")
-	func decemberSolstice2024() throws {
+	func decemberSolstice2024() {
 		let solstice = SolsticeCalculator.decemberSolstice(year: 2024)
-		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: solstice)
+		let components = components(of: solstice)
 
 		#expect(components.month == 12)
 		#expect(components.day == 21)
@@ -35,9 +49,9 @@ struct SolsticeCalculatorTests {
 	}
 
 	@Test("March equinox 2024 falls on March 20")
-	func marchEquinox2024() throws {
+	func marchEquinox2024() {
 		let equinox = SolsticeCalculator.marchEquinox(year: 2024)
-		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: equinox)
+		let components = components(of: equinox)
 
 		#expect(components.month == 3)
 		#expect(components.day == 20)
@@ -45,9 +59,9 @@ struct SolsticeCalculatorTests {
 	}
 
 	@Test("September equinox 2024 falls on September 22")
-	func septemberEquinox2024() throws {
+	func septemberEquinox2024() {
 		let equinox = SolsticeCalculator.septemberEquinox(year: 2024)
-		let components = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: equinox)
+		let components = components(of: equinox)
 
 		#expect(components.month == 9)
 		#expect(components.day == 22)
@@ -63,10 +77,10 @@ struct SolsticeCalculatorTests {
 		let marchEquinox = SolsticeCalculator.marchEquinox(year: year)
 		let septemberEquinox = SolsticeCalculator.septemberEquinox(year: year)
 
-		let juneSolsticeComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: juneSolstice)
-		let decemberSolsticeComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: decemberSolstice)
-		let marchEquinoxComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: marchEquinox)
-		let septemberEquinoxComponents = try Calendar.current.dateComponents(in: #require(TimeZone(identifier: "UTC")), from: septemberEquinox)
+		let juneSolsticeComponents = components(of: juneSolstice)
+		let decemberSolsticeComponents = components(of: decemberSolstice)
+		let marchEquinoxComponents = components(of: marchEquinox)
+		let septemberEquinoxComponents = components(of: septemberEquinox)
 
 		// June solstice should be in June (day 20 or 21)
 		#expect(juneSolsticeComponents.month == 6)

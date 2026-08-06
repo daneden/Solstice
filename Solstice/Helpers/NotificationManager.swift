@@ -100,7 +100,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			content.title = notificationContent.title
 			content.body = notificationContent.body
 
+			// The day and month are read from one calendar, so the trigger has to be told to
+			// match them in that same calendar. Left unset, nothing here pins how
+			// UNCalendarNotificationTrigger interprets them.
 			var components = calendar.dateComponents([.hour, .minute, .day, .month], from: notificationDate)
+			components.calendar = calendar
 			components.timeZone = .autoupdatingCurrent
 
 			let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
@@ -224,7 +228,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
 	/// Returns a title if the date falls on a solstice or equinox
 	private static func solarEventTitle(for date: Date) -> String? {
-		let year = calendar.component(.year, from: date)
+		let year = solarCalendar.component(.year, from: date)
 
 		let solarEvents: [(date: Date, title: String)] = [
 			(SolsticeCalculator.marchEquinox(year: year),
@@ -326,7 +330,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	}
 
 	private static func solsticeCountdownFragment(for date: Date) -> String? {
-		let year = calendar.component(.year, from: date)
+		let year = solarCalendar.component(.year, from: date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 

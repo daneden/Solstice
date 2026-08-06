@@ -28,7 +28,7 @@ extension Date {
 	}
 
 	var nextSolsticeMonth: Int {
-		calendar.dateComponents([.month], from: nextSolstice).month ?? 6
+		solarCalendar.dateComponents([.month], from: nextSolstice).month ?? 6
 	}
 
 	func nextSolsticeIncreasesLight(at latitude: Double) -> Bool {

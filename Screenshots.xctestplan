@@ -1,111 +1,112 @@
 {
-  "configurations" : [
+  "configurations": [
     {
-      "id" : "69728EAB-AC99-4171-915F-B84CE5F153AF",
-      "name" : "en",
-      "options" : {
-        "language" : "en",
-        "region" : "US"
+      "id": "69728EAB-AC99-4171-915F-B84CE5F153AF",
+      "name": "en",
+      "options": {
+        "language": "en",
+        "region": "US"
       }
     },
     {
-      "id" : "B8B4B4A6-E6F5-481E-A59A-A1900D08CE2C",
-      "name" : "de",
-      "options" : {
-        "language" : "de",
-        "region" : "DE"
+      "id": "B8B4B4A6-E6F5-481E-A59A-A1900D08CE2C",
+      "name": "de",
+      "options": {
+        "language": "de",
+        "region": "DE"
       }
     },
     {
-      "id" : "6501AF38-AAD9-4062-A296-AC31B999223C",
-      "name" : "fr",
-      "options" : {
-        "language" : "fr",
-        "region" : "FR"
+      "id": "6501AF38-AAD9-4062-A296-AC31B999223C",
+      "name": "fr",
+      "options": {
+        "language": "fr",
+        "region": "FR"
       }
     },
     {
-      "id" : "3E464ADC-2EC7-4287-B0EB-964D1D936E3B",
-      "name" : "es",
-      "options" : {
-        "language" : "es",
-        "region" : "ES"
+      "id": "3E464ADC-2EC7-4287-B0EB-964D1D936E3B",
+      "name": "es",
+      "options": {
+        "language": "es",
+        "region": "ES"
       }
     },
     {
-      "id" : "9D062043-A494-4323-8200-5F8A7EBCE86C",
-      "name" : "ja",
-      "options" : {
-        "language" : "ja",
-        "region" : "JP"
+      "id": "9D062043-A494-4323-8200-5F8A7EBCE86C",
+      "name": "ja",
+      "options": {
+        "language": "ja",
+        "region": "JP"
       }
     },
     {
-      "id" : "BF8B6729-0E58-4FB0-A2B0-A0AE5BD3D150",
-      "name" : "ar",
-      "options" : {
-        "language" : "ar",
-        "region" : "SA"
+      "id": "BF8B6729-0E58-4FB0-A2B0-A0AE5BD3D150",
+      "name": "ar",
+      "options": {
+        "language": "ar",
+        "region": "SA"
       }
     },
     {
-      "id" : "19AFC6B1-EBA2-4B89-B0EB-FA09F392C1B2",
-      "name" : "nl",
-      "options" : {
-        "language" : "nl",
-        "region" : "NL"
+      "id": "19AFC6B1-EBA2-4B89-B0EB-FA09F392C1B2",
+      "name": "nl",
+      "options": {
+        "language": "nl",
+        "region": "NL"
       }
     },
     {
-      "id" : "DBC39339-4C95-4738-9ECB-C456DBAF2438",
-      "name" : "zh-Hans",
-      "options" : {
-        "language" : "zh-Hans",
-        "region" : "CN"
+      "id": "DBC39339-4C95-4738-9ECB-C456DBAF2438",
+      "name": "zh-Hans",
+      "options": {
+        "language": "zh-Hans",
+        "region": "CN"
       }
     },
     {
-      "id" : "FD9D999B-7FBF-44F4-B9FE-86ACE3A742C2",
-      "name" : "pl",
-      "options" : {
-        "language" : "pl",
-        "region" : "PL"
+      "id": "FD9D999B-7FBF-44F4-B9FE-86ACE3A742C2",
+      "name": "pl",
+      "options": {
+        "language": "pl",
+        "region": "PL"
       }
     },
     {
-      "id" : "DBB00352-C141-40C5-992E-147EBE2D09B0",
-      "name" : "it",
-      "options" : {
-        "language" : "it",
-        "region" : "IT"
+      "id": "DBB00352-C141-40C5-992E-147EBE2D09B0",
+      "name": "it",
+      "options": {
+        "language": "it",
+        "region": "IT"
       }
     }
   ],
-  "defaultOptions" : {
-    "preferredScreenCaptureFormat" : "screenshot",
-    "testTimeoutsEnabled" : false
+  "defaultOptions": {
+    "preferredScreenCaptureFormat": "screenshot",
+    "testTimeoutsEnabled": false
   },
-  "testTargets" : [
+  "testTargets": [
     {
-      "skippedTests" : [
+      "skippedTests": [
         "SolsticeUITests"
       ],
-      "target" : {
-        "containerPath" : "container:Solstice.xcodeproj",
-        "identifier" : "71615FEA2F29F06F0082944D",
-        "name" : "SolsticeUITests"
+      "target": {
+        "containerPath": "container:Solstice.xcodeproj",
+        "identifier": "71615FEA2F29F06F0082944D",
+        "name": "SolsticeUITests"
       }
     },
     {
-      "selectedTests" : [
-        "WidgetRenderTests\/testRenderMarketingWidgets()"
+      "selectedTests": [
+        "CalendarFramingTests",
+        "WidgetRenderTests/testRenderMarketingWidgets()"
       ],
-      "target" : {
-        "containerPath" : "container:Solstice.xcodeproj",
-        "identifier" : "71615FDB2F29F0610082944D",
-        "name" : "SolsticeTests"
+      "target": {
+        "containerPath": "container:Solstice.xcodeproj",
+        "identifier": "71615FDB2F29F0610082944D",
+        "name": "SolsticeTests"
       }
     }
   ],
-  "version" : 1
+  "version": 1
 }

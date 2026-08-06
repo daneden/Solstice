@@ -183,13 +183,13 @@ struct AnnualOverview<Location: AnyLocation>: View {
 
 extension AnnualOverview {
 	var decemberSolsticeSolar: NTSolar? {
-		let year = calendar.component(.year, from: timeMachine.date)
+		let year = solarCalendar.component(.year, from: timeMachine.date)
 		let decemberSolstice = SolsticeCalculator.decemberSolstice(year: year)
 		return NTSolar(for: decemberSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
 
 	var juneSolsticeSolar: NTSolar? {
-		let year = calendar.component(.year, from: timeMachine.date)
+		let year = solarCalendar.component(.year, from: timeMachine.date)
 		let juneSolstice = SolsticeCalculator.juneSolstice(year: year)
 		return NTSolar(for: juneSolstice, coordinate: location.coordinate, timeZone: location.timeZone)
 	}
