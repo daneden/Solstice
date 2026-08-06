@@ -269,6 +269,38 @@ extension View {
 }
 
 extension View {
+	/// Appearance and window size the marketing shots need. Both resolve to "no
+	/// opinion" in a normal launch: `forcedColorScheme` is nil outside capture, and
+	/// a nil width/height leaves the window free to size and resize as usual.
+	func screenshotPresentation() -> some View {
+		preferredColorScheme(ScreenshotLaunch.forcedColorScheme)
+		#if os(macOS)
+			.frame(
+				width: ScreenshotLaunch.isCapturing ? 800 : nil,
+				height: ScreenshotLaunch.isCapturing ? 600 : nil
+			)
+		#endif
+	}
+}
+
+extension Scene {
+	/// Window behaviour the macOS capture needs.
+	///
+	/// Passing -AppleLanguages to force the capture locale makes AppKit relaunch the
+	/// app, and that relaunch restores the prior (zero-window) state instead of
+	/// presenting the main window. Disable restoration and force presentation while
+	/// capturing; normal launches keep system behaviour.
+	func screenshotWindowBehavior() -> some Scene {
+		#if os(macOS)
+			restorationBehavior(ScreenshotLaunch.isCapturing ? .disabled : .automatic)
+				.defaultLaunchBehavior(ScreenshotLaunch.isCapturing ? .presented : .automatic)
+		#else
+			self
+		#endif
+	}
+}
+
+extension View {
 	/// Injects the shared TimeMachine. When a capture pins the displayed instant
 	/// (`UITEST_DISPLAY_EPOCH`), the environment is set directly — skipping
 	/// `withTimeMachine`'s minutely reference-date ticker, which would overwrite

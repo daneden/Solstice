@@ -45,17 +45,7 @@ struct SolsticeApp: App {
 				.environment(nameResolver)
 				.environment(locationSearchService)
 				.environment(\.managedObjectContext, persistenceController.container.viewContext)
-				// Forced appearance for dark-mode marketing shots; nil (any normal
-				// launch) leaves the system appearance in charge.
-				.preferredColorScheme(ScreenshotLaunch.forcedColorScheme)
-			#if os(macOS)
-				// Deterministic, compact window size for marketing captures; nil leaves
-				// normal launches free to size/resize as usual.
-				.frame(
-					width: ScreenshotLaunch.isCapturing ? 800 : nil,
-					height: ScreenshotLaunch.isCapturing ? 600 : nil
-				)
-			#endif
+				.screenshotPresentation()
 		}
 		#if os(iOS)
 		.backgroundTask(.appRefresh(NotificationManager.backgroundTaskIdentifier)) {
@@ -65,18 +55,11 @@ struct SolsticeApp: App {
 		#if !os(watchOS)
 		.windowResizability(.contentSize)
 		#endif
-		#if os(macOS)
-		// Passing -AppleLanguages to force the capture locale makes AppKit relaunch the
-		// app, and that relaunch restores the prior (zero-window) state instead of
-		// presenting the main window. Disable restoration and force presentation while
-		// capturing so the window always appears; normal launches keep system behavior.
-		.restorationBehavior(ScreenshotLaunch.isCapturing ? .disabled : .automatic)
-		.defaultLaunchBehavior(ScreenshotLaunch.isCapturing ? .presented : .automatic)
-		#endif
+		.screenshotWindowBehavior()
 		#if os(visionOS)
-		.defaultSize(width: 900, height: 720)
+			.defaultSize(width: 900, height: 720)
 		#elseif os(macOS)
-		.defaultSize(width: 800, height: 600)
+			.defaultSize(width: 800, height: 600)
 		#endif
 
 		#if os(visionOS)

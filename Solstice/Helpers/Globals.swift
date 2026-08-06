@@ -260,7 +260,7 @@ final class LocationNameResolver {
 			#if DEBUG
 				// Fixtures are pre-seeded during capture; a geocode here means a cache
 				// miss slipped through (network-dependent, non-deterministic).
-				if ProcessInfo.processInfo.arguments.contains("-UITestScreenshots") {
+				if ScreenshotLaunch.isCapturing {
 					print("⚠️ [screenshots] geocoding \(key) — not pre-seeded")
 				}
 			#endif
