@@ -124,9 +124,15 @@ HOME_SUM="$(xcrun simctl io "$UDID" screenshot --type png "$TMP_DIR/home.png" >/
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.
 FAILURES=0
-# Carried across shots so each one can prove it differs from the last. Reset by
-# launch_locale, since the first shot of a locale has nothing to differ from.
-LAST_SUM=""
+# Every accepted shot's raw hash, for the whole run — not just the previous shot.
+#
+# Comparing against the previous shot only catches a state change that failed
+# within a locale. It cannot see cross-locale contamination: a locale whose
+# language never applied produces a frame identical to some earlier locale's,
+# and if the two are not adjacent nothing notices. A full 10-locale run passed
+# 30/30 that way while ar matched zh-Hans and en's time-travel shot matched fr's
+# main window. This is the audit that used to be run by hand afterwards.
+SEEN_SUMS=""
 COMMAND_DIR=""
 SEQ=0
 
@@ -182,7 +188,6 @@ launch_locale() {
 	mkdir -p "$COMMAND_DIR"
 	rm -f "$COMMAND_DIR/capture-command.json"
 	SEQ=0
-	LAST_SUM=""
 }
 
 # command_app <json-body> — asks the running app to change state, no relaunch.
@@ -214,8 +219,10 @@ shoot() {
 		xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
 		[ -s "$dest" ] || break
 		sum="$(md5 -q "$dest")"
-		[ -z "$LAST_SUM" ] && break
-		[ "$sum" != "$LAST_SUM" ] && break
+		case "$SEEN_SUMS" in
+			*"$sum"*) ;;          # already captured this exact frame — keep waiting
+			*) break ;;
+		esac
 		sleep 3
 		attempt=$((attempt + 1))
 	done
@@ -227,12 +234,12 @@ shoot() {
 		echo "  ✗ $loc/$name — captured the home screen; the app was not on screen"
 		rm -f "$dest"
 		FAILURES=$((FAILURES + 1))
-	elif [ -n "$LAST_SUM" ] && [ "$sum" = "$LAST_SUM" ]; then
-		echo "  ✗ $loc/$name — still identical to the previous shot after $((attempt * 3))s; the app never changed state"
+	elif case "$SEEN_SUMS" in *"$sum"*) true ;; *) false ;; esac; then
+		echo "  ✗ $loc/$name — identical to a shot already captured in this run (after $((attempt * 3))s); state or locale never changed"
 		rm -f "$dest"
 		FAILURES=$((FAILURES + 1))
 	else
-		LAST_SUM="$sum"   # compare raw captures: strip-alpha rewrites the file
+		SEEN_SUMS="$SEEN_SUMS $sum"   # compare raw captures: strip-alpha rewrites the file
 		"$STRIP_ALPHA_BIN" "$dest"
 		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
 	fi
