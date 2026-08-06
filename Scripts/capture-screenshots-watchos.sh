@@ -162,6 +162,17 @@ shoot() {
 	local loc="$1" settle="$2" name="$3"
 	sleep "$settle"
 
+	# A terminated app leaves the simulator showing its home screen, and a home
+	# screen frame differs from the previous shot just like a real state change
+	# would — so the frame-change check below waves it through. Thirty visionOS
+	# shots once collapsed to eleven unique images this way, most of them the
+	# springboard. Confirm the process is alive before believing any frame.
+	if ! xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID"; then
+		echo "  ✗ $loc/$name — app is not running; the frame would be the home screen"
+		FAILURES=$((FAILURES + 1))
+		return
+	fi
+
 	mkdir -p "$OUT/$loc"
 	local dest="$OUT/$loc/$name.png"
 
