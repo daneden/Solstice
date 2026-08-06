@@ -16,6 +16,13 @@
 #   IPAD=1 Scripts/capture-screenshots.sh         # iPad marketing shots (ipad-*.png)
 #                                                  # on the 13" iPad simulator; leaves
 #                                                  # the iPhone shots + widgets intact
+#   SCREENS=03-detail-annual Scripts/capture-screenshots.sh   # one screen only
+#
+# SCREENS is comma-separated and reaches the UI test as SCREENSHOT_SCREENS (the
+# TEST_RUNNER_ prefix is how xcodebuild forwards a variable into the test host).
+# The flow stops once the last requested screen is captured, so asking for an
+# early screen skips the rest of the journey — that is where the time goes, not
+# in the captures themselves.
 #
 set -euo pipefail
 
@@ -110,6 +117,7 @@ xcodebuild test \
 	-derivedDataPath "$DERIVED_DIR" \
 	-resultBundlePath "$RESULT_BUNDLE" \
 	${XCODEBUILD_EXTRA_ARGS:-} \
+	${SCREENS:+TEST_RUNNER_SCREENSHOT_SCREENS="$SCREENS"} \
 	"${ONLY_CONFIGS[@]}" \
 	${ONLY_TESTING[@]+"${ONLY_TESTING[@]}"}
 set +x
@@ -140,9 +148,22 @@ for loc in "${LOCALES[@]}"; do
 		continue
 	fi
 	if [ "${WIDGETS_ONLY:-0}" != "1" ]; then
-		rm -f "${OUT_DIR:?}/$loc"/[0-9][0-9]-*.png
+		if [ -n "${SCREENS:-}" ]; then
+			# Only clear what this run will actually replace. Wiping every iOS shot
+			# here would delete the screens a filtered run never recaptures.
+			IFS="," read -ra wanted <<< "$SCREENS"
+			for want in "${wanted[@]}"; do
+				rm -f "${OUT_DIR:?}/$loc/${want// /}.png"
+			done
+		else
+			rm -f "${OUT_DIR:?}/$loc"/[0-9][0-9]-*.png
+		fi
 	fi
-	rm -f "${OUT_DIR:?}/$loc"/mac-04-widget-*.png
+	# Widget renders come from the same test run, so only clear them when this
+	# run will actually re-render them.
+	if [ -z "${SCREENS:-}" ] || [ "${WIDGETS_ONLY:-0}" = "1" ]; then
+		rm -f "${OUT_DIR:?}/$loc"/mac-04-widget-*.png
+	fi
 done
 mkdir -p "$OUT_DIR"
 

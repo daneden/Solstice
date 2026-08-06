@@ -21,6 +21,27 @@ final class AppStoreScreenshots: XCTestCase {
 		continueAfterFailure = false
 	}
 
+	/// Screens this run should capture, from the SCREENSHOT_SCREENS environment
+	/// variable (comma-separated, e.g. "03-detail-annual"). Empty means all.
+	///
+	/// The flow is one journey — detail, annual, back, settings, time travel — so
+	/// skipping a `capture()` saves almost nothing; the taps and settles around it
+	/// are the cost. What pays is stopping once the last requested screen is in
+	/// hand, which `finishedRequested` below reports.
+	private var requestedScreens: Set<String> {
+		let raw = ProcessInfo.processInfo.environment["SCREENSHOT_SCREENS"] ?? ""
+		return Set(raw.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty })
+	}
+
+	private func wants(_ name: String) -> Bool {
+		requestedScreens.isEmpty || requestedScreens.contains(name)
+	}
+
+	/// True once every requested screen has been captured, so the flow can stop.
+	private func finishedRequested(_ captured: Set<String>) -> Bool {
+		!requestedScreens.isEmpty && requestedScreens.isSubset(of: captured)
+	}
+
 	@MainActor
 	func testCaptureAppStoreScreenshots() async throws {
 		try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .phone, "iPhone marketing flow")
@@ -33,8 +54,10 @@ final class AppStoreScreenshots: XCTestCase {
 		// 02 — Detail view, daily overview (opens directly to the forced selection)
 		let detail = app.match(A11y.detailScreen)
 		XCTAssertTrue(detail.waitForExistence(timeout: 30), "Detail view never appeared")
+		var captured = Set<String>()
 		try await settle()
-		capture(app, named: "02-detail-daily")
+		if wants("02-detail-daily") { capture(app, named: "02-detail-daily"); captured.insert("02-detail-daily") }
+		if finishedRequested(captured) { return }
 
 		// 03 — Detail view, annual overview (scroll down to the annual section)
 		let annualChart = app.match(A11y.annualChart)
@@ -44,14 +67,16 @@ final class AppStoreScreenshots: XCTestCase {
 		XCTAssertTrue(annualChart.exists && annualChart.frame.minY < app.frame.midY,
 		              "Annual chart never scrolled into view — 03 would duplicate 02")
 		try await settle()
-		capture(app, named: "03-detail-annual")
+		if wants("03-detail-annual") { capture(app, named: "03-detail-annual"); captured.insert("03-detail-annual") }
+		if finishedRequested(captured) { return }
 
 		// 01 — Location list (back out of the detail view)
 		app.buttons["BackButton"].tap()
 		let settingsButton = app.buttons[A11y.settingsButton]
 		XCTAssertTrue(settingsButton.waitForExistence(timeout: 15), "Locations list never appeared")
 		try await settle()
-		capture(app, named: "01-location-list")
+		if wants("01-location-list") { capture(app, named: "01-location-list"); captured.insert("01-location-list") }
+		if finishedRequested(captured) { return }
 
 		// 05 — Notification settings (Settings → Notifications)
 		settingsButton.tap()
@@ -65,7 +90,8 @@ final class AppStoreScreenshots: XCTestCase {
 		XCTAssertTrue(notificationsLink.waitForExistence(timeout: 15), "Notifications link never appeared")
 		notificationsLink.tap()
 		try await settle()
-		capture(app, named: "05-notifications")
+		if wants("05-notifications") { capture(app, named: "05-notifications"); captured.insert("05-notifications") }
+		if finishedRequested(captured) { return }
 
 		// 04 — Time-travelled detail view: relaunch with a Time Machine offset so the
 		// app opens straight into a detail view a few months ahead, pinned to New
@@ -77,7 +103,7 @@ final class AppStoreScreenshots: XCTestCase {
 		let travelledDetail = app.match(A11y.detailScreen)
 		XCTAssertTrue(travelledDetail.waitForExistence(timeout: 30), "Travelled detail view never appeared")
 		try await settle()
-		capture(app, named: "04-time-travel")
+		if wants("04-time-travel") { capture(app, named: "04-time-travel") }
 	}
 
 	/// iPad marketing flow — matches the Figma "iPadOS Screenshot" template variants:
@@ -107,7 +133,9 @@ final class AppStoreScreenshots: XCTestCase {
 			XCTAssertTrue(settingsButton.waitForExistence(timeout: 15), "Sidebar never appeared")
 		}
 		try await settle()
-		capture(app, named: "ipad-01-overview")
+		var capturedIPad = Set<String>()
+		if wants("ipad-01-overview") { capture(app, named: "ipad-01-overview"); capturedIPad.insert("ipad-01-overview") }
+		if finishedRequested(capturedIPad) { return }
 
 		// ipad-02 — Notification settings sheet, dark appearance. Relaunch with the
 		// scheme forced in-process (UITEST_APPEARANCE): flipping the simulator's
@@ -125,7 +153,7 @@ final class AppStoreScreenshots: XCTestCase {
 		XCTAssertTrue(notificationsLink.waitForExistence(timeout: 15), "Notifications link never appeared")
 		notificationsLink.tap()
 		try await settle()
-		capture(app, named: "ipad-02-notifications")
+		if wants("ipad-02-notifications") { capture(app, named: "ipad-02-notifications") }
 	}
 
 	// MARK: - Helpers

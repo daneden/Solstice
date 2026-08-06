@@ -63,7 +63,12 @@ LOCALES=("$@")
 [ ${#LOCALES[@]} -eq 0 ] && LOCALES=(en de fr es ja ar nl zh-Hans pl it)
 
 # Swift helper: print the frontmost on-screen Solstice window's CGWindowID.
-WINID_SWIFT="$(mktemp /tmp/solstice-winid-XXXX.swift)"
+# A run-scoped temp dir, not `mktemp <name>-XXXX.swift`: macOS mktemp only
+# substitutes X's at the END of the template, so that form creates the literal
+# "-XXXX.swift" file, succeeds once, and fails with "File exists" on every later
+# run of the day. CI never noticed because each job gets a clean machine.
+TMP_DIR="$(mktemp -d)"
+WINID_SWIFT="$TMP_DIR/winid.swift"
 cat > "$WINID_SWIFT" <<'SWIFT'
 import CoreGraphics
 import Foundation
@@ -91,10 +96,10 @@ kill_app() { pkill -9 -f "$BIN_MATCH" 2>/dev/null || true; }
 # tens of seconds per call against a fraction of a second of actual work, and
 # this one runs on every iteration of the window poll below, so the poll's
 # "seconds" were never seconds.
-WINID_BIN="${WINID_SWIFT%.swift}"
+WINID_BIN="$TMP_DIR/winid"
 swiftc -O "$WINID_SWIFT" -o "$WINID_BIN"
 
-trap 'kill_app; rm -f "$WINID_SWIFT" "$WINID_BIN"' EXIT
+trap 'kill_app; rm -rf "$TMP_DIR"' EXIT
 
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.

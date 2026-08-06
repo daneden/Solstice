@@ -63,7 +63,12 @@ LOCALES=("$@")
 # aspect-fill (upscale to width, centre-crop height) in one CoreGraphics pass.
 # App Store screenshots must be this exact size, and simctl PNGs carry an alpha
 # channel that App Store Connect rejects (sips can't drop it).
-FILL_CROP_SWIFT="$(mktemp /tmp/solstice-vision-fill-XXXX.swift)"
+# A run-scoped temp dir, not `mktemp <name>-XXXX.swift`: macOS mktemp only
+# substitutes X's at the END of the template, so that form creates the literal
+# "-XXXX.swift" file, succeeds once, and fails with "File exists" on every later
+# run of the day. CI never noticed because each job gets a clean machine.
+TMP_DIR="$(mktemp -d)"
+FILL_CROP_SWIFT="$TMP_DIR/fill-crop.swift"
 cat > "$FILL_CROP_SWIFT" <<'SWIFT'
 import CoreGraphics
 import ImageIO
@@ -95,10 +100,10 @@ SWIFT
 # Compile the helper once. `swift file.swift` recompiles on every invocation,
 # which dominated the runtime here — tens of seconds per call against a fraction
 # of a second of actual work, paid once per screenshot.
-FILL_CROP_BIN="${FILL_CROP_SWIFT%.swift}"
+FILL_CROP_BIN="$TMP_DIR/fill-crop"
 swiftc -O "$FILL_CROP_SWIFT" -o "$FILL_CROP_BIN"
 
-trap 'rm -f "$FILL_CROP_SWIFT" "$FILL_CROP_BIN"' EXIT
+trap 'rm -rf "$TMP_DIR"' EXIT
 
 # Two Vision Pro sims can coexist (one per runtime); take the newest runtime —
 # `simctl list` orders runtime sections ascending. Override via DEVICE_UDID.
@@ -122,6 +127,13 @@ xcrun simctl bootstatus "$UDID"
 # because the main window behind it kept changing.
 xcrun simctl uninstall "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 xcrun simctl install "$UDID" "$APP"
+
+# What the springboard looks like with no app running. Checking `launchctl list`
+# for liveness proved unusable — the app self-restarts a few seconds after launch
+# (its pid changes), so a poll lands in the gap and reports a live app as dead.
+# The frame itself is unambiguous: if a shot matches this, the app wasn't on
+# screen, whatever the process table said.
+HOME_SUM="$(xcrun simctl io "$UDID" screenshot --type png "$TMP_DIR/home.png" >/dev/null 2>&1 && md5 -q "$TMP_DIR/home.png")"
 
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.
@@ -204,12 +216,6 @@ shoot() {
 	# would — so the frame-change check below waves it through. Thirty visionOS
 	# shots once collapsed to eleven unique images this way, most of them the
 	# springboard. Confirm the process is alive before believing any frame.
-	if ! xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID"; then
-		echo "  ✗ $loc/$name — app is not running; the frame would be the home screen"
-		FAILURES=$((FAILURES + 1))
-		return
-	fi
-
 	mkdir -p "$OUT/$loc"
 	local dest="$OUT/$loc/$name.png"
 
@@ -233,6 +239,10 @@ shoot() {
 
 	if [ ! -s "$dest" ]; then
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
+		FAILURES=$((FAILURES + 1))
+	elif [ -n "$HOME_SUM" ] && [ "$sum" = "$HOME_SUM" ]; then
+		echo "  ✗ $loc/$name — captured the home screen; the app was not on screen"
+		rm -f "$dest"
 		FAILURES=$((FAILURES + 1))
 	elif [ -n "$LAST_SUM" ] && [ "$sum" = "$LAST_SUM" ]; then
 		echo "  ✗ $loc/$name — still identical to the previous shot after $((attempt * 5))s; the app never changed state"
