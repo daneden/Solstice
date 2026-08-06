@@ -89,13 +89,13 @@ struct CalendarFramingTests {
 		#expect(solarCalendar.identifier == .gregorian)
 	}
 
-	/// A canary against the real process calendar rather than a constructed one. It is inert
-	/// wherever the process resolves to a Gregorian calendar — which includes a plain
-	/// `xcodebuild test`, and `-testLanguage ar -testRegion SA`, neither of which changes the
-	/// calendar preference. It bites on a device or runner whose region supplies a lunar one.
+	/// The end-to-end invariant, against the real process calendar rather than a constructed
+	/// one. This is why the suite is in `Screenshots.xctestplan`: that plan's `ar`
+	/// configuration gives the process an islamic-umalqura calendar, and this assertion fails
+	/// there without the substitution. The `-testLanguage ar -testRegion SA` flags do *not*
+	/// change the calendar preference, so a plain `xcodebuild test` leaves this test inert.
 	@Test("The chart frame is seasonal under the process calendar")
 	func processFrameIsSeasonal() {
-		#expect(calendar.identifier == .gregorian, "TEMPORARY PROBE")
 		#expect(
 			yearStartSpread(over: 12, in: calendar.seasonalEquivalent) <= 30,
 			"the process calendar \(calendar.identifier) did not yield a seasonal frame"
