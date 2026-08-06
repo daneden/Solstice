@@ -163,9 +163,23 @@ launch_locale() {
 		langArgs=(-AppleLanguages "($loc)" -AppleLocale "$(apple_locale_for "$loc")")
 	fi
 
-	env "SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$SELECTED_LOCATION" \
-		"SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$DAILY_EPOCH" \
-		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" > /dev/null
+	# Verify the launch instead of discarding its output. `simctl launch` prints
+	# "<bundle id>: <pid>" on success and fails intermittently on a busy machine;
+	# ignoring that let a locale proceed with no app at all, and the whole locale
+	# then captured nothing. 14 of 30 shots were lost this way in one run.
+	local attempt=0 launched=""
+	while [ "$attempt" -lt 3 ]; do
+		launched=$(env "SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$SELECTED_LOCATION" \
+			"SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$DAILY_EPOCH" \
+			xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" 2>&1)
+		case "$launched" in
+			*"$BUNDLE_ID"*[0-9]*) break ;;
+		esac
+		echo "     launch attempt $((attempt + 1)) failed for $loc: $launched"
+		xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
+		sleep 3
+		attempt=$((attempt + 1))
+	done
 
 	COMMAND_DIR="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Documents"
 	mkdir -p "$COMMAND_DIR"
