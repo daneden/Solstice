@@ -106,50 +106,105 @@ xcrun simctl install "$UDID" "$APP"
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.
 FAILURES=0
+# Carried across shots so each one can prove it differs from the last. Reset by
+# launch_locale, since the first shot of a locale has nothing to differ from.
+LAST_SUM=""
+COMMAND_DIR=""
+SEQ=0
 
-# shoot <locale> <selectedLocation-or-empty> <timeOffset-or-empty> <displayEpoch> <outName>
-shoot() {
-	local loc="$1" selected="$2" offset="$3" epoch="$4" name="$5"
+# One launch per locale, every shot within it.
+#
+# Selecting each shot's state through launch environment variables meant a
+# terminate/launch/first-render cycle per shot. The app also reads a command
+# file now, so selection and time offset can change in place.
+#
+# Locale still needs its own launch: SwiftUI resolves `Text` against the
+# environment locale, but the app formats several strings through
+# `Locale.current`, which no environment override reaches. See
+# ScreenshotSupport.swift.
+
+# launch_locale <locale> — fresh process in that language, on the list, pinned to
+# the daily instant.
+launch_locale() {
+	local loc="$1"
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
-	sleep 1
+	local t=0
+	while [ "$t" -lt 15 ]; do
+		xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID" || break
+		sleep 1
+		t=$((t + 1))
+	done
 
-	# Locale comes from per-process launch arguments (same mechanism as the macOS
-	# capture); SwiftUI derives layout direction (ar → RTL) from the language.
+	# SwiftUI derives layout direction (ar → RTL) from the launch language.
 	local langArgs=()
 	if [ "$loc" != "en" ]; then
 		langArgs=(-AppleLanguages "($loc)" -AppleLocale "$(apple_locale_for "$loc")")
 	fi
 
-	# Only set the UITEST_* env vars when they carry a value — an empty string is
-	# not "unset" to the app (an empty forced selection would select nothing).
-	local envArgs=()
-	[ -n "$selected" ] && envArgs+=("SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$selected")
-	[ -n "$offset" ] && envArgs+=("SIMCTL_CHILD_UITEST_TIME_OFFSET_DAYS=$offset")
-	[ -n "$epoch" ] && envArgs+=("SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$epoch")
-
-	env "${envArgs[@]+"${envArgs[@]}"}" \
+	env "SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$DAILY_EPOCH" \
 		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" > /dev/null
-	sleep 5   # let the UI settle (list render / detail push / time-machine offset)
+
+	COMMAND_DIR="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Documents"
+	mkdir -p "$COMMAND_DIR"
+	rm -f "$COMMAND_DIR/capture-command.json"
+	SEQ=0
+	LAST_SUM=""
+}
+
+# command_app <json-body> — asks the running app to change state, no relaunch.
+command_app() {
+	SEQ=$((SEQ + 1))
+	printf '{"seq":%s,%s}' "$SEQ" "$1" > "$COMMAND_DIR/capture-command.json"
+}
+
+# shoot <locale> <settle-secs> <outName>
+shoot() {
+	local loc="$1" settle="$2" name="$3"
+	sleep "$settle"
 
 	mkdir -p "$OUT/$loc"
 	local dest="$OUT/$loc/$name.png"
-	rm -f "$dest"
-	xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
-	if [ -s "$dest" ]; then
-		"$STRIP_ALPHA_BIN" "$dest"
-		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
-	else
+
+	# The settle is a floor: a command is applied asynchronously, so keep
+	# re-grabbing until the frame differs from the previous shot. An identical
+	# frame means the new state hasn't rendered, and accepting it would ship one
+	# shot's content under another shot's name.
+	local sum="" attempt=0
+	while [ "$attempt" -lt 8 ]; do
+		rm -f "$dest"
+		xcrun simctl io "$UDID" screenshot --type png "$dest" > /dev/null
+		[ -s "$dest" ] || break
+		sum="$(md5 -q "$dest")"
+		[ -z "$LAST_SUM" ] && break
+		[ "$sum" != "$LAST_SUM" ] && break
+		sleep 3
+		attempt=$((attempt + 1))
+	done
+
+	if [ ! -s "$dest" ]; then
 		echo "  ✗ $loc/$name — screenshot wrote nothing"
 		FAILURES=$((FAILURES + 1))
+	elif [ -n "$LAST_SUM" ] && [ "$sum" = "$LAST_SUM" ]; then
+		echo "  ✗ $loc/$name — still identical to the previous shot after $((attempt * 3))s; the app never changed state"
+		rm -f "$dest"
+		FAILURES=$((FAILURES + 1))
+	else
+		LAST_SUM="$sum"   # compare raw captures: strip-alpha rewrites the file
+		"$STRIP_ALPHA_BIN" "$dest"
+		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))"
 	fi
-	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 }
 
 for loc in "${LOCALES[@]}"; do
 	echo "== $loc =="
-	shoot "$loc" ""                   ""                  "$DAILY_EPOCH"  "watch-01-location-list"
-	shoot "$loc" "$SELECTED_LOCATION" ""                  "$DAILY_EPOCH"  "watch-02-detail"
-	shoot "$loc" "$SELECTED_LOCATION" "$TIME_OFFSET_DAYS" "$TRAVEL_EPOCH" "watch-03-time-travel"
+	launch_locale "$loc"
+	shoot "$loc" 5 "watch-01-location-list"
+
+	command_app "\"location\":\"$SELECTED_LOCATION\""
+	shoot "$loc" 3 "watch-02-detail"
+
+	command_app "\"location\":\"$SELECTED_LOCATION\",\"offset\":$TIME_OFFSET_DAYS,\"epoch\":$TRAVEL_EPOCH"
+	shoot "$loc" 3 "watch-03-time-travel"
 done
 
 if [ "$FAILURES" -gt 0 ]; then

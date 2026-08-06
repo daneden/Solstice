@@ -118,47 +118,7 @@ struct ContentView: View {
 			}
 		#endif
 			.deduplicateLocationRecords()
-			.task {
-				guard ScreenshotLaunch.isCapturing else { return }
-				// Deterministic launch state: honor the forced selection, otherwise
-				// start on the list (ignore any stale SceneStorage selection).
-				selectedLocation = ScreenshotLaunch.forcedSelectedLocation
-				if let display = ScreenshotLaunch.displayDate {
-					// Pin the displayed instant exactly: referenceDate + offset must land on
-					// `display`, so derive the reference by walking the offset back. Without
-					// the pin, time-of-day tracks the wall clock and a long multi-locale run
-					// drifts the sun's position between the first and last locale.
-					let offsetDays = ScreenshotLaunch.timeOffsetDays ?? 0
-					let reference = Calendar.current.date(byAdding: .day, value: -offsetDays, to: display) ?? display
-					timeMachine.updateReferenceDate(to: reference)
-					timeMachine.offset = Double(offsetDays)
-				} else if let offset = ScreenshotLaunch.timeOffsetDays {
-					timeMachine.offset = Double(offset)
-				}
-				#if os(macOS)
-					// Force the app frontmost so its window is presented for capture.
-					NSApplication.shared.activate(ignoringOtherApps: true)
-					// For the settings marketing shot, open the dedicated capture window (the
-					// SwiftUI Settings scene can't be opened programmatically). DEBUG-only window.
-					#if DEBUG
-						if ScreenshotLaunch.macScreen == .settingsNotifications {
-							try? await Task.sleep(for: .milliseconds(400))
-							openWindow(id: "capture-settings")
-						}
-					#endif
-				#endif
-				#if os(visionOS)
-					// For the solstice-info marketing shot, present the "About solstices and
-					// equinoxes" window and dismiss the main one so it's captured alone.
-					// The main window stays open behind — dismissing it leaves the info
-					// window permanently dimmed (unfocused), and its glass backdrop is
-					// what gives the front window its solid, readable look.
-					if ScreenshotLaunch.visionScreen == .solsticeInfo {
-						try? await Task.sleep(for: .milliseconds(400))
-						openWindow(value: AnnualSolarEvent.juneSolstice)
-					}
-				#endif
-			}
+			.capturingScreenshots()
 			.task(id: scenePhase) {
 				switch scenePhase {
 				#if !os(watchOS)

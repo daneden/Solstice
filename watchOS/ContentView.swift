@@ -109,22 +109,7 @@ struct ContentView: View {
 		}
 		.resolveDeepLink(sortedItems)
 		.withSolsticeTimeMachine()
-		.task {
-			guard ScreenshotLaunch.isCapturing else { return }
-			// Deterministic launch state: honor the forced selection, otherwise
-			// start on the list (ignore any stale SceneStorage selection).
-			selectedLocation = ScreenshotLaunch.forcedSelectedLocation
-			if let display = ScreenshotLaunch.displayDate {
-				// Pin the displayed instant exactly: referenceDate + offset must land on
-				// `display`, so derive the reference by walking the offset back.
-				let offsetDays = ScreenshotLaunch.timeOffsetDays ?? 0
-				let reference = Calendar.current.date(byAdding: .day, value: -offsetDays, to: display) ?? display
-				timeMachine.updateReferenceDate(to: reference)
-				timeMachine.offset = Double(offsetDays)
-			} else if let offset = ScreenshotLaunch.timeOffsetDays {
-				timeMachine.offset = Double(offset)
-			}
-		}
+		.capturingScreenshots()
 	}
 
 	var placeholderView: some View {

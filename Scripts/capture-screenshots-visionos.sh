@@ -120,64 +120,74 @@ xcrun simctl install "$UDID" "$APP"
 # A missed shot is recoverable on a desk — you see the ✗ and rerun. On CI nobody
 # reads a green log, so count the misses and exit non-zero at the end.
 FAILURES=0
-# Carried across shots so each one can prove it differs from the last.
+# Carried across shots so each one can prove it differs from the last. Reset by
+# launch_locale, since the first shot of a locale has nothing to differ from.
 LAST_SUM=""
-LAST_PID=""
+COMMAND_DIR=""
+SEQ=0
 
-# shoot <locale> <visionScreen-or-empty> <timeOffset-or-empty> <displayEpoch> <settle-secs> <outName>
-shoot() {
-	local loc="$1" screen="$2" offset="$3" epoch="$4" settle="$5" name="$6"
+# One launch per locale, every shot within it.
+#
+# Selecting the screen through launch environment variables meant a
+# terminate/launch/first-render cycle per shot. Measured on this simulator that
+# cycle is 16-33s locally and around three minutes on a CI runner, against ~2s
+# for the simctl calls themselves — the launch is the entire cost. The app now
+# also reads a command file, so the screen can change in place.
+#
+# Locale still needs its own launch: SwiftUI resolves `Text` against the
+# environment locale, but the app formats several strings — including the
+# daylight-summary headline — through `Locale.current`, which no environment
+# override reaches. See ScreenshotSupport.swift.
 
-	# Wait for the process to actually be gone before relaunching. `simctl launch`
-	# returns a PID immediately, and against a still-running instance it surfaces
-	# that one without applying the new arguments — which is how a shot ends up
-	# with the previous window *and* the previous locale.
+# launch <locale> — fresh process in that language, pinned to the daily instant.
+launch_locale() {
+	local loc="$1"
 	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
-	local gone=0 t=0
+	# `simctl launch` returns a pid immediately, and against a still-running
+	# instance it surfaces that one without applying the new arguments.
+	local t=0
 	while [ "$t" -lt 15 ]; do
-		if ! xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID"; then
-			gone=1; break
-		fi
+		xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID" || break
 		sleep 1
 		t=$((t + 1))
 	done
-	[ "$gone" = "1" ] || echo "     warning: $BUNDLE_ID still listed after 15s; relaunch may not apply"
 
-	# Locale comes from per-process launch arguments (same mechanism as the
-	# watchOS capture); SwiftUI derives layout direction (ar → RTL) from the language.
 	local langArgs=()
 	if [ "$loc" != "en" ]; then
 		langArgs=(-AppleLanguages "($loc)" -AppleLocale "$(apple_locale_for "$loc")")
 	fi
 
-	# Only set the UITEST_* env vars when they carry a value — an empty string is
-	# not "unset" to the app (an empty forced selection would select nothing).
-	local envArgs=("SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$SELECTED_LOCATION")
-	[ -n "$screen" ] && envArgs+=("SIMCTL_CHILD_UITEST_VISION_SCREEN=$screen")
-	[ -n "$offset" ] && envArgs+=("SIMCTL_CHILD_UITEST_TIME_OFFSET_DAYS=$offset")
-	[ -n "$epoch" ] && envArgs+=("SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$epoch")
+	env "SIMCTL_CHILD_UITEST_SELECTED_LOCATION=$SELECTED_LOCATION" \
+		"SIMCTL_CHILD_UITEST_DISPLAY_EPOCH=$DAILY_EPOCH" \
+		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" > /dev/null
 
-	# `simctl launch` prints "<bundle id>: <pid>" — keep it, so a PID that did not
-	# change tells us the relaunch was a no-op rather than a fresh process.
-	local launchOut
-	launchOut=$(env "${envArgs[@]}" \
-		xcrun simctl launch "$UDID" "$BUNDLE_ID" -UITestScreenshots "${langArgs[@]+"${langArgs[@]}"}" 2>&1)
-	local pid="${launchOut##*: }"
-	if [ -n "$LAST_PID" ] && [ "$pid" = "$LAST_PID" ]; then
-		echo "     warning: pid $pid unchanged from the previous shot — the app did not restart"
-	fi
-	LAST_PID="$pid"
+	COMMAND_DIR="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Documents"
+	mkdir -p "$COMMAND_DIR"
+	rm -f "$COMMAND_DIR/capture-command.json"
+	SEQ=0
+	LAST_SUM=""
+}
+
+# command <json-body> — asks the running app to change state, no relaunch.
+command_app() {
+	SEQ=$((SEQ + 1))
+	printf '{"seq":%s,%s}' "$SEQ" "$1" > "$COMMAND_DIR/capture-command.json"
+}
+
+# shoot <locale> <settle-secs> <outName>
+shoot() {
+	local loc="$1" settle="$2" name="$3"
 	sleep "$settle"
 
 	mkdir -p "$OUT/$loc"
 	local dest="$OUT/$loc/$name.png"
 
-	# The settle above is a floor, not a guarantee: the app relaunches with a new
-	# pid, but the simulator can still be presenting the previous app's last frame
+	# The settle above is a floor, not a guarantee: a command is applied
+	# asynchronously and the simulator can still be presenting the previous frame
 	# when the sleep expires. So don't trust the clock — keep re-grabbing until the
 	# frame differs from the one before it. An identical frame is proof the new
-	# state hasn't rendered yet; accepting it ships one locale's screenshot under
-	# another language, which is what happened before this loop existed.
+	# state hasn't rendered yet; accepting it once shipped an English screenshot
+	# into nine slots across six languages.
 	local sum="" attempt=0
 	while [ "$attempt" -lt 8 ]; do
 		rm -f "$dest"
@@ -204,17 +214,25 @@ shoot() {
 		[ "$attempt" -gt 0 ] && extra=" (+$((attempt * 5))s waiting for the new frame)"
 		echo "  ✓ $loc/$name.png ($(sips -g pixelWidth -g pixelHeight "$dest" | awk '/pixel/ {printf "%s ", $2}'| sed 's/ $//' | tr ' ' 'x'))$extra"
 	fi
-	xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
 }
 
-# The visionOS simulator takes ~15–20s past the launch plate before the window
-# content is rendered, so the settle times are generous. The solstice-info
-# window additionally hosts the RealityKit globe, which needs load + lighting.
+# The settles are a floor; the frame-change check below decides when a shot is
+# really ready. The solstice-info window hosts the RealityKit globe, which needs
+# load + lighting on top of that.
+#
+# solstice-info goes LAST on purpose. It opens a second window, and
+# `dismissWindow(value:)` does not reliably close it again — so rather than fight
+# that, nothing follows it within a locale. Output names keep their original order.
 for loc in "${LOCALES[@]}"; do
 	echo "== $loc =="
-	shoot "$loc" ""              ""                  "$DAILY_EPOCH"  20 "vision-01-app"
-	shoot "$loc" "solstice-info" ""                  "$DAILY_EPOCH"  25 "vision-02-solstice-info"
-	shoot "$loc" ""              "$TIME_OFFSET_DAYS" "$TRAVEL_EPOCH" 20 "vision-03-time-travel"
+	launch_locale "$loc"
+	shoot "$loc" 20 "vision-01-app"
+
+	command_app "\"offset\":$TIME_OFFSET_DAYS,\"epoch\":$TRAVEL_EPOCH"
+	shoot "$loc" 8 "vision-03-time-travel"
+
+	command_app "\"screen\":\"solstice-info\",\"offset\":0,\"epoch\":$DAILY_EPOCH"
+	shoot "$loc" 20 "vision-02-solstice-info"
 done
 
 if [ "$FAILURES" -gt 0 ]; then
