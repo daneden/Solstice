@@ -26,6 +26,8 @@ struct NotificationSettings: View {
 	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) var notifsIncludeSolsticeCountdown
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) var notifsIncludeDaylightChange
 
+	@AppStorage(Preferences.notificationsIncludeEclipses) var notifsIncludeEclipses
+
 	@AppStorage(Preferences.sadPreference) var sadPreference
 
 	/// Expanded by default only for screenshot capture, so the marketing shot shows
@@ -85,6 +87,7 @@ struct NotificationSettings: View {
 		Group {
 			locationSection
 			scheduleSection
+			eclipseSection
 			contentCustomizationGroup
 			sadPreferenceSection
 		}
@@ -165,6 +168,17 @@ struct NotificationSettings: View {
 			text = Text("at \(Text(scheduleType.description))")
 		}
 		return text
+	}
+
+	/// Kept out of the content-customisation group on purpose: those toggles change what
+	/// the daily notification says, whereas this one schedules two extra notifications of
+	/// its own and has no effect on the preview below it.
+	private var eclipseSection: some View {
+		Section {
+			Toggle("Solar eclipse alerts", isOn: $notifsIncludeEclipses)
+		} footer: {
+			Text("Get a reminder a week before, and again on the morning of, a solar eclipse that covers most of the sun where you are. Most locations see one only once or twice a decade.")
+		}
 	}
 
 	private var contentCustomizationGroup: some View {

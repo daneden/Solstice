@@ -94,6 +94,12 @@
 		713F7FF929BE843700BEA156 /* AnnualOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FF829BE843700BEA156 /* AnnualOverview.swift */; };
 		713F7FFA29BE843700BEA156 /* AnnualOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FF829BE843700BEA156 /* AnnualOverview.swift */; };
 		713F7FFC29BE867E00BEA156 /* DailyOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFB29BE867E00BEA156 /* DailyOverview.swift */; };
+		71EC11FE2F30000000000011 /* EclipseCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC11FE2F30000000000001 /* EclipseCalculator.swift */; };
+		71EC11FE2F30000000000012 /* EclipseCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC11FE2F30000000000001 /* EclipseCalculator.swift */; };
+		71EC11FE2F30000000000013 /* EclipseCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC11FE2F30000000000001 /* EclipseCalculator.swift */; };
+		71EC11FE2F30000000000014 /* EclipseCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC11FE2F30000000000001 /* EclipseCalculator.swift */; };
+		71EC11FE2F30000000000021 /* EclipseOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC11FE2F30000000000002 /* EclipseOverview.swift */; };
+		71EC11FE2F30000000000022 /* EclipseOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EC11FE2F30000000000002 /* EclipseOverview.swift */; };
 		713F7FFD29BE867E00BEA156 /* DailyOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFB29BE867E00BEA156 /* DailyOverview.swift */; };
 		713F7FFF29BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
 		713F800029BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */; };
@@ -515,6 +521,8 @@
 		71C635C72E9D9A8C003FA1AE /* Shared Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Shared Assets.xcassets"; sourceTree = "<group>"; };
 		71C718202E83361C006A6835 /* TimeTravelCompactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelCompactView.swift; sourceTree = "<group>"; };
 		71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolsticeCalculator.swift; sourceTree = "<group>"; };
+		71EC11FE2F30000000000001 /* EclipseCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EclipseCalculator.swift; sourceTree = "<group>"; };
+		71EC11FE2F30000000000002 /* EclipseOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EclipseOverview.swift; sourceTree = "<group>"; };
 		71CA1E0029E0000000000001 /* Calendar++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar++.swift"; sourceTree = "<group>"; };
 		71CCE7993022311F00E2782D /* TimeTravelOrnamentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelOrnamentView.swift; sourceTree = "<group>"; };
 		71DB52AB29AB8BED00D62BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -649,6 +657,7 @@
 				713F7FF829BE843700BEA156 /* AnnualOverview.swift */,
 				713F7FFB29BE867E00BEA156 /* DailyOverview.swift */,
 				713F7FFE29BE88E800BEA156 /* DaylightSummaryTitle.swift */,
+				71EC11FE2F30000000000002 /* EclipseOverview.swift */,
 				7198469D28E58CCD00E866CE /* DetailView.swift */,
 				71C4D8092EA9856800EEB023 /* SolarExtremetiesOverview.swift */,
 			);
@@ -823,6 +832,7 @@
 				48E63C6609375907FE3E8C3C /* Secrets.swift */,
 				BE27E44FFAA0D1493AA14281 /* Secrets.swift.template */,
 				71E9457F2F31FDA600B26D02 /* NTSolar.swift */,
+				71EC11FE2F30000000000001 /* EclipseCalculator.swift */,
 				71C8F4CD29A38752009A86B4 /* SolsticeCalculator.swift */,
 				71908ACC2AC95A5500C7B610 /* StringBuilder.swift */,
 				7123E75E30052CE20091C591 /* ScreenshotSupport.swift */,
@@ -1230,6 +1240,7 @@
 				710720913009257E006AA79C /* MarketingWidgetRenderer.swift in Sources */,
 				7187147729DDE6B700EADF03 /* CLLocationCoordinate2D++.swift in Sources */,
 				7150CC5C29AB7C3200E6B90C /* SolsticeCalculator.swift in Sources */,
+				71EC11FE2F30000000000011 /* EclipseCalculator.swift in Sources */,
 				7121DE0229C22E7D0031EEE7 /* View+Debugging.swift in Sources */,
 				7198C40E29DB06C1009A457E /* OverviewWidget.swift in Sources */,
 				718177692F2EA2EC007A2E9E /* LocationAppEntity.swift in Sources */,
@@ -1306,6 +1317,7 @@
 				719465232C2C1E09008408C0 /* AppStorage++.swift in Sources */,
 				719465242C2C1E09008408C0 /* CLLocationCoordinate2D++.swift in Sources */,
 				719465252C2C1E09008408C0 /* SolsticeCalculator.swift in Sources */,
+				71EC11FE2F30000000000012 /* EclipseCalculator.swift in Sources */,
 				719465262C2C1E09008408C0 /* View+Debugging.swift in Sources */,
 				719465272C2C1E09008408C0 /* OverviewWidget.swift in Sources */,
 				719465282C2C1E09008408C0 /* Color+Mix.swift in Sources */,
@@ -1375,6 +1387,7 @@
 				7198468728E5895E00E866CE /* ContentView.swift in Sources */,
 				71A029B22C3052BC00E19819 /* EquinoxAndSolsticeDescriptions.swift in Sources */,
 				713F7FF929BE843700BEA156 /* AnnualOverview.swift in Sources */,
+				71EC11FE2F30000000000021 /* EclipseOverview.swift in Sources */,
 				71F641B729994DD900FE5AB5 /* LocationListRow.swift in Sources */,
 				7194650E2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */,
 				713F7FFF29BE88E800BEA156 /* DaylightSummaryTitle.swift in Sources */,
@@ -1407,6 +1420,7 @@
 				712433A92D78870600709C20 /* StackedButtonStyle.swift in Sources */,
 				71BC51CB2E91B56D0025892F /* CircularSolarChart.swift in Sources */,
 				71C8F4CE29A38752009A86B4 /* SolsticeCalculator.swift in Sources */,
+				71EC11FE2F30000000000013 /* EclipseCalculator.swift in Sources */,
 				711782EA2E4E7CE20006CE5B /* AsyncButton.swift in Sources */,
 				7116B1EE2DDD12BA0018A294 /* TimeMachinePanelView.swift in Sources */,
 				718177622F2E9BCF007A2E9E /* SolsticeConfigurationIntent.swift in Sources */,
@@ -1467,6 +1481,7 @@
 				711782DD2E4E0E030006CE5B /* LandingView.swift in Sources */,
 				719F928829ACD29100C06921 /* ContentView.swift in Sources */,
 				713F7FFA29BE843700BEA156 /* AnnualOverview.swift in Sources */,
+				71EC11FE2F30000000000022 /* EclipseOverview.swift in Sources */,
 				7132AC1A29E6962D00523215 /* ConditionalGlobals.swift in Sources */,
 				711782DA2E4DFDFE0006CE5B /* DeduplicateLocationRecordsModifier.swift in Sources */,
 				711782E72E4E77AF0006CE5B /* View+glassButtonStyle.swift in Sources */,
@@ -1504,6 +1519,7 @@
 				7188714429DC8C60001A4327 /* View+RectangularEdgeMask.swift in Sources */,
 				71E945C82F32506000B26D02 /* CircularSolarChart.swift in Sources */,
 				719F927C29ACD22100C06921 /* SolsticeCalculator.swift in Sources */,
+				71EC11FE2F30000000000014 /* EclipseCalculator.swift in Sources */,
 				719465162C294B42008408C0 /* Color+Mix.swift in Sources */,
 				71E3C41B2EA12B030005C884 /* View+backportGlassEffect.swift in Sources */,
 				7194650F2C22B61E008408C0 /* AppChangeMigrator.swift in Sources */,
@@ -1873,7 +1889,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.2.0;
+				MARKETING_VERSION = 3.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1935,7 +1951,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Solstice uses your location to calculate local sunrise and sunset times";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.2.0;
+				MARKETING_VERSION = 3.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

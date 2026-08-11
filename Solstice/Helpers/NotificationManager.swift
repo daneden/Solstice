@@ -20,6 +20,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) static var includeDaylightChange
 	@AppStorage(Preferences.notificationsIncludeDaylightDuration) static var includeDaylightDuration
 	@AppStorage(Preferences.notificationsIncludeSolsticeCountdown) static var includeSolsticeCountdown
+	@AppStorage(Preferences.notificationsIncludeEclipses) static var includeEclipses
 	@AppStorage(Preferences.NotificationSettings.scheduleType) static var scheduleType
 	@AppStorage(Preferences.NotificationSettings.notificationDateComponents) static var notificationDateComponents
 	@AppStorage(Preferences.NotificationSettings.relativeOffset) static var userPreferenceNotificationOffset
@@ -83,7 +84,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			return
 		}
 
-		for i in 0 ... 63 {
+		// Eclipse alerts go in first, for two independent reasons. iOS keeps only 64
+		// pending requests per app, and the daily loop below would otherwise claim every
+		// one of them — so the eclipse alerts have to be budgeted for rather than
+		// appended. And the daily loop returns outright on the first suppressed day
+		// (see the SAD handling), which would silently skip anything scheduled after it.
+		let eclipseRequestCount = await scheduleEclipseNotifications(location: location, timeZone: timeZone)
+
+		for i in 0 ... (63 - eclipseRequestCount) {
 			let date = calendar.date(byAdding: .day, value: i, to: Date()) ?? .now
 
 			guard let solar = NTSolar(for: date, coordinate: location.coordinate, timeZone: timeZone) else {
@@ -93,7 +101,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			let notificationDate = getNextNotificationDate(after: date, with: solar)
 
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
-				return
+				// `continue`, not `return`: content comes back nil for a single day —
+				// either the solar maths failed or the SAD preference suppressed that one
+				// day — and every remaining day still deserves its notification. Returning
+				// here cancelled the rest of the schedule.
+				continue
 			}
 
 			let content = UNMutableNotificationContent()
@@ -120,6 +132,171 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 		#if os(iOS) && !WIDGET_EXTENSION
 			scheduleBackgroundTask()
 		#endif
+	}
+
+	// MARK: - Eclipse Notifications
+
+	/// Schedules alerts for an upcoming major solar eclipse at the notification location.
+	///
+	/// Two go out: one a week ahead, which is enough notice to get hold of eclipse
+	/// glasses or arrange to be somewhere with a clear view, and one on the morning
+	/// itself carrying the local times.
+	///
+	/// Must only ever be called from `scheduleNotifications`, which clears every pending
+	/// request before it runs. Scheduling eclipse alerts anywhere else would work right
+	/// up until the next reschedule quietly deleted them.
+	///
+	/// - Returns: How many requests were added, so the daily schedule can leave room.
+	private static func scheduleEclipseNotifications(location: CLLocation, timeZone: TimeZone) async -> Int {
+		guard includeEclipses else { return 0 }
+
+		guard let eclipse = EclipseCalculator.nextEclipse(
+			at: location.coordinate,
+			after: Date(),
+			within: Constants.Eclipse.notificationWindow,
+			minimumObscuration: Constants.Eclipse.notificationThreshold
+		) else {
+			return 0
+		}
+
+		var scheduled = 0
+
+		let weekAhead = eclipse.maximum.addingTimeInterval(-Constants.Eclipse.notificationLeadTime)
+		let weekAheadTime = eclipseAlertTime(on: weekAhead, location: location, timeZone: timeZone)
+
+		if weekAheadTime > Date(),
+		   await addEclipseRequest(for: eclipse, at: weekAheadTime, timeZone: timeZone, isSameDay: false)
+		{
+			scheduled += 1
+		}
+
+		// A preferred notification time of 08:00 is no use for an eclipse that starts at
+		// 07:30, so pull the same-day alert forward if it would otherwise land too late.
+		var sameDayTime = eclipseAlertTime(on: eclipse.maximum, location: location, timeZone: timeZone)
+		let latestUseful = eclipse.firstContact.addingTimeInterval(-Constants.Eclipse.sameDayMinimumWarning)
+		if sameDayTime > latestUseful {
+			sameDayTime = latestUseful
+		}
+
+		if sameDayTime > Date(),
+		   await addEclipseRequest(for: eclipse, at: sameDayTime, timeZone: timeZone, isSameDay: true)
+		{
+			scheduled += 1
+		}
+
+		return scheduled
+	}
+
+	/// Places an eclipse alert at whatever time of day the user has chosen for their
+	/// daily notification, so these arrive when they already expect to hear from the app.
+	private static func eclipseAlertTime(on day: Date, location: CLLocation, timeZone: TimeZone) -> Date {
+		let solar = NTSolar(for: day, coordinate: location.coordinate, timeZone: timeZone)
+		return getNextNotificationDate(after: day, with: solar)
+	}
+
+	private static func addEclipseRequest(
+		for eclipse: EclipseCalculator.LocalCircumstances,
+		at date: Date,
+		timeZone: TimeZone,
+		isSameDay: Bool
+	) async -> Bool {
+		// Note there is deliberately no SAD suppression here. That exists to soften the
+		// message that the days are drawing in; an eclipse isn't that message, and it is
+		// far too rare to be worth withholding.
+		let content = UNMutableNotificationContent()
+		content.title = eclipseTitle(isSameDay: isSameDay)
+		content.body = eclipseBody(for: eclipse, timeZone: timeZone)
+
+		var components = calendar.dateComponents([.hour, .minute, .day, .month], from: date)
+		components.calendar = calendar
+		components.timeZone = .autoupdatingCurrent
+
+		let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+		let request = UNNotificationRequest(
+			identifier: "\(Constants.eclipseNotificationIdentifierPrefix)\(date.ISO8601Format())",
+			content: content,
+			trigger: trigger
+		)
+
+		do {
+			try await UNUserNotificationCenter.current().add(request)
+			return true
+		} catch {
+			print(error)
+			return false
+		}
+	}
+
+	private static func eclipseTitle(isSameDay: Bool) -> String {
+		isSameDay
+			? NSLocalizedString("eclipse-notif-day-title", value: "Solar eclipse today", comment: "Notification title on the day of a solar eclipse")
+			: NSLocalizedString("eclipse-notif-week-title", value: "Solar eclipse in one week", comment: "Notification title one week before a solar eclipse")
+	}
+
+	private static func eclipseBody(for eclipse: EclipseCalculator.LocalCircumstances, timeZone: TimeZone) -> String {
+		let formatStyle = Date.FormatStyle(timeZone: timeZone).hour().minute()
+		let coverage = eclipse.obscuration.formatted(.percent.precision(.fractionLength(0)))
+
+		let description: String
+		switch eclipse.kind {
+		case .total:
+			description = NSLocalizedString(
+				"eclipse-notif-total",
+				value: "A total solar eclipse will completely cover the sun.",
+				comment: "Notification fragment describing a total solar eclipse"
+			)
+		case .annular:
+			description = String.localizedStringWithFormat(
+				NSLocalizedString(
+					"eclipse-notif-annular",
+					value: "An annular solar eclipse will cover %@ of the sun, leaving a ring of light.",
+					comment: "Notification fragment describing an annular solar eclipse"
+				), coverage
+			)
+		case .partial:
+			description = String.localizedStringWithFormat(
+				NSLocalizedString(
+					"eclipse-notif-partial",
+					value: "A partial solar eclipse will cover %@ of the sun.",
+					comment: "Notification fragment describing a partial solar eclipse"
+				), coverage
+			)
+		}
+
+		let times = String.localizedStringWithFormat(
+			NSLocalizedString(
+				"eclipse-notif-times",
+				value: "It begins at %1$@ and peaks at %2$@.",
+				comment: "Notification fragment for when a solar eclipse starts and peaks"
+			),
+			eclipse.firstContact.formatted(formatStyle),
+			eclipse.maximum.formatted(formatStyle)
+		)
+
+		@StringBuilder var body: String {
+			description
+
+			times
+
+			if let centralDuration = eclipse.centralDuration, eclipse.kind == .total {
+				String.localizedStringWithFormat(
+					NSLocalizedString(
+						"eclipse-notif-totality",
+						value: "Totality lasts about %@.",
+						comment: "Notification fragment for how long totality lasts"
+					),
+					Duration.seconds(centralDuration).formatted(.units(allowed: [.minutes, .seconds], maximumUnitCount: 2))
+				)
+			}
+
+			NSLocalizedString(
+				"eclipse-notif-safety",
+				value: "Never look at the sun without certified eclipse glasses.",
+				comment: "Eye safety warning appended to solar eclipse notifications"
+			)
+		}
+
+		return body
 	}
 
 	// MARK: Background Task Management

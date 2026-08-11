@@ -322,6 +322,42 @@ enum Constants {
 	/// Prefix for notification request identifiers
 	static let notificationIdentifierPrefix = "me.daneden.Solstice.notification-"
 
+	/// Prefix for eclipse notification request identifiers, kept distinct from the daily
+	/// ones so the two can be told apart when inspecting what's pending.
+	static let eclipseNotificationIdentifierPrefix = "me.daneden.Solstice.eclipse-"
+
+	enum Eclipse {
+		/// How far ahead the detail view looks for an eclipse.
+		static let detailWindow: TimeInterval = 182 * 24 * 60 * 60
+
+		/// The smallest slice of the sun worth a row in the detail view. Below about a
+		/// tenth of the disc there is nothing to notice without a filter and a reason to
+		/// look, and a location typically gets an eclipse this size every year or two —
+		/// often enough for the section to earn its place.
+		static let detailThreshold = 0.1
+
+		/// Eclipses at or above this get a fuller treatment: contact times, how long
+		/// totality lasts, and the safety note.
+		static let majorThreshold = 0.9
+
+		/// Only an eclipse this deep is worth interrupting someone for. At this size a
+		/// given location sees one perhaps once or twice a decade, which is what keeps
+		/// the notification feeling like news rather than noise.
+		static let notificationThreshold = 0.9
+
+		/// How far ahead notification scheduling looks. Comfortably past the 64-day
+		/// horizon of the daily notifications so an eclipse is never missed between
+		/// background refreshes.
+		static let notificationWindow: TimeInterval = 70 * 24 * 60 * 60
+
+		/// How far in advance the first eclipse notification fires.
+		static let notificationLeadTime: TimeInterval = 7 * 24 * 60 * 60
+
+		/// The latest the morning-of notification may fire before first contact, so a
+		/// preferred notification time that falls mid-eclipse still gives some warning.
+		static let sameDayMinimumWarning: TimeInterval = 60 * 60
+	}
+
 	/// URL scheme for deep links
 	static let urlScheme = "solstice"
 
