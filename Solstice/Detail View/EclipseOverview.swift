@@ -29,7 +29,8 @@ struct EclipseOverview<Location: AnyLocation>: View {
 	var location: Location
 
 	/// A near-total eclipse is a reason to take the day off work; a third of the sun
-	/// quietly disappearing is a curiosity. They shouldn't get the same amount of screen.
+	/// quietly disappearing is a curiosity. Chooses between the full row set and a single
+	/// compact row — and nothing else, so the section's chrome stays the same either way.
 	private var isMajor: Bool {
 		circumstances.obscuration >= Constants.Eclipse.majorThreshold || circumstances.isCentral
 	}
@@ -50,7 +51,7 @@ struct EclipseOverview<Location: AnyLocation>: View {
 		switch circumstances.kind {
 		case .total: "circle.fill"
 		case .annular: "circle.circle"
-		case .partial: "circle.righthalf.filled"
+		case .partial: "sun.righthalf.filled"
 		}
 	}
 
@@ -64,18 +65,14 @@ struct EclipseOverview<Location: AnyLocation>: View {
 				}
 			}
 			.environment(\.timeZone, location.timeZone)
-		} header: {
-			if isMajor {
-				Text("Upcoming solar eclipse")
-			}
 		} footer: {
-			if isMajor {
-				// An app that tells someone to go and look at the sun owes them this.
-				if circumstances.kind == .total {
-					Text("Never look at the sun without certified eclipse glasses. Only during totality, when the sun is completely covered, is it safe to look with the naked eye.")
-				} else {
-					Text("Never look at the sun without certified eclipse glasses, even when it is almost entirely covered.")
-				}
+			// An app that tells someone to go and look at the sun owes them this, and a
+			// smaller eclipse is no safer to stare at than a near-total one — so it
+			// appears whenever the section does, not just for the headline events.
+			if circumstances.kind == .total {
+				Text("Never look at the sun without certified eclipse glasses. Only during totality, when the sun is completely covered, is it safe to look with the naked eye.")
+			} else {
+				Text("Never look at the sun without certified eclipse glasses, even when it is almost entirely covered.")
 			}
 		}
 		.materialListRowBackground()
@@ -135,7 +132,7 @@ struct EclipseOverview<Location: AnyLocation>: View {
 				Text("Maximum coverage")
 			}
 		} icon: {
-			Image(systemName: "circle.lefthalf.filled")
+			Image(systemName: "slider.horizontal.below.sun.max")
 		}
 
 		if let centralDuration = circumstances.centralDuration {
@@ -167,7 +164,7 @@ struct EclipseOverview<Location: AnyLocation>: View {
 				Text("Eclipse begins")
 			}
 		} icon: {
-			Image(systemName: "sunrise")
+			Image(systemName: "moonphase.waxing.gibbous")
 		}
 
 		Label {
@@ -177,7 +174,7 @@ struct EclipseOverview<Location: AnyLocation>: View {
 				Text("Maximum eclipse")
 			}
 		} icon: {
-			Image(systemName: "sun.max")
+			Image(systemName: "moonphase.full.moon")
 		}
 
 		Label {
@@ -187,7 +184,7 @@ struct EclipseOverview<Location: AnyLocation>: View {
 				Text("Eclipse ends")
 			}
 		} icon: {
-			Image(systemName: "sunset")
+			Image(systemName: "moonphase.waning.gibbous")
 		}
 
 		// Below roughly ten degrees the sun is behind most rooftops and hills, which

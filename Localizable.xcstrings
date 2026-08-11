@@ -13362,64 +13362,6 @@
         }
       }
     },
-    "Upcoming solar eclipse" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "كسوف شمسي قادم"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Bevorstehende Sonnenfinsternis"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Próximo eclipse solar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Prochaine éclipse solaire"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Prossima eclissi solare"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "今後の日食"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Aankomende zonsverduistering"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Nadchodzące zaćmienie Słońca"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "即将到来的日食"
-          }
-        }
-      }
-    },
     "%@ covered" : {
       "localizations" : {
         "ar" : {

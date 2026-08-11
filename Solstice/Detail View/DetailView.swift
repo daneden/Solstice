@@ -145,7 +145,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		let longitude = location.longitude
 		let date = timeMachine.date
 
-		eclipse = await Task.detached(priority: .utility) {
+		let result = await Task.detached(priority: .utility) {
 			EclipseCalculator.nextEclipse(
 				at: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
 				after: date,
@@ -153,6 +153,14 @@ struct DetailView<Location: ObservableLocation>: View {
 				minimumObscuration: Constants.Eclipse.detailThreshold
 			)
 		}.value
+
+		// Animating at the mutation site rather than with `.animation(_:value:)` on the
+		// form, which would also animate everything else in it. Covers all three
+		// transitions: the section arriving once the first search finishes, leaving when
+		// the eclipse is time-travelled past, and swapping one eclipse for another.
+		withAnimation {
+			eclipse = result
+		}
 	}
 
 	var toolbarItemPlacement: ToolbarItemPlacement {
