@@ -170,9 +170,10 @@ struct DetailView<Location: ObservableLocation>: View {
 			)
 		}.value
 
-		withAnimation {
-			moon = result
-		}
+		// Assigned without animation on purpose. This task is keyed on the day, so during
+		// time travel it fires on every day change — animating here meant animating the
+		// whole form each time, which is what made scrubbing feel slow on device.
+		moon = result
 	}
 
 	private func findEclipse() async {

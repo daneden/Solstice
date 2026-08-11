@@ -45,95 +45,105 @@ struct DailyOverview<Location: AnyLocation>: View {
 	}
 
 	var body: some View {
-		Section {
-			VStack {
-				switch chartType {
-				#if !os(watchOS)
-					case .circular:
-						CircularSolarChart(location: location)
-							.padding()
-							.frame(maxHeight: chartHeight)
-							.frame(maxWidth: .infinity)
-				#endif
-				default:
-					daylightChartView
-						.frame(height: chartHeight)
-						.environment(\.timeZone, location.timeZone)
-				}
-			}
-			.listRowInsets(.zero)
-			#if os(watchOS)
-				.listRowBackground(Color.clear)
-			#else
-				.contextMenu {
-					Picker(selection: $chartType.animation()) {
-						ForEach(ChartType.allCases) { chartType in
-							Label(chartType.title, image: chartType.icon)
-								.symbolRenderingMode(.hierarchical)
-								.imageScale(.large)
-								.labelStyle(.titleAndIcon)
-						}
-					} label: {
-						Text("Chart type")
+		// Two sections rather than one: the chart and the sun above, the moon below.
+		// Interleaving them made the two bodies’ times read as a single list.
+		Group {
+			Section {
+				VStack {
+					switch chartType {
+					#if !os(watchOS)
+						case .circular:
+							CircularSolarChart(location: location)
+								.padding()
+								.frame(maxHeight: chartHeight)
+								.frame(maxWidth: .infinity)
+					#endif
+					default:
+						daylightChartView
+							.frame(height: chartHeight)
+							.environment(\.timeZone, location.timeZone)
 					}
-					.pickerStyle(.menu)
-
-					Picker(selection: $chartAppearance.animation()) {
-						ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
-							Label(appearance.description, systemImage: "circle.fill")
-								.tint(appearance.tintColor.gradient)
-						}
-					} label: {
-						Text("Chart theme")
-					}
-					.pickerStyle(.menu)
 				}
-				.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
-				.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
-				#if !os(visionOS)
-					.listRowBackground(
-						solar.view
-							.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
-							.mask {
-								LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+				.listRowInsets(.zero)
+				#if os(watchOS)
+					.listRowBackground(Color.clear)
+				#else
+					.contextMenu {
+						Picker(selection: $chartType.animation()) {
+							ForEach(ChartType.allCases) { chartType in
+								Label(chartType.title, image: chartType.icon)
+									.symbolRenderingMode(.hierarchical)
+									.imageScale(.large)
+									.labelStyle(.titleAndIcon)
 							}
-							.background(Color("listRowBackgroundColor"))
-					)
+						} label: {
+							Text("Chart type")
+						}
+						.pickerStyle(.menu)
+
+						Picker(selection: $chartAppearance.animation()) {
+							ForEach(DaylightChart.Appearance.allCases, id: \.self) { appearance in
+								Label(appearance.description, systemImage: "circle.fill")
+									.tint(appearance.tintColor.gradient)
+							}
+						} label: {
+							Text("Chart theme")
+						}
+						.pickerStyle(.menu)
+					}
+					.alignmentGuide(.listRowSeparatorLeading) { d in d[.leading] }
+					.alignmentGuide(.listRowSeparatorTrailing) { d in d[.trailing] }
+					#if !os(visionOS)
+						.listRowBackground(
+							solar.view
+								.opacity(chartType == .circular && chartAppearance == .graphical ? 0.3 : 0)
+								.mask {
+									LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+								}
+								.background(Color("listRowBackgroundColor"))
+						)
+					#endif
 				#endif
-			#endif
 
-			Group {
 				if bodyMode.includesSun {
-					solarRows
+					Group {
+						solarRows
+					}
+					.environment(\.timeZone, location.timeZone)
+					.materialListRowBackground()
 				}
+			} header: {
+				if location.timeZoneIdentifier != localTimeZone.identifier,
+				   !(location is CurrentLocation)
+				{
+					HStack {
+						Text("Local time")
+						Spacer()
+						Text("\(solar.date, style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
+					}
+					.environment(\.timeZone, location.timeZone)
+				}
+			} footer: {
+				if let differenceFromPreviousSolstice {
+					let moreOrLess = nextGreaterThanPrevious
+						? String(localized: "more", comment: "More daylight middle of sentence")
+						: String(localized: "less", comment: "Less daylight middle of sentence")
+					Label {
+						Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(moreOrLess) daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
+					} icon: {
+						Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
+							.contentTransition(.symbolEffect)
+					}
+				}
+			}
 
-				if bodyMode.includesMoon, let moon {
-					lunarRows(for: moon)
-				}
-			}
-			.environment(\.timeZone, location.timeZone)
-			.materialListRowBackground()
-		} header: {
-			if location.timeZoneIdentifier != localTimeZone.identifier,
-			   !(location is CurrentLocation)
-			{
-				HStack {
-					Text("Local time")
-					Spacer()
-					Text("\(solar.date, style: .time) (\(location.timeZone.differenceStringFromLocalTime(for: timeMachine.date)))")
-				}
-				.environment(\.timeZone, location.timeZone)
-			}
-		} footer: {
-			if let differenceFromPreviousSolstice {
-				let moreOrLess = nextGreaterThanPrevious
-					? String(localized: "more", comment: "More daylight middle of sentence")
-					: String(localized: "less", comment: "Less daylight middle of sentence")
-				Label {
-					Text("\(Duration.seconds(abs(differenceFromPreviousSolstice)).formatted(.units(maximumUnitCount: 2))) \(moreOrLess) daylight \(timeMachine.dateLabel(context: .middleOfSentence)) compared to the previous solstice")
-				} icon: {
-					Image(systemName: nextGreaterThanPrevious ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
-						.contentTransition(.symbolEffect)
+			if bodyMode.includesMoon, let moon {
+				Section {
+					Group {
+						lunarRows(for: moon)
+					}
+					.environment(\.timeZone, location.timeZone)
+					.materialListRowBackground()
 				}
 			}
 		}
@@ -229,8 +239,10 @@ struct DailyOverview<Location: AnyLocation>: View {
 				Text(moon.phase.localizedName)
 			}
 		} icon: {
+			// No `contentTransition` here: the glyph changes whenever the moon data
+			// arrives, which is on every day change, so the symbol effect fired far more
+			// often than it looked like it would.
 			Image(systemName: moon.phase.symbolName(latitude: location.latitude))
-				.contentTransition(.symbolEffect)
 		}
 
 		Label {
@@ -279,6 +291,7 @@ extension DailyOverview {
 	var daylightChartView: some View {
 		DaylightChart(
 			solar: solar,
+			moon: moon,
 			timeZone: location.timeZone,
 			appearance: chartAppearance, scrubbable: true,
 			markSize: chartMarkSize,

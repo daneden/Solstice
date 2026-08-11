@@ -29,6 +29,9 @@ struct DaylightChart: View {
 	}
 
 	var solar: NTSolar
+	/// Supplied by `DailyOverview`, which already computes it. Only needed for the phase
+	/// glyph — the moon's path is sampled from `solar.coordinate`.
+	var moon: LunarCalculator.Moon? = nil
 	var timeZone: TimeZone
 	var showEventTypes = true
 
@@ -123,7 +126,7 @@ struct DaylightChart: View {
 					.interpolationMethod(.catmullRom)
 					.foregroundStyle(.secondary)
 					.lineStyle(StrokeStyle(
-						lineWidth: max(1, markSize / 2),
+						lineWidth: max(1, markSize / 3),
 						lineCap: .round,
 						lineJoin: .round,
 						dash: [markSize / 2, markSize]
@@ -239,6 +242,7 @@ struct DaylightChart: View {
 			scrubIndicator(proxy: proxy, geoHeight: geo.size.height)
 			sunBelowHorizon(proxy: proxy, geo: geo, horizonY: horizonY)
 			sunAboveHorizon(proxy: proxy, horizonY: horizonY)
+			moonMarker(proxy: proxy)
 		}
 
 		scrubHitArea(geo: geo, proxy: proxy)
@@ -267,8 +271,14 @@ struct DaylightChart: View {
 		let frame = geo.frame(in: .named(SkyGradient.coordinateSpaceName))
 		var geometry = SkyChartGeometry(date: midnight.addingTimeInterval(offset))
 
-		let position = sunPosition(for: offset, proxy: proxy)
-		geometry.sunPoint = CGPoint(x: frame.minX + position.x, y: frame.minY + position.y)
+		// Left unset in lunar mode. `sunPoint` becomes the SkyGradient's `sunAnchor`, so
+		// publishing it with no sun drawn would leave a bright highlight tracking an
+		// invisible marker. The sky keeps its day/night colouring either way — that comes
+		// from `date` and `horizonY`.
+		if bodyMode.includesSun {
+			let position = sunPosition(for: offset, proxy: proxy)
+			geometry.sunPoint = CGPoint(x: frame.minX + position.x, y: frame.minY + position.y)
+		}
 
 		if let horizonY = proxy.position(forY: 0.0) {
 			geometry.horizonY = frame.minY + horizonY
@@ -339,6 +349,9 @@ struct DaylightChart: View {
 				.position(sunPosition(for: offset, proxy: proxy))
 				.shadow(color: .secondary.opacity(0.5), radius: 2)
 				.blendMode(.normal)
+				// Hidden rather than skipped: the veil and mask below belong to the chart,
+				// not to the sun, and must survive in lunar mode.
+				.opacity(bodyMode.includesSun ? 1 : 0)
 		}
 		.background {
 			// In simple appearance the chart sits on a plain background, so a subtle veil marks the
@@ -368,10 +381,35 @@ struct DaylightChart: View {
 				.frame(width: markSize * 2.5, height: markSize * 2.5)
 				.position(sunPosition(for: offset, proxy: proxy))
 				.shadow(color: .secondary.opacity(0.5), radius: 3)
+				.opacity(bodyMode.includesSun ? 1 : 0)
 		}
 		.mask(alignment: .top) {
 			Rectangle()
 				.frame(height: horizonY)
+		}
+	}
+
+	/// The moon's phase glyph at the plotted moment.
+	///
+	/// Positioned directly rather than through `AlongSolarPath` — that exists to glide the
+	/// sun's marker during a scrub, and the moon doesn't need to carry that machinery.
+	@ViewBuilder
+	private func moonMarker(proxy: ChartProxy) -> some View {
+		if bodyMode.includesMoon, let moon {
+			let offset = plotOffset
+			let altitude = LunarCalculator.altitude(
+				at: midnight.addingTimeInterval(offset),
+				coordinate: solar.coordinate
+			)
+
+			Image(systemName: moon.phase.symbolName(latitude: solar.coordinate.latitude))
+				.font(.system(size: markSize * 2.5))
+				.foregroundStyle(markForegroundColor)
+				.shadow(color: .secondary.opacity(0.5), radius: 2)
+				.position(
+					x: proxy.position(forX: offset) ?? 0,
+					y: proxy.position(forY: altitude) ?? 0
+				)
 		}
 	}
 
