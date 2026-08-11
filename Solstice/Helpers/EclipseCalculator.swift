@@ -207,9 +207,9 @@ enum EclipseCalculator {
 			kind: kind,
 			obscuration: peak.obscuration,
 			magnitude: peak.magnitude,
-			firstContact: date(fromJulianDay: firstContact),
-			maximum: date(fromJulianDay: best.jd),
-			lastContact: date(fromJulianDay: lastContact),
+			firstContact: Ephemeris.date(fromJulianDay: firstContact),
+			maximum: Ephemeris.date(fromJulianDay: best.jd),
+			lastContact: Ephemeris.date(fromJulianDay: lastContact),
 			centralDuration: centralDuration,
 			sunAltitudeAtMaximum: peak.sunAltitude
 		)
