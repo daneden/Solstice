@@ -536,7 +536,7 @@
 		71EC11FE2F30000000000001 /* EclipseCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EclipseCalculator.swift; sourceTree = "<group>"; };
 		71EC11FE2F30000000000101 /* Ephemeris.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ephemeris.swift; sourceTree = "<group>"; };
 		71EC11FE2F30000000000102 /* LunarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunarCalculator.swift; sourceTree = "<group>"; };
-		71EC11FE2F30000000000103 /* LunarCalculator++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunarCalculator++.swift; sourceTree = "<group>"; };
+		71EC11FE2F30000000000103 /* LunarCalculator++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LunarCalculator++.swift"; sourceTree = "<group>"; };
 		71EC11FE2F30000000000002 /* EclipseOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EclipseOverview.swift; sourceTree = "<group>"; };
 		71CA1E0029E0000000000001 /* Calendar++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar++.swift"; sourceTree = "<group>"; };
 		71CCE7993022311F00E2782D /* TimeTravelOrnamentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTravelOrnamentView.swift; sourceTree = "<group>"; };
