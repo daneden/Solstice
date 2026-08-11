@@ -71,6 +71,10 @@ enum Preferences {
 	/// The user preference for whether notifications include the time until the next solstice
 	static let notificationsIncludeSolsticeCountdown: Value = ("notifsIncludeSolsticeCountdown", false)
 
+	/// Which bodies the detail view's charts plot. Global rather than per-location, the
+	/// same way `chartType` is.
+	static let bodyMode: Value<CelestialBodyMode> = ("detailViewBodyMode", .solar)
+
 	/// The user preference for whether a major solar eclipse produces its own notifications.
 	///
 	/// Unlike the fragment toggles above this doesn't change the daily notification; it
@@ -192,6 +196,45 @@ enum ChartType: String, CaseIterable, RawRepresentable, Identifiable {
 		case .classic: return .solarchartLinear
 		case .circular: return .solarchartCircularFill
 		}
+	}
+
+	var id: Self {
+		self
+	}
+}
+
+/// Which bodies the detail view's charts plot.
+///
+/// The sky gradient stays solar whichever is chosen — it is driven by the sun's altitude,
+/// and keeping it as the backdrop is what makes the moon's path legible: you can see at a
+/// glance whether the moon is up in darkness or wasted in broad daylight.
+enum CelestialBodyMode: String, CaseIterable, RawRepresentable, Identifiable {
+	case solar, lunar, both
+
+	var title: LocalizedStringKey {
+		switch self {
+		case .solar: return "Sun"
+		case .lunar: return "Moon"
+		case .both: return "Sun and moon"
+		}
+	}
+
+	var icon: String {
+		switch self {
+		case .solar: return "sun.max"
+		case .lunar: return "moon"
+		case .both: return "moon.stars"
+		}
+	}
+
+	var includesSun: Bool { self != .lunar }
+	var includesMoon: Bool { self != .solar }
+
+	/// The next mode in the cycle, for the watchOS toolbar button where a menu is clumsy.
+	var next: CelestialBodyMode {
+		let all = Self.allCases
+		let index = all.firstIndex(of: self) ?? 0
+		return all[(index + 1) % all.count]
 	}
 
 	var id: Self {

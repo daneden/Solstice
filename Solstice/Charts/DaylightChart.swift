@@ -14,6 +14,7 @@ struct DaylightChart: View {
 	@Environment(\.isLuminanceReduced) var isLuminanceReduced
 	@Environment(\.colorScheme) var colorScheme
 	@Environment(\.timeMachine) private var timeMachine
+	@AppStorage(Preferences.bodyMode) var bodyMode
 
 	@State private var selectedEvent: NTSolar.Event?
 	@State private var currentX: TimeInterval?
@@ -110,18 +111,41 @@ struct DaylightChart: View {
 		Chart {
 			let hours = hours
 			let altitudes = sampledAltitudes
-			ForEach(hours.indices, id: \.self) { index in
-				LineMark(
-					x: .value("Time", hours[index]),
-					y: .value("Altitude", altitudes[index])
-				)
-				.interpolationMethod(.catmullRom)
-				.foregroundStyle(solarPathGradient)
-				.lineStyle(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
+
+			// The moon goes down first so the sun's path draws over it where they cross.
+			if let moonAltitudes = sampledMoonAltitudes {
+				ForEach(hours.indices, id: \.self) { index in
+					LineMark(
+						x: .value("Time", hours[index]),
+						y: .value("Moon altitude", moonAltitudes[index]),
+						series: .value("Body", "moon")
+					)
+					.interpolationMethod(.catmullRom)
+					.foregroundStyle(.secondary)
+					.lineStyle(StrokeStyle(
+						lineWidth: max(1, markSize / 2),
+						lineCap: .round,
+						lineJoin: .round,
+						dash: [markSize / 2, markSize]
+					))
+				}
 			}
 
-			ForEach(filteredEvents, id: \.id) { solarEvent in
-				eventPointMark(for: solarEvent)
+			if bodyMode.includesSun {
+				ForEach(hours.indices, id: \.self) { index in
+					LineMark(
+						x: .value("Time", hours[index]),
+						y: .value("Altitude", altitudes[index]),
+						series: .value("Body", "sun")
+					)
+					.interpolationMethod(.catmullRom)
+					.foregroundStyle(solarPathGradient)
+					.lineStyle(StrokeStyle(lineWidth: markSize, lineCap: .round, lineJoin: .round))
+				}
+
+				ForEach(filteredEvents, id: \.id) { solarEvent in
+					eventPointMark(for: solarEvent)
+				}
 			}
 		}
 		.chartLegend(.hidden)
@@ -423,7 +447,13 @@ extension DaylightChart {
 	/// Callers may override via the `yScale` property.
 	private var effectiveYScale: ClosedRange<Double> {
 		if let yScale { return yScale }
-		let altitudes = sampledAltitudes
+
+		// Fit to whichever bodies are actually drawn. In lunar mode the sun's path isn't
+		// on screen, so letting it set the scale would squash the moon into a corner.
+		var altitudes: [Double] = []
+		if bodyMode.includesSun { altitudes += sampledAltitudes }
+		if let moonAltitudes = sampledMoonAltitudes { altitudes += moonAltitudes }
+
 		guard let minAlt = altitudes.min(), let maxAlt = altitudes.max() else {
 			return -90.0 ... 90.0
 		}
@@ -446,6 +476,29 @@ extension DaylightChart {
 		                             longitude: Int((solar.coordinate.longitude * 1e4).rounded()))
 		return altitudeSamplesCache.value(for: key) {
 			hours.map { yValue(for: $0) }
+		}
+	}
+
+	/// The moon's altitude for every sampled hour, or `nil` when the moon isn't plotted.
+	///
+	/// Memoized the same way the sun's samples are, and for the same reason. Note this is
+	/// a computed property rather than `@State` filled by `.task`: the share card renders
+	/// this chart through `ImageRenderer`, which never runs the view lifecycle, so
+	/// anything that depends on a task would come out blank there.
+	private var sampledMoonAltitudes: [Double]? {
+		guard bodyMode.includesMoon else { return nil }
+
+		let coordinate = solar.coordinate
+		let key = AltitudeSamplesKey(midnight: midnight,
+		                             latitude: Int((coordinate.latitude * 1e4).rounded()),
+		                             longitude: Int((coordinate.longitude * 1e4).rounded()))
+		return moonAltitudeSamplesCache.value(for: key) {
+			hours.map { offset in
+				LunarCalculator.altitude(
+					at: midnight.addingTimeInterval(offset),
+					coordinate: coordinate
+				)
+			}
 		}
 	}
 
@@ -482,6 +535,7 @@ private struct AltitudeSamplesKey: Hashable {
 }
 
 private let altitudeSamplesCache = SkyRenderCache<AltitudeSamplesKey, [Double]>(capacity: 16)
+private let moonAltitudeSamplesCache = SkyRenderCache<AltitudeSamplesKey, [Double]>(capacity: 16)
 
 extension DaylightChart {
 	enum Appearance: String, Codable, CaseIterable {

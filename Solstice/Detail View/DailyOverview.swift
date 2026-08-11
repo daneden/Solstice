@@ -17,6 +17,12 @@ struct DailyOverview<Location: AnyLocation>: View {
 
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@AppStorage(Preferences.chartType) private var chartType
+	@AppStorage(Preferences.bodyMode) private var bodyMode
+
+	/// The moon for the displayed day, or `nil` while it is still being worked out.
+	/// Owned by `DetailView` so the search is cached rather than repeated on every body
+	/// evaluation.
+	var moon: LunarCalculator.Moon? = nil
 
 	var solarDateIsInToday: Bool {
 		var calendar = Calendar.autoupdatingCurrent
@@ -97,78 +103,12 @@ struct DailyOverview<Location: AnyLocation>: View {
 			#endif
 
 			Group {
-				Label {
-					AdaptiveStack {
-						Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
-					} label: {
-						Text("Total daylight")
-					}
-				} icon: {
-					Image(systemName: "hourglass")
+				if bodyMode.includesSun {
+					solarRows
 				}
 
-				if solarDateIsInToday && (solar.safeSunrise ... solar.safeSunset).contains(solar.date) {
-					Label {
-						AdaptiveStack {
-							if let pinned = ScreenshotLaunch.displayDate {
-								// Text(timerInterval:) counts down against the real system clock,
-								// which a pinned capture must not leak; show the same remaining
-								// duration measured from the pinned instant instead.
-								Text(Duration.seconds(max(0, solar.safeSunset.timeIntervalSince(pinned)))
-									.formatted(.time(pattern: .hourMinuteSecond)))
-									.monospacedDigit()
-							} else {
-								Text(timerInterval: solar.safeSunrise ... solar.safeSunset)
-									.monospacedDigit()
-							}
-						} label: {
-							Text("Remaining daylight")
-						}
-					} icon: {
-						Image(systemName: "timer")
-					}
-				}
-
-				Label {
-					AdaptiveStack {
-						if let sunrise = solar.sunrise {
-							Text(sunrise, style: .time)
-						} else {
-							Text("—")
-						}
-					} label: {
-						Text("Sunrise")
-					}
-				} icon: {
-					Image(systemName: "sunrise")
-				}
-
-				Label {
-					AdaptiveStack {
-						if let solarNoon = solar.solarNoon {
-							Text(solarNoon, style: .time)
-						} else {
-							Text("—")
-						}
-					} label: {
-						Text("Solar noon")
-					}
-				} icon: {
-					Image(systemName: "sun.max")
-				}
-
-				Label {
-					AdaptiveStack {
-						if let sunset = solar.sunset {
-							Text(sunset, style: .time)
-						} else {
-							Text("—")
-						}
-					} label: {
-						Text("Sunset")
-					}
-				} icon: {
-					Image(systemName: "sunset")
+				if bodyMode.includesMoon, let moon {
+					lunarRows(for: moon)
 				}
 			}
 			.environment(\.timeZone, location.timeZone)
@@ -198,6 +138,130 @@ struct DailyOverview<Location: AnyLocation>: View {
 			}
 		}
 	}
+
+	@ViewBuilder
+	private var solarRows: some View {
+		Label {
+			AdaptiveStack {
+				Text(Duration.seconds(solar.daylightDuration).formatted(.units(maximumUnitCount: 2)))
+			} label: {
+				Text("Total daylight")
+			}
+		} icon: {
+			Image(systemName: "hourglass")
+		}
+
+		if solarDateIsInToday && (solar.safeSunrise ... solar.safeSunset).contains(solar.date) {
+			Label {
+				AdaptiveStack {
+					if let pinned = ScreenshotLaunch.displayDate {
+						// Text(timerInterval:) counts down against the real system clock,
+						// which a pinned capture must not leak; show the same remaining
+						// duration measured from the pinned instant instead.
+						Text(Duration.seconds(max(0, solar.safeSunset.timeIntervalSince(pinned)))
+							.formatted(.time(pattern: .hourMinuteSecond)))
+							.monospacedDigit()
+					} else {
+						Text(timerInterval: solar.safeSunrise ... solar.safeSunset)
+							.monospacedDigit()
+					}
+				} label: {
+					Text("Remaining daylight")
+				}
+			} icon: {
+				Image(systemName: "timer")
+			}
+		}
+
+		Label {
+			AdaptiveStack {
+				if let sunrise = solar.sunrise {
+					Text(sunrise, style: .time)
+				} else {
+					Text("—")
+				}
+			} label: {
+				Text("Sunrise")
+			}
+		} icon: {
+			Image(systemName: "sunrise")
+		}
+
+		Label {
+			AdaptiveStack {
+				if let solarNoon = solar.solarNoon {
+					Text(solarNoon, style: .time)
+				} else {
+					Text("—")
+				}
+			} label: {
+				Text("Solar noon")
+			}
+		} icon: {
+			Image(systemName: "sun.max")
+		}
+
+		Label {
+			AdaptiveStack {
+				if let sunset = solar.sunset {
+					Text(sunset, style: .time)
+				} else {
+					Text("—")
+				}
+			} label: {
+				Text("Sunset")
+			}
+		} icon: {
+			Image(systemName: "sunset")
+		}
+	}
+
+	/// The lunar counterpart of the solar rows. Moonrise and moonset are optional in a way
+	/// sunrise and sunset are not: the moon rises roughly 50 minutes later each day, so
+	/// about once a lunation a calendar day simply has no moonrise, or no moonset. That is
+	/// ordinary everywhere, not a polar edge case, and it renders as an em dash.
+	@ViewBuilder
+	private func lunarRows(for moon: LunarCalculator.Moon) -> some View {
+		Label {
+			AdaptiveStack {
+				Text(moon.formattedIllumination)
+			} label: {
+				Text(moon.phase.localizedName)
+			}
+		} icon: {
+			Image(systemName: moon.phase.symbolName(latitude: location.latitude))
+				.contentTransition(.symbolEffect)
+		}
+
+		Label {
+			AdaptiveStack {
+				if let moonrise = moon.moonrise {
+					Text(moonrise, style: .time)
+				} else {
+					Text("—")
+				}
+			} label: {
+				Text("Moonrise")
+			}
+		} icon: {
+			Image(systemName: "moonrise")
+		}
+
+		Label {
+			AdaptiveStack {
+				if let moonset = moon.moonset {
+					Text(moonset, style: .time)
+				} else {
+					Text("—")
+				}
+			} label: {
+				Text("Moonset")
+			}
+		} icon: {
+			Image(systemName: "moonset")
+		}
+	}
+
 }
 
 extension DailyOverview {
