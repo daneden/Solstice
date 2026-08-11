@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import CoreLocation
 import Suite
 import SwiftUI
 import TimeMachine
@@ -26,6 +27,7 @@ struct DetailView<Location: ObservableLocation>: View {
 	#endif
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
+	@State private var eclipse: EclipseCalculator.LocalCircumstances?
 
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
@@ -56,10 +58,17 @@ struct DetailView<Location: ObservableLocation>: View {
 					DailyOverview(solar: solar, location: location)
 				}
 
+				if let eclipse {
+					EclipseOverview(circumstances: eclipse, location: location)
+				}
+
 				AnnualOverview(location: location)
 					.id(Self.annualAnchor)
 			}
 			.formStyle(.grouped)
+			.task(id: eclipseSearchKey) {
+				await findEclipse()
+			}
 			#if os(macOS)
 				// The macOS toolbar has no Share button to carry the detail-screen identifier
 				// (that's iOS-only below), so tag the detail root for screenshot navigation.
@@ -121,6 +130,29 @@ struct DetailView<Location: ObservableLocation>: View {
 
 	static var annualAnchor: String {
 		"annual-overview"
+	}
+
+	/// Keyed on the place and the *day*, not the instant. Searching for eclipses is far
+	/// heavier than building an `NTSolar`, so it can't live in a computed property that
+	/// re-evaluates on every body pass — and keying on the day means dragging the
+	/// time-travel slider doesn't restart the search on every frame.
+	private var eclipseSearchKey: String {
+		"\(location.latitude),\(location.longitude),\(timeMachine.date.startOfDay.timeIntervalSince1970)"
+	}
+
+	private func findEclipse() async {
+		let latitude = location.latitude
+		let longitude = location.longitude
+		let date = timeMachine.date
+
+		eclipse = await Task.detached(priority: .utility) {
+			EclipseCalculator.nextEclipse(
+				at: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+				after: date,
+				within: Constants.Eclipse.detailWindow,
+				minimumObscuration: Constants.Eclipse.detailThreshold
+			)
+		}.value
 	}
 
 	var toolbarItemPlacement: ToolbarItemPlacement {

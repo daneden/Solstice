@@ -71,6 +71,14 @@ enum Preferences {
 	/// The user preference for whether notifications include the time until the next solstice
 	static let notificationsIncludeSolsticeCountdown: Value = ("notifsIncludeSolsticeCountdown", false)
 
+	/// The user preference for whether a major solar eclipse produces its own notifications.
+	///
+	/// Unlike the fragment toggles above this doesn't change the daily notification; it
+	/// schedules two extra ones around the eclipse itself. On by default, so the handful
+	/// of people whose location is ever in the path don't miss it through not knowing the
+	/// setting existed.
+	static let notificationsIncludeEclipses: Value = ("notifsIncludeEclipses", true)
+
 	/// The user preference for how notifications are altered during periods of lessening daylight
 	static let sadPreference: Value<SADPreference> = ("sadPreverence", .none)
 
