@@ -101,7 +101,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 			let notificationDate = getNextNotificationDate(after: date, with: solar)
 
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
-				return
+				// `continue`, not `return`: content comes back nil for a single day —
+				// either the solar maths failed or the SAD preference suppressed that one
+				// day — and every remaining day still deserves its notification. Returning
+				// here cancelled the rest of the schedule.
+				continue
 			}
 
 			let content = UNMutableNotificationContent()
