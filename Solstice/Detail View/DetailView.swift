@@ -28,6 +28,9 @@ struct DetailView<Location: ObservableLocation>: View {
 	@State private var showRemainingDaylight = false
 	@State private var showShareSheet = false
 	@State private var eclipse: EclipseCalculator.LocalCircumstances?
+	@State private var moon: LunarCalculator.Moon?
+
+	@AppStorage(Preferences.bodyMode) private var bodyMode
 
 	@AppStorage(Preferences.detailViewChartAppearance) private var chartAppearance
 	@SceneStorage("selectedLocation") private var selectedLocation: String?
@@ -55,7 +58,7 @@ struct DetailView<Location: ObservableLocation>: View {
 		ScrollViewReader { proxy in
 			Form {
 				if let solar {
-					DailyOverview(solar: solar, location: location)
+					DailyOverview(solar: solar, location: location, moon: moon)
 				}
 
 				if let eclipse {
@@ -68,6 +71,9 @@ struct DetailView<Location: ObservableLocation>: View {
 			.formStyle(.grouped)
 			.task(id: eclipseSearchKey) {
 				await findEclipse()
+			}
+			.task(id: moonSearchKey) {
+				await findMoon()
 			}
 			#if os(macOS)
 				// The macOS toolbar has no Share button to carry the detail-screen identifier
@@ -140,6 +146,36 @@ struct DetailView<Location: ObservableLocation>: View {
 		"\(location.latitude),\(location.longitude),\(timeMachine.date.startOfDay.timeIntervalSince1970)"
 	}
 
+	/// Keyed the same way the eclipse search is, and for the same reason: working out
+	/// moonrise samples the moon's position well over a hundred times, which has no place
+	/// in a computed property that re-evaluates on every body pass.
+	private var moonSearchKey: String {
+		"\(location.latitude),\(location.longitude),\(timeMachine.date.startOfDay.timeIntervalSince1970)"
+	}
+
+	/// Computed regardless of the current mode, deliberately. It costs a few hundred
+	/// microseconds off the main thread once per day and place, and doing it eagerly means
+	/// switching to the moon shows data immediately rather than after a round trip.
+	private func findMoon() async {
+		let latitude = location.latitude
+		let longitude = location.longitude
+		let date = timeMachine.date
+		let timeZone = location.timeZone
+
+		let result = await Task.detached(priority: .utility) {
+			LunarCalculator.moon(
+				for: date,
+				coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+				timeZone: timeZone
+			)
+		}.value
+
+		// Assigned without animation on purpose. This task is keyed on the day, so during
+		// time travel it fires on every day change — animating here meant animating the
+		// whole form each time, which is what made scrubbing feel slow on device.
+		moon = result
+	}
+
 	private func findEclipse() async {
 		let latitude = location.latitude
 		let longitude = location.longitude
@@ -173,6 +209,35 @@ struct DetailView<Location: ObservableLocation>: View {
 
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
+		ToolbarItem(placement: toolbarItemPlacement) {
+			#if os(watchOS)
+				// A menu is clumsy on the watch, so cycle instead. The label carries the
+				// current state, which is what makes cycling legible here.
+				Button {
+					withAnimation {
+						bodyMode = bodyMode.next
+					}
+				} label: {
+					Label(bodyMode.title, systemImage: bodyMode.icon)
+				}
+			#else
+				Menu {
+					Picker(selection: $bodyMode.animation()) {
+						ForEach(CelestialBodyMode.allCases) { mode in
+							Label(mode.title, systemImage: mode.icon)
+								.tag(mode)
+						}
+					} label: {
+						Text("Show")
+					}
+					.pickerStyle(.inline)
+				} label: {
+					Label(bodyMode.title, systemImage: bodyMode.icon)
+						.contentTransition(.symbolEffect)
+				}
+			#endif
+		}
+
 		#if !os(macOS)
 			ToolbarItem(placement: .topBarTrailing) {
 				Button("Share...", systemImage: "square.and.arrow.up") {
