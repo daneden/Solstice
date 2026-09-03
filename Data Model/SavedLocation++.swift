@@ -5,6 +5,7 @@
 //  Created by Daniel Eden on 04/07/2024.
 //
 
+import CoreData
 import Foundation
 
 extension SavedLocation {
@@ -19,6 +20,17 @@ extension SavedLocation {
 			timeZoneIdentifier: timeZoneIdentifier,
 			uuid: uuid
 		)
+	}
+}
+
+extension SavedLocation {
+	/// The index that places a new location at the end of the manual order.
+	static func nextSortIndex(in context: NSManagedObjectContext) -> Int64 {
+		let request = SavedLocation.fetchRequest()
+		request.sortDescriptors = [NSSortDescriptor(keyPath: \SavedLocation.sortIndex, ascending: false)]
+		request.fetchLimit = 1
+		let highest = (try? context.fetch(request))?.first?.sortIndex ?? -1
+		return highest + 1
 	}
 }
 

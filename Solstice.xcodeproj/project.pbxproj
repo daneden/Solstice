@@ -481,6 +481,7 @@
 		7198468B28E5895F00E866CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7198468D28E5895F00E866CE /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		7198469028E5895F00E866CE /* Solstice.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Solstice.xcdatamodel; sourceTree = "<group>"; };
+		7198469A2E67F1A200E866CE /* Solstice 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Solstice 2.xcdatamodel"; sourceTree = "<group>"; };
 		7198469228E5895F00E866CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7198469828E5898500E866CE /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		7198469D28E58CCD00E866CE /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -2263,9 +2264,10 @@
 		7198468F28E5895F00E866CE /* Solstice.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7198469A2E67F1A200E866CE /* Solstice 2.xcdatamodel */,
 				7198469028E5895F00E866CE /* Solstice.xcdatamodel */,
 			);
-			currentVersion = 7198469028E5895F00E866CE /* Solstice.xcdatamodel */;
+			currentVersion = 7198469A2E67F1A200E866CE /* Solstice 2.xcdatamodel */;
 			path = Solstice.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
