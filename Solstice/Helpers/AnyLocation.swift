@@ -62,6 +62,7 @@ final class TemporaryLocation: ObservableLocation {
 		savedLocation.timeZoneIdentifier = timeZoneIdentifier
 		savedLocation.longitude = longitude
 		savedLocation.latitude = latitude
+		savedLocation.sortIndex = SavedLocation.nextSortIndex(in: context)
 
 		try context.save()
 		return savedLocation.uuid
