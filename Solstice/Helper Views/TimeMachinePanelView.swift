@@ -83,7 +83,6 @@ struct TimeMachineDraggableOverlayView: View {
 		}
 	}
 
-	@State private var measureScreenWidthTaskID = UUID()
 	@State private var targetAlignment: TimeMachineDraggableBarAlignment = .trailing
 	@State private var offset: CGSize = .zero
 	@State private var screenSize: CGSize = .zero
@@ -155,14 +154,9 @@ struct TimeMachineDraggableOverlayView: View {
 		}
 		.animation(.snappy, value: offset)
 		.animation(.smooth, value: alignment)
-		#if os(iOS)
-			.onRotate { _ in
-				measureScreenWidthTaskID = UUID()
-			}
-		#endif
-			.task {
-				targetAlignment = alignment
-			}
+		.task {
+			targetAlignment = alignment
+		}
 	}
 }
 

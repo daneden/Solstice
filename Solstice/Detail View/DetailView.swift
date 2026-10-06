@@ -161,10 +161,8 @@ struct DetailView<Location: ObservableLocation>: View {
 		#if !os(watchOS)
 			if locationSearchService.location != nil {
 				ToolbarItem(placement: .cancellationAction) {
-					Button {
+					CloseButton {
 						locationSearchService.location = nil
-					} label: {
-						Text("Close")
 					}
 				}
 			}
