@@ -61,10 +61,12 @@ struct SidebarListView: View {
 	/// The daylight-duration sort constructs an `NTSolar` per comparison, so
 	/// re-running it on every body evaluation is expensive. Recompute only when
 	/// an input that actually affects the order changes; `timeMachine.date` only
-	/// matters for the daylight-duration dimension.
+	/// matters for the daylight-duration dimension. `sortIndex` is included so a
+	/// reorder synced in from another device re-sorts the manual order.
 	private var sortSignature: SortSignature {
 		SortSignature(
 			ids: items.map(\.objectID),
+			sortIndices: items.map(\.sortIndex),
 			dimension: itemSortDimension,
 			order: itemSortOrder,
 			date: itemSortDimension == .daylightDuration ? timeMachine.date : nil
@@ -73,6 +75,7 @@ struct SidebarListView: View {
 
 	private struct SortSignature: Equatable {
 		let ids: [NSManagedObjectID]
+		let sortIndices: [Int64]
 		let dimension: Preferences.SortingFunction
 		let order: SortOrder
 		let date: Date?
@@ -111,6 +114,7 @@ struct SidebarListView: View {
 			savedLocationRow(for: item)
 		}
 		.onDelete(perform: deleteItems)
+		.onMove(perform: moveItems)
 	}
 
 	@ViewBuilder
@@ -186,6 +190,13 @@ extension SidebarListView {
 	private func recomputeSortedItems() {
 		sortedItems = items.sorted { lhs, rhs in
 			switch itemSortDimension {
+			case .manual:
+				// Locations that have never been dragged share index 0, so fall back
+				// to the fetch order (title) to keep the sort stable.
+				if lhs.sortIndex != rhs.sortIndex {
+					return lhs.sortIndex < rhs.sortIndex
+				}
+				return (lhs.title ?? "") < (rhs.title ?? "")
 			case .timezone:
 				switch itemSortOrder {
 				case .forward:
@@ -206,6 +217,29 @@ extension SidebarListView {
 				case .reverse:
 					return lhsSolar.daylightDuration > rhsSolar.daylightDuration
 				}
+			}
+		}
+	}
+
+	/// Persists a drag-and-drop reorder. Dragging in any sort mode adopts the
+	/// on-screen order as the new manual order and switches to it, so the row
+	/// stays where the user dropped it instead of snapping back.
+	private func moveItems(from source: IndexSet, to destination: Int) {
+		var reordered = sortedItems
+		reordered.move(fromOffsets: source, toOffset: destination)
+
+		withAnimation {
+			for (index, item) in reordered.enumerated() where item.sortIndex != Int64(index) {
+				item.sortIndex = Int64(index)
+			}
+
+			sortedItems = reordered
+			itemSortDimension = .manual
+
+			do {
+				try viewContext.save()
+			} catch {
+				print(error)
 			}
 		}
 	}

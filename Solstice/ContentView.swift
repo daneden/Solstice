@@ -168,6 +168,9 @@ struct ContentView: View {
 		ToolbarItem(placement: .primaryAction) {
 			Menu {
 				Picker(selection: $itemSortDimension.animation()) {
+					Text("Manual")
+						.tag(Preferences.SortingFunction.manual)
+
 					Text("Timezone")
 						.tag(Preferences.SortingFunction.timezone)
 
@@ -177,14 +180,18 @@ struct ContentView: View {
 					Text("Sort by")
 				}
 
-				Picker(selection: $itemSortOrder.animation()) {
-					Text("Ascending")
-						.tag(SortOrder.forward)
+				// A manual order is whatever the user dragged it into; reversing it
+				// would only make the next drag land somewhere unexpected.
+				if itemSortDimension != .manual {
+					Picker(selection: $itemSortOrder.animation()) {
+						Text("Ascending")
+							.tag(SortOrder.forward)
 
-					Text("Descending")
-						.tag(SortOrder.reverse)
-				} label: {
-					Text("Order")
+						Text("Descending")
+							.tag(SortOrder.reverse)
+					} label: {
+						Text("Order")
+					}
 				}
 			} label: {
 				Label("Sort locations", systemImage: "arrow.up.arrow.down")

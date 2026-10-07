@@ -53,11 +53,38 @@ struct TimeMachinePanelView: View {
 			.scenePadding(.horizontal)
 			.scenePadding(.top)
 		#endif
+		#if os(iOS)
+		.modifier(VerticalBarBottomSpacing())
+		#endif
 		#if os(macOS)
 		.scenePadding(.bottom)
 		#endif
 	}
 }
+
+#if os(iOS)
+	/// Where the system bars run vertically nothing sits below the panel but the home indicator,
+	/// so it drops into that inset as far as the system's own bars do, which lines it up with the
+	/// bottom of the rail.
+	private struct VerticalBarBottomSpacing: ViewModifier {
+		func body(content: Content) -> some View {
+			if #available(iOS 27.1, *) {
+				content.modifier(Resolved())
+			} else {
+				content
+			}
+		}
+
+		@available(iOS 27.1, *)
+		private struct Resolved: ViewModifier {
+			@Environment(\.toolbarVerticalEdge) private var verticalEdge
+
+			func body(content: Content) -> some View {
+				content.padding(.bottom, verticalEdge == nil ? 0 : -8)
+			}
+		}
+	}
+#endif
 
 #Preview {
 	TimeMachinePanelView()
@@ -83,7 +110,6 @@ struct TimeMachineDraggableOverlayView: View {
 		}
 	}
 
-	@State private var measureScreenWidthTaskID = UUID()
 	@State private var targetAlignment: TimeMachineDraggableBarAlignment = .trailing
 	@State private var offset: CGSize = .zero
 	@State private var screenSize: CGSize = .zero
@@ -155,14 +181,9 @@ struct TimeMachineDraggableOverlayView: View {
 		}
 		.animation(.snappy, value: offset)
 		.animation(.smooth, value: alignment)
-		#if os(iOS)
-			.onRotate { _ in
-				measureScreenWidthTaskID = UUID()
-			}
-		#endif
-			.task {
-				targetAlignment = alignment
-			}
+		.task {
+			targetAlignment = alignment
+		}
 	}
 }
 
