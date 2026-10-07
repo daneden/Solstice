@@ -121,6 +121,8 @@ enum Preferences {
 	// MARK: Appearance
 
 	enum SortingFunction: String, Codable, RawRepresentable {
+		/// The user's own drag-and-drop order, persisted as `SavedLocation.sortIndex`.
+		case manual
 		case timezone, daylightDuration
 	}
 
