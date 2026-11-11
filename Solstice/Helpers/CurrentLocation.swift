@@ -128,24 +128,6 @@ extension CurrentLocation {
 	}
 }
 
-extension CurrentLocation {
-	// MARK: Fallback location request code
-
-	func legacyRequestLocation() {
-		locationManager.startUpdatingLocation()
-	}
-
-	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		guard let location = locations.last else { return }
-		self.location = location
-		manager.stopUpdatingLocation()
-	}
-
-	func locationManager(_: CLLocationManager, didFailWithError error: any Error) {
-		print("Error with location manager delegate: \(error.localizedDescription)")
-	}
-}
-
 extension CurrentLocation: ObservableLocation {
 	var title: String? {
 		place?.city

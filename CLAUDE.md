@@ -63,6 +63,10 @@ xcodebuild test -scheme Solstice -destination 'platform=iOS Simulator,name=iPhon
 - `Solstice/Helpers/CurrentLocation.swift`: Location management with @Observable
 - `Solstice/Helpers/NotificationManager.swift`: Background notification scheduling
 - `Solstice/Helpers/SolsticeCalculator.swift`: Solar event date calculations
+- `Solstice/Helpers/LocationData.swift`: `LocationData` and the App Group cache the widgets read
+- `Solstice/Helpers/LocationNameResolver.swift`: Per-locale display names for saved locations
+- `Solstice/Helpers/ReverseGeocoder.swift`: Platform-appropriate reverse geocoding
+- `Solstice/Helpers/Globals.swift`: Shared calendars, the viewer's time zone and `Constants`. Nothing else belongs here
 - `Widget/Helpers/SolsticeWidgetTimelineProvider.swift`: Shared widget timeline logic
 
 ### Protocols

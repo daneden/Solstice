@@ -27,7 +27,6 @@ struct SidebarListView: View {
 
 	@AppStorage(Preferences.listViewSortOrder) private var itemSortOrder
 	@AppStorage(Preferences.listViewSortDimension) private var itemSortDimension
-	@AppStorage(Preferences.listViewShowComplication) private var showComplication
 
 	@State private var sortedItems: [SavedLocation] = []
 
@@ -132,7 +131,7 @@ struct SidebarListView: View {
 	}
 
 	private func savedLocationContextMenu(for item: SavedLocation) -> some View {
-		Section(item.title!) {
+		Section(item.title ?? "") {
 			Button(role: .destructive) {
 				deleteItem(item)
 			} label: {

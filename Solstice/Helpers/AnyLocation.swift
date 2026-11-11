@@ -70,7 +70,7 @@ final class TemporaryLocation: ObservableLocation {
 
 extension TemporaryLocation: Hashable, Equatable {
 	static func == (lhs: TemporaryLocation, rhs: TemporaryLocation) -> Bool {
-		lhs.hashValue == rhs.hashValue
+		lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
 	}
 
 	func hash(into hasher: inout Hasher) {
