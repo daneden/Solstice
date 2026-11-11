@@ -33,10 +33,11 @@ struct SkyModel {
 	var mie = 6e-6
 	/// Henyey–Greenstein asymmetry: how tightly the Mie glow hugs the sun (0…1).
 	var mieG = 0.8
-	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues. Green sits near its
-	/// physical ~1.9e-6: at double that, the long low-sun light paths lost so much green that
-	/// dusk rendered maroon and violet where a real one is peach under blue.
-	var ozone = SIMD3<Double>(0.850e-6, 2e-6, 0.085e-6)
+	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues. Green is tuned by eye
+	/// between its physical ~1.9e-6 and the 4e-6 this once used: at 4e-6 the long low-sun light
+	/// paths lost so much green that dusk rendered maroon and violet where a real one is peach
+	/// under blue.
+	var ozone = SIMD3<Double>(0.850e-6, 3e-6, 0.085e-6)
 	/// Single scattering alone leaves long near-horizon paths yellow-green under a high sun: blue is
 	/// scattered out of the ray faster than in, and with no second bounce nothing replaces it. This
 	/// approximates multiple scattering with an isotropic, sky-tinted fill wherever the view path is
@@ -54,10 +55,10 @@ struct SkyModel {
 	/// Skylight scattered down from the still-sunlit upper atmosphere, which single scattering
 	/// leaves out and which supplies most of a twilight zenith's blue. Fades toward the horizon,
 	/// where the thick view path extinguishes it and the warm band shows through.
-	var twilightSkylight = 0.004
+	var twilightSkylight = 0.0025
 	/// Sun altitudes where the twilight terms begin, peak and end.
 	var twilightStartDeg = 7.0
-	var twilightPeakDeg = -4.0
+	var twilightPeakDeg = -3.0
 	var twilightEndDeg = -10.0
 
 	/// 0 by day and by night, rising smoothly to 1 at `twilightPeakDeg`.
