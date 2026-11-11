@@ -188,6 +188,27 @@ struct SkyModelTests {
 		#expect(rgb.z > rgb.y)
 	}
 
+	@Test("Twilight adaptation peaks after sunset and leaves day and night alone")
+	func twilightFactorIsConfinedToDusk() {
+		#expect(model.twilightFactor(sunAltitudeDeg: 30) == 0)
+		#expect(model.twilightFactor(sunAltitudeDeg: model.twilightStartDeg) == 0)
+		#expect(model.twilightFactor(sunAltitudeDeg: model.twilightPeakDeg) == 1)
+		#expect(model.twilightFactor(sunAltitudeDeg: model.twilightEndDeg) == 0)
+		#expect(model.twilightFactor(sunAltitudeDeg: -30) == 0)
+	}
+
+	@Test("Just after sunset the sky overhead is blue and the horizon warm")
+	func duskIsBlueOverPeach() {
+		// The moment of the reference photo: Stockport, 11 Nov 2026, 16:36, sun at -2.4°.
+		let stops = model.mesh(sunAltitudeDeg: -2.4).stops
+		let top = stops[0].resolve(in: EnvironmentValues())
+		let horizon = stops[stops.count - 1].resolve(in: EnvironmentValues())
+		#expect(top.blue > top.red * 1.5)
+		#expect(horizon.red > horizon.blue)
+		// Bright enough to read as dusk rather than night.
+		#expect(resolvedLuminance(stops[0]) > 0.1)
+	}
+
 	@Test("Radiance stays finite and non-negative across every angle")
 	func radianceNeverNaN() {
 		for sunAltitude in stride(from: -90.0, through: 90, by: 7.5) {

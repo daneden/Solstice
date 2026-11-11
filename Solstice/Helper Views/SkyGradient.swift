@@ -33,14 +33,44 @@ struct SkyModel {
 	var mie = 6e-6
 	/// Henyey–Greenstein asymmetry: how tightly the Mie glow hugs the sun (0…1).
 	var mieG = 0.8
-	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues and purples.
-	var ozone = SIMD3<Double>(0.850e-6, 4e-6, 0.085e-6)
+	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues. Green sits near its
+	/// physical ~1.9e-6: at double that, the long low-sun light paths lost so much green that
+	/// dusk rendered maroon and violet where a real one is peach under blue.
+	var ozone = SIMD3<Double>(0.850e-6, 2e-6, 0.085e-6)
 	/// Single scattering alone leaves long near-horizon paths yellow-green under a high sun: blue is
 	/// scattered out of the ray faster than in, and with no second bounce nothing replaces it. This
 	/// approximates multiple scattering with an isotropic, sky-tinted fill wherever the view path is
 	/// optically thick, fading with sun altitude so twilight and night keep their single-scatter
 	/// colours. Higher = paler, bluer horizon at midday.
 	var multipleScattering = 0.015
+
+	/// Dusk as an eye or a camera sees it. The marched radiance is physically right to fall by
+	/// orders of magnitude as the sun sets, but nobody perceives it that way: eyes adapt, and the
+	/// sky just after sunset reads as bright as the afternoon's. Two terms, both scaled by
+	/// `twilightFactor`, close that gap without touching day or night.
+	///
+	/// `twilightExposureBoost` raises the tone-map exposure by up to `1 + boost`.
+	var twilightExposureBoost = 3.0
+	/// Skylight scattered down from the still-sunlit upper atmosphere, which single scattering
+	/// leaves out and which supplies most of a twilight zenith's blue. Fades toward the horizon,
+	/// where the thick view path extinguishes it and the warm band shows through.
+	var twilightSkylight = 0.004
+	/// Sun altitudes where the twilight terms begin, peak and end.
+	var twilightStartDeg = 7.0
+	var twilightPeakDeg = -4.0
+	var twilightEndDeg = -10.0
+
+	/// 0 by day and by night, rising smoothly to 1 at `twilightPeakDeg`.
+	func twilightFactor(sunAltitudeDeg: Double) -> Double {
+		func smoothstep(_ x: Double) -> Double {
+			let t = min(max(x, 0), 1)
+			return t * t * (3 - 2 * t)
+		}
+		if sunAltitudeDeg >= twilightPeakDeg {
+			return smoothstep((twilightStartDeg - sunAltitudeDeg) / (twilightStartDeg - twilightPeakDeg))
+		}
+		return smoothstep((sunAltitudeDeg - twilightEndDeg) / (twilightPeakDeg - twilightEndDeg))
+	}
 
 	var rayleighScaleHeight = 8000.0
 	var mieScaleHeight = 1200.0
@@ -224,7 +254,12 @@ struct SkyModel {
 		let pathOpacity = SIMD3<Double>(1 - exp(-tauView.x), 1 - exp(-tauView.y), 1 - exp(-tauView.z))
 		let inMultiple = multipleScattering * max(0, sin(sa)) * pathOpacity * skyTint
 
-		return (inRayleigh + inMie + inMultiple) * sunIntensity
+		// Twilight skylight: the complement of the fill above — strongest where the view path is
+		// thin (overhead), gone where it is opaque (the horizon).
+		let inTwilight = twilightSkylight * twilightFactor(sunAltitudeDeg: sunAltitudeDeg)
+			* (SIMD3<Double>(repeating: 1) - pathOpacity) * skyTint
+
+		return (inRayleigh + inMie + inMultiple + inTwilight) * sunIntensity
 	}
 
 	/// Tone-mapped, gamma-encoded sky colour for a view direction, including the ambient skylight floor.
@@ -463,7 +498,7 @@ struct SkyModel {
 				                  scatterCosTheta: dialScatterCosTheta)
 				: .zero
 			let blended = wedge + (sky - wedge) * sunUpFraction
-			return coarse.tonemap(blended + coarse.ambientRadiance, sunAltitudeDeg: altitudeDeg)
+			return coarse.tonemap(blended + coarse.ambientRadiance, sunAltitudeDeg: altitudeDeg, adaptsToTwilight: false)
 		}
 
 		let start = solar.startOfDay
@@ -550,8 +585,11 @@ struct SkyModel {
 
 	/// Luminance-based Reinhard: compresses brightness while preserving chroma, so the daytime
 	/// sky stays saturated blue instead of desaturating toward grey the way per-channel Reinhard does.
-	private func tonemapLinear(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double) -> SIMD3<Double> {
-		let exposed = radiance * exposure
+	/// `adaptsToTwilight` is off for the dial ring, whose below-horizon wedges are stylised solid
+	/// steps: an exposure that varies with altitude would grade each wedge into a ramp.
+	private func tonemapLinear(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double, adaptsToTwilight: Bool = true) -> SIMD3<Double> {
+		let adaptation = adaptsToTwilight ? 1 + twilightExposureBoost * twilightFactor(sunAltitudeDeg: sunAltitudeDeg) : 1
+		let exposed = radiance * (exposure * adaptation)
 		let luminance = 0.2126 * exposed.x + 0.7152 * exposed.y + 0.0722 * exposed.z
 		let scale = luminance > 0 ? 1 / (1 + luminance) : 0
 		var mapped = exposed * scale
@@ -569,8 +607,8 @@ struct SkyModel {
 		return mapped
 	}
 
-	private func tonemap(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double) -> Color {
-		encode(tonemapLinear(radiance, sunAltitudeDeg: sunAltitudeDeg))
+	private func tonemap(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double, adaptsToTwilight: Bool = true) -> Color {
+		encode(tonemapLinear(radiance, sunAltitudeDeg: sunAltitudeDeg, adaptsToTwilight: adaptsToTwilight))
 	}
 
 	private func encode(_ mapped: SIMD3<Double>) -> Color {
