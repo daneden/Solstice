@@ -140,12 +140,20 @@ struct SkyModelTests {
 		#expect(stops.first?.location == 0)
 		#expect(stops.last?.location == 1)
 
-		let luminances = stops.map { resolvedLuminance($0.color) }
-		let first = luminances[0], mid = luminances[luminances.count / 2], last = luminances[luminances.count - 1]
+		let opacities = stops.map { Double($0.color.resolve(in: EnvironmentValues()).opacity) }
+		let first = opacities[0], mid = opacities[opacities.count / 2], last = opacities[opacities.count - 1]
 		#expect(first > mid)
 		#expect(mid >= last)
-		// The outermost stop is (near) black, so the additive layer vanishes at its edge.
+		// The outermost stop is (near) transparent, so the layer vanishes at its edge.
 		#expect(last < 0.02)
+	}
+
+	@Test("The glow still shows as the sun touches the horizon, and is warm")
+	func glowSurvivesSunset() {
+		let centre = SkyModel.standard.glowStops(sunAltitudeDeg: 0)[0].color.resolve(in: EnvironmentValues())
+		#expect(centre.opacity > 0.5)
+		#expect(centre.red > centre.green)
+		#expect(centre.green > centre.blue)
 	}
 
 	@Test("Below-horizon dial segments are solid per twilight band")
