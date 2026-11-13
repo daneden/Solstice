@@ -123,14 +123,6 @@ struct DetailView<Location: ObservableLocation>: View {
 		"annual-overview"
 	}
 
-	var toolbarItemPlacement: ToolbarItemPlacement {
-		#if os(macOS)
-			return .automatic
-		#else
-			return .topBarTrailing
-		#endif
-	}
-
 	@ToolbarContentBuilder
 	var toolbarItems: some ToolbarContent {
 		#if !os(macOS)

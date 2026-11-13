@@ -74,9 +74,6 @@ enum Preferences {
 	/// The user preference for how notifications are altered during periods of lessening daylight
 	static let sadPreference: Value<SADPreference> = ("sadPreverence", .none)
 
-	static let cachedLatitude: Value<Double> = ("cachedLatitude", 0)
-	static let cachedLongitude: Value<Double> = ("cachedLongitude", 0)
-
 	static let customNotificationLocationUUID: Value<String?> = ("customNotificationLocationUUID", nil)
 
 	// MARK: Scheduling
@@ -91,9 +88,6 @@ enum Preferences {
 		/// The date components for notification scheduling.
 		static let notificationDateComponents: Value<DateComponents> = ("notifDateComponents", NotificationSettings.defaultDateComponents)
 		static let defaultDateComponents = DateComponents(timeZone: .autoupdatingCurrent, hour: 8, minute: 0)
-
-		/// Which solar event notifications are sent relative to
-		static let relation: Value<NTSolar.Phase> = ("notificationRelation", .sunrise)
 
 		/// The offset in seconds between the notification and the chosen solar event
 		static let relativeOffset: Value<TimeInterval> = ("notificationRelativeOffset", 30 * 60)
@@ -132,7 +126,6 @@ enum Preferences {
 	#endif
 
 	static let listViewSortOrder: Value<SortOrder> = ("listViewSortOrder", .forward)
-	static let listViewShowComplication: Value<Bool> = ("listViewShowComplication", showComplicationDefaultValue)
 
 	static let timeTravelAppearance: Value<TimeTravelAppearance> = ("timeTravelAppearance", .expanded)
 
@@ -247,14 +240,6 @@ extension SortOrder: @retroactive RawRepresentable {
 	}
 
 	public typealias RawValue = String
-}
-
-private var showComplicationDefaultValue: Bool {
-	#if os(macOS)
-		true
-	#else
-		false
-	#endif
 }
 
 private var chartAppearanceDefaultValue: DaylightChart.Appearance = .graphical

@@ -14,7 +14,7 @@ import UserNotifications
 	import BackgroundTasks
 #endif
 
-class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
+enum NotificationManager {
 	@AppStorage(Preferences.notificationsEnabled) static var notificationsEnabled
 	@AppStorage(Preferences.notificationsIncludeSunTimes) static var includeSunTimes
 	@AppStorage(Preferences.notificationsIncludeDaylightChange) static var includeDaylightChange
@@ -34,10 +34,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
 	static func clearScheduledNotifications() async {
 		return UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-	}
-
-	static func clearDeliveredNotifications() async {
-		return UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 	}
 
 	/// Schedules notifications for the next 64 days
@@ -92,8 +88,10 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
 			let notificationDate = getNextNotificationDate(after: date, with: solar)
 
+			// No content means this day is suppressed (see `SADPreference`); the days
+			// after it, and the background refresh below, still need scheduling.
 			guard let notificationContent = buildNotificationContent(for: notificationDate, location: location, timeZone: timeZone) else {
-				return
+				continue
 			}
 
 			let content = UNMutableNotificationContent()

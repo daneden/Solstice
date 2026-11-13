@@ -20,8 +20,6 @@ struct LocationListRow<Location: ObservableLocation>: View {
 		nameResolver?.displayName(for: location) ?? (location.title, location.subtitle)
 	}
 
-	@FocusState private var focused: Bool
-
 	@State private var showRemainingDaylight = false
 
 	var headingFontWeight: Font.Weight = .medium

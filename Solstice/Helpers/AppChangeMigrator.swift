@@ -40,17 +40,7 @@ struct AppChangeMigrator: ViewModifier {
 					// user who deleted every location never triggers a re-seed.
 					if !SeedState.didSeedDefaultLocations {
 						if currentData.isEmpty {
-							for entry in SavedLocation.defaultData {
-								let newRecord = SavedLocation(context: modelContext)
-								newRecord.title = entry.title
-								newRecord.subtitle = entry.subtitle
-								newRecord.uuid = entry.uuid
-								newRecord.latitude = entry.latitude
-								newRecord.longitude = entry.longitude
-								newRecord.timeZoneIdentifier = entry.timeZoneIdentifier
-
-								modelContext.insert(newRecord)
-							}
+							SavedLocation.insertDefaults(into: modelContext)
 							try modelContext.save()
 						}
 						SeedState.didSeedDefaultLocations = true
