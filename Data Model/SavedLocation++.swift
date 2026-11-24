@@ -9,6 +9,15 @@ import CoreData
 import Foundation
 
 extension SavedLocation {
+	/// The index that places a new location at the end of the manual order.
+	static func nextSortIndex(in context: NSManagedObjectContext) -> Int64 {
+		let request = SavedLocation.fetchRequest()
+		request.sortDescriptors = [NSSortDescriptor(keyPath: \SavedLocation.sortIndex, ascending: false)]
+		request.fetchLimit = 1
+		let highest = (try? context.fetch(request))?.first?.sortIndex ?? -1
+		return highest + 1
+	}
+
 	static let nycUUIDString = "7AAA4D87-4402-4D0E-A35E-2D84641A71BE"
 
 	static var defaultData: [LocationData] {

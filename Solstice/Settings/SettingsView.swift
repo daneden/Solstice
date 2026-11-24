@@ -96,7 +96,7 @@ struct SettingsView: View {
 		}
 	}
 
-	@ViewBuilder private var standardSettings: some View {
+	private var standardSettings: some View {
 		NavigationStack {
 			Form {
 				Section {
@@ -137,16 +137,15 @@ struct SettingsView: View {
 			#endif
 			.formStyle(.grouped)
 			.accessibilityIdentifier(A11y.settingsWindow)
+			#if !os(macOS)
+				// Inside the stack: a toolbar on the NavigationStack itself has no bar to appear in.
+				.toolbar {
+					ToolbarItem(placement: .cancellationAction) {
+						CloseButton { dismiss() }
+					}
+				}
+			#endif
 		}
-		#if !os(macOS)
-		.toolbar {
-			Button {
-				dismiss()
-			} label: {
-				Text("Close")
-			}
-		}
-		#endif
 	}
 }
 
