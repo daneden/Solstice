@@ -410,14 +410,6 @@ extension DaylightChart {
 		}
 	}
 
-	func resetSelectedEvent() {
-		selectedEvent = solar.events.filter {
-			$0.phase == .sunset || $0.phase == .sunrise
-		}.sorted(by: { a, _ in
-			a.date.compare(.now) == .orderedDescending
-		}).first
-	}
-
 	/// The y-scale to use for the chart, fitted to the actual min/max altitudes
 	/// across all sampled hours with padding so the path never crowds the edges.
 	/// Callers may override via the `yScale` property.

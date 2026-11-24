@@ -35,11 +35,6 @@ extension SolsticeWidgetView {
 
 	// MARK: - Error handling helpers
 
-	/// True when we have valid data to display
-	var hasValidData: Bool {
-		location != nil && solar != nil
-	}
-
 	/// True when we should show a placeholder/redacted view (temporary location failure)
 	var shouldShowPlaceholder: Bool {
 		guard let error = entry.locationError else { return false }

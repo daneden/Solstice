@@ -14,8 +14,6 @@ import SwiftUI
 	@MainActor
 	@Observable
 	class LocationSearchService: NSObject, MKLocalSearchCompleterDelegate {
-		static let shared = LocationSearchService()
-
 		enum LocationStatus: Equatable {
 			case idle, noResults, isSearching, result
 			case error(String)
@@ -82,7 +80,6 @@ import SwiftUI
 	@MainActor
 	@Observable
 	class LocationSearchService {
-		static var shared = LocationSearchService()
 		var location: TemporaryLocation?
 	}
 #endif

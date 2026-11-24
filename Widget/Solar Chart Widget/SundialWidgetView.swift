@@ -122,27 +122,6 @@ struct SundialWidgetView: SolsticeWidgetView {
 	}
 }
 
-private struct AdaptiveLabelContainer<Content: View>: View {
-	@Environment(\.widgetRenderingMode) private var renderingMode
-
-	var padding: CGFloat = 4
-
-	@ViewBuilder
-	var content: Content
-
-	var body: some View {
-		content
-			.if(renderingMode == .fullColor) { content in
-				content
-					.padding(padding)
-					.padding(.horizontal, padding / 2)
-					.background(.regularMaterial, in: .containerRelative)
-					.padding(padding * -1)
-					.padding(.horizontal, padding * -0.5)
-			}
-	}
-}
-
 #if !os(macOS)
 	#Preview(as: .systemLarge) {
 		SundialWidget()

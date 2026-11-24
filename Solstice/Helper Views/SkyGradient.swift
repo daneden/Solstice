@@ -33,14 +33,52 @@ struct SkyModel {
 	var mie = 6e-6
 	/// Henyey–Greenstein asymmetry: how tightly the Mie glow hugs the sun (0…1).
 	var mieG = 0.8
-	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues and purples.
-	var ozone = SIMD3<Double>(0.850e-6, 4e-6, 0.085e-6)
+	/// Ozone absorption per RGB wavelength (1/m) — deepens twilight blues. Green is tuned by eye
+	/// between its physical ~1.9e-6 and the 4e-6 this once used: at 4e-6 the long low-sun light
+	/// paths lost so much green that dusk rendered maroon and violet where a real one is peach
+	/// under blue.
+	var ozone = SIMD3<Double>(0.850e-6, 3e-6, 0.085e-6)
 	/// Single scattering alone leaves long near-horizon paths yellow-green under a high sun: blue is
 	/// scattered out of the ray faster than in, and with no second bounce nothing replaces it. This
 	/// approximates multiple scattering with an isotropic, sky-tinted fill wherever the view path is
 	/// optically thick, fading with sun altitude so twilight and night keep their single-scatter
 	/// colours. Higher = paler, bluer horizon at midday.
 	var multipleScattering = 0.015
+	/// That fill fades with the sine of the sun's altitude, which is too fast: under a low sun
+	/// the horizon was left olive, and over the blue above it read as mud. This holds the fill
+	/// at no less than this fraction of its overhead strength while the sun is low, from full at
+	/// `lowSunFillFullDeg` down to none at `lowSunFillEndDeg`, where twilight takes over.
+	var lowSunFill = 0.5
+	var lowSunFillFullDeg = 5.0
+	var lowSunFillEndDeg = -2.0
+
+	/// Dusk as an eye or a camera sees it. The marched radiance is physically right to fall by
+	/// orders of magnitude as the sun sets, but nobody perceives it that way: eyes adapt, and the
+	/// sky just after sunset reads as bright as the afternoon's. Two terms, both scaled by
+	/// `twilightFactor`, close that gap without touching day or night.
+	///
+	/// `twilightExposureBoost` raises the tone-map exposure by up to `1 + boost`.
+	var twilightExposureBoost = 3.0
+	/// Skylight scattered down from the still-sunlit upper atmosphere, which single scattering
+	/// leaves out and which supplies most of a twilight zenith's blue. Fades toward the horizon,
+	/// where the thick view path extinguishes it and the warm band shows through.
+	var twilightSkylight = 0.0025
+	/// Sun altitudes where the twilight terms begin, peak and end.
+	var twilightStartDeg = 7.0
+	var twilightPeakDeg = -3.0
+	var twilightEndDeg = -10.0
+
+	/// 0 by day and by night, rising smoothly to 1 at `twilightPeakDeg`.
+	func twilightFactor(sunAltitudeDeg: Double) -> Double {
+		func smoothstep(_ x: Double) -> Double {
+			let t = min(max(x, 0), 1)
+			return t * t * (3 - 2 * t)
+		}
+		if sunAltitudeDeg >= twilightPeakDeg {
+			return smoothstep((twilightStartDeg - sunAltitudeDeg) / (twilightStartDeg - twilightPeakDeg))
+		}
+		return smoothstep((sunAltitudeDeg - twilightEndDeg) / (twilightPeakDeg - twilightEndDeg))
+	}
 
 	var rayleighScaleHeight = 8000.0
 	var mieScaleHeight = 1200.0
@@ -87,12 +125,19 @@ struct SkyModel {
 
 	/// Sunrise/sunset drama. All three ramp in as the sun approaches the horizon, at full
 	/// strength when it touches it and gone once |altitude| exceeds `glowDramaFalloffDeg`:
-	/// the glow gets brighter (`glowHorizonGain`), more saturated (`glowHorizonSaturation`),
+	/// the glow gets denser (`glowHorizonGain`), more saturated (`glowHorizonSaturation`),
 	/// and — on surfaces with a horizon line — stretches into an ellipse hugging it
 	/// (`glowHorizonStretch`, the horizontal scale at altitude 0).
 	var glowDramaFalloffDeg = 15.0
 	var glowHorizonGain = 0.4
-	var glowHorizonSaturation = 0.5
+	var glowHorizonSaturation = 0.25
+	/// The glow's opacity is how far the sun-facing sky stands out from the ambient one, in
+	/// display units: a difference this large or larger is fully opaque.
+	var glowFullContrast = 0.5
+	/// Lowest view elevation that contrast is measured at. At the sun's own elevation the
+	/// twilight-adapted horizon is as bright as the aureole, which made the glow vanish at the
+	/// very moment it should peak.
+	var glowContrastElevationDeg = 12.0
 	var glowHorizonStretch = 1.5
 
 	/// 0 far from the horizon → 1 as the sun touches it, from either side.
@@ -222,9 +267,16 @@ struct SkyModel {
 		// reads as pale blue rather than the yellow-green the extinguished path leaves behind.
 		let tauView = rayleigh * odR + SIMD3<Double>(repeating: mieExt * odM) + ozone * odO
 		let pathOpacity = SIMD3<Double>(1 - exp(-tauView.x), 1 - exp(-tauView.y), 1 - exp(-tauView.z))
-		let inMultiple = multipleScattering * max(0, sin(sa)) * pathOpacity * skyTint
+		let lowSunRamp = min(max((sunAltitudeDeg - lowSunFillEndDeg) / (lowSunFillFullDeg - lowSunFillEndDeg), 0), 1)
+		let lowSun = lowSunFill * lowSunRamp * lowSunRamp * (3 - 2 * lowSunRamp)
+		let inMultiple = multipleScattering * max(0, sin(sa), lowSun) * pathOpacity * skyTint
 
-		return (inRayleigh + inMie + inMultiple) * sunIntensity
+		// Twilight skylight: the complement of the fill above — strongest where the view path is
+		// thin (overhead), gone where it is opaque (the horizon).
+		let inTwilight = twilightSkylight * twilightFactor(sunAltitudeDeg: sunAltitudeDeg)
+			* (SIMD3<Double>(repeating: 1) - pathOpacity) * skyTint
+
+		return (inRayleigh + inMie + inMultiple + inTwilight) * sunIntensity
 	}
 
 	/// Tone-mapped, gamma-encoded sky colour for a view direction, including the ambient skylight floor.
@@ -285,10 +337,6 @@ struct SkyModel {
 		return (gradient, stops)
 	}
 
-	/// The sun's aureole as an analytic radial gradient: the colour at unit radius `r` is the sky
-	/// looking `r · glowAngularScaleDeg` away from the sun, *minus* the ambient base the glow is
-	/// layered over with `.plusLighter` — so mesh + glow ≈ the fully sun-anchored sky, but with
-	/// per-pixel smoothness and a continuously movable centre.
 	/// This model with a coarser ray march, for callers that evaluate many directions (the dial
 	/// ring, the glow stops): colour varies smoothly enough with angle that the difference is
 	/// invisible after tone-mapping.
@@ -299,24 +347,32 @@ struct SkyModel {
 		return coarse
 	}
 
+	/// The sun's aureole as an analytic radial gradient, composited over the mesh. The colour at
+	/// unit radius `r` is the sky looking `r · glowAngularScaleDeg` away from the sun, and its
+	/// opacity is how much that sky stands out from the ambient one.
+	///
+	/// It used to be the difference between the two, added with `.plusLighter`. Near sunset that
+	/// difference is almost pure red, and red added to a blue sky is pink, not gold. Painting the
+	/// sun-facing colour itself keeps its hue whatever is underneath.
 	func glowStops(sunAltitudeDeg: Double, stopCount: Int = 12) -> [Gradient.Stop] {
 		let coarse = coarseMarch
-		let elevationDeg = max(sunAltitudeDeg, groundSourceElevationDeg)
+		let colourElevationDeg = max(sunAltitudeDeg, groundSourceElevationDeg)
+		let contrastElevationDeg = max(sunAltitudeDeg, glowContrastElevationDeg)
 
-		func encoded(scatterCosTheta: Double) -> SIMD3<Double> {
+		func encoded(viewElevationDeg: Double, scatterCosTheta: Double) -> SIMD3<Double> {
 			let mapped = coarse.tonemapLinear(coarse.radiance(sunAltitudeDeg: sunAltitudeDeg,
-			                                                  viewElevationDeg: elevationDeg,
+			                                                  viewElevationDeg: viewElevationDeg,
 			                                                  scatterCosTheta: scatterCosTheta)
 					+ ambientRadiance,
 				sunAltitudeDeg: sunAltitudeDeg)
 			return SIMD3<Double>(encodeSRGB(mapped.x), encodeSRGB(mapped.y), encodeSRGB(mapped.z))
 		}
 
-		let base = encoded(scatterCosTheta: ambientScatterCosTheta(sunAltitudeDeg: sunAltitudeDeg,
-		                                                           viewElevationDeg: elevationDeg))
+		let base = encoded(viewElevationDeg: contrastElevationDeg,
+		                   scatterCosTheta: ambientScatterCosTheta(sunAltitudeDeg: sunAltitudeDeg,
+		                                                           viewElevationDeg: contrastElevationDeg))
 
-		// Sunrise/sunset drama: brighten and saturate the aureole as the sun nears the horizon —
-		// the physics alone underplays it after tone-mapping.
+		// Sunrise/sunset drama: a denser, more saturated aureole as the sun nears the horizon.
 		let closeness = horizonCloseness(sunAltitudeDeg: sunAltitudeDeg)
 		let gain = 1 + glowHorizonGain * closeness
 		let saturation = 1 + glowHorizonSaturation * closeness
@@ -325,20 +381,20 @@ struct SkyModel {
 			// Quadratic spacing clusters stops in the tight forward lobe near the centre.
 			let t = Double(i) / Double(stopCount - 1)
 			let location = t * t
-			let angle = location * glowAngularScaleDeg * .pi / 180
-			// `.plusLighter` adds in the display's gamma-encoded space, so each stop is the
-			// gamma-space difference against the ambient base: base + glow reconstructs the
-			// sun-facing sky exactly where they meet.
-			let lit = encoded(scatterCosTheta: cos(min(.pi, angle)))
-			let glow = SIMD3<Double>(max(0, lit.x - base.x),
-			                         max(0, lit.y - base.y),
-			                         max(0, lit.z - base.z))
-			let luminance = 0.2126 * glow.x + 0.7152 * glow.y + 0.0722 * glow.z
-			let dramatic = (SIMD3<Double>(repeating: luminance) + (glow - SIMD3<Double>(repeating: luminance)) * saturation) * gain
+			let scatterCosTheta = cos(min(.pi, location * glowAngularScaleDeg * .pi / 180))
+
+			let contrast = simd_reduce_max(encoded(viewElevationDeg: contrastElevationDeg,
+			                                       scatterCosTheta: scatterCosTheta) - base)
+			let opacity = min(1, max(0, contrast) / glowFullContrast * gain)
+
+			let lit = encoded(viewElevationDeg: colourElevationDeg, scatterCosTheta: scatterCosTheta)
+			let luminance = 0.2126 * lit.x + 0.7152 * lit.y + 0.0722 * lit.z
+			let vivid = SIMD3<Double>(repeating: luminance) + (lit - SIMD3<Double>(repeating: luminance)) * saturation
 			return Gradient.Stop(color: Color(.sRGB,
-			                                  red: min(1, max(0, dramatic.x)),
-			                                  green: min(1, max(0, dramatic.y)),
-			                                  blue: min(1, max(0, dramatic.z))),
+			                                  red: min(1, max(0, vivid.x)),
+			                                  green: min(1, max(0, vivid.y)),
+			                                  blue: min(1, max(0, vivid.z)),
+			                                  opacity: opacity),
 			                     location: location)
 		}
 	}
@@ -463,7 +519,7 @@ struct SkyModel {
 				                  scatterCosTheta: dialScatterCosTheta)
 				: .zero
 			let blended = wedge + (sky - wedge) * sunUpFraction
-			return coarse.tonemap(blended + coarse.ambientRadiance, sunAltitudeDeg: altitudeDeg)
+			return coarse.tonemap(blended + coarse.ambientRadiance, sunAltitudeDeg: altitudeDeg, adaptsToTwilight: false)
 		}
 
 		let start = solar.startOfDay
@@ -550,8 +606,11 @@ struct SkyModel {
 
 	/// Luminance-based Reinhard: compresses brightness while preserving chroma, so the daytime
 	/// sky stays saturated blue instead of desaturating toward grey the way per-channel Reinhard does.
-	private func tonemapLinear(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double) -> SIMD3<Double> {
-		let exposed = radiance * exposure
+	/// `adaptsToTwilight` is off for the dial ring, whose below-horizon wedges are stylised solid
+	/// steps: an exposure that varies with altitude would grade each wedge into a ramp.
+	private func tonemapLinear(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double, adaptsToTwilight: Bool = true) -> SIMD3<Double> {
+		let adaptation = adaptsToTwilight ? 1 + twilightExposureBoost * twilightFactor(sunAltitudeDeg: sunAltitudeDeg) : 1
+		let exposed = radiance * (exposure * adaptation)
 		let luminance = 0.2126 * exposed.x + 0.7152 * exposed.y + 0.0722 * exposed.z
 		let scale = luminance > 0 ? 1 / (1 + luminance) : 0
 		var mapped = exposed * scale
@@ -569,8 +628,8 @@ struct SkyModel {
 		return mapped
 	}
 
-	private func tonemap(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double) -> Color {
-		encode(tonemapLinear(radiance, sunAltitudeDeg: sunAltitudeDeg))
+	private func tonemap(_ radiance: SIMD3<Double>, sunAltitudeDeg: Double, adaptsToTwilight: Bool = true) -> Color {
+		encode(tonemapLinear(radiance, sunAltitudeDeg: sunAltitudeDeg, adaptsToTwilight: adaptsToTwilight))
 	}
 
 	private func encode(_ mapped: SIMD3<Double>) -> Color {
@@ -731,10 +790,6 @@ struct SkyView: View {
 						             anchor: sunAnchor)
 				}
 				.mask { glowMask }
-				// Blend applied last: inside the mask's compositing group there is no backdrop,
-				// and the glow's opaque near-black skirt would paint over the mesh instead of
-				// adding to it.
-				.blendMode(.plusLighter)
 			}
 		}
 		.compositingGroup()

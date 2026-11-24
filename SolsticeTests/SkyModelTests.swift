@@ -140,12 +140,20 @@ struct SkyModelTests {
 		#expect(stops.first?.location == 0)
 		#expect(stops.last?.location == 1)
 
-		let luminances = stops.map { resolvedLuminance($0.color) }
-		let first = luminances[0], mid = luminances[luminances.count / 2], last = luminances[luminances.count - 1]
+		let opacities = stops.map { Double($0.color.resolve(in: EnvironmentValues()).opacity) }
+		let first = opacities[0], mid = opacities[opacities.count / 2], last = opacities[opacities.count - 1]
 		#expect(first > mid)
 		#expect(mid >= last)
-		// The outermost stop is (near) black, so the additive layer vanishes at its edge.
+		// The outermost stop is (near) transparent, so the layer vanishes at its edge.
 		#expect(last < 0.02)
+	}
+
+	@Test("The glow still shows as the sun touches the horizon, and is warm")
+	func glowSurvivesSunset() {
+		let centre = SkyModel.standard.glowStops(sunAltitudeDeg: 0)[0].color.resolve(in: EnvironmentValues())
+		#expect(centre.opacity > 0.5)
+		#expect(centre.red > centre.green)
+		#expect(centre.green > centre.blue)
 	}
 
 	@Test("Below-horizon dial segments are solid per twilight band")
@@ -186,6 +194,27 @@ struct SkyModelTests {
 		// Single scattering alone goes green here; the multiple-scattering fill keeps it blue.
 		let rgb = model.radiance(sunAltitudeDeg: 60, viewElevationDeg: model.minElevationDeg, scatterCosTheta: 0.3)
 		#expect(rgb.z > rgb.y)
+	}
+
+	@Test("Twilight adaptation peaks after sunset and leaves day and night alone")
+	func twilightFactorIsConfinedToDusk() {
+		#expect(model.twilightFactor(sunAltitudeDeg: 30) == 0)
+		#expect(model.twilightFactor(sunAltitudeDeg: model.twilightStartDeg) == 0)
+		#expect(model.twilightFactor(sunAltitudeDeg: model.twilightPeakDeg) == 1)
+		#expect(model.twilightFactor(sunAltitudeDeg: model.twilightEndDeg) == 0)
+		#expect(model.twilightFactor(sunAltitudeDeg: -30) == 0)
+	}
+
+	@Test("Just after sunset the sky overhead is blue and the horizon warm")
+	func duskIsBlueOverPeach() {
+		// The moment of the reference photo: Stockport, 11 Nov 2026, 16:36, sun at -2.4°.
+		let stops = model.mesh(sunAltitudeDeg: -2.4).stops
+		let top = stops[0].resolve(in: EnvironmentValues())
+		let horizon = stops[stops.count - 1].resolve(in: EnvironmentValues())
+		#expect(top.blue > top.red * 1.5)
+		#expect(horizon.red > horizon.blue)
+		// Bright enough to read as dusk rather than night.
+		#expect(resolvedLuminance(stops[0]) > 0.1)
 	}
 
 	@Test("Radiance stays finite and non-negative across every angle")

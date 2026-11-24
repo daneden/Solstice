@@ -106,10 +106,6 @@ extension CountdownWidgetView {
 			return Text("—")
 		}
 	}
-
-	var currentEventImageName: String {
-		nextSolarEvent?.phase == .sunrise ? "moon.stars" : "sun.max"
-	}
 }
 
 struct CountdownWidgetPreview: PreviewProvider {

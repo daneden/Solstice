@@ -22,8 +22,6 @@ struct AnnualOverview<Location: AnyLocation>: View {
 	#endif
 	@Environment(\.timeMachine) var timeMachine: TimeMachine
 
-	@State private var isInformationSheetPresented = false
-
 	var location: Location
 
 	var nextGreaterThanPrevious: Bool {
