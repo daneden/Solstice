@@ -26,6 +26,26 @@ case "$YAPKIT_API_KEY" in
         ;;
 esac
 
+# Confirm the Yapback server accepts the key. The upload-url endpoint checks
+# auth before the body, so an empty body returns 400 for a valid key and 401
+# for a rejected one. Nothing is written.
+echo "Checking YAPKIT_API_KEY against the Yapback API..."
+RESPONSE_FILE=$(mktemp)
+STATUS=$(curl -sS -o "$RESPONSE_FILE" -w '%{http_code}' --max-time 20 \
+    -X POST "https://yapback.dev/api/feedback/upload-url" \
+    -H "Authorization: Bearer $YAPKIT_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{}') || STATUS="000"
+
+if [ "$STATUS" = "400" ]; then
+    echo "YAPKIT_API_KEY accepted by the Yapback API"
+else
+    echo "error: Yapback API rejected YAPKIT_API_KEY (HTTP $STATUS): $(cat "$RESPONSE_FILE")"
+    rm -f "$RESPONSE_FILE"
+    exit 1
+fi
+rm -f "$RESPONSE_FILE"
+
 cat > "$SECRETS_FILE" << EOF
 //
 //  Secrets.swift
