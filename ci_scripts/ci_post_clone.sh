@@ -12,10 +12,39 @@ echo "Generating Secrets.swift..."
 
 SECRETS_FILE="$CI_PRIMARY_REPOSITORY_PATH/Solstice/Helpers/Secrets.swift"
 
-if [ -z "$YAPKIT_API_KEY" ]; then
-    echo "warning: YAPKIT_API_KEY environment variable is not set"
-    YAPKIT_API_KEY="MISSING_API_KEY"
+# Log a redacted summary so the key can be checked without revealing it
+RAW_LENGTH=${#YAPKIT_API_KEY}
+YAPKIT_API_KEY=$(printf '%s' "$YAPKIT_API_KEY" | tr -d '[:space:]')
+echo "YAPKIT_API_KEY: prefix '$(printf '%s' "$YAPKIT_API_KEY" | cut -c1-8)', length ${#YAPKIT_API_KEY} (raw length $RAW_LENGTH; any difference was whitespace, now stripped)"
+
+# Fail the build rather than ship a key the server will reject
+case "$YAPKIT_API_KEY" in
+    yb_live_?????????????????????*) ;;
+    *)
+        echo "error: YAPKIT_API_KEY is missing or not a valid yb_live_ key"
+        exit 1
+        ;;
+esac
+
+# Confirm the Yapback server accepts the key. The upload-url endpoint checks
+# auth before the body, so an empty body returns 400 for a valid key and 401
+# for a rejected one. Nothing is written.
+echo "Checking YAPKIT_API_KEY against the Yapback API..."
+RESPONSE_FILE=$(mktemp)
+STATUS=$(curl -sS -o "$RESPONSE_FILE" -w '%{http_code}' --max-time 20 \
+    -X POST "https://yapback.dev/api/feedback/upload-url" \
+    -H "Authorization: Bearer $YAPKIT_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{}') || STATUS="000"
+
+if [ "$STATUS" = "400" ]; then
+    echo "YAPKIT_API_KEY accepted by the Yapback API"
+else
+    echo "error: Yapback API rejected YAPKIT_API_KEY (HTTP $STATUS): $(cat "$RESPONSE_FILE")"
+    rm -f "$RESPONSE_FILE"
+    exit 1
 fi
+rm -f "$RESPONSE_FILE"
 
 cat > "$SECRETS_FILE" << EOF
 //
