@@ -12,10 +12,19 @@ echo "Generating Secrets.swift..."
 
 SECRETS_FILE="$CI_PRIMARY_REPOSITORY_PATH/Solstice/Helpers/Secrets.swift"
 
-if [ -z "$YAPKIT_API_KEY" ]; then
-    echo "warning: YAPKIT_API_KEY environment variable is not set"
-    YAPKIT_API_KEY="MISSING_API_KEY"
-fi
+# Log a redacted summary so the key can be checked without revealing it
+RAW_LENGTH=${#YAPKIT_API_KEY}
+YAPKIT_API_KEY=$(printf '%s' "$YAPKIT_API_KEY" | tr -d '[:space:]')
+echo "YAPKIT_API_KEY: prefix '$(printf '%s' "$YAPKIT_API_KEY" | cut -c1-8)', length ${#YAPKIT_API_KEY} (raw length $RAW_LENGTH; any difference was whitespace, now stripped)"
+
+# Fail the build rather than ship a key the server will reject
+case "$YAPKIT_API_KEY" in
+    yb_live_?????????????????????*) ;;
+    *)
+        echo "error: YAPKIT_API_KEY is missing or not a valid yb_live_ key"
+        exit 1
+        ;;
+esac
 
 cat > "$SECRETS_FILE" << EOF
 //
